@@ -1,4 +1,5 @@
 import express, { type Request, Response, NextFunction } from "express";
+import path from "path";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
@@ -46,6 +47,11 @@ app.use((req, res, next) => {
 
     res.status(status).json({ message });
     console.error('Server error:', err);
+  });
+
+  // Add a simple test route first
+  app.get('/test', (req, res) => {
+    res.sendFile(path.resolve(import.meta.dirname, '..', 'simple_test.html'));
   });
 
   // importantly only setup vite in development and after
