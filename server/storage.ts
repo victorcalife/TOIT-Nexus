@@ -1,4 +1,5 @@
 import {
+  tenants,
   users,
   clientCategories,
   clients,
@@ -7,6 +8,8 @@ import {
   workflowExecutions,
   reports,
   activities,
+  type Tenant,
+  type InsertTenant,
   type User,
   type UpsertUser,
   type ClientCategory,
@@ -27,35 +30,43 @@ import { db } from "./db";
 import { eq, desc, and, count, sql } from "drizzle-orm";
 
 export interface IStorage {
+  // Tenant operations
+  getTenants(): Promise<Tenant[]>;
+  getTenant(id: string): Promise<Tenant | undefined>;
+  getTenantBySlug(slug: string): Promise<Tenant | undefined>;
+  createTenant(tenant: InsertTenant): Promise<Tenant>;
+  updateTenant(id: string, tenant: Partial<InsertTenant>): Promise<Tenant>;
+  
   // User operations (mandatory for Replit Auth)
   getUser(id: string): Promise<User | undefined>;
+  getUsersByTenant(tenantId: string): Promise<User[]>;
   upsertUser(user: UpsertUser): Promise<User>;
   
-  // Client Category operations
-  getClientCategories(): Promise<ClientCategory[]>;
+  // Client Category operations (tenant-isolated)
+  getClientCategories(tenantId?: string): Promise<ClientCategory[]>;
   getClientCategory(id: string): Promise<ClientCategory | undefined>;
   createClientCategory(category: InsertClientCategory): Promise<ClientCategory>;
   updateClientCategory(id: string, category: Partial<InsertClientCategory>): Promise<ClientCategory>;
   deleteClientCategory(id: string): Promise<void>;
   
-  // Client operations
-  getClients(): Promise<Client[]>;
+  // Client operations (tenant-isolated)
+  getClients(tenantId?: string): Promise<Client[]>;
   getClient(id: string): Promise<Client | undefined>;
   getClientsByCategory(categoryId: string): Promise<Client[]>;
   createClient(client: InsertClient): Promise<Client>;
   updateClient(id: string, client: Partial<InsertClient>): Promise<Client>;
   deleteClient(id: string): Promise<void>;
   
-  // Integration operations
-  getIntegrations(): Promise<Integration[]>;
+  // Integration operations (tenant-isolated)
+  getIntegrations(tenantId?: string): Promise<Integration[]>;
   getIntegration(id: string): Promise<Integration | undefined>;
   createIntegration(integration: InsertIntegration): Promise<Integration>;
   updateIntegration(id: string, integration: Partial<InsertIntegration>): Promise<Integration>;
   deleteIntegration(id: string): Promise<void>;
   updateIntegrationStatus(id: string, status: string): Promise<void>;
   
-  // Workflow operations
-  getWorkflows(): Promise<Workflow[]>;
+  // Workflow operations (tenant-isolated)
+  getWorkflows(tenantId?: string): Promise<Workflow[]>;
   getWorkflow(id: string): Promise<Workflow | undefined>;
   getWorkflowsByCategory(categoryId: string): Promise<Workflow[]>;
   createWorkflow(workflow: InsertWorkflow): Promise<Workflow>;
@@ -63,20 +74,29 @@ export interface IStorage {
   deleteWorkflow(id: string): Promise<void>;
   updateWorkflowExecution(workflowId: string): Promise<void>;
   
-  // Workflow execution operations
-  getWorkflowExecutions(workflowId?: string, limit?: number): Promise<WorkflowExecution[]>;
+  // Workflow execution operations (tenant-isolated)
+  getWorkflowExecutions(tenantId?: string, workflowId?: string, limit?: number): Promise<WorkflowExecution[]>;
   createWorkflowExecution(execution: Omit<WorkflowExecution, 'id' | 'executedAt'>): Promise<WorkflowExecution>;
   
-  // Report operations
-  getReports(): Promise<Report[]>;
+  // Report operations (tenant-isolated)
+  getReports(tenantId?: string): Promise<Report[]>;
   getReport(id: string): Promise<Report | undefined>;
   createReport(report: InsertReport): Promise<Report>;
   updateReport(id: string, report: Partial<InsertReport>): Promise<Report>;
   deleteReport(id: string): Promise<void>;
   
-  // Activity operations
-  getRecentActivities(limit?: number): Promise<Activity[]>;
+  // Activity operations (tenant-isolated)
+  getRecentActivities(tenantId?: string, limit?: number): Promise<Activity[]>;
   createActivity(activity: InsertActivity): Promise<Activity>;
+  
+  // Admin operations
+  getAdminStats(): Promise<{
+    totalTenants: number;
+    totalUsers: number;
+    monthlyRevenue: number;
+    issues: number;
+  }>;
+  getAllActivities(limit?: number): Promise<Activity[]>;
   
   // Dashboard statistics
   getDashboardStats(): Promise<{
@@ -88,10 +108,46 @@ export interface IStorage {
 }
 
 export class DatabaseStorage implements IStorage {
+  // Tenant operations
+  async getTenants(): Promise<Tenant[]> {
+    return await db.select().from(tenants).orderBy(desc(tenants.createdAt));
+  }
+
+  async getTenant(id: string): Promise<Tenant | undefined> {
+    const [tenant] = await db.select().from(tenants).where(eq(tenants.id, id));
+    return tenant;
+  }
+
+  async getTenantBySlug(slug: string): Promise<Tenant | undefined> {
+    const [tenant] = await db.select().from(tenants).where(eq(tenants.slug, slug));
+    return tenant;
+  }
+
+  async createTenant(tenantData: InsertTenant): Promise<Tenant> {
+    const [tenant] = await db
+      .insert(tenants)
+      .values(tenantData)
+      .returning();
+    return tenant;
+  }
+
+  async updateTenant(id: string, tenantData: Partial<InsertTenant>): Promise<Tenant> {
+    const [tenant] = await db
+      .update(tenants)
+      .set({ ...tenantData, updatedAt: new Date() })
+      .where(eq(tenants.id, id))
+      .returning();
+    return tenant;
+  }
+
   // User operations
   async getUser(id: string): Promise<User | undefined> {
     const [user] = await db.select().from(users).where(eq(users.id, id));
     return user;
+  }
+
+  async getUsersByTenant(tenantId: string): Promise<User[]> {
+    return await db.select().from(users).where(eq(users.tenantId, tenantId));
   }
 
   async upsertUser(userData: UpsertUser): Promise<User> {
@@ -109,13 +165,18 @@ export class DatabaseStorage implements IStorage {
     return user;
   }
 
-  // Client Category operations
-  async getClientCategories(): Promise<ClientCategory[]> {
-    return await db
+  // Client Category operations (with tenant isolation)
+  async getClientCategories(tenantId?: string): Promise<ClientCategory[]> {
+    const query = db
       .select()
       .from(clientCategories)
-      .where(eq(clientCategories.isActive, true))
-      .orderBy(desc(clientCategories.createdAt));
+      .where(eq(clientCategories.isActive, true));
+    
+    if (tenantId) {
+      return await query.where(eq(clientCategories.tenantId, tenantId)).orderBy(desc(clientCategories.createdAt));
+    }
+    
+    return await query.orderBy(desc(clientCategories.createdAt));
   }
 
   async getClientCategory(id: string): Promise<ClientCategory | undefined> {
@@ -150,13 +211,18 @@ export class DatabaseStorage implements IStorage {
       .where(eq(clientCategories.id, id));
   }
 
-  // Client operations
-  async getClients(): Promise<Client[]> {
-    return await db
+  // Client operations (with tenant isolation)
+  async getClients(tenantId?: string): Promise<Client[]> {
+    const query = db
       .select()
       .from(clients)
-      .where(eq(clients.isActive, true))
-      .orderBy(desc(clients.createdAt));
+      .where(eq(clients.isActive, true));
+    
+    if (tenantId) {
+      return await query.where(eq(clients.tenantId, tenantId)).orderBy(desc(clients.createdAt));
+    }
+    
+    return await query.orderBy(desc(clients.createdAt));
   }
 
   async getClient(id: string): Promise<Client | undefined> {
@@ -199,13 +265,18 @@ export class DatabaseStorage implements IStorage {
       .where(eq(clients.id, id));
   }
 
-  // Integration operations
-  async getIntegrations(): Promise<Integration[]> {
-    return await db
+  // Integration operations (with tenant isolation)
+  async getIntegrations(tenantId?: string): Promise<Integration[]> {
+    const query = db
       .select()
       .from(integrations)
-      .where(eq(integrations.isActive, true))
-      .orderBy(desc(integrations.createdAt));
+      .where(eq(integrations.isActive, true));
+    
+    if (tenantId) {
+      return await query.where(eq(integrations.tenantId, tenantId)).orderBy(desc(integrations.createdAt));
+    }
+    
+    return await query.orderBy(desc(integrations.createdAt));
   }
 
   async getIntegration(id: string): Promise<Integration | undefined> {
@@ -247,12 +318,15 @@ export class DatabaseStorage implements IStorage {
       .where(eq(integrations.id, id));
   }
 
-  // Workflow operations
-  async getWorkflows(): Promise<Workflow[]> {
-    return await db
-      .select()
-      .from(workflows)
-      .orderBy(desc(workflows.createdAt));
+  // Workflow operations (with tenant isolation)
+  async getWorkflows(tenantId?: string): Promise<Workflow[]> {
+    const query = db.select().from(workflows);
+    
+    if (tenantId) {
+      return await query.where(eq(workflows.tenantId, tenantId)).orderBy(desc(workflows.createdAt));
+    }
+    
+    return await query.orderBy(desc(workflows.createdAt));
   }
 
   async getWorkflow(id: string): Promise<Workflow | undefined> {
@@ -302,9 +376,13 @@ export class DatabaseStorage implements IStorage {
       .where(eq(workflows.id, workflowId));
   }
 
-  // Workflow execution operations
-  async getWorkflowExecutions(workflowId?: string, limit = 50): Promise<WorkflowExecution[]> {
+  // Workflow execution operations (with tenant isolation)  
+  async getWorkflowExecutions(tenantId?: string, workflowId?: string, limit = 50): Promise<WorkflowExecution[]> {
     let query = db.select().from(workflowExecutions);
+    
+    if (tenantId) {
+      query = query.where(eq(workflowExecutions.tenantId, tenantId));
+    }
     
     if (workflowId) {
       query = query.where(eq(workflowExecutions.workflowId, workflowId));
@@ -323,13 +401,18 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 
-  // Report operations
-  async getReports(): Promise<Report[]> {
-    return await db
+  // Report operations (with tenant isolation)
+  async getReports(tenantId?: string): Promise<Report[]> {
+    const query = db
       .select()
       .from(reports)
-      .where(eq(reports.isActive, true))
-      .orderBy(desc(reports.createdAt));
+      .where(eq(reports.isActive, true));
+    
+    if (tenantId) {
+      return await query.where(eq(reports.tenantId, tenantId)).orderBy(desc(reports.createdAt));
+    }
+    
+    return await query.orderBy(desc(reports.createdAt));
   }
 
   async getReport(id: string): Promise<Report | undefined> {
@@ -364,11 +447,18 @@ export class DatabaseStorage implements IStorage {
       .where(eq(reports.id, id));
   }
 
-  // Activity operations
-  async getRecentActivities(limit = 20): Promise<Activity[]> {
-    return await db
-      .select()
-      .from(activities)
+  // Activity operations (with tenant isolation)
+  async getRecentActivities(tenantId?: string, limit = 20): Promise<Activity[]> {
+    const query = db.select().from(activities);
+    
+    if (tenantId) {
+      return await query
+        .where(eq(activities.tenantId, tenantId))
+        .orderBy(desc(activities.createdAt))
+        .limit(limit);
+    }
+    
+    return await query
       .orderBy(desc(activities.createdAt))
       .limit(limit);
   }
@@ -379,6 +469,47 @@ export class DatabaseStorage implements IStorage {
       .values(activity)
       .returning();
     return created;
+  }
+
+  // Admin operations
+  async getAdminStats(): Promise<{
+    totalTenants: number;
+    totalUsers: number;
+    monthlyRevenue: number;
+    issues: number;
+  }> {
+    const [tenantCount] = await db.select({ count: count() }).from(tenants);
+    const [userCount] = await db.select({ count: count() }).from(users).where(eq(users.isActive, true));
+    
+    // Calculate monthly revenue based on subscription plans
+    const activeTenantsWithPlans = await db
+      .select({ subscriptionPlan: tenants.subscriptionPlan })
+      .from(tenants)
+      .where(eq(tenants.status, 'active'));
+    
+    const planPrices = { basic: 99, premium: 299, enterprise: 999 };
+    const monthlyRevenue = activeTenantsWithPlans.reduce((sum, tenant) => {
+      return sum + (planPrices[tenant.subscriptionPlan as keyof typeof planPrices] || 0);
+    }, 0);
+
+    // Count issues (suspended tenants + inactive integrations)
+    const [suspendedTenants] = await db.select({ count: count() }).from(tenants).where(eq(tenants.status, 'suspended'));
+    const [failedIntegrations] = await db.select({ count: count() }).from(integrations).where(eq(integrations.lastStatus, 'error'));
+    
+    return {
+      totalTenants: tenantCount.count,
+      totalUsers: userCount.count,
+      monthlyRevenue,
+      issues: suspendedTenants.count + failedIntegrations.count
+    };
+  }
+
+  async getAllActivities(limit = 50): Promise<Activity[]> {
+    return await db
+      .select()
+      .from(activities)
+      .orderBy(desc(activities.createdAt))
+      .limit(limit);
   }
 
   // Dashboard statistics

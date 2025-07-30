@@ -2,6 +2,14 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
+import { 
+  tenantMiddleware, 
+  requireTenant, 
+  requireSuperAdmin, 
+  requireRole,
+  getTenantId,
+  canAccessTenantResource
+} from "./tenantMiddleware";
 
 // Helper function to generate report data
 async function generateReportData(report: any) {
@@ -118,15 +126,139 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Auth middleware
   await setupAuth(app);
 
+  // Apply tenant middleware to all authenticated routes
+  app.use('/api', isAuthenticated, tenantMiddleware);
+
   // Auth routes
-  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
+  app.get('/api/auth/user', async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
       const user = await storage.getUser(userId);
-      res.json(user);
+      
+      // Include tenant information in response
+      const response: any = { ...user };
+      if (req.tenant) {
+        response.tenant = req.tenant;
+      }
+      if (req.isSuperAdmin) {
+        response.isSuperAdmin = true;
+      }
+      
+      res.json(response);
     } catch (error) {
       console.error("Error fetching user:", error);
       res.status(500).json({ message: "Failed to fetch user" });
+    }
+  });
+
+  // Tenant selection for users with multiple tenant access
+  app.post('/api/auth/select-tenant', async (req: any, res) => {
+    try {
+      const { tenantId } = req.body;
+      const userId = req.user.claims.sub;
+      
+      // Verify user has access to this tenant
+      const user = await storage.getUser(userId);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      // For super admin, allow access to any active tenant
+      if (user.role === 'super_admin') {
+        const tenant = await storage.getTenant(tenantId);
+        if (!tenant) {
+          return res.status(404).json({ message: "Tenant not found" });
+        }
+        // Set tenant in session or return token with tenant info
+        res.json({ success: true, tenant });
+        return;
+      }
+
+      // For regular users, verify they belong to this tenant
+      if (user.tenantId !== tenantId) {
+        return res.status(403).json({ message: "Access denied to this tenant" });
+      }
+
+      const tenant = await storage.getTenant(tenantId);
+      if (!tenant || tenant.status !== 'active') {
+        return res.status(403).json({ message: "Tenant not available" });
+      }
+
+      res.json({ success: true, tenant });
+    } catch (error) {
+      console.error("Error selecting tenant:", error);
+      res.status(500).json({ message: "Failed to select tenant" });
+    }
+  });
+
+  // Admin routes (super admin only)
+  app.get('/api/admin/tenants', requireSuperAdmin, async (req, res) => {
+    try {
+      const tenants = await storage.getTenants();
+      res.json(tenants);
+    } catch (error) {
+      console.error("Error fetching tenants:", error);
+      res.status(500).json({ message: "Failed to fetch tenants" });
+    }
+  });
+
+  app.get('/api/admin/stats', requireSuperAdmin, async (req, res) => {
+    try {
+      const stats = await storage.getAdminStats();
+      res.json(stats);
+    } catch (error) {
+      console.error("Error fetching admin stats:", error);
+      res.status(500).json({ message: "Failed to fetch admin stats" });
+    }
+  });
+
+  app.get('/api/admin/activities', requireSuperAdmin, async (req, res) => {
+    try {
+      const activities = await storage.getAllActivities(50);
+      res.json(activities);
+    } catch (error) {
+      console.error("Error fetching admin activities:", error);
+      res.status(500).json({ message: "Failed to fetch activities" });
+    }
+  });
+
+  app.post('/api/admin/tenants/:id/suspend', requireSuperAdmin, async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      await storage.updateTenant(id, { status: 'suspended' });
+      
+      await storage.createActivity({
+        userId: req.user.claims.sub,
+        action: 'suspend_tenant',
+        entityType: 'tenant',
+        entityId: id,
+        description: `Suspended tenant`,
+      });
+
+      res.json({ message: "Tenant suspended successfully" });
+    } catch (error) {
+      console.error("Error suspending tenant:", error);
+      res.status(500).json({ message: "Failed to suspend tenant" });
+    }
+  });
+
+  app.post('/api/admin/tenants/:id/activate', requireSuperAdmin, async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      await storage.updateTenant(id, { status: 'active' });
+      
+      await storage.createActivity({
+        userId: req.user.claims.sub,
+        action: 'activate_tenant',
+        entityType: 'tenant',
+        entityId: id,
+        description: `Activated tenant`,
+      });
+
+      res.json({ message: "Tenant activated successfully" });
+    } catch (error) {
+      console.error("Error activating tenant:", error);
+      res.status(500).json({ message: "Failed to activate tenant" });
     }
   });
 
@@ -151,10 +283,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Client Category routes
-  app.get('/api/categories', isAuthenticated, async (req, res) => {
+  // Client Category routes (tenant-isolated)
+  app.get('/api/categories', requireTenant, async (req, res) => {
     try {
-      const categories = await storage.getClientCategories();
+      const tenantId = getTenantId(req);
+      const categories = await storage.getClientCategories(tenantId);
       res.json(categories);
     } catch (error) {
       console.error("Error fetching categories:", error);
