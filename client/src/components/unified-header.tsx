@@ -20,7 +20,13 @@ export function UnifiedHeader({ title, subtitle, showUserActions = false, user, 
   };
 
   return (
-    <header className="bg-gradient-to-r from-blue-600 via-blue-700 to-purple-700 text-white shadow-lg">
+    <header 
+      className="text-white shadow-lg"
+      style={{
+        background: 'linear-gradient(90deg, #1e3a8a 0%, #581c87 50%, #06b6d4 100%)',
+        backgroundSize: '100% 100%'
+      }}
+    >
       <div className="w-full px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">

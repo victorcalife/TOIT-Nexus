@@ -45,7 +45,7 @@ function Router() {
   }
 
   // If system needs setup, show setup page
-  if (setupStatus?.needsSetup) {
+  if (setupStatus && (setupStatus as any).needsSetup) {
     return <SystemSetup />;
   }
 
@@ -101,6 +101,7 @@ function Router() {
 
       {/* Tenant selection */}
       <Route path="/select-tenant" component={SelectTenant} />
+      <Route path="/tenant-selection" component={TenantSelection} />
 
       {/* Main tenant-based application routes */}
       <Route path="/" component={() => {
