@@ -20,13 +20,19 @@ import Settings from "@/pages/settings";
 import AccessControl from "@/pages/access-control";
 import TenantSelection from "@/pages/tenant-selection";
 import AdminDashboard from "@/pages/admin/dashboard";
+import SystemSetup from "@/pages/system-setup";
+import { useQuery } from "@tanstack/react-query";
 
 function Router() {
   const { isAuthenticated, isLoading, user, isSuperAdmin } = useAuth();
+  
+  // Check if system needs setup
+  const { data: setupStatus, isLoading: setupLoading } = useQuery({
+    queryKey: ['/api/setup-status'],
+    enabled: !isLoading // Only check after auth loading completes
+  });
 
-
-
-  if (isLoading) {
+  if (isLoading || setupLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -37,13 +43,18 @@ function Router() {
     );
   }
 
+  // If system needs setup, show setup page
+  if (setupStatus?.needsSetup) {
+    return <SystemSetup />;
+  }
+
   // Not authenticated - show landing page or login
   if (!isAuthenticated) {
     return (
       <Switch>
         <Route path="/" component={Landing} />
         <Route path="/login" component={Login} />
-        <Route>
+        <Route component={() => (
           <div className="min-h-screen flex items-center justify-center">
             <div className="text-center">
               <h1 className="text-2xl font-bold mb-4">Página não encontrada</h1>
@@ -52,55 +63,198 @@ function Router() {
               </a>
             </div>
           </div>
-        </Route>
+        )} />
       </Switch>
     );
   }
 
-  // Authenticated user routing based on role and tenant access
+  // Authenticated user routing
   return (
     <Switch>
-      {/* Admin routes for super admin */}
-      {isSuperAdmin && (
-        <>
-          <Route path="/admin" component={AdminDashboard} />
-          <Route path="/admin/dashboard" component={AdminDashboard} />
-        </>
-      )}
+      {/* TOIT Admin routes (super admin only) */}
+      <Route path="/admin" component={() => {
+        if (!isSuperAdmin) {
+          return <div className="min-h-screen flex items-center justify-center">
+            <div className="text-center">
+              <h1 className="text-2xl font-bold mb-4">Acesso Negado</h1>
+              <p className="mb-4">Apenas super administradores podem acessar esta área.</p>
+              <a href="/" className="text-blue-600 hover:underline">Voltar ao início</a>
+            </div>
+          </div>;
+        }
+        return <AdminDashboard />;
+      }} />
+      
+      <Route path="/admin/:rest*" component={() => {
+        if (!isSuperAdmin) {
+          return <div className="min-h-screen flex items-center justify-center">
+            <div className="text-center">
+              <h1 className="text-2xl font-bold mb-4">Acesso Negado</h1>
+              <p className="mb-4">Apenas super administradores podem acessar esta área.</p>
+              <a href="/" className="text-blue-600 hover:underline">Voltar ao início</a>
+            </div>
+          </div>;
+        }
+        return <AdminDashboard />;
+      }} />
 
-      {/* Tenant selection for users without active tenant or super admin wanting to access client area */}
-      {(!user?.tenant || window.location.pathname === '/select-tenant') && (
-        <Route path="/select-tenant" component={TenantSelection} />
-      )}
+      {/* Tenant selection */}
+      <Route path="/select-tenant" component={TenantSelection} />
 
-      {/* Main tenant-based application */}
-      {user?.tenant ? (
-        <div className="flex h-screen bg-gray-50">
-          <Sidebar />
-          <Switch>
-            <Route path="/" component={Dashboard} />
-            <Route path="/clients" component={Clients} />
-            <Route path="/categories" component={Categories} />
-            <Route path="/workflows" component={Workflows} />
-            <Route path="/integrations" component={Integrations} />
-            <Route path="/reports" component={Reports} />
-            <Route path="/users" component={Users} />
-            <Route path="/access-control" component={AccessControl} />
-            <Route path="/connectivity" component={Connectivity} />
-            <Route path="/settings" component={Settings} />
-            <Route component={NotFound} />
-          </Switch>
-        </div>
-      ) : (
-        // Redirect to tenant selection if no tenant is selected
-        <Route path="/:rest*">
-          {() => {
-            window.location.href = '/select-tenant';
-            return null;
-          }}
-        </Route>
-      )}
+      {/* Main tenant-based application routes */}
+      <Route path="/" component={() => {
+        // If user has no tenant, redirect to tenant selection
+        if (!user?.tenant) {
+          window.location.href = '/select-tenant';
+          return null;
+        }
+        
+        return (
+          <div className="flex h-screen bg-gray-50">
+            <Sidebar />
+            <main className="flex-1 overflow-hidden">
+              <Dashboard />
+            </main>
+          </div>
+        );
+      }} />
 
+      <Route path="/clients" component={() => {
+        if (!user?.tenant) {
+          window.location.href = '/select-tenant';
+          return null;
+        }
+        return (
+          <div className="flex h-screen bg-gray-50">
+            <Sidebar />
+            <main className="flex-1 overflow-hidden">
+              <Clients />
+            </main>
+          </div>
+        );
+      }} />
+
+      <Route path="/categories" component={() => {
+        if (!user?.tenant) {
+          window.location.href = '/select-tenant';
+          return null;
+        }
+        return (
+          <div className="flex h-screen bg-gray-50">
+            <Sidebar />
+            <main className="flex-1 overflow-hidden">
+              <Categories />
+            </main>
+          </div>
+        );
+      }} />
+
+      <Route path="/workflows" component={() => {
+        if (!user?.tenant) {
+          window.location.href = '/select-tenant';
+          return null;
+        }
+        return (
+          <div className="flex h-screen bg-gray-50">
+            <Sidebar />
+            <main className="flex-1 overflow-hidden">
+              <Workflows />
+            </main>
+          </div>
+        );
+      }} />
+
+      <Route path="/integrations" component={() => {
+        if (!user?.tenant) {
+          window.location.href = '/select-tenant';
+          return null;
+        }
+        return (
+          <div className="flex h-screen bg-gray-50">
+            <Sidebar />
+            <main className="flex-1 overflow-hidden">
+              <Integrations />
+            </main>
+          </div>
+        );
+      }} />
+
+      <Route path="/reports" component={() => {
+        if (!user?.tenant) {
+          window.location.href = '/select-tenant';
+          return null;
+        }
+        return (
+          <div className="flex h-screen bg-gray-50">
+            <Sidebar />
+            <main className="flex-1 overflow-hidden">
+              <Reports />
+            </main>
+          </div>
+        );
+      }} />
+
+      <Route path="/users" component={() => {
+        if (!user?.tenant) {
+          window.location.href = '/select-tenant';
+          return null;
+        }
+        return (
+          <div className="flex h-screen bg-gray-50">
+            <Sidebar />
+            <main className="flex-1 overflow-hidden">
+              <Users />
+            </main>
+          </div>
+        );
+      }} />
+
+      <Route path="/access-control" component={() => {
+        if (!user?.tenant) {
+          window.location.href = '/select-tenant';
+          return null;
+        }
+        return (
+          <div className="flex h-screen bg-gray-50">
+            <Sidebar />
+            <main className="flex-1 overflow-hidden">
+              <AccessControl />
+            </main>
+          </div>
+        );
+      }} />
+
+      <Route path="/connectivity" component={() => {
+        if (!user?.tenant) {
+          window.location.href = '/select-tenant';
+          return null;
+        }
+        return (
+          <div className="flex h-screen bg-gray-50">
+            <Sidebar />
+            <main className="flex-1 overflow-hidden">
+              <Connectivity />
+            </main>
+          </div>
+        );
+      }} />
+
+      <Route path="/settings" component={() => {
+        if (!user?.tenant) {
+          window.location.href = '/select-tenant';
+          return null;
+        }
+        return (
+          <div className="flex h-screen bg-gray-50">
+            <Sidebar />
+            <main className="flex-1 overflow-hidden">
+              <Settings />
+            </main>
+          </div>
+        );
+      }} />
+
+      {/* Catch-all 404 route */}
       <Route component={NotFound} />
     </Switch>
   );
