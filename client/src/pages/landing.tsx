@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartLine, Users, Workflow, Shield, Database, BarChart3 } from "lucide-react";
+import toitNexusLogo from "@/assets/toit-nexus-logo.svg";
 
 export default function Landing() {
   return (
@@ -9,11 +10,12 @@ export default function Landing() {
       <header className="border-b bg-white/80 backdrop-blur-sm">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
-                <ChartLine className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-xl font-semibold text-gray-900">InvestFlow</span>
+            <div className="flex items-center">
+              <img 
+                src={toitNexusLogo} 
+                alt="TOIT Nexus" 
+                className="h-12 w-auto"
+              />
             </div>
             <Button 
               onClick={() => window.location.href = '/login'}
@@ -29,6 +31,13 @@ export default function Landing() {
       <section className="py-20">
         <div className="container mx-auto px-6 text-center">
           <div className="max-w-4xl mx-auto">
+            <div className="flex justify-center mb-8">
+              <img 
+                src={toitNexusLogo} 
+                alt="TOIT Nexus" 
+                className="h-20 w-auto opacity-90"
+              />
+            </div>
             <h1 className="text-5xl font-bold text-gray-900 mb-6">
               Automatize seu escritório de investimentos com 
               <span className="text-primary-500"> workflows inteligentes</span>

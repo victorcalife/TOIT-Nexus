@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ChartLine, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import toitNexusLogo from "@/assets/toit-nexus-logo.svg";
 
 export default function Login() {
   const [cpf, setCpf] = useState("");
@@ -100,10 +101,13 @@ export default function Login() {
       <div className="w-full max-w-md">
         {/* Logo/Header */}
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-primary-500 rounded-xl flex items-center justify-center mx-auto mb-4">
-            <ChartLine className="w-8 h-8 text-white" />
+          <div className="flex justify-center mb-4">
+            <img 
+              src={toitNexusLogo} 
+              alt="TOIT Nexus" 
+              className="h-16 w-auto opacity-90"
+            />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900">InvestFlow</h1>
           <p className="text-gray-600 mt-2">Faça login em sua conta</p>
         </div>
 
@@ -113,7 +117,7 @@ export default function Login() {
               Entrar na Plataforma
             </CardTitle>
             <CardDescription className="text-center">
-              Digite seu CPF e senha para acessar sua conta
+              Digite seu CPF e senha para acessar a plataforma TOIT Nexus
             </CardDescription>
           </CardHeader>
           <CardContent>
