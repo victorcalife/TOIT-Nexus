@@ -13,6 +13,7 @@ import {
   Database, 
   FileText,
   UserCheck, 
+  Shield,
   TestTube,
   Settings, 
   LogOut 
@@ -26,6 +27,7 @@ const navigation = [
   { name: 'Integrações', href: '/integrations', icon: Database },
   { name: 'Relatórios', href: '/reports', icon: FileText },
   { name: 'Usuários', href: '/users', icon: UserCheck },
+  { name: 'Controle de Acesso', href: '/access-control', icon: Shield },
   { name: 'Testes', href: '/connectivity', icon: TestTube },
   { name: 'Configurações', href: '/settings', icon: Settings },
 ];

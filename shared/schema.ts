@@ -31,6 +31,8 @@ export const riskProfileEnum = pgEnum('risk_profile', ['conservative', 'moderate
 export const integrationTypeEnum = pgEnum('integration_type', ['api', 'database', 'webhook', 'email']);
 export const workflowStatusEnum = pgEnum('workflow_status', ['active', 'inactive', 'draft']);
 export const tenantStatusEnum = pgEnum('tenant_status', ['active', 'inactive', 'suspended']);
+export const permissionTypeEnum = pgEnum('permission_type', ['read', 'write', 'delete', 'admin']);
+export const departmentTypeEnum = pgEnum('department_type', ['sales', 'purchases', 'finance', 'operations', 'hr', 'it', 'marketing', 'custom']);
 
 // Tenants table (empresas/clientes)
 export const tenants = pgTable("tenants", {
@@ -63,6 +65,62 @@ export const users = pgTable("users", {
   lastLoginAt: timestamp("last_login_at"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Departments table for organizational structure within tenants
+export const departments = pgTable("departments", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  name: varchar("name", { length: 100 }).notNull(),
+  type: departmentTypeEnum("type").notNull(),
+  description: text("description"),
+  parentDepartmentId: varchar("parent_department_id").references(() => departments.id), // For hierarchical departments
+  settings: jsonb("settings"), // Department-specific configurations
+  dataFilters: jsonb("data_filters"), // What data this department can access
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// User-Department assignments (users can belong to multiple departments)
+export const userDepartments = pgTable("user_departments", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  departmentId: varchar("department_id").references(() => departments.id).notNull(),
+  isPrimary: boolean("is_primary").default(false), // Primary department for the user
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Permissions table for granular access control
+export const permissions = pgTable("permissions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  name: varchar("name", { length: 100 }).notNull(),
+  resource: varchar("resource", { length: 100 }).notNull(), // 'clients', 'reports', 'workflows', etc.
+  action: permissionTypeEnum("action").notNull(),
+  conditions: jsonb("conditions"), // Additional conditions (e.g., only own department data)
+  description: text("description"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Role-Permission assignments
+export const rolePermissions = pgTable("role_permissions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  role: userRoleEnum("role").notNull(),
+  permissionId: varchar("permission_id").references(() => permissions.id).notNull(),
+  departmentId: varchar("department_id").references(() => departments.id), // Permission specific to department
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// User-specific permissions (overrides for specific users)
+export const userPermissions = pgTable("user_permissions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  permissionId: varchar("permission_id").references(() => permissions.id).notNull(),
+  departmentId: varchar("department_id").references(() => departments.id), // Permission specific to department
+  granted: boolean("granted").default(true), // true = grant, false = revoke
+  createdAt: timestamp("created_at").defaultNow(),
 });
 
 // Client categories table with tenant isolation
@@ -205,24 +263,6 @@ export const activities = pgTable("activities", {
 });
 
 // Relations
-export const tenantsRelations = relations(tenants, ({ many }) => ({
-  users: many(users),
-  clientCategories: many(clientCategories),
-  clients: many(clients),
-  integrations: many(integrations),
-  workflows: many(workflows),
-  workflowExecutions: many(workflowExecutions),
-  reports: many(reports),
-  activities: many(activities),
-}));
-
-export const usersRelations = relations(users, ({ one, many }) => ({
-  tenant: one(tenants, {
-    fields: [users.tenantId],
-    references: [tenants.id],
-  }),
-  activities: many(activities),
-}));
 
 export const clientCategoriesRelations = relations(clientCategories, ({ one, many }) => ({
   tenant: one(tenants, {
@@ -320,6 +360,97 @@ export const activitiesRelations = relations(activities, ({ one }) => ({
   }),
 }));
 
+// New relations for access control tables
+export const departmentsRelations = relations(departments, ({ one, many }) => ({
+  tenant: one(tenants, {
+    fields: [departments.tenantId],
+    references: [tenants.id],
+  }),
+  parentDepartment: one(departments, {
+    fields: [departments.parentDepartmentId],
+    references: [departments.id],
+  }),
+  childDepartments: many(departments),
+  userDepartments: many(userDepartments),
+  rolePermissions: many(rolePermissions),
+  userPermissions: many(userPermissions),
+}));
+
+export const userDepartmentsRelations = relations(userDepartments, ({ one }) => ({
+  user: one(users, {
+    fields: [userDepartments.userId],
+    references: [users.id],
+  }),
+  department: one(departments, {
+    fields: [userDepartments.departmentId],
+    references: [departments.id],
+  }),
+}));
+
+export const permissionsRelations = relations(permissions, ({ one, many }) => ({
+  tenant: one(tenants, {
+    fields: [permissions.tenantId],
+    references: [tenants.id],
+  }),
+  rolePermissions: many(rolePermissions),
+  userPermissions: many(userPermissions),
+}));
+
+export const rolePermissionsRelations = relations(rolePermissions, ({ one }) => ({
+  tenant: one(tenants, {
+    fields: [rolePermissions.tenantId],
+    references: [tenants.id],
+  }),
+  permission: one(permissions, {
+    fields: [rolePermissions.permissionId],
+    references: [permissions.id],
+  }),
+  department: one(departments, {
+    fields: [rolePermissions.departmentId],
+    references: [departments.id],
+  }),
+}));
+
+export const userPermissionsRelations = relations(userPermissions, ({ one }) => ({
+  user: one(users, {
+    fields: [userPermissions.userId],
+    references: [users.id],
+  }),
+  permission: one(permissions, {
+    fields: [userPermissions.permissionId],
+    references: [permissions.id],
+  }),
+  department: one(departments, {
+    fields: [userPermissions.departmentId],
+    references: [departments.id],
+  }),
+}));
+
+// Update existing relations to include new tables
+export const tenantsRelations = relations(tenants, ({ many }) => ({
+  users: many(users),
+  departments: many(departments),
+  permissions: many(permissions),
+  rolePermissions: many(rolePermissions),
+  clientCategories: many(clientCategories),
+  clients: many(clients),
+  integrations: many(integrations),
+  workflows: many(workflows),
+  workflowExecutions: many(workflowExecutions),
+  reports: many(reports),
+  activities: many(activities),
+}));
+
+export const usersRelations = relations(users, ({ one, many }) => ({
+  tenant: one(tenants, {
+    fields: [users.tenantId],
+    references: [tenants.id],
+  }),
+  userDepartments: many(userDepartments),
+  userPermissions: many(userPermissions),
+  activities: many(activities),
+}));
+
 // Insert schemas
 export const insertTenantSchema = createInsertSchema(tenants).omit({
   id: true,
@@ -373,6 +504,33 @@ export const insertActivitySchema = createInsertSchema(activities).omit({
   createdAt: true,
 });
 
+// Insert schemas for new access control tables
+export const insertDepartmentSchema = createInsertSchema(departments).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertUserDepartmentSchema = createInsertSchema(userDepartments).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertPermissionSchema = createInsertSchema(permissions).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertRolePermissionSchema = createInsertSchema(rolePermissions).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertUserPermissionSchema = createInsertSchema(userPermissions).omit({
+  id: true,
+  createdAt: true,
+});
+
 // Type exports
 export type Tenant = typeof tenants.$inferSelect;
 export type InsertTenant = typeof tenants.$inferInsert;
@@ -392,3 +550,13 @@ export type Report = typeof reports.$inferSelect;
 export type InsertReport = typeof reports.$inferInsert;
 export type Activity = typeof activities.$inferSelect;
 export type InsertActivity = typeof activities.$inferInsert;
+export type Department = typeof departments.$inferSelect;
+export type InsertDepartment = typeof departments.$inferInsert;
+export type UserDepartment = typeof userDepartments.$inferSelect;
+export type InsertUserDepartment = typeof userDepartments.$inferInsert;
+export type Permission = typeof permissions.$inferSelect;
+export type InsertPermission = typeof permissions.$inferInsert;
+export type RolePermission = typeof rolePermissions.$inferSelect;
+export type InsertRolePermission = typeof rolePermissions.$inferInsert;
+export type UserPermission = typeof userPermissions.$inferSelect;
+export type InsertUserPermission = typeof userPermissions.$inferInsert;

@@ -17,6 +17,7 @@ import {
   getTenantId,
   canAccessTenantResource
 } from "./tenantMiddleware";
+import { accessControlRoutes } from "./accessControlRoutes";
 
 // Helper function to determine if client should be assigned to a category
 function shouldAssignToCategory(client: any, category: any): boolean {
@@ -1049,6 +1050,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(400).json({ message: "Failed to create report" });
     }
   });
+
+  // Register access control routes
+  app.use('/api/access-control', accessControlRoutes);
 
   const httpServer = createServer(app);
   return httpServer;
