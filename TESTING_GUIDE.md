@@ -17,9 +17,12 @@
 
 ### 1. **Acesso como Admin TOIT (Super Admin)**
 
-**Usuário atual**: victorcalife@gmail.com
-- ✅ **Já configurado como super_admin**
-- 🎯 **Acesso**: Faça login normalmente
+**Usuários disponíveis**:
+- `victorcalife@gmail.com` (seu usuário atual)
+- `admin@toit.com` (Admin TOIT)
+
+- ✅ **Configurados como super_admin**
+- 🎯 **Acesso**: Faça login com qualquer um desses emails
 - 📍 **Será redirecionado para**: `/admin`
 - 🔧 **Funcionalidades**:
   - Ver estatísticas de todos os clientes
@@ -29,14 +32,19 @@
 
 ### 2. **Acesso como Cliente de Empresa**
 
-**Usuário de teste criado**: test@acme.com (João Silva)
-- ✅ **Configurado como admin da "Acme Investimentos"**
-- 🎯 **Acesso**: Precisa autenticar via Replit Auth
-- 📍 **Será direcionado para**: Interface principal da empresa
+**Usuário Acme Investimentos**: `cliente@acme.com` (Maria Santos)
+- ✅ **Admin da Acme Investimentos**
+- 📍 **Interface**: Dados isolados da Acme apenas
+
+**Usuário Beta Capital**: `gerente@betacapital.com` (Carlos Oliveira)  
+- ✅ **Admin da Beta Capital**
+- 📍 **Interface**: Dados isolados da Beta Capital apenas
+
+- 🎯 **Acesso**: Login via Replit Auth com esses emails
 - 🔧 **Funcionalidades**:
-  - Ver apenas dados da Acme Investimentos
+  - Ver apenas dados da própria empresa
   - Gerenciar clientes, workflows, relatórios
-  - Acesso isolado da empresa
+  - Acesso completamente isolado
 
 ### 3. **Empresas de Teste Disponíveis**
 
@@ -72,9 +80,28 @@
 - `client/src/pages/tenant-selection.tsx` - Seleção de empresa
 - `client/src/pages/admin/dashboard.tsx` - Painel TOIT
 
+## Dados de Teste Inseridos
+
+### Clientes por Empresa:
+**Acme Investimentos:**
+- Maria Silva - R$ 250.000 (moderado)
+- João Santos - R$ 180.000 (conservador)  
+- Ana Costa - R$ 450.000 (agressivo)
+
+**Beta Capital:**
+- Carlos Lima - R$ 320.000 (agressivo)
+- Fernanda Alves - R$ 150.000 (moderado)
+- Roberto Dias - R$ 80.000 (conservador)
+
+### Como Testar o Isolamento:
+1. **Login como Admin TOIT**: Vê todos os dados
+2. **Login como Maria (Acme)**: Vê apenas clientes da Acme
+3. **Login como Carlos (Beta)**: Vê apenas clientes da Beta
+
 ## Status Atual
 
 🟢 **Sistema funcionando e pronto para testes**
 🟢 **Isolamento de dados implementado**
 🟢 **Interfaces separadas para TOIT e clientes**
 🟢 **Autenticação multi-tenant operacional**
+🟢 **Dados de teste inseridos para demonstração**
