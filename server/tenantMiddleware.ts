@@ -79,13 +79,35 @@ export const requireTenant = (req: Request, res: Response, next: NextFunction) =
 };
 
 // Middleware to require super admin access
-export const requireSuperAdmin = (req: Request, res: Response, next: NextFunction) => {
-  if (!req.isSuperAdmin) {
-    return res.status(403).json({ 
-      message: "Super admin access required" 
-    });
+export const requireSuperAdmin = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const user = req.user as any;
+    
+    if (!user) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
+
+    // For local auth, user object is the DB user directly
+    if (user.role === 'super_admin') {
+      req.isSuperAdmin = true;
+      return next();
+    }
+
+    // Handle OAuth format if needed
+    const userId = user.claims?.sub;
+    if (userId) {
+      const dbUser = await storage.getUser(userId);
+      if (dbUser && dbUser.role === 'super_admin') {
+        req.isSuperAdmin = true;
+        return next();
+      }
+    }
+    
+    return res.status(403).json({ message: "Super admin access required" });
+  } catch (error) {
+    console.error("Super admin middleware error:", error);
+    res.status(500).json({ message: "Authorization check failed" });
   }
-  next();
 };
 
 // Middleware to require specific role within tenant

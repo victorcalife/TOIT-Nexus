@@ -21,7 +21,7 @@ import TenantSelection from "@/pages/tenant-selection";
 import AdminDashboard from "@/pages/admin/dashboard";
 
 function Router() {
-  const { isAuthenticated, isLoading, user } = useAuth();
+  const { isAuthenticated, isLoading, user, isSuperAdmin } = useAuth();
 
   if (isLoading) {
     return (
@@ -46,18 +46,11 @@ function Router() {
   return (
     <Switch>
       {/* Admin routes for super admin */}
-      {user?.isSuperAdmin && (
-        <Route path="/admin/:rest*">
-          {(params) => (
-            <div className="min-h-screen bg-gray-50">
-              <Switch>
-                <Route path="/admin" component={AdminDashboard} />
-                <Route path="/admin/dashboard" component={AdminDashboard} />
-                <Route component={NotFound} />
-              </Switch>
-            </div>
-          )}
-        </Route>
+      {isSuperAdmin && (
+        <>
+          <Route path="/admin" component={AdminDashboard} />
+          <Route path="/admin/dashboard" component={AdminDashboard} />
+        </>
       )}
 
       {/* Tenant selection for users without active tenant or super admin wanting to access client area */}
