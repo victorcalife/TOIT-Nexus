@@ -31,11 +31,9 @@ import { useQuery } from "@tanstack/react-query";
 function Router() {
   const { isAuthenticated, isLoading, user, isSuperAdmin } = useAuth();
   
-  // Check if system needs setup
-  const { data: setupStatus, isLoading: setupLoading } = useQuery({
-    queryKey: ['/api/setup-status'],
-    enabled: !isLoading // Only check after auth loading completes
-  });
+  // For demo purposes, assume system is set up
+  const setupStatus = { needsSetup: false };
+  const setupLoading = false;
 
   if (isLoading || setupLoading) {
     return (
