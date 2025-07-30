@@ -1,42 +1,24 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartLine, Users, Workflow, Shield, Database, BarChart3 } from "lucide-react";
-import toitNexusLogo from "@/assets/toit-nexus-logo.svg";
+import { UnifiedHeader } from "@/components/unified-header";
 
 export default function Landing() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-blue-50">
-      {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <img 
-                src={toitNexusLogo} 
-                alt="TOIT Nexus" 
-                className="h-12 w-auto"
-              />
-            </div>
-            <Button 
-              onClick={() => window.location.href = '/login'}
-              className="bg-primary-500 hover:bg-primary-600"
-            >
-              Entrar na Plataforma
-            </Button>
-          </div>
-        </div>
-      </header>
+      <UnifiedHeader 
+        title="TOIT Nexus" 
+        subtitle="Plataforma de Automação Empresarial"
+      />
 
       {/* Hero Section */}
       <section className="py-20">
         <div className="container mx-auto px-6 text-center">
           <div className="max-w-4xl mx-auto">
             <div className="flex justify-center mb-8">
-              <img 
-                src={toitNexusLogo} 
-                alt="TOIT Nexus" 
-                className="h-20 w-auto opacity-90"
-              />
+              <div className="h-20 w-20 bg-primary-500 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-xl">TOIT</span>
+              </div>
             </div>
             <h1 className="text-5xl font-bold text-gray-900 mb-6">
               Automatize seu escritório de investimentos com 

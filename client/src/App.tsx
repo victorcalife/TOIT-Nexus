@@ -21,6 +21,7 @@ import AccessControl from "@/pages/access-control";
 import TenantSelection from "@/pages/tenant-selection";
 import AdminDashboard from "@/pages/admin/dashboard";
 import SystemSetup from "@/pages/system-setup";
+import SelectTenant from "@/pages/select-tenant";
 import { useQuery } from "@tanstack/react-query";
 
 function Router() {
@@ -99,7 +100,7 @@ function Router() {
       }} />
 
       {/* Tenant selection */}
-      <Route path="/select-tenant" component={TenantSelection} />
+      <Route path="/select-tenant" component={SelectTenant} />
 
       {/* Main tenant-based application routes */}
       <Route path="/" component={() => {

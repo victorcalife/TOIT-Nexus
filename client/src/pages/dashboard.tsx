@@ -1,338 +1,290 @@
-import { useQuery } from "@tanstack/react-query";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
+import { useState, useEffect } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   BarChart3, 
   Users, 
   Workflow, 
-  TrendingUp,
+  Settings, 
+  Plus, 
   Activity,
-  Clock,
-  CheckCircle,
-  AlertTriangle
-} from "lucide-react";
+  TrendingUp,
+  FileText,
+  Calendar,
+  Bell
+} from 'lucide-react';
+import { UnifiedHeader } from '@/components/unified-header';
 
 export default function Dashboard() {
-  const { data: stats, isLoading: statsLoading } = useQuery({
-    queryKey: ['/api/dashboard/stats'],
-    retry: false,
-  });
+  const [selectedTenant, setSelectedTenant] = useState<any>(null);
 
-  const { data: activities, isLoading: activitiesLoading } = useQuery({
-    queryKey: ['/api/dashboard/activities'],
-    retry: false,
-  });
-
-  const getActionIcon = (action: string) => {
-    switch (action) {
-      case 'create_client':
-        return <Users className="w-4 h-4 text-blue-500" />;
-      case 'create_workflow':
-        return <Workflow className="w-4 h-4 text-green-500" />;
-      case 'create_integration':
-        return <BarChart3 className="w-4 h-4 text-purple-500" />;
-      default:
-        return <Activity className="w-4 h-4 text-gray-500" />;
+  useEffect(() => {
+    const tenant = localStorage.getItem('selectedTenant');
+    if (tenant) {
+      setSelectedTenant(JSON.parse(tenant));
+    } else {
+      // Redirect to tenant selection if no tenant is selected
+      window.location.href = '/select-tenant';
     }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('selectedTenant');
+    window.location.href = '/api/logout';
   };
 
-  const getActionLabel = (action: string) => {
-    switch (action) {
-      case 'create_client':
-        return 'Cliente criado';
-      case 'update_client':
-        return 'Cliente atualizado';
-      case 'delete_client':
-        return 'Cliente excluído';
-      case 'create_workflow':
-        return 'Workflow criado';
-      case 'update_workflow':
-        return 'Workflow atualizado';
-      case 'delete_workflow':
-        return 'Workflow excluído';
-      case 'create_integration':
-        return 'Integração criada';
-      case 'update_integration':
-        return 'Integração atualizada';
-      case 'delete_integration':
-        return 'Integração excluída';
-      case 'create_category':
-        return 'Categoria criada';
-      case 'update_category':
-        return 'Categoria atualizada';
-      case 'delete_category':
-        return 'Categoria excluída';
-      default:
-        return 'Atividade do sistema';
-    }
+  const handleBackToSelection = () => {
+    localStorage.removeItem('selectedTenant');
+    window.location.href = '/select-tenant';
   };
+
+  if (!selectedTenant) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
+          <p>Carregando dashboard...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-6 py-4">
-        <div>
-          <h1 className="text-2xl font-semibold text-gray-900">Dashboard</h1>
-          <p className="text-sm text-gray-600 mt-1">
-            Visão geral das atividades e métricas do sistema
-          </p>
+    <div className="min-h-screen bg-gray-50">
+      <UnifiedHeader 
+        title={`${selectedTenant.name} - Dashboard`}
+        subtitle={`Painel de controle da empresa ${selectedTenant.name}`}
+        showUserActions={true}
+        user={{ firstName: 'Usuário', lastName: 'Empresa' }}
+        onLogout={handleLogout}
+      />
+      
+      <div className="px-6 py-4">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">
+              Bem-vindo ao {selectedTenant.name}
+            </h1>
+            <p className="text-gray-600">
+              {selectedTenant.description}
+            </p>
+          </div>
+          <div className="flex items-center space-x-3">
+            <Button variant="outline" onClick={handleBackToSelection}>
+              Trocar Empresa
+            </Button>
+            <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+              {selectedTenant.userCount} usuários ativos
+            </Badge>
+          </div>
         </div>
-      </header>
 
-      {/* Main Content */}
-      <main className="flex-1 overflow-y-auto p-6">
-        {/* Key Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {statsLoading ? (
-            <>
-              {[...Array(4)].map((_, i) => (
-                <Card key={i}>
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Workflows Ativos</CardTitle>
+              <Workflow className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{selectedTenant.workflowCount}</div>
+              <p className="text-xs text-muted-foreground">+2 este mês</p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Usuários</CardTitle>
+              <Users className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{selectedTenant.userCount}</div>
+              <p className="text-xs text-muted-foreground">5 novos esta semana</p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Execuções Hoje</CardTitle>
+              <Activity className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">247</div>
+              <p className="text-xs text-muted-foreground">98.5% taxa de sucesso</p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Relatórios</CardTitle>
+              <FileText className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">12</div>
+              <p className="text-xs text-muted-foreground">3 pendentes</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Tabs defaultValue="overview" className="w-full">
+          <TabsList className="grid w-full grid-cols-5">
+            <TabsTrigger value="overview">Visão Geral</TabsTrigger>
+            <TabsTrigger value="workflows">Workflows</TabsTrigger>
+            <TabsTrigger value="clients">Clientes</TabsTrigger>
+            <TabsTrigger value="reports">Relatórios</TabsTrigger>
+            <TabsTrigger value="settings">Configurações</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="overview" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Atividade Recente</CardTitle>
+                  <CardDescription>Últimas ações na sua empresa</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex items-center space-x-4">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                       <div>
-                        <Skeleton className="h-4 w-24 mb-2" />
-                        <Skeleton className="h-8 w-16" />
+                        <p className="text-sm font-medium">Workflow "Cadastro Cliente" executado</p>
+                        <p className="text-xs text-muted-foreground">há 5 minutos</p>
                       </div>
-                      <Skeleton className="h-12 w-12 rounded-lg" />
                     </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </>
-          ) : (
-            <>
-              <Card>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-gray-600">Total de Clientes</p>
-                      <p className="text-3xl font-semibold text-gray-900 mt-2">
-                        {stats?.totalClients || 0}
-                      </p>
+                    <div className="flex items-center space-x-4">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      <div>
+                        <p className="text-sm font-medium">Novo usuário adicionado ao sistema</p>
+                        <p className="text-xs text-muted-foreground">há 1 hora</p>
+                      </div>
                     </div>
-                    <div className="w-12 h-12 bg-primary-50 rounded-lg flex items-center justify-center">
-                      <Users className="w-6 h-6 text-primary-500" />
+                    <div className="flex items-center space-x-4">
+                      <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                      <div>
+                        <p className="text-sm font-medium">Relatório mensal gerado</p>
+                        <p className="text-xs text-muted-foreground">há 2 horas</p>
+                      </div>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
               <Card>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-gray-600">Workflows Ativos</p>
-                      <p className="text-3xl font-semibold text-gray-900 mt-2">
-                        {stats?.activeWorkflows || 0}
-                      </p>
-                    </div>
-                    <div className="w-12 h-12 bg-success-50 rounded-lg flex items-center justify-center">
-                      <CheckCircle className="w-6 h-6 text-success-500" />
-                    </div>
-                  </div>
+                <CardHeader>
+                  <CardTitle>Ações Rápidas</CardTitle>
+                  <CardDescription>Funcionalidades mais utilizadas</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <Button className="w-full justify-start">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Criar Novo Workflow
+                  </Button>
+                  <Button variant="outline" className="w-full justify-start">
+                    <Users className="h-4 w-4 mr-2" />
+                    Gerenciar Clientes
+                  </Button>
+                  <Button variant="outline" className="w-full justify-start">
+                    <FileText className="h-4 w-4 mr-2" />
+                    Gerar Relatório
+                  </Button>
+                  <Button variant="outline" className="w-full justify-start">
+                    <Settings className="h-4 w-4 mr-2" />
+                    Configurações
+                  </Button>
                 </CardContent>
               </Card>
-
-              <Card>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-gray-600">Total de Execuções</p>
-                      <p className="text-3xl font-semibold text-gray-900 mt-2">
-                        {stats?.totalExecutions || 0}
-                      </p>
-                    </div>
-                    <div className="w-12 h-12 bg-warning-50 rounded-lg flex items-center justify-center">
-                      <Activity className="w-6 h-6 text-warning-500" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-gray-600">Taxa de Sucesso</p>
-                      <p className="text-3xl font-semibold text-gray-900 mt-2">
-                        {stats?.successRate || 0}%
-                      </p>
-                    </div>
-                    <div className="w-12 h-12 bg-success-50 rounded-lg flex items-center justify-center">
-                      <TrendingUp className="w-6 h-6 text-success-500" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </>
-          )}
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Recent Activities */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Atividades Recentes</CardTitle>
-              <CardDescription>
-                Últimas ações realizadas no sistema
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {activitiesLoading ? (
-                <div className="space-y-4">
-                  {[...Array(6)].map((_, i) => (
-                    <div key={i} className="flex items-center space-x-4">
-                      <Skeleton className="h-10 w-10 rounded-lg" />
-                      <div className="flex-1">
-                        <Skeleton className="h-4 w-32 mb-1" />
-                        <Skeleton className="h-3 w-48" />
-                      </div>
-                      <Skeleton className="h-3 w-16" />
-                    </div>
-                  ))}
-                </div>
-              ) : activities && activities.length > 0 ? (
-                <div className="space-y-4">
-                  {activities.map((activity: any) => (
-                    <div key={activity.id} className="flex items-center space-x-4">
-                      <div className="w-10 h-10 bg-gray-50 rounded-lg flex items-center justify-center">
-                        {getActionIcon(activity.action)}
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-sm font-medium text-gray-900">
-                          {getActionLabel(activity.action)}
-                        </p>
-                        <p className="text-xs text-gray-500">
-                          {activity.description || 'Atividade do sistema'}
-                        </p>
-                      </div>
-                      <p className="text-xs text-gray-400">
-                        {new Date(activity.createdAt).toLocaleString('pt-BR')}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-8">
-                  <Activity className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                  <p className="text-gray-500">Nenhuma atividade recente</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* System Status */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Status do Sistema</CardTitle>
-              <CardDescription>
-                Visão geral da saúde do sistema
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-success-50 rounded-lg flex items-center justify-center">
-                      <CheckCircle className="w-4 h-4 text-success-500" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">Servidor Principal</p>
-                      <p className="text-xs text-gray-500">Online e funcionando</p>
-                    </div>
-                  </div>
-                  <Badge className="bg-success-100 text-success-800">Online</Badge>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-success-50 rounded-lg flex items-center justify-center">
-                      <CheckCircle className="w-4 h-4 text-success-500" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">Banco de Dados</p>
-                      <p className="text-xs text-gray-500">Conectado e responsivo</p>
-                    </div>
-                  </div>
-                  <Badge className="bg-success-100 text-success-800">Online</Badge>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-warning-50 rounded-lg flex items-center justify-center">
-                      <AlertTriangle className="w-4 h-4 text-warning-500" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">Integrações Externas</p>
-                      <p className="text-xs text-gray-500">Algumas com latência elevada</p>
-                    </div>
-                  </div>
-                  <Badge className="bg-warning-100 text-warning-800">Atenção</Badge>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-success-50 rounded-lg flex items-center justify-center">
-                      <Activity className="w-4 h-4 text-success-500" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">Workflows</p>
-                      <p className="text-xs text-gray-500">{stats?.activeWorkflows || 0} workflows ativos</p>
-                    </div>
-                  </div>
-                  <Badge className="bg-success-100 text-success-800">Funcionando</Badge>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Quick Actions */}
-        <Card className="mt-6">
-          <CardHeader>
-            <CardTitle>Ações Rápidas</CardTitle>
-            <CardDescription>
-              Acesse as funcionalidades mais utilizadas
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <a
-                href="/clients"
-                className="flex flex-col items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-              >
-                <Users className="w-8 h-8 text-primary-500 mb-2" />
-                <span className="text-sm font-medium text-gray-900">Adicionar Cliente</span>
-              </a>
-              
-              <a
-                href="/workflows"
-                className="flex flex-col items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-              >
-                <Workflow className="w-8 h-8 text-success-500 mb-2" />
-                <span className="text-sm font-medium text-gray-900">Criar Workflow</span>
-              </a>
-
-              <a
-                href="/integrations"
-                className="flex flex-col items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-              >
-                <BarChart3 className="w-8 h-8 text-purple-500 mb-2" />
-                <span className="text-sm font-medium text-gray-900">Nova Integração</span>
-              </a>
-
-              <a
-                href="/settings"
-                className="flex flex-col items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-              >
-                <Clock className="w-8 h-8 text-warning-500 mb-2" />
-                <span className="text-sm font-medium text-gray-900">Configurações</span>
-              </a>
             </div>
-          </CardContent>
-        </Card>
-      </main>
+          </TabsContent>
+
+          <TabsContent value="workflows" className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-semibold">Workflows da Empresa</h2>
+              <Button>
+                <Plus className="h-4 w-4 mr-2" />
+                Novo Workflow
+              </Button>
+            </div>
+            <Card>
+              <CardContent className="p-6">
+                <p className="text-center text-muted-foreground">
+                  Interface de criação e gestão de workflows será implementada aqui.
+                  <br />
+                  Permitirá criar automações personalizadas para sua empresa.
+                </p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="clients" className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-semibold">Gestão de Clientes</h2>
+              <Button>
+                <Plus className="h-4 w-4 mr-2" />
+                Novo Cliente
+              </Button>
+            </div>
+            <Card>
+              <CardContent className="p-6">
+                <p className="text-center text-muted-foreground">
+                  Sistema de gestão de clientes será implementado aqui.
+                  <br />
+                  Cadastro, categorização e histórico de interações.
+                </p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="reports" className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-semibold">Relatórios e Analytics</h2>
+              <Button>
+                <FileText className="h-4 w-4 mr-2" />
+                Novo Relatório
+              </Button>
+            </div>
+            <Card>
+              <CardContent className="p-6">
+                <p className="text-center text-muted-foreground">
+                  Sistema de relatórios dinâmicos será implementado aqui.
+                  <br />
+                  Dashboards personalizados e exports automatizados.
+                </p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="settings" className="space-y-4">
+            <h2 className="text-xl font-semibold">Configurações da Empresa</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Informações Gerais</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <p><strong>Nome:</strong> {selectedTenant.name}</p>
+                    <p><strong>Domínio:</strong> {selectedTenant.domain}.toitflow.com</p>
+                    <p><strong>Usuários:</strong> {selectedTenant.userCount}</p>
+                    <p><strong>Workflows:</strong> {selectedTenant.workflowCount}</p>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardHeader>
+                  <CardTitle>Configurações Avançadas</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    Configurações de integração, permissões e customizações serão implementadas aqui.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
 }
