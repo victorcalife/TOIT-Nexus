@@ -38,6 +38,7 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
+import toitWorkflowLogo from '@/assets/SELOtoit-workflow-logo.svg';
 
 type Tenant = {
   id: string;
@@ -189,8 +190,12 @@ export default function TOITAdminDashboard() {
       {/* TOIT Header */}
       <header className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            <Crown className="w-8 h-8 text-purple-600 mr-3" />
+          <div className="flex items-center space-x-4">
+            <img 
+              src={toitWorkflowLogo} 
+              alt="TOIT Workflow" 
+              className="h-16 w-16"
+            />
             <div>
               <h1 className="text-2xl font-bold text-gray-900">TOIT - Controle Central</h1>
               <p className="text-sm text-gray-600">

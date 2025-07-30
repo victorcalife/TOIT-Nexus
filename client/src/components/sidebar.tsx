@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import toitNexusLogo from "@/assets/toit-nexus-logo.svg";
 import { 
   ChartLine, 
   LayoutDashboard, 
@@ -69,11 +70,12 @@ export function Sidebar() {
     <div className="w-64 bg-white shadow-sm border-r border-gray-200 flex flex-col">
       {/* Logo */}
       <div className="px-6 py-5 border-b border-gray-200">
-        <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
-            <ChartLine className="w-5 h-5 text-white" />
-          </div>
-          <span className="text-xl font-semibold text-gray-900">InvestFlow</span>
+        <div className="flex items-center justify-center">
+          <img 
+            src={toitNexusLogo} 
+            alt="TOIT Nexus" 
+            className="h-10 w-auto"
+          />
         </div>
       </div>
 

@@ -8,6 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { ChartLine, Shield, UserCheck } from "lucide-react";
+import toitNexusLogo from "@/assets/toit-nexus-logo.svg";
 
 const setupSchema = z.object({
   email: z.string().email("Email inválido"),
@@ -106,12 +107,16 @@ export default function SystemSetup() {
     <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-blue-50 flex items-center justify-center p-6">
       <Card className="w-full max-w-lg">
         <CardHeader className="text-center">
-          <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <ChartLine className="w-8 h-8 text-primary-600" />
+          <div className="flex justify-center mb-4">
+            <img 
+              src={toitNexusLogo} 
+              alt="TOIT Nexus" 
+              className="h-16 w-auto opacity-90"
+            />
           </div>
           <CardTitle className="text-3xl text-gray-900">Configuração Inicial</CardTitle>
           <CardDescription>
-            Configure o sistema InvestFlow criando o primeiro super administrador
+            Configure o sistema TOIT Nexus criando o primeiro super administrador
           </CardDescription>
         </CardHeader>
         <CardContent>
