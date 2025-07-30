@@ -23,13 +23,7 @@ import AdminDashboard from "@/pages/admin/dashboard";
 function Router() {
   const { isAuthenticated, isLoading, user, isSuperAdmin } = useAuth();
 
-  // Add debug info - remove after testing
-  console.log('Auth state:', { isAuthenticated, isLoading, user, isSuperAdmin });
-  
-  // Add visual debug for loading state
-  if (isLoading) {
-    console.log('App is in loading state');
-  }
+
 
   if (isLoading) {
     return (
