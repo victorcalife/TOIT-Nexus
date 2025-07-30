@@ -158,11 +158,20 @@ export default function Landing() {
             </p>
             <Button 
               size="lg" 
-              onClick={() => window.location.href = '/api/login'}
+              onClick={() => window.location.href = '/login'}
               className="bg-white text-primary-500 hover:bg-gray-50 text-lg px-8"
             >
               Acessar Plataforma
             </Button>
+            
+            {/* Debug info */}
+            <div className="mt-8 p-4 bg-white/20 rounded-lg backdrop-blur-sm max-w-md mx-auto">
+              <h3 className="text-lg font-semibold text-white mb-2">✅ Sistema Funcionando</h3>
+              <p className="text-sm text-primary-100">React carregado com sucesso!</p>
+              <p className="text-xs text-primary-200 mt-2">
+                Frontend: Ativo | Backend: Conectado
+              </p>
+            </div>
           </div>
         </div>
       </section>

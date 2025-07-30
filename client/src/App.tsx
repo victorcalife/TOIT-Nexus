@@ -25,6 +25,11 @@ function Router() {
 
   // Add debug info - remove after testing
   console.log('Auth state:', { isAuthenticated, isLoading, user, isSuperAdmin });
+  
+  // Add visual debug for loading state
+  if (isLoading) {
+    console.log('App is in loading state');
+  }
 
   if (isLoading) {
     return (
@@ -43,7 +48,16 @@ function Router() {
       <Switch>
         <Route path="/" component={Landing} />
         <Route path="/login" component={Login} />
-        <Route component={NotFound} />
+        <Route>
+          <div className="min-h-screen flex items-center justify-center">
+            <div className="text-center">
+              <h1 className="text-2xl font-bold mb-4">Página não encontrada</h1>
+              <a href="/" className="text-blue-600 hover:underline">
+                Voltar para o início
+              </a>
+            </div>
+          </div>
+        </Route>
       </Switch>
     );
   }
