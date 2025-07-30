@@ -62,6 +62,14 @@ Preferred communication style: Simple, everyday language.
 
 ## Data Flow
 
+### Multi-Tenant Architecture (Updated January 30, 2025)
+1. **Super Admin Flow**: TOIT admin → `/admin` dashboard → Manage all tenants and users
+2. **Tenant User Flow**: Client login → Tenant-specific interface → Isolated data access
+3. **Data Isolation**: All operations filtered by tenant_id through middleware
+4. **Role-Based Access**: Four levels (super_admin, admin, manager, employee)
+5. **Security**: Complete tenant separation enforced at storage layer
+
+### Original Flows (Tenant-Specific)
 1. **Authentication Flow**: User authenticates via Replit OIDC → Session created in PostgreSQL → User data synchronized
 2. **Client Management Flow**: Client data entered → Categorized based on rules → Workflows triggered automatically
 3. **Workflow Execution Flow**: Trigger conditions met → Workflow actions executed → Results logged and tracked
