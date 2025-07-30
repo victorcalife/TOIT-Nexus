@@ -10,5 +10,8 @@ export function useAuth() {
     user,
     isLoading,
     isAuthenticated: !!user,
+    isSuperAdmin: user?.isSuperAdmin || false,
+    tenant: user?.tenant,
+    userRole: user?.role,
   };
 }

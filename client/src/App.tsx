@@ -16,9 +16,11 @@ import Reports from "@/pages/reports";
 import Users from "@/pages/users";
 import Connectivity from "@/pages/connectivity";
 import Settings from "@/pages/settings";
+import TenantSelection from "@/pages/tenant-selection";
+import AdminDashboard from "@/pages/admin/dashboard";
 
 function Router() {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, user } = useAuth();
 
   if (isLoading) {
     return (
@@ -28,11 +30,41 @@ function Router() {
     );
   }
 
+  // Not authenticated - show landing page
+  if (!isAuthenticated) {
+    return (
+      <Switch>
+        <Route path="/" component={Landing} />
+        <Route component={NotFound} />
+      </Switch>
+    );
+  }
+
+  // Authenticated user routing based on role and tenant access
   return (
     <Switch>
-      {!isAuthenticated ? (
-        <Route path="/" component={Landing} />
-      ) : (
+      {/* Admin routes for super admin */}
+      {user?.isSuperAdmin && (
+        <Route path="/admin/:rest*">
+          {(params) => (
+            <div className="min-h-screen bg-gray-50">
+              <Switch>
+                <Route path="/admin" component={AdminDashboard} />
+                <Route path="/admin/dashboard" component={AdminDashboard} />
+                <Route component={NotFound} />
+              </Switch>
+            </div>
+          )}
+        </Route>
+      )}
+
+      {/* Tenant selection for users without active tenant or super admin wanting to access client area */}
+      {(!user?.tenant || window.location.pathname === '/select-tenant') && (
+        <Route path="/select-tenant" component={TenantSelection} />
+      )}
+
+      {/* Main tenant-based application */}
+      {user?.tenant ? (
         <div className="flex h-screen bg-gray-50">
           <Sidebar />
           <Switch>
@@ -48,7 +80,16 @@ function Router() {
             <Route component={NotFound} />
           </Switch>
         </div>
+      ) : (
+        // Redirect to tenant selection if no tenant is selected
+        <Route path="/:rest*">
+          {() => {
+            window.location.href = '/select-tenant';
+            return null;
+          }}
+        </Route>
       )}
+
       <Route component={NotFound} />
     </Switch>
   );
