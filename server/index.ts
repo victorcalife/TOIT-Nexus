@@ -1,7 +1,9 @@
 import express, { type Request, Response, NextFunction } from "express";
 import path from "path";
+import { createServer } from "http";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import { NotificationWebSocketServer } from "./websocket";
 
 const app = express();
 app.use(express.json());
@@ -149,7 +151,15 @@ app.use((req, res, next) => {
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
     const port = parseInt(process.env.PORT || '5000', 10);
-    server.listen(port, "0.0.0.0", () => {
+    
+    // Create HTTP server and WebSocket
+    const httpServer = createServer(app);
+    const notificationWS = new NotificationWebSocketServer(httpServer);
+    
+    // Make WebSocket available globally
+    (global as any).notificationWS = notificationWS;
+    
+    httpServer.listen(port, "0.0.0.0", () => {
       log(`serving on port ${port} - accessible on 0.0.0.0:${port}`);
       console.log(`Server URLs:`);
       console.log(`  Local: http://localhost:${port}`);
@@ -157,6 +167,15 @@ app.use((req, res, next) => {
       if (process.env.REPLIT_DOMAINS) {
         console.log(`  Replit: https://${process.env.REPLIT_DOMAINS}`);
       }
+      
+      // Send welcome notification after startup
+      setTimeout(() => {
+        notificationWS.sendSystemNotification(
+          'Sistema Online',
+          'TOIT Nexus está funcionando perfeitamente!',
+          'success'
+        );
+      }, 3000);
     });
   } catch (error) {
     console.error('Failed to start server:', error);

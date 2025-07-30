@@ -1,6 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { LogOut, LogIn, User, Home } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { useDemoAuth } from '@/contexts/DemoAuthContext';
+import { NotificationBell } from '@/components/notifications/NotificationBell';
 import toitNexusLogo from '@/assets/toit-nexus-logo.svg';
 
 interface UnifiedHeaderProps {
@@ -20,8 +22,18 @@ export function UnifiedHeader({
 }: UnifiedHeaderProps) {
   const { isAuthenticated, user: authUser, isLoading } = useAuth();
   
+  // Try demo auth if regular auth fails
+  let demoAuth;
+  try {
+    demoAuth = useDemoAuth();
+  } catch {
+    demoAuth = null;
+  }
+  
+  const finalAuth = demoAuth || { isAuthenticated, isLoading, user: authUser };
+  
   // Use prop user if provided, otherwise use auth user
-  const displayUser = propUser || authUser;
+  const displayUser = propUser || finalAuth.user;
   
   const handleLogin = () => {
     window.location.href = '/login';
@@ -65,6 +77,9 @@ export function UnifiedHeader({
           </div>
           
           <div className="flex items-center space-x-4">
+            {/* Notification Bell */}
+            {(finalAuth.isAuthenticated || showUserActions) && <NotificationBell />}
+            
             {/* Always show home button */}
             <Button 
               variant="ghost" 
@@ -76,9 +91,9 @@ export function UnifiedHeader({
               Início
             </Button>
 
-            {!isLoading && (
+            {!finalAuth.isLoading && (
               <>
-                {isAuthenticated || showUserActions ? (
+                {finalAuth.isAuthenticated || showUserActions ? (
                   <>
                     {/* Show user info if available */}
                     {displayUser && (

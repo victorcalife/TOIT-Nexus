@@ -34,6 +34,7 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { UnifiedHeader } from '@/components/unified-header';
+import { NotificationDemo } from '@/components/notifications/NotificationDemo';
 
 type Tenant = {
   id: string;
@@ -230,6 +231,11 @@ export default function TOITAdminDashboard() {
                   </div>
                 </CardContent>
               </Card>
+              
+              {/* Notification System Demo */}
+              <div className="lg:col-span-2">
+                <NotificationDemo />
+              </div>
             </div>
           </TabsContent>
 
