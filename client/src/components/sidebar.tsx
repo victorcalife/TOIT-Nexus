@@ -7,10 +7,13 @@ import {
   ChartLine, 
   LayoutDashboard, 
   Users, 
+  Tag,
   Workflow, 
   BarChart3, 
   Database, 
+  FileText,
   UserCheck, 
+  TestTube,
   Settings, 
   LogOut 
 } from "lucide-react";
@@ -18,10 +21,12 @@ import {
 const navigation = [
   { name: 'Dashboard', href: '/', icon: LayoutDashboard },
   { name: 'Clientes', href: '/clients', icon: Users },
+  { name: 'Categorias', href: '/categories', icon: Tag },
   { name: 'Workflows', href: '/workflows', icon: Workflow },
-  { name: 'Relatórios', href: '/reports', icon: BarChart3 },
   { name: 'Integrações', href: '/integrations', icon: Database },
+  { name: 'Relatórios', href: '/reports', icon: FileText },
   { name: 'Usuários', href: '/users', icon: UserCheck },
+  { name: 'Testes', href: '/connectivity', icon: TestTube },
   { name: 'Configurações', href: '/settings', icon: Settings },
 ];
 
@@ -77,19 +82,17 @@ export function Sidebar() {
             (item.href !== '/' && location.startsWith(item.href));
           
           return (
-            <Link key={item.name} href={item.href}>
-              <a className={cn(
-                'group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors',
-                isActive
-                  ? 'bg-primary-50 text-primary-700'
-                  : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
-              )}>
-                <item.icon className={cn(
-                  'mr-3 h-5 w-5 flex-shrink-0',
-                  isActive ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500'
-                )} />
-                {item.name}
-              </a>
+            <Link key={item.name} href={item.href} className={cn(
+              'group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors',
+              isActive
+                ? 'bg-primary-50 text-primary-700'
+                : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+            )}>
+              <item.icon className={cn(
+                'mr-3 h-5 w-5 flex-shrink-0',
+                isActive ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500'
+              )} />
+              {item.name}
             </Link>
           );
         })}
