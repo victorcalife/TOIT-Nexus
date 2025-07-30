@@ -24,6 +24,8 @@ import TenantSelection from "@/pages/tenant-selection";
 import AdminDashboard from "@/pages/admin/dashboard";
 import SystemSetup from "@/pages/system-setup";
 import SelectTenant from "@/pages/select-tenant";
+import QueryBuilder from "@/pages/query-builder";
+import TenantDemo from "@/pages/tenant-demo";
 import { useQuery } from "@tanstack/react-query";
 
 function Router() {
@@ -67,6 +69,7 @@ function Router() {
             </Suspense>
           );
         }} />
+        <Route path="/tenant-demo" component={TenantDemo} />
         <Route component={() => (
           <div className="min-h-screen flex items-center justify-center">
             <div className="text-center">
@@ -266,6 +269,14 @@ function Router() {
             </main>
           </div>
         );
+      }} />
+
+      <Route path="/query-builder" component={() => {
+        if (!user?.tenant) {
+          window.location.href = '/select-tenant';
+          return null;
+        }
+        return <QueryBuilder />;
       }} />
 
       {/* Catch-all 404 route */}

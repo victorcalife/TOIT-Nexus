@@ -10,6 +10,7 @@ import {
   boolean,
   decimal,
   pgEnum,
+  uniqueIndex,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -27,6 +28,7 @@ export const sessions = pgTable(
 
 // User roles enum
 export const userRoleEnum = pgEnum('user_role', ['super_admin', 'tenant_admin', 'manager', 'employee']);
+export const tenantTypeEnum = pgEnum('tenant_type', ['individual', 'enterprise']);
 export const riskProfileEnum = pgEnum('risk_profile', ['conservative', 'moderate', 'aggressive']);
 export const integrationTypeEnum = pgEnum('integration_type', ['api', 'database', 'webhook', 'email']);
 export const workflowStatusEnum = pgEnum('workflow_status', ['active', 'inactive', 'draft']);
@@ -34,14 +36,21 @@ export const tenantStatusEnum = pgEnum('tenant_status', ['active', 'inactive', '
 export const permissionTypeEnum = pgEnum('permission_type', ['read', 'write', 'delete', 'admin']);
 export const departmentTypeEnum = pgEnum('department_type', ['sales', 'purchases', 'finance', 'operations', 'hr', 'it', 'marketing', 'custom']);
 
-// Tenants table (empresas/clientes)
+// Tenants table (individuals and enterprises)
 export const tenants = pgTable("tenants", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   name: varchar("name", { length: 200 }).notNull(),
   slug: varchar("slug", { length: 100 }).notNull().unique(), // URL-friendly identifier
   domain: varchar("domain", { length: 255 }), // Optional custom domain
+  type: tenantTypeEnum("type").default('individual'), // individual or enterprise
   logo: varchar("logo"),
   settings: jsonb("settings"), // Tenant-specific configurations
+  connectionLimits: jsonb("connection_limits").default({
+    databases: 2,
+    apis: 5,
+    webhooks: 10,
+    users: 1
+  }), // Limits based on plan
   status: tenantStatusEnum("status").default('active'),
   subscriptionPlan: varchar("subscription_plan", { length: 50 }).default('basic'),
   subscriptionExpiresAt: timestamp("subscription_expires_at"),
@@ -67,6 +76,69 @@ export const users = pgTable("users", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+// Data connections per tenant (for Individual users and Enterprise setup)
+export const connections = pgTable("connections", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  name: varchar("name", { length: 100 }).notNull(),
+  type: varchar("type", { length: 50 }).notNull(), // "database", "api", "webhook", "file"
+  config: jsonb("config").notNull(), // connection details, credentials
+  isActive: boolean("is_active").default(true),
+  lastTested: timestamp("last_tested"),
+  testResults: jsonb("test_results"), // last test results
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Query builder saved queries (for individuals and enterprises)
+export const savedQueries = pgTable("saved_queries", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  name: varchar("name", { length: 200 }).notNull(),
+  description: text("description"),
+  connectionId: varchar("connection_id").references(() => connections.id).notNull(),
+  queryConfig: jsonb("query_config").notNull(), // visual query builder config
+  sqlQuery: text("sql_query").notNull(), // generated SQL
+  resultConfig: jsonb("result_config").default({}), // chart/table/visualization config
+  isPublic: boolean("is_public").default(false), // share within tenant
+  tags: varchar("tags").array().default([]),
+  lastExecuted: timestamp("last_executed"),
+  executionCount: integer("execution_count").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Custom dashboards with drag-drop KPIs and charts
+export const dashboards = pgTable("dashboards", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  name: varchar("name", { length: 200 }).notNull(),
+  description: text("description"),
+  layout: jsonb("layout").notNull(), // dashboard layout with widget positions
+  widgets: jsonb("widgets").notNull(), // widget configurations
+  isPublic: boolean("is_public").default(false),
+  isDefault: boolean("is_default").default(false), // default dashboard for user
+  refreshInterval: integer("refresh_interval").default(300), // seconds
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Dashboard widgets (KPIs, charts, tables, etc.)
+export const dashboardWidgets = pgTable("dashboard_widgets", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  dashboardId: varchar("dashboard_id").references(() => dashboards.id).notNull(),
+  queryId: varchar("query_id").references(() => savedQueries.id),
+  name: varchar("name", { length: 200 }).notNull(),
+  type: varchar("type", { length: 50 }).notNull(), // "chart", "kpi", "table", "metric"
+  config: jsonb("config").notNull(), // widget-specific configuration
+  position: jsonb("position").notNull(), // x, y, width, height
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 // Departments table for organizational structure within tenants
 export const departments = pgTable("departments", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
@@ -74,7 +146,7 @@ export const departments = pgTable("departments", {
   name: varchar("name", { length: 100 }).notNull(),
   type: departmentTypeEnum("type").notNull(),
   description: text("description"),
-  parentDepartmentId: varchar("parent_department_id").references(() => departments.id), // For hierarchical departments
+  parentDepartmentId: varchar("parent_department_id"), // For hierarchical departments
   settings: jsonb("settings"), // Department-specific configurations
   dataFilters: jsonb("data_filters"), // What data this department can access
   isActive: boolean("is_active").default(true),
@@ -426,9 +498,62 @@ export const userPermissionsRelations = relations(userPermissions, ({ one }) => 
   }),
 }));
 
+// Relations for new tables
+export const connectionsRelations = relations(connections, ({ one }) => ({
+  tenant: one(tenants, {
+    fields: [connections.tenantId],
+    references: [tenants.id],
+  }),
+  user: one(users, {
+    fields: [connections.userId],
+    references: [users.id],
+  }),
+}));
+
+export const savedQueriesRelations = relations(savedQueries, ({ one }) => ({
+  tenant: one(tenants, {
+    fields: [savedQueries.tenantId],
+    references: [tenants.id],
+  }),
+  user: one(users, {
+    fields: [savedQueries.userId],
+    references: [users.id],
+  }),
+  connection: one(connections, {
+    fields: [savedQueries.connectionId],
+    references: [connections.id],
+  }),
+}));
+
+export const dashboardsRelations = relations(dashboards, ({ one, many }) => ({
+  tenant: one(tenants, {
+    fields: [dashboards.tenantId],
+    references: [tenants.id],
+  }),
+  user: one(users, {
+    fields: [dashboards.userId],
+    references: [users.id],
+  }),
+  widgets: many(dashboardWidgets),
+}));
+
+export const dashboardWidgetsRelations = relations(dashboardWidgets, ({ one }) => ({
+  dashboard: one(dashboards, {
+    fields: [dashboardWidgets.dashboardId],
+    references: [dashboards.id],
+  }),
+  query: one(savedQueries, {
+    fields: [dashboardWidgets.queryId],
+    references: [savedQueries.id],
+  }),
+}));
+
 // Update existing relations to include new tables
 export const tenantsRelations = relations(tenants, ({ many }) => ({
   users: many(users),
+  connections: many(connections),
+  savedQueries: many(savedQueries),
+  dashboards: many(dashboards),
   departments: many(departments),
   permissions: many(permissions),
   rolePermissions: many(rolePermissions),
@@ -438,6 +563,8 @@ export const tenantsRelations = relations(tenants, ({ many }) => ({
   workflows: many(workflows),
   workflowExecutions: many(workflowExecutions),
   reports: many(reports),
+  kpiDefinitions: many(kpiDefinitions),
+  workflowRules: many(workflowRules),
   activities: many(activities),
 }));
 
@@ -446,10 +573,27 @@ export const usersRelations = relations(users, ({ one, many }) => ({
     fields: [users.tenantId],
     references: [tenants.id],
   }),
+  connections: many(connections),
+  savedQueries: many(savedQueries),
+  dashboards: many(dashboards),
   userDepartments: many(userDepartments),
   userPermissions: many(userPermissions),
   activities: many(activities),
 }));
+
+// Type definitions
+export type UpsertUser = typeof users.$inferInsert;
+export type User = typeof users.$inferSelect;
+export type Tenant = typeof tenants.$inferSelect;
+export type UpsertTenant = typeof tenants.$inferInsert;
+export type Connection = typeof connections.$inferSelect;
+export type UpsertConnection = typeof connections.$inferInsert;
+export type SavedQuery = typeof savedQueries.$inferSelect;
+export type UpsertSavedQuery = typeof savedQueries.$inferInsert;
+export type Dashboard = typeof dashboards.$inferSelect;
+export type UpsertDashboard = typeof dashboards.$inferInsert;
+export type DashboardWidget = typeof dashboardWidgets.$inferSelect;
+export type UpsertDashboardWidget = typeof dashboardWidgets.$inferInsert;
 
 // Insert schemas
 export const insertTenantSchema = createInsertSchema(tenants).omit({
