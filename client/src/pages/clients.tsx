@@ -110,13 +110,13 @@ export default function Clients() {
     },
   });
 
-  const filteredClients = clients?.filter((client: any) =>
+  const filteredClients = (clients || []).filter((client: any) =>
     client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     client.email?.toLowerCase().includes(searchTerm.toLowerCase())
-  ) || [];
+  );
 
   const getCategoryName = (categoryId: string) => {
-    return categories?.find((cat: any) => cat.id === categoryId)?.name || 'Não categorizado';
+    return (categories || []).find((cat: any) => cat.id === categoryId)?.name || 'Não categorizado';
   };
 
   const getRiskProfileColor = (profile: string) => {
