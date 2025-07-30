@@ -58,12 +58,24 @@ function updateUserSession(
 async function upsertUser(
   claims: any,
 ) {
+  // Check if this user should be a super admin (TOIT team member)
+  const email = claims["email"];
+  const isToitMember = email?.includes('@replit.com') || 
+                      email?.includes('@toit.com') ||
+                      email === 'admin@toit.com' ||
+                      claims["sub"] === 'super_admin';
+  
   await storage.upsertUser({
     id: claims["sub"],
+    cpf: claims["sub"], // Use sub as CPF
+    password: 'oauth_authenticated', // OAuth users don't need traditional passwords
     email: claims["email"],
-    firstName: claims["first_name"],
-    lastName: claims["last_name"],
+    firstName: claims["first_name"] || claims["name"]?.split(' ')[0] || 'User',
+    lastName: claims["last_name"] || claims["name"]?.split(' ').slice(1).join(' ') || '',
     profileImageUrl: claims["profile_image_url"],
+    role: isToitMember ? 'super_admin' : 'employee',
+    tenantId: null,
+    isActive: true,
   });
 }
 

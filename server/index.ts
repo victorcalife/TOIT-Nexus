@@ -72,6 +72,69 @@ app.use((req, res, next) => {
     res.send('OK - InvestFlow Server Running');
   });
 
+  // System setup route - creates initial super admin (no auth required)
+  app.post('/api/setup-system', async (req, res) => {
+    try {
+      const { storage } = await import('./storage');
+      
+      // Check if any super admin already exists
+      const existingSuperAdmins = await storage.getAllUsers();
+      const hasSuperAdmin = existingSuperAdmins.some(user => user.role === 'super_admin');
+      
+      if (hasSuperAdmin) {
+        return res.status(400).json({ 
+          error: 'Sistema já foi configurado. Super admin já existe.' 
+        });
+      }
+
+      const { email, firstName, lastName, password } = req.body;
+      
+      if (!email || !firstName || !lastName || !password) {
+        return res.status(400).json({ 
+          error: 'Dados obrigatórios: email, firstName, lastName, password' 
+        });
+      }
+
+      const superAdmin = await storage.upsertUser({
+        cpf: `super_admin_${Date.now()}`,
+        password,
+        email,
+        firstName,
+        lastName,
+        role: 'super_admin',
+        tenantId: null,
+        isActive: true,
+      });
+      
+      res.json({ 
+        success: true, 
+        message: 'Sistema configurado com sucesso! Super admin criado.',
+        user: {
+          id: superAdmin.id,
+          email: superAdmin.email,
+          role: superAdmin.role
+        }
+      });
+    } catch (error) {
+      console.error('Error setting up system:', error);
+      res.status(500).json({ error: 'Falha ao configurar sistema' });
+    }
+  });
+
+  // Check if system needs setup
+  app.get('/api/setup-status', async (req, res) => {
+    try {
+      const { storage } = await import('./storage');
+      const existingSuperAdmins = await storage.getAllUsers();
+      const needsSetup = !existingSuperAdmins.some(user => user.role === 'super_admin');
+      
+      res.json({ needsSetup });
+    } catch (error) {
+      console.error('Error checking setup status:', error);
+      res.status(500).json({ error: 'Falha ao verificar status do sistema' });
+    }
+  });
+
   // importantly only setup vite in development and after
   // setting up all the other routes so the catch-all route
   // doesn't interfere with the other routes
