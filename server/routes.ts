@@ -2,7 +2,13 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth } from "./auth";
-import { isAuthenticated } from "./replitAuth";
+// Custom authentication middleware that works with both auth systems
+const isAuthenticated = (req: any, res: any, next: any) => {
+  if (req.user) {
+    return next();
+  }
+  return res.status(401).json({ message: "Unauthorized" });
+};
 import { 
   tenantMiddleware, 
   requireTenant, 
@@ -180,18 +186,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Public routes (no authentication required)
   // Login and register routes are handled by setupAuth() above
   
+  
   // Protected auth routes
   app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
+      // Handle both local auth (req.user directly) and OIDC auth (req.user.claims.sub)
+      const userId = req.user.claims?.sub || req.user.id;
+      const user = userId ? await storage.getUser(userId) : req.user;
+      
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
       
       // Include tenant information in response
       const response: any = { ...user };
       if (req.tenant) {
         response.tenant = req.tenant;
       }
-      if (req.isSuperAdmin) {
+      if (user.role === 'super_admin') {
         response.isSuperAdmin = true;
       }
       
@@ -206,10 +218,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/auth/select-tenant', isAuthenticated, async (req: any, res) => {
     try {
       const { tenantId } = req.body;
-      const userId = req.user.claims.sub;
+      const userId = req.user.claims?.sub || req.user.id;
+      const user = userId ? await storage.getUser(userId) : req.user;
       
-      // Verify user has access to this tenant
-      const user = await storage.getUser(userId);
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
@@ -279,7 +290,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       await storage.updateTenant(id, { status: 'suspended' });
       
       await storage.createActivity({
-        userId: req.user.claims.sub,
+        userId: req.user.claims?.sub || req.user.id,
         action: 'suspend_tenant',
         entityType: 'tenant',
         entityId: id,
@@ -299,7 +310,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       await storage.updateTenant(id, { status: 'active' });
       
       await storage.createActivity({
-        userId: req.user.claims.sub,
+        userId: req.user.claims?.sub || req.user.id,
         action: 'activate_tenant',
         entityType: 'tenant',
         entityId: id,
