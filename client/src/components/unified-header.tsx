@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
-import { LogOut, Settings, User } from 'lucide-react';
+import { LogOut, LogIn, User, Home } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 import toitNexusLogo from '@/assets/toit-nexus-logo.svg';
 
 interface UnifiedHeaderProps {
@@ -10,13 +11,32 @@ interface UnifiedHeaderProps {
   onLogout?: () => void;
 }
 
-export function UnifiedHeader({ title, subtitle, showUserActions = false, user, onLogout }: UnifiedHeaderProps) {
+export function UnifiedHeader({ 
+  title, 
+  subtitle, 
+  showUserActions = false, 
+  user: propUser, 
+  onLogout 
+}: UnifiedHeaderProps) {
+  const { isAuthenticated, user: authUser, isLoading } = useAuth();
+  
+  // Use prop user if provided, otherwise use auth user
+  const displayUser = propUser || authUser;
+  
+  const handleLogin = () => {
+    window.location.href = '/login';
+  };
+
   const handleLogout = () => {
     if (onLogout) {
       onLogout();
     } else {
       window.location.href = '/api/logout';
     }
+  };
+
+  const goHome = () => {
+    window.location.href = '/';
   };
 
   return (
@@ -29,7 +49,7 @@ export function UnifiedHeader({ title, subtitle, showUserActions = false, user, 
     >
       <div className="w-full px-6 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 cursor-pointer" onClick={goHome}>
             <img 
               src={toitNexusLogo} 
               alt="TOIT Nexus" 
@@ -37,40 +57,65 @@ export function UnifiedHeader({ title, subtitle, showUserActions = false, user, 
               style={{ transform: 'scale(1.15)' }}
             />
             <div>
-              <h1 className="text-2xl font-bold">
-                {title}
-              </h1>
+              <h1 className="text-2xl font-bold">{title}</h1>
               {subtitle && (
-                <p className="text-blue-100 text-sm mt-1">
-                  {subtitle}
-                </p>
+                <p className="text-blue-100 text-sm">{subtitle}</p>
               )}
             </div>
           </div>
+          
+          <div className="flex items-center space-x-4">
+            {/* Always show home button */}
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="text-white hover:bg-white/20"
+              onClick={goHome}
+            >
+              <Home className="h-4 w-4 mr-2" />
+              Início
+            </Button>
 
-          {showUserActions && (
-            <div className="flex items-center space-x-4">
-              {user && (
-                <div className="flex items-center space-x-3">
-                  <div className="flex items-center space-x-2 bg-white/10 rounded-lg px-3 py-2">
-                    <User className="w-4 h-4" />
-                    <span className="text-sm font-medium">
-                      {user.firstName} {user.lastName}
-                    </span>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleLogout}
-                    className="text-white hover:bg-white/10 hover:text-white"
+            {!isLoading && (
+              <>
+                {isAuthenticated || showUserActions ? (
+                  <>
+                    {/* Show user info if available */}
+                    {displayUser && (
+                      <div className="flex items-center space-x-2 text-sm">
+                        <User className="h-4 w-4" />
+                        <span>
+                          {displayUser.firstName} {displayUser.lastName}
+                        </span>
+                      </div>
+                    )}
+                    
+                    {/* Logout button */}
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="text-white hover:bg-white/20"
+                      onClick={handleLogout}
+                    >
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Sair
+                    </Button>
+                  </>
+                ) : (
+                  /* Login button when not authenticated */
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="text-white hover:bg-white/20"
+                    onClick={handleLogin}
                   >
-                    <LogOut className="w-4 h-4 mr-2" />
-                    Sair
+                    <LogIn className="h-4 w-4 mr-2" />
+                    Entrar
                   </Button>
-                </div>
-              )}
-            </div>
-          )}
+                )}
+              </>
+            )}
+          </div>
         </div>
       </div>
     </header>
