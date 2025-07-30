@@ -54,6 +54,24 @@ app.use((req, res, next) => {
     res.sendFile(path.resolve(import.meta.dirname, '..', 'simple_test.html'));
   });
 
+  // Debug route to check server status
+  app.get('/debug', (req, res) => {
+    res.json({
+      status: 'Server is running',
+      environment: process.env.NODE_ENV,
+      port: process.env.PORT,
+      replit_domain: process.env.REPLIT_DOMAINS,
+      headers: req.headers,
+      url: req.url,
+      timestamp: new Date().toISOString()
+    });
+  });
+
+  // Add a simple health check route
+  app.get('/health', (req, res) => {
+    res.send('OK - InvestFlow Server Running');
+  });
+
   // importantly only setup vite in development and after
   // setting up all the other routes so the catch-all route
   // doesn't interfere with the other routes
@@ -68,12 +86,14 @@ app.use((req, res, next) => {
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
     const port = parseInt(process.env.PORT || '5000', 10);
-    server.listen({
-      port,
-      host: "0.0.0.0",
-      reusePort: true,
-    }, () => {
-      log(`serving on port ${port}`);
+    server.listen(port, "0.0.0.0", () => {
+      log(`serving on port ${port} - accessible on 0.0.0.0:${port}`);
+      console.log(`Server URLs:`);
+      console.log(`  Local: http://localhost:${port}`);
+      console.log(`  Network: http://0.0.0.0:${port}`);
+      if (process.env.REPLIT_DOMAINS) {
+        console.log(`  Replit: https://${process.env.REPLIT_DOMAINS}`);
+      }
     });
   } catch (error) {
     console.error('Failed to start server:', error);
