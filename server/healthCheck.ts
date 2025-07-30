@@ -1,8 +1,9 @@
 import { db } from "./db";
+import { sql } from "drizzle-orm";
 
 export async function checkDatabaseConnection(): Promise<boolean> {
   try {
-    const result = await db.execute(`SELECT 1 as test`);
+    const result = await db.execute(sql`SELECT 1 as test`);
     return true;
   } catch (error) {
     console.error("Database connection failed:", error);
