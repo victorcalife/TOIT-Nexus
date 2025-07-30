@@ -106,7 +106,14 @@ export default function TOITAdminDashboard() {
 
   // Mutations for TOIT admin actions
   const createTenant = useMutation({
-    mutationFn: (data: any) => apiRequest('/api/admin/tenants', { method: 'POST', body: data }),
+    mutationFn: async (data: any) => {
+      const response = await fetch('/api/admin/tenants', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      return response.json();
+    },
     onSuccess: () => {
       toast({ title: 'Sucesso', description: 'Empresa criada com sucesso!' });
       queryClient.invalidateQueries({ queryKey: ['/api/admin/tenants'] });
@@ -117,7 +124,14 @@ export default function TOITAdminDashboard() {
   });
 
   const updateTenant = useMutation({
-    mutationFn: ({ id, ...data }: any) => apiRequest(`/api/admin/tenants/${id}`, { method: 'PUT', body: data }),
+    mutationFn: async ({ id, ...data }: any) => {
+      const response = await fetch(`/api/admin/tenants/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      return response.json();
+    },
     onSuccess: () => {
       toast({ title: 'Sucesso', description: 'Empresa atualizada!' });
       queryClient.invalidateQueries({ queryKey: ['/api/admin/tenants'] });
@@ -125,7 +139,10 @@ export default function TOITAdminDashboard() {
   });
 
   const deleteTenant = useMutation({
-    mutationFn: (id: string) => apiRequest(`/api/admin/tenants/${id}`, { method: 'DELETE' }),
+    mutationFn: async (id: string) => {
+      const response = await fetch(`/api/admin/tenants/${id}`, { method: 'DELETE' });
+      return response.json();
+    },
     onSuccess: () => {
       toast({ title: 'Sucesso', description: 'Empresa removida!' });
       queryClient.invalidateQueries({ queryKey: ['/api/admin/tenants'] });
@@ -133,7 +150,10 @@ export default function TOITAdminDashboard() {
   });
 
   const setupTenantDefaults = useMutation({
-    mutationFn: (tenantId: string) => apiRequest(`/api/admin/tenants/${tenantId}/setup-defaults`, { method: 'POST' }),
+    mutationFn: async (tenantId: string) => {
+      const response = await fetch(`/api/admin/tenants/${tenantId}/setup-defaults`, { method: 'POST' });
+      return response.json();
+    },
     onSuccess: () => {
       toast({ title: 'Sucesso', description: 'Estrutura padrão configurada!' });
       queryClient.invalidateQueries({ queryKey: ['/api/admin/departments'] });
@@ -142,7 +162,14 @@ export default function TOITAdminDashboard() {
   });
 
   const createGlobalPermission = useMutation({
-    mutationFn: (data: any) => apiRequest('/api/admin/permissions', { method: 'POST', body: data }),
+    mutationFn: async (data: any) => {
+      const response = await fetch('/api/admin/permissions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      return response.json();
+    },
     onSuccess: () => {
       toast({ title: 'Sucesso', description: 'Permissão global criada!' });
       queryClient.invalidateQueries({ queryKey: ['/api/admin/permissions'] });
@@ -150,26 +177,32 @@ export default function TOITAdminDashboard() {
   });
 
   const assignUserToTenant = useMutation({
-    mutationFn: ({ userId, tenantId, role }: any) => 
-      apiRequest(`/api/admin/users/${userId}/assign-tenant`, { method: 'POST', body: { tenantId, role } }),
+    mutationFn: async ({ userId, tenantId, role }: any) => {
+      const response = await fetch(`/api/admin/users/${userId}/assign-tenant`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tenantId, role })
+      });
+      return response.json();
+    },
     onSuccess: () => {
       toast({ title: 'Sucesso', description: 'Usuário atribuído à empresa!' });
       queryClient.invalidateQueries({ queryKey: ['/api/admin/users'] });
     },
   });
 
-  const filteredTenants = tenants.filter((tenant: Tenant) =>
-    tenant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    tenant.domain.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredTenants = (tenants as any[] || []).filter((tenant: any) =>
+    tenant.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    tenant.domain?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const mockStats = {
-    totalTenants: tenants.length || 5,
-    totalUsers: globalUsers.length || 42,
-    totalWorkflows: globalWorkflows.length || 28,
+    totalTenants: (tenants as any[])?.length || 5,
+    totalUsers: (globalUsers as any[])?.length || 42,
+    totalWorkflows: (globalWorkflows as any[])?.length || 28,
     systemUptime: '99.9%',
     monthlyRevenue: 125000,
-    activeIntegrations: globalIntegrations.filter((i: any) => i.status === 'active').length || 15,
+    activeIntegrations: (globalIntegrations as any[])?.filter((i: any) => i.status === 'active')?.length || 15,
     pendingIssues: 3,
     successRate: 97.5
   };
@@ -384,7 +417,7 @@ export default function TOITAdminDashboard() {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredTenants.map((tenant: Tenant) => (
+              {(filteredTenants as any[]).map((tenant: any) => (
                 <Card key={tenant.id} className="relative">
                   <CardHeader>
                     <CardTitle className="flex items-center justify-between">
@@ -469,7 +502,7 @@ export default function TOITAdminDashboard() {
                 </Button>
               </div>
             </div>
-            <GlobalUsersTable users={globalUsers} tenants={tenants} onAssign={assignUserToTenant.mutate} />
+            <GlobalUsersTable users={globalUsers as any[]} tenants={tenants as any[]} onAssign={assignUserToTenant.mutate} />
           </TabsContent>
 
           <TabsContent value="departments" className="space-y-4">
@@ -480,7 +513,7 @@ export default function TOITAdminDashboard() {
                 Filtrar por Empresa
               </Button>
             </div>
-            <GlobalDepartmentsTable departments={globalDepartments} tenants={tenants} />
+            <GlobalDepartmentsTable departments={globalDepartments as any[]} tenants={tenants as any[]} />
           </TabsContent>
 
           <TabsContent value="permissions" className="space-y-4">
@@ -488,17 +521,17 @@ export default function TOITAdminDashboard() {
               <h2 className="text-xl font-semibold">Configuração Global de Permissões</h2>
               <GlobalPermissionDialog onSubmit={createGlobalPermission.mutate} />
             </div>
-            <GlobalPermissionsTable permissions={globalPermissions} tenants={tenants} />
+            <GlobalPermissionsTable permissions={globalPermissions as any[]} tenants={tenants as any[]} />
           </TabsContent>
 
           <TabsContent value="workflows" className="space-y-4">
             <h2 className="text-xl font-semibold">Workflows Globais</h2>
-            <GlobalWorkflowsTable workflows={globalWorkflows} tenants={tenants} />
+            <GlobalWorkflowsTable workflows={globalWorkflows as any[]} tenants={tenants as any[]} />
           </TabsContent>
 
           <TabsContent value="integrations" className="space-y-4">
             <h2 className="text-xl font-semibold">Integrações do Sistema</h2>
-            <GlobalIntegrationsTable integrations={globalIntegrations} tenants={tenants} />
+            <GlobalIntegrationsTable integrations={globalIntegrations as any[]} tenants={tenants as any[]} />
           </TabsContent>
 
           <TabsContent value="monitoring" className="space-y-4">
