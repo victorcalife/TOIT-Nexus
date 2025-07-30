@@ -8,7 +8,7 @@ export function useAuth() {
   });
 
   const isAuthenticated = !!user && !error;
-  const isSuperAdmin = user?.role === 'super_admin';
+  const isSuperAdmin = user && typeof user === 'object' && 'role' in user && user.role === 'super_admin';
 
   return {
     user,
