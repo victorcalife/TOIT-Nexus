@@ -588,10 +588,10 @@ export default function QueryBuilder() {
                                 <SelectContent>
                                   <SelectItem value="=">=</SelectItem>
                                   <SelectItem value="!=">!=</SelectItem>
-                                  <SelectItem value=">">></SelectItem>
-                                  <SelectItem value="<"><</SelectItem>
-                                  <SelectItem value=">=">>=</SelectItem>
-                                  <SelectItem value="<="><=</SelectItem>
+                                  <SelectItem value=">">&gt;</SelectItem>
+                                  <SelectItem value="<">&lt;</SelectItem>
+                                  <SelectItem value=">=">&gt;=</SelectItem>
+                                  <SelectItem value="<=">&lt;=</SelectItem>
                                   <SelectItem value="LIKE">LIKE</SelectItem>
                                   <SelectItem value="IN">IN</SelectItem>
                                 </SelectContent>
