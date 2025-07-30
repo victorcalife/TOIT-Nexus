@@ -177,11 +177,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Auth middleware with CPF/password
   setupAuth(app);
 
-  // Apply tenant middleware to all authenticated routes
-  app.use('/api', isAuthenticated, tenantMiddleware);
-
-  // Auth routes
-  app.get('/api/auth/user', async (req: any, res) => {
+  // Public routes (no authentication required)
+  // Login and register routes are handled by setupAuth() above
+  
+  // Protected auth routes
+  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
       const user = await storage.getUser(userId);
@@ -203,7 +203,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Tenant selection for users with multiple tenant access
-  app.post('/api/auth/select-tenant', async (req: any, res) => {
+  app.post('/api/auth/select-tenant', isAuthenticated, async (req: any, res) => {
     try {
       const { tenantId } = req.body;
       const userId = req.user.claims.sub;
@@ -335,7 +335,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Client Category routes (tenant-isolated)
-  app.get('/api/categories', requireTenant, async (req, res) => {
+  app.get('/api/categories', isAuthenticated, tenantMiddleware, requireTenant, async (req, res) => {
     try {
       const tenantId = getTenantId(req);
       const categories = await storage.getClientCategories(tenantId);
@@ -360,7 +360,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post('/api/categories', isAuthenticated, async (req: any, res) => {
+  app.post('/api/categories', isAuthenticated, tenantMiddleware, async (req: any, res) => {
     try {
       const validatedData = insertClientCategorySchema.parse(req.body);
       const category = await storage.createClientCategory(validatedData);
