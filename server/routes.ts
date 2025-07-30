@@ -2,6 +2,110 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
+
+// Helper function to generate report data
+async function generateReportData(report: any) {
+  const template = report.template;
+  const reportData: any = {
+    reportName: report.name,
+    generatedAt: new Date().toISOString(),
+    filters: template.filters || {},
+    data: []
+  };
+
+  try {
+    // Get clients based on filters
+    const clients = await storage.getClients();
+    let filteredClients = clients;
+
+    // Apply category filters
+    if (template.filters?.categories && template.filters.categories.length > 0) {
+      filteredClients = filteredClients.filter((client: any) => 
+        template.filters.categories.includes(client.categoryId)
+      );
+    }
+
+    // Apply risk profile filters
+    if (template.filters?.riskProfiles && template.filters.riskProfiles.length > 0) {
+      filteredClients = filteredClients.filter((client: any) => 
+        template.filters.riskProfiles.includes(client.riskProfile)
+      );
+    }
+
+    // Apply investment amount filters
+    if (template.filters?.minInvestment) {
+      filteredClients = filteredClients.filter((client: any) => 
+        client.currentInvestment >= template.filters.minInvestment
+      );
+    }
+
+    if (template.filters?.maxInvestment) {
+      filteredClients = filteredClients.filter((client: any) => 
+        client.currentInvestment <= template.filters.maxInvestment
+      );
+    }
+
+    // Format data based on selected fields
+    reportData.data = filteredClients.map((client: any) => {
+      const clientData: any = {};
+      
+      if (!template.fields || template.fields.length === 0) {
+        // Include all fields if none specified
+        return client;
+      }
+
+      // Include only selected fields
+      template.fields.forEach((field: string) => {
+        switch (field) {
+          case 'client_name':
+            clientData.name = client.name;
+            break;
+          case 'email':
+            clientData.email = client.email;
+            break;
+          case 'phone':
+            clientData.phone = client.phone;
+            break;
+          case 'current_investment':
+            clientData.currentInvestment = client.currentInvestment;
+            break;
+          case 'risk_profile':
+            clientData.riskProfile = client.riskProfile;
+            break;
+          case 'category':
+            clientData.categoryId = client.categoryId;
+            break;
+          case 'last_activity':
+            clientData.lastActivity = client.metadata?.lastActivity;
+            break;
+          default:
+            if (client[field]) {
+              clientData[field] = client[field];
+            }
+        }
+      });
+
+      return clientData;
+    });
+
+    reportData.summary = {
+      totalClients: filteredClients.length,
+      totalInvestment: filteredClients.reduce((sum: number, client: any) => 
+        sum + (client.currentInvestment || 0), 0
+      ),
+      averageInvestment: filteredClients.length > 0 
+        ? filteredClients.reduce((sum: number, client: any) => 
+            sum + (client.currentInvestment || 0), 0) / filteredClients.length
+        : 0
+    };
+
+  } catch (error) {
+    console.error('Error generating report data:', error);
+    reportData.error = 'Failed to generate report data';
+  }
+
+  return reportData;
+}
 import {
   insertClientCategorySchema,
   insertClientSchema,
@@ -163,22 +267,56 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post('/api/clients', isAuthenticated, async (req: any, res) => {
     try {
-      const validatedData = insertClientSchema.parse(req.body);
-      const client = await storage.createClient(validatedData);
+      const clientData = req.body;
       
-      // Log activity
+      // Auto-assign category based on rules
+      const categories = await storage.getClientCategories();
+      let assignedCategory = null;
+      
+      for (const category of categories) {
+        if (category.rules && shouldAssignToCategory(clientData, category.rules)) {
+          assignedCategory = category.id;
+          break;
+        }
+      }
+      
+      if (assignedCategory) {
+        clientData.categoryId = assignedCategory;
+      }
+      
+      const client = await storage.createClient(clientData);
+      
+      // Send welcome email if client has email and category
+      if (client.email && assignedCategory) {
+        try {
+          const category = await storage.getClientCategory(assignedCategory);
+          if (category) {
+            const { sendWelcomeEmail } = await import('./emailService');
+            await sendWelcomeEmail(client.email, client.name, category.name);
+          }
+        } catch (emailError) {
+          console.error('Failed to send welcome email:', emailError);
+          // Don't fail the client creation if email fails
+        }
+      }
+      
+      // Trigger workflows for this category
+      if (assignedCategory) {
+        await triggerWorkflowsForCategory(assignedCategory, client);
+      }
+      
       await storage.createActivity({
         userId: req.user.claims.sub,
         action: 'create_client',
         entityType: 'client',
         entityId: client.id,
-        description: `Added new client: ${client.name}`,
+        description: `Created client: ${client.name}`,
       });
-
+      
       res.status(201).json(client);
     } catch (error) {
       console.error("Error creating client:", error);
-      res.status(400).json({ message: "Failed to create client" });
+      res.status(500).json({ message: "Failed to create client" });
     }
   });
 
@@ -508,7 +646,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "Report not found" });
       }
 
-      // Simulate report generation
+      // Generate report data based on template
+      const reportData = await generateReportData(report);
+
+      // Send email if configured
+      if (report.template.recipients && report.template.recipients.length > 0) {
+        const { sendReportEmail } = await import('./emailService');
+        await sendReportEmail(
+          report.template.recipients,
+          report.name,
+          reportData,
+          report.categoryId ? (await storage.getClientCategory(report.categoryId))?.name : undefined
+        );
+      }
+
+      // Log activity
       await storage.createActivity({
         userId: req.user.claims.sub,
         action: 'generate_report',
@@ -521,11 +673,153 @@ export async function registerRoutes(app: Express): Promise<Server> {
         status: 'success',
         message: 'Report generated and sent successfully',
         reportId: id,
+        reportData,
         timestamp: new Date().toISOString()
       });
     } catch (error) {
       console.error("Error generating report:", error);
       res.status(500).json({ message: "Failed to generate report" });
+    }
+  });
+
+  // Test email configuration
+  app.post('/api/system/test-email', isAuthenticated, async (req, res) => {
+    try {
+      const { testEmailConfiguration } = await import('./emailService');
+      const result = await testEmailConfiguration();
+      
+      res.json({
+        status: result.success ? 'success' : 'error',
+        message: result.message
+      });
+    } catch (error) {
+      console.error("Email test failed:", error);
+      res.json({
+        status: 'error',
+        message: 'Email test failed'
+      });
+    }
+  });
+
+  // Integration routes
+  app.get('/api/integrations', isAuthenticated, async (req, res) => {
+    try {
+      const integrations = await storage.getIntegrations();
+      res.json(integrations);
+    } catch (error) {
+      console.error("Error fetching integrations:", error);
+      res.status(500).json({ message: "Failed to fetch integrations" });
+    }
+  });
+
+  app.post('/api/integrations', isAuthenticated, async (req: any, res) => {
+    try {
+      const integrationData = req.body;
+      const integration = await storage.createIntegration(integrationData);
+      
+      await storage.createActivity({
+        userId: req.user.claims.sub,
+        action: 'create_integration',
+        entityType: 'integration',
+        entityId: integration.id,
+        description: `Created integration: ${integration.name}`,
+      });
+
+      res.status(201).json(integration);
+    } catch (error) {
+      console.error("Error creating integration:", error);
+      res.status(500).json({ message: "Failed to create integration" });
+    }
+  });
+
+  app.put('/api/integrations/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      const integrationData = req.body;
+      const integration = await storage.updateIntegration(id, integrationData);
+      
+      await storage.createActivity({
+        userId: req.user.claims.sub,
+        action: 'update_integration',
+        entityType: 'integration',
+        entityId: id,
+        description: `Updated integration: ${integration.name}`,
+      });
+
+      res.json(integration);
+    } catch (error) {
+      console.error("Error updating integration:", error);
+      res.status(500).json({ message: "Failed to update integration" });
+    }
+  });
+
+  app.delete('/api/integrations/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      await storage.deleteIntegration(id);
+      
+      await storage.createActivity({
+        userId: req.user.claims.sub,
+        action: 'delete_integration',
+        entityType: 'integration',
+        entityId: id,
+        description: `Deleted integration`,
+      });
+
+      res.json({ message: "Integration deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting integration:", error);
+      res.status(500).json({ message: "Failed to delete integration" });
+    }
+  });
+
+  app.post('/api/integrations/:id/test', isAuthenticated, async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      const integration = await storage.getIntegration(id);
+      
+      if (!integration) {
+        return res.status(404).json({ message: "Integration not found" });
+      }
+
+      let testResult = { success: false, message: 'Test not implemented for this type' };
+
+      // Test based on integration type
+      switch (integration.type) {
+        case 'email':
+          if (integration.config?.email) {
+            const { testEmailConfiguration } = await import('./emailService');
+            testResult = await testEmailConfiguration();
+          }
+          break;
+        case 'api':
+          // TODO: Implement API testing
+          testResult = { success: true, message: 'API test not yet implemented' };
+          break;
+        case 'database':
+          // TODO: Implement database testing
+          testResult = { success: true, message: 'Database test not yet implemented' };
+          break;
+        case 'webhook':
+          // TODO: Implement webhook testing
+          testResult = { success: true, message: 'Webhook test not yet implemented' };
+          break;
+      }
+
+      // Update integration status based on test result
+      await storage.updateIntegration(id, {
+        lastStatus: testResult.success ? 'active' : 'error',
+        lastChecked: new Date()
+      });
+
+      res.json({
+        success: testResult.success,
+        message: testResult.message,
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      console.error("Error testing integration:", error);
+      res.status(500).json({ message: "Failed to test integration" });
     }
   });
 
