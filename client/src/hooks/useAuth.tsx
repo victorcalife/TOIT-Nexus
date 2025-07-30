@@ -5,6 +5,10 @@ export function useAuth() {
     queryKey: ['/api/auth/user'],
     retry: false,
     staleTime: 1000 * 60 * 5, // 5 minutes
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+    refetchOnMount: false,
+    enabled: false, // Disable automatic queries for demo
   });
 
   const isAuthenticated = !!user && !error;

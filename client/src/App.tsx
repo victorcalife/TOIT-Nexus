@@ -3,6 +3,8 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { NotificationProvider } from "@/contexts/NotificationContext";
+import { ToastContainer } from "@/components/notifications/ToastContainer";
 import { useAuth } from "@/hooks/useAuth";
 import { Sidebar } from "@/components/sidebar";
 import NotFound from "@/pages/not-found";
@@ -55,6 +57,16 @@ function Router() {
       <Switch>
         <Route path="/" component={Landing} />
         <Route path="/login" component={Login} />
+        <Route path="/demo" component={() => {
+          const NotificationDemo = lazy(() => import("./pages/notification-demo-standalone"));
+          return (
+            <Suspense fallback={<div className="flex justify-center items-center h-screen">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            </div>}>
+              <NotificationDemo />
+            </Suspense>
+          );
+        }} />
         <Route component={() => (
           <div className="min-h-screen flex items-center justify-center">
             <div className="text-center">
@@ -266,8 +278,11 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <Toaster />
-        <Router />
+        <NotificationProvider>
+          <Router />
+          <Toaster />
+          <ToastContainer />
+        </NotificationProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );
