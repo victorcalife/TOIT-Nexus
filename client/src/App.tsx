@@ -7,6 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Sidebar } from "@/components/sidebar";
 import NotFound from "@/pages/not-found";
 import Landing from "@/pages/landing";
+import Login from "@/pages/login";
 import Dashboard from "@/pages/dashboard";
 import Clients from "@/pages/clients";
 import Categories from "@/pages/categories";
@@ -30,11 +31,12 @@ function Router() {
     );
   }
 
-  // Not authenticated - show landing page
+  // Not authenticated - show landing page or login
   if (!isAuthenticated) {
     return (
       <Switch>
         <Route path="/" component={Landing} />
+        <Route path="/login" component={Login} />
         <Route component={NotFound} />
       </Switch>
     );
