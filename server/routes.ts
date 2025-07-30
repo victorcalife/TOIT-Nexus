@@ -845,10 +845,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const reportData = await generateReportData(report);
 
       // Send email if configured
-      if (report.template.recipients && report.template.recipients.length > 0) {
+      if ((report.template as any)?.recipients && (report.template as any).recipients.length > 0) {
         const { sendReportEmail } = await import('./emailService');
         await sendReportEmail(
-          report.template.recipients,
+          (report.template as any).recipients,
           report.name,
           reportData,
           report.categoryId ? (await storage.getClientCategory(report.categoryId))?.name : undefined
