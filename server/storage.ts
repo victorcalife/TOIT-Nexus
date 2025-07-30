@@ -44,6 +44,7 @@ export interface IStorage {
   getUserByCPF(cpf: string): Promise<User | undefined>;
   getUsersByTenant(tenantId: string): Promise<User[]>;
   createUser(user: any): Promise<User>;
+  upsertUser(user: UpsertUser): Promise<User>;
   updateUserLastLogin(id: string): Promise<void>;
   
   // Client Category operations (tenant-isolated)
@@ -176,6 +177,46 @@ export class DatabaseStorage implements IStorage {
       .update(users)
       .set({ lastLoginAt: new Date() })
       .where(eq(users.id, id));
+  }
+
+  async upsertUser(user: UpsertUser): Promise<User> {
+    const existingUser = await this.getUser(user.id);
+    
+    if (existingUser) {
+      // Update existing user
+      const [updated] = await db
+        .update(users)
+        .set({ 
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          profileImageUrl: user.profileImageUrl,
+          updatedAt: new Date()
+        })
+        .where(eq(users.id, user.id))
+        .returning();
+      return updated;
+    } else {
+      // Create new user with default values
+      const [created] = await db
+        .insert(users)
+        .values({
+          id: user.id,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          profileImageUrl: user.profileImageUrl,
+          password: '', // Default empty password for OAuth users
+          cpf: '', // Default empty CPF for OAuth users
+          isActive: true,
+          role: 'user',
+          tenantId: 'default', // Default tenant for OAuth users
+          createdAt: new Date(),
+          updatedAt: new Date()
+        })
+        .returning();
+      return created;
+    }
   }
 
   // Client Category operations (with tenant isolation)

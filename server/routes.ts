@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth } from "./auth";
+import { isAuthenticated } from "./replitAuth";
 import { 
   tenantMiddleware, 
   requireTenant, 
@@ -10,6 +11,56 @@ import {
   getTenantId,
   canAccessTenantResource
 } from "./tenantMiddleware";
+
+// Helper function to determine if client should be assigned to a category
+function shouldAssignToCategory(client: any, category: any): boolean {
+  // Basic logic for auto-assignment based on client criteria
+  if (!category.autoAssignmentRules) return false;
+  
+  const rules = category.autoAssignmentRules;
+  
+  // Check investment threshold
+  if (rules.minInvestmentAmount && client.currentInvestment < rules.minInvestmentAmount) {
+    return false;
+  }
+  if (rules.maxInvestmentAmount && client.currentInvestment > rules.maxInvestmentAmount) {
+    return false;
+  }
+  
+  // Check risk profile
+  if (rules.riskProfiles && rules.riskProfiles.length > 0) {
+    if (!rules.riskProfiles.includes(client.riskProfile)) {
+      return false;
+    }
+  }
+  
+  return true;
+}
+
+// Helper function to trigger workflows for a category
+async function triggerWorkflowsForCategory(categoryId: string, clientId: string) {
+  try {
+    // Get workflows associated with this category
+    const workflows = await storage.getWorkflowsByCategory(categoryId);
+    
+    for (const workflow of workflows) {
+      if (workflow.status === 'active' && workflow.trigger === 'client_assignment') {
+        // Log the workflow trigger
+        await storage.createActivity({
+          action: 'workflow_triggered',
+          description: `Workflow "${workflow.name}" triggered for client assignment`,
+          metadata: { workflowId: workflow.id, clientId, categoryId }
+        });
+        
+        // Here you would integrate with your workflow engine
+        // For now, we'll just log the action
+        console.log(`Triggered workflow ${workflow.name} for client ${clientId} in category ${categoryId}`);
+      }
+    }
+  } catch (error) {
+    console.error('Error triggering workflows:', error);
+  }
+}
 
 // Helper function to generate report data
 async function generateReportData(report: any) {
@@ -275,7 +326,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get('/api/dashboard/activities', isAuthenticated, async (req, res) => {
     try {
-      const activities = await storage.getRecentActivities(20);
+      const activities = await storage.getRecentActivities("20");
       res.json(activities);
     } catch (error) {
       console.error("Error fetching activities:", error);
@@ -435,7 +486,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Trigger workflows for this category
       if (assignedCategory) {
-        await triggerWorkflowsForCategory(assignedCategory, client);
+        await triggerWorkflowsForCategory(assignedCategory, client.id);
       }
       
       await storage.createActivity({
@@ -920,7 +971,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Test based on integration type
       switch (integration.type) {
         case 'email':
-          if (integration.config?.email) {
+          if ((integration.config as any)?.email) {
             const { testEmailConfiguration } = await import('./emailService');
             testResult = await testEmailConfiguration();
           }
