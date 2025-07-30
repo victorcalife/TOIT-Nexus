@@ -16,7 +16,7 @@ export default function Landing() {
               <span className="text-xl font-semibold text-gray-900">InvestFlow</span>
             </div>
             <Button 
-              onClick={() => window.location.href = '/api/login'}
+              onClick={() => window.location.href = '/login'}
               className="bg-primary-500 hover:bg-primary-600"
             >
               Entrar na Plataforma
@@ -40,7 +40,7 @@ export default function Landing() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 size="lg" 
-                onClick={() => window.location.href = '/api/login'}
+                onClick={() => window.location.href = '/login'}
                 className="bg-primary-500 hover:bg-primary-600 text-lg px-8"
               >
                 Começar Agora
