@@ -8,6 +8,8 @@ import {
   workflowExecutions,
   reports,
   activities,
+  kpiDefinitions,
+  workflowRules,
   type Tenant,
   type InsertTenant,
   type User,
@@ -510,6 +512,48 @@ export class DatabaseStorage implements IStorage {
       .from(activities)
       .orderBy(desc(activities.createdAt))
       .limit(limit);
+  }
+
+  // KPI management operations
+  async createKPI(kpi: any): Promise<any> {
+    const [created] = await db
+      .insert(kpiDefinitions)
+      .values(kpi)
+      .returning();
+    return created;
+  }
+
+  async getKPIs(tenantId?: string): Promise<any[]> {
+    const query = db.select().from(kpiDefinitions);
+    
+    if (tenantId) {
+      return await query.where(eq(kpiDefinitions.tenantId, tenantId));
+    }
+    
+    return await query;
+  }
+
+  // Workflow rules management
+  async createWorkflowRule(rule: any): Promise<any> {
+    const [created] = await db
+      .insert(workflowRules)
+      .values(rule)
+      .returning();
+    return created;
+  }
+
+  async getWorkflowRules(tenantId?: string, workflowId?: string): Promise<any[]> {
+    let query = db.select().from(workflowRules);
+    
+    if (tenantId) {
+      query = query.where(eq(workflowRules.tenantId, tenantId));
+    }
+    
+    if (workflowId) {
+      query = query.where(eq(workflowRules.workflowId, workflowId));
+    }
+    
+    return await query;
   }
 
   // Dashboard statistics

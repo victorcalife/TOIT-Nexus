@@ -136,13 +136,53 @@ export const workflowExecutions = pgTable("workflow_executions", {
   executedAt: timestamp("executed_at").defaultNow(),
 });
 
-// Reports table with tenant isolation
+// Reports table with tenant isolation and adaptive features
 export const reports = pgTable("reports", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
   name: varchar("name", { length: 200 }).notNull(),
   template: jsonb("template").notNull(),
   categoryId: varchar("category_id").references(() => clientCategories.id),
+  // Enhanced adaptive features
+  dataFilters: jsonb("data_filters"), // Dynamic filters based on tenant data
+  kpiConfiguration: jsonb("kpi_configuration"), // Adaptive KPIs and indicators
+  visualizationSettings: jsonb("visualization_settings"), // Dynamic charts
+  autoAdaptRules: jsonb("auto_adapt_rules"), // Rules for automatic adaptation
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Dynamic KPI definitions that adapt to tenant data
+export const kpiDefinitions = pgTable("kpi_definitions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  name: varchar("name", { length: 200 }).notNull(),
+  description: text("description"),
+  category: varchar("category", { length: 50 }).notNull(), // 'financial', 'client', 'portfolio', 'risk'
+  calculationType: varchar("calculation_type", { length: 50 }).notNull(), // 'sum', 'avg', 'count', 'ratio', 'custom'
+  dataSource: jsonb("data_source").notNull(), // Which tables/fields to use
+  calculationFormula: text("calculation_formula"), // Custom calculations
+  targetValue: decimal("target_value", { precision: 15, scale: 2 }),
+  alertThresholds: jsonb("alert_thresholds"), // Trigger alerts
+  adaptationRules: jsonb("adaptation_rules"), // Auto-adapt based on data patterns
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Workflow rules that adapt to client data patterns
+export const workflowRules = pgTable("workflow_rules", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  workflowId: varchar("workflow_id").references(() => workflows.id),
+  name: varchar("name", { length: 200 }).notNull(),
+  description: text("description"),
+  triggerConditions: jsonb("trigger_conditions").notNull(), // Dynamic conditions based on data
+  actions: jsonb("actions").notNull(), // Actions to execute
+  dataThresholds: jsonb("data_thresholds"), // Adaptive thresholds based on historical data
+  learningRules: jsonb("learning_rules"), // Rules for learning from data patterns
+  priority: integer("priority").default(0), // Execution priority
   isActive: boolean("is_active").default(true),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
@@ -245,6 +285,24 @@ export const reportsRelations = relations(reports, ({ one }) => ({
   category: one(clientCategories, {
     fields: [reports.categoryId],
     references: [clientCategories.id],
+  }),
+}));
+
+export const kpiDefinitionsRelations = relations(kpiDefinitions, ({ one }) => ({
+  tenant: one(tenants, {
+    fields: [kpiDefinitions.tenantId],
+    references: [tenants.id],
+  }),
+}));
+
+export const workflowRulesRelations = relations(workflowRules, ({ one }) => ({
+  tenant: one(tenants, {
+    fields: [workflowRules.tenantId],
+    references: [tenants.id],
+  }),
+  workflow: one(workflows, {
+    fields: [workflowRules.workflowId],
+    references: [workflows.id],
   }),
 }));
 
