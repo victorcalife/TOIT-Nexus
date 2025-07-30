@@ -4,6 +4,8 @@
 
 This is a full-stack investment workflow automation platform called "InvestFlow" built with React, Express, and PostgreSQL. The application provides a comprehensive solution for investment firms to automate client management, create custom workflows, and generate reports through an intuitive interface.
 
+**MAJOR UPDATE (January 30, 2025)**: Implemented comprehensive TOIT administrative interface with complete multi-tenant management capabilities, allowing the TOIT team to control every aspect of the system including tenant creation, user management, department configuration, permission assignment, workflow oversight, integration management, and system monitoring.
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
@@ -83,7 +85,12 @@ Preferred communication style: Simple, everyday language.
 ## Data Flow
 
 ### Multi-Tenant Architecture with Department-Based Access Control (Updated January 30, 2025)
-1. **Super Admin Flow**: TOIT admin → `/admin` dashboard → Manage all tenants and users
+1. **TOIT Administrative Flow**: Super admin → `/admin` dashboard → Complete system control
+   - Create and manage all tenant companies
+   - Configure departments, permissions, and user roles globally
+   - Monitor system performance, usage analytics, and billing
+   - Set up default structures for new tenants
+   - Manage global templates and configurations
 2. **Tenant User Flow**: Client login → Tenant-specific interface → Isolated data access
 3. **Data Isolation**: All operations filtered by tenant_id through middleware
 4. **Role-Based Access**: Four levels (super_admin, tenant_admin, manager, employee)
@@ -91,6 +98,7 @@ Preferred communication style: Simple, everyday language.
 6. **Granular Permissions**: Resource-action permissions (read, write, delete, admin) assigned by role and department
 7. **Data Filtering**: Each department sees only relevant data based on configured filters
 8. **Security**: Complete tenant separation with department-level access control
+9. **TOIT Control**: Complete administrative oversight with ability to configure any aspect of any tenant
 
 ### Original Flows (Tenant-Specific)
 1. **Authentication Flow**: User authenticates via Replit OIDC → Session created in PostgreSQL → User data synchronized

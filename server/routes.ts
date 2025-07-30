@@ -18,6 +18,7 @@ import {
   canAccessTenantResource
 } from "./tenantMiddleware";
 import { accessControlRoutes } from "./accessControlRoutes";
+import { adminRoutes } from "./adminRoutes";
 
 // Helper function to determine if client should be assigned to a category
 function shouldAssignToCategory(client: any, category: any): boolean {
@@ -1053,6 +1054,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Register access control routes
   app.use('/api/access-control', accessControlRoutes);
+  
+  // Register TOIT admin routes
+  app.use('/api/admin', adminRoutes);
 
   const httpServer = createServer(app);
   return httpServer;

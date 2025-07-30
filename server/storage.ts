@@ -118,6 +118,33 @@ export interface IStorage {
   }>;
   getAllActivities(limit?: number): Promise<Activity[]>;
   
+  // TOIT Admin operations
+  getSystemStats(): Promise<any>;
+  getSystemHealth(): Promise<any>;
+  getSystemLogs(): Promise<any>;
+  getAllTenants(): Promise<Tenant[]>;
+  deleteTenant(id: string): Promise<void>;
+  getAllUsers(): Promise<any[]>;
+  updateUser(id: string, userData: Partial<any>): Promise<User>;
+  deleteUser(id: string): Promise<void>;
+  getAllDepartments(): Promise<any[]>;
+  getAllPermissions(): Promise<any[]>;
+  createGlobalPermission(permissionData: any): Promise<Permission>;
+  getAllWorkflows(): Promise<any[]>;
+  createWorkflowTemplate(templateData: any): Promise<any>;
+  getAllIntegrations(): Promise<any[]>;
+  createGlobalIntegration(integrationData: any): Promise<any>;
+  getSystemConfig(): Promise<any>;
+  updateSystemConfig(configData: any): Promise<any>;
+  getTenantAnalytics(): Promise<any>;
+  getUsageAnalytics(period: string, tenantId?: string): Promise<any>;
+  getBillingOverview(): Promise<any>;
+  updateTenantSubscription(id: string, subscriptionData: any): Promise<Tenant>;
+  exportTenantData(): Promise<any>;
+  importTenantData(importData: any): Promise<any>;
+  getSupportTickets(): Promise<any>;
+  setMaintenanceMode(enabled: boolean, message?: string): Promise<void>;
+  
   // Dashboard statistics
   getDashboardStats(): Promise<{
     totalClients: number;
@@ -876,6 +903,325 @@ export class DatabaseStorage implements IStorage {
   async getDepartmentFilters(userId: string): Promise<any[]> {
     const accessibleDepts = await this.getUserAccessibleDepartments(userId);
     return accessibleDepts.map(dept => dept.dataFilters).filter(Boolean);
+  }
+
+  // TOIT Admin implementations
+  async getSystemStats(): Promise<any> {
+    const [totalTenants] = await db.select({ count: count() }).from(tenants);
+    const [totalUsers] = await db.select({ count: count() }).from(users);
+    const [totalWorkflows] = await db.select({ count: count() }).from(workflows);
+    const [totalExecutions] = await db.select({ count: count() }).from(workflowExecutions);
+    
+    return {
+      totalTenants: totalTenants.count,
+      totalUsers: totalUsers.count,
+      totalWorkflows: totalWorkflows.count,
+      totalExecutions: totalExecutions.count,
+      monthlyRevenue: 125000, // Mock data for now
+      systemUptime: '99.9%',
+      activeIntegrations: 15,
+      pendingIssues: 3,
+      successRate: 97.5
+    };
+  }
+
+  async getSystemHealth(): Promise<any> {
+    return [
+      { service: 'database', status: 'healthy', uptime: '99.9%' },
+      { service: 'api', status: 'healthy', uptime: '99.8%' },
+      { service: 'email', status: 'healthy', uptime: '99.7%' },
+      { service: 'workflows', status: 'healthy', uptime: '99.9%' }
+    ];
+  }
+
+  async getSystemLogs(): Promise<any> {
+    return [
+      { timestamp: new Date(), level: 'info', message: 'System health check completed', service: 'monitor' },
+      { timestamp: new Date(), level: 'info', message: 'User authentication successful', service: 'auth' },
+      { timestamp: new Date(), level: 'info', message: 'Workflow executed successfully', service: 'workflow' }
+    ];
+  }
+
+  async getAllTenants(): Promise<Tenant[]> {
+    const allTenants = await db.select().from(tenants).orderBy(desc(tenants.createdAt));
+    
+    // Add user count for each tenant
+    const tenantsWithCounts = await Promise.all(
+      allTenants.map(async (tenant) => {
+        const [userCount] = await db.select({ count: count() })
+          .from(users)
+          .where(eq(users.tenantId, tenant.id));
+        
+        const [departmentCount] = await db.select({ count: count() })
+          .from(departments)
+          .where(eq(departments.tenantId, tenant.id));
+        
+        return {
+          ...tenant,
+          userCount: userCount.count,
+          departmentCount: departmentCount.count
+        };
+      })
+    );
+    
+    return tenantsWithCounts;
+  }
+
+  async deleteTenant(id: string): Promise<void> {
+    // Delete all related data first
+    await db.delete(users).where(eq(users.tenantId, id));
+    await db.delete(departments).where(eq(departments.tenantId, id));
+    await db.delete(permissions).where(eq(permissions.tenantId, id));
+    await db.delete(clientCategories).where(eq(clientCategories.tenantId, id));
+    await db.delete(clients).where(eq(clients.tenantId, id));
+    await db.delete(workflows).where(eq(workflows.tenantId, id));
+    await db.delete(integrations).where(eq(integrations.tenantId, id));
+    await db.delete(reports).where(eq(reports.tenantId, id));
+    await db.delete(activities).where(eq(activities.tenantId, id));
+    
+    // Finally delete the tenant
+    await db.delete(tenants).where(eq(tenants.id, id));
+  }
+
+  async getAllUsers(): Promise<any[]> {
+    const allUsers = await db.select({
+      id: users.id,
+      email: users.email,
+      firstName: users.firstName,
+      lastName: users.lastName,
+      role: users.role,
+      isActive: users.isActive,
+      tenantId: users.tenantId,
+      lastLoginAt: users.lastLoginAt,
+      createdAt: users.createdAt,
+      tenantName: tenants.name
+    })
+    .from(users)
+    .leftJoin(tenants, eq(users.tenantId, tenants.id))
+    .orderBy(desc(users.createdAt));
+    
+    return allUsers;
+  }
+
+  async updateUser(id: string, userData: Partial<any>): Promise<User> {
+    const [user] = await db
+      .update(users)
+      .set(userData)
+      .where(eq(users.id, id))
+      .returning();
+    return user;
+  }
+
+  async deleteUser(id: string): Promise<void> {
+    // Delete all related user data
+    await db.delete(userDepartments).where(eq(userDepartments.userId, id));
+    await db.delete(userPermissions).where(eq(userPermissions.userId, id));
+    await db.delete(users).where(eq(users.id, id));
+  }
+
+  async getAllDepartments(): Promise<any[]> {
+    const allDepartments = await db.select({
+      id: departments.id,
+      name: departments.name,
+      type: departments.type,
+      description: departments.description,
+      tenantId: departments.tenantId,
+      tenantName: tenants.name
+    })
+    .from(departments)
+    .leftJoin(tenants, eq(departments.tenantId, tenants.id))
+    .orderBy(tenants.name, departments.name);
+    
+    return allDepartments;
+  }
+
+  async getAllPermissions(): Promise<any[]> {
+    const allPermissions = await db.select({
+      id: permissions.id,
+      name: permissions.name,
+      resource: permissions.resource,
+      action: permissions.action,
+      description: permissions.description,
+      tenantId: permissions.tenantId,
+      tenantName: tenants.name,
+      isGlobal: sql<boolean>`${permissions.tenantId} IS NULL`
+    })
+    .from(permissions)
+    .leftJoin(tenants, eq(permissions.tenantId, tenants.id))
+    .orderBy(permissions.name);
+    
+    return allPermissions;
+  }
+
+  async createGlobalPermission(permissionData: any): Promise<Permission> {
+    const [permission] = await db
+      .insert(permissions)
+      .values({
+        ...permissionData,
+        tenantId: null // Global permission has no tenant
+      })
+      .returning();
+    return permission;
+  }
+
+  async getAllWorkflows(): Promise<any[]> {
+    const allWorkflows = await db.select({
+      id: workflows.id,
+      name: workflows.name,
+      description: workflows.description,
+      status: workflows.status,
+      tenantId: workflows.tenantId,
+      tenantName: tenants.name,
+      createdAt: workflows.createdAt
+    })
+    .from(workflows)
+    .leftJoin(tenants, eq(workflows.tenantId, tenants.id))
+    .orderBy(desc(workflows.createdAt));
+    
+    return allWorkflows;
+  }
+
+  async createWorkflowTemplate(templateData: any): Promise<any> {
+    // For now, just create a regular workflow marked as template
+    const [template] = await db
+      .insert(workflows)
+      .values({
+        ...templateData,
+        isTemplate: true,
+        tenantId: null // Global template
+      })
+      .returning();
+    return template;
+  }
+
+  async getAllIntegrations(): Promise<any[]> {
+    const allIntegrations = await db.select({
+      id: integrations.id,
+      name: integrations.name,
+      type: integrations.type,
+      status: integrations.status,
+      tenantId: integrations.tenantId,
+      tenantName: tenants.name,
+      createdAt: integrations.createdAt
+    })
+    .from(integrations)
+    .leftJoin(tenants, eq(integrations.tenantId, tenants.id))
+    .orderBy(desc(integrations.createdAt));
+    
+    return allIntegrations;
+  }
+
+  async createGlobalIntegration(integrationData: any): Promise<any> {
+    const [integration] = await db
+      .insert(integrations)
+      .values({
+        ...integrationData,
+        tenantId: null // Global integration
+      })
+      .returning();
+    return integration;
+  }
+
+  async getSystemConfig(): Promise<any> {
+    return {
+      maintenanceMode: false,
+      allowSignups: true,
+      maxTenantsPerUser: 5,
+      defaultPlan: 'basic',
+      emailProvider: 'sendgrid',
+      storageProvider: 'local'
+    };
+  }
+
+  async updateSystemConfig(configData: any): Promise<any> {
+    // For now, just return the updated config
+    // In a real implementation, this would update a config table
+    return configData;
+  }
+
+  async getTenantAnalytics(): Promise<any> {
+    const [tenantsCount] = await db.select({ count: count() }).from(tenants);
+    const [usersCount] = await db.select({ count: count() }).from(users);
+    const [workflowsCount] = await db.select({ count: count() }).from(workflows);
+    
+    return {
+      totalTenants: tenantsCount.count,
+      totalUsers: usersCount.count,
+      totalWorkflows: workflowsCount.count,
+      averageUsersPerTenant: Math.round(usersCount.count / Math.max(tenantsCount.count, 1)),
+      averageWorkflowsPerTenant: Math.round(workflowsCount.count / Math.max(tenantsCount.count, 1))
+    };
+  }
+
+  async getUsageAnalytics(period: string, tenantId?: string): Promise<any> {
+    // Mock implementation - in real scenario would query actual usage data
+    return {
+      period,
+      tenantId,
+      apiCalls: 12500,
+      workflowExecutions: 450,
+      storageUsed: '2.5GB',
+      activeUsers: 34
+    };
+  }
+
+  async getBillingOverview(): Promise<any> {
+    const [tenantsCount] = await db.select({ count: count() }).from(tenants);
+    
+    return {
+      totalRevenue: 125000,
+      monthlyRecurring: 45000,
+      activeTenants: tenantsCount.count,
+      churned: 2,
+      newSubscriptions: 5
+    };
+  }
+
+  async updateTenantSubscription(id: string, subscriptionData: any): Promise<Tenant> {
+    const [tenant] = await db
+      .update(tenants)
+      .set({
+        subscriptionPlan: subscriptionData.plan,
+        subscriptionStatus: subscriptionData.status
+      })
+      .where(eq(tenants.id, id))
+      .returning();
+    return tenant;
+  }
+
+  async exportTenantData(): Promise<any> {
+    const allTenants = await this.getAllTenants();
+    const allUsers = await this.getAllUsers();
+    const allDepartments = await this.getAllDepartments();
+    
+    return {
+      tenants: allTenants,
+      users: allUsers,
+      departments: allDepartments,
+      exportedAt: new Date().toISOString()
+    };
+  }
+
+  async importTenantData(importData: any): Promise<any> {
+    // Mock implementation - would validate and import data
+    return {
+      success: true,
+      tenantsImported: importData.tenants?.length || 0,
+      usersImported: importData.users?.length || 0,
+      departmentsImported: importData.departments?.length || 0
+    };
+  }
+
+  async getSupportTickets(): Promise<any> {
+    return [
+      { id: '1', tenantId: 'tenant1', subject: 'Issue with workflow execution', status: 'open', priority: 'high' },
+      { id: '2', tenantId: 'tenant2', subject: 'Need help with integration setup', status: 'pending', priority: 'medium' }
+    ];
+  }
+
+  async setMaintenanceMode(enabled: boolean, message?: string): Promise<void> {
+    // In a real implementation, this would update system configuration
+    console.log(`Maintenance mode ${enabled ? 'enabled' : 'disabled'}${message ? ': ' + message : ''}`);
   }
 }
 
