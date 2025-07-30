@@ -39,10 +39,12 @@ export interface IStorage {
   createTenant(tenant: InsertTenant): Promise<Tenant>;
   updateTenant(id: string, tenant: Partial<InsertTenant>): Promise<Tenant>;
   
-  // User operations (mandatory for Replit Auth)
+  // User operations with CPF authentication
   getUser(id: string): Promise<User | undefined>;
+  getUserByCPF(cpf: string): Promise<User | undefined>;
   getUsersByTenant(tenantId: string): Promise<User[]>;
-  upsertUser(user: UpsertUser): Promise<User>;
+  createUser(user: any): Promise<User>;
+  updateUserLastLogin(id: string): Promise<void>;
   
   // Client Category operations (tenant-isolated)
   getClientCategories(tenantId?: string): Promise<ClientCategory[]>;
@@ -148,23 +150,32 @@ export class DatabaseStorage implements IStorage {
     return user;
   }
 
+  async getUserByCPF(cpf: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.cpf, cpf));
+    return user;
+  }
+
   async getUsersByTenant(tenantId: string): Promise<User[]> {
     return await db.select().from(users).where(eq(users.tenantId, tenantId));
   }
 
-  async upsertUser(userData: UpsertUser): Promise<User> {
+  async createUser(userData: any): Promise<User> {
     const [user] = await db
       .insert(users)
-      .values(userData)
-      .onConflictDoUpdate({
-        target: users.id,
-        set: {
-          ...userData,
-          updatedAt: new Date(),
-        },
+      .values({
+        ...userData,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       })
       .returning();
     return user;
+  }
+
+  async updateUserLastLogin(id: string): Promise<void> {
+    await db
+      .update(users)
+      .set({ lastLoginAt: new Date() })
+      .where(eq(users.id, id));
   }
 
   // Client Category operations (with tenant isolation)

@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { setupAuth, isAuthenticated } from "./replitAuth";
+import { setupAuth } from "./auth";
 import { 
   tenantMiddleware, 
   requireTenant, 
@@ -123,8 +123,8 @@ import {
 } from "@shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Auth middleware
-  await setupAuth(app);
+  // Auth middleware with CPF/password
+  setupAuth(app);
 
   // Apply tenant middleware to all authenticated routes
   app.use('/api', isAuthenticated, tenantMiddleware);

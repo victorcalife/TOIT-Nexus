@@ -47,12 +47,15 @@ export const tenants = pgTable("tenants", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-// Users table with tenant support
+// Users table with CPF/password authentication
 export const users = pgTable("users", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  cpf: varchar("cpf", { length: 11 }).unique().notNull(), // CPF sem formatação (apenas números)
   email: varchar("email").unique(),
+  password: varchar("password").notNull(), // Hash da senha
   firstName: varchar("first_name"),
   lastName: varchar("last_name"),
+  phone: varchar("phone"),
   profileImageUrl: varchar("profile_image_url"),
   role: userRoleEnum("role").default('employee'),
   tenantId: varchar("tenant_id").references(() => tenants.id), // null for super_admin
