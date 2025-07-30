@@ -126,13 +126,43 @@ export function setupAuth(app: Express) {
     )
   );
 
-  passport.serializeUser((user, done) => done(null, user.id));
-  passport.deserializeUser(async (id: string, done) => {
-    try {
-      const user = await storage.getUser(id);
+  passport.serializeUser((user: any, done) => {
+    // Handle both local auth users (with id) and OAuth users (object format)
+    if (user && typeof user === 'object') {
+      const userId = user.id || user.sub || user.claims?.sub;
+      done(null, { userId, authType: user.claims ? 'oauth' : 'local' });
+    } else {
       done(null, user);
+    }
+  });
+  
+  passport.deserializeUser(async (sessionData: any, done) => {
+    try {
+      if (!sessionData) {
+        return done(null, false);
+      }
+      
+      // Handle serialized object format
+      if (typeof sessionData === 'object' && sessionData.userId) {
+        if (sessionData.authType === 'oauth') {
+          // For OAuth users, return minimal user data
+          done(null, sessionData);
+        } else {
+          // For local users, fetch full user data
+          const user = await storage.getUser(sessionData.userId);
+          done(null, user);
+        }
+      } else if (typeof sessionData === 'string') {
+        // Handle legacy string ID format
+        const user = await storage.getUser(sessionData);
+        done(null, user);
+      } else {
+        // Handle direct object (OAuth format)
+        done(null, sessionData);
+      }
     } catch (error) {
-      done(error);
+      console.error('Deserialization error:', error);
+      done(null, false); // Return false instead of error to prevent crashes
     }
   });
 
