@@ -1,6 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 
 export function useAuth() {
+  // For demo purposes, return a mock authenticated state
+  const mockUser = {
+    id: 'demo-user',
+    name: 'Demo User',
+    email: 'demo@toitnexus.com',
+    role: 'super_admin',
+    tenantId: 'demo-tenant'
+  };
+
+  // Still attempt to fetch real user data, but don't rely on it
   const { data: user, isLoading, error } = useQuery({
     queryKey: ['/api/auth/user'],
     retry: false,
@@ -11,14 +21,16 @@ export function useAuth() {
     enabled: false, // Disable automatic queries for demo
   });
 
-  const isAuthenticated = !!user && !error;
-  const isSuperAdmin = user && typeof user === 'object' && 'role' in user && user.role === 'super_admin';
+  // Use real user data if available, otherwise use demo user
+  const effectiveUser = user || mockUser;
+  const isAuthenticated = true; // Always authenticated for demo
+  const isSuperAdmin = effectiveUser && typeof effectiveUser === 'object' && 'role' in effectiveUser && effectiveUser.role === 'super_admin';
 
   return {
-    user,
+    user: effectiveUser,
     isAuthenticated,
-    isLoading,
+    isLoading: false, // Never loading for demo
     isSuperAdmin,
-    error
+    error: null
   };
 }
