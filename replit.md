@@ -33,11 +33,17 @@ Preferred communication style: Simple, everyday language.
 
 ## Key Components
 
-### Authentication System
+### Authentication & Authorization System
 - **Provider**: Replit OpenID Connect integration
 - **Session Storage**: PostgreSQL-backed sessions with configurable TTL
 - **Security**: HTTP-only cookies, secure flags, and CSRF protection
 - **User Management**: Automatic user creation/updates on authentication
+- **Department-Based Access Control**:
+  - Users belong to one or more departments within their tenant
+  - Permissions assigned by role and department combination
+  - Granular resource-action control (clients.read, reports.write, workflows.admin, etc.)
+  - Department-specific data filtering ensures users see only relevant information
+  - User-specific permission overrides for fine-tuned access control
 
 ### Client Management
 - **Client Categories**: Configurable client segmentation with risk profiles and investment thresholds
@@ -60,14 +66,31 @@ Preferred communication style: Simple, everyday language.
 - **Activity Tracking**: Comprehensive audit trail for all system activities
 - **Dashboard Analytics**: Real-time statistics and recent activity monitoring
 
+## Access Control Examples
+### Real-World Scenarios Solved:
+1. **Sales Department**: Can view all clients but only edit prospects and active sales opportunities
+2. **Finance Department**: Has read access to all financial data, write access to billing and payment records
+3. **Purchases Department**: Manages vendor relationships and purchasing workflows, no access to sales data
+4. **Operations Department**: Monitors all workflows and system performance, limited client data access
+5. **Cross-Department Managers**: Assigned to multiple departments with elevated permissions
+
+### Permission Matrix:
+- **super_admin**: All permissions across all tenants
+- **tenant_admin**: All permissions within their tenant
+- **manager**: Department-specific admin permissions + cross-department read access
+- **employee**: Department-specific read/write permissions based on role
+
 ## Data Flow
 
-### Multi-Tenant Architecture (Updated January 30, 2025)
+### Multi-Tenant Architecture with Department-Based Access Control (Updated January 30, 2025)
 1. **Super Admin Flow**: TOIT admin → `/admin` dashboard → Manage all tenants and users
 2. **Tenant User Flow**: Client login → Tenant-specific interface → Isolated data access
 3. **Data Isolation**: All operations filtered by tenant_id through middleware
-4. **Role-Based Access**: Four levels (super_admin, admin, manager, employee)
-5. **Security**: Complete tenant separation enforced at storage layer
+4. **Role-Based Access**: Four levels (super_admin, tenant_admin, manager, employee)
+5. **Department Segregation**: Users assigned to departments (sales, purchases, finance, operations, hr, it, marketing, custom)
+6. **Granular Permissions**: Resource-action permissions (read, write, delete, admin) assigned by role and department
+7. **Data Filtering**: Each department sees only relevant data based on configured filters
+8. **Security**: Complete tenant separation with department-level access control
 
 ### Original Flows (Tenant-Specific)
 1. **Authentication Flow**: User authenticates via Replit OIDC → Session created in PostgreSQL → User data synchronized

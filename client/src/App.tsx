@@ -17,6 +17,7 @@ import Reports from "@/pages/reports";
 import Users from "@/pages/users";
 import Connectivity from "@/pages/connectivity";
 import Settings from "@/pages/settings";
+import AccessControl from "@/pages/access-control";
 import TenantSelection from "@/pages/tenant-selection";
 import AdminDashboard from "@/pages/admin/dashboard";
 
@@ -84,6 +85,7 @@ function Router() {
             <Route path="/integrations" component={Integrations} />
             <Route path="/reports" component={Reports} />
             <Route path="/users" component={Users} />
+            <Route path="/access-control" component={AccessControl} />
             <Route path="/connectivity" component={Connectivity} />
             <Route path="/settings" component={Settings} />
             <Route component={NotFound} />

@@ -1,6 +1,11 @@
 import {
   tenants,
   users,
+  departments,
+  userDepartments,
+  permissions,
+  rolePermissions,
+  userPermissions,
   clientCategories,
   clients,
   integrations,
@@ -14,6 +19,16 @@ import {
   type InsertTenant,
   type User,
   type UpsertUser,
+  type Department,
+  type InsertDepartment,
+  type UserDepartment,
+  type InsertUserDepartment,
+  type Permission,
+  type InsertPermission,
+  type RolePermission,
+  type InsertRolePermission,
+  type UserPermission,
+  type InsertUserPermission,
   type ClientCategory,
   type InsertClientCategory,
   type Client,
@@ -110,6 +125,40 @@ export interface IStorage {
     totalExecutions: number;
     successRate: number;
   }>;
+
+  // Department operations (tenant-isolated)
+  getDepartments(tenantId: string): Promise<Department[]>;
+  getDepartment(id: string): Promise<Department | undefined>;
+  createDepartment(department: InsertDepartment): Promise<Department>;
+  updateDepartment(id: string, department: Partial<InsertDepartment>): Promise<Department>;
+  deleteDepartment(id: string): Promise<void>;
+
+  // User-Department operations
+  getUserDepartments(userId: string): Promise<UserDepartment[]>;
+  assignUserToDepartment(assignment: InsertUserDepartment): Promise<UserDepartment>;
+  removeUserFromDepartment(userId: string, departmentId: string): Promise<void>;
+
+  // Permission operations (tenant-isolated)
+  getPermissions(tenantId: string): Promise<Permission[]>;
+  getPermission(id: string): Promise<Permission | undefined>;
+  createPermission(permission: InsertPermission): Promise<Permission>;
+  updatePermission(id: string, permission: Partial<InsertPermission>): Promise<Permission>;
+  deletePermission(id: string): Promise<void>;
+
+  // Role-Permission operations
+  getRolePermissions(tenantId: string, role?: string): Promise<RolePermission[]>;
+  assignPermissionToRole(assignment: InsertRolePermission): Promise<RolePermission>;
+  removePermissionFromRole(tenantId: string, role: string, permissionId: string): Promise<void>;
+
+  // User-Permission operations (overrides)
+  getUserPermissions(userId: string): Promise<UserPermission[]>;
+  grantUserPermission(permission: InsertUserPermission): Promise<UserPermission>;
+  revokeUserPermission(userId: string, permissionId: string): Promise<void>;
+
+  // Access control utilities
+  checkUserPermission(userId: string, resource: string, action: string, departmentId?: string): Promise<boolean>;
+  getUserAccessibleDepartments(userId: string): Promise<Department[]>;
+  getDepartmentFilters(userId: string): Promise<any[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -644,6 +693,189 @@ export class DatabaseStorage implements IStorage {
       totalExecutions: executionCount.count,
       successRate: Number(successRate.toFixed(1)),
     };
+  }
+
+  // Department operations
+  async getDepartments(tenantId: string): Promise<Department[]> {
+    return await db.select().from(departments)
+      .where(eq(departments.tenantId, tenantId))
+      .orderBy(desc(departments.createdAt));
+  }
+
+  async getDepartment(id: string): Promise<Department | undefined> {
+    const [department] = await db.select().from(departments).where(eq(departments.id, id));
+    return department;
+  }
+
+  async createDepartment(departmentData: InsertDepartment): Promise<Department> {
+    const [department] = await db
+      .insert(departments)
+      .values(departmentData)
+      .returning();
+    return department;
+  }
+
+  async updateDepartment(id: string, departmentData: Partial<InsertDepartment>): Promise<Department> {
+    const [department] = await db
+      .update(departments)
+      .set({ ...departmentData, updatedAt: new Date() })
+      .where(eq(departments.id, id))
+      .returning();
+    return department;
+  }
+
+  async deleteDepartment(id: string): Promise<void> {
+    await db.delete(departments).where(eq(departments.id, id));
+  }
+
+  // User-Department operations
+  async getUserDepartments(userId: string): Promise<UserDepartment[]> {
+    return await db.select().from(userDepartments)
+      .where(eq(userDepartments.userId, userId));
+  }
+
+  async assignUserToDepartment(assignment: InsertUserDepartment): Promise<UserDepartment> {
+    const [userDept] = await db
+      .insert(userDepartments)
+      .values(assignment)
+      .returning();
+    return userDept;
+  }
+
+  async removeUserFromDepartment(userId: string, departmentId: string): Promise<void> {
+    await db.delete(userDepartments)
+      .where(and(
+        eq(userDepartments.userId, userId),
+        eq(userDepartments.departmentId, departmentId)
+      ));
+  }
+
+  // Permission operations
+  async getPermissions(tenantId: string): Promise<Permission[]> {
+    return await db.select().from(permissions)
+      .where(eq(permissions.tenantId, tenantId))
+      .orderBy(desc(permissions.createdAt));
+  }
+
+  async getPermission(id: string): Promise<Permission | undefined> {
+    const [permission] = await db.select().from(permissions).where(eq(permissions.id, id));
+    return permission;
+  }
+
+  async createPermission(permissionData: InsertPermission): Promise<Permission> {
+    const [permission] = await db
+      .insert(permissions)
+      .values(permissionData)
+      .returning();
+    return permission;
+  }
+
+  async updatePermission(id: string, permissionData: Partial<InsertPermission>): Promise<Permission> {
+    const [permission] = await db
+      .update(permissions)
+      .set(permissionData)
+      .where(eq(permissions.id, id))
+      .returning();
+    return permission;
+  }
+
+  async deletePermission(id: string): Promise<void> {
+    await db.delete(permissions).where(eq(permissions.id, id));
+  }
+
+  // Role-Permission operations
+  async getRolePermissions(tenantId: string, role?: string): Promise<RolePermission[]> {
+    let query = db.select().from(rolePermissions)
+      .where(eq(rolePermissions.tenantId, tenantId));
+    
+    if (role) {
+      query = query.where(eq(rolePermissions.role, role as any));
+    }
+    
+    return await query;
+  }
+
+  async assignPermissionToRole(assignment: InsertRolePermission): Promise<RolePermission> {
+    const [rolePermission] = await db
+      .insert(rolePermissions)
+      .values(assignment)
+      .returning();
+    return rolePermission;
+  }
+
+  async removePermissionFromRole(tenantId: string, role: string, permissionId: string): Promise<void> {
+    await db.delete(rolePermissions)
+      .where(and(
+        eq(rolePermissions.tenantId, tenantId),
+        eq(rolePermissions.role, role as any),
+        eq(rolePermissions.permissionId, permissionId)
+      ));
+  }
+
+  // User-Permission operations
+  async getUserPermissions(userId: string): Promise<UserPermission[]> {
+    return await db.select().from(userPermissions)
+      .where(eq(userPermissions.userId, userId));
+  }
+
+  async grantUserPermission(permission: InsertUserPermission): Promise<UserPermission> {
+    const [userPermission] = await db
+      .insert(userPermissions)
+      .values(permission)
+      .returning();
+    return userPermission;
+  }
+
+  async revokeUserPermission(userId: string, permissionId: string): Promise<void> {
+    await db.delete(userPermissions)
+      .where(and(
+        eq(userPermissions.userId, userId),
+        eq(userPermissions.permissionId, permissionId)
+      ));
+  }
+
+  // Access control utilities
+  async checkUserPermission(userId: string, resource: string, action: string, departmentId?: string): Promise<boolean> {
+    // Get user and their role
+    const user = await this.getUser(userId);
+    if (!user) return false;
+
+    // Super admin has all permissions
+    if (user.role === 'super_admin') return true;
+    
+    // Tenant admin has all permissions within their tenant
+    if (user.role === 'tenant_admin' && user.tenantId) return true;
+
+    // Check role-based permissions
+    const rolePerms = await this.getRolePermissions(user.tenantId || '', user.role);
+    const roleHasPermission = rolePerms.some(rp => {
+      return rp.permissionId && 
+             (departmentId ? rp.departmentId === departmentId : true);
+    });
+
+    // Check user-specific permissions
+    const userPerms = await this.getUserPermissions(userId);
+    const userHasPermission = userPerms.some(up => {
+      return up.granted && 
+             (departmentId ? up.departmentId === departmentId : true);
+    });
+
+    return roleHasPermission || userHasPermission;
+  }
+
+  async getUserAccessibleDepartments(userId: string): Promise<Department[]> {
+    const userDepts = await this.getUserDepartments(userId);
+    const departmentIds = userDepts.map(ud => ud.departmentId);
+    
+    if (departmentIds.length === 0) return [];
+    
+    return await db.select().from(departments)
+      .where(sql`${departments.id} = ANY(${departmentIds})`);
+  }
+
+  async getDepartmentFilters(userId: string): Promise<any[]> {
+    const accessibleDepts = await this.getUserAccessibleDepartments(userId);
+    return accessibleDepts.map(dept => dept.dataFilters).filter(Boolean);
   }
 }
 
