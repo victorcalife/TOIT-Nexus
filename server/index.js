@@ -76,12 +76,12 @@ app.use((req, res, next) => {
     
     await import('./initializeSystem.js');
     
-    // Register other routes first
-    const server = await registerRoutes(app);
-    
-    // Register payment and webhook routes AFTER other routes
+    // Register payment and webhook routes FIRST (highest priority)
     app.use('/api/payment', paymentRoutes);
     app.use('/api/webhooks', webhookRoutes);
+    
+    // Register other routes after
+    const server = await registerRoutes(app);
 
     // Railway usa a variável PORT automaticamente
     const port = process.env.PORT || 3001;
