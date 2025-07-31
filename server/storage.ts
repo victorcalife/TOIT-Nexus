@@ -15,6 +15,8 @@ import {
   activities,
   kpiDefinitions,
   workflowRules,
+  savedQueries,
+  dashboards,
   type Tenant,
   type InsertTenant,
   type User,
@@ -42,6 +44,10 @@ import {
   type InsertReport,
   type Activity,
   type InsertActivity,
+  type SavedQuery,
+  type InsertSavedQuery,
+  type Dashboard,
+  type InsertDashboard,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, count, sql } from "drizzle-orm";
@@ -256,6 +262,10 @@ export class DatabaseStorage implements IStorage {
   }
 
   async upsertUser(user: UpsertUser): Promise<User> {
+    if (!user.id) {
+      throw new Error('User ID is required');
+    }
+    
     const existingUser = await this.getUser(user.id);
     
     if (existingUser) {
@@ -278,15 +288,15 @@ export class DatabaseStorage implements IStorage {
         .insert(users)
         .values({
           id: user.id,
-          email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          profileImageUrl: user.profileImageUrl,
+          email: user.email || '',
+          firstName: user.firstName || '',
+          lastName: user.lastName || '',
+          profileImageUrl: user.profileImageUrl || '',
           password: '', // Default empty password for OAuth users
           cpf: '', // Default empty CPF for OAuth users
           isActive: true,
-          role: 'user',
-          tenantId: 'default', // Default tenant for OAuth users
+          role: 'employee' as const,
+          tenantId: null, // No default tenant for OAuth users
           createdAt: new Date(),
           updatedAt: new Date()
         })
@@ -297,16 +307,19 @@ export class DatabaseStorage implements IStorage {
 
   // Client Category operations (with tenant isolation)
   async getClientCategories(tenantId?: string): Promise<ClientCategory[]> {
-    const query = db
-      .select()
-      .from(clientCategories)
-      .where(eq(clientCategories.isActive, true));
-    
     if (tenantId) {
-      return await query.where(eq(clientCategories.tenantId, tenantId)).orderBy(desc(clientCategories.createdAt));
+      return await db
+        .select()
+        .from(clientCategories)
+        .where(and(eq(clientCategories.isActive, true), eq(clientCategories.tenantId, tenantId)))
+        .orderBy(desc(clientCategories.createdAt));
     }
     
-    return await query.orderBy(desc(clientCategories.createdAt));
+    return await db
+      .select()
+      .from(clientCategories)
+      .where(eq(clientCategories.isActive, true))
+      .orderBy(desc(clientCategories.createdAt));
   }
 
   async getClientCategory(id: string): Promise<ClientCategory | undefined> {
@@ -343,16 +356,19 @@ export class DatabaseStorage implements IStorage {
 
   // Client operations (with tenant isolation)
   async getClients(tenantId?: string): Promise<Client[]> {
-    const query = db
-      .select()
-      .from(clients)
-      .where(eq(clients.isActive, true));
-    
     if (tenantId) {
-      return await query.where(eq(clients.tenantId, tenantId)).orderBy(desc(clients.createdAt));
+      return await db
+        .select()
+        .from(clients)
+        .where(and(eq(clients.isActive, true), eq(clients.tenantId, tenantId)))
+        .orderBy(desc(clients.createdAt));
     }
     
-    return await query.orderBy(desc(clients.createdAt));
+    return await db
+      .select()
+      .from(clients)
+      .where(eq(clients.isActive, true))
+      .orderBy(desc(clients.createdAt));
   }
 
   async getClient(id: string): Promise<Client | undefined> {
@@ -397,16 +413,19 @@ export class DatabaseStorage implements IStorage {
 
   // Integration operations (with tenant isolation)
   async getIntegrations(tenantId?: string): Promise<Integration[]> {
-    const query = db
-      .select()
-      .from(integrations)
-      .where(eq(integrations.isActive, true));
-    
     if (tenantId) {
-      return await query.where(eq(integrations.tenantId, tenantId)).orderBy(desc(integrations.createdAt));
+      return await db
+        .select()
+        .from(integrations)
+        .where(and(eq(integrations.isActive, true), eq(integrations.tenantId, tenantId)))
+        .orderBy(desc(integrations.createdAt));
     }
     
-    return await query.orderBy(desc(integrations.createdAt));
+    return await db
+      .select()
+      .from(integrations)
+      .where(eq(integrations.isActive, true))
+      .orderBy(desc(integrations.createdAt));
   }
 
   async getIntegration(id: string): Promise<Integration | undefined> {
@@ -508,17 +527,24 @@ export class DatabaseStorage implements IStorage {
 
   // Workflow execution operations (with tenant isolation)  
   async getWorkflowExecutions(tenantId?: string, workflowId?: string, limit = 50): Promise<WorkflowExecution[]> {
-    let query = db.select().from(workflowExecutions);
-    
-    if (tenantId) {
-      query = query.where(eq(workflowExecutions.tenantId, tenantId));
+    if (tenantId && workflowId) {
+      return await db.select().from(workflowExecutions)
+        .where(and(eq(workflowExecutions.tenantId, tenantId), eq(workflowExecutions.workflowId, workflowId)))
+        .orderBy(desc(workflowExecutions.executedAt))
+        .limit(limit);
+    } else if (tenantId) {
+      return await db.select().from(workflowExecutions)
+        .where(eq(workflowExecutions.tenantId, tenantId))
+        .orderBy(desc(workflowExecutions.executedAt))
+        .limit(limit);
+    } else if (workflowId) {
+      return await db.select().from(workflowExecutions)
+        .where(eq(workflowExecutions.workflowId, workflowId))
+        .orderBy(desc(workflowExecutions.executedAt))
+        .limit(limit);
     }
     
-    if (workflowId) {
-      query = query.where(eq(workflowExecutions.workflowId, workflowId));
-    }
-    
-    return await query
+    return await db.select().from(workflowExecutions)
       .orderBy(desc(workflowExecutions.executedAt))
       .limit(limit);
   }
@@ -533,16 +559,19 @@ export class DatabaseStorage implements IStorage {
 
   // Report operations (with tenant isolation)
   async getReports(tenantId?: string): Promise<Report[]> {
-    const query = db
-      .select()
-      .from(reports)
-      .where(eq(reports.isActive, true));
-    
     if (tenantId) {
-      return await query.where(eq(reports.tenantId, tenantId)).orderBy(desc(reports.createdAt));
+      return await db
+        .select()
+        .from(reports)
+        .where(and(eq(reports.isActive, true), eq(reports.tenantId, tenantId)))
+        .orderBy(desc(reports.createdAt));
     }
     
-    return await query.orderBy(desc(reports.createdAt));
+    return await db
+      .select()
+      .from(reports)
+      .where(eq(reports.isActive, true))
+      .orderBy(desc(reports.createdAt));
   }
 
   async getReport(id: string): Promise<Report | undefined> {
@@ -671,17 +700,18 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getWorkflowRules(tenantId?: string, workflowId?: string): Promise<any[]> {
-    let query = db.select().from(workflowRules);
-    
-    if (tenantId) {
-      query = query.where(eq(workflowRules.tenantId, tenantId));
+    if (tenantId && workflowId) {
+      return await db.select().from(workflowRules)
+        .where(and(eq(workflowRules.tenantId, tenantId), eq(workflowRules.workflowId, workflowId)));
+    } else if (tenantId) {
+      return await db.select().from(workflowRules)
+        .where(eq(workflowRules.tenantId, tenantId));
+    } else if (workflowId) {
+      return await db.select().from(workflowRules)
+        .where(eq(workflowRules.workflowId, workflowId));
     }
     
-    if (workflowId) {
-      query = query.where(eq(workflowRules.workflowId, workflowId));
-    }
-    
-    return await query;
+    return await db.select().from(workflowRules);
   }
 
   // Dashboard statistics
@@ -812,14 +842,13 @@ export class DatabaseStorage implements IStorage {
 
   // Role-Permission operations
   async getRolePermissions(tenantId: string, role?: string): Promise<RolePermission[]> {
-    let query = db.select().from(rolePermissions)
-      .where(eq(rolePermissions.tenantId, tenantId));
-    
     if (role) {
-      query = query.where(eq(rolePermissions.role, role as any));
+      return await db.select().from(rolePermissions)
+        .where(and(eq(rolePermissions.tenantId, tenantId), eq(rolePermissions.role, role as any)));
     }
     
-    return await query;
+    return await db.select().from(rolePermissions)
+      .where(eq(rolePermissions.tenantId, tenantId));
   }
 
   async assignPermissionToRole(assignment: InsertRolePermission): Promise<RolePermission> {
@@ -874,7 +903,7 @@ export class DatabaseStorage implements IStorage {
     if (user.role === 'tenant_admin' && user.tenantId) return true;
 
     // Check role-based permissions
-    const rolePerms = await this.getRolePermissions(user.tenantId || '', user.role);
+    const rolePerms = await this.getRolePermissions(user.tenantId || '', user.role || 'employee');
     const roleHasPermission = rolePerms.some(rp => {
       return rp.permissionId && 
              (departmentId ? rp.departmentId === departmentId : true);
@@ -1087,7 +1116,7 @@ export class DatabaseStorage implements IStorage {
       .insert(workflows)
       .values({
         ...templateData,
-        isTemplate: true,
+        // isTemplate: true, // Remove this field as it doesn't exist in the schema
         tenantId: null // Global template
       })
       .returning();
@@ -1099,7 +1128,7 @@ export class DatabaseStorage implements IStorage {
       id: integrations.id,
       name: integrations.name,
       type: integrations.type,
-      status: integrations.status,
+      lastStatus: integrations.lastStatus,
       tenantId: integrations.tenantId,
       tenantName: tenants.name,
       createdAt: integrations.createdAt
@@ -1182,7 +1211,7 @@ export class DatabaseStorage implements IStorage {
       .update(tenants)
       .set({
         subscriptionPlan: subscriptionData.plan,
-        subscriptionStatus: subscriptionData.status
+        subscriptionExpiresAt: subscriptionData.expiresAt
       })
       .where(eq(tenants.id, id))
       .returning();
