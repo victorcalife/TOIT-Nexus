@@ -699,6 +699,58 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // ========== ROTAS TASK + WORKFLOW INTEGRATION ==========
+  
+  // Buscar tarefas de um workflow específico
+  app.get('/api/workflows/:workflowId/tasks', isAuthenticated, async (req, res) => {
+    try {
+      const { workflowId } = req.params;
+      
+      const tasks = await storage.getWorkflowTasks(workflowId);
+      
+      res.json({
+        success: true,
+        workflowId,
+        tasks,
+        count: tasks.length
+      });
+    } catch (error) {
+      console.error('Erro ao buscar tarefas do workflow:', error);
+      res.status(500).json({ 
+        success: false,
+        message: 'Erro ao buscar tarefas do workflow'
+      });
+    }
+  });
+
+  // Buscar workflow de uma tarefa específica
+  app.get('/api/tasks/:taskId/workflow', isAuthenticated, async (req, res) => {
+    try {
+      const { taskId } = req.params;
+      
+      const workflow = await storage.getTaskWorkflow(taskId);
+      
+      if (!workflow) {
+        return res.status(404).json({
+          success: false,
+          message: 'Workflow não encontrado para esta tarefa'
+        });
+      }
+      
+      res.json({
+        success: true,
+        taskId,
+        workflow
+      });
+    } catch (error) {
+      console.error('Erro ao buscar workflow da tarefa:', error);
+      res.status(500).json({ 
+        success: false,
+        message: 'Erro ao buscar workflow da tarefa'
+      });
+    }
+  });
+
   // ENDPOINTS PARA SISTEMA COMPLETO TOIT NEXUS
 
   // DATABASE CONNECTIONS - Conectar qualquer banco
