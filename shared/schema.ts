@@ -68,13 +68,13 @@ export const users = pgTable("users", {
 });
 
 // Departments table for organizational structure within tenants
-export const departments = pgTable("departments", {
+export const departments: any = pgTable("departments", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
   name: varchar("name", { length: 100 }).notNull(),
   type: departmentTypeEnum("type").notNull(),
   description: text("description"),
-  parentDepartmentId: varchar("parent_department_id").references(() => departments.id), // For hierarchical departments
+  parentDepartmentId: varchar("parent_department_id"), // For hierarchical departments
   settings: jsonb("settings"), // Department-specific configurations
   dataFilters: jsonb("data_filters"), // What data this department can access
   isActive: boolean("is_active").default(true),
@@ -262,6 +262,39 @@ export const activities = pgTable("activities", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Saved queries table for Query Builder
+export const savedQueries = pgTable("saved_queries", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  userId: varchar("user_id").references(() => users.id),
+  name: varchar("name", { length: 200 }).notNull(),
+  description: text("description"),
+  queryConfig: jsonb("query_config").notNull(), // Query builder configuration
+  visualizationConfig: jsonb("visualization_config").notNull(), // Chart/table configuration
+  lastExecutedAt: timestamp("last_executed_at"),
+  executionCount: integer("execution_count").default(0),
+  isPublic: boolean("is_public").default(false),
+  tags: text("tags").array(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Dashboard configurations
+export const dashboards = pgTable("dashboards", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  userId: varchar("user_id").references(() => users.id),
+  name: varchar("name", { length: 200 }).notNull(),
+  description: text("description"),
+  layout: jsonb("layout").notNull(), // Dashboard layout configuration
+  widgets: jsonb("widgets").notNull(), // Widget configurations
+  isDefault: boolean("is_default").default(false),
+  isPublic: boolean("is_public").default(false),
+  refreshInterval: integer("refresh_interval").default(300), // seconds
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 // Relations
 
 export const clientCategoriesRelations = relations(clientCategories, ({ one, many }) => ({
@@ -356,6 +389,28 @@ export const activitiesRelations = relations(activities, ({ one }) => ({
   }),
   user: one(users, {
     fields: [activities.userId],
+    references: [users.id],
+  }),
+}));
+
+export const savedQueriesRelations = relations(savedQueries, ({ one }) => ({
+  tenant: one(tenants, {
+    fields: [savedQueries.tenantId],
+    references: [tenants.id],
+  }),
+  user: one(users, {
+    fields: [savedQueries.userId],
+    references: [users.id],
+  }),
+}));
+
+export const dashboardsRelations = relations(dashboards, ({ one }) => ({
+  tenant: one(tenants, {
+    fields: [dashboards.tenantId],
+    references: [tenants.id],
+  }),
+  user: one(users, {
+    fields: [dashboards.userId],
     references: [users.id],
   }),
 }));
@@ -531,6 +586,20 @@ export const insertUserPermissionSchema = createInsertSchema(userPermissions).om
   createdAt: true,
 });
 
+export const insertSavedQuerySchema = createInsertSchema(savedQueries).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+  lastExecutedAt: true,
+  executionCount: true,
+});
+
+export const insertDashboardSchema = createInsertSchema(dashboards).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 // Type exports
 export type Tenant = typeof tenants.$inferSelect;
 export type InsertTenant = typeof tenants.$inferInsert;
@@ -560,3 +629,7 @@ export type RolePermission = typeof rolePermissions.$inferSelect;
 export type InsertRolePermission = typeof rolePermissions.$inferInsert;
 export type UserPermission = typeof userPermissions.$inferSelect;
 export type InsertUserPermission = typeof userPermissions.$inferInsert;
+export type SavedQuery = typeof savedQueries.$inferSelect;
+export type InsertSavedQuery = typeof savedQueries.$inferInsert;
+export type Dashboard = typeof dashboards.$inferSelect;
+export type InsertDashboard = typeof dashboards.$inferInsert;
