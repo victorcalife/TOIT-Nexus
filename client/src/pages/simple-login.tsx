@@ -27,13 +27,15 @@ export default function SimpleLogin() {
       
       return response.json();
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast({
         title: "Login realizado com sucesso!",
         description: "Redirecionando...",
       });
-      // Recarregar a página para atualizar o estado de autenticação
-      window.location.href = '/';
+      // Forçar recarga da página para atualizar estado de auth
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     },
     onError: (error: any) => {
       toast({
