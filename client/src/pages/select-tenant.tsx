@@ -55,8 +55,6 @@ export default function SelectTenant() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <UnifiedHeader 
-        title="Selecionar Empresa" 
-        subtitle="Escolha a empresa para acessar"
         showUserActions={true}
         user={{ firstName: 'Usuário', lastName: 'Sistema' }}
       />

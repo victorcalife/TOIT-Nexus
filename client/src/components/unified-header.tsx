@@ -1,16 +1,18 @@
-import { Button } from '@/components/ui/button';
-import { LogOut, Settings, User } from 'lucide-react';
-import toitNexusLogo from '@/assets/toit-nexus-logo.svg';
+import toitNexusLogoSvg from '@/assets/toit-nexus-logo.svg';
 
 interface UnifiedHeaderProps {
-  title: string;
+  title?: string;
   subtitle?: string;
   showUserActions?: boolean;
-  user?: any;
+  user?: { firstName: string; lastName: string };
   onLogout?: () => void;
 }
 
-export function UnifiedHeader({ title, subtitle, showUserActions = false, user, onLogout }: UnifiedHeaderProps) {
+export function UnifiedHeader({ 
+  showUserActions = false,
+  user,
+  onLogout 
+}: UnifiedHeaderProps) {
   const handleLogout = () => {
     if (onLogout) {
       onLogout();
@@ -21,54 +23,39 @@ export function UnifiedHeader({ title, subtitle, showUserActions = false, user, 
 
   return (
     <header 
-      className="text-white shadow-lg"
+      className="shadow-lg relative"
       style={{
-        background: 'linear-gradient(90deg, #1e3a8a 0%, #581c87 50%, #06b6d4 100%)',
-        backgroundSize: '100% 100%'
+        background: '#f8fafc',
+        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='1.5' fill='%2306b6d4' opacity='0.3'/%3E%3Cline x1='10' y1='0' x2='10' y2='20' stroke='%2306b6d4' stroke-width='0.5' opacity='0.2'/%3E%3Cline x1='0' y1='10' x2='20' y2='10' stroke='%2306b6d4' stroke-width='0.5' opacity='0.2'/%3E%3C/svg%3E")`,
+        backgroundRepeat: 'repeat',
+        backgroundSize: '20px 20px'
       }}
     >
       <div className="w-full px-6 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center">
             <img 
-              src={toitNexusLogo} 
-              alt="TOIT Nexus" 
-              className="h-12 w-12"
-              style={{ transform: 'scale(1.15)' }}
+              src={toitNexusLogoSvg} 
+              alt="TOIT Nexus - Workflow Automation Platform" 
+              className="w-auto"
+              style={{ 
+                height: '110px',
+                transform: 'scale(1.1)'
+              }}
             />
-            <div>
-              <h1 className="text-2xl font-bold">
-                {title}
-              </h1>
-              {subtitle && (
-                <p className="text-blue-100 text-sm mt-1">
-                  {subtitle}
-                </p>
-              )}
-            </div>
           </div>
-
-          {showUserActions && (
+          
+          {showUserActions && user && (
             <div className="flex items-center space-x-4">
-              {user && (
-                <div className="flex items-center space-x-3">
-                  <div className="flex items-center space-x-2 bg-white/10 rounded-lg px-3 py-2">
-                    <User className="w-4 h-4" />
-                    <span className="text-sm font-medium">
-                      {user.firstName} {user.lastName}
-                    </span>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleLogout}
-                    className="text-white hover:bg-white/10 hover:text-white"
-                  >
-                    <LogOut className="w-4 h-4 mr-2" />
-                    Sair
-                  </Button>
-                </div>
-              )}
+              <span className="text-gray-700 font-medium">
+                {user.firstName} {user.lastName}
+              </span>
+              <button
+                onClick={handleLogout}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
+              >
+                Sair
+              </button>
             </div>
           )}
         </div>
