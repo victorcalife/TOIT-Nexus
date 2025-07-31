@@ -23,6 +23,7 @@ import { registerQueryBuilderRoutes } from "./queryBuilderRoutes";
 import { registerDataConnectionRoutes } from "./dataConnectionRoutes";
 import { taskManagementRoutes } from "./taskManagementRoutes";
 import { moduleRoutes } from "./moduleRoutes";
+import { adaptiveEngine } from "./adaptiveEngine";
 
 // Helper function to determine if client should be assigned to a category
 function shouldAssignToCategory(client: any, category: any): boolean {
