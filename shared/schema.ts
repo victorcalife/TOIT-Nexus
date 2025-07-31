@@ -481,6 +481,73 @@ export const userPermissionsRelations = relations(userPermissions, ({ one }) => 
   }),
 }));
 
+// TASK MANAGEMENT SYSTEM - CORE DA APLICAÇÃO
+export const taskTemplates = pgTable("task_templates", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id),
+  managerId: varchar("manager_id").references(() => users.id), // Quem criou o template
+  title: varchar("title").notNull(),
+  description: text("description"),
+  category: varchar("category").default("general"), // 'client_follow_up', 'reporting', 'general'
+  priority: varchar("priority").default("medium"), // 'low', 'medium', 'high', 'urgent'
+  estimatedDuration: integer("estimated_duration"), // em minutos
+  instructions: jsonb("instructions").notNull(), // Array de passos/instruções
+  checklistItems: jsonb("checklist_items"), // Array de itens de checklist
+  requiredFields: jsonb("required_fields"), // Campos que devem ser preenchidos
+  schedule: jsonb("schedule"), // Configuração de agendamento (diário, semanal, mensal)
+  assignedTo: jsonb("assigned_to"), // Array de IDs de usuários ou departamentos
+  tags: jsonb("tags"), // Array de tags
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const taskInstances = pgTable("task_instances", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id),
+  templateId: varchar("template_id").references(() => taskTemplates.id),
+  assignedToId: varchar("assigned_to_id").references(() => users.id),
+  assignedById: varchar("assigned_by_id").references(() => users.id),
+  title: varchar("title").notNull(),
+  description: text("description"),
+  priority: varchar("priority").default("medium"),
+  status: varchar("status").default("pending"), // 'pending', 'in_progress', 'completed', 'cancelled', 'overdue'
+  dueDate: timestamp("due_date"),
+  startedAt: timestamp("started_at"),
+  completedAt: timestamp("completed_at"),
+  completionData: jsonb("completion_data"), // Dados preenchidos pelo funcionário
+  checklistProgress: jsonb("checklist_progress"), // Progresso do checklist
+  notes: text("notes"),
+  attachments: jsonb("attachments"), // Array de anexos
+  remindersSent: integer("reminders_sent").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const taskComments = pgTable("task_comments", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id),
+  taskInstanceId: varchar("task_instance_id").references(() => taskInstances.id),
+  userId: varchar("user_id").references(() => users.id),
+  comment: text("comment").notNull(),
+  isInternal: boolean("is_internal").default(false), // Se é apenas para o gerente ver
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const notifications = pgTable("notifications", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id),
+  userId: varchar("user_id").references(() => users.id),
+  type: varchar("type").notNull(), // 'task_assigned', 'task_reminder', 'task_overdue', 'task_completed'
+  title: varchar("title").notNull(),
+  message: text("message").notNull(),
+  data: jsonb("data"), // Dados relacionados à notificação
+  isRead: boolean("is_read").default(false),
+  readAt: timestamp("read_at"),
+  actionUrl: varchar("action_url"), // URL para onde a notificação deve levar
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // Update existing relations to include new tables
 export const tenantsRelations = relations(tenants, ({ many }) => ({
   users: many(users),
@@ -576,6 +643,29 @@ export const insertPermissionSchema = createInsertSchema(permissions).omit({
   createdAt: true,
 });
 
+// Task Management Insert Schemas
+export const insertTaskTemplateSchema = createInsertSchema(taskTemplates).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertTaskInstanceSchema = createInsertSchema(taskInstances).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertTaskCommentSchema = createInsertSchema(taskComments).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertNotificationSchema = createInsertSchema(notifications).omit({
+  id: true,
+  createdAt: true,
+});
+
 export const insertRolePermissionSchema = createInsertSchema(rolePermissions).omit({
   id: true,
   createdAt: true,
@@ -633,3 +723,13 @@ export type SavedQuery = typeof savedQueries.$inferSelect;
 export type InsertSavedQuery = typeof savedQueries.$inferInsert;
 export type Dashboard = typeof dashboards.$inferSelect;
 export type InsertDashboard = typeof dashboards.$inferInsert;
+
+// Task Management Types
+export type TaskTemplate = typeof taskTemplates.$inferSelect;
+export type InsertTaskTemplate = typeof taskTemplates.$inferInsert;
+export type TaskInstance = typeof taskInstances.$inferSelect;
+export type InsertTaskInstance = typeof taskInstances.$inferInsert;
+export type TaskComment = typeof taskComments.$inferSelect;
+export type InsertTaskComment = typeof taskComments.$inferInsert;
+export type Notification = typeof notifications.$inferSelect;
+export type InsertNotification = typeof notifications.$inferInsert;

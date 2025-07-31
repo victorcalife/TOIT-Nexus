@@ -19,11 +19,15 @@ import {
   Settings, 
   LogOut,
   Search,
-  Link as LinkIcon
+  Link as LinkIcon,
+  CheckSquare,
+  ClipboardList
 } from "lucide-react";
 
 const navigation = [
   { name: 'Dashboard', href: '/', icon: LayoutDashboard },
+  { name: 'Minhas Tarefas', href: '/my-tasks', icon: ClipboardList },
+  { name: 'Gerenciar Tarefas', href: '/task-management', icon: CheckSquare },
   { name: 'Query Builder', href: '/query-builder', icon: Search },
   { name: 'Conexões de Dados', href: '/data-connections', icon: LinkIcon },
   { name: 'Clientes', href: '/clients', icon: Users },
@@ -110,7 +114,7 @@ export function Sidebar() {
       <div className="px-4 pb-4 border-t border-gray-200 pt-4">
         <div className="flex items-center space-x-3">
           <Avatar className="w-8 h-8">
-            <AvatarImage src={user?.profileImageUrl || undefined} alt="User avatar" />
+            <AvatarImage src={user?.profile_image_url || undefined} alt="User avatar" />
             <AvatarFallback className="bg-primary-100 text-primary-700 text-xs">
               {getUserInitials(user)}
             </AvatarFallback>
