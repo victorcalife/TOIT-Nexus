@@ -10,16 +10,7 @@ import { User } from "@shared/schema";
 
 declare global {
   namespace Express {
-    interface User {
-      id: string;
-      cpf: string;
-      email?: string;
-      firstName?: string;
-      lastName?: string;
-      role: string;
-      tenantId?: string;
-      isActive: boolean;
-    }
+    interface User extends User {}
   }
 }
 
@@ -119,7 +110,7 @@ export function setupAuth(app: Express) {
             return done(null, false, { message: 'Usuário inativo' });
           }
 
-          const isValidPassword = await comparePasswords(password, user.password!);
+          const isValidPassword = await comparePasswords(password, user.password);
           if (!isValidPassword) {
             return done(null, false, { message: 'Senha incorreta' });
           }
@@ -208,7 +199,7 @@ export function setupAuth(app: Express) {
       });
 
       // Remove senha do retorno
-      const { password: _, ...userWithoutPassword } = user as any;
+      const { password: _, ...userWithoutPassword } = user;
 
       req.login(user, (err) => {
         if (err) return next(err);
@@ -234,7 +225,7 @@ export function setupAuth(app: Express) {
         if (err) return next(err);
         
         // Remove senha do retorno
-        const { password: _, ...userWithoutPassword } = user as any;
+        const { password: _, ...userWithoutPassword } = user;
         res.json(userWithoutPassword);
       });
     })(req, res, next);
@@ -254,8 +245,8 @@ export function setupAuth(app: Express) {
       return res.sendStatus(401);
     }
     
-    // Remove senha do retorno  
-    const { password: _, ...userWithoutPassword } = req.user as any;
+    // Remove senha do retorno
+    const { password: _, ...userWithoutPassword } = req.user;
     res.json(userWithoutPassword);
   });
 }
