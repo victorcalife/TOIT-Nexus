@@ -110,13 +110,13 @@ export default function SystemSetup() {
           <div className="flex justify-center mb-4">
             <img 
               src={toitNexusLogo} 
-              alt="TOIT Nexus" 
+              alt="TOIT-Nexus" 
               className="h-16 w-auto opacity-90"
             />
           </div>
           <CardTitle className="text-3xl text-gray-900">Configuração Inicial</CardTitle>
           <CardDescription>
-            Configure o sistema TOIT Nexus criando o primeiro super administrador
+            Configure o sistema TOIT-Nexus criando o primeiro super administrador
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -124,7 +124,7 @@ export default function SystemSetup() {
             <div className="flex items-start space-x-3">
               <Shield className="w-5 h-5 text-blue-600 mt-0.5" />
               <div className="text-sm text-blue-800">
-                <p className="font-medium mb-1">Super Administrador TOIT</p>
+                <p className="font-medium mb-1">Super Administrador TOIT-Nexus</p>
                 <p>Este usuário terá controle total sobre todos os aspectos do sistema, incluindo gerenciamento de empresas, usuários, departamentos e configurações globais.</p>
               </div>
             </div>
