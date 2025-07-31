@@ -11,6 +11,7 @@ import Login from "@/pages/login";
 import SimpleLogin from "@/pages/simple-login";
 import Dashboard from "@/pages/dashboard";
 import Home from "@/pages/home";
+import WorkingApp from "@/pages/working-app";
 import Clients from "@/pages/clients";
 import Categories from "@/pages/categories";
 import Workflows from "@/pages/workflows";
@@ -103,7 +104,8 @@ function Router() {
       <Route path="/tenant-selection" component={TenantSelection} />
 
       {/* Main application routes */}
-      <Route path="/" component={Home} />
+      <Route path="/" component={WorkingApp} />
+      <Route path="/home" component={Home} />
       <Route path="/dashboard" component={() => {
         // If user has no tenant, redirect to tenant selection
         if (!user?.tenant) {

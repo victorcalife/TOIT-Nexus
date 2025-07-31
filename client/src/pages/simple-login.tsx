@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { apiRequest } from "@/lib/queryClient";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useMutation } from "@tanstack/react-query";
 
 export default function SimpleLogin() {
@@ -32,10 +32,11 @@ export default function SimpleLogin() {
         title: "Login realizado com sucesso!",
         description: "Redirecionando...",
       });
-      // Forçar recarga da página para atualizar estado de auth
+      // Invalidar cache de auth e recarregar
+      queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
       setTimeout(() => {
-        window.location.reload();
-      }, 500);
+        window.location.href = '/';
+      }, 1000);
     },
     onError: (error: any) => {
       toast({

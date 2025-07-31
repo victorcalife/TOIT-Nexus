@@ -27,8 +27,6 @@ export function useAuth() {
 
   const isSuperAdmin = user?.role === 'super_admin' || user?.isSuperAdmin || false;
 
-
-
   return {
     user,
     isLoading,
