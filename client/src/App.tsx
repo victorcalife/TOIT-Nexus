@@ -12,7 +12,8 @@ import SimpleLogin from "@/pages/simple-login";
 import Dashboard from "@/pages/dashboard";
 import Home from "@/pages/home";
 import WorkingApp from "@/pages/working-app";
-import WorkingAdmin from "@/pages/working-admin";
+import CompleteToitSystem from "@/pages/complete-toit-system";
+import ToitNexusComplete from '@/components/toit-nexus-complete';
 import Clients from "@/pages/clients";
 import Categories from "@/pages/categories";
 import Workflows from "@/pages/workflows";
@@ -106,9 +107,9 @@ function Router() {
 
       {/* Main application routes */}
       <Route path="/" component={() => {
-        // Super admin vai para painel administrativo que funciona
+        // Super admin vai para sistema completo TOIT NEXUS
         if (isSuperAdmin) {
-          return <WorkingAdmin />;
+          return <ToitNexusComplete />;
         }
         // Outros usuários vão para working app
         return <WorkingApp />;
