@@ -20,6 +20,14 @@ declare global {
   }
 }
 
+// Basic authentication middleware
+export function requireAuth(req: Request, res: Response, next: NextFunction) {
+  if (!req.user) {
+    return res.status(401).json({ message: 'Authentication required' });
+  }
+  next();
+}
+
 // Middleware to check user permissions for specific resources
 export function requirePermission(resource: string, action: string) {
   return async (req: Request, res: Response, next: NextFunction) => {

@@ -53,6 +53,10 @@ import {
   type Dashboard,
   type InsertDashboard,
   type TaskTemplate,
+  moduleDefinitions,
+  tenantModules,
+  userModuleAccess,
+  moduleUsageTracking,
   type InsertTaskTemplate,
   type TaskInstance,
   type InsertTaskInstance,
@@ -1409,6 +1413,156 @@ export class DatabaseStorage implements IStorage {
   async setMaintenanceMode(enabled: boolean, message?: string): Promise<void> {
     // In a real implementation, this would update system configuration
     console.log(`Maintenance mode ${enabled ? 'enabled' : 'disabled'}${message ? ': ' + message : ''}`);
+  }
+  // MÓDULOS E ATIVAÇÃO - SISTEMA DE MONETIZAÇÃO
+  async getModuleByName(name: string): Promise<any> {
+    const [module] = await db.select().from(moduleDefinitions).where(eq(moduleDefinitions.name, name));
+    return module;
+  }
+
+  async createModuleDefinition(moduleData: any): Promise<any> {
+    const [module] = await db.insert(moduleDefinitions).values(moduleData).returning();
+    return module;
+  }
+
+  async updateModuleDefinition(id: string, updateData: any): Promise<any> {
+    const [module] = await db.update(moduleDefinitions)
+      .set(updateData)
+      .where(eq(moduleDefinitions.id, id))
+      .returning();
+    return module;
+  }
+
+  async getAvailableModules(userType: string): Promise<any[]> {
+    return await db.select()
+      .from(moduleDefinitions)
+      .where(eq(moduleDefinitions.isActive, true))
+      .orderBy(moduleDefinitions.sortOrder);
+  }
+
+  async getTenantModules(tenantId: string): Promise<any[]> {
+    return await db.select()
+      .from(tenantModules)
+      .innerJoin(moduleDefinitions, eq(tenantModules.moduleId, moduleDefinitions.id))
+      .where(eq(tenantModules.tenantId, tenantId))
+      .orderBy(moduleDefinitions.sortOrder);
+  }
+
+  async getTenantModule(tenantId: string, moduleId: string): Promise<any> {
+    const [tenantModule] = await db.select()
+      .from(tenantModules)
+      .where(
+        and(
+          eq(tenantModules.tenantId, tenantId),
+          eq(tenantModules.moduleId, moduleId)
+        )
+      );
+    return tenantModule;
+  }
+
+  async createTenantModule(tenantModuleData: any): Promise<any> {
+    const [tenantModule] = await db.insert(tenantModules).values(tenantModuleData).returning();
+    return tenantModule;
+  }
+
+  async updateTenantModule(tenantId: string, moduleId: string, updateData: any): Promise<any> {
+    const [tenantModule] = await db.update(tenantModules)
+      .set(updateData)
+      .where(
+        and(
+          eq(tenantModules.tenantId, tenantId),
+          eq(tenantModules.moduleId, moduleId)
+        )
+      )
+      .returning();
+    return tenantModule;
+  }
+
+  async getModuleUsageStats(tenantId: string): Promise<any> {
+    return {};
+  }
+
+  async createModuleUsageTracking(trackingData: any): Promise<any> {
+    const [tracking] = await db.insert(moduleUsageTracking).values(trackingData).returning();
+    return tracking;
+  }
+
+  async getUserModuleAccess(userId: string, moduleId: string): Promise<any> {
+    const [userAccess] = await db.select()
+      .from(userModuleAccess)
+      .where(
+        and(
+          eq(userModuleAccess.userId, userId),
+          eq(userModuleAccess.moduleId, moduleId)
+        )
+      );
+    return userAccess;
+  }
+
+  // TASK MANAGEMENT - CORE DA APLICAÇÃO
+  async createTaskTemplate(templateData: any): Promise<any> {
+    const [template] = await db.insert(taskTemplates).values(templateData).returning();
+    return template;
+  }
+
+  async getTaskTemplates(tenantId: string, managerId?: string): Promise<any[]> {
+    let query = db.select().from(taskTemplates).where(eq(taskTemplates.tenantId, tenantId));
+    
+    if (managerId) {
+      query = query.where(eq(taskTemplates.managerId, managerId));
+    }
+    
+    return await query.orderBy(desc(taskTemplates.createdAt));
+  }
+
+  async getTaskTemplate(id: string): Promise<any> {
+    const [template] = await db.select().from(taskTemplates).where(eq(taskTemplates.id, id));
+    return template;
+  }
+
+  async createTaskInstance(instanceData: any): Promise<any> {
+    const [instance] = await db.insert(taskInstances).values(instanceData).returning();
+    return instance;
+  }
+
+  async getTaskInstances(tenantId: string, userId?: string, status?: string): Promise<any[]> {
+    let query = db.select().from(taskInstances).where(eq(taskInstances.tenantId, tenantId));
+
+    if (userId) {
+      query = query.where(eq(taskInstances.assignedToId, userId));
+    }
+
+    if (status) {
+      query = query.where(eq(taskInstances.status, status));
+    }
+
+    return await query.orderBy(desc(taskInstances.createdAt));
+  }
+
+  async getTaskInstance(id: string): Promise<any> {
+    const [instance] = await db.select().from(taskInstances).where(eq(taskInstances.id, id));
+    return instance;
+  }
+
+  async updateTaskInstance(id: string, updateData: any): Promise<any> {
+    const [instance] = await db.update(taskInstances)
+      .set({ ...updateData, updatedAt: new Date() })
+      .where(eq(taskInstances.id, id))
+      .returning();
+    return instance;
+  }
+
+  async createNotification(notificationData: any): Promise<any> {
+    const [notification] = await db.insert(notifications).values(notificationData).returning();
+    return notification;
+  }
+
+  async getUserNotifications(userId: string, limit: number = 50): Promise<any[]> {
+    return await db.select()
+      .from(notifications)
+      .where(eq(notifications.userId, userId))
+      .orderBy(desc(notifications.createdAt))
+      .limit(limit);
   }
 }
 

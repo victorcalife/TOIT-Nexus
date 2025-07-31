@@ -26,6 +26,7 @@ import QueryBuilderPage from "@/pages/query-builder";
 import DataConnectionsPage from "@/pages/data-connections";
 import TaskManagement from "@/pages/task-management";
 import MyTasks from "@/pages/my-tasks";
+import ModuleManagement from "@/pages/module-management";
 import { useQuery } from "@tanstack/react-query";
 
 function Router() {
@@ -321,6 +322,23 @@ function Router() {
           </div>
         );
       }} />
+
+      <Route path="/module-management" component={() => {
+        if (!user?.tenant) {
+          window.location.href = '/select-tenant';
+          return null;
+        }
+        return (
+          <div className="flex h-screen bg-gray-50">
+            <Sidebar />
+            <main className="flex-1 overflow-hidden">
+              <ModuleManagement />
+            </main>
+          </div>
+        );
+      }} />
+
+      <Route component={NotFound} />
 
       {/* Catch-all 404 route */}
       <Route component={NotFound} />

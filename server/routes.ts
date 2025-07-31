@@ -22,6 +22,7 @@ import { adminRoutes } from "./adminRoutes";
 import { registerQueryBuilderRoutes } from "./queryBuilderRoutes";
 import { registerDataConnectionRoutes } from "./dataConnectionRoutes";
 import { taskManagementRoutes } from "./taskManagementRoutes";
+import { moduleRoutes } from "./moduleRoutes";
 
 // Helper function to determine if client should be assigned to a category
 function shouldAssignToCategory(client: any, category: any): boolean {
@@ -1072,6 +1073,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // CORE DA APLICAÇÃO - Task Management Routes
   app.use('/api/tasks', tenantMiddleware, isAuthenticated, taskManagementRoutes);
+
+  // SISTEMA DE MÓDULOS - Controle e Monetização
+  app.use('/api/modules', moduleRoutes);
 
   const httpServer = createServer(app);
   return httpServer;
