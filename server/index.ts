@@ -43,10 +43,10 @@ app.use((req, res, next) => {
     console.log('🚀 Inicializando sistema TOIT NEXUS...');
     await import('./initializeSystem');
     
-    // Inicializar módulos padrão
-    const { initializeDefaultModules, createProductConfigurations } = await import('./initializeModules');
-    await initializeDefaultModules();
-    await createProductConfigurations();
+    // Inicializar módulos padrão (desabilitado temporariamente)
+    // const { initializeDefaultModules, createProductConfigurations } = await import('./initializeModules');
+    // await initializeDefaultModules();
+    // await createProductConfigurations();
     
     const server = await registerRoutes(app);
 

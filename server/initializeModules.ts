@@ -35,8 +35,8 @@ const DEFAULT_MODULES = [
     sort_order: 1
   },
   {
-    name: 'task_management',
-    displayName: 'Gerenciamento de Tarefas',
+    name: 'file_uploader',
+    display_name: 'Upload de Arquivos',
     description: 'Sistema completo de criação, atribuição e acompanhamento de tarefas para equipes',
     category: 'core',
     basePrice: '29.90',
@@ -66,9 +66,8 @@ const DEFAULT_MODULES = [
     displayName: 'Upload de Arquivos',
     description: 'Sistema básico de upload e organização de arquivos',
     category: 'core',
-    basePrice: '9.90',
-    pricePerUser: '2.90',
-    priceModel: 'per_user',
+    base_price: 9.90,
+    pricing_model: 'per_user',
     features: [
       'Upload de múltiplos arquivos',
       'Organização em pastas',
@@ -81,10 +80,10 @@ const DEFAULT_MODULES = [
       premium: { max_storage_gb: 100, max_file_size_mb: 200, max_users: 25 },
       enterprise: {} // ilimitado
     },
-    targetUserTypes: ['pessoa_fisica', 'pequena_empresa', 'enterprise'],
+    target_user_types: ['pessoa_fisica', 'pequena_empresa', 'enterprise'],
     icon: 'Upload',
     color: '#10b981',
-    sortOrder: 2
+    sort_order: 2
   },
   {
     name: 'query_builder',
@@ -200,19 +199,11 @@ export async function initializeDefaultModules() {
       const existingModule = await storage.getModuleByName(moduleData.name);
       
       if (!existingModule) {
-        await storage.createModuleDefinition({
-          ...moduleData,
-          isActive: true,
-          createdAt: new Date(),
-          updatedAt: new Date()
-        });
+        await storage.createModuleDefinition(moduleData);
         console.log(`✅ Módulo ${moduleData.displayName} criado`);
       } else {
         // Atualizar módulo existente com novas configurações
-        await storage.updateModuleDefinition(existingModule.id, {
-          ...moduleData,
-          updatedAt: new Date()
-        });
+        await storage.updateModuleDefinition(existingModule.id, moduleData);
         console.log(`🔄 Módulo ${moduleData.displayName} atualizado`);
       }
     }
