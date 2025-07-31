@@ -31,7 +31,7 @@ export function UnifiedHeader({
         backgroundSize: '20px 20px'
       }}
     >
-      <div className="w-full px-6 py-4">
+      <div className="w-full px-6 py-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <img 
@@ -39,7 +39,7 @@ export function UnifiedHeader({
               alt="TOIT Nexus - Workflow Automation Platform" 
               className="w-auto"
               style={{ 
-                height: '110px',
+                height: '55px',
                 transform: 'scale(1.1)'
               }}
             />
