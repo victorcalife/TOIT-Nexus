@@ -3,9 +3,10 @@
 
 case "$1" in
   "deploy")
-    echo "🚀 Para fazer deploy:"
-    echo "1. Vá para: https://replit.com/@victorcalife/workspace/deployments"
-    echo "2. Ou use: npm run build && npm start"
+    echo "🚀 Sua aplicação JÁ ESTÁ DEPLOYADA!"
+    echo "1. URL de desenvolvimento: $REPLIT_DEV_DOMAIN"
+    echo "2. URL de produção: https://workspace--victorcalife.replit.app (provável)"
+    echo "3. Para atualizar: https://replit.com/@victorcalife/workspace/deployments → Redeploy"
     ;;
   "build")
     echo "🔨 Fazendo build..."
