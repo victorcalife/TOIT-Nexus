@@ -1,0 +1,15 @@
+{
+    "todo-tree.general.rootFolder": "C:\\Users\\victo\\Desktop\\Dodumentos Pessoais\\Victor\\TOIT\\SISTEMAS\\TOIT-Nexus\\TOIT-Nexus",
+    "todo-tree.general.showActivityBarBadge": true,
+    "todo-tree.general.showIconsInsteadOfTagsInStatusBar": true,
+    "todo-tree.general.tags": [
+        "OPEN",
+        "DOING",
+        "DONE"
+    ],
+    "todo-tree.general.tagGroups": {},
+    "todo-tree.highlights.useColourScheme": true,
+    "todo-tree.tree.flat": true,
+    "todo-tree.tree.groupedByTag": true,
+    "todo-tree.tree.showCountsInTree": true
+}

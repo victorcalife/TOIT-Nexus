@@ -1,0 +1,138 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Definições -->
+  <defs>
+    <!-- Gradiente radial para o pulso -->
+    <radialGradient id="pulseGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#581c87;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#1e3a8a;stop-opacity:0.6" />
+    </radialGradient>
+    
+    <!-- Gradiente linear para elementos -->
+    <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#581c87;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Filtro de brilho -->
+    <filter id="glowEffect">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Máscara para o efeito de pulso -->
+    <mask id="pulseMask">
+      <rect width="400" height="400" fill="white"/>
+      <circle cx="200" cy="200" r="60" fill="black"/>
+    </mask>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="400" fill="#f8fafc"/>
+  
+  <!-- Ondas de pulso animadas (representando monitoramento) -->
+  <g transform="translate(200,200)">
+    <!-- Onda 1 -->
+    <circle r="60" fill="none" stroke="url(#waveGradient)" stroke-width="3" opacity="0.8">
+      <animate attributeName="r" from="60" to="120" dur="2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" from="0.8" to="0" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- Onda 2 -->
+    <circle r="60" fill="none" stroke="url(#waveGradient)" stroke-width="3" opacity="0.8">
+      <animate attributeName="r" from="60" to="120" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" from="0.8" to="0" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- Onda 3 -->
+    <circle r="60" fill="none" stroke="url(#waveGradient)" stroke-width="3" opacity="0.8">
+      <animate attributeName="r" from="60" to="120" dur="2s" begin="1s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" from="0.8" to="0" dur="2s" begin="1s" repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- Onda 4 -->
+    <circle r="60" fill="none" stroke="url(#waveGradient)" stroke-width="3" opacity="0.8">
+      <animate attributeName="r" from="60" to="120" dur="2s" begin="1.5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" from="0.8" to="0" dur="2s" begin="1.5s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- Gráfico de pulso (heartbeat) -->
+  <g transform="translate(200,200)" mask="url(#pulseMask)">
+    <path d="M -100 0 L -60 0 L -50 -30 L -40 20 L -30 -40 L -20 30 L -10 -20 L 0 50 L 10 -50 L 20 20 L 30 -30 L 40 10 L 50 -20 L 60 0 L 100 0"
+          fill="none"
+          stroke="#ffffff"
+          stroke-width="3"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          filter="url(#glowEffect)">
+      <animateTransform attributeName="transform" type="translate" 
+                        values="-100,0;100,0;-100,0" 
+                        dur="3s" 
+                        repeatCount="indefinite"/>
+    </path>
+  </g>
+  
+  <!-- Núcleo central -->
+  <g transform="translate(200,200)">
+    <!-- Círculo base -->
+    <circle r="60" fill="url(#pulseGradient)" filter="url(#glowEffect)"/>
+    
+    <!-- Ícone de dados/fluxo -->
+    <g fill="#ffffff">
+      <!-- Símbolo de conexão -->
+      <circle cx="-20" cy="0" r="8"/>
+      <circle cx="0" cy="0" r="8"/>
+      <circle cx="20" cy="0" r="8"/>
+      <rect x="-20" y="-2" width="15" height="4" rx="2"/>
+      <rect x="5" y="-2" width="15" height="4" rx="2"/>
+      
+      <!-- Indicadores de atividade -->
+      <circle cx="-20" cy="0" r="3" fill="#06b6d4">
+        <animate attributeName="fill" values="#06b6d4;#ffffff;#06b6d4" dur="1s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="0" cy="0" r="3" fill="#ffffff">
+        <animate attributeName="fill" values="#ffffff;#06b6d4;#ffffff" dur="1s" begin="0.33s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="20" cy="0" r="3" fill="#06b6d4">
+        <animate attributeName="fill" values="#06b6d4;#ffffff;#06b6d4" dur="1s" begin="0.66s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+  </g>
+  
+  <!-- Indicadores de conexão (APIs/Webhooks) -->
+  <g opacity="0.7">
+    <!-- Superior -->
+    <line x1="200" y1="80" x2="200" y2="40" stroke="#06b6d4" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="200" cy="40" r="6" fill="#06b6d4"/>
+    
+    <!-- Direita -->
+    <line x1="320" y1="200" x2="360" y2="200" stroke="#06b6d4" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="360" cy="200" r="6" fill="#06b6d4"/>
+    
+    <!-- Inferior -->
+    <line x1="200" y1="320" x2="200" y2="360" stroke="#06b6d4" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="200" cy="360" r="6" fill="#06b6d4"/>
+    
+    <!-- Esquerda -->
+    <line x1="80" y1="200" x2="40" y2="200" stroke="#06b6d4" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="40" cy="200" r="6" fill="#06b6d4"/>
+  </g>
+  
+  <!-- Texto -->
+  <g transform="translate(200,200)">
+    <!-- TOIT -->
+    <text x="0" y="100" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="48" font-weight="900" fill="#1e3a8a">
+      TOIT
+    </text>
+    
+    <!-- PULSE -->
+    <text x="0" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" font-weight="300" fill="url(#waveGradient)" letter-spacing="8">
+      PULSE
+    </text>
+  </g>
+</svg>
