@@ -54,6 +54,18 @@ app.use((req, res, next) => {
   try {
     // Inicializar sistema e módulos
     console.log('🚀 Inicializando sistema TOIT NEXUS...');
+    
+    // Executar migrations automaticamente
+    console.log('🗄️  Executando database migrations...');
+    try {
+      const { execSync } = await import('child_process');
+      execSync('npm run db:push', { stdio: 'inherit' });
+      console.log('✅ Migrations executadas com sucesso');
+    } catch (error) {
+      console.warn('⚠️  Erro ao executar migrations:', error.message);
+      console.log('Continuando sem migrations - assumindo tabelas já existem');
+    }
+    
     await import('./initializeSystem.js');
     
     const server = await registerRoutes(app);

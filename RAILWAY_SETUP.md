@@ -28,7 +28,7 @@ TOIT-Nexus (Railway Project)
 **Build Settings:**
 - **Root Directory:** `/` (raiz do projeto)
 - **Build Command:** (deixar vazio - Railway auto-detecta)
-- **Start Command:** (deixar vazio - Railway auto-detecta)
+- **Start Command:** `npm run railway:start` (executa migrations + start)
 
 **Environment Variables:**
 ```bash
