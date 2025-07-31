@@ -17,6 +17,10 @@ import {
   workflowRules,
   savedQueries,
   dashboards,
+  taskTemplates,
+  taskInstances,
+  taskComments,
+  notifications,
   type Tenant,
   type InsertTenant,
   type User,
@@ -48,6 +52,14 @@ import {
   type InsertSavedQuery,
   type Dashboard,
   type InsertDashboard,
+  type TaskTemplate,
+  type InsertTaskTemplate,
+  type TaskInstance,
+  type InsertTaskInstance,
+  type TaskComment,
+  type InsertTaskComment,
+  type Notification,
+  type InsertNotification,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, count, sql } from "drizzle-orm";
@@ -208,6 +220,26 @@ export interface IStorage {
   getDashboard(id: string): Promise<Dashboard | undefined>;
   updateDashboard(id: string, dashboardData: any): Promise<Dashboard>;
   deleteDashboard(id: string): Promise<void>;
+
+  // Task Management operations - CORE DA APLICAÇÃO
+  createTaskTemplate(templateData: InsertTaskTemplate): Promise<TaskTemplate>;
+  getTaskTemplatesByManager(managerId: string, tenantId: string): Promise<TaskTemplate[]>;
+  getTaskTemplate(id: string): Promise<TaskTemplate | undefined>;
+  updateTaskTemplate(id: string, templateData: Partial<InsertTaskTemplate>): Promise<TaskTemplate>;
+  deleteTaskTemplate(id: string): Promise<void>;
+  
+  createTaskInstance(instanceData: InsertTaskInstance): Promise<TaskInstance>;
+  getTaskInstance(id: string): Promise<TaskInstance | undefined>;
+  updateTaskInstance(id: string, instanceData: Partial<InsertTaskInstance>): Promise<TaskInstance>;
+  getTasksByUser(userId: string, tenantId: string): Promise<TaskInstance[]>;
+  getDepartmentTasks(managerId: string, tenantId: string): Promise<TaskInstance[]>;
+  
+  createTaskComment(commentData: InsertTaskComment): Promise<TaskComment>;
+  getTaskComments(taskInstanceId: string): Promise<TaskComment[]>;
+  
+  createNotification(notificationData: InsertNotification): Promise<Notification>;
+  getUserNotifications(userId: string, tenantId: string): Promise<Notification[]>;
+  markNotificationAsRead(id: string): Promise<Notification>;
 }
 
 export class DatabaseStorage implements IStorage {
