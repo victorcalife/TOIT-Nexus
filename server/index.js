@@ -1,10 +1,18 @@
+import 'dotenv/config';
 import express from "express";
 import session from "express-session";
 import path from "path";
 import { registerRoutes } from "./routes.js";
 import { setupVite, serveStatic, log } from "./vite.js";
+import paymentRoutes from "./paymentRoutes.js";
+import webhookRoutes from "./webhookRoutes.js";
 
 const app = express();
+
+// Configure raw body processing for Stripe webhooks BEFORE other middleware
+app.use('/api/webhooks/stripe', express.raw({ type: 'application/json' }));
+
+// Standard JSON middleware for other routes
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -68,10 +76,14 @@ app.use((req, res, next) => {
     
     await import('./initializeSystem.js');
     
+    // Register payment and webhook routes
+    app.use('/api/payment', paymentRoutes);
+    app.use('/api/webhooks', webhookRoutes);
+    
     const server = await registerRoutes(app);
 
     // Railway usa a variável PORT automaticamente
-    const port = process.env.PORT || 3000;
+    const port = process.env.PORT || 3001;
   
     app.listen(port, '0.0.0.0', () => {
       console.log(`🚀 Server running on port ${port}`);
@@ -110,6 +122,16 @@ app.use((req, res, next) => {
       res.send('OK - TOIT NEXUS Server Running');
     });
 
+    // Payment system health check
+    app.get('/api/payment/health', (req, res) => {
+      const stripeConfigured = !!process.env.STRIPE_SECRET_KEY;
+      res.json({
+        status: 'Payment system ready',
+        stripe_configured: stripeConfigured,
+        timestamp: new Date().toISOString()
+      });
+    });
+
     // System setup route - creates initial super admin (no auth required)
     app.post('/api/setup-system', async (req, res) => {
       try {
@@ -143,10 +165,20 @@ app.use((req, res, next) => {
           tenantId: null,
           isActive: true,
         });
+
+        // Initialize default payment plans
+        try {
+          const { paymentService } = await import('./paymentService.js');
+          const plans = await paymentService.createDefaultPlans();
+          console.log(`✅ ${plans.length} planos de pagamento padrão criados`);
+        } catch (error) {
+          console.warn('⚠️  Erro ao criar planos padrão:', error.message);
+          // Continue without failing the setup
+        }
         
         res.json({ 
           success: true, 
-          message: 'Sistema configurado com sucesso! Super admin criado.',
+          message: 'Sistema configurado com sucesso! Super admin criado e planos de pagamento inicializados.',
           user: {
             id: superAdmin.id,
             email: superAdmin.email,

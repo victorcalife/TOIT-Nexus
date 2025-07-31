@@ -1,0 +1,40 @@
+NEXUS - PROCESSOS FUNCIONAIS PARA CADA PERSONA QUE DEVEM SER FEITOS VIA UI (frontend)
+
+Persona 1: EQUIPE TOIT (Empresa desenvolvedora e proprietária do sistema Nexus)
+
+- Comercializar o sistema para pessoa física (usuário único) ou Empresas (multi usuários em um mesmo ambiente)
+- Ativar ou desativar módulos definindo funcionalidades ativas para cada perfil de usuário ou empresa
+- Criar Empresas e ambientes de trabalho únicos e particulares para cada empresa
+- Gestão completa de usuários
+- Gestão completa de dados
+- Gestão completa de dados e kpis de sistema
+- Acesso, permissão e autorização full em todas as ferramentas/funcionalidades do sistema
+- Configurar, criar, editar e excluir modelos do produto (ex: usuário ou empresa do perfil basic possuem X, Y e Z funcionalidades ativas) e isso ficar definido no sistema.
+- Configurar e comercializar diferentes modelos na landingpage, utilizando stripe com possibilidade do usuário utilizar grátis por 7 dias após criar conta com Nome, Sobrenome, CPF, e-mail (verificar), telefone (verificar), inclusão de cartão de crédito (verificar se está ativo). Sistema precisa fazer gestão automática deste serviço informando que após os 7 dias a assinatura é renovada automaticamente e usuário pode cancelar quando quiser. Em todos os planos, existirão opção de pagamento mensal ou anual. Caso usuário cancele assinatura antes do prazo de 7 dias do teste grátis, sistema deve automaticamente, ao término do prazo dos 7 dias de teste, desativar o acesso e bloquear utilização do sistema direcionado usuário para página de gestão de conta e pagamento.
+- Após verificação de e-mail, telefone e cartão de crédito ativo, sistema deve automaticamente habilitar a conta do usuário e prover acesso ao sistema de acordo com o modelo escolhido ao realizar cadastro. 
+- Modelo empresa e grandes corporações, terão opção para solicitar contato com equipe comercial por meio de preenchimento de formulário com:Nome, Sobrenome, Nome da Empresa, CNPJ, Quantidade de Funcionários, Setor de Atividade, E-mail e telefone para contato (nesse modelo, sem necessidade de verificação pois não é criação de conta).
+- Disponbilizar, ajustra e configurar feature adaptativa de machine learning conforme documento C:\Users\victo\Desktop\Dodumentos Pessoais\Victor\TOIT\SISTEMAS\TOIT-Nexus\ADAPTIVE_FEATURES.md
+
+
+
+Persona 2: Usuário pessoa física (CPF)
+- Realizar a criação de conta e assinatura sozinho e acessar sistema com suas devidas funcionalidades
+- Conectar sua agenda Nexus com calendários Google, Apple e Outlook/Hotmail/Microsoft
+- Conectar seu e-mail para envio e recebimento de workflows e tarefas
+- Criar tarefas com possibilidade de enviar a outro usuário do mesmo grupo de trabalho (caso tenha) e acompanhar o andamento. As tarefas precisam ter opçoes de atividades como: Pergunta com multipla escolha de resposta, ação necessária com diferente opçoes de resposta (texto, multiplaescolha, 
+opções com apenas uma escolha, etc). Criar tarefas e guardá-las para que possam ser utilizadas em workflows de forma que, dependendo da resposta na tarefa o fluxo segue de diferente formas.. portanto, ele preciso ter a flexibilidade de vincular tarefas no workflow e definir como elas devem agir e impactar o andamento do flxo. 
+- Vincular tarefas a workflows para que sejam disparadas automaticamente e atribuí-las a outros usuários ou a ele mesmo. 
+- Víncular e desvincular usuários que possuam conta ao seu ambiente de trabalho (permissão das funcionalidades são mantidas de acordo com o usuário e não ambiente de trabalho).
+- Conectar a bancos de dados (host, port, nome db, user, senha), APIs (diferentes tipos) e Webhook  -- Não fazer download de dados. Apenas manter visão e utilização deles.
+- Fazer upload de arquivos de .xls .xlsx .csv
+- Criar e guardar em seu perfil, relatórios, kpis, gráficos e dashboards personalizados pra inclusão em workflow.
+- Manejar e trabalhar dados de bancos, apis, webhooks e arquivos .xls .xlsx .csv de forma simples interativa e no code.
+- Vincular tarefas a workflows para que sejam disparadas automaticamente
+- Gestão e visualização completa de status de tarefas, workflows, dashboards todos devidamente rastreáveis e com tracking de data e hora de cada etapa conforme andamento.
+- Quando e-mail vinculado, deve ter possibilidade de incluir no workflow envios automáticos e recebimentos  e envios que gera gatilhos atomáticos para próxima etapa do workflow (definir melhor tratativa para que Nexus entenda que determinado email é o que vai gerar o gatilho para determinado workflow). 
+
+
+
+Persona 3: EMPRESAS (acima de 5 funcionários)
+
+Possuem todas as funcionalidades descritas na persona 2 porém são os gestores dos acessos às funcionalidades e aos dados. Eles definem qual usuário tem acesso e a quais funcionalidades, configuram a base de dados que vão utilizar e quais dados cada usuário poderá ter acesso e visualizar. Por exemplo: Departamento de Compras e Departamento de Vendas, eles precisam ter funcionalidade para definir que compras não verá dados de vendas e vendas não verá dados de compras. Verificar melhor formato, criando departamentos e incluindo usuários neles, ou mantendo perfil direto para cada usuário.

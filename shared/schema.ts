@@ -902,6 +902,139 @@ export const completeWorkflowExecutions = pgTable("complete_workflow_executions"
   triggeredBy: varchar("triggered_by", { length: 255 }), // user_id, webhook, schedule
 });
 
+// ==================== PAYMENT SYSTEM TABLES ====================
+
+// Payment Plans - Planos de pagamento disponíveis
+export const paymentPlanEnum = pgEnum('payment_plan_type', ['individual', 'business', 'enterprise']);
+export const subscriptionStatusEnum = pgEnum('subscription_status', ['active', 'past_due', 'canceled', 'incomplete', 'trialing']);
+export const paymentStatusEnum = pgEnum('payment_status', ['pending', 'processing', 'succeeded', 'failed', 'canceled']);
+
+export const paymentPlans = pgTable("payment_plans", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: varchar("name", { length: 100 }).notNull(),
+  slug: varchar("slug", { length: 50 }).notNull().unique(),
+  type: paymentPlanEnum("type").notNull(),
+  description: text("description"),
+  priceMonthly: decimal("price_monthly", { precision: 10, scale: 2 }),
+  priceYearly: decimal("price_yearly", { precision: 10, scale: 2 }),
+  stripePriceIdMonthly: varchar("stripe_price_id_monthly"),
+  stripePriceIdYearly: varchar("stripe_price_id_yearly"),
+  features: jsonb("features").notNull(), // Array of features
+  maxUsers: integer("max_users"),
+  maxModules: integer("max_modules"),
+  trialDays: integer("trial_days").default(7),
+  isActive: boolean("is_active").default(true),
+  sortOrder: integer("sort_order").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Subscriptions - Assinaturas ativas
+export const subscriptions = pgTable("subscriptions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  planId: varchar("plan_id").references(() => paymentPlans.id).notNull(),
+  stripeSubscriptionId: varchar("stripe_subscription_id").unique(),
+  stripeCustomerId: varchar("stripe_customer_id").notNull(),
+  status: subscriptionStatusEnum("status").notNull(),
+  billingCycle: varchar("billing_cycle", { length: 20 }).notNull(), // monthly, yearly
+  currentPeriodStart: timestamp("current_period_start").notNull(),
+  currentPeriodEnd: timestamp("current_period_end").notNull(),
+  trialStart: timestamp("trial_start"),
+  trialEnd: timestamp("trial_end"),
+  canceledAt: timestamp("canceled_at"),
+  cancelAtPeriodEnd: boolean("cancel_at_period_end").default(false),
+  metadata: jsonb("metadata"), // Additional subscription data
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Payment Transactions - Histórico de transações
+export const paymentTransactions = pgTable("payment_transactions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  subscriptionId: varchar("subscription_id").references(() => subscriptions.id),
+  stripePaymentIntentId: varchar("stripe_payment_intent_id").unique(),
+  stripeInvoiceId: varchar("stripe_invoice_id"),
+  amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
+  currency: varchar("currency", { length: 3 }).default('BRL'),
+  status: paymentStatusEnum("status").notNull(),
+  paymentMethod: varchar("payment_method", { length: 50 }), // card, boleto, pix
+  failureReason: text("failure_reason"),
+  receiptUrl: varchar("receipt_url"),
+  metadata: jsonb("metadata"),
+  processedAt: timestamp("processed_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Payment Methods - Métodos de pagamento salvos
+export const paymentMethods = pgTable("payment_methods", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  stripePaymentMethodId: varchar("stripe_payment_method_id").notNull().unique(),
+  type: varchar("type", { length: 50 }).notNull(), // card, bank_account
+  cardBrand: varchar("card_brand", { length: 20 }), // visa, mastercard, etc
+  cardLast4: varchar("card_last4", { length: 4 }),
+  cardExpMonth: integer("card_exp_month"),
+  cardExpYear: integer("card_exp_year"),
+  isDefault: boolean("is_default").default(false),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Invoice History - Histórico de faturas
+export const invoices = pgTable("invoices", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  subscriptionId: varchar("subscription_id").references(() => subscriptions.id),
+  stripeInvoiceId: varchar("stripe_invoice_id").unique(),
+  invoiceNumber: varchar("invoice_number", { length: 50 }),
+  status: varchar("status", { length: 20 }).notNull(), // draft, open, paid, void
+  amountDue: decimal("amount_due", { precision: 10, scale: 2 }).notNull(),
+  amountPaid: decimal("amount_paid", { precision: 10, scale: 2 }).default("0"),
+  currency: varchar("currency", { length: 3 }).default('BRL'),
+  dueDate: timestamp("due_date"),
+  paidAt: timestamp("paid_at"),
+  hostedInvoiceUrl: varchar("hosted_invoice_url"),
+  invoicePdf: varchar("invoice_pdf"),
+  periodStart: timestamp("period_start"),
+  periodEnd: timestamp("period_end"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Webhook Events - Log de eventos Stripe
+export const webhookEvents = pgTable("webhook_events", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  stripeEventId: varchar("stripe_event_id").notNull().unique(),
+  eventType: varchar("event_type", { length: 100 }).notNull(),
+  apiVersion: varchar("api_version", { length: 20 }),
+  processed: boolean("processed").default(false),
+  processingError: text("processing_error"),
+  data: jsonb("data").notNull(),
+  receivedAt: timestamp("received_at").defaultNow(),
+  processedAt: timestamp("processed_at"),
+});
+
+// Business Leads - Formulário empresarial (não pagantes)
+export const businessLeads = pgTable("business_leads", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  firstName: varchar("first_name", { length: 100 }).notNull(),
+  lastName: varchar("last_name", { length: 100 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull(),
+  phone: varchar("phone", { length: 20 }),
+  companyName: varchar("company_name", { length: 200 }).notNull(),
+  cnpj: varchar("cnpj", { length: 18 }),
+  employeeCount: integer("employee_count"),
+  sector: varchar("sector", { length: 100 }),
+  message: text("message"),
+  status: varchar("status", { length: 20 }).default('new'), // new, contacted, qualified, converted
+  contactedAt: timestamp("contacted_at"),
+  notes: text("notes"), // Internal notes
+  assignedTo: varchar("assigned_to").references(() => users.id), // TOIT team member
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 // RELATIONS
 export const databaseConnectionsRelations = relations(databaseConnections, ({ one }) => ({
   tenant: one(tenants, { fields: [databaseConnections.tenantId], references: [tenants.id] }),
@@ -937,6 +1070,36 @@ export const completeWorkflowsRelations = relations(completeWorkflows, ({ one, m
 export const completeWorkflowExecutionsRelations = relations(completeWorkflowExecutions, ({ one }) => ({
   workflow: one(completeWorkflows, { fields: [completeWorkflowExecutions.workflowId], references: [completeWorkflows.id] }),
   tenant: one(tenants, { fields: [completeWorkflowExecutions.tenantId], references: [tenants.id] }),
+}));
+
+// Payment System Relations
+export const paymentPlansRelations = relations(paymentPlans, ({ many }) => ({
+  subscriptions: many(subscriptions),
+}));
+
+export const subscriptionsRelations = relations(subscriptions, ({ one, many }) => ({
+  tenant: one(tenants, { fields: [subscriptions.tenantId], references: [tenants.id] }),
+  plan: one(paymentPlans, { fields: [subscriptions.planId], references: [paymentPlans.id] }),
+  transactions: many(paymentTransactions),
+  invoices: many(invoices),
+}));
+
+export const paymentTransactionsRelations = relations(paymentTransactions, ({ one }) => ({
+  tenant: one(tenants, { fields: [paymentTransactions.tenantId], references: [tenants.id] }),
+  subscription: one(subscriptions, { fields: [paymentTransactions.subscriptionId], references: [subscriptions.id] }),
+}));
+
+export const paymentMethodsRelations = relations(paymentMethods, ({ one }) => ({
+  tenant: one(tenants, { fields: [paymentMethods.tenantId], references: [tenants.id] }),
+}));
+
+export const invoicesRelations = relations(invoices, ({ one }) => ({
+  tenant: one(tenants, { fields: [invoices.tenantId], references: [tenants.id] }),
+  subscription: one(subscriptions, { fields: [invoices.subscriptionId], references: [subscriptions.id] }),
+}));
+
+export const businessLeadsRelations = relations(businessLeads, ({ one }) => ({
+  assignedUser: one(users, { fields: [businessLeads.assignedTo], references: [users.id] }),
 }));
 
 // TYPE EXPORTS
@@ -994,3 +1157,19 @@ export type TaskComment = typeof taskComments.$inferSelect;
 export type InsertTaskComment = typeof taskComments.$inferInsert;
 export type Notification = typeof notifications.$inferSelect;
 export type InsertNotification = typeof notifications.$inferInsert;
+
+// Payment System Types
+export type PaymentPlan = typeof paymentPlans.$inferSelect;
+export type InsertPaymentPlan = typeof paymentPlans.$inferInsert;
+export type Subscription = typeof subscriptions.$inferSelect;
+export type InsertSubscription = typeof subscriptions.$inferInsert;
+export type PaymentTransaction = typeof paymentTransactions.$inferSelect;
+export type InsertPaymentTransaction = typeof paymentTransactions.$inferInsert;
+export type PaymentMethod = typeof paymentMethods.$inferSelect;
+export type InsertPaymentMethod = typeof paymentMethods.$inferInsert;
+export type Invoice = typeof invoices.$inferSelect;
+export type InsertInvoice = typeof invoices.$inferInsert;
+export type WebhookEvent = typeof webhookEvents.$inferSelect;
+export type InsertWebhookEvent = typeof webhookEvents.$inferInsert;
+export type BusinessLead = typeof businessLeads.$inferSelect;
+export type InsertBusinessLead = typeof businessLeads.$inferInsert;
