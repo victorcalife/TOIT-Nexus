@@ -1,8 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { LogOut, LogIn, User, Home } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
-import { useDemoAuth } from '@/contexts/DemoAuthContext';
-import { NotificationBell } from '@/components/notifications/NotificationBell';
+import { LogOut, Settings, User } from 'lucide-react';
 import toitNexusLogo from '@/assets/toit-nexus-logo.svg';
 
 interface UnifiedHeaderProps {
@@ -13,42 +10,13 @@ interface UnifiedHeaderProps {
   onLogout?: () => void;
 }
 
-export function UnifiedHeader({ 
-  title, 
-  subtitle, 
-  showUserActions = false, 
-  user: propUser, 
-  onLogout 
-}: UnifiedHeaderProps) {
-  const { isAuthenticated, user: authUser, isLoading } = useAuth();
-  
-  // Try demo auth if regular auth fails
-  let demoAuth;
-  try {
-    demoAuth = useDemoAuth();
-  } catch {
-    demoAuth = null;
-  }
-  
-  const finalAuth = demoAuth || { isAuthenticated, isLoading, user: authUser };
-  
-  // Use prop user if provided, otherwise use auth user
-  const displayUser = propUser || finalAuth.user;
-  
-  const handleLogin = () => {
-    window.location.href = '/login';
-  };
-
+export function UnifiedHeader({ title, subtitle, showUserActions = false, user, onLogout }: UnifiedHeaderProps) {
   const handleLogout = () => {
     if (onLogout) {
       onLogout();
     } else {
       window.location.href = '/api/logout';
     }
-  };
-
-  const goHome = () => {
-    window.location.href = '/';
   };
 
   return (
@@ -61,79 +29,48 @@ export function UnifiedHeader({
     >
       <div className="w-full px-6 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4 cursor-pointer" onClick={goHome}>
+          <div className="flex items-center space-x-4">
             <img 
               src={toitNexusLogo} 
-              alt="TOIT-Nexus" 
+              alt="TOIT Nexus" 
               className="h-12 w-12"
               style={{ transform: 'scale(1.15)' }}
             />
             <div>
-              <div className="leading-none">
-                <h1 className="text-2xl font-bold tracking-wide">TOIT</h1>
-                <p className="text-[10px] font-medium tracking-[0.15em] text-blue-100 -mt-1">THE ONE IN TECH</p>
-              </div>
+              <h1 className="text-2xl font-bold">
+                {title}
+              </h1>
               {subtitle && (
-                <p className="text-blue-100 text-sm mt-1">{subtitle}</p>
+                <p className="text-blue-100 text-sm mt-1">
+                  {subtitle}
+                </p>
               )}
             </div>
           </div>
-          
-          <div className="flex items-center space-x-4">
-            {/* Notification Bell */}
-            {(finalAuth.isAuthenticated || showUserActions) && <NotificationBell />}
-            
-            {/* Always show home button */}
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="text-white hover:bg-white/20"
-              onClick={goHome}
-            >
-              <Home className="h-4 w-4 mr-2" />
-              Início
-            </Button>
 
-            {!finalAuth?.isLoading && (
-              <>
-                {finalAuth.isAuthenticated || showUserActions ? (
-                  <>
-                    {/* Show user info if available */}
-                    {displayUser && (
-                      <div className="flex items-center space-x-2 text-sm">
-                        <User className="h-4 w-4" />
-                        <span>
-                          {displayUser.firstName} {displayUser.lastName}
-                        </span>
-                      </div>
-                    )}
-                    
-                    {/* Logout button */}
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      className="text-white hover:bg-white/20"
-                      onClick={handleLogout}
-                    >
-                      <LogOut className="h-4 w-4 mr-2" />
-                      Sair
-                    </Button>
-                  </>
-                ) : (
-                  /* Login button when not authenticated */
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    className="text-white hover:bg-white/20"
-                    onClick={handleLogin}
+          {showUserActions && (
+            <div className="flex items-center space-x-4">
+              {user && (
+                <div className="flex items-center space-x-3">
+                  <div className="flex items-center space-x-2 bg-white/10 rounded-lg px-3 py-2">
+                    <User className="w-4 h-4" />
+                    <span className="text-sm font-medium">
+                      {user.firstName} {user.lastName}
+                    </span>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleLogout}
+                    className="text-white hover:bg-white/10 hover:text-white"
                   >
-                    <LogIn className="h-4 w-4 mr-2" />
-                    Entrar
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Sair
                   </Button>
-                )}
-              </>
-            )}
-          </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </header>

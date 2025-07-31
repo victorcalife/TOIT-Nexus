@@ -7,7 +7,7 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-blue-50">
       <UnifiedHeader 
-        title="TOIT-Nexus" 
+        title="TOIT Nexus" 
         subtitle="Plataforma de Automação Empresarial"
       />
 

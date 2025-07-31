@@ -10,14 +10,7 @@ import { User } from "@shared/schema";
 
 declare global {
   namespace Express {
-    interface User {
-      id: string;
-      name?: string;
-      email?: string;
-      role?: string;
-      tenantId?: string;
-      departments?: string[];
-    }
+    interface User extends User {}
   }
 }
 
@@ -125,7 +118,7 @@ export function setupAuth(app: Express) {
           // Atualiza último login
           await storage.updateUserLastLogin(user.id);
 
-          return done(null, user as Express.User);
+          return done(null, user);
         } catch (error) {
           return done(error);
         }
@@ -157,7 +150,7 @@ export function setupAuth(app: Express) {
         } else {
           // For local users, fetch full user data
           const user = await storage.getUser(sessionData.userId);
-          done(null, user as any);
+          done(null, user);
         }
       } else if (typeof sessionData === 'string') {
         // Handle legacy string ID format
@@ -232,8 +225,7 @@ export function setupAuth(app: Express) {
         if (err) return next(err);
         
         // Remove senha do retorno
-        const userObj = user as any;
-        const { password: _, ...userWithoutPassword } = userObj;
+        const { password: _, ...userWithoutPassword } = user;
         res.json(userWithoutPassword);
       });
     })(req, res, next);
@@ -253,9 +245,8 @@ export function setupAuth(app: Express) {
       return res.sendStatus(401);
     }
     
-    // Remove senha do retorno se existir
-    const userObj = req.user as any;
-    const { password: _, ...userWithoutPassword } = userObj || {};
+    // Remove senha do retorno
+    const { password: _, ...userWithoutPassword } = req.user;
     res.json(userWithoutPassword);
   });
 }
