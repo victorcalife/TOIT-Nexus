@@ -10,6 +10,7 @@ import Landing from "@/pages/landing";
 import Login from "@/pages/login";
 import SimpleLogin from "@/pages/simple-login";
 import Dashboard from "@/pages/dashboard";
+import Home from "@/pages/home";
 import Clients from "@/pages/clients";
 import Categories from "@/pages/categories";
 import Workflows from "@/pages/workflows";
@@ -101,8 +102,9 @@ function Router() {
       <Route path="/select-tenant" component={SelectTenant} />
       <Route path="/tenant-selection" component={TenantSelection} />
 
-      {/* Main tenant-based application routes */}
-      <Route path="/" component={() => {
+      {/* Main application routes */}
+      <Route path="/" component={Home} />
+      <Route path="/dashboard" component={() => {
         // If user has no tenant, redirect to tenant selection
         if (!user?.tenant) {
           window.location.href = '/select-tenant';

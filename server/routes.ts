@@ -248,6 +248,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ message: 'Logout realizado com sucesso' });
     });
   });
+
+  // API básica para módulos (sem autenticação para teste)
+  app.get('/api/modules/available', async (req, res) => {
+    try {
+      const modules = await storage.getAvailableModules();
+      res.json(modules);
+    } catch (error) {
+      console.error('Erro ao buscar módulos:', error);
+      res.status(500).json({ message: 'Erro interno do servidor' });
+    }
+  });
+
+  // API básica para task templates (sem autenticação para teste)
+  app.get('/api/task-templates', async (req, res) => {
+    try {
+      const templates = await storage.getTaskTemplates();
+      res.json(templates);
+    } catch (error) {
+      console.error('Erro ao buscar templates:', error);
+      res.status(500).json({ message: 'Erro interno do servidor' });
+    }
+  });
   // Initialize system on startup
   const { initializeSystem } = await import('./initializeSystem');
   await initializeSystem();
