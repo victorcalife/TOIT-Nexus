@@ -184,6 +184,9 @@ import {
 } from "@shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Initialize system on startup
+  const { initializeSystem } = await import('./initializeSystem');
+  await initializeSystem();
   // Auth middleware with CPF/password
   setupAuth(app);
 
