@@ -991,7 +991,7 @@ export class DatabaseStorage implements IStorage {
   async executeRawQuery(sqlQuery: string): Promise<any[]> {
     try {
       const result = await db.execute(sql.raw(sqlQuery));
-      return Array.isArray(result) ? result : result.rows || [];
+      return result.rows || [];
     } catch (error) {
       console.error('Raw query execution error:', error);
       throw new Error('Query execution failed');
