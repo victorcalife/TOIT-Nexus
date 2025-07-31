@@ -1144,30 +1144,6 @@ export class DatabaseStorage implements IStorage {
     ];
   }
 
-  async getAllTenants(): Promise<Tenant[]> {
-    const allTenants = await db.select().from(tenants).orderBy(desc(tenants.createdAt));
-    
-    // Add user count for each tenant
-    const tenantsWithCounts = await Promise.all(
-      allTenants.map(async (tenant) => {
-        const [userCount] = await db.select({ count: count() })
-          .from(users)
-          .where(eq(users.tenantId, tenant.id));
-        
-        const [departmentCount] = await db.select({ count: count() })
-          .from(departments)
-          .where(eq(departments.tenantId, tenant.id));
-        
-        return {
-          ...tenant,
-          userCount: userCount.count,
-          departmentCount: departmentCount.count
-        };
-      })
-    );
-    
-    return tenantsWithCounts;
-  }
 
   async deleteTenant(id: string): Promise<void> {
     // Delete all related data first
@@ -1185,25 +1161,6 @@ export class DatabaseStorage implements IStorage {
     await db.delete(tenants).where(eq(tenants.id, id));
   }
 
-  async getAllUsers(): Promise<any[]> {
-    const allUsers = await db.select({
-      id: users.id,
-      email: users.email,
-      firstName: users.firstName,
-      lastName: users.lastName,
-      role: users.role,
-      isActive: users.isActive,
-      tenantId: users.tenantId,
-      lastLoginAt: users.lastLoginAt,
-      createdAt: users.createdAt,
-      tenantName: tenants.name
-    })
-    .from(users)
-    .leftJoin(tenants, eq(users.tenantId, tenants.id))
-    .orderBy(desc(users.createdAt));
-    
-    return allUsers;
-  }
 
   async updateUser(id: string, userData: Partial<any>): Promise<User> {
     const [user] = await db
@@ -1622,23 +1579,6 @@ export class DatabaseStorage implements IStorage {
     }
   }
 
-  async createTenant(tenantData: InsertTenant): Promise<Tenant> {
-    try {
-      const [tenant] = await db.insert(tenants)
-        .values({
-          ...tenantData,
-          id: `tenant-${Date.now()}`,
-          isActive: true,
-          createdAt: new Date(),
-          updatedAt: new Date()
-        })
-        .returning();
-      return tenant;
-    } catch (error) {
-      console.error('Error creating tenant:', error);
-      throw error;
-    }
-  }
 
   // Versão simplificada para getTaskTemplates que funciona
   async getTaskTemplates(): Promise<TaskTemplate[]> {
