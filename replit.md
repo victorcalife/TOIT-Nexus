@@ -4,7 +4,13 @@
 
 This is a full-stack investment workflow automation platform called "InvestFlow" built with React, Express, and PostgreSQL. The application provides a comprehensive solution for investment firms to automate client management, create custom workflows, and generate reports through an intuitive interface.
 
-**MAJOR UPDATE (January 30, 2025)**: Implemented comprehensive TOIT administrative interface with complete multi-tenant management capabilities, allowing the TOIT team to control every aspect of the system including tenant creation, user management, department configuration, permission assignment, workflow oversight, integration management, and system monitoring.
+**MAJOR UPDATE (January 30, 2025)**: Pivoting back to core TOIT NEXUS workflow automation system with focus on:
+- Real-time notifications system
+- Interactive no-code query builder with epic UI
+- KPI creation and personalized dashboards
+- User workspace saving capabilities
+- Lead capture landing page with 7-day free trial
+- Professional marketing messaging targeting democratization of enterprise automation
 
 ## User Preferences
 
