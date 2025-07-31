@@ -13,12 +13,12 @@ export default function DemoDashboard() {
     <DemoAuthProvider>
       <NotificationProvider>
         <div className="min-h-screen bg-gray-50">
-          <UnifiedHeader title="Demo - Sistema de Notificações" showUserActions={true} />
+          <UnifiedHeader title="TOIT-Nexus - Demo Notificações" showUserActions={true} />
       
       <main className="container mx-auto px-4 py-8 space-y-8">
         <div className="text-center space-y-4">
           <h1 className="text-3xl font-bold text-gray-900">
-            TOIT Nexus - Sistema de Notificações
+            TOIT-Nexus - Sistema de Notificações
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Demonstração completa do sistema de notificações em tempo real com WebSocket, 

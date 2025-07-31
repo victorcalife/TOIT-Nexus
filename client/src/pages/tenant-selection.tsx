@@ -89,9 +89,9 @@ export default function TenantSelection() {
             <div className="flex items-center">
               <Crown className="w-6 h-6 text-purple-600 mr-3" />
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">Acesso Administrativo TOIT</h3>
+                <h3 className="text-lg font-semibold text-gray-900">Acesso Administrativo TOIT-Nexus</h3>
                 <p className="text-sm text-gray-600">
-                  Área de gestão da TOIT para administração de clientes e sistema
+                  Área de gestão da TOIT-Nexus para administração de clientes e sistema
                 </p>
               </div>
             </div>
@@ -100,7 +100,7 @@ export default function TenantSelection() {
               className="bg-purple-600 hover:bg-purple-700"
             >
               <Settings className="w-4 h-4 mr-2" />
-              Acessar Painel TOIT
+              Acessar Painel TOIT-Nexus
             </Button>
           </div>
         </div>

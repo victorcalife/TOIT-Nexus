@@ -75,7 +75,7 @@ export function Sidebar() {
         <div className="flex items-center justify-center">
           <img 
             src={toitNexusLogo} 
-            alt="TOIT Nexus" 
+            alt="TOIT-Nexus" 
             className="h-10 w-auto"
           />
         </div>

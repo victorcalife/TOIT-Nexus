@@ -64,7 +64,7 @@ export function UnifiedHeader({
           <div className="flex items-center space-x-4 cursor-pointer" onClick={goHome}>
             <img 
               src={toitNexusLogo} 
-              alt="TOIT Nexus" 
+              alt="TOIT-Nexus" 
               className="h-12 w-12"
               style={{ transform: 'scale(1.15)' }}
             />

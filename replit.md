@@ -2,10 +2,10 @@
 
 ## Overview
 
-This is a full-stack investment workflow automation platform called "InvestFlow" built with React, Express, and PostgreSQL. The application provides a comprehensive solution for investment firms to automate client management, create custom workflows, and generate reports through an intuitive interface.
+This is a full-stack investment workflow automation platform called "TOIT-Nexus" built with React, Express, and PostgreSQL. The application provides a comprehensive solution for investment firms to automate client management, create custom workflows, and generate reports through an intuitive interface.
 
 **MAJOR UPDATE (January 30, 2025)**: 
-- Implemented comprehensive TOIT administrative interface with complete multi-tenant management capabilities
+- Implemented comprehensive TOIT-Nexus administrative interface with complete multi-tenant management capabilities
 - **NEW**: Added complete multi-tenant B2C/B2B business model support with guaranteed tenant isolation
 - **NEW**: Built comprehensive query builder with no-code interface for creating KPIs, dashboards, and reports
 - **NEW**: Extended database schema to support individual users (B2C) and enterprise clients (B2B) with complete data separation
