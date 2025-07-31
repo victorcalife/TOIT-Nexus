@@ -199,7 +199,7 @@ router.post("/instances/:id/start", async (req: any, res) => {
   }
 });
 
-// COMPLETAR TAREFA
+// COMPLETAR TAREFA + INTEGRAÇÃO WORKFLOW
 router.post("/instances/:id/complete", async (req: any, res) => {
   try {
     const { id } = req.params;
@@ -213,6 +213,9 @@ router.post("/instances/:id/complete", async (req: any, res) => {
       completionData,
       notes
     });
+    
+    // 🔗 INTEGRAÇÃO WORKFLOW: Atualizar progresso do workflow
+    await storage.updateWorkflowFromTaskProgress(id);
     
     // Notificar o gerente que atribuiu a tarefa
     await storage.createNotification({
