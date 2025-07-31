@@ -12,7 +12,7 @@ import SimpleLogin from "@/pages/simple-login";
 import Dashboard from "@/pages/dashboard";
 import Home from "@/pages/home";
 import WorkingApp from "@/pages/working-app";
-import FunctionalAdmin from "@/pages/functional-admin";
+import WorkingAdmin from "@/pages/working-admin";
 import Clients from "@/pages/clients";
 import Categories from "@/pages/categories";
 import Workflows from "@/pages/workflows";
@@ -106,9 +106,9 @@ function Router() {
 
       {/* Main application routes */}
       <Route path="/" component={() => {
-        // Super admin vai para painel administrativo funcional
+        // Super admin vai para painel administrativo que funciona
         if (isSuperAdmin) {
-          return <FunctionalAdmin />;
+          return <WorkingAdmin />;
         }
         // Outros usuários vão para working app
         return <WorkingApp />;
