@@ -33,14 +33,14 @@ export function UnifiedHeader({
     >
       <div className="w-full px-6 py-2">
         <div className="flex items-center justify-between">
-          <div className="flex items-center">
+          <div className="flex items-center justify-center">
             <img 
               src={toitNexusLogoSvg} 
               alt="TOIT Nexus - Workflow Automation Platform" 
               className="w-auto"
               style={{ 
-                height: '55px',
-                transform: 'scale(1.1)'
+                height: '70px',
+                transform: 'scale(1.2)'
               }}
             />
           </div>
