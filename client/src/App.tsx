@@ -241,6 +241,38 @@ function Router() {
         );
       }} />
 
+      <Route path="/query-builder" component={() => {
+        if (!user?.tenant) {
+          window.location.href = '/select-tenant';
+          return null;
+        }
+        const QueryBuilder = require("@/pages/query-builder").default;
+        return (
+          <div className="flex h-screen bg-gray-50">
+            <Sidebar />
+            <main className="flex-1 overflow-hidden">
+              <QueryBuilder />
+            </main>
+          </div>
+        );
+      }} />
+
+      <Route path="/data-connections" component={() => {
+        if (!user?.tenant) {
+          window.location.href = '/select-tenant';
+          return null;
+        }
+        const DataConnections = require("@/pages/data-connections").default;
+        return (
+          <div className="flex h-screen bg-gray-50">
+            <Sidebar />
+            <main className="flex-1 overflow-hidden">
+              <DataConnections />
+            </main>
+          </div>
+        );
+      }} />
+
       <Route path="/settings" component={() => {
         if (!user?.tenant) {
           window.location.href = '/select-tenant';

@@ -19,6 +19,7 @@ import {
 } from "./tenantMiddleware";
 import { accessControlRoutes } from "./accessControlRoutes";
 import { adminRoutes } from "./adminRoutes";
+import { registerQueryBuilderRoutes } from "./queryBuilderRoutes";
 
 // Helper function to determine if client should be assigned to a category
 function shouldAssignToCategory(client: any, category: any): boolean {
@@ -1057,6 +1058,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register TOIT admin routes
   app.use('/api/admin', adminRoutes);
+
+  // Register Query Builder routes
+  registerQueryBuilderRoutes(app);
 
   const httpServer = createServer(app);
   return httpServer;

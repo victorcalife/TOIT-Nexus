@@ -126,7 +126,7 @@ export default function QueryBuilderPage() {
     mutationFn: async (query: QueryBuilder) => {
       return await apiRequest('/api/query-builder/execute', 'POST', { query });
     },
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       setQueryResults(data.results || []);
       toast({
         title: "Consulta executada",
@@ -255,12 +255,12 @@ export default function QueryBuilderPage() {
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={queryResults}>
                 {visualization.showGrid && <CartesianGrid strokeDasharray="3 3" />}
-                <XAxis dataKey={visualization.xAxis} />
+                <XAxis dataKey={visualization.xAxis || 'label'} />
                 <YAxis />
                 <Tooltip />
                 {visualization.showLegend && <Legend />}
                 <Bar 
-                  dataKey={visualization.yAxis} 
+                  dataKey={visualization.yAxis || 'value'} 
                   fill={visualization.colors[0]} 
                 />
               </BarChart>
@@ -274,13 +274,13 @@ export default function QueryBuilderPage() {
             <ResponsiveContainer width="100%" height="100%">
               <RechartsLineChart data={queryResults}>
                 {visualization.showGrid && <CartesianGrid strokeDasharray="3 3" />}
-                <XAxis dataKey={visualization.xAxis} />
+                <XAxis dataKey={visualization.xAxis || 'label'} />
                 <YAxis />
                 <Tooltip />
                 {visualization.showLegend && <Legend />}
                 <Line 
                   type="monotone" 
-                  dataKey={visualization.yAxis} 
+                  dataKey={visualization.yAxis || 'value'} 
                   stroke={visualization.colors[0]} 
                 />
               </RechartsLineChart>
@@ -295,8 +295,8 @@ export default function QueryBuilderPage() {
               <RechartsPieChart>
                 <Pie
                   data={queryResults}
-                  dataKey={visualization.yAxis}
-                  nameKey={visualization.xAxis}
+                  dataKey={visualization.yAxis || 'value'}
+                  nameKey={visualization.xAxis || 'label'}
                   cx="50%"
                   cy="50%"
                   outerRadius={80}
@@ -319,13 +319,13 @@ export default function QueryBuilderPage() {
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={queryResults}>
                 {visualization.showGrid && <CartesianGrid strokeDasharray="3 3" />}
-                <XAxis dataKey={visualization.xAxis} />
+                <XAxis dataKey={visualization.xAxis || 'label'} />
                 <YAxis />
                 <Tooltip />
                 {visualization.showLegend && <Legend />}
                 <Area 
                   type="monotone" 
-                  dataKey={visualization.yAxis} 
+                  dataKey={visualization.yAxis || 'value'} 
                   stroke={visualization.colors[0]} 
                   fill={visualization.colors[0]} 
                 />
@@ -493,10 +493,10 @@ export default function QueryBuilderPage() {
                           <SelectContent>
                             <SelectItem value="=">=</SelectItem>
                             <SelectItem value="!=">!=</SelectItem>
-                            <SelectItem value=">">></SelectItem>
-                            <SelectItem value="<"><</SelectItem>
-                            <SelectItem value=">=">>=</SelectItem>
-                            <SelectItem value="<="><=</SelectItem>
+                            <SelectItem value=">">&gt;</SelectItem>
+                            <SelectItem value="<">&lt;</SelectItem>
+                            <SelectItem value=">=">&gt;=</SelectItem>
+                            <SelectItem value="<=">&lt;=</SelectItem>
                             <SelectItem value="LIKE">LIKE</SelectItem>
                           </SelectContent>
                         </Select>
