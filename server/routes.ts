@@ -538,6 +538,167 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // ========== ROTAS DE ADAPTAÇÃO INTELIGENTE TOIT NEXUS ==========
+  
+  // Análise automática de padrões por tenant
+  app.get('/api/adaptive/analyze/:tenantId', isAuthenticated, requireSuperAdmin, async (req, res) => {
+    try {
+      const { tenantId } = req.params;
+      console.log(`🧠 Iniciando análise adaptativa para tenant: ${tenantId}`);
+      
+      const patterns = await adaptiveEngine.analyzeDataPatterns(tenantId);
+      
+      res.json({
+        success: true,
+        tenantId,
+        patterns,
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      console.error('Erro na análise adaptativa:', error);
+      res.status(500).json({ 
+        success: false,
+        message: 'Erro ao analisar padrões de dados',
+        error: error instanceof Error ? error.message : 'Erro desconhecido'
+      });
+    }
+  });
+
+  // Geração automática de KPIs adaptativos
+  app.post('/api/adaptive/generate-kpis/:tenantId', isAuthenticated, requireSuperAdmin, async (req, res) => {
+    try {
+      const { tenantId } = req.params;
+      console.log(`🎯 Gerando KPIs adaptativos para tenant: ${tenantId}`);
+      
+      const kpis = await adaptiveEngine.generateAdaptiveKPIs(tenantId);
+      
+      res.json({
+        success: true,
+        tenantId,
+        kpisGenerated: kpis.length,
+        kpis,
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      console.error('Erro na geração de KPIs:', error);
+      res.status(500).json({ 
+        success: false,
+        message: 'Erro ao gerar KPIs adaptativos',
+        error: error instanceof Error ? error.message : 'Erro desconhecido'
+      });
+    }
+  });
+
+  // Execução de adaptações automáticas
+  app.post('/api/adaptive/execute/:tenantId', isAuthenticated, requireSuperAdmin, async (req, res) => {
+    try {
+      const { tenantId } = req.params;
+      console.log(`🔄 Executando adaptações automáticas para tenant: ${tenantId}`);
+      
+      const adaptations = await adaptiveEngine.executeAdaptations(tenantId);
+      
+      res.json({
+        success: true,
+        tenantId,
+        adaptationsExecuted: adaptations.adaptationsCount,
+        adaptations: adaptations.adaptations,
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      console.error('Erro na execução de adaptações:', error);
+      res.status(500).json({ 
+        success: false,
+        message: 'Erro ao executar adaptações',
+        error: error instanceof Error ? error.message : 'Erro desconhecido'
+      });
+    }
+  });
+
+  // Análise em tempo real de mudanças de dados
+  app.post('/api/adaptive/realtime-analysis/:tenantId', isAuthenticated, async (req, res) => {
+    try {
+      const { tenantId } = req.params;
+      const { dataType, data } = req.body;
+      
+      console.log(`⚡ Análise em tempo real: ${dataType} para tenant: ${tenantId}`);
+      
+      const analysis = await adaptiveEngine.performRealtimeAnalysis(tenantId, dataType, data);
+      
+      res.json({
+        success: true,
+        tenantId,
+        dataType,
+        analysis,
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      console.error('Erro na análise em tempo real:', error);
+      res.status(500).json({ 
+        success: false,
+        message: 'Erro na análise em tempo real',
+        error: error instanceof Error ? error.message : 'Erro desconhecido'
+      });
+    }
+  });
+
+  // Dashboard de insights adaptativos
+  app.get('/api/adaptive/insights/:tenantId', isAuthenticated, async (req, res) => {
+    try {
+      const { tenantId } = req.params;
+      
+      // Verificar se usuário pode acessar este tenant
+      if (!canAccessTenantResource(req, tenantId)) {
+        return res.status(403).json({ message: 'Acesso negado ao tenant especificado' });
+      }
+      
+      // Gerar insights em tempo real
+      const patterns = await adaptiveEngine.analyzeDataPatterns(tenantId);
+      
+      const insights = {
+        clientInsights: {
+          totalClients: patterns.clientPatterns?.totalClients || 0,
+          avgInvestment: patterns.clientPatterns?.avgInvestment || 0,
+          riskDistribution: patterns.clientPatterns?.riskDistribution || {},
+          suggestedKPIs: patterns.clientPatterns?.suggestedKPIs || []
+        },
+        investmentInsights: {
+          patterns: patterns.investmentPatterns?.riskAnalysis || {},
+          suggestedThresholds: patterns.investmentPatterns?.suggestedThresholds || {},
+          adaptiveRules: patterns.investmentPatterns?.adaptiveRules || []
+        },
+        riskInsights: {
+          incompatibilities: patterns.riskPatterns?.incompatibilities || 0,
+          riskAlerts: patterns.riskPatterns?.riskAlerts || [],
+          adaptiveThresholds: patterns.riskPatterns?.adaptiveThresholds || {}
+        },
+        workflowInsights: {
+          totalWorkflows: patterns.workflowPatterns?.totalWorkflows || 0,
+          activeWorkflows: patterns.workflowPatterns?.activeWorkflows || 0,
+          suggestions: patterns.workflowPatterns?.suggestedOptimizations || []
+        },
+        dataInsights: {
+          totalQueries: patterns.dataPatterns?.totalQueries || 0,
+          totalFiles: patterns.dataPatterns?.totalFiles || 0,
+          suggestions: patterns.dataPatterns?.suggestedConnections || []
+        }
+      };
+      
+      res.json({
+        success: true,
+        tenantId,
+        insights,
+        lastAnalysis: new Date().toISOString()
+      });
+    } catch (error) {
+      console.error('Erro ao gerar insights:', error);
+      res.status(500).json({ 
+        success: false,
+        message: 'Erro ao gerar insights adaptativos',
+        error: error instanceof Error ? error.message : 'Erro desconhecido'
+      });
+    }
+  });
+
   // ENDPOINTS PARA SISTEMA COMPLETO TOIT NEXUS
 
   // DATABASE CONNECTIONS - Conectar qualquer banco
