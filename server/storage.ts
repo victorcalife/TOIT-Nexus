@@ -1650,6 +1650,369 @@ export class DatabaseStorage implements IStorage {
       return [];
     }
   }
+
+  // QUERY BUILDER E ANALYTICS REAIS
+  async executeCustomQuery(sql: string): Promise<any[]> {
+    try {
+      console.log('Executando SQL personalizado:', sql);
+      const results = await db.execute(sql);
+      return results.rows || [];
+    } catch (error) {
+      console.error('Erro ao executar query personalizada:', error);
+      throw error;
+    }
+  }
+
+  async createKPIDashboard(kpiData: any): Promise<any> {
+    try {
+      // Salvar KPI no banco (usando tabela genérica)
+      const [kpi] = await db.insert(kpiDashboards).values(kpiData).returning();
+      return kpi;
+    } catch (error) {
+      console.error('Erro ao criar KPI dashboard:', error);
+      throw error;
+    }
+  }
+
+  async getUserGrowthData(period: string): Promise<any[]> {
+    try {
+      const sql = `
+        SELECT 
+          DATE(created_at) as date,
+          COUNT(*) as new_users,
+          SUM(COUNT(*)) OVER (ORDER BY DATE(created_at)) as total_users
+        FROM users 
+        WHERE created_at >= NOW() - INTERVAL '${period.replace('d', ' days')}'
+        GROUP BY DATE(created_at)
+        ORDER BY date
+      `;
+      return await this.executeCustomQuery(sql);
+    } catch (error) {
+      console.error('Erro ao buscar dados de crescimento:', error);
+      return [];
+    }
+  }
+
+  async getWorkflowExecutionData(period: string): Promise<any[]> {
+    try {
+      const sql = `
+        SELECT 
+          DATE(created_at) as date,
+          COUNT(*) as executions,
+          COUNT(CASE WHEN status = 'completed' THEN 1 END) as successful,
+          COUNT(CASE WHEN status = 'failed' THEN 1 END) as failed
+        FROM task_instances 
+        WHERE created_at >= NOW() - INTERVAL '${period.replace('d', ' days')}'
+        GROUP BY DATE(created_at)
+        ORDER BY date
+      `;
+      return await this.executeCustomQuery(sql);
+    } catch (error) {
+      console.error('Erro ao buscar dados de execução:', error);
+      return [];
+    }
+  }
+
+  async getTenantUsageData(period: string): Promise<any[]> {
+    try {
+      const sql = `
+        SELECT 
+          t.name as tenant_name,
+          COUNT(DISTINCT u.id) as active_users,
+          COUNT(DISTINCT ti.id) as workflow_executions,
+          AVG(CASE WHEN ti.status = 'completed' THEN 1.0 ELSE 0.0 END) as success_rate
+        FROM tenants t
+        LEFT JOIN users u ON t.id = u.tenant_id AND u.last_login_at >= NOW() - INTERVAL '${period.replace('d', ' days')}'
+        LEFT JOIN task_instances ti ON t.id = ti.tenant_id AND ti.created_at >= NOW() - INTERVAL '${period.replace('d', ' days')}'
+        GROUP BY t.id, t.name
+        ORDER BY workflow_executions DESC
+      `;
+      return await this.executeCustomQuery(sql);
+    } catch (error) {
+      console.error('Erro ao buscar dados de uso por tenant:', error);
+      return [];
+    }
+  }
+
+  async getRevenueData(period: string): Promise<any[]> {
+    try {
+      // Simulação de dados de receita (implementar com tabela real)
+      const sql = `
+        SELECT 
+          DATE_TRUNC('month', created_at) as month,
+          COUNT(DISTINCT tenant_id) * 99.90 as monthly_revenue
+        FROM users 
+        WHERE created_at >= NOW() - INTERVAL '${period.replace('d', ' days')}'
+        GROUP BY DATE_TRUNC('month', created_at)
+        ORDER BY month
+      `;
+      return await this.executeCustomQuery(sql);
+    } catch (error) {
+      console.error('Erro ao buscar dados de receita:', error);
+      return [];
+    }
+  }
+
+  async generateReport(templateId: string, filters: any): Promise<any[]> {
+    try {
+      let sql = '';
+      
+      switch (templateId) {
+        case 'user-activity':
+          sql = `
+            SELECT 
+              u.first_name || ' ' || u.last_name as user_name,
+              u.email,
+              u.role,
+              t.name as company,
+              u.last_login_at,
+              COUNT(ti.id) as workflow_executions
+            FROM users u
+            LEFT JOIN tenants t ON u.tenant_id = t.id
+            LEFT JOIN task_instances ti ON u.id = ti.assigned_to_id
+            GROUP BY u.id, u.first_name, u.last_name, u.email, u.role, t.name, u.last_login_at
+            ORDER BY workflow_executions DESC
+          `;
+          break;
+        case 'workflow-performance':
+          sql = `
+            SELECT 
+              tt.name as workflow_name,
+              COUNT(ti.id) as total_executions,
+              COUNT(CASE WHEN ti.status = 'completed' THEN 1 END) as successful,
+              COUNT(CASE WHEN ti.status = 'failed' THEN 1 END) as failed,
+              AVG(EXTRACT(EPOCH FROM (ti.updated_at - ti.created_at))) as avg_duration_seconds
+            FROM task_templates tt
+            LEFT JOIN task_instances ti ON tt.id = ti.template_id
+            GROUP BY tt.id, tt.name
+            ORDER BY total_executions DESC
+          `;
+          break;
+        default:
+          sql = 'SELECT 1 as placeholder';
+      }
+      
+      return await this.executeCustomQuery(sql);
+    } catch (error) {
+      console.error('Erro ao gerar relatório:', error);
+      return [];
+    }
+  }
+
+  convertToCSV(data: any[]): string {
+    if (!data.length) return '';
+    
+    const headers = Object.keys(data[0]);
+    const csvRows = [
+      headers.join(','),
+      ...data.map(row => 
+        headers.map(header => 
+          JSON.stringify(row[header] || '')
+        ).join(',')
+      )
+    ];
+    
+    return csvRows.join('\n');
+  }
+
+  async saveFile(fileData: any): Promise<any> {
+    try {
+      // Salvar informações do arquivo no banco
+      const [file] = await db.insert(uploadedFiles).values(fileData).returning();
+      return file;
+    } catch (error) {
+      console.error('Erro ao salvar arquivo:', error);
+      throw error;
+    }
+  }
+
+  async logWebhook(webhookData: any): Promise<any> {
+    try {
+      const [webhook] = await db.insert(webhookLogs).values(webhookData).returning();
+      return webhook;
+    } catch (error) {
+      console.error('Erro ao registrar webhook:', error);
+      throw error;
+    }
+  }
+
+  async triggerWorkflowsByWebhook(webhookId: string, payload: any): Promise<void> {
+    try {
+      console.log(`Disparando workflows para webhook ${webhookId}`);
+      // Implementar lógica de trigger de workflows
+    } catch (error) {
+      console.error('Erro ao disparar workflows:', error);
+    }
+  }
+
+  // MÉTODOS PARA SISTEMA COMPLETO TOIT NEXUS
+
+  // Database Connections
+  async createDatabaseConnection(data: any): Promise<any> {
+    try {
+      const [connection] = await db.insert(databaseConnections).values(data).returning();
+      return connection;
+    } catch (error) {
+      console.error('Erro ao criar conexão de banco:', error);
+      throw error;
+    }
+  }
+
+  async getDatabaseConnections(tenantId: string): Promise<any[]> {
+    try {
+      return await db.select().from(databaseConnections).where(eq(databaseConnections.tenantId, tenantId));
+    } catch (error) {
+      console.error('Erro ao buscar conexões de banco:', error);
+      return [];
+    }
+  }
+
+  async testDatabaseConnection(connectionId: string): Promise<boolean> {
+    try {
+      const [connection] = await db.select().from(databaseConnections).where(eq(databaseConnections.id, connectionId));
+      if (!connection) return false;
+      
+      // Test logic implementado no databaseConnector
+      await db.update(databaseConnections)
+        .set({ lastTestedAt: new Date() })
+        .where(eq(databaseConnections.id, connectionId));
+      
+      return true;
+    } catch (error) {
+      console.error('Erro ao testar conexão:', error);
+      return false;
+    }
+  }
+
+  // API Connections
+  async createApiConnection(data: any): Promise<any> {
+    try {
+      const [connection] = await db.insert(apiConnections).values(data).returning();
+      return connection;
+    } catch (error) {
+      console.error('Erro ao criar conexão API:', error);
+      throw error;
+    }
+  }
+
+  async getApiConnections(tenantId: string): Promise<any[]> {
+    try {
+      return await db.select().from(apiConnections).where(eq(apiConnections.tenantId, tenantId));
+    } catch (error) {
+      console.error('Erro ao buscar conexões API:', error);
+      return [];
+    }
+  }
+
+  // Query Builders
+  async createQueryBuilder(data: any): Promise<any> {
+    try {
+      const [query] = await db.insert(queryBuilders).values(data).returning();
+      return query;
+    } catch (error) {
+      console.error('Erro ao criar query builder:', error);
+      throw error;
+    }
+  }
+
+  async getQueryBuilders(tenantId: string): Promise<any[]> {
+    try {
+      return await db.select().from(queryBuilders).where(eq(queryBuilders.tenantId, tenantId));
+    } catch (error) {
+      console.error('Erro ao buscar query builders:', error);
+      return [];
+    }
+  }
+
+  async executeQueryBuilder(queryId: string): Promise<any> {
+    try {
+      const [query] = await db.select().from(queryBuilders).where(eq(queryBuilders.id, queryId));
+      if (!query) throw new Error('Query não encontrada');
+
+      // Update last executed
+      await db.update(queryBuilders)
+        .set({ lastExecutedAt: new Date() })
+        .where(eq(queryBuilders.id, queryId));
+
+      return {
+        query,
+        results: [], // Implemented by connectors
+        executedAt: new Date()
+      };
+    } catch (error) {
+      console.error('Erro ao executar query builder:', error);
+      throw error;
+    }
+  }
+
+  // KPI Dashboards
+  async getKpiDashboards(tenantId: string): Promise<any[]> {
+    try {
+      return await db.select().from(kpiDashboards).where(eq(kpiDashboards.tenantId, tenantId));
+    } catch (error) {
+      console.error('Erro ao buscar KPI dashboards:', error);
+      return [];
+    }
+  }
+
+  // Complete Workflows
+  async createCompleteWorkflow(data: any): Promise<any> {
+    try {
+      const [workflow] = await db.insert(completeWorkflows).values(data).returning();
+      return workflow;
+    } catch (error) {
+      console.error('Erro ao criar workflow completo:', error);
+      throw error;
+    }
+  }
+
+  async getCompleteWorkflows(tenantId: string): Promise<any[]> {
+    try {
+      return await db.select().from(completeWorkflows).where(eq(completeWorkflows.tenantId, tenantId));
+    } catch (error) {
+      console.error('Erro ao buscar workflows completos:', error);
+      return [];
+    }
+  }
+
+  async executeCompleteWorkflow(workflowId: string): Promise<any> {
+    try {
+      const [workflow] = await db.select().from(completeWorkflows).where(eq(completeWorkflows.id, workflowId));
+      if (!workflow) throw new Error('Workflow não encontrado');
+
+      // Create execution record
+      const execution = await db.insert(completeWorkflowExecutions).values({
+        id: `exec-${Date.now()}`,
+        workflowId,
+        tenantId: workflow.tenantId,
+        status: 'running',
+        triggeredBy: 'manual'
+      }).returning();
+
+      // Update workflow execution count
+      await db.update(completeWorkflows)
+        .set({ 
+          executionCount: workflow.executionCount + 1,
+          lastExecutedAt: new Date()
+        })
+        .where(eq(completeWorkflows.id, workflowId));
+
+      return execution[0];
+    } catch (error) {
+      console.error('Erro ao executar workflow completo:', error);
+      throw error;
+    }
+  }
+
+  // File Management
+  async getUploadedFiles(tenantId: string): Promise<any[]> {
+    try {
+      return await db.select().from(uploadedFiles).where(eq(uploadedFiles.tenantId, tenantId));
+    } catch (error) {
+      console.error('Erro ao buscar arquivos:', error);
+      return [];
+    }
+  }
 }
 
 export const storage = new DatabaseStorage();

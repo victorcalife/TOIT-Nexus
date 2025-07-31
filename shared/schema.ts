@@ -33,6 +33,9 @@ export const workflowStatusEnum = pgEnum('workflow_status', ['active', 'inactive
 export const tenantStatusEnum = pgEnum('tenant_status', ['active', 'inactive', 'suspended']);
 export const permissionTypeEnum = pgEnum('permission_type', ['read', 'write', 'delete', 'admin']);
 export const departmentTypeEnum = pgEnum('department_type', ['sales', 'purchases', 'finance', 'operations', 'hr', 'it', 'marketing', 'custom']);
+export const databaseTypeEnum = pgEnum('database_type', ['postgresql', 'mysql', 'mssql', 'oracle', 'sqlite']);
+export const chartTypeEnum = pgEnum('chart_type', ['bar', 'line', 'pie', 'doughnut', 'area', 'scatter']);
+export const workflowStepTypeEnum = pgEnum('workflow_step_type', ['condition', 'action', 'webhook', 'email', 'api_call', 'file_process', 'database_query']);
 
 // Tenants table (empresas/clientes)
 export const tenants = pgTable("tenants", {
@@ -770,8 +773,189 @@ export const insertDashboardSchema = createInsertSchema(dashboards).omit({
 // Type exports
 export type Tenant = typeof tenants.$inferSelect;
 export type InsertTenant = typeof tenants.$inferInsert;
+// TABELAS PARA SISTEMA COMPLETO TOIT NEXUS
+
+// Database Connections - Qualquer banco de dados
+export const databaseConnections = pgTable("database_connections", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  name: varchar("name", { length: 200 }).notNull(),
+  type: databaseTypeEnum("type").notNull(), // postgresql, mysql, mssql, oracle
+  host: varchar("host", { length: 255 }).notNull(),
+  port: integer("port").notNull(),
+  database: varchar("database", { length: 255 }).notNull(),
+  username: varchar("username", { length: 255 }).notNull(),
+  password: varchar("password", { length: 255 }).notNull(), // Encrypted
+  ssl: boolean("ssl").default(false),
+  connectionString: text("connection_string"), // Alternative to individual fields
+  isActive: boolean("is_active").default(true),
+  lastTestedAt: timestamp("last_tested_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// API Connections - Qualquer API externa
+export const apiConnections = pgTable("api_connections", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  name: varchar("name", { length: 200 }).notNull(),
+  baseUrl: varchar("base_url", { length: 500 }).notNull(),
+  authType: varchar("auth_type", { length: 50 }).notNull(), // bearer, apikey, basic, oauth
+  authConfig: jsonb("auth_config").notNull(), // Headers, tokens, etc
+  headers: jsonb("headers"), // Default headers
+  timeout: integer("timeout").default(30000),
+  isActive: boolean("is_active").default(true),
+  lastTestedAt: timestamp("last_tested_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Query Builder - Queries visuais no-code
+export const queryBuilders = pgTable("query_builders", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  name: varchar("name", { length: 200 }).notNull(),
+  description: text("description"),
+  connectionId: varchar("connection_id"), // database or api connection
+  connectionType: varchar("connection_type", { length: 20 }).notNull(), // 'database' or 'api'
+  queryConfig: jsonb("query_config").notNull(), // Visual query configuration
+  sqlGenerated: text("sql_generated"), // For database queries
+  apiEndpoint: varchar("api_endpoint", { length: 500 }), // For API queries
+  lastExecutedAt: timestamp("last_executed_at"),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// KPI Dashboards - KPIs e métricas
+export const kpiDashboards = pgTable("kpi_dashboards", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  name: varchar("name", { length: 200 }).notNull(),
+  description: text("description"),
+  queryBuilderId: varchar("query_builder_id").references(() => queryBuilders.id),
+  chartType: chartTypeEnum("chart_type").notNull(),
+  chartConfig: jsonb("chart_config").notNull(), // Chart.js configuration
+  refreshInterval: integer("refresh_interval").default(300), // seconds
+  isActive: boolean("is_active").default(true),
+  position: jsonb("position"), // Dashboard layout position
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Uploaded Files - Gestão de arquivos
+export const uploadedFiles = pgTable("uploaded_files", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  originalName: varchar("original_name", { length: 255 }).notNull(),
+  filename: varchar("filename", { length: 255 }).notNull(),
+  mimetype: varchar("mimetype", { length: 100 }).notNull(),
+  size: integer("size").notNull(),
+  path: varchar("path", { length: 500 }).notNull(),
+  isProcessed: boolean("is_processed").default(false),
+  metadata: jsonb("metadata"), // File analysis results
+  uploadedAt: timestamp("uploaded_at").defaultNow(),
+});
+
+// Webhook Logs - Logs de webhooks
+export const webhookLogs = pgTable("webhook_logs", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id),
+  webhookId: varchar("webhook_id", { length: 255 }).notNull(),
+  payload: jsonb("payload").notNull(),
+  headers: jsonb("headers"),
+  processed: boolean("processed").default(false),
+  processingResult: jsonb("processing_result"),
+  receivedAt: timestamp("received_at").defaultNow(),
+});
+
+// Complete Workflows - Workflows avançados
+export const completeWorkflows = pgTable("complete_workflows", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  name: varchar("name", { length: 200 }).notNull(),
+  description: text("description"),
+  steps: jsonb("steps").notNull(), // Array of workflow steps
+  triggers: jsonb("triggers").notNull(), // Trigger configurations
+  status: workflowStatusEnum("status").default('draft'),
+  executionCount: integer("execution_count").default(0),
+  lastExecutedAt: timestamp("last_executed_at"),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Complete Workflow Executions - Histórico de execuções
+export const completeWorkflowExecutions = pgTable("complete_workflow_executions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  workflowId: varchar("workflow_id").references(() => completeWorkflows.id).notNull(),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  status: varchar("status", { length: 50 }).notNull(), // running, completed, failed
+  startedAt: timestamp("started_at").defaultNow(),
+  completedAt: timestamp("completed_at"),
+  executionLog: jsonb("execution_log"), // Detailed execution steps
+  errorMessage: text("error_message"),
+  triggeredBy: varchar("triggered_by", { length: 255 }), // user_id, webhook, schedule
+});
+
+// RELATIONS
+export const databaseConnectionsRelations = relations(databaseConnections, ({ one }) => ({
+  tenant: one(tenants, { fields: [databaseConnections.tenantId], references: [tenants.id] }),
+}));
+
+export const apiConnectionsRelations = relations(apiConnections, ({ one }) => ({
+  tenant: one(tenants, { fields: [apiConnections.tenantId], references: [tenants.id] }),
+}));
+
+export const queryBuildersRelations = relations(queryBuilders, ({ one, many }) => ({
+  tenant: one(tenants, { fields: [queryBuilders.tenantId], references: [tenants.id] }),
+  user: one(users, { fields: [queryBuilders.userId], references: [users.id] }),
+  kpiDashboards: many(kpiDashboards),
+}));
+
+export const kpiDashboardsRelations = relations(kpiDashboards, ({ one }) => ({
+  tenant: one(tenants, { fields: [kpiDashboards.tenantId], references: [tenants.id] }),
+  user: one(users, { fields: [kpiDashboards.userId], references: [users.id] }),
+  queryBuilder: one(queryBuilders, { fields: [kpiDashboards.queryBuilderId], references: [queryBuilders.id] }),
+}));
+
+export const uploadedFilesRelations = relations(uploadedFiles, ({ one }) => ({
+  tenant: one(tenants, { fields: [uploadedFiles.tenantId], references: [tenants.id] }),
+  user: one(users, { fields: [uploadedFiles.userId], references: [users.id] }),
+}));
+
+export const completeWorkflowsRelations = relations(completeWorkflows, ({ one, many }) => ({
+  tenant: one(tenants, { fields: [completeWorkflows.tenantId], references: [tenants.id] }),
+  user: one(users, { fields: [completeWorkflows.userId], references: [users.id] }),
+  executions: many(completeWorkflowExecutions),
+}));
+
+export const completeWorkflowExecutionsRelations = relations(completeWorkflowExecutions, ({ one }) => ({
+  workflow: one(completeWorkflows, { fields: [completeWorkflowExecutions.workflowId], references: [completeWorkflows.id] }),
+  tenant: one(tenants, { fields: [completeWorkflowExecutions.tenantId], references: [tenants.id] }),
+}));
+
+// TYPE EXPORTS
 export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
+export type DatabaseConnection = typeof databaseConnections.$inferSelect;
+export type UpsertDatabaseConnection = typeof databaseConnections.$inferInsert;
+export type ApiConnection = typeof apiConnections.$inferSelect;
+export type UpsertApiConnection = typeof apiConnections.$inferInsert;
+export type QueryBuilder = typeof queryBuilders.$inferSelect;
+export type UpsertQueryBuilder = typeof queryBuilders.$inferInsert;
+export type KpiDashboard = typeof kpiDashboards.$inferSelect;
+export type UpsertKpiDashboard = typeof kpiDashboards.$inferInsert;
+export type UploadedFile = typeof uploadedFiles.$inferSelect;
+export type UpsertUploadedFile = typeof uploadedFiles.$inferInsert;
+export type CompleteWorkflow = typeof completeWorkflows.$inferSelect;
+export type UpsertCompleteWorkflow = typeof completeWorkflows.$inferInsert;
+export type CompleteWorkflowExecution = typeof completeWorkflowExecutions.$inferSelect;
+export type UpsertCompleteWorkflowExecution = typeof completeWorkflowExecutions.$inferInsert;
 export type InsertUser = typeof users.$inferInsert;
 export type ClientCategory = typeof clientCategories.$inferSelect;
 export type InsertClientCategory = typeof clientCategories.$inferInsert;
