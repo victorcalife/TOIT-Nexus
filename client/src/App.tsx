@@ -1,11 +1,8 @@
 import { Switch, Route } from "wouter";
-import { lazy, Suspense } from "react";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { NotificationProvider } from "@/contexts/NotificationContext";
-import { ToastContainer } from "@/components/notifications/ToastContainer";
 import { useAuth } from "@/hooks/useAuth";
 import { Sidebar } from "@/components/sidebar";
 import NotFound from "@/pages/not-found";
@@ -25,16 +22,16 @@ import TenantSelection from "@/pages/tenant-selection";
 import AdminDashboard from "@/pages/admin/dashboard";
 import SystemSetup from "@/pages/system-setup";
 import SelectTenant from "@/pages/select-tenant";
-import QueryBuilder from "@/pages/query-builder";
-import TenantDemo from "@/pages/tenant-demo";
 import { useQuery } from "@tanstack/react-query";
 
 function Router() {
   const { isAuthenticated, isLoading, user, isSuperAdmin } = useAuth();
   
-  // For demo purposes, assume system is set up
-  const setupStatus = { needsSetup: false };
-  const setupLoading = false;
+  // Check if system needs setup
+  const { data: setupStatus, isLoading: setupLoading } = useQuery({
+    queryKey: ['/api/setup-status'],
+    enabled: !isLoading // Only check after auth loading completes
+  });
 
   if (isLoading || setupLoading) {
     return (
@@ -58,17 +55,6 @@ function Router() {
       <Switch>
         <Route path="/" component={Landing} />
         <Route path="/login" component={Login} />
-        <Route path="/demo" component={() => {
-          const NotificationDemo = lazy(() => import("./pages/notification-demo-standalone"));
-          return (
-            <Suspense fallback={<div className="flex justify-center items-center h-screen">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-            </div>}>
-              <NotificationDemo />
-            </Suspense>
-          );
-        }} />
-        <Route path="/tenant-demo" component={TenantDemo} />
         <Route component={() => (
           <div className="min-h-screen flex items-center justify-center">
             <div className="text-center">
@@ -270,14 +256,6 @@ function Router() {
         );
       }} />
 
-      <Route path="/query-builder" component={() => {
-        if (!user?.tenant) {
-          window.location.href = '/select-tenant';
-          return null;
-        }
-        return <QueryBuilder />;
-      }} />
-
       {/* Catch-all 404 route */}
       <Route component={NotFound} />
     </Switch>
@@ -288,11 +266,8 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <NotificationProvider>
-          <Router />
-          <Toaster />
-          <ToastContainer />
-        </NotificationProvider>
+        <Toaster />
+        <Router />
       </TooltipProvider>
     </QueryClientProvider>
   );
