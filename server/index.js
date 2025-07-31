@@ -75,8 +75,17 @@ app.use((req, res, next) => {
     }
     
     await import('./initializeSystem.js');
+
+    // Inicializar sistema de autenticação
+    console.log('🔐 Inicializando sistema de autenticação...');
+    const { initializeAuth } = await import('./initializeAuth.js');
+    await initializeAuth();
     
-    // Register payment and webhook routes FIRST (highest priority)
+    // Register authentication routes FIRST (highest priority)
+    const authRoutes = await import('./authRoutes.js');
+    app.use('/api/auth', authRoutes.default);
+
+    // Register payment and webhook routes
     app.use('/api/payment', paymentRoutes);
     app.use('/api/webhooks', webhookRoutes);
     

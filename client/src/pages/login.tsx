@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -6,14 +6,25 @@ import { Label } from "@/components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { UnifiedHeader } from "@/components/unified-header";
+import { useAuthState } from "@/hooks/useAuthState";
 import workflowLogo from "@/assets/SELOtoit-workflow-logo.svg";
 
 export default function Login() {
   const [cpf, setCpf] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { login, isLoading, isAuthenticated, user } = useAuthState();
+
+  // Redirecionar se já estiver logado
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      const redirectTo = user.role === 'super_admin' || user.role === 'tenant_admin' 
+        ? '/admin/dashboard' 
+        : '/dashboard';
+      window.location.href = redirectTo;
+    }
+  }, [isAuthenticated, user]);
 
   const formatCpf = (value: string) => {
     const numbers = value.replace(/\D/g, '');
@@ -46,51 +57,24 @@ export default function Login() {
       return;
     }
 
-    setIsLoading(true);
+    // Usar o hook de auth
+    const result = await login(cpf, password);
 
-    try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          cpf: cpf.replace(/\D/g, ''),
-          password,
-        }),
+    if (result.success) {
+      toast({
+        title: "Sucesso",
+        description: "Login realizado com sucesso!",
       });
 
-      if (response.ok) {
-        const userData = await response.json();
-        toast({
-          title: "Login realizado com sucesso!",
-          description: `Bem-vindo, ${userData.firstName}!`,
-        });
-        
-        if (userData.role === 'super_admin') {
-          window.location.href = '/admin/dashboard';
-        } else if (userData.tenantId) {
-          window.location.href = '/dashboard';
-        } else {
-          window.location.href = '/select-tenant';
-        }
-      } else {
-        const errorData = await response.json();
-        toast({
-          title: "Erro no login",
-          description: errorData.message || "CPF ou senha incorretos.",
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
-      console.error('Login error:', error);
+      // Redirecionar baseado no resultado
+      const redirectTo = result.redirectTo || '/dashboard';
+      window.location.href = redirectTo;
+    } else {
       toast({
-        title: "Erro de conexão",
-        description: "Não foi possível conectar ao servidor. Tente novamente.",
+        title: "Erro de Autenticação",
+        description: result.error,
         variant: "destructive",
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
