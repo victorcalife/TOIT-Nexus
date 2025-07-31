@@ -331,7 +331,7 @@ export default function QueryBuilder() {
         return (
           <div className="text-center p-8">
             <div className="text-4xl font-bold text-blue-600 mb-2">
-              {typeof metricValue === 'number' ? metricValue.toLocaleString() : metricValue}
+              {typeof metricValue === 'number' ? metricValue.toLocaleString() : String(metricValue || 0)}
             </div>
             <div className="text-gray-600">
               {resultConfig.title}

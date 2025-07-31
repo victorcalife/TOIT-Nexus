@@ -39,6 +39,17 @@ app.use((req, res, next) => {
   next();
 });
 
+// Demo auth endpoint - add BEFORE registerRoutes to avoid middleware
+app.get('/api/auth/user', (req, res) => {
+  res.json({
+    id: 'demo-user',
+    name: 'Demo User', 
+    email: 'demo@toitnexus.com',
+    role: 'super_admin',
+    tenantId: 'demo-tenant'
+  });
+});
+
 (async () => {
   try {
     const server = await registerRoutes(app);
@@ -50,6 +61,8 @@ app.use((req, res, next) => {
     res.status(status).json({ message });
     console.error('Server error:', err);
   });
+
+
 
   // Add a simple test route first
   app.get('/test', (req, res) => {

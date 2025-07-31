@@ -108,7 +108,7 @@ export function Sidebar() {
       <div className="px-4 pb-4 border-t border-gray-200 pt-4">
         <div className="flex items-center space-x-3">
           <Avatar className="w-8 h-8">
-            <AvatarImage src={user?.profileImageUrl || undefined} alt="User avatar" />
+            <AvatarImage src={undefined} alt="User avatar" />
             <AvatarFallback className="bg-primary-100 text-primary-700 text-xs">
               {getUserInitials(user)}
             </AvatarFallback>
