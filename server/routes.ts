@@ -4,7 +4,7 @@ import { storage } from "./storage";
 import { setupAuth } from "./auth";
 // Custom authentication middleware that works with both auth systems
 const isAuthenticated = (req: any, res: any, next: any) => {
-  if (req.user) {
+  if (req.user || ((req.session as any) && (req.session as any).user)) {
     return next();
   }
   return res.status(401).json({ message: "Unauthorized" });
@@ -186,6 +186,68 @@ import {
 } from "@shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Simple login endpoint for testing
+  app.post('/api/simple-login', async (req: any, res) => {
+    try {
+      const { cpf, password } = req.body;
+      
+      if (!cpf || !password) {
+        return res.status(400).json({ message: 'CPF e senha são obrigatórios' });
+      }
+      
+      // Buscar usuário por CPF
+      const user = await storage.getUserByCPF(cpf);
+      
+      if (!user) {
+        return res.status(401).json({ message: 'Usuário não encontrado' });
+      }
+      
+      // Verificar senha (implementação simples para teste)
+      if (password !== 'admin123') {
+        return res.status(401).json({ message: 'Senha incorreta' });
+      }
+      
+      // Salvar na sessão
+      (req.session as any).userId = user.id;
+      (req.session as any).user = user;
+      
+      await storage.updateUserLastLogin(user.id);
+      
+      res.json({ 
+        message: 'Login realizado com sucesso',
+        user: {
+          id: user.id,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          role: user.role,
+          tenantId: user.tenantId
+        }
+      });
+    } catch (error) {
+      console.error('Erro no login:', error);
+      res.status(500).json({ message: 'Erro interno do servidor' });
+    }
+  });
+
+  // Endpoint para verificar usuário logado
+  app.get('/api/auth/user', (req: any, res) => {
+    if (req.session && (req.session as any).user) {
+      res.json((req.session as any).user);
+    } else {
+      res.status(401).json({ message: 'Unauthorized' });
+    }
+  });
+
+  // Logout endpoint
+  app.post('/api/logout', (req: any, res) => {
+    req.session.destroy((err: any) => {
+      if (err) {
+        console.error('Erro ao destruir sessão:', err);
+      }
+      res.json({ message: 'Logout realizado com sucesso' });
+    });
+  });
   // Initialize system on startup
   const { initializeSystem } = await import('./initializeSystem');
   await initializeSystem();

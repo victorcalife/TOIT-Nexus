@@ -8,6 +8,7 @@ import { Sidebar } from "@/components/sidebar";
 import NotFound from "@/pages/not-found";
 import Landing from "@/pages/landing";
 import Login from "@/pages/login";
+import SimpleLogin from "@/pages/simple-login";
 import Dashboard from "@/pages/dashboard";
 import Clients from "@/pages/clients";
 import Categories from "@/pages/categories";
@@ -54,22 +55,14 @@ function Router() {
     return <SystemSetup />;
   }
 
-  // Not authenticated - show landing page or login
+  // Not authenticated - show simple login
   if (!isAuthenticated) {
     return (
       <Switch>
-        <Route path="/" component={Landing} />
+        <Route path="/landing" component={Landing} />
         <Route path="/login" component={Login} />
-        <Route component={() => (
-          <div className="min-h-screen flex items-center justify-center">
-            <div className="text-center">
-              <h1 className="text-2xl font-bold mb-4">Página não encontrada</h1>
-              <a href="/" className="text-blue-600 hover:underline">
-                Voltar para o início
-              </a>
-            </div>
-          </div>
-        )} />
+        <Route path="/" component={SimpleLogin} />
+        <Route component={SimpleLogin} />
       </Switch>
     );
   }
