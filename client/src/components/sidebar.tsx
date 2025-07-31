@@ -17,11 +17,15 @@ import {
   Shield,
   TestTube,
   Settings, 
-  LogOut 
+  LogOut,
+  Search,
+  Link as LinkIcon
 } from "lucide-react";
 
 const navigation = [
   { name: 'Dashboard', href: '/', icon: LayoutDashboard },
+  { name: 'Query Builder', href: '/query-builder', icon: Search },
+  { name: 'Conexões de Dados', href: '/data-connections', icon: LinkIcon },
   { name: 'Clientes', href: '/clients', icon: Users },
   { name: 'Categorias', href: '/categories', icon: Tag },
   { name: 'Workflows', href: '/workflows', icon: Workflow },

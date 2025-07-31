@@ -20,6 +20,7 @@ import {
 import { accessControlRoutes } from "./accessControlRoutes";
 import { adminRoutes } from "./adminRoutes";
 import { registerQueryBuilderRoutes } from "./queryBuilderRoutes";
+import { registerDataConnectionRoutes } from "./dataConnectionRoutes";
 
 // Helper function to determine if client should be assigned to a category
 function shouldAssignToCategory(client: any, category: any): boolean {
@@ -1061,6 +1062,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Register Query Builder routes
   registerQueryBuilderRoutes(app);
+  
+  // Register Data Connection routes
+  registerDataConnectionRoutes(app);
 
   const httpServer = createServer(app);
   return httpServer;

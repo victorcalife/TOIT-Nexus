@@ -22,6 +22,8 @@ import TenantSelection from "@/pages/tenant-selection";
 import AdminDashboard from "@/pages/admin/dashboard";
 import SystemSetup from "@/pages/system-setup";
 import SelectTenant from "@/pages/select-tenant";
+import QueryBuilderPage from "@/pages/query-builder";
+import DataConnectionsPage from "@/pages/data-connections";
 import { useQuery } from "@tanstack/react-query";
 
 function Router() {
@@ -246,12 +248,12 @@ function Router() {
           window.location.href = '/select-tenant';
           return null;
         }
-        const QueryBuilder = require("@/pages/query-builder").default;
+        
         return (
           <div className="flex h-screen bg-gray-50">
             <Sidebar />
             <main className="flex-1 overflow-hidden">
-              <QueryBuilder />
+              <QueryBuilderPage />
             </main>
           </div>
         );
@@ -262,12 +264,12 @@ function Router() {
           window.location.href = '/select-tenant';
           return null;
         }
-        const DataConnections = require("@/pages/data-connections").default;
+        
         return (
           <div className="flex h-screen bg-gray-50">
             <Sidebar />
             <main className="flex-1 overflow-hidden">
-              <DataConnections />
+              <DataConnectionsPage />
             </main>
           </div>
         );
