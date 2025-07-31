@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOIT Cards - Background Escuro</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Core Colors */
+            --bg-dark: #0a0a0f;
+            --bg-darker: #050508;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b8;
+            --text-muted: #808088;
+            
+            /* TOIT Brand Colors */
+            --neon-cyan: #00d4ff;
+            --electric-blue: #0099ff;
+            --deep-purple: #6a0dad;
+            --quantum-purple: #13023c;
+            --neural-green: #10b981;
+            
+            /* Epic Gradients */
+            --gradient-epic: linear-gradient(135deg, #00d4ff 0%, #6a0dad 50%, #0099ff 100%);
+            --gradient-card: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
+            --gradient-glow: radial-gradient(circle, rgba(0,212,255,0.3) 0%, transparent 70%);
+            
+            /* Fonts */
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+            
+            /* Physics */
+            --gravity: 0.5;
+            --friction: 0.98;
+            --magnetic-force: 8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            perspective: 2000px;
+            min-height: 100vh;
+        }
+
+        /* Cinematic Background */
+        .epic-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(106, 13, 173, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+                linear-gradient(180deg, var(--bg-darker) 0%, var(--bg-dark) 100%);
+            animation: epicBackgroundShift 20s ease-in-out infinite;
+        }
+
+        @keyframes epicBackgroundShift {
+            0%, 100% { transform: scale(1) rotate(0deg); filter: hue-rotate(0deg); }
+            33% { transform: scale(1.05) rotate(1deg); filter: hue-rotate(10deg); }
+            66% { transform: scale(0.95) rotate(-1deg); filter: hue-rotate(-10deg); }
+        }
+
+        /* Particle System */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--neon-cyan);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: particleFloat 15s linear infinite;
+        }
+
+        @keyframes particleFloat {
+            0% { transform: translateY(100vh) translateX(0px) scale(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) translateX(50px) scale(1); opacity: 0; }
+        }
+
+        /* Cards Container */
+        .floating-cards-universe {
+            min-height: 100vh;
+            padding: 4rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .floating-cards-container {
+            position: relative;
+            width: 100%;
+            max-width: 1600px;
+            margin: 0 auto;
+            height: 80vh;
+            perspective: 2000px;
+            transform-style: preserve-3d;
+        }
+
+        /* Epic Floating Cards - Reduzidos em 30% + 25% adicional */
+        .floating-card {
+            position: absolute;
+            width: 184px; /* 245px * 0.75 */
+            height: 253px; /* 263px - 10px */
+            background: var(--gradient-card);
+            backdrop-filter: blur(20px) saturate(1.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            padding: 1.05rem; /* 1.4rem * 0.75 */
+            margin: 3px; /* 3px em todos os lados */
+            cursor: pointer;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .floating-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-glow);
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            z-index: -1;
+        }
+
+        .floating-card:hover::before {
+            opacity: 1;
+        }
+
+        .floating-card:hover {
+            transform: translateY(-20px) rotateX(10deg) rotateY(10deg) scale(1.05);
+            box-shadow: 
+                0 40px 80px rgba(0, 212, 255, 0.2),
+                0 20px 40px rgba(106, 13, 173, 0.15),
+                0 0 0 1px rgba(0, 212, 255, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border-color: rgba(0, 212, 255, 0.5);
+        }
+
+        .floating-card.active {
+            z-index: 100;
+            transform: translateY(-30px) rotateX(5deg) scale(1.1);
+            box-shadow: 
+                0 60px 120px rgba(0, 212, 255, 0.3),
+                0 30px 60px rgba(106, 13, 173, 0.2),
+                0 0 0 2px rgba(0, 212, 255, 0.5);
+        }
+
+        /* Card Content - Reduzido proporcionalmente */
+        .card-epic-icon {
+            width: 34px; /* 42px * 0.8 (redução de 20%) */
+            height: 34px; /* 42px * 0.8 (redução de 20%) */
+            background: var(--gradient-epic);
+            border-radius: 8.5px; /* 10.5px * 0.8 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.05rem; /* 1.31rem * 0.8 (redução de 20%) */
+            margin-bottom: 0.7rem; /* Reduzido para subir o texto */
+            position: relative;
+            animation: iconFloat 4s ease-in-out infinite;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        .floating-card:hover .card-epic-icon {
+            animation: iconSpin 1s ease-in-out;
+            transform: scale(0.92);
+        }
+
+        @keyframes iconSpin {
+            0% { transform: rotate(0deg) scale(0.8); }
+            50% { transform: rotate(180deg) scale(1.0); }
+            100% { transform: rotate(360deg) scale(0.9); }
+        }
+
+        .card-epic-title {
+            font-size: 0.53rem; /* 0.7rem * 0.75 */
+            font-weight: 800;
+            margin-bottom: 0.4rem; /* Reduzido para melhor alinhamento */
+            background: var(--gradient-epic);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        .card-epic-description {
+            color: var(--text-secondary);
+            font-size: 0.42rem; /* 0.56rem * 0.75 */
+            line-height: 1.2;
+            margin-bottom: 0.4rem; /* Reduzido para melhor alinhamento */
+        }
+
+        .card-epic-features {
+            list-style: none;
+            margin-bottom: 0.53rem; /* 0.7rem * 0.75 */
+        }
+
+        .card-epic-features li {
+            color: var(--text-secondary);
+            margin-bottom: 0.42rem; /* 0.56rem * 0.75 */
+            padding-left: 0.53rem; /* 0.7rem * 0.75 */
+            position: relative;
+            opacity: 0;
+            animation: featureReveal 0.5s ease-out forwards;
+            font-size: 0.42rem; /* 0.56rem * 0.75 */
+        }
+
+        .card-epic-features li:nth-child(1) { animation-delay: 0.1s; }
+        .card-epic-features li:nth-child(2) { animation-delay: 0.2s; }
+        .card-epic-features li:nth-child(3) { animation-delay: 0.3s; }
+        .card-epic-features li:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes featureReveal {
+            0% { opacity: 0; transform: translateX(-20px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        .card-epic-features li::before {
+            content: '⚡';
+            position: absolute;
+            left: 0;
+            color: var(--neon-cyan);
+            font-size: 0.42rem; /* 0.56rem * 0.75 */
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 1; transform: scale(0.8); }
+            50% { opacity: 0.7; transform: scale(1.0); }
+        }
+
+        .card-epic-cta {
+            background: var(--gradient-epic);
+            color: white;
+            padding: 0.42rem 0.84rem; /* 0.7rem 1.4rem * 0.6 (redução de 40%) */
+            border: none;
+            border-radius: 6.3px; /* 10.5px * 0.6 */
+            font-size: 0.42rem; /* 0.7rem * 0.6 */
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card-epic-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .card-epic-cta:hover::before {
+            left: 100%;
+        }
+
+        .card-epic-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 212, 255, 0.4);
+        }
+
+        /* Physics System */
+        .floating-card[data-physics="true"] {
+            animation: naturalFloat 8s ease-in-out infinite;
+        }
+
+        @keyframes naturalFloat {
+            0%, 100% { transform: translateY(0px) rotateZ(0deg); }
+            25% { transform: translateY(-15px) rotateZ(1deg); }
+            50% { transform: translateY(-10px) rotateZ(0deg); }
+            75% { transform: translateY(-20px) rotateZ(-1deg); }
+        }
+
+        /* Card Positions */
+        .floating-card:nth-child(1) {
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .floating-card:nth-child(2) {
+            top: 15%;
+            right: 8%;
+            animation-delay: -2s;
+        }
+
+        .floating-card:nth-child(3) {
+            bottom: 20%;
+            left: 10%;
+            animation-delay: -4s;
+        }
+
+        .floating-card:nth-child(4) {
+            bottom: 15%;
+            right: 5%;
+            animation-delay: -6s;
+        }
+
+        .floating-card:nth-child(5) {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -1s;
+        }
+
+        .floating-card:nth-child(6) {
+            top: 30%;
+            left: 30%;
+            animation-delay: -3s;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .floating-card {
+                width: 158px; /* 210px * 0.75 */
+                height: 226px; /* 236px - 10px */
+                padding: 0.79rem; /* 1.05rem * 0.75 */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .floating-cards-container {
+                height: auto;
+                padding: 2rem 0;
+            }
+            
+            .floating-card {
+                position: relative;
+                width: 100%;
+                max-width: 184px; /* Mantém largura, altura ajustada automaticamente */
+                margin: 2rem auto;
+                display: block;
+            }
+            
+            .floating-card:nth-child(n) {
+                top: auto;
+                left: auto;
+                right: auto;
+                bottom: auto;
+                transform: none;
+            }
+        }
+
+        /* Holographic Effects */
+        .hologram-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(45deg, transparent 30%, rgba(0, 212, 255, 0.1) 50%, transparent 70%),
+                linear-gradient(-45deg, transparent 30%, rgba(106, 13, 173, 0.1) 50%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-card:hover .hologram-effect {
+            opacity: 1;
+            animation: hologramScan 2s ease-in-out infinite;
+        }
+
+        @keyframes hologramScan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Epic Background -->
+    <div class="epic-background"></div>
+    
+    <!-- Particle System -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Floating Cards Universe -->
+    <section class="floating-cards-universe">
+        <div class="floating-cards-container" id="cardsContainer">
+            
+            <!-- Portal TOIT -->
+            <div class="floating-card" data-physics="true" data-product="portal">
+                <div class="hologram-effect"></div>
+                <div class="card-epic-icon">🔐</div>
+                <h3 class="card-epic-title">Portal TOIT</h3>
+                <p class="card-epic-description">
+                    Gateway SSO empresarial que unifica todos os seus sistemas em uma plataforma segura e escalável.
+                </p>
+                <ul class="card-epic-features">
+                    <li>Single Sign-On (SSO) avançado</li>
+                    <li>Gestão centralizada de usuários</li>
+                    <li>Dashboard executivo em tempo real</li>
+                    <li>Arquitetura multi-tenant escalável</li>
+                </ul>
+                <button class="card-epic-cta" onclick="openEpicDemo('portal')">
+                    VER DEMO ÉPICA
+                </button>
+            </div>
+
+            <!-- OMS Blue World -->
+            <div class="floating-card" data-physics="true" data-product="oms">
+                <div class="hologram-effect"></div>
+                <div class="card-epic-icon">📋</div>
+                <h3 class="card-epic-title">OMS Blue World</h3>
+                <p class="card-epic-description">
+                    Sistema revolucionário de gestão ITIL com automação inteligente e SLA automático.
+                </p>
+                <ul class="card-epic-features">
+                    <li>Gestão ITIL completa certificada</li>
+                    <li>SLA automático com alertas</li>
+                    <li>Kanban visual e relatórios</li>
+                    <li>Integração perfeita com equipes</li>
+                </ul>
+                <button class="card-epic-cta" onclick="openEpicDemo('oms')">
+                    VER DEMO ÉPICA
+                </button>
+            </div>
+
+            <!-- Trad.IA -->
+            <div class="floating-card" data-physics="true" data-product="tradia">
+                <div class="hologram-effect"></div>
+                <div class="card-epic-icon">🤖</div>
+                <h3 class="card-epic-title">Trad.IA</h3>
+                <p class="card-epic-description">
+                    IA avançada para trading com 85% de precisão e execução automatizada 24/7.
+                </p>
+                <ul class="card-epic-features">
+                    <li>85% taxa de acerto comprovada</li>
+                    <li>Trading automatizado 24/7</li>
+                    <li>Análise de mercado em tempo real</li>
+                    <li>Risk management inteligente</li>
+                </ul>
+                <button class="card-epic-cta" onclick="openEpicDemo('tradia')">
+                    VER DEMO ÉPICA
+                </button>
+            </div>
+
+            <!-- EASIS ERP -->
+            <div class="floating-card" data-physics="true" data-product="easis">
+                <div class="hologram-effect"></div>
+                <div class="card-epic-icon">⚙️</div>
+                <h3 class="card-epic-title">EASIS ERP</h3>
+                <p class="card-epic-description">
+                    Sistema ERP inteligente com BI integrado e visão 360° do seu negócio.
+                </p>
+                <ul class="card-epic-features">
+                    <li>ERP completo e inteligente</li>
+                    <li>Business Intelligence integrado</li>
+                    <li>Visão 360° do negócio</li>
+                    <li>Automação de processos</li>
+                </ul>
+                <button class="card-epic-cta" onclick="openEpicDemo('easis')">
+                    VER DEMO ÉPICA
+                </button>
+            </div>
+
+            <!-- GISST -->
+            <div class="floating-card" data-physics="true" data-product="gisst">
+                <div class="hologram-effect"></div>
+                <div class="card-epic-icon">🎯</div>
+                <h3 class="card-epic-title">GISST</h3>
+                <p class="card-epic-description">
+                    Automação com IA generativa para insights estratégicos e decisões inteligentes.
+                </p>
+                <ul class="card-epic-features">
+                    <li>IA generativa avançada</li>
+                    <li>Insights estratégicos automáticos</li>
+                    <li>Análise preditiva de mercado</li>
+                    <li>Decisões baseadas em dados</li>
+                </ul>
+                <button class="card-epic-cta" onclick="openEpicDemo('gisst')">
+                    VER DEMO ÉPICA
+                </button>
+            </div>
+
+            <!-- ARTIC -->
+            <div class="floating-card" data-physics="true" data-product="artic">
+                <div class="hologram-effect"></div>
+                <div class="card-epic-icon">📊</div>
+                <h3 class="card-epic-title">ARTIC</h3>
+                <p class="card-epic-description">
+                    Business Intelligence ártico - performance que não derrete sob pressão.
+                </p>
+                <ul class="card-epic-features">
+                    <li>99.99% uptime garantido</li>
+                    <li>Analytics em tempo real</li>
+                    <li>Performance excepcional</li>
+                    <li>Dashboards interativos</li>
+                </ul>
+                <button class="card-epic-cta" onclick="openEpicDemo('artic')">
+                    VER DEMO ÉPICA
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+    <script>
+        // Epic JavaScript System
+        class EpicCardSystem {
+            constructor() {
+                this.cards = document.querySelectorAll('.floating-card');
+                this.container = document.getElementById('cardsContainer');
+                this.particles = document.getElementById('particles');
+                this.mouseX = 0;
+                this.mouseY = 0;
+                this.cardPositions = [];
+                
+                this.init();
+            }
+
+            init() {
+                this.createParticles();
+                this.setupCardPhysics();
+                this.setupEventListeners();
+                this.startEpicAnimations();
+            }
+
+            createParticles() {
+                for (let i = 0; i < 50; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 15 + 's';
+                    particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+                    this.particles.appendChild(particle);
+                }
+            }
+
+            setupCardPhysics() {
+                this.cards.forEach((card, index) => {
+                    const position = {
+                        x: parseFloat(getComputedStyle(card).left) || 0,
+                        y: parseFloat(getComputedStyle(card).top) || 0,
+                        vx: 0,
+                        vy: 0,
+                        rotation: 0,
+                        rotationSpeed: 0
+                    };
+                    this.cardPositions.push(position);
+                    
+                    // Add random initial rotation
+                    card.style.transform = `rotateZ(${Math.random() * 10 - 5}deg)`;
+                });
+            }
+
+            setupEventListeners() {
+                // Mouse tracking for magnetic effect
+                document.addEventListener('mousemove', (e) => {
+                    this.mouseX = e.clientX;
+                    this.mouseY = e.clientY;
+                    this.updateMagneticEffect();
+                });
+
+                // Card interactions
+                this.cards.forEach((card, index) => {
+                    card.addEventListener('mouseenter', () => {
+                        this.activateCard(card, index);
+                    });
+
+                    card.addEventListener('mouseleave', () => {
+                        this.deactivateCard(card, index);
+                    });
+
+                    card.addEventListener('click', () => {
+                        this.epicCardReveal(card, index);
+                    });
+
+                    // Drag functionality
+                    let isDragging = false;
+                    let startX, startY;
+
+                    card.addEventListener('mousedown', (e) => {
+                        isDragging = true;
+                        startX = e.clientX - card.offsetLeft;
+                        startY = e.clientY - card.offsetTop;
+                        card.style.cursor = 'grabbing';
+                        card.style.zIndex = 1000;
+                    });
+
+                    document.addEventListener('mousemove', (e) => {
+                        if (isDragging) {
+                            const x = e.clientX - startX;
+                            const y = e.clientY - startY;
+                            card.style.left = x + 'px';
+                            card.style.top = y + 'px';
+                            
+                            // Add rotation while dragging
+                            const rotation = (e.movementX || 0) * 0.5;
+                            this.cardPositions[index].rotation += rotation;
+                            card.style.transform = `rotateZ(${this.cardPositions[index].rotation}deg)`;
+                        }
+                    });
+
+                    document.addEventListener('mouseup', () => {
+                        if (isDragging) {
+                            isDragging = false;
+                            card.style.cursor = 'pointer';
+                            card.style.zIndex = 'auto';
+                            
+                            // Return to natural position with physics
+                            this.returnToNaturalPosition(card, index);
+                        }
+                    });
+                });
+            }
+
+            updateMagneticEffect() {
+                this.cards.forEach((card, index) => {
+                    if (!card.classList.contains('active')) {
+                        const rect = card.getBoundingClientRect();
+                        const centerX = rect.left + rect.width / 2;
+                        const centerY = rect.top + rect.height / 2;
+                        
+                        const deltaX = this.mouseX - centerX;
+                        const deltaY = this.mouseY - centerY;
+                        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                        
+                        if (distance < 200) {
+                            const force = (200 - distance) / 200;
+                            const moveX = deltaX * force * 0.1;
+                            const moveY = deltaY * force * 0.1;
+                            
+                            card.style.transform = `translate(${moveX}px, ${moveY}px) rotateZ(${this.cardPositions[index].rotation}deg)`;
+                        }
+                    }
+                });
+            }
+
+            activateCard(card, index) {
+                card.classList.add('active');
+                
+                // Epic hover animations
+                const icon = card.querySelector('.card-epic-icon');
+                const features = card.querySelectorAll('.card-epic-features li');
+                
+                // Animate icon
+                icon.style.animation = 'iconSpin 1s ease-in-out';
+                
+                // Animate features
+                features.forEach((feature, i) => {
+                    setTimeout(() => {
+                        feature.style.transform = 'translateX(10px)';
+                        feature.style.color = 'var(--neon-cyan)';
+                    }, i * 100);
+                });
+
+                // Add particle effect around card
+                this.createCardParticles(card);
+            }
+
+            deactivateCard(card, index) {
+                setTimeout(() => {
+                    card.classList.remove('active');
+                }, 200);
+                
+                const features = card.querySelectorAll('.card-epic-features li');
+                features.forEach((feature) => {
+                    feature.style.transform = 'translateX(0)';
+                    feature.style.color = 'var(--text-secondary)';
+                });
+            }
+
+            epicCardReveal(card, index) {
+                // Create cinematic zoom effect
+                card.style.transition = 'all 1s cubic-bezier(0.23, 1, 0.32, 1)';
+                card.style.transform = 'scale(1.2) translateZ(100px)';
+                card.style.zIndex = 2000;
+                
+                // Blur other cards
+                this.cards.forEach((otherCard, otherIndex) => {
+                    if (otherIndex !== index) {
+                        otherCard.style.filter = 'blur(5px) brightness(0.3)';
+                        otherCard.style.transform = 'scale(0.9)';
+                    }
+                });
+
+                // Return to normal after 2 seconds
+                setTimeout(() => {
+                    card.style.transform = 'scale(1) translateZ(0)';
+                    card.style.zIndex = 'auto';
+                    
+                    this.cards.forEach((otherCard) => {
+                        otherCard.style.filter = 'none';
+                        otherCard.style.transform = 'scale(1)';
+                    });
+                }, 2000);
+            }
+
+            createCardParticles(card) {
+                const rect = card.getBoundingClientRect();
+                
+                for (let i = 0; i < 10; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.position = 'fixed';
+                    particle.style.left = rect.left + Math.random() * rect.width + 'px';
+                    particle.style.top = rect.top + Math.random() * rect.height + 'px';
+                    particle.style.animation = 'particleFloat 2s ease-out forwards';
+                    document.body.appendChild(particle);
+                    
+                    setTimeout(() => {
+                        particle.remove();
+                    }, 2000);
+                }
+            }
+
+            returnToNaturalPosition(card, index) {
+                // Smooth return animation
+                card.style.transition = 'all 1s cubic-bezier(0.4, 0, 0.2, 1)';
+                
+                // Reset to original position (simplified)
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
+                }, 1000);
+            }
+
+            startEpicAnimations() {
+                // Continuous floating animation
+                setInterval(() => {
+                    this.updateFloatingAnimation();
+                }, 16); // 60fps
+            }
+
+            updateFloatingAnimation() {
+                // Add subtle continuous movement to cards
+                this.cards.forEach((card, index) => {
+                    if (!card.classList.contains('active')) {
+                        const time = Date.now() * 0.001;
+                        const offsetX = Math.sin(time + index) * 5;
+                        const offsetY = Math.cos(time + index * 0.7) * 3;
+                        
+                        const currentTransform = card.style.transform;
+                        if (!currentTransform.includes('translate(')) {
+                            card.style.transform = `translate(${offsetX}px, ${offsetY}px) rotateZ(${this.cardPositions[index].rotation}deg)`;
+                        }
+                    }
+                });
+            }
+        }
+
+        // Epic Functions
+        function openEpicDemo(product) {
+            // Epic modal system would go here
+            alert(`🚀 Demo épica do ${product.toUpperCase()} em construção! Prepare-se para uma experiência revolucionária!`);
+        }
+
+        // Initialize Epic System
+        document.addEventListener('DOMContentLoaded', () => {
+            new EpicCardSystem();
+        });
+
+        // Scroll effects
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const rate = scrolled * -0.5;
+            
+            document.querySelector('.epic-background').style.transform = `translateY(${rate}px)`;
+        });
+    </script>
+</body>
+</html>
