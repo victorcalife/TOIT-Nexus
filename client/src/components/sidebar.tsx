@@ -21,7 +21,8 @@ import {
   Search,
   Link as LinkIcon,
   CheckSquare,
-  ClipboardList
+  ClipboardList,
+  Package
 } from "lucide-react";
 
 const navigation = [
@@ -38,6 +39,7 @@ const navigation = [
   { name: 'Usuários', href: '/users', icon: UserCheck },
   { name: 'Controle de Acesso', href: '/access-control', icon: Shield },
   { name: 'Testes', href: '/connectivity', icon: TestTube },
+  { name: 'Módulos', href: '/module-management', icon: Package },
   { name: 'Configurações', href: '/settings', icon: Settings },
 ];
 

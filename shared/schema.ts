@@ -481,6 +481,83 @@ export const userPermissionsRelations = relations(userPermissions, ({ one }) => 
   }),
 }));
 
+// SISTEMA DE MÓDULOS E ATIVAÇÃO - MONETIZAÇÃO E PERSONALIZAÇÃO
+export const moduleDefinitions = pgTable("module_definitions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: varchar("name").notNull().unique(), // task_management, query_builder, crm, etc
+  displayName: varchar("display_name").notNull(),
+  description: text("description"),
+  category: varchar("category").default("core"), // core, advanced, premium, enterprise
+  basePrice: decimal("base_price", { precision: 10, scale: 2 }).default("0.00"),
+  pricePerUser: decimal("price_per_user", { precision: 10, scale: 2 }).default("0.00"),
+  priceModel: varchar("price_model").default("free"), // free, one_time, monthly, per_user, usage_based
+  features: jsonb("features").default([]), // lista de funcionalidades incluídas
+  limitations: jsonb("limitations").default({}), // limites por plano (max_tasks, max_users, etc)
+  dependencies: jsonb("dependencies").default([]), // módulos necessários
+  targetUserTypes: jsonb("target_user_types").default([]), // pessoa_fisica, pequena_empresa, enterprise
+  isActive: boolean("is_active").default(true),
+  icon: varchar("icon"), // ícone do módulo
+  color: varchar("color"), // cor tema do módulo
+  sortOrder: integer("sort_order").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const tenantModules = pgTable("tenant_modules", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").notNull().references(() => tenants.id, { onDelete: "cascade" }),
+  moduleId: varchar("module_id").notNull().references(() => moduleDefinitions.id, { onDelete: "cascade" }),
+  isEnabled: boolean("is_enabled").default(true),
+  plan: varchar("plan").default("free"), // free, basic, premium, enterprise
+  maxUsers: integer("max_users"), // limite de usuários para o módulo
+  currentUsers: integer("current_users").default(0),
+  usageLimits: jsonb("usage_limits").default({}), // limites específicos do tenant
+  currentUsage: jsonb("current_usage").default({}), // uso atual
+  customConfig: jsonb("custom_config").default({}), // configurações personalizadas
+  billingCycle: varchar("billing_cycle").default("monthly"), // monthly, yearly
+  nextBillingDate: timestamp("next_billing_date"),
+  trialEndsAt: timestamp("trial_ends_at"),
+  activatedAt: timestamp("activated_at").defaultNow(),
+  activatedBy: varchar("activated_by").references(() => users.id),
+  suspendedAt: timestamp("suspended_at"),
+  suspendedReason: text("suspended_reason"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const userModuleAccess = pgTable("user_module_access", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  moduleId: varchar("module_id").notNull().references(() => moduleDefinitions.id, { onDelete: "cascade" }),
+  tenantId: varchar("tenant_id").notNull().references(() => tenants.id, { onDelete: "cascade" }),
+  hasAccess: boolean("has_access").default(true),
+  accessLevel: varchar("access_level").default("basic"), // basic, advanced, admin
+  permissions: jsonb("permissions").default([]), // permissões específicas do módulo
+  usageLimit: integer("usage_limit"), // limite de uso mensal
+  currentUsage: integer("current_usage").default(0),
+  features: jsonb("features").default([]), // funcionalidades específicas habilitadas
+  restrictions: jsonb("restrictions").default({}), // restrições específicas
+  lastUsedAt: timestamp("last_used_at"),
+  grantedAt: timestamp("granted_at").defaultNow(),
+  grantedBy: varchar("granted_by").references(() => users.id),
+  expiresAt: timestamp("expires_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const moduleUsageTracking = pgTable("module_usage_tracking", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").notNull().references(() => tenants.id, { onDelete: "cascade" }),
+  userId: varchar("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  moduleId: varchar("module_id").notNull().references(() => moduleDefinitions.id, { onDelete: "cascade" }),
+  action: varchar("action").notNull(), // create_task, send_notification, run_query, etc
+  resource: varchar("resource"), // task_template, query, etc
+  resourceId: varchar("resource_id"),
+  usage: integer("usage").default(1), // quantidade usada
+  metadata: jsonb("metadata").default({}), // dados adicionais da ação
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // TASK MANAGEMENT SYSTEM - CORE DA APLICAÇÃO
 export const taskTemplates = pgTable("task_templates", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
