@@ -32,6 +32,7 @@ import DataConnectionsPage from "@/pages/data-connections";
 import TaskManagement from "@/pages/task-management";
 import MyTasks from "@/pages/my-tasks";
 import ModuleManagement from "@/pages/module-management";
+import TestEverything from "@/pages/test-everything";
 import { useQuery } from "@tanstack/react-query";
 
 function Router() {
@@ -107,13 +108,14 @@ function Router() {
 
       {/* Main application routes */}
       <Route path="/" component={() => {
-        // Super admin vai para sistema completo TOIT NEXUS
+        // Super admin vai para centro de testes
         if (isSuperAdmin) {
-          return <ToitNexusComplete />;
+          return <TestEverything />;
         }
         // Outros usuários vão para working app
         return <WorkingApp />;
       }} />
+      <Route path="/test-everything" component={TestEverything} />
       <Route path="/home" component={Home} />
       <Route path="/dashboard" component={() => {
         // If user has no tenant, redirect to tenant selection
