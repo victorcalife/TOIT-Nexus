@@ -270,6 +270,61 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: 'Erro interno do servidor' });
     }
   });
+
+  // APIs administrativas funcionais
+  app.get('/api/admin/users', async (req, res) => {
+    try {
+      const users = await storage.getAllUsers();
+      res.json(users);
+    } catch (error) {
+      console.error('Erro ao buscar usuários:', error);
+      res.status(500).json({ message: 'Erro interno do servidor' });
+    }
+  });
+
+  app.post('/api/admin/users', async (req, res) => {
+    try {
+      const userData = req.body;
+      const user = await storage.createUser(userData);
+      res.json(user);
+    } catch (error) {
+      console.error('Erro ao criar usuário:', error);
+      res.status(500).json({ message: 'Erro ao criar usuário' });
+    }
+  });
+
+  app.patch('/api/admin/users/:id/status', async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { isActive } = req.body;
+      await storage.updateUserStatus(id, isActive);
+      res.json({ message: 'Status atualizado com sucesso' });
+    } catch (error) {
+      console.error('Erro ao atualizar status:', error);
+      res.status(500).json({ message: 'Erro ao atualizar status' });
+    }
+  });
+
+  app.get('/api/admin/tenants', async (req, res) => {
+    try {
+      const tenants = await storage.getAllTenants();
+      res.json(tenants);
+    } catch (error) {
+      console.error('Erro ao buscar tenants:', error);
+      res.status(500).json({ message: 'Erro interno do servidor' });
+    }
+  });
+
+  app.post('/api/admin/tenants', async (req, res) => {
+    try {
+      const tenantData = req.body;
+      const tenant = await storage.createTenant(tenantData);
+      res.json(tenant);
+    } catch (error) {
+      console.error('Erro ao criar tenant:', error);
+      res.status(500).json({ message: 'Erro ao criar tenant' });
+    }
+  });
   // Initialize system on startup
   const { initializeSystem } = await import('./initializeSystem');
   await initializeSystem();

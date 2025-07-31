@@ -1575,6 +1575,81 @@ export class DatabaseStorage implements IStorage {
       .orderBy(desc(notifications.createdAt))
       .limit(limit);
   }
+
+  // Métodos administrativos funcionais
+  async getAllUsers(): Promise<User[]> {
+    try {
+      const usersData = await db.select({
+        id: users.id,
+        cpf: users.cpf,
+        email: users.email,
+        firstName: users.firstName,
+        lastName: users.lastName,
+        role: users.role,
+        tenantId: users.tenantId,
+        isActive: users.isActive,
+        tenant: {
+          name: tenants.name
+        }
+      }).from(users)
+      .leftJoin(tenants, eq(users.tenantId, tenants.id));
+      
+      return usersData;
+    } catch (error) {
+      console.error('Error getting all users:', error);
+      return [];
+    }
+  }
+
+  async updateUserStatus(userId: string, isActive: boolean): Promise<void> {
+    try {
+      await db.update(users)
+        .set({ isActive, updatedAt: new Date() })
+        .where(eq(users.id, userId));
+    } catch (error) {
+      console.error('Error updating user status:', error);
+      throw error;
+    }
+  }
+
+  async getAllTenants(): Promise<Tenant[]> {
+    try {
+      const tenantsData = await db.select().from(tenants);
+      return tenantsData;
+    } catch (error) {
+      console.error('Error getting all tenants:', error);
+      return [];
+    }
+  }
+
+  async createTenant(tenantData: InsertTenant): Promise<Tenant> {
+    try {
+      const [tenant] = await db.insert(tenants)
+        .values({
+          ...tenantData,
+          id: `tenant-${Date.now()}`,
+          isActive: true,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        })
+        .returning();
+      return tenant;
+    } catch (error) {
+      console.error('Error creating tenant:', error);
+      throw error;
+    }
+  }
+
+  // Versão simplificada para getTaskTemplates que funciona
+  async getTaskTemplates(): Promise<TaskTemplate[]> {
+    try {
+      const templates = await db.select().from(taskTemplates);
+      return templates;
+    } catch (error) {
+      console.error('Error getting task templates:', error);
+      return [];
+    }
+  }
 }
 
 export const storage = new DatabaseStorage();
