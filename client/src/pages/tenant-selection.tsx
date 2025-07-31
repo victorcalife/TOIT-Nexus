@@ -38,7 +38,7 @@ export default function TenantSelection() {
     window.location.href = '/admin';
   };
 
-  const filteredTenants = (tenants || []).filter((tenant: any) =>
+  const filteredTenants = (tenants as any[] || []).filter((tenant: any) =>
     tenant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     tenant.slug.toLowerCase().includes(searchTerm.toLowerCase())
   );
