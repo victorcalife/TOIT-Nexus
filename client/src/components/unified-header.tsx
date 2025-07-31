@@ -94,7 +94,7 @@ export function UnifiedHeader({
               Início
             </Button>
 
-            {!finalAuth.isLoading && (
+            {!finalAuth?.isLoading && (
               <>
                 {finalAuth.isAuthenticated || showUserActions ? (
                   <>
