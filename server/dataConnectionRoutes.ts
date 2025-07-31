@@ -3,7 +3,7 @@ import { z } from "zod";
 import { storage } from "./storage";
 import multer from "multer";
 import * as XLSX from "xlsx";
-import { Parser } from "csv-parser";
+import csv from "csv-parser";
 import fs from "fs";
 import path from "path";
 import PDFDocument from "pdfkit";
@@ -405,10 +405,9 @@ async function processExcelFile(filePath: string): Promise<any[]> {
 async function processCsvFile(filePath: string): Promise<any[]> {
   return new Promise((resolve, reject) => {
     const results: any[] = [];
-    const parser = new Parser();
     
     fs.createReadStream(filePath)
-      .pipe(parser)
+      .pipe(csv())
       .on('data', (data) => results.push(data))
       .on('end', () => resolve(results))
       .on('error', (error) => reject(error));
