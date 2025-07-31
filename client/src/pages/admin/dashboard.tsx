@@ -87,8 +87,6 @@ export default function TOITAdminDashboard() {
   return (
     <div className="min-h-screen bg-gray-50">
       <UnifiedHeader 
-        title="TOIT - Controle Central" 
-        subtitle="Gestão completa do sistema TOIT Nexus para todas as empresas"
         showUserActions={true}
         user={{ firstName: 'Super', lastName: 'Admin' }}
         onLogout={handleLogout}

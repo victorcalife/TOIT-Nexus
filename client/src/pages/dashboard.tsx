@@ -54,8 +54,6 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-50">
       <UnifiedHeader 
-        title={`${selectedTenant.name} - Dashboard`}
-        subtitle={`Painel de controle da empresa ${selectedTenant.name}`}
         showUserActions={true}
         user={{ firstName: 'Usuário', lastName: 'Empresa' }}
         onLogout={handleLogout}
