@@ -69,9 +69,12 @@ export function UnifiedHeader({
               style={{ transform: 'scale(1.15)' }}
             />
             <div>
-              <h1 className="text-2xl font-bold">{title}</h1>
+              <div className="leading-none">
+                <h1 className="text-2xl font-bold tracking-wide">TOIT</h1>
+                <p className="text-[10px] font-medium tracking-[0.15em] text-blue-100 -mt-1">THE ONE IN TECH</p>
+              </div>
               {subtitle && (
-                <p className="text-blue-100 text-sm">{subtitle}</p>
+                <p className="text-blue-100 text-sm mt-1">{subtitle}</p>
               )}
             </div>
           </div>
