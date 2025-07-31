@@ -108,14 +108,13 @@ function Router() {
 
       {/* Main application routes */}
       <Route path="/" component={() => {
-        // Super admin vai para centro de testes
+        // Super admin vai para painel administrativo
         if (isSuperAdmin) {
-          return <TestEverything />;
+          return <AdminDashboard />;
         }
         // Outros usuários vão para working app
         return <WorkingApp />;
       }} />
-      <Route path="/test-everything" component={TestEverything} />
       <Route path="/home" component={Home} />
       <Route path="/dashboard" component={() => {
         // If user has no tenant, redirect to tenant selection
