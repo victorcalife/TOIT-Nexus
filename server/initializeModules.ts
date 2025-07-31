@@ -4,6 +4,38 @@ import { storage } from './storage';
 const DEFAULT_MODULES = [
   {
     name: 'task_management',
+    display_name: 'Gestão de Tarefas',
+    description: 'Sistema completo de gestão de tarefas com coleta rica de dados',
+    category: 'core',
+    version: '1.0.0',
+    author: 'TOIT',
+    icon: 'CheckSquare',
+    color: '#10B981',
+    is_active: true,
+    is_core: true,
+    target_user_types: ['pequena_empresa', 'media_empresa', 'grande_empresa'],
+    dependencies: [],
+    features: [
+      'Criação de templates de tarefas',
+      'Campos de resposta personalizáveis (texto, checkbox, dropdown, etc)',
+      'Atribuição de tarefas para funcionários',
+      'Acompanhamento de progresso',
+      'Sistema de comentários',
+      'Notificações automáticas',
+      'Relatórios de produtividade'
+    ],
+    limitations: {
+      free: { maxTasks: 10, maxUsers: 2 },
+      basic: { maxTasks: 100, maxUsers: 10 },
+      premium: { maxTasks: -1, maxUsers: -1 }
+    },
+    base_price: 29.90,
+    pricing_model: 'per_user',
+    trial_days: 7,
+    sort_order: 1
+  },
+  {
+    name: 'task_management',
     displayName: 'Gerenciamento de Tarefas',
     description: 'Sistema completo de criação, atribuição e acompanhamento de tarefas para equipes',
     category: 'core',
