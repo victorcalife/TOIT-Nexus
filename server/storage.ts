@@ -192,6 +192,22 @@ export interface IStorage {
   checkUserPermission(userId: string, resource: string, action: string, departmentId?: string): Promise<boolean>;
   getUserAccessibleDepartments(userId: string): Promise<Department[]>;
   getDepartmentFilters(userId: string): Promise<any[]>;
+
+  // Query Builder operations
+  saveQuery(queryData: any): Promise<SavedQuery>;
+  getSavedQueries(tenantId: string): Promise<SavedQuery[]>;
+  getSavedQuery(id: string): Promise<SavedQuery | undefined>;
+  updateSavedQuery(id: string, queryData: any): Promise<SavedQuery>;
+  deleteSavedQuery(id: string): Promise<void>;
+  executeRawQuery(sql: string): Promise<any[]>;
+  getDatabaseSchema(): Promise<any>;
+
+  // Dashboard operations
+  saveDashboard(dashboardData: any): Promise<Dashboard>;
+  getDashboards(tenantId: string): Promise<Dashboard[]>;
+  getDashboard(id: string): Promise<Dashboard | undefined>;
+  updateDashboard(id: string, dashboardData: any): Promise<Dashboard>;
+  deleteDashboard(id: string): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -932,6 +948,116 @@ export class DatabaseStorage implements IStorage {
   async getDepartmentFilters(userId: string): Promise<any[]> {
     const accessibleDepts = await this.getUserAccessibleDepartments(userId);
     return accessibleDepts.map(dept => dept.dataFilters).filter(Boolean);
+  }
+
+  // Query Builder operations
+  async saveQuery(queryData: any): Promise<SavedQuery> {
+    const [saved] = await db
+      .insert(savedQueries)
+      .values(queryData)
+      .returning();
+    return saved;
+  }
+
+  async getSavedQueries(tenantId: string): Promise<SavedQuery[]> {
+    return await db
+      .select()
+      .from(savedQueries)
+      .where(eq(savedQueries.tenantId, tenantId))
+      .orderBy(desc(savedQueries.createdAt));
+  }
+
+  async getSavedQuery(id: string): Promise<SavedQuery | undefined> {
+    const [query] = await db
+      .select()
+      .from(savedQueries)
+      .where(eq(savedQueries.id, id));
+    return query;
+  }
+
+  async updateSavedQuery(id: string, queryData: any): Promise<SavedQuery> {
+    const [updated] = await db
+      .update(savedQueries)
+      .set({ ...queryData, updatedAt: new Date() })
+      .where(eq(savedQueries.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteSavedQuery(id: string): Promise<void> {
+    await db.delete(savedQueries).where(eq(savedQueries.id, id));
+  }
+
+  async executeRawQuery(sqlQuery: string): Promise<any[]> {
+    try {
+      const result = await db.execute(sql.raw(sqlQuery));
+      return result.rows || [];
+    } catch (error) {
+      console.error('Raw query execution error:', error);
+      throw new Error('Query execution failed');
+    }
+  }
+
+  async getDatabaseSchema(): Promise<any> {
+    // Return available tables and their columns
+    return {
+      tables: [
+        {
+          name: 'clients',
+          columns: ['id', 'name', 'email', 'currentInvestment', 'riskProfile', 'createdAt']
+        },
+        {
+          name: 'workflows',
+          columns: ['id', 'name', 'status', 'executionCount', 'createdAt']
+        },
+        {
+          name: 'reports',
+          columns: ['id', 'name', 'createdAt']
+        },
+        {
+          name: 'activities',
+          columns: ['id', 'action', 'description', 'createdAt']
+        }
+      ]
+    };
+  }
+
+  // Dashboard operations
+  async saveDashboard(dashboardData: any): Promise<Dashboard> {
+    const [saved] = await db
+      .insert(dashboards)
+      .values(dashboardData)
+      .returning();
+    return saved;
+  }
+
+  async getDashboards(tenantId: string): Promise<Dashboard[]> {
+    return await db
+      .select()
+      .from(dashboards)
+      .where(eq(dashboards.tenantId, tenantId))
+      .orderBy(desc(dashboards.createdAt));
+  }
+
+  async getDashboard(id: string): Promise<Dashboard | undefined> {
+    const [dashboard] = await db
+      .select()
+      .from(dashboards)
+      .where(eq(dashboards.id, id));
+    return dashboard;
+  }
+
+  async updateDashboard(id: string, dashboardData: any): Promise<Dashboard> {
+    const [updated] = await db
+      .update(dashboards)
+      .set({ ...dashboardData, updatedAt: new Date() })
+      .where(eq(dashboards.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteDashboard(id: string): Promise<void> {
+    await db.delete(dashboards).where(eq(dashboards.id, id));
   }
 
   // TOIT Admin implementations
