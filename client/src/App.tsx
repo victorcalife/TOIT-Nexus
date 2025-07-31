@@ -25,6 +25,7 @@ import Settings from "@/pages/settings";
 import AccessControl from "@/pages/access-control";
 import TenantSelection from "@/pages/tenant-selection";
 import AdminDashboard from "@/pages/admin/dashboard";
+import ToitAdmin from "@/pages/toit-admin";
 import SystemSetup from "@/pages/system-setup";
 import SelectTenant from "@/pages/select-tenant";
 import QueryBuilderPage from "@/pages/query-builder";
@@ -108,9 +109,9 @@ function Router() {
 
       {/* Main application routes */}
       <Route path="/" component={() => {
-        // Super admin vai para centro de testes
+        // Super admin vai para painel administrativo completo
         if (isSuperAdmin) {
-          return <TestEverything />;
+          return <ToitAdmin />;
         }
         // Outros usuários vão para working app
         return <WorkingApp />;
