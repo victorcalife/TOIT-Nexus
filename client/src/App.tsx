@@ -12,6 +12,7 @@ import SimpleLogin from "@/pages/simple-login";
 import Dashboard from "@/pages/dashboard";
 import Home from "@/pages/home";
 import WorkingApp from "@/pages/working-app";
+import FunctionalAdmin from "@/pages/functional-admin";
 import Clients from "@/pages/clients";
 import Categories from "@/pages/categories";
 import Workflows from "@/pages/workflows";
@@ -104,7 +105,14 @@ function Router() {
       <Route path="/tenant-selection" component={TenantSelection} />
 
       {/* Main application routes */}
-      <Route path="/" component={WorkingApp} />
+      <Route path="/" component={() => {
+        // Super admin vai para painel administrativo funcional
+        if (isSuperAdmin) {
+          return <FunctionalAdmin />;
+        }
+        // Outros usuários vão para working app
+        return <WorkingApp />;
+      }} />
       <Route path="/home" component={Home} />
       <Route path="/dashboard" component={() => {
         // If user has no tenant, redirect to tenant selection
