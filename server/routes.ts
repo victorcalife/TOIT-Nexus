@@ -28,6 +28,7 @@ import accessProfileRoutes from "./accessProfileRoutes";
 import stripeCheckoutRoutes from "./stripeCheckoutRoutes";
 import { trialRoutes } from "./trialRoutes";
 import { fileUploadRoutes } from "./fileUploadRoutes";
+import { advancedTaskRoutes } from "./advancedTaskRoutes";
 
 // Helper function to determine if client should be assigned to a category
 function shouldAssignToCategory(client: any, category: any): boolean {
@@ -1845,6 +1846,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // File Upload routes - necessita autenticação
   app.use('/api/files', fileUploadRoutes);
+  
+  // Advanced Task routes - necessita autenticação
+  app.use('/api/advanced-tasks', advancedTaskRoutes);
 
   // Register Query Builder routes
   registerQueryBuilderRoutes(app);

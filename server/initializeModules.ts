@@ -68,6 +68,45 @@ const DEFAULT_MODULES = [
     sort_order: 3
   },
   {
+    name: 'advanced_tasks',
+    display_name: 'Tarefas Avançadas',
+    description: 'Sistema avançado de tarefas com múltiplos tipos de campos e lógica condicional',
+    category: 'produtividade',
+    version: '1.0.0',
+    author: 'TOIT',
+    icon: 'Zap',
+    color: '#F59E0B',
+    is_active: true,
+    is_core: false,
+    target_user_types: ['pessoa_fisica', 'pequena_empresa', 'media_empresa', 'grande_empresa'],
+    dependencies: ['task_management'],
+    features: [
+      'Templates de tarefas personalizáveis',
+      '15 tipos de campos diferentes (texto, número, data, checkbox, etc)',
+      'Validação avançada de campos com regex',
+      'Lógica condicional para campos',
+      'Sistema de comentários e histórico',
+      'Notificações automáticas por email',
+      'Relatórios de produtividade',
+      'Workflow automático baseado em respostas',
+      'Sistema de aprovação e revisão',
+      'Templates reutilizáveis',
+      'Campos de rating e slider',
+      'Upload de arquivos por tarefa',
+      'Campos de múltipla escolha avançados'
+    ],
+    limitations: {
+      free: { maxTemplates: 3, maxFields: 5, maxTasks: 25 },
+      basic: { maxTemplates: 15, maxFields: 15, maxTasks: 200 },
+      premium: { maxTemplates: 50, maxFields: 30, maxTasks: 1000 },
+      enterprise: { maxTemplates: -1, maxFields: -1, maxTasks: -1 }
+    },
+    base_price: 39.90,
+    pricing_model: 'per_user',
+    trial_days: 7,
+    sort_order: 4
+  },
+  {
     name: 'query_builder',
     displayName: 'Construtor de Consultas',
     description: 'Interface visual para criação de consultas complexas aos dados',

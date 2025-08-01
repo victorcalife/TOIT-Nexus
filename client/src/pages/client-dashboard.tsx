@@ -42,6 +42,7 @@ import Workflows from './workflows';
 import DataConnectionsPage from './data-connections';
 import Reports from './reports';
 import FileUpload from './file-upload';
+import AdvancedTaskManagement from './advanced-task-management';
 
 export default function ClientDashboard() {
   const [selectedTenant, setSelectedTenant] = useState<any>(null);
@@ -94,6 +95,10 @@ export default function ClientDashboard() {
     // FERRAMENTAS FUNCIONAIS baseadas em módulos ativos
     if (isModuleActive('task_management')) {
       functionalTabs.push('tasks');
+    }
+    
+    if (isModuleActive('advanced_tasks')) {
+      functionalTabs.push('advanced_tasks');
     }
     
     if (isModuleActive('calendar_email')) {
@@ -283,6 +288,7 @@ export default function ClientDashboard() {
           <TabsList className="grid w-full" style={{ gridTemplateColumns: `repeat(${Math.min(availableTabs.length, 8)}, 1fr)` }}>
             {availableTabs.includes('workspace') && <TabsTrigger value="workspace">Workspace</TabsTrigger>}
             {availableTabs.includes('tasks') && <TabsTrigger value="tasks">Tarefas</TabsTrigger>}
+            {availableTabs.includes('advanced_tasks') && <TabsTrigger value="advanced_tasks">Tarefas Avançadas</TabsTrigger>}
             {availableTabs.includes('calendar') && <TabsTrigger value="calendar">Agenda</TabsTrigger>}
             {availableTabs.includes('queries') && <TabsTrigger value="queries">Consultas</TabsTrigger>}
             {availableTabs.includes('reports') && <TabsTrigger value="reports">Relatórios</TabsTrigger>}
@@ -387,6 +393,12 @@ export default function ClientDashboard() {
           {availableTabs.includes('tasks') && (
             <TabsContent value="tasks" className="space-y-4">
               <TaskManagement />
+            </TabsContent>
+          )}
+
+          {availableTabs.includes('advanced_tasks') && (
+            <TabsContent value="advanced_tasks" className="space-y-4">
+              <AdvancedTaskManagement />
             </TabsContent>
           )}
 
