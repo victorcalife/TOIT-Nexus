@@ -35,6 +35,7 @@ import TaskManagement from "@/pages/task-management";
 import MyTasks from "@/pages/my-tasks";
 import ModuleManagement from "@/pages/module-management";
 import TestEverything from "@/pages/test-everything";
+import ClientDashboard from "@/pages/client-dashboard";
 import { useQuery } from "@tanstack/react-query";
 import { detectLoginType, redirectToCorrectLogin } from "@/lib/domainUtils";
 
@@ -135,12 +136,33 @@ function Router() {
 
       {/* Main application routes */}
       <Route path="/" component={() => {
-        // Super admin vai para painel administrativo completo
-        if (isSuperAdmin) {
-          return <ToitAdmin />;
+        // Detectar tipo de domínio para definir comportamento
+        const hostname = window.location.hostname;
+        const isSupportDomain = hostname.startsWith('supnexus.');
+        
+        if (isSupportDomain) {
+          // Portal TOIT (supnexus) - FERRAMENTA COMPLETA
+          if (user?.role === 'super_admin') {
+            return <AdminDashboard />; // Dashboard administrativo completo
+          } else if (user?.role === 'toit_admin') {
+            return <ToitAdmin />; // Painel TOIT administrativo
+          } else {
+            // Usuários que não são da equipe TOIT não podem acessar
+            return (
+              <div className="min-h-screen flex items-center justify-center">
+                <div className="text-center">
+                  <h1 className="text-2xl font-bold mb-4">Acesso Negado</h1>
+                  <p className="mb-4">Apenas membros da equipe TOIT podem acessar esta área.</p>
+                  <a href="/login" className="text-blue-600 hover:underline">Fazer login como cliente</a>
+                </div>
+              </div>
+            );
+          }
+        } else {
+          // Portal Cliente (nexus) - FERRAMENTA LIMITADA POR MÓDULOS/PERFIL
+          // Todos os usuários (incluindo super_admin) usam interface limitada no portal cliente
+          return <ClientDashboard />;
         }
-        // Outros usuários vão para working app
-        return <WorkingApp />;
       }} />
       <Route path="/test-everything" component={TestEverything} />
       <Route path="/home" component={Home} />
