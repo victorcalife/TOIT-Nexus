@@ -36,6 +36,7 @@ import { useToast } from '@/hooks/use-toast';
 import { StandardHeader } from '@/components/standard-header';
 import { useAuth } from '@/hooks/useAuth';
 import { SalesMetricsDashboard } from '@/components/sales-metrics-dashboard';
+import { SubscriptionReportsDashboard } from '@/components/subscription-reports-dashboard';
 
 type Tenant = {
   id: string;
@@ -110,7 +111,7 @@ export default function TOITAdminDashboard() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-8">
+          <TabsList className="grid w-full grid-cols-9">
             <TabsTrigger value="overview">Visão Geral</TabsTrigger>
             <TabsTrigger value="tenants">Empresas</TabsTrigger>
             <TabsTrigger value="users">Usuários</TabsTrigger>
@@ -118,6 +119,7 @@ export default function TOITAdminDashboard() {
             <TabsTrigger value="permissions">Permissões</TabsTrigger>
             <TabsTrigger value="profiles">Perfis de Acesso</TabsTrigger>
             <TabsTrigger value="sales">Vendas</TabsTrigger>
+            <TabsTrigger value="subscriptions">Assinaturas</TabsTrigger>
             <TabsTrigger value="workflows">Workflows</TabsTrigger>
             <TabsTrigger value="monitoring">Monitoramento</TabsTrigger>
           </TabsList>
@@ -468,6 +470,10 @@ export default function TOITAdminDashboard() {
 
           <TabsContent value="sales" className="space-y-4">
             <SalesMetricsDashboard />
+          </TabsContent>
+
+          <TabsContent value="subscriptions" className="space-y-4">
+            <SubscriptionReportsDashboard />
           </TabsContent>
 
           <TabsContent value="workflows" className="space-y-4">
