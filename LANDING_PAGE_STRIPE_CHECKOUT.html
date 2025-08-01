@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOIT Nexus - Plataforma Empresarial Inteligente</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding-top: 80px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background: #ff6b6b;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.6);
+        }
+
+        /* Pricing Section */
+        .pricing {
+            padding: 100px 0;
+            background: #f8f9ff;
+        }
+
+        .pricing h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .pricing-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 4rem;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .pricing-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .pricing-card.popular {
+            border: 3px solid #667eea;
+            transform: scale(1.05);
+        }
+
+        .pricing-card.popular::before {
+            content: '⭐ MAIS POPULAR';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #667eea;
+            color: white;
+            padding: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .pricing-card.premium-special {
+            border: 3px solid #f39c12;
+            position: relative;
+        }
+
+        .pricing-card.premium-special::before {
+            content: '🔥 OFERTA ESPECIAL';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            color: white;
+            padding: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: bold;
+            animation: pulse-premium 2s infinite;
+        }
+
+        @keyframes pulse-premium {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .premium-savings {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            color: white !important;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(243, 156, 18, 0.3);
+        }
+
+        .pricing-card.enterprise {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            border: 3px solid #f39c12;
+        }
+
+        .pricing-card.enterprise .plan-name {
+            color: #f39c12;
+        }
+
+        .plan-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .billing-cycle {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .pricing-card.enterprise .billing-cycle {
+            color: #bdc3c7;
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-card.enterprise .price {
+            color: #f39c12;
+        }
+
+        .price-period {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .pricing-card.enterprise .price-period {
+            color: #bdc3c7;
+        }
+
+        .savings {
+            background: #e8f5e8;
+            color: #2e7d32;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+        }
+
+        .features {
+            list-style: none;
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        .features li {
+            padding: 0.5rem 0;
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #4caf50;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .pricing-card.enterprise .features li::before {
+            color: #f39c12;
+        }
+
+        .btn-checkout {
+            width: 100%;
+            padding: 15px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .btn-checkout:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-checkout:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-enterprise {
+            background: #f39c12;
+            border: 2px solid #f39c12;
+        }
+
+        .btn-enterprise:hover {
+            background: #e67e22;
+            border-color: #e67e22;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 3% auto;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-header h3 {
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-header .plan-details {
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Billing Toggle */
+        .billing-toggle {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: #f8f9ff;
+            border-radius: 12px;
+            border: 1px solid #e1e5e9;
+        }
+
+        .toggle-container {
+            flex: 1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-container input[type="radio"] {
+            display: none;
+        }
+
+        .toggle-option {
+            display: block;
+            padding: 1rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            text-align: center;
+            background: white;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .toggle-container input[type="radio"]:checked + .toggle-option {
+            border-color: #667eea;
+            background: #f0f4ff;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+        }
+
+        .toggle-option strong {
+            display: block;
+            color: #333;
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .toggle-option small {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .toggle-container input[type="radio"]:checked + .toggle-option strong {
+            color: #667eea;
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #e8f5e8;
+            color: #2e7d32;
+            font-size: 0.7rem;
+            font-weight: bold;
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+            border: 1px solid #2e7d32;
+        }
+
+        /* Total Display */
+        .total-display {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        .total-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .total-amount {
+            color: #667eea;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        #card-element {
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            background: #fafafa;
+        }
+
+        #card-errors {
+            color: #e74c3c;
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-primary {
+            flex: 2;
+            padding: 15px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #5a6fd8;
+        }
+
+        .btn-primary:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            flex: 1;
+            padding: 15px;
+            background: transparent;
+            color: #666;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #f8f9fa;
+            border-color: #ccc;
+        }
+
+        .loading-spinner {
+            display: none;
+            margin-left: 0.5rem;
+        }
+
+        .success-modal .modal-content {
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .access-info {
+            background: #f8f9ff;
+            border: 1px solid #e1e5e9;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        .access-info h4 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .access-info p {
+            margin: 0.5rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .access-info code {
+            background: #fff;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .pricing-card.popular {
+                transform: none;
+            }
+
+            .modal-content {
+                margin: 5% auto;
+                padding: 1.5rem;
+            }
+
+            .modal-buttons {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+
+            .pricing-card {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <div class="logo">TOIT Nexus</div>
+            <div>
+                <a href="#pricing" style="color: #333; text-decoration: none; font-weight: 500;">Ver Planos</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>TOIT Nexus</h1>
+                <p>A Plataforma Empresarial Inteligente que revoluciona seus processos de negócio</p>
+                <a href="#pricing" class="cta-button">Escolher Meu Plano</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <h2>Escolha o Plano Ideal para Sua Empresa</h2>
+            <p class="pricing-subtitle">Todos os planos incluem suporte técnico e atualizações automáticas</p>
+            
+            <div class="pricing-grid">
+                <!-- TOIT Nexus - Básico -->
+                <div class="pricing-card">
+                    <h3 class="plan-name">TOIT Nexus - Básico</h3>
+                    <div class="billing-cycle">👥 Ideal para Pequenas Equipes</div>
+                    <div class="price">Apenas R$ 45<small>,75</small></div>
+                    <div class="price-period">por mês*</div>
+                    <div class="savings">⚡ *Pago anualmente - Economize R$ 159!</div>
+                    
+                    <ul class="features">
+                        <li>Até 3 usuários</li>
+                        <li>Gestão de Tarefas</li>
+                        <li>Query Builder Básico</li>
+                        <li>Relatórios Simples</li>
+                        <li>5GB de armazenamento</li>
+                        <li>Suporte por email</li>
+                    </ul>
+                    
+                    <button class="btn-checkout" data-profile="basico">
+                        Começar Agora
+                    </button>
+                </div>
+
+                <!-- TOIT Nexus - Standard -->
+                <div class="pricing-card popular">
+                    <h3 class="plan-name">TOIT Nexus - Standard</h3>
+                    <div class="billing-cycle">🚀 Crescimento Empresarial</div>
+                    <div class="price">Apenas R$ 62<small>,42</small></div>
+                    <div class="price-period">por mês*</div>
+                    <div class="savings">💰 *Pago anualmente - Economize R$ 319!</div>
+                    
+                    <ul class="features">
+                        <li>Até 10 usuários</li>
+                        <li>Todas as funcionalidades do Básico</li>
+                        <li>Workflow Builder</li>
+                        <li>Dashboard Builder</li>
+                        <li>Integrações com APIs</li>
+                        <li>25GB de armazenamento</li>
+                        <li>Suporte prioritário</li>
+                    </ul>
+                    
+                    <button class="btn-checkout" data-profile="standard">
+                        Começar Agora
+                    </button>
+                </div>
+
+                <!-- TOIT Nexus - Premium -->
+                <div class="pricing-card premium-special">
+                    <h3 class="plan-name">TOIT Nexus - Premium</h3>
+                    <div class="billing-cycle">🎯 Máxima Performance</div>
+                    <div class="price">Apenas R$ 83<small>,25</small></div>
+                    <div class="price-period">por mês*</div>
+                    <div class="savings premium-savings">🔥 *Oferta Especial - Economize R$ 429!</div>
+                    
+                    <ul class="features">
+                        <li>Até 25 usuários</li>
+                        <li>Todas as funcionalidades do Standard</li>
+                        <li>Motor Adaptativo IA</li>
+                        <li>Relatórios Avançados</li>
+                        <li>Conexões Banco de Dados</li>
+                        <li>100GB de armazenamento</li>
+                        <li>Suporte dedicado</li>
+                        <li>Treinamento incluído</li>
+                    </ul>
+                    
+                    <button class="btn-checkout" data-profile="premium">
+                        Começar Agora
+                    </button>
+                </div>
+
+                <!-- TOIT Nexus - Enterprise & Teams -->
+                <div class="pricing-card enterprise">
+                    <h3 class="plan-name">TOIT Nexus - Enterprise & Teams</h3>
+                    <div class="billing-cycle">🏢 Soluções Corporativas</div>
+                    <div class="price">A partir de R$ 39<small>,00</small></div>
+                    <div class="price-period">por usuário/mês</div>
+                    <div class="savings">💼 Mínimo de 5 usuários</div>
+                    
+                    <ul class="features">
+                        <li>Usuários ilimitados</li>
+                        <li>Todas as funcionalidades Premium</li>
+                        <li>Customizações específicas</li>
+                        <li>Integrações dedicadas</li>
+                        <li>Infraestrutura dedicada</li>
+                        <li>Armazenamento ilimitado</li>
+                        <li>Gerente de conta dedicado</li>
+                        <li>SLA 99.9% garantido</li>
+                    </ul>
+                    
+                    <button class="btn-checkout btn-enterprise" onclick="openContactForm()">
+                        Falar com Vendas
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal de Checkout -->
+    <div id="checkout-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Finalizar Assinatura</h3>
+                <div class="plan-details" id="plan-details"></div>
+                
+                <!-- Toggle Mensal/Anual -->
+                <div class="billing-toggle">
+                    <label class="toggle-container">
+                        <input type="radio" name="billing" value="monthly" checked>
+                        <span class="toggle-option">
+                            <strong>Mensal</strong>
+                            <small id="monthly-price">R$ 29,90/mês</small>
+                        </span>
+                    </label>
+                    <label class="toggle-container">
+                        <input type="radio" name="billing" value="yearly">
+                        <span class="toggle-option">
+                            <strong>Anual</strong>
+                            <small id="yearly-price">R$ 299,00/ano</small>
+                            <span class="discount-badge">17% OFF</span>
+                        </span>
+                    </label>
+                </div>
+                
+                <div class="total-display">
+                    <div class="total-label">Total a pagar:</div>
+                    <div class="total-amount" id="total-amount">R$ 29,90</div>
+                </div>
+            </div>
+            
+            <form id="customer-form">
+                <div class="form-group">
+                    <label for="customer-name">Nome Completo *</label>
+                    <input type="text" id="customer-name" placeholder="João Silva" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="customer-email">E-mail *</label>
+                    <input type="email" id="customer-email" placeholder="joao@empresa.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="customer-phone">Telefone</label>
+                    <input type="tel" id="customer-phone" placeholder="(11) 99999-9999">
+                </div>
+                
+                <div class="form-group">
+                    <label for="customer-cpf">CPF</label>
+                    <input type="text" id="customer-cpf" placeholder="000.000.000-00">
+                </div>
+                
+                <div class="form-group">
+                    <label for="card-element">Dados do Cartão *</label>
+                    <div id="card-element">
+                        <!-- Stripe Elements injeta aqui -->
+                    </div>
+                    <div id="card-errors" role="alert"></div>
+                </div>
+            </form>
+            
+            <div class="modal-buttons">
+                <button id="submit-payment" class="btn-primary" disabled>
+                    <span id="payment-text">Processar Pagamento</span>
+                    <span id="payment-spinner" class="loading-spinner">🔄</span>
+                </button>
+                <button id="close-modal" class="btn-secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuração Stripe
+        let stripe;
+        let elements;
+        let cardElement;
+
+        // Variáveis do checkout
+        let currentProfile = null;
+        let currentCycle = 'monthly'; // Padrão mensal
+        
+        // Dados dos planos com preços
+        const planData = {
+            basico: {
+                name: 'TOIT Nexus - Básico',
+                monthly: { price: 59.00, total: 59.00 },
+                yearly: { price: 549.00, total: 549.00, savings: 159.00 }
+            },
+            standard: {
+                name: 'TOIT Nexus - Standard',
+                monthly: { price: 89.00, total: 89.00 },
+                yearly: { price: 749.00, total: 749.00, savings: 319.00 }
+            },
+            premium: {
+                name: 'TOIT Nexus - Premium',
+                monthly: { price: 119.00, total: 119.00 },
+                yearly: { price: 999.00, total: 999.00, savings: 429.00 }
+            },
+        };
+
+        // Inicializar Stripe
+        async function initializeStripe() {
+            try {
+                const configResponse = await fetch('/api/stripe/config');
+                const config = await configResponse.json();
+                
+                stripe = Stripe(config.publishable_key);
+                elements = stripe.elements();
+
+                // Configurar elemento do cartão
+                cardElement = elements.create('card', {
+                    style: {
+                        base: {
+                            fontSize: '16px',
+                            color: '#424770',
+                            '::placeholder': {
+                                color: '#aab7c4',
+                            },
+                        },
+                        invalid: {
+                            color: '#9e2146',
+                        },
+                    },
+                });
+                
+                cardElement.mount('#card-element');
+
+                // Validação em tempo real do cartão
+                cardElement.on('change', ({error}) => {
+                    const displayError = document.getElementById('card-errors');
+                    const submitButton = document.getElementById('submit-payment');
+                    
+                    if (error) {
+                        displayError.textContent = error.message;
+                        submitButton.disabled = true;
+                    } else {
+                        displayError.textContent = '';
+                        submitButton.disabled = false;
+                    }
+                });
+
+                console.log('Stripe inicializado com sucesso');
+            } catch (error) {
+                console.error('Erro ao inicializar Stripe:', error);
+                alert('Erro ao carregar sistema de pagamento. Tente novamente.');
+            }
+        }
+
+        // Event listeners dos botões de checkout
+        function initializeCheckoutButtons() {
+            document.querySelectorAll('.btn-checkout[data-profile]').forEach(button => {
+                button.addEventListener('click', async (e) => {
+                    currentProfile = e.target.dataset.profile;
+                    currentCycle = 'monthly'; // Sempre inicia com mensal
+                    
+                    // Atualizar modal
+                    updateModalContent();
+                    
+                    // Mostrar modal
+                    document.getElementById('checkout-modal').style.display = 'block';
+                });
+            });
+            
+            // Event listeners para toggle mensal/anual
+            document.querySelectorAll('input[name="billing"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    currentCycle = e.target.value;
+                    updatePricing();
+                });
+            });
+        }
+
+        // Atualizar conteúdo do modal
+        function updateModalContent() {
+            const modalTitle = document.getElementById('modal-title');
+            const planDetails = document.getElementById('plan-details');
+            
+            const plan = planData[currentProfile];
+            modalTitle.textContent = plan.name;
+            planDetails.textContent = 'Escolha a forma de pagamento que preferir';
+            
+            // Resetar para mensal
+            document.querySelector('input[name="billing"][value="monthly"]').checked = true;
+            currentCycle = 'monthly';
+            
+            updatePricing();
+        }
+        
+        // Atualizar preços no modal
+        function updatePricing() {
+            const plan = planData[currentProfile];
+            const monthlyData = plan.monthly;
+            const yearlyData = plan.yearly;
+            
+            // Atualizar preços nos toggle
+            document.getElementById('monthly-price').textContent = `R$ ${monthlyData.price.toFixed(2)}/mês`;
+            document.getElementById('yearly-price').textContent = `R$ ${yearlyData.price.toFixed(2)}/ano`;
+            
+            // Atualizar total
+            if (currentCycle === 'monthly') {
+                document.getElementById('total-amount').textContent = `R$ ${monthlyData.total.toFixed(2)}`;
+            } else {
+                document.getElementById('total-amount').textContent = `R$ ${yearlyData.total.toFixed(2)}`;
+                
+                // Destacar economia
+                const discountBadge = document.querySelector('.discount-badge');
+                if (discountBadge) {
+                    discountBadge.textContent = `Economize R$ ${yearlyData.savings.toFixed(2)}`;
+                }
+            }
+        }
+
+        // Processar pagamento
+        async function processPayment() {
+            const submitButton = document.getElementById('submit-payment');
+            const paymentText = document.getElementById('payment-text');
+            const paymentSpinner = document.getElementById('payment-spinner');
+            
+            // Validar formulário
+            const customerName = document.getElementById('customer-name').value.trim();
+            const customerEmail = document.getElementById('customer-email').value.trim();
+            
+            if (!customerName || !customerEmail) {
+                alert('Nome e e-mail são obrigatórios');
+                return;
+            }
+            
+            // Validar email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(customerEmail)) {
+                alert('Por favor, insira um e-mail válido');
+                return;
+            }
+            
+            // Desabilitar botão e mostrar loading
+            submitButton.disabled = true;
+            paymentText.style.display = 'none';
+            paymentSpinner.style.display = 'inline';
+            
+            try {
+                // 1. Criar Payment Intent
+                const paymentIntentResponse = await fetch('/api/stripe/create-payment-intent', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        profile_slug: currentProfile,
+                        billing_cycle: currentCycle,
+                        customer_name: customerName,
+                        customer_email: customerEmail,
+                        customer_phone: document.getElementById('customer-phone').value.trim(),
+                        customer_cpf: document.getElementById('customer-cpf').value.trim()
+                    })
+                });
+                
+                const paymentIntentData = await paymentIntentResponse.json();
+                
+                if (!paymentIntentData.success) {
+                    throw new Error(paymentIntentData.error || 'Erro ao criar pagamento');
+                }
+                
+                // 2. Confirmar pagamento com Stripe
+                const { error, paymentIntent } = await stripe.confirmCardPayment(
+                    paymentIntentData.client_secret,
+                    {
+                        payment_method: {
+                            card: cardElement,
+                            billing_details: {
+                                name: customerName,
+                                email: customerEmail,
+                                phone: document.getElementById('customer-phone').value.trim()
+                            }
+                        }
+                    }
+                );
+                
+                if (error) {
+                    throw new Error(error.message);
+                }
+                
+                // 3. Confirmar no backend e criar usuário
+                const confirmResponse = await fetch('/api/stripe/confirm-payment', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        payment_intent_id: paymentIntent.id
+                    })
+                });
+                
+                const confirmData = await confirmResponse.json();
+                
+                if (!confirmData.success) {
+                    throw new Error(confirmData.error || 'Erro ao confirmar pagamento');
+                }
+                
+                // 4. Sucesso! Mostrar dados de acesso
+                showSuccessMessage(confirmData.user);
+                
+            } catch (error) {
+                console.error('Erro no pagamento:', error);
+                alert(`Erro: ${error.message}`);
+                
+                // Reabilitar botão
+                submitButton.disabled = false;
+                paymentText.style.display = 'inline';
+                paymentSpinner.style.display = 'none';
+            }
+        }
+
+        // Mostrar mensagem de sucesso
+        function showSuccessMessage(userData) {
+            const modal = document.getElementById('checkout-modal');
+            modal.className = 'modal success-modal';
+            
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="success-icon">🎉</div>
+                    <h3>Pagamento Realizado com Sucesso!</h3>
+                    <p><strong>Sua conta foi criada automaticamente!</strong></p>
+                    
+                    <div class="access-info">
+                        <h4>📋 Seus Dados de Acesso:</h4>
+                        <p><strong>🌐 URL:</strong> <a href="${userData.login_url}" target="_blank">${userData.login_url}</a></p>
+                        <p><strong>👤 E-mail:</strong> <code>${userData.email}</code></p>
+                        <p><strong>🔑 Senha temporária:</strong> <code>${userData.temporary_password}</code></p>
+                        <p><strong>📦 Plano:</strong> <code>${userData.profile.toUpperCase()}</code></p>
+                    </div>
+                    
+                    <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem; margin: 1rem 0;">
+                        <h4>📌 Próximos Passos:</h4>
+                        <ol style="margin: 0.5rem 0; padding-left: 1.2rem;">
+                            <li>Faça login usando os dados acima</li>
+                            <li><strong>Altere sua senha</strong> no primeiro acesso</li>
+                            <li>Explore suas funcionalidades disponíveis</li>
+                            <li>Entre em contato se precisar de ajuda</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="modal-buttons">
+                        <button onclick="window.open('${userData.login_url}', '_blank')" class="btn-primary">
+                            🚀 Acessar Minha Conta
+                        </button>
+                        <button onclick="location.reload()" class="btn-secondary">
+                            Fechar
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Função para contato Enterprise
+        function openContactForm() {
+            alert('Para o plano Enterprise & Teams, entre em contato:\n\n📧 vendas@toit.com.br\n📱 (11) 99999-9999\n\n💼 A partir de R$ 39,00 por usuário (mínimo 5 usuários)\n\nNosso time comercial retornará em até 4 horas!');
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', async () => {
+            await initializeStripe();
+            initializeCheckoutButtons();
+            
+            // Fechar modal
+            document.getElementById('close-modal').addEventListener('click', () => {
+                document.getElementById('checkout-modal').style.display = 'none';
+            });
+            
+            // Processar pagamento
+            document.getElementById('submit-payment').addEventListener('click', processPayment);
+            
+            // Fechar modal clicando fora
+            window.addEventListener('click', (e) => {
+                const modal = document.getElementById('checkout-modal');
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            // Smooth scroll para seção de preços
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

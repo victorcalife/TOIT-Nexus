@@ -24,6 +24,8 @@ import { registerDataConnectionRoutes } from "./dataConnectionRoutes";
 import { taskManagementRoutes } from "./taskManagementRoutes";
 import { moduleRoutes } from "./moduleRoutes";
 import { adaptiveEngine } from "./adaptiveEngine";
+import accessProfileRoutes from "./accessProfileRoutes";
+import stripeCheckoutRoutes from "./stripeCheckoutRoutes";
 
 // Helper function to determine if client should be assigned to a category
 function shouldAssignToCategory(client: any, category: any): boolean {
@@ -950,6 +952,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Initialize system on startup
   const { initializeSystem } = await import('./initializeSystem');
   await initializeSystem();
+  
+  // Initialize access profiles and modules
+  const { initializeAccessProfiles } = await import('./initializeAccessProfiles');
+  await initializeAccessProfiles();
   // Auth middleware with CPF/password
   setupAuth(app);
 
@@ -1825,6 +1831,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register TOIT admin routes
   app.use('/api/admin', adminRoutes);
+  
+  // Register Access Profile management routes (TOIT admin only)
+  app.use('/api/admin/access-profiles', accessProfileRoutes);
+  
+  // Register Stripe Checkout integrado routes
+  app.use('/api/stripe', stripeCheckoutRoutes);
 
   // Register Query Builder routes
   registerQueryBuilderRoutes(app);

@@ -9,11 +9,13 @@ import {
   webhookEvents,
   tenants,
   users,
+  accessProfiles,
   type PaymentPlan,
   type Subscription,
   type PaymentTransaction,
   type PaymentMethod,
-  type Invoice
+  type Invoice,
+  type AccessProfile
 } from '@shared/schema';
 import { eq, and } from 'drizzle-orm';
 
@@ -23,6 +25,98 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
 });
 
 export class PaymentService {
+  
+  // ==================== ACCESS PROFILES INTEGRATION ====================
+  
+  /**
+   * Buscar perfil de acesso pelo slug (metadata-driven)
+   */
+  async findAccessProfileBySlug(profileSlug: string): Promise<AccessProfile | null> {
+    const [profile] = await db
+      .select()
+      .from(accessProfiles)
+      .where(and(
+        eq(accessProfiles.slug, profileSlug.toLowerCase()),
+        eq(accessProfiles.is_active, true)
+      ));
+
+    return profile || null;
+  }
+
+  /**
+   * Buscar perfil de acesso pelo Price ID do Stripe (mantido para compatibilidade)
+   */
+  async findAccessProfileByPriceId(priceId: string): Promise<AccessProfile | null> {
+    const profiles = await db
+      .select()
+      .from(accessProfiles)
+      .where(eq(accessProfiles.is_active, true));
+
+    const profile = profiles.find(profile => 
+      profile.stripe_price_id_monthly === priceId || 
+      profile.stripe_price_id_yearly === priceId
+    );
+
+    return profile || null;
+  }
+
+  /**
+   * Atribuir perfil de acesso a um tenant baseado no metadata do pagamento
+   */
+  async assignAccessProfileByMetadata(tenantId: string, metadata: any): Promise<void> {
+    let accessProfile: AccessProfile | null = null;
+
+    // Primeiro tenta por profile_slug do metadata
+    if (metadata.profile_slug) {
+      accessProfile = await this.findAccessProfileBySlug(metadata.profile_slug);
+    }
+
+    // Se não encontrou e tem price_id, tenta pela forma antiga
+    if (!accessProfile && metadata.price_id) {
+      accessProfile = await this.findAccessProfileByPriceId(metadata.price_id);
+    }
+
+    if (!accessProfile) {
+      console.log(`⚠️  Perfil de acesso não encontrado para metadata:`, metadata);
+      return;
+    }
+
+    // Atualizar tenant com o perfil de acesso
+    await db
+      .update(tenants)
+      .set({
+        accessProfileId: accessProfile.id,
+        subscriptionPlan: accessProfile.slug,
+        updatedAt: new Date()
+      })
+      .where(eq(tenants.id, tenantId));
+
+    console.log(`✅ Perfil "${accessProfile.name}" atribuído ao tenant ${tenantId}`);
+  }
+
+  /**
+   * Atribuir perfil de acesso a um tenant baseado no Price ID (mantido para compatibilidade)
+   */
+  async assignAccessProfileToTenant(tenantId: string, priceId: string): Promise<void> {
+    const accessProfile = await this.findAccessProfileByPriceId(priceId);
+    
+    if (!accessProfile) {
+      console.log(`⚠️  Perfil de acesso não encontrado para Price ID: ${priceId}`);
+      return;
+    }
+
+    // Atualizar tenant com o perfil de acesso
+    await db
+      .update(tenants)
+      .set({
+        accessProfileId: accessProfile.id,
+        subscriptionPlan: accessProfile.slug,
+        updatedAt: new Date()
+      })
+      .where(eq(tenants.id, tenantId));
+
+    console.log(`✅ Perfil "${accessProfile.name}" atribuído ao tenant ${tenantId}`);
+  }
   
   // ==================== PAYMENT PLANS ====================
   
@@ -364,6 +458,19 @@ export class PaymentService {
       await db.update(subscriptions)
         .set({ status: 'active', updatedAt: new Date() })
         .where(eq(subscriptions.stripeSubscriptionId, invoice.subscription as string));
+    }
+
+    // 🆕 INTEGRAÇÃO COM PERFIS DE ACESSO
+    // Prioridade: metadata do invoice, fallback para Price ID
+    console.log(`🎯 Atribuindo perfil de acesso baseado no metadata/price ID`);
+    await this.assignAccessProfileByMetadata(tenantId, invoice.metadata);
+    
+    // Fallback para Price ID se metadata não funcionou
+    if (invoice.lines && invoice.lines.data.length > 0) {
+      const lineItem = invoice.lines.data[0];
+      if (lineItem.price?.id) {
+        await this.assignAccessProfileToTenant(tenantId, lineItem.price.id);
+      }
     }
   }
 

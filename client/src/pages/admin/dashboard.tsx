@@ -115,6 +115,7 @@ export default function TOITAdminDashboard() {
             <TabsTrigger value="users">Usuários</TabsTrigger>
             <TabsTrigger value="departments">Departamentos</TabsTrigger>
             <TabsTrigger value="permissions">Permissões</TabsTrigger>
+            <TabsTrigger value="profiles">Perfis de Acesso</TabsTrigger>
             <TabsTrigger value="workflows">Workflows</TabsTrigger>
             <TabsTrigger value="monitoring">Monitoramento</TabsTrigger>
           </TabsList>
@@ -364,6 +365,101 @@ export default function TOITAdminDashboard() {
                   <br />
                   Controle total sobre o que cada usuário pode fazer no sistema.
                 </p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="profiles" className="space-y-4">
+            <div className="flex justify-between items-center">
+              <div>
+                <h2 className="text-xl font-semibold">Configurador de Perfis de Acesso</h2>
+                <p className="text-sm text-muted-foreground">
+                  Configure quais módulos cada plano de assinatura terá acesso
+                </p>
+              </div>
+              <Button onClick={() => window.location.href = '/admin/profile-builder'}>
+                <Crown className="h-4 w-4 mr-2" />
+                Gerenciar Perfis
+              </Button>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Perfis Ativos</CardTitle>
+                  <Settings className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">4</div>
+                  <p className="text-xs text-muted-foreground">
+                    Disponíveis para venda
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Módulos Configuráveis</CardTitle>
+                  <Database className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">12</div>
+                  <p className="text-xs text-muted-foreground">
+                    Funcionalidades disponíveis
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Planos Vendidos</CardTitle>
+                  <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">127</div>
+                  <p className="text-xs text-muted-foreground">
+                    Assinaturas ativas
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+            <Card>
+              <CardHeader>
+                <CardTitle>Acesso Rápido</CardTitle>
+                <CardDescription>
+                  Ações principais para gestão de perfis de acesso
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start"
+                  onClick={() => window.location.href = '/admin/profile-builder'}
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Criar Novo Perfil de Assinatura
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start"
+                  onClick={() => window.location.href = '/admin/profile-builder'}
+                >
+                  <Edit className="h-4 w-4 mr-2" />
+                  Editar Perfis Existentes
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start"
+                  onClick={() => window.location.href = '/admin/profile-builder'}
+                >
+                  <Crown className="h-4 w-4 mr-2" />
+                  Configurar Módulos por Perfil
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start"
+                  disabled
+                >
+                  <FileText className="h-4 w-4 mr-2" />
+                  Vincular com Landing Page (Em breve)
+                </Button>
               </CardContent>
             </Card>
           </TabsContent>

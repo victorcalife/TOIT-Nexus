@@ -26,6 +26,7 @@ import Settings from "@/pages/settings";
 import AccessControl from "@/pages/access-control";
 import TenantSelection from "@/pages/tenant-selection";
 import AdminDashboard from "@/pages/admin/dashboard";
+import ProfileBuilder from "@/pages/admin/profile-builder";
 import ToitAdmin from "@/pages/toit-admin";
 import SystemSetup from "@/pages/system-setup";
 import SelectTenant from "@/pages/select-tenant";
@@ -115,6 +116,26 @@ function Router() {
           </div>;
         }
         return <AdminDashboard />;
+      }} />
+      
+      <Route path="/admin/profile-builder" component={() => {
+        if (!isAuthenticated) {
+          return <div className="flex items-center justify-center min-h-screen">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
+              <p>Verificando autenticação...</p>
+            </div>
+          </div>;
+        }
+        
+        if (!isSuperAdmin) {
+          return <div className="flex flex-col items-center justify-center min-h-screen">
+            <h1 className="text-2xl font-bold mb-4">Acesso Negado</h1>
+            <p className="text-gray-600 mb-4">Você não tem permissão para acessar esta página.</p>
+            <p className="text-sm text-gray-500">Apenas super administradores podem configurar perfis de acesso.</p>
+          </div>;
+        }
+        return <ProfileBuilder />;
       }} />
       
       <Route path="/admin/:rest*" component={() => {

@@ -48,6 +48,7 @@ export const tenants = pgTable("tenants", {
   status: tenantStatusEnum("status").default('active'),
   subscriptionPlan: varchar("subscription_plan", { length: 50 }).default('basic'),
   subscriptionExpiresAt: timestamp("subscription_expires_at"),
+  accessProfileId: varchar("access_profile_id").references(() => accessProfiles.id),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -504,6 +505,27 @@ export const moduleDefinitions = pgTable("module_definitions", {
   sortOrder: integer("sort_order").default(0),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Access Profiles table - Define subscription plans with module access
+export const accessProfiles = pgTable("access_profiles", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: varchar("name", { length: 100 }).notNull(), // BÁSICO, PREMIUM, ENTERPRISE
+  slug: varchar("slug", { length: 100 }).notNull().unique(), // basico, premium, enterprise
+  description: text("description"),
+  price_monthly: decimal("price_monthly", { precision: 10, scale: 2 }).notNull(),
+  price_yearly: decimal("price_yearly", { precision: 10, scale: 2 }).notNull(),
+  max_users: integer("max_users").default(1), // -1 for unlimited
+  max_storage_gb: integer("max_storage_gb").default(1),
+  modules: jsonb("modules").default({}), // { module_id: enabled }
+  features: jsonb("features").default([]), // lista de features destacadas
+  stripe_price_id_monthly: varchar("stripe_price_id_monthly"), // price_1234abcd (mensal)
+  stripe_price_id_yearly: varchar("stripe_price_id_yearly"), // price_5678efgh (anual)
+  stripe_product_id: varchar("stripe_product_id"), // prod_1234abcd
+  is_active: boolean("is_active").default(true),
+  sort_order: integer("sort_order").default(0),
+  created_at: timestamp("created_at").defaultNow(),
+  updated_at: timestamp("updated_at").defaultNow(),
 });
 
 export const tenantModules = pgTable("tenant_modules", {
@@ -1173,3 +1195,7 @@ export type WebhookEvent = typeof webhookEvents.$inferSelect;
 export type InsertWebhookEvent = typeof webhookEvents.$inferInsert;
 export type BusinessLead = typeof businessLeads.$inferSelect;
 export type InsertBusinessLead = typeof businessLeads.$inferInsert;
+
+// Access Profile Types
+export type AccessProfile = typeof accessProfiles.$inferSelect;
+export type InsertAccessProfile = typeof accessProfiles.$inferInsert;
