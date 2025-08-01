@@ -1083,6 +1083,19 @@ export const verificationTokens = pgTable("verification_tokens", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Verification Codes - Sistema avançado de códigos de verificação Email/SMS
+export const verificationCodes = pgTable("verification_codes", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  user_id: varchar("user_id").references(() => users.id).notNull(),
+  type: varchar("type", { length: 10 }).notNull(), // 'email' or 'phone'
+  code: varchar("code", { length: 6 }).notNull(), // Código de 6 dígitos
+  contact: varchar("contact", { length: 100 }).notNull(), // Email ou telefone
+  expires_at: timestamp("expires_at").notNull(),
+  attempts: integer("attempts").default(0), // Número de tentativas de verificação
+  verified: boolean("verified").default(false), // Se foi verificado com sucesso
+  created_at: timestamp("created_at").defaultNow(),
+});
+
 // RELATIONS
 export const databaseConnectionsRelations = relations(databaseConnections, ({ one }) => ({
   tenant: one(tenants, { fields: [databaseConnections.tenantId], references: [tenants.id] }),
@@ -1152,6 +1165,10 @@ export const businessLeadsRelations = relations(businessLeads, ({ one }) => ({
 
 export const verificationTokensRelations = relations(verificationTokens, ({ one }) => ({
   user: one(users, { fields: [verificationTokens.userId], references: [users.id] }),
+}));
+
+export const verificationCodesRelations = relations(verificationCodes, ({ one }) => ({
+  user: one(users, { fields: [verificationCodes.user_id], references: [users.id] }),
 }));
 
 // TYPE EXPORTS
@@ -1229,6 +1246,10 @@ export type InsertBusinessLead = typeof businessLeads.$inferInsert;
 // Verification Token Types
 export type VerificationToken = typeof verificationTokens.$inferSelect;
 export type InsertVerificationToken = typeof verificationTokens.$inferInsert;
+
+// Verification Code Types
+export type VerificationCode = typeof verificationCodes.$inferSelect;
+export type InsertVerificationCode = typeof verificationCodes.$inferInsert;
 
 // Access Profile Types
 export type AccessProfile = typeof accessProfiles.$inferSelect;

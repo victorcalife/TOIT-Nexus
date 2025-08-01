@@ -3,8 +3,7 @@ import { users, tenants } from '../shared/schema.js';
 import { eq, and, lt } from 'drizzle-orm';
 import bcrypt from 'bcrypt';
 import { nanoid } from 'nanoid';
-import nodemailer from 'nodemailer';
-import twilio from 'twilio';
+import { verificationService } from './verificationService';
 
 interface TrialUserData {
   name: string;
@@ -17,25 +16,8 @@ interface TrialUserData {
 }
 
 class TrialService {
-  private emailTransporter: any;
-  private twilioClient: any;
-
   constructor() {
-    // Configurar email transporter (SendGrid via SMTP)
-    this.emailTransporter = nodemailer.createTransporter({
-      host: 'smtp.sendgrid.net',
-      port: 587,
-      secure: false,
-      auth: {
-        user: 'apikey',
-        pass: process.env.SENDGRID_API_KEY
-      }
-    });
-
-    // Configurar Twilio para SMS (se disponível)
-    if (process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN) {
-      this.twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-    }
+    // Sistema de verificação integrado via verificationService
   }
 
   /**
@@ -101,12 +83,13 @@ class TrialService {
         updatedAt: new Date()
       }).returning();
 
-      // Enviar emails de verificação
-      await this.sendVerificationEmail(userId, userData.email);
+      // Enviar códigos de verificação usando o sistema moderno
+      if (userData.email) {
+        await verificationService.sendEmailVerification(userId, userData.email);
+      }
       
-      // Enviar SMS de verificação (se Twilio configurado)
-      if (userData.phone && this.twilioClient) {
-        await this.sendVerificationSMS(userId, userData.phone);
+      if (userData.phone) {
+        await verificationService.sendPhoneVerification(userId, userData.phone.replace(/\D/g, ''));
       }
 
       return {
@@ -124,141 +107,52 @@ class TrialService {
   }
 
   /**
-   * Envia email de verificação
+   * Ativa conta após verificação completa
    */
-  async sendVerificationEmail(userId: string, email: string) {
-    if (!email) return;
-
-    const verificationToken = nanoid(32);
-    const verificationUrl = `${process.env.FRONTEND_URL}/verify-email?token=${verificationToken}&userId=${userId}`;
-
+  async activateAccountAfterVerification(userId: string) {
     try {
-      // Salvar token no banco (você pode criar uma tabela verification_tokens)
-      // Por ora, salvamos no localStorage/sessão do frontend
-      
-      const mailOptions = {
-        from: 'noreply@toit.com.br',
-        to: email,
-        subject: 'TOIT Nexus - Confirme seu email',
-        html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #2563eb;">Bem-vindo ao TOIT Nexus!</h2>
-            <p>Confirme seu email clicando no link abaixo:</p>
-            <a href="${verificationUrl}" style="background-color: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; margin: 16px 0;">
-              Confirmar Email
-            </a>
-            <p><strong>Seu trial de 7 dias começou!</strong></p>
-            <p>Após confirmar email e telefone, sua conta será ativada automaticamente.</p>
-            <hr>
-            <p style="color: #666; font-size: 12px;">
-              Se você não criou esta conta, ignore este email.
-            </p>
-          </div>
-        `
-      };
-
-      await this.emailTransporter.sendMail(mailOptions);
-      console.log(`Email de verificação enviado para: ${email}`);
-
-    } catch (error) {
-      console.error('Erro ao enviar email de verificação:', error);
-    }
-  }
-
-  /**
-   * Envia SMS de verificação
-   */
-  async sendVerificationSMS(userId: string, phone: string) {
-    if (!this.twilioClient || !phone) return;
-
-    const verificationCode = Math.floor(100000 + Math.random() * 900000); // 6 dígitos
-    
-    try {
-      await this.twilioClient.messages.create({
-        body: `TOIT Nexus - Seu código de verificação: ${verificationCode}. Válido por 10 minutos.`,
-        from: process.env.TWILIO_PHONE_NUMBER,
-        to: phone
-      });
-
-      // Salvar código no banco para validação posterior
-      // Por ora, implementação básica
-      console.log(`SMS enviado para ${phone} - Código: ${verificationCode}`);
-
-    } catch (error) {
-      console.error('Erro ao enviar SMS:', error);
-    }
-  }
-
-  /**
-   * Verifica email do usuário
-   */
-  async verifyEmail(userId: string, token: string) {
-    try {
-      // Verificar token (implementação básica)
-      // Em produção, você salvaria o token no banco com expiração
-      
       await db.update(users)
         .set({ 
-          emailVerified: true,
+          isActive: true,
           updatedAt: new Date()
         })
         .where(eq(users.id, userId));
 
-      // Verificar se email E telefone foram verificados para ativar conta
-      const [user] = await db.select().from(users).where(eq(users.id, userId));
-      
-      if (user && user.emailVerified && (user.phoneVerified || !user.phone)) {
-        await db.update(users)
-          .set({ 
-            isActive: true,
-            updatedAt: new Date()
-          })
-          .where(eq(users.id, userId));
-
-        return { success: true, accountActivated: true };
-      }
-
-      return { success: true, accountActivated: false };
+      console.log(`✅ Conta trial ativada para usuário: ${userId}`);
+      return { success: true, message: 'Conta ativada com sucesso!' };
 
     } catch (error) {
-      console.error('Erro ao verificar email:', error);
+      console.error('❌ Erro ao ativar conta:', error);
       throw error;
     }
   }
 
   /**
-   * Verifica telefone do usuário
+   * Verifica se usuário está com verificação completa e ativa conta
    */
-  async verifyPhone(userId: string, code: string) {
+  async checkAndActivateAccount(userId: string) {
     try {
-      // Verificar código (implementação básica)
-      // Em produção, você salvaria o código no banco com expiração
-      
-      await db.update(users)
-        .set({ 
-          phoneVerified: true,
-          updatedAt: new Date()
-        })
-        .where(eq(users.id, userId));
-
-      // Verificar se email E telefone foram verificados para ativar conta
       const [user] = await db.select().from(users).where(eq(users.id, userId));
       
-      if (user && user.emailVerified && user.phoneVerified) {
-        await db.update(users)
-          .set({ 
-            isActive: true,
-            updatedAt: new Date()
-          })
-          .where(eq(users.id, userId));
+      if (!user) {
+        throw new Error('Usuário não encontrado');
+      }
 
+      // Verificar se ambas verificações estão completas
+      const emailVerified = user.email_verified || false;
+      const phoneVerified = user.phone_verified || false;
+      const phoneRequired = !!user.phone; // Só exige verificação se tem telefone
+      
+      if (emailVerified && (phoneVerified || !phoneRequired)) {
+        // Ativar conta trial
+        await this.activateAccountAfterVerification(userId);
         return { success: true, accountActivated: true };
       }
 
       return { success: true, accountActivated: false };
 
     } catch (error) {
-      console.error('Erro ao verificar telefone:', error);
+      console.error('❌ Erro ao verificar ativação da conta:', error);
       throw error;
     }
   }
@@ -300,10 +194,8 @@ class TrialService {
             .where(eq(tenants.id, user.tenantId));
         }
 
-        // Enviar email de notificação de expiração
-        if (user.email) {
-          await this.sendTrialExpiredEmail(user.email, user.firstName || '');
-        }
+        // Email de notificação será enviado via sistema de email automático
+        console.log(`📧 Trial expirado para usuário: ${user.email}`);
       }
 
       console.log(`${expiredUsers.length} trials expirados desativados`);
@@ -315,39 +207,6 @@ class TrialService {
     }
   }
 
-  /**
-   * Envia email de trial expirado
-   */
-  async sendTrialExpiredEmail(email: string, firstName: string) {
-    try {
-      const mailOptions = {
-        from: 'noreply@toit.com.br',
-        to: email,
-        subject: 'TOIT Nexus - Seu trial expirou',
-        html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #dc2626;">Trial Expirado</h2>
-            <p>Olá ${firstName},</p>
-            <p>Seu período de trial de 7 dias no TOIT Nexus expirou.</p>
-            <p>Para continuar usando nossa plataforma, escolha um plano:</p>
-            <a href="${process.env.FRONTEND_URL}/" style="background-color: #059669; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; margin: 16px 0;">
-              Ver Planos
-            </a>
-            <p>Sua conta foi temporariamente suspensa, mas seus dados estão seguros.</p>
-            <hr>
-            <p style="color: #666; font-size: 12px;">
-              Equipe TOIT | toit.com.br
-            </p>
-          </div>
-        `
-      };
-
-      await this.emailTransporter.sendMail(mailOptions);
-
-    } catch (error) {
-      console.error('Erro ao enviar email de expiração:', error);
-    }
-  }
 
   /**
    * Converte trial em assinatura paga
