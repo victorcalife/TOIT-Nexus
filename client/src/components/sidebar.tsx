@@ -22,7 +22,8 @@ import {
   Link as LinkIcon,
   CheckSquare,
   ClipboardList,
-  Package
+  Package,
+  Calendar
 } from "lucide-react";
 
 const navigation = [
@@ -40,6 +41,7 @@ const navigation = [
   { name: 'Controle de Acesso', href: '/access-control', icon: Shield },
   { name: 'Testes', href: '/connectivity', icon: TestTube },
   { name: 'Módulos', href: '/module-management', icon: Package },
+  { name: 'Calendários', href: '/calendar-integrations', icon: Calendar },
   { name: 'Configurações', href: '/settings', icon: Settings },
 ];
 

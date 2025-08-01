@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { getQueryFn, apiRequest } from '@/lib/queryClient';
 
 interface Notification {
   id: string;
@@ -41,7 +42,8 @@ export function useNotifications() {
 
   // Buscar notificações do servidor
   const { data, isLoading, error, refetch } = useQuery<NotificationsResponse>({
-    queryKey: ['/api/notifications'],
+    queryKey: ['api', 'notifications'],
+    queryFn: getQueryFn({ on401: 'returnNull' }),
     refetchInterval: 60000, // Refetch a cada 1 minuto
     staleTime: 30000, // Considera fresh por 30 segundos
   });
@@ -62,11 +64,8 @@ export function useNotifications() {
   // Marcar notificação como lida
   const markAsRead = async (notificationId: string) => {
     try {
-      // Fazer call para API
-      await fetch(`/api/notifications/${notificationId}/read`, {
-        method: 'POST',
-        credentials: 'include',
-      });
+      // Fazer call para API usando o sistema configurado
+      await apiRequest('POST', `/api/notifications/${notificationId}/read`);
 
       // Atualizar estado local
       const newReadNotifications = new Set(readNotifications);

@@ -37,6 +37,8 @@ import { advancedTaskRoutes } from "./advancedTaskRoutes";
 import verificationRoutes from "./verificationRoutes";
 import enterpriseRoutes from "./enterpriseRoutes";
 import adaptiveRoutes from "./adaptiveRoutes";
+import notificationRoutes from "./notificationRoutes";
+import calendarRoutes from "./calendarRoutes";
 
 // Helper function to determine if client should be assigned to a category
 function shouldAssignToCategory(client: any, category: any): boolean {
@@ -1881,6 +1883,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Adaptive ML routes - Sistema adaptativo e machine learning
   app.use('/api/adaptive', adaptiveRoutes);
+  
+  // Notification routes - Sistema completo de notificações com campanhas
+  app.use('/api/notifications', notificationRoutes);
+  
+  // Calendar Integration routes - Integração com Google/Apple/Outlook calendários
+  app.use('/api/calendar', calendarRoutes);
 
   // Register Query Builder routes
   registerQueryBuilderRoutes(app);

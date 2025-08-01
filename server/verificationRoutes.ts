@@ -150,6 +150,69 @@ router.post('/send-phone', sendCodeRateLimit, authMiddleware, async (req, res) =
 });
 
 /**
+ * POST /api/verification/verify-code
+ * Verificar código fornecido pelo usuário (endpoint usado pelo frontend)
+ */
+router.post('/verify-code', verificationRateLimit, async (req, res) => {
+  try {
+    const { userId, type, code } = req.body;
+    
+    // Validações
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        message: 'ID do usuário é obrigatório',
+        error: 'USER_ID_REQUIRED'
+      });
+    }
+    
+    if (!type || !['email', 'phone'].includes(type)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Tipo de verificação inválido. Use: email ou phone',
+        error: 'INVALID_TYPE'
+      });
+    }
+    
+    if (!code || typeof code !== 'string') {
+      return res.status(400).json({
+        success: false,
+        message: 'Código é obrigatório',
+        error: 'INVALID_CODE'
+      });
+    }
+    
+    // Validar formato do código (6 dígitos)
+    const cleanCode = code.replace(/\D/g, '');
+    if (cleanCode.length !== 6) {
+      return res.status(400).json({
+        success: false,
+        message: 'Código deve ter 6 dígitos',
+        error: 'INVALID_CODE_FORMAT'
+      });
+    }
+    
+    console.log(`🔍 Verificação de código ${type}:`, { userId, code: '******' });
+    
+    const result = await verificationService.verifyCode(userId, type as 'email' | 'phone', cleanCode);
+    
+    if (result.success) {
+      res.status(200).json(result);
+    } else {
+      res.status(400).json(result);
+    }
+    
+  } catch (error) {
+    console.error('❌ Erro na rota verify-code:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erro interno do servidor',
+      error: 'INTERNAL_SERVER_ERROR'
+    });
+  }
+});
+
+/**
  * POST /api/verification/verify
  * Verificar código fornecido pelo usuário
  */
@@ -215,19 +278,18 @@ router.post('/verify', verificationRateLimit, authMiddleware, async (req, res) =
 
 /**
  * POST /api/verification/resend
- * Reenviar código de verificação
+ * Reenviar código de verificação (endpoint público para frontend)
  */
-router.post('/resend', sendCodeRateLimit, authMiddleware, async (req, res) => {
+router.post('/resend', sendCodeRateLimit, async (req, res) => {
   try {
-    const userId = req.user?.id;
-    const { type } = req.body;
+    const { userId, type } = req.body;
     
     // Validações
     if (!userId) {
-      return res.status(401).json({
+      return res.status(400).json({
         success: false,
-        message: 'Usuário não autenticado',
-        error: 'UNAUTHORIZED'
+        message: 'ID do usuário é obrigatório',
+        error: 'USER_ID_REQUIRED'
       });
     }
     
@@ -260,8 +322,90 @@ router.post('/resend', sendCodeRateLimit, authMiddleware, async (req, res) => {
 });
 
 /**
+ * POST /api/verification/resend-auth
+ * Reenviar código de verificação (endpoint autenticado)
+ */
+router.post('/resend-auth', sendCodeRateLimit, authMiddleware, async (req, res) => {
+  try {
+    const userId = req.user?.id;
+    const { type } = req.body;
+    
+    // Validações
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: 'Usuário não autenticado',
+        error: 'UNAUTHORIZED'
+      });
+    }
+    
+    if (!type || !['email', 'phone'].includes(type)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Tipo de verificação inválido. Use: email ou phone',
+        error: 'INVALID_TYPE'
+      });
+    }
+    
+    console.log(`🔄 Reenvio de código ${type}:`, { userId });
+    
+    const result = await verificationService.resendCode(userId, type as 'email' | 'phone');
+    
+    if (result.success) {
+      res.status(200).json(result);
+    } else {
+      res.status(400).json(result);
+    }
+    
+  } catch (error) {
+    console.error('❌ Erro na rota resend-auth:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erro interno do servidor',
+      error: 'INTERNAL_SERVER_ERROR'
+    });
+  }
+});
+
+/**
+ * GET /api/verification/status/:userId
+ * Obter status de verificação do usuário (endpoint público para frontend)
+ */
+router.get('/status/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        message: 'ID do usuário é obrigatório',
+        error: 'USER_ID_REQUIRED'
+      });
+    }
+    
+    console.log('📊 Consultando status de verificação:', { userId });
+    
+    const result = await verificationService.getVerificationStatus(userId);
+    
+    if (result.success) {
+      res.status(200).json(result);
+    } else {
+      res.status(500).json(result);
+    }
+    
+  } catch (error) {
+    console.error('❌ Erro na rota status:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erro interno do servidor',
+      error: 'INTERNAL_SERVER_ERROR'
+    });
+  }
+});
+
+/**
  * GET /api/verification/status
- * Obter status de verificação do usuário
+ * Obter status de verificação do usuário (endpoint autenticado)
  */
 router.get('/status', authMiddleware, async (req, res) => {
   try {

@@ -32,21 +32,33 @@ export default function VerifyEmail() {
 
   const verifyEmailToken = async (token: string, userId: string) => {
     try {
-      const response = await fetch(`/api/trial/verify-email?token=${token}&userId=${userId}`, {
-        method: 'GET'
+      const response = await fetch(`/api/verification/verify-code`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: userId,
+          type: 'email',
+          code: token
+        })
       });
 
-      if (response.ok) {
+      const result = await response.json();
+
+      if (response.ok && result.success) {
         setStatus('success');
         setMessage('Email verificado com sucesso!');
         
         // Verificar se conta já foi totalmente ativada
         const checkActivation = async () => {
           try {
-            const userResponse = await fetch(`/api/users/${userId}`);
-            if (userResponse.ok) {
-              const userData = await userResponse.json();
-              setAccountActivated(userData.isActive);
+            const statusResponse = await fetch(`/api/verification/status/${userId}`);
+            if (statusResponse.ok) {
+              const statusData = await statusResponse.json();
+              // Conta ativa se email E telefone verificados (ou telefone não obrigatório)
+              const isActive = statusData.data.email_verified && (statusData.data.phone_verified || !statusData.data.has_phone);
+              setAccountActivated(isActive);
             }
           } catch (error) {
             console.error('Erro ao verificar status da conta:', error);
@@ -54,12 +66,12 @@ export default function VerifyEmail() {
         };
         
         checkActivation();
-      } else if (response.status === 410) {
+      } else if (result.error === 'CODE_NOT_FOUND' || result.error === 'MAX_ATTEMPTS_EXCEEDED') {
         setStatus('expired');
-        setMessage('Link de verificação expirado');
+        setMessage(result.message || 'Código expirado ou inválido');
       } else {
         setStatus('error');
-        setMessage('Erro ao verificar email');
+        setMessage(result.message || 'Erro ao verificar email');
       }
     } catch (error) {
       console.error('Erro na verificação:', error);
@@ -73,21 +85,24 @@ export default function VerifyEmail() {
 
     setResendLoading(true);
     try {
-      const response = await fetch('/api/trial/resend-email', {
+      const response = await fetch('/api/verification/resend', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           userId: userId,
-          email: '' // Você pode pedir o email novamente ou buscá-lo do banco
+          type: 'email'
         })
       });
 
-      if (response.ok) {
+      const result = await response.json();
+
+      if (response.ok && result.success) {
         setMessage('Email de verificação reenviado! Verifique sua caixa de entrada.');
+        setStatus('loading');
       } else {
-        setMessage('Erro ao reenviar email');
+        setMessage(result.message || 'Erro ao reenviar email');
       }
     } catch (error) {
       setMessage('Erro de conexão');

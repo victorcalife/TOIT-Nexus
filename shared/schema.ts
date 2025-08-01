@@ -1096,6 +1096,43 @@ export const verificationCodes = pgTable("verification_codes", {
   created_at: timestamp("created_at").defaultNow(),
 });
 
+// Calendar Integrations - Integrações com calendários externos (Google, Apple, Outlook)
+export const calendarIntegrations = pgTable("calendar_integrations", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  provider: varchar("provider", { length: 20 }).notNull(), // 'google', 'apple', 'outlook'
+  accessToken: text("access_token").notNull(), // Token de acesso OAuth
+  refreshToken: text("refresh_token"), // Token para renovar acesso
+  tokenExpiresAt: timestamp("token_expires_at"), // Quando o token expira
+  calendarId: varchar("calendar_id", { length: 255 }).notNull(), // ID do calendário no provedor
+  calendarName: varchar("calendar_name", { length: 255 }).notNull(), // Nome do calendário
+  isActive: boolean("is_active").default(true), // Se a integração está ativa
+  lastSyncAt: timestamp("last_sync_at"), // Última sincronização
+  syncErrors: integer("sync_errors").default(0), // Número de erros na sincronização
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Calendar Events - Eventos importados dos calendários externos
+export const calendarEvents = pgTable("calendar_events", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  integrationId: varchar("integration_id").references(() => calendarIntegrations.id).notNull(),
+  externalId: varchar("external_id", { length: 255 }).notNull(), // ID do evento no provedor externo
+  title: varchar("title", { length: 500 }).notNull(),
+  description: text("description"),
+  startTime: timestamp("start_time").notNull(),
+  endTime: timestamp("end_time").notNull(),
+  attendees: jsonb("attendees"), // Array de emails dos participantes
+  location: varchar("location", { length: 500 }),
+  reminders: jsonb("reminders"), // Array de lembretes
+  recurrence: text("recurrence"), // Regras de recorrência
+  status: varchar("status", { length: 20 }).default('confirmed'), // 'confirmed', 'tentative', 'cancelled'
+  lastSyncAt: timestamp("last_sync_at").defaultNow(), // Última sincronização deste evento
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 // RELATIONS
 export const databaseConnectionsRelations = relations(databaseConnections, ({ one }) => ({
   tenant: one(tenants, { fields: [databaseConnections.tenantId], references: [tenants.id] }),
@@ -1254,3 +1291,7 @@ export type InsertVerificationCode = typeof verificationCodes.$inferInsert;
 // Access Profile Types
 export type AccessProfile = typeof accessProfiles.$inferSelect;
 export type InsertAccessProfile = typeof accessProfiles.$inferInsert;
+export type CalendarIntegration = typeof calendarIntegrations.$inferSelect;
+export type InsertCalendarIntegration = typeof calendarIntegrations.$inferInsert;
+export type CalendarEvent = typeof calendarEvents.$inferSelect;
+export type InsertCalendarEvent = typeof calendarEvents.$inferInsert;

@@ -71,13 +71,14 @@ export default function VerifyPhone() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/trial/verify-phone', {
+      const response = await fetch('/api/verification/verify-code', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           userId: userId,
+          type: 'phone',
           code: verificationCode
         }),
       });
@@ -86,18 +87,23 @@ export default function VerifyPhone() {
 
       if (response.ok && result.success) {
         setIsVerified(true);
-        setAccountActivated(result.accountActivated);
+        
+        // Verificar se conta foi totalmente ativada
+        const statusResponse = await fetch(`/api/verification/status/${userId}`);
+        const statusData = await statusResponse.json();
+        const isActive = statusData.data.email_verified && statusData.data.phone_verified;
+        setAccountActivated(isActive);
         
         toast({
           title: "Telefone verificado!",
-          description: result.accountActivated 
+          description: isActive 
             ? "Sua conta foi ativada com sucesso!"
             : "Telefone verificado. Aguardando verificação de email.",
         });
 
         // Redirecionar após 3 segundos
         setTimeout(() => {
-          if (result.accountActivated) {
+          if (isActive) {
             window.location.href = '/login?verified=true&activated=true';
           } else {
             window.location.href = '/verify-email?userId=' + userId;
@@ -128,18 +134,20 @@ export default function VerifyPhone() {
 
     setResendLoading(true);
     try {
-      const response = await fetch('/api/trial/resend-sms', {
+      const response = await fetch('/api/verification/resend', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           userId: userId,
-          phone: phone
+          type: 'phone'
         })
       });
 
-      if (response.ok) {
+      const result = await response.json();
+
+      if (response.ok && result.success) {
         toast({
           title: "SMS reenviado",
           description: "Novo código enviado para seu telefone",
@@ -159,7 +167,7 @@ export default function VerifyPhone() {
       } else {
         toast({
           title: "Erro",
-          description: "Não foi possível reenviar o SMS",
+          description: result.message || "Não foi possível reenviar o SMS",
           variant: "destructive",
         });
       }

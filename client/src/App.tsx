@@ -52,6 +52,8 @@ const MyTasks = lazy(() => import("@/pages/my-tasks"));
 const ModuleManagement = lazy(() => import("@/pages/module-management"));
 const TestEverything = lazy(() => import("@/pages/test-everything"));
 const ClientDashboard = lazy(() => import("@/pages/client-dashboard"));
+const CalendarIntegrations = lazy(() => import("@/pages/calendar-integrations"));
+const CalendarCallback = lazy(() => import("@/pages/calendar-callback"));
 
 function Router() {
   const { isAuthenticated, isLoading, user, isSuperAdmin } = useAuth();
@@ -435,6 +437,23 @@ function Router() {
           </div>
         );
       }} />
+      
+      <Route path="/calendar-integrations" component={() => {
+        if (!user?.tenant) {
+          window.location.href = '/select-tenant';
+          return null;
+        }
+        return (
+          <div className="flex h-screen bg-gray-50">
+            <Sidebar />
+            <main className="flex-1 overflow-hidden">
+              <CalendarIntegrations />
+            </main>
+          </div>
+        );
+      }} />
+      
+      <Route path="/calendar-callback" component={CalendarCallback} />
 
       <Route component={NotFound} />
 

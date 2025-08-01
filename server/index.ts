@@ -6,6 +6,7 @@ import { setupVite, serveStatic, log } from "./vite";
 import { startNotificationCron } from "./notificationService";
 import { cronJobService } from "./cronJobs";
 import { initializeTrialCronJob } from "./trialManager";
+import { startCalendarSyncCron } from "./calendarIntegrationService";
 
 const app = express();
 app.use(express.json());
@@ -94,8 +95,10 @@ app.use((req, res, next) => {
     // Inicializar sistema de notificações automáticas
     if (process.env.NODE_ENV === 'production') {
       startNotificationCron();
+      startCalendarSyncCron();
     } else {
       console.log(`🔔 Notification cron disabled in development`);
+      console.log(`📅 Calendar sync cron disabled in development`);
     }
   });
 

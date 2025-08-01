@@ -8,6 +8,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useNotifications } from '@/hooks/useNotifications';
+import { apiRequest } from '@/lib/queryClient';
 
 export function NotificationBell() {
   const {
@@ -153,16 +154,11 @@ export function NotificationBell() {
               onClick={async () => {
                 try {
                   // Usar endpoint específico para marcar todas como lidas
-                  const response = await fetch('/api/notifications/read-all', {
-                    method: 'POST',
-                    credentials: 'include',
-                  });
+                  await apiRequest('POST', '/api/notifications/read-all');
                   
-                  if (response.ok) {
-                    // Marcar todas localmente
-                    for (const notification of unreadNotifications) {
-                      await markAsRead(notification.id);
-                    }
+                  // Marcar todas localmente
+                  for (const notification of unreadNotifications) {
+                    await markAsRead(notification.id);
                   }
                 } catch (error) {
                   console.error('Error marking all as read:', error);
