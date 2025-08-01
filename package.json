@@ -110,11 +110,14 @@
     "zod-validation-error": "^3.4.0"
   },
   "devDependencies": {
+    "@types/react": "^19.1.9",
+    "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^4.3.2",
     "autoprefixer": "^10.4.20",
     "drizzle-kit": "^0.31.4",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.17",
+    "typescript": "^5.9.2",
     "vite": "^7.0.6"
   },
   "optionalDependencies": {

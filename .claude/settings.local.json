@@ -33,7 +33,8 @@
       "Bash(railway service:*)",
       "Bash(railway link:*)",
       "Bash(railway up:*)",
-      "Bash(railway logs:*)"
+      "Bash(railway logs:*)",
+      "Bash(npm ls:*)"
     ],
     "deny": []
   }

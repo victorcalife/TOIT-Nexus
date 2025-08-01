@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Slider } from '@/components/ui/slider';
 import { 
   Plus, 
   Trash2, 
@@ -23,9 +24,9 @@ import {
   CheckSquare,
   List,
   Star,
-  Slider,
   FileUp,
-  AlertCircle
+  AlertCircle,
+  Move
 } from 'lucide-react';
 
 export interface TaskField {
@@ -72,7 +73,7 @@ const FIELD_TYPES = [
   { value: 'multiselect', label: 'Múltipla Seleção', icon: List },
   { value: 'file', label: 'Upload de Arquivo', icon: FileUp },
   { value: 'rating', label: 'Avaliação (Estrelas)', icon: Star },
-  { value: 'slider', label: 'Slider', icon: Slider }
+  { value: 'slider', label: 'Slider', icon: Move }
 ];
 
 export default function TaskFieldBuilder({ fields, onChange, preview = false }: TaskFieldBuilderProps) {
