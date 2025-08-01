@@ -1252,7 +1252,6 @@ export default function QueryBuilderPage() {
                       </div>
                     </TabsContent>
                   </Tabs>
-                )
                 ) : !executionResult ? (
                   // Estado inicial - aguardando execução TQL
                   <div className="border rounded-lg p-8 min-h-[400px] flex flex-col items-center justify-center text-center">
