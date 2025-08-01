@@ -35,7 +35,8 @@ export default function Landing() {
     email: '',
     phone: '',
     cpf: '',
-    password: ''
+    password: '',
+    birthDate: ''
   });
 
   // Contact form data  
@@ -416,7 +417,7 @@ export default function Landing() {
                   <span className="font-medium">7 dias completamente grátis</span>
                 </div>
                 <p className="text-sm text-green-700 mt-1">
-                  Acesso completo ao plano escolhido. Cancel quando quiser.
+                  Acesso completo ao plano <strong>Premium</strong>. Sem cartão obrigatório. Cancele quando quiser.
                 </p>
               </div>
 
@@ -482,6 +483,18 @@ export default function Landing() {
                     value={formData.phone}
                     onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
                     placeholder="(11) 99999-9999"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="birthDate">Data de Nascimento</Label>
+                  <Input
+                    id="birthDate"
+                    type="date"
+                    required
+                    value={formData.birthDate}
+                    onChange={(e) => setFormData(prev => ({ ...prev, birthDate: e.target.value }))}
+                    max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split('T')[0]}
                   />
                 </div>
 

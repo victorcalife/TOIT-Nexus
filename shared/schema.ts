@@ -62,6 +62,7 @@ export const users = pgTable("users", {
   firstName: varchar("first_name"),
   lastName: varchar("last_name"),
   phone: varchar("phone"),
+  birthDate: varchar("birth_date", { length: 10 }), // YYYY-MM-DD
   profileImageUrl: varchar("profile_image_url"),
   role: userRoleEnum("role").default('employee'),
   tenantId: varchar("tenant_id").references(() => tenants.id), // null for super_admin

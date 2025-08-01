@@ -308,10 +308,10 @@ export function setupAuth(app: Express) {
   // Rota para trial signup - 7 dias grátis
   app.post("/api/auth/trial-signup", async (req, res, next) => {
     try {
-      const { name, email, phone, cpf, password, plan, cycle } = req.body;
+      const { name, email, phone, cpf, password, plan, cycle, birthDate } = req.body;
 
       // Validações obrigatórias
-      if (!name || !email || !phone || !cpf || !password || !plan) {
+      if (!name || !email || !phone || !cpf || !password || !plan || !birthDate) {
         return res.status(400).json({ 
           message: "Todos os campos são obrigatórios" 
         });
@@ -347,6 +347,18 @@ export function setupAuth(app: Express) {
         });
       }
 
+      // Valida idade (18+ anos)
+      const birthDateObj = new Date(birthDate);
+      const now = new Date();
+      const age = now.getFullYear() - birthDateObj.getFullYear();
+      const monthDiff = now.getMonth() - birthDateObj.getMonth();
+      
+      if (age < 18 || (age === 18 && monthDiff < 0) || (age === 18 && monthDiff === 0 && now.getDate() < birthDateObj.getDate())) {
+        return res.status(400).json({ 
+          message: "É necessário ter pelo menos 18 anos para se cadastrar" 
+        });
+      }
+
       // Separa nome e sobrenome
       const nameParts = name.trim().split(' ');
       const firstName = nameParts[0];
@@ -361,13 +373,14 @@ export function setupAuth(app: Express) {
         firstName,
         lastName,
         phone,
+        birthDate: birthDateObj, // Incluir data de nascimento
         role: 'employee', // Pessoa física = employee
         tenantId: null, // Individual user
         isActive: false, // CONTA INATIVA ATÉ VALIDAÇÃO
         planType: plan,
         planCycle: cycle,
         trialEndsAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 dias
-        trialPlan: 'standard', // TRIAL SEMPRE NO STANDARD
+        trialPlan: 'premium', // TRIAL SEMPRE NO PREMIUM - Estratégia para conversão
         isTrialActive: true,
         emailVerified: false,
         phoneVerified: false,
@@ -540,6 +553,88 @@ export function setupAuth(app: Express) {
     } catch (error) {
       console.error('Cancel trial error:', error);
       res.status(500).json({ message: "Erro ao cancelar trial" });
+    }
+  });
+
+  // Rota para campanhas promocionais durante trial
+  app.get("/api/auth/trial-campaigns", async (req, res) => {
+    try {
+      if (!req.isAuthenticated()) {
+        return res.status(401).json({ message: "Não autenticado" });
+      }
+
+      const user = req.user as any;
+      
+      if (!user.isTrialActive || !user.trialEndsAt) {
+        return res.json({
+          success: true,
+          campaigns: [],
+          message: "Usuário não está em trial ativo"
+        });
+      }
+
+      const now = new Date();
+      const trialStart = new Date(user.createdAt);
+      const trialEnd = new Date(user.trialEndsAt);
+      const daysInTrial = Math.floor((now - trialStart) / (1000 * 60 * 60 * 24));
+      const daysLeft = Math.max(0, Math.ceil((trialEnd - now) / (1000 * 60 * 60 * 24)));
+
+      const campaigns = [];
+
+      // CAMPANHA DIA 3: Desconto no plano anual
+      if (daysInTrial === 3) {
+        campaigns.push({
+          type: 'discount_annual',
+          title: 'Oferta Especial: 1 Mês Grátis!',
+          message: 'Assine o plano anual agora e ganhe 1 mês grátis. Apenas hoje!',
+          discount: '1 mês grátis',
+          urgency: 'Oferta válida apenas hoje',
+          cta: 'Aproveitar Oferta',
+          backgroundColor: 'bg-gradient-to-r from-green-500 to-emerald-600'
+        });
+      }
+
+      // CAMPANHA DIA 4: Desconto adicional 
+      if (daysInTrial === 4) {
+        campaigns.push({
+          type: 'discount_percentage',
+          title: 'Última Chance: 20% OFF!',
+          message: 'Assine agora e ganhe 20% de desconto permanente em qualquer plano.',
+          discount: '20% OFF para sempre',
+          urgency: 'Restam apenas 3 dias de trial',
+          cta: 'Garantir Desconto',
+          backgroundColor: 'bg-gradient-to-r from-purple-500 to-pink-600'
+        });
+      }
+
+      // CAMPANHA DIA 6: Urgência final
+      if (daysInTrial >= 6) {
+        campaigns.push({
+          type: 'urgency_final',
+          title: 'Seu trial expira em breve!',
+          message: `Restam apenas ${daysLeft} dia(s). Continue aproveitando todas as funcionalidades Premium.`,
+          discount: 'Preço especial trial',
+          urgency: `Expira em ${daysLeft} dia(s)`,
+          cta: 'Continuar Premium',
+          backgroundColor: 'bg-gradient-to-r from-red-500 to-orange-600'
+        });
+      }
+
+      res.json({
+        success: true,
+        campaigns,
+        trialInfo: {
+          daysInTrial,
+          daysLeft,
+          trialPlan: user.trialPlan,
+          selectedPlan: user.planType,
+          selectedCycle: user.planCycle
+        }
+      });
+
+    } catch (error) {
+      console.error('Trial campaigns error:', error);
+      res.status(500).json({ message: "Erro ao buscar campanhas" });
     }
   });
 }
