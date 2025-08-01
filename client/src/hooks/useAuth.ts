@@ -6,7 +6,7 @@ interface User {
   email?: string;
   firstName?: string;
   lastName?: string;
-  role: 'super_admin' | 'tenant_admin' | 'manager' | 'employee';
+  role: 'super_admin' | 'toit_admin' | 'tenant_admin' | 'manager' | 'employee';
   tenantId?: string;
   isActive: boolean;
   lastLoginAt?: string;

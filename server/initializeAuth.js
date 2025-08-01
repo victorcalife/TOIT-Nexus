@@ -14,11 +14,11 @@ export async function initializeAuth() {
     const { runAuthMigrations } = await import('./migrations.js');
     await runAuthMigrations();
 
-    // 2. Criar tenant TOIT (super admin)
-    await createDefaultTenant();
+    // 2. Verificar tenants existentes
+    await checkExistingTenants();
 
-    // 3. Criar usuário super_admin padrão
-    await createSuperAdmin();
+    // 3. Verificar usuários existentes no banco
+    await checkExistingUsers();
 
     // 4. Criar tenant e usuário demo
     await createDemoData();
@@ -35,153 +35,67 @@ export async function initializeAuth() {
 }
 
 /**
- * Criar tenant TOIT padrão
+ * Verificar tenants existentes
  */
-async function createDefaultTenant() {
+async function checkExistingTenants() {
   try {
-    // Verificar se já existe
-    const existing = await db.select().from(tenants).where(eq(tenants.slug, 'toit'));
+    // Buscar todos os tenants
+    const allTenants = await db.select().from(tenants);
     
-    if (existing.length === 0) {
-      const toitTenant = {
-        id: 'toit-enterprise',
-        name: 'TOIT Enterprise',
-        slug: 'toit',
-        domain: 'toit.com.br',
-        status: 'active',
-        subscriptionPlan: 'enterprise',
-        settings: {
-          theme: 'dark',
-          features: ['all'],
-          maxUsers: null,
-          maxStorage: null
-        },
-        isActive: true,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      };
-
-      await db.insert(tenants).values(toitTenant);
-      console.log('✅ Tenant TOIT criado');
+    console.log(`🏢 Encontrados ${allTenants.length} tenants no banco de dados`);
+    
+    // Verificar tenant TOIT especificamente
+    const toitTenant = allTenants.find(tenant => tenant.slug === 'toit');
+    if (toitTenant) {
+      console.log(`✅ Tenant TOIT encontrado - Status: ${toitTenant.status}`);
     } else {
-      console.log('ℹ️  Tenant TOIT já existe');
+      console.log('⚠️  Tenant TOIT não encontrado');
     }
+
   } catch (error) {
-    console.error('Erro ao criar tenant TOIT:', error);
+    console.error('Erro ao verificar tenants:', error);
     throw error;
   }
 }
 
 /**
- * Criar usuário super_admin padrão
+ * Verificar usuários existentes no banco
  */
-async function createSuperAdmin() {
+async function checkExistingUsers() {
   try {
-    // Verificar se já existe
-    const existing = await db.select().from(users).where(eq(users.cpf, '33656299803'));
+    // Buscar todos os usuários no banco
+    const allUsers = await db.select().from(users);
     
-    if (existing.length === 0) {
-      const superAdmin = {
-        cpf: '33656299803',
-        email: 'victor@toit.com.br',
-        password: '15151515', // Será hasheada pelo authService
-        firstName: 'Victor',
-        lastName: 'Calife',
-        phone: '+5511999999999',
-        role: 'super_admin',
-        tenantId: 'toit-enterprise',
-        isActive: true
-      };
-
-      await authService.createUser(superAdmin);
-      console.log('✅ Super Admin criado - Victor Calife - CPF: 33656299803 / Senha: 15151515');
+    console.log(`📊 Encontrados ${allUsers.length} usuários no banco de dados`);
+    
+    // Buscar super admins
+    const superAdmins = allUsers.filter(user => user.role === 'super_admin');
+    if (superAdmins.length > 0) {
+      console.log(`👑 Super Admins encontrados: ${superAdmins.length}`);
     } else {
-      console.log('ℹ️  Super Admin já existe');
+      console.log('⚠️  Nenhum Super Admin encontrado no sistema');
     }
+
+    // Verificar usuário Victor especificamente
+    const victor = allUsers.find(user => user.cpf === '33656299803');
+    if (victor) {
+      console.log(`✅ Victor Calife encontrado - Role: ${victor.role}`);
+    } else {
+      console.log('⚠️  Victor Calife não encontrado no sistema');
+    }
+
   } catch (error) {
-    console.error('Erro ao criar super admin:', error);
+    console.error('Erro ao verificar usuários:', error);
     throw error;
   }
 }
 
 /**
- * Criar dados demo para teste
+ * Sistema limpo - sem dados demo
  */
 async function createDemoData() {
-  try {
-    // Criar tenant demo
-    const existingTenant = await db.select().from(tenants).where(eq(tenants.slug, 'demo'));
-    
-    if (existingTenant.length === 0) {
-      const demoTenant = {
-        id: 'demo-company',
-        name: 'Demo Company',
-        slug: 'demo',
-        status: 'active',
-        subscriptionPlan: 'business',
-        settings: {
-          theme: 'light',
-          features: ['basic', 'workflows', 'reports'],
-          maxUsers: 10,
-          maxStorage: '100GB'
-        },
-        isActive: true,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      };
-
-      await db.insert(tenants).values(demoTenant);
-      console.log('✅ Tenant Demo criado');
-    }
-
-    // Criar usuário tenant_admin demo
-    const existingUser = await db.select().from(users).where(eq(users.cpf, '11111111111'));
-    
-    if (existingUser.length === 0) {
-      const demoAdmin = {
-        cpf: '11111111111',
-        email: 'demo@demo.com',
-        password: 'demo123', // Será hasheada pelo authService
-        firstName: 'Demo',
-        lastName: 'Admin',
-        phone: '+5511888888888',
-        role: 'tenant_admin',
-        tenantId: 'demo-company',
-        isActive: true
-      };
-
-      await authService.createUser(demoAdmin);
-      console.log('✅ Demo Admin criado - CPF: 11111111111 / Senha: demo123');
-    } else {
-      console.log('ℹ️  Demo Admin já existe');
-    }
-
-    // Criar usuário employee demo
-    const existingEmployee = await db.select().from(users).where(eq(users.cpf, '22222222222'));
-    
-    if (existingEmployee.length === 0) {
-      const demoEmployee = {
-        cpf: '22222222222',
-        email: 'employee@demo.com',
-        password: 'employee123', // Será hasheada pelo authService
-        firstName: 'Demo',
-        lastName: 'Employee',
-        phone: '+5511777777777',
-        role: 'employee',
-        tenantId: 'demo-company',
-        isActive: true
-      };
-
-      await authService.createUser(demoEmployee);
-      console.log('✅ Demo Employee criado - CPF: 22222222222 / Senha: employee123');
-    } else {
-      console.log('ℹ️  Demo Employee já existe');
-    }
-
-  } catch (error) {
-    console.error('Erro ao criar dados demo:', error);
-    throw error;
-  }
+  // Sistema limpo - sem dados hardcoded de demonstração
+  console.log('🧹 Sistema configurado sem dados demo');
 }
 
 /**
@@ -191,19 +105,19 @@ export async function validateAuthSystem() {
   try {
     console.log('🔍 Validando sistema de autenticação...');
 
-    // Verificar se super admin pode fazer login
-    const superAdmin = await authService.authenticate('33656299803', '15151515');
-    if (!superAdmin) {
-      throw new Error('Super admin Victor Calife não consegue fazer login');
+    // Verificar se super admin existe
+    const superAdmin = await db.select().from(users).where(eq(users.cpf, '33656299803'));
+    if (superAdmin.length === 0) {
+      console.log('⚠️  Super admin Victor não encontrado no sistema');
+      return false;
     }
 
-    // Verificar se demo admin pode fazer login
-    const demoAdmin = await authService.authenticate('11111111111', 'demo123');
-    if (!demoAdmin) {
-      throw new Error('Demo admin não consegue fazer login');
+    if (superAdmin[0].role !== 'super_admin') {
+      console.log('⚠️  Usuário Victor encontrado mas não é super_admin');
+      return false;
     }
 
-    console.log('✅ Sistema de autenticação validado');
+    console.log('✅ Sistema de autenticação validado - Super Admin Victor ativo');
     return true;
 
   } catch (error) {

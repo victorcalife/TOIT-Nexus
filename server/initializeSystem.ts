@@ -53,8 +53,6 @@ export async function initializeSystem() {
     console.log("🧹 Sistema inicializado sem dados de exemplo");
 
     console.log("🎉 Sistema inicializado com sucesso!");
-    console.log("📋 ÚNICO SUPER ADMIN:");
-    console.log("   Victor Calife - CPF: 33656299803, Senha: 241286");
 
   } catch (error) {
     console.error("❌ Erro inicializando sistema:", error);
