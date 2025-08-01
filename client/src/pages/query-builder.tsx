@@ -38,6 +38,31 @@ const CHART_COLORS = [
 
 // TQL Examples organized by category
 const TQL_EXAMPLES = {
+  tempo_real: [
+    {
+      title: "Vendas de hoje (tempo real)",
+      description: "Vendas atualizadas em tempo real - atualiza automaticamente",
+      code: "SOMAR valor DE vendas ONDE data = HOJE;"
+    },
+    {
+      title: "Usuários online agora",
+      description: "Contagem de usuários conectados neste momento",
+      code: "CONTAR usuarios ONDE ultimo_acesso = AGORA E status = \"online\";"
+    },
+    {
+      title: "Dashboard Tempo Real Completo",
+      description: "Dashboard executivo em tempo real com auto-refresh",
+      code: `# Dashboard em tempo real
+vendas_hoje = SOMAR valor DE vendas ONDE data = HOJE;
+pedidos_ativo = CONTAR pedidos ONDE status = "ativo" E criado = AGORA;
+usuarios_online = CONTAR usuarios ONDE ultimo_acesso = AGORA;
+
+DASHBOARD "Live Dashboard" ATUALIZAR_A_CADA 15_SEGUNDOS:
+    KPI vendas_hoje TITULO "Vendas Hoje", MOEDA R$;
+    KPI pedidos_ativo TITULO "Pedidos Ativos";
+    KPI usuarios_online TITULO "Online";`
+    }
+  ],
   basico: [
     {
       title: "Listar todos os clientes",
@@ -57,6 +82,31 @@ const TQL_EXAMPLES = {
   ],
   temporal: [
     {
+      title: "Vendas de hoje em tempo real",
+      description: "Vendas atualizadas em tempo real para hoje",
+      code: "SOMAR valor DE vendas ONDE data = HOJE;"
+    },
+    {
+      title: "Pedidos desta semana",
+      description: "Todos os pedidos da semana atual",
+      code: "CONTAR pedidos ONDE data ENTRE ESTA_SEMANA;"
+    },
+    {
+      title: "Comparativo hoje vs ontem",
+      description: "Comparação em tempo real",
+      code: "vendas_hoje = SOMAR valor DE vendas ONDE data = HOJE;\nvendas_ontem = SOMAR valor DE vendas ONDE data = ONTEM;\ndiferenca = vendas_hoje - vendas_ontem;"
+    },
+    {
+      title: "Vendas deste mês em tempo real",
+      description: "Total do mês atual atualizado constantemente",
+      code: "SOMAR valor DE vendas ONDE data ENTRE ESTE_MES;"
+    },
+    {
+      title: "Status agora vs período anterior",
+      description: "Métricas em tempo real comparativas",
+      code: "funcionarios_agora = CONTAR funcionarios ONDE status = \"ativo\" E ultimo_acesso = AGORA;\nfuncionarios_semana = CONTAR funcionarios ONDE ultimo_acesso ENTRE ESTA_SEMANA;"
+    },
+    {
       title: "Vendas dos últimos 30 dias",
       description: "Vendas em período específico",
       code: "SOMAR valor DE vendas ONDE data ENTRE DIA(-30) E DIA(0);"
@@ -65,14 +115,27 @@ const TQL_EXAMPLES = {
       title: "Comparativo mensal",
       description: "Vendas de múltiplos meses",
       code: "SOMAR valor DE vendas ONDE data = (MES(-2), MES(-1), MES(0));"
-    },
-    {
-      title: "Funcionários por ano de admissão",
-      description: "Funcionários admitidos em anos específicos",
-      code: "CONTAR funcionarios ONDE admissao = (ANO(-2), ANO(-1), ANO(0));"
     }
   ],
   dashboard: [
+    {
+      title: "Dashboard TEMPO REAL - Hoje",
+      description: "Métricas atualizadas constantemente",
+      code: `# Dashboard em tempo real
+vendas_hoje = SOMAR valor DE vendas ONDE data = HOJE;
+vendas_ontem = SOMAR valor DE vendas ONDE data = ONTEM;
+crescimento_dia = (vendas_hoje - vendas_ontem) / vendas_ontem * 100;
+pedidos_agora = CONTAR pedidos ONDE status = "ativo" E criado = AGORA;
+usuarios_online = CONTAR usuarios ONDE ultimo_acesso = AGORA;
+
+DASHBOARD "Tempo Real - Hoje" ATUALIZAR_A_CADA 30_SEGUNDOS:
+    KPI vendas_hoje TITULO "Vendas Hoje", MOEDA R$, COR azul;
+    KPI crescimento_dia TITULO "vs Ontem", FORMATO %, 
+        COR verde SE >0, COR vermelho SE <0;
+    KPI pedidos_agora TITULO "Pedidos Ativos", COR laranja;
+    KPI usuarios_online TITULO "Online Agora", COR verde;
+    GRAFICO linha DE vendas PERIODO ESTA_SEMANA TITULO "Vendas da Semana";`
+    },
     {
       title: "Dashboard Vendas Simples",
       description: "KPIs básicos de vendas",
@@ -182,6 +245,7 @@ export default function QueryBuilderPage() {
   const [queryResults, setQueryResults] = useState<any[]>([]);
   const [isPreviewMode, setIsPreviewMode] = useState(false);
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<'tempo_real' | 'basico' | 'temporal' | 'dashboard'>('tempo_real');
 
   // Available tables and fields (would come from database schema)
   const availableTables = [
@@ -611,12 +675,13 @@ export default function QueryBuilderPage() {
                       <Label>Categorias de Exemplos</Label>
                       <Select 
                         value={selectedCategory} 
-                        onValueChange={(value: 'basico' | 'temporal' | 'dashboard') => setSelectedCategory(value)}
+                        onValueChange={(value: 'tempo_real' | 'basico' | 'temporal' | 'dashboard') => setSelectedCategory(value)}
                       >
                         <SelectTrigger>
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
+                          <SelectItem value="tempo_real">⚡ Tempo Real</SelectItem>
                           <SelectItem value="basico">🔰 Básico</SelectItem>
                           <SelectItem value="temporal">⏰ Temporal</SelectItem>
                           <SelectItem value="dashboard">📊 Dashboard</SelectItem>
@@ -648,33 +713,246 @@ export default function QueryBuilderPage() {
                       <BookOpen className="h-4 w-4" />
                       <AlertDescription>
                         <strong>TQL - TOIT Query Language</strong><br/>
-                        Linguagem de consulta 100% em português brasileiro para criar relatórios e dashboards.
+                        Linguagem de consulta 100% em português brasileiro para criar relatórios e dashboards em tempo real.
                       </AlertDescription>
                     </Alert>
                     
-                    <div className="space-y-2 text-sm">
-                      <div><strong>Ações básicas:</strong></div>
-                      <div className="grid grid-cols-2 gap-2 text-xs">
-                        <Badge variant="outline">MOSTRAR</Badge>
-                        <Badge variant="outline">SOMAR</Badge>
-                        <Badge variant="outline">CONTAR</Badge>
-                        <Badge variant="outline">MEDIA</Badge>
+                    <ScrollArea className="h-[500px] space-y-4">
+                      <div className="space-y-6 text-sm pr-4">
+                        
+                        {/* 1. CONSULTAS BÁSICAS */}
+                        <div>
+                          <h4 className="font-semibold text-base mb-2 flex items-center gap-2">
+                            <Code className="w-4 h-4" />
+                            1. Consultas Básicas
+                          </h4>
+                          <div className="space-y-2">
+                            <div><strong>Ações disponíveis:</strong></div>
+                            <div className="grid grid-cols-2 gap-2 text-xs">
+                              <Badge variant="outline">MOSTRAR</Badge>
+                              <Badge variant="outline">SOMAR</Badge>
+                              <Badge variant="outline">CONTAR</Badge>
+                              <Badge variant="outline">MEDIA</Badge>
+                              <Badge variant="outline">MAXIMO</Badge>
+                              <Badge variant="outline">MINIMO</Badge>
+                            </div>
+                            <div className="text-xs bg-gray-100 dark:bg-gray-800 p-2 rounded font-mono mt-2">
+                              MOSTRAR clientes;<br/>
+                              CONTAR funcionarios ONDE status = "ativo";<br/>
+                              SOMAR valor DE vendas ONDE data = HOJE;
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* 2. FUNÇÕES TEMPORAIS */}
+                        <div>
+                          <h4 className="font-semibold text-base mb-2 flex items-center gap-2">
+                            <Calendar className="w-4 h-4" />
+                            2. Funções Temporais em Tempo Real
+                          </h4>
+                          <div className="space-y-2">
+                            <div><strong>Comandos em tempo real:</strong></div>
+                            <div className="grid grid-cols-3 gap-1 text-xs">
+                              <Badge variant="secondary">AGORA</Badge>
+                              <Badge variant="secondary">HOJE</Badge>
+                              <Badge variant="secondary">ONTEM</Badge>
+                              <Badge variant="secondary">ESTA_SEMANA</Badge>
+                              <Badge variant="secondary">ESTE_MES</Badge>
+                              <Badge variant="secondary">ESTE_ANO</Badge>
+                            </div>
+                            <div><strong>Funções numéricas:</strong></div>
+                            <div className="grid grid-cols-3 gap-1 text-xs">
+                              <Badge variant="secondary">DIA(0)</Badge>
+                              <Badge variant="secondary">MES(-1)</Badge>
+                              <Badge variant="secondary">ANO(0)</Badge>
+                              <Badge variant="secondary">SEMANA(-2)</Badge>
+                              <Badge variant="secondary">HORA(0)</Badge>
+                              <Badge variant="secondary">MINUTO(0)</Badge>
+                            </div>
+                            <div className="text-xs bg-gray-100 dark:bg-gray-800 p-2 rounded font-mono mt-2">
+                              # Tempo real<br/>
+                              vendas_hoje = SOMAR valor DE vendas ONDE data = HOJE;<br/>
+                              online_agora = CONTAR usuarios ONDE status = AGORA;<br/>
+                              <br/>
+                              # Períodos específicos<br/>
+                              vendas_mes = SOMAR valor ONDE data ENTRE ESTE_MES;<br/>
+                              comparativo = ONDE data = (ONTEM, HOJE);
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* 3. FILTROS E CONDIÇÕES */}
+                        <div>
+                          <h4 className="font-semibold text-base mb-2 flex items-center gap-2">
+                            <Settings className="w-4 h-4" />
+                            3. Filtros e Condições
+                          </h4>
+                          <div className="space-y-2">
+                            <div><strong>Operadores disponíveis:</strong></div>
+                            <div className="grid grid-cols-4 gap-1 text-xs">
+                              <Badge variant="outline">ONDE</Badge>
+                              <Badge variant="outline">E</Badge>
+                              <Badge variant="outline">OU</Badge>
+                              <Badge variant="outline">NAO</Badge>
+                              <Badge variant="outline">ENTRE</Badge>
+                              <Badge variant="outline">COMO</Badge>
+                              <Badge variant="outline">CONTEM</Badge>
+                              <Badge variant="outline">INICIA</Badge>
+                            </div>
+                            <div className="text-xs bg-gray-100 dark:bg-gray-800 p-2 rounded font-mono mt-2">
+                              CONTAR clientes ONDE status = "ativo" E cidade = "São Paulo";<br/>
+                              SOMAR vendas ONDE valor ENTRE 1000 E 5000;<br/>
+                              MOSTRAR usuarios ONDE nome CONTEM "Silva";
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* 4. VARIÁVEIS E CÁLCULOS */}
+                        <div>
+                          <h4 className="font-semibold text-base mb-2 flex items-center gap-2">
+                            <Calculator className="w-4 h-4" />
+                            4. Variáveis e Cálculos
+                          </h4>
+                          <div className="space-y-2">
+                            <div><strong>Operações matemáticas:</strong></div>
+                            <div className="grid grid-cols-4 gap-1 text-xs">
+                              <Badge variant="outline">+</Badge>
+                              <Badge variant="outline">-</Badge>
+                              <Badge variant="outline">*</Badge>
+                              <Badge variant="outline">/</Badge>
+                              <Badge variant="outline">%</Badge>
+                              <Badge variant="outline">^</Badge>
+                            </div>
+                            <div className="text-xs bg-gray-100 dark:bg-gray-800 p-2 rounded font-mono mt-2">
+                              # Definir variáveis<br/>
+                              vendas_mes = SOMAR valor DE vendas ONDE data = ESTE_MES;<br/>
+                              vendas_anterior = SOMAR valor DE vendas ONDE data = MES(-1);<br/>
+                              <br/>
+                              # Calcular crescimento<br/>
+                              crescimento = (vendas_mes - vendas_anterior) / vendas_anterior * 100;
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* 5. DASHBOARDS */}
+                        <div>
+                          <h4 className="font-semibold text-base mb-2 flex items-center gap-2">
+                            <BarChart3 className="w-4 h-4" />
+                            5. Dashboards Dinâmicos
+                          </h4>
+                          <div className="space-y-2">
+                            <div><strong>Tipos de componentes:</strong></div>
+                            <div className="grid grid-cols-3 gap-1 text-xs">
+                              <Badge variant="default">KPI</Badge>
+                              <Badge variant="default">GRAFICO</Badge>
+                              <Badge variant="default">TABELA</Badge>
+                              <Badge variant="default">CARTAO</Badge>
+                              <Badge variant="default">LISTA</Badge>
+                              <Badge variant="default">MAPA</Badge>
+                            </div>
+                            <div><strong>Tipos de gráficos:</strong></div>
+                            <div className="grid grid-cols-4 gap-1 text-xs">
+                              <Badge variant="secondary">barras</Badge>
+                              <Badge variant="secondary">linha</Badge>
+                              <Badge variant="secondary">pizza</Badge>
+                              <Badge variant="secondary">area</Badge>
+                              <Badge variant="secondary">gauge</Badge>
+                              <Badge variant="secondary">radar</Badge>
+                            </div>
+                            <div className="text-xs bg-gray-100 dark:bg-gray-800 p-2 rounded font-mono mt-2">
+                              DASHBOARD "Vendas Tempo Real" ATUALIZAR_A_CADA 30_SEGUNDOS:<br/>
+                              &nbsp;&nbsp;KPI vendas_hoje TITULO "Vendas Hoje", MOEDA R$, COR azul;<br/>
+                              &nbsp;&nbsp;KPI crescimento TITULO "vs Ontem", FORMATO %,<br/>
+                              &nbsp;&nbsp;&nbsp;&nbsp;COR verde SE &gt;0, COR vermelho SE &lt;0;<br/>
+                              &nbsp;&nbsp;GRAFICO linha DE vendas PERIODO ESTA_SEMANA;<br/>
+                              &nbsp;&nbsp;TABELA TOP 10 DE clientes ORDENADO POR valor;
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* 6. FORMATAÇÃO E CORES */}
+                        <div>
+                          <h4 className="font-semibold text-base mb-2 flex items-center gap-2">
+                            <Palette className="w-4 h-4" />
+                            6. Formatação e Estilos
+                          </h4>
+                          <div className="space-y-2">
+                            <div><strong>Formatos disponíveis:</strong></div>
+                            <div className="grid grid-cols-4 gap-1 text-xs">
+                              <Badge variant="outline">MOEDA</Badge>
+                              <Badge variant="outline">FORMATO %</Badge>
+                              <Badge variant="outline">DECIMAL</Badge>
+                              <Badge variant="outline">INTEIRO</Badge>
+                            </div>
+                            <div><strong>Cores disponíveis:</strong></div>
+                            <div className="grid grid-cols-5 gap-1 text-xs">
+                              <Badge variant="outline">azul</Badge>
+                              <Badge variant="outline">verde</Badge>
+                              <Badge variant="outline">vermelho</Badge>
+                              <Badge variant="outline">amarelo</Badge>
+                              <Badge variant="outline">roxo</Badge>
+                              <Badge variant="outline">laranja</Badge>
+                              <Badge variant="outline">rosa</Badge>
+                              <Badge variant="outline">cinza</Badge>
+                            </div>
+                            <div className="text-xs bg-gray-100 dark:bg-gray-800 p-2 rounded font-mono mt-2">
+                              KPI receita TITULO "Receita Total", MOEDA R$, COR verde;<br/>
+                              KPI conversao TITULO "Taxa Conversão", FORMATO %, COR azul;<br/>
+                              KPI temperatura TITULO "Temperatura", FORMATO decimal, COR laranja;
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* 7. AGRUPAMENTO E ORDENAÇÃO */}
+                        <div>
+                          <h4 className="font-semibold text-base mb-2 flex items-center gap-2">
+                            <TrendingUp className="w-4 h-4" />
+                            7. Agrupamento e Ordenação
+                          </h4>
+                          <div className="space-y-2">
+                            <div><strong>Comandos de organização:</strong></div>
+                            <div className="grid grid-cols-4 gap-1 text-xs">
+                              <Badge variant="outline">AGRUPADO POR</Badge>
+                              <Badge variant="outline">ORDENADO POR</Badge>
+                              <Badge variant="outline">LIMITADO A</Badge>
+                              <Badge variant="outline">TOP</Badge>
+                            </div>
+                            <div className="text-xs bg-gray-100 dark:bg-gray-800 p-2 rounded font-mono mt-2">
+                              SOMAR vendas AGRUPADO POR regiao ORDENADO POR valor DESC;<br/>
+                              MOSTRAR TOP 5 DE produtos ORDENADO POR vendas;<br/>
+                              CONTAR clientes AGRUPADO POR mes LIMITADO A 12;
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* 8. EXEMPLOS COMPLETOS */}
+                        <div>
+                          <h4 className="font-semibold text-base mb-2 flex items-center gap-2">
+                            <Lightbulb className="w-4 h-4" />
+                            8. Exemplos Práticos Completos
+                          </h4>
+                          <div className="text-xs bg-gray-100 dark:bg-gray-800 p-3 rounded font-mono leading-relaxed">
+                            <strong># Dashboard Executivo Tempo Real</strong><br/>
+                            receita_hoje = SOMAR receita DE vendas ONDE data = HOJE;<br/>
+                            receita_ontem = SOMAR receita DE vendas ONDE data = ONTEM;<br/>
+                            crescimento = (receita_hoje - receita_ontem) / receita_ontem * 100;<br/>
+                            usuarios_online = CONTAR usuarios ONDE ultimo_acesso = AGORA;<br/>
+                            pedidos_pendentes = CONTAR pedidos ONDE status = "pendente";<br/>
+                            <br/>
+                            DASHBOARD "Executivo Live" ATUALIZAR_A_CADA 15_SEGUNDOS:<br/>
+                            &nbsp;&nbsp;KPI receita_hoje TITULO "Receita Hoje", MOEDA R$, COR verde;<br/>
+                            &nbsp;&nbsp;KPI crescimento TITULO "Crescimento vs Ontem", FORMATO %,<br/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;COR verde SE &gt;0, COR vermelho SE &lt;0;<br/>
+                            &nbsp;&nbsp;KPI usuarios_online TITULO "Usuários Online", COR azul;<br/>
+                            &nbsp;&nbsp;KPI pedidos_pendentes TITULO "Pedidos Pendentes", COR laranja;<br/>
+                            &nbsp;&nbsp;GRAFICO linha DE receita PERIODO ESTA_SEMANA TITULO "Receita Semanal";<br/>
+                            &nbsp;&nbsp;GRAFICO barras DE vendas AGRUPADO POR regiao TOP 5;<br/>
+                            &nbsp;&nbsp;TABELA pedidos ONDE status = "pendente" LIMITADO A 10;
+                          </div>
+                        </div>
+
                       </div>
-                      
-                      <div className="mt-3"><strong>Funções temporais:</strong></div>
-                      <div className="grid grid-cols-3 gap-1 text-xs">
-                        <Badge variant="secondary">DIA(0)</Badge>
-                        <Badge variant="secondary">MES(-1)</Badge>
-                        <Badge variant="secondary">ANO(0)</Badge>
-                      </div>
-                      
-                      <div className="mt-3"><strong>Dashboards:</strong></div>
-                      <div className="text-xs bg-gray-100 dark:bg-gray-800 p-2 rounded font-mono">
-                        DASHBOARD "Nome":<br/>
-                        &nbsp;&nbsp;KPI variavel TITULO "Nome";<br/>
-                        &nbsp;&nbsp;GRAFICO barras DE dados;
-                      </div>
-                    </div>
+                    </ScrollArea>
                   </TabsContent>
                   
                 </Tabs>
@@ -974,6 +1252,7 @@ export default function QueryBuilderPage() {
                       </div>
                     </TabsContent>
                   </Tabs>
+                )
                 ) : !executionResult ? (
                   // Estado inicial - aguardando execução TQL
                   <div className="border rounded-lg p-8 min-h-[400px] flex flex-col items-center justify-center text-center">
