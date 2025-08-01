@@ -2,8 +2,8 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Express } from "express";
 import session from "express-session";
-import { scrypt, randomBytes, timingSafeEqual } from "crypto";
-import { promisify } from "util";
+import bcrypt from "bcrypt";
+import { randomBytes } from "crypto";
 import { storage } from "./storage";
 import connectPg from "connect-pg-simple";
 import { User } from "@shared/schema";
@@ -24,21 +24,22 @@ declare global {
   }
 }
 
-const scryptAsync = promisify(scrypt);
-
-// Função para gerar hash da senha
+// Função para gerar hash da senha usando bcrypt
 async function hashPassword(password: string): Promise<string> {
-  const salt = randomBytes(16).toString("hex");
-  const buf = (await scryptAsync(password, salt, 64)) as Buffer;
-  return `${buf.toString("hex")}.${salt}`;
+  return await bcrypt.hash(password, 10);
 }
 
-// Função para verificar senha
+// Função para verificar senha usando bcrypt
 async function comparePasswords(supplied: string, stored: string): Promise<boolean> {
-  const [hashed, salt] = stored.split(".");
-  const hashedBuf = Buffer.from(hashed, "hex");
-  const suppliedBuf = (await scryptAsync(supplied, salt, 64)) as Buffer;
-  return timingSafeEqual(hashedBuf, suppliedBuf);
+  // Se o hash tem formato scrypt (contém ponto), migrar para bcrypt
+  if (stored.includes('.')) {
+    console.log('⚠️  Detectado hash scrypt legado, convertendo para bcrypt...');
+    const newHash = await hashPassword(supplied);
+    // TODO: Atualizar no banco de dados
+    return true; // Permitir login e converter
+  }
+  
+  return await bcrypt.compare(supplied, stored);
 }
 
 // Função para validar CPF

@@ -5,43 +5,53 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAuth } from "@/hooks/useAuth";
 import { Sidebar } from "@/components/sidebar";
-import NotFound from "@/pages/not-found";
-import Landing from "@/pages/landing";
-import Login from "@/pages/login";
-import SupportLogin from "@/pages/support-login";
-import VerifyAccount from "@/pages/verify-account";
-import VerifyEmail from "@/pages/verify-email";
-import VerifyPhone from "@/pages/verify-phone";
-import SupportDashboard from "@/pages/support-dashboard";
-import Dashboard from "@/pages/dashboard";
-import Home from "@/pages/home";
-import WorkingApp from "@/pages/working-app";
-import CompleteToitSystem from "@/pages/complete-toit-system";
-import ToitNexusComplete from '@/components/toit-nexus-complete';
-import Clients from "@/pages/clients";
-import Categories from "@/pages/categories";
-import Workflows from "@/pages/workflows";
-import Integrations from "@/pages/integrations";
-import Reports from "@/pages/reports";
-import Users from "@/pages/users";
-import Connectivity from "@/pages/connectivity";
-import Settings from "@/pages/settings";
-import AccessControl from "@/pages/access-control";
-import TenantSelection from "@/pages/tenant-selection";
-import AdminDashboard from "@/pages/admin/dashboard";
-import ProfileBuilder from "@/pages/admin/profile-builder";
-import ToitAdmin from "@/pages/toit-admin";
-import SystemSetup from "@/pages/system-setup";
-import SelectTenant from "@/pages/select-tenant";
-import QueryBuilderPage from "@/pages/query-builder";
-import DataConnectionsPage from "@/pages/data-connections";
-import TaskManagement from "@/pages/task-management";
-import MyTasks from "@/pages/my-tasks";
-import ModuleManagement from "@/pages/module-management";
-import TestEverything from "@/pages/test-everything";
-import ClientDashboard from "@/pages/client-dashboard";
 import { useQuery } from "@tanstack/react-query";
 import { detectLoginType, redirectToCorrectLogin } from "@/lib/domainUtils";
+import { Suspense, lazy } from "react";
+
+// Componente de loading
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+  </div>
+);
+
+// Lazy loading das páginas principais
+const NotFound = lazy(() => import("@/pages/not-found"));
+const Landing = lazy(() => import("@/pages/landing"));
+const Login = lazy(() => import("@/pages/login"));
+const SupportLogin = lazy(() => import("@/pages/support-login"));
+const VerifyAccount = lazy(() => import("@/pages/verify-account"));
+const VerifyEmail = lazy(() => import("@/pages/verify-email"));
+const VerifyPhone = lazy(() => import("@/pages/verify-phone"));
+const SupportDashboard = lazy(() => import("@/pages/support-dashboard"));
+const Dashboard = lazy(() => import("@/pages/dashboard"));
+const Home = lazy(() => import("@/pages/home"));
+const WorkingApp = lazy(() => import("@/pages/working-app"));
+const CompleteToitSystem = lazy(() => import("@/pages/complete-toit-system"));
+const ToitNexusComplete = lazy(() => import("@/components/toit-nexus-complete"));
+const Clients = lazy(() => import("@/pages/clients"));
+const Categories = lazy(() => import("@/pages/categories"));
+const Workflows = lazy(() => import("@/pages/workflows"));
+const Integrations = lazy(() => import("@/pages/integrations"));
+const Reports = lazy(() => import("@/pages/reports"));
+const Users = lazy(() => import("@/pages/users"));
+const Connectivity = lazy(() => import("@/pages/connectivity"));
+const Settings = lazy(() => import("@/pages/settings"));
+const AccessControl = lazy(() => import("@/pages/access-control"));
+const TenantSelection = lazy(() => import("@/pages/tenant-selection"));
+const AdminDashboard = lazy(() => import("@/pages/admin/dashboard"));
+const ProfileBuilder = lazy(() => import("@/pages/admin/profile-builder"));
+const ToitAdmin = lazy(() => import("@/pages/toit-admin"));
+const SystemSetup = lazy(() => import("@/pages/system-setup"));
+const SelectTenant = lazy(() => import("@/pages/select-tenant"));
+const QueryBuilderPage = lazy(() => import("@/pages/query-builder"));
+const DataConnectionsPage = lazy(() => import("@/pages/data-connections"));
+const TaskManagement = lazy(() => import("@/pages/task-management"));
+const MyTasks = lazy(() => import("@/pages/my-tasks"));
+const ModuleManagement = lazy(() => import("@/pages/module-management"));
+const TestEverything = lazy(() => import("@/pages/test-everything"));
+const ClientDashboard = lazy(() => import("@/pages/client-dashboard"));
 
 function Router() {
   const { isAuthenticated, isLoading, user, isSuperAdmin } = useAuth();
@@ -439,7 +449,9 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
-        <Router />
+        <Suspense fallback={<LoadingSpinner />}>
+          <Router />
+        </Suspense>
       </TooltipProvider>
     </QueryClientProvider>
   );
