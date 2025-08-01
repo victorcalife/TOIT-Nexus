@@ -30,6 +30,7 @@ import emailTestRoutes from "./emailTestRoutes";
 import trialAdminRoutes from "./trialAdminRoutes";
 import salesMetricsRoutes from "./salesMetricsRoutes";
 import subscriptionReportsRoutes from "./subscriptionReportsRoutes";
+import planManagementRoutes from "./planManagementRoutes";
 import { trialRoutes } from "./trialRoutes";
 import { fileUploadRoutes } from "./fileUploadRoutes";
 import { advancedTaskRoutes } from "./advancedTaskRoutes";
@@ -1857,6 +1858,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Subscription Reports routes - Super Admin apenas
   app.use('/api/admin/subscription-reports', subscriptionReportsRoutes);
+  
+  // Plan Management routes - Usuário autenticado
+  app.use('/api/plan-management', planManagementRoutes);
   
   // Trial routes - não necessita autenticação
   app.use('/api/trial', trialRoutes);
