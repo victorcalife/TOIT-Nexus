@@ -65,30 +65,22 @@ function Router() {
 
   // Not authenticated - show appropriate login or landing page
   if (!isAuthenticated) {
-    // Detectar se é subdomínio de suporte
+    // Detectar se é subdomínio de suporte para mostrar página de login específica
     const hostname = window.location.hostname;
     const isSupportDomain = hostname.startsWith('supnexus.');
     
+    // Se for domínio de suporte, mostrar APENAS página de suporte (não roteamento completo)
+    if (isSupportDomain) {
+      return <SupportLogin />;
+    }
+    
+    // Para domínio normal, mostrar roteamento completo
     return (
       <Switch>
         <Route path="/support-login" component={SupportLogin} />
         <Route path="/login" component={Login} />
-        <Route path="/" component={() => {
-          // Se for domínio de suporte, ir direto para support-login
-          if (isSupportDomain) {
-            return <SupportLogin />;
-          }
-          // Senão, mostrar landing page
-          return <Landing />;
-        }} />
-        <Route component={() => {
-          // Se for domínio de suporte, ir direto para support-login
-          if (isSupportDomain) {
-            return <SupportLogin />;
-          }
-          // Senão, mostrar landing page
-          return <Landing />;
-        }} />
+        <Route path="/" component={Landing} />
+        <Route component={Landing} />
       </Switch>
     );
   }
