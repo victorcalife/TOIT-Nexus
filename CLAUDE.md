@@ -695,11 +695,19 @@ async assignAccessProfileByMetadata(tenantId: string, metadata: any): Promise<vo
 - ✅ **ENTERPRISE:** Configurado como "A partir de R$ 29,00" + is_active: false
 - ✅ **Descrição Enterprise:** Inclui "mínimo de 5 usuários" no texto
 
+### **🔧 Correção de Roteamento por Domínio:**
+- ✅ **Problema identificado:** supnexus.toit.com.br abrindo landing page em vez de login administrativo  
+- ✅ **Middleware servidor:** Adicionado debug logs para detectar hosts corretamente
+- ✅ **Frontend App.tsx:** Melhorada detecção de domínio com .toLowerCase() e verificação robusta
+- ✅ **SupportLogin:** Componente já existia e estava implementado corretamente
+- ✅ **Debug implementado:** Logs para diagnosticar detecção de hostname no frontend/backend
+
 ### **🎯 Consistência Final Alcançada:**
 - ✅ Landing page, backend e sistema de checkout 100% alinhados
 - ✅ Enterprise direcionando corretamente para vendas (não comercializado)
 - ✅ Preços otimizados para conversão com descontos anuais atraentes
 - ✅ Sistema pronto para receber pagamentos reais e criar usuários automaticamente
+- ✅ Roteamento por domínio corrigido para equipe TOIT (supnexus.toit.com.br)
 
 ---
 
