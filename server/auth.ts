@@ -367,6 +367,8 @@ export function setupAuth(app: Express) {
         planType: plan,
         planCycle: cycle,
         trialEndsAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 dias
+        trialPlan: 'standard', // TRIAL SEMPRE NO STANDARD
+        isTrialActive: true,
         emailVerified: false,
         phoneVerified: false,
         createdAt: new Date()
@@ -481,6 +483,63 @@ export function setupAuth(app: Express) {
     } catch (error) {
       console.error('Phone verification error:', error);
       res.status(500).json({ message: "Erro ao verificar telefone" });
+    }
+  });
+
+  // Rota para verificar status do trial
+  app.get("/api/auth/trial-status", async (req, res) => {
+    try {
+      if (!req.isAuthenticated()) {
+        return res.status(401).json({ message: "Não autenticado" });
+      }
+
+      const user = req.user as any;
+      const now = new Date();
+      const trialEnded = user.trialEndsAt && new Date(user.trialEndsAt) < now;
+
+      res.json({
+        success: true,
+        user: {
+          id: user.id,
+          name: `${user.firstName} ${user.lastName}`,
+          email: user.email,
+          planType: user.planType,
+          planCycle: user.planCycle,
+          trialPlan: user.trialPlan,
+          isTrialActive: user.isTrialActive && !trialEnded,
+          trialEndsAt: user.trialEndsAt,
+          trialDaysLeft: user.trialEndsAt ? Math.max(0, Math.ceil((new Date(user.trialEndsAt) - now) / (1000 * 60 * 60 * 24))) : 0,
+          needsPayment: trialEnded && user.isTrialActive,
+          currentAccess: user.isTrialActive && !trialEnded ? user.trialPlan : user.planType
+        }
+      });
+
+    } catch (error) {
+      console.error('Trial status error:', error);
+      res.status(500).json({ message: "Erro ao verificar status do trial" });
+    }
+  });
+
+  // Rota para cancelar trial (antes dos 7 dias)
+  app.post("/api/auth/cancel-trial", async (req, res) => {
+    try {
+      if (!req.isAuthenticated()) {
+        return res.status(401).json({ message: "Não autenticado" });
+      }
+
+      const user = req.user as any;
+      
+      // Desativar trial e conta
+      await storage.cancelUserTrial(user.id);
+
+      res.json({
+        success: true,
+        message: "Trial cancelado com sucesso. Sua conta será desativada em 7 dias."
+      });
+
+    } catch (error) {
+      console.error('Cancel trial error:', error);
+      res.status(500).json({ message: "Erro ao cancelar trial" });
     }
   });
 }

@@ -70,6 +70,8 @@ export const users = pgTable("users", {
   planType: varchar("plan_type", { length: 50 }), // basico, standard, premium, enterprise
   planCycle: varchar("plan_cycle", { length: 20 }), // monthly, yearly
   trialEndsAt: timestamp("trial_ends_at"), // Data fim do trial
+  trialPlan: varchar("trial_plan", { length: 50 }).default('standard'), // Plano durante trial
+  isTrialActive: boolean("is_trial_active").default(false), // Se está em trial
   emailVerified: boolean("email_verified").default(false),
   phoneVerified: boolean("phone_verified").default(false),
   lastLoginAt: timestamp("last_login_at"),

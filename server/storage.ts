@@ -97,6 +97,7 @@ export interface IStorage {
   verifyUserEmail(userId: string): Promise<void>;
   verifyUserPhone(userId: string): Promise<void>;
   activateUser(userId: string): Promise<void>;
+  cancelUserTrial(userId: string): Promise<void>;
   
   // Client Category operations (tenant-isolated)
   getClientCategories(tenantId?: string): Promise<ClientCategory[]>;
@@ -446,6 +447,16 @@ export class DatabaseStorage implements IStorage {
       .update(users)
       .set({ 
         isActive: true,
+        updatedAt: new Date() 
+      })
+      .where(eq(users.id, userId));
+  }
+
+  async cancelUserTrial(userId: string): Promise<void> {
+    await db
+      .update(users)
+      .set({ 
+        isTrialActive: false,
         updatedAt: new Date() 
       })
       .where(eq(users.id, userId));
