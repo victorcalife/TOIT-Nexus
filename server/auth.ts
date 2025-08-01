@@ -7,6 +7,7 @@ import { promisify } from "util";
 import { storage } from "./storage";
 import connectPg from "connect-pg-simple";
 import { User } from "@shared/schema";
+import { NotificationService } from "./notificationService";
 
 declare global {
   namespace Express {
@@ -635,6 +636,142 @@ export function setupAuth(app: Express) {
     } catch (error) {
       console.error('Trial campaigns error:', error);
       res.status(500).json({ message: "Erro ao buscar campanhas" });
+    }
+  });
+
+  // Rota para buscar notificações do sininho do banco de dados
+  app.get("/api/notifications", async (req, res) => {
+    try {
+      if (!req.isAuthenticated()) {
+        return res.status(401).json({ message: "Não autenticado" });
+      }
+
+      const user = req.user as any;
+      
+      // Processar campanhas automáticas se necessário
+      if (user.isTrialActive) {
+        await NotificationService.createTrialCampaignNotifications(user.id, user);
+      }
+      
+      // Buscar notificações não lidas do banco
+      const userNotifications = await NotificationService.getUserNotifications(user.id, 20);
+      const unreadCount = await NotificationService.getUnreadCount(user.id);
+      
+      // Calcular informações do trial do usuário
+      const now = new Date();
+      const trialStart = new Date(user.createdAt);
+      const trialEnd = user.trialEndsAt ? new Date(user.trialEndsAt) : null;
+      const daysInTrial = Math.floor((now - trialStart) / (1000 * 60 * 60 * 24));
+      const daysLeft = trialEnd ? Math.max(0, Math.ceil((trialEnd - now) / (1000 * 60 * 60 * 24))) : 0;
+      
+      // Processar notificações com informações do usuário
+      const processedNotifications = userNotifications.map((notification: any) => {
+        let processedMessage = notification.message;
+        if (notification.data?.daysLeft !== undefined) {
+          processedMessage = processedMessage.replace('{daysLeft}', notification.data.daysLeft.toString());
+        }
+        processedMessage = processedMessage.replace('{daysLeft}', daysLeft.toString());
+
+        return {
+          id: notification.id,
+          type: notification.type,
+          title: notification.title,
+          message: processedMessage,
+          actionUrl: notification.actionUrl,
+          data: notification.data,
+          priority: notification.data?.priority || 'medium',
+          backgroundColor: notification.data?.backgroundColor || 'bg-gray-100',
+          iconColor: notification.data?.iconColor || 'text-gray-600',
+          createdAt: notification.createdAt,
+          isRead: notification.isRead,
+          userContext: {
+            daysInTrial,
+            daysLeft,
+            trialPlan: user.trialPlan,
+            isTrialActive: user.isTrialActive
+          }
+        };
+      });
+
+      // Ordenar por prioridade e data
+      const priorityOrder = { urgent: 4, high: 3, medium: 2, low: 1 };
+      processedNotifications.sort((a: any, b: any) => {
+        const priorityDiff = (priorityOrder[b.priority as keyof typeof priorityOrder] || 0) - 
+                            (priorityOrder[a.priority as keyof typeof priorityOrder] || 0);
+        if (priorityDiff !== 0) return priorityDiff;
+        
+        // Se prioridade igual, ordenar por data (mais recente primeiro)
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      });
+
+      res.json({
+        success: true,
+        notifications: processedNotifications,
+        count: unreadCount,
+        userInfo: {
+          daysInTrial,
+          daysLeft,
+          isTrialActive: user.isTrialActive,
+          trialPlan: user.trialPlan
+        }
+      });
+
+    } catch (error) {
+      console.error('Notifications error:', error);
+      res.status(500).json({ message: "Erro ao buscar notificações" });
+    }
+  });
+
+  // Rota para marcar notificação como lida
+  app.post("/api/notifications/:id/read", async (req, res) => {
+    try {
+      if (!req.isAuthenticated()) {
+        return res.status(401).json({ message: "Não autenticado" });
+      }
+
+      const { id } = req.params;
+      const user = req.user as any;
+
+      // Marcar notificação como lida no banco
+      const updatedNotification = await NotificationService.markAsRead(id, user.id);
+
+      if (!updatedNotification) {
+        return res.status(404).json({ message: "Notificação não encontrada" });
+      }
+
+      res.json({
+        success: true,
+        message: "Notificação marcada como lida",
+        notification: updatedNotification
+      });
+
+    } catch (error) {
+      console.error('Mark notification read error:', error);
+      res.status(500).json({ message: "Erro ao marcar notificação como lida" });
+    }
+  });
+
+  // Rota para marcar todas notificações como lidas
+  app.post("/api/notifications/read-all", async (req, res) => {
+    try {
+      if (!req.isAuthenticated()) {
+        return res.status(401).json({ message: "Não autenticado" });
+      }
+
+      const user = req.user as any;
+
+      // Marcar todas notificações como lidas
+      const updatedNotifications = await NotificationService.markAllAsRead(user.id);
+
+      res.json({
+        success: true,
+        message: `${updatedNotifications.length} notificações marcadas como lidas`,
+        count: updatedNotifications.length
+      });
+
+    } catch (error) {
+      console.error('Mark all notifications read error:', error);
+      res.status(500).json({ message: "Erro ao marcar todas notificações como lidas" });
     }
   });
 }

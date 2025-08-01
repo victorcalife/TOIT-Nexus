@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/hooks/useAuth";
+import { NotificationBell } from "@/components/notification-bell";
 import toitNexusLogoSvg from '@/assets/toit-nexus-logo.svg';
 
 interface StandardHeaderProps {
@@ -129,6 +130,9 @@ export function StandardHeader({
             {/* User Actions for Authenticated Users */}
             {showUserActions && isAuthenticated && currentUser && (
               <div className="flex items-center space-x-4">
+                {/* Notification Bell - sininho com campanhas promocionais */}
+                <NotificationBell />
+                
                 <div className="text-right">
                   <p className="text-sm font-medium text-gray-900">
                     {currentUser.firstName} {currentUser.lastName}

@@ -1,3 +1,66 @@
 [
-
+  {
+    "id": "campaign_day3_2025",
+    "type": "promotional_campaign",
+    "title": "🎉 Oferta Especial: 1 Mês Grátis!",
+    "message": "Assine o plano anual agora e ganhe 1 mês grátis. Apenas hoje!",
+    "actionText": "Aproveitar Oferta",
+    "actionUrl": "/upgrade?campaign=day3_annual",
+    "priority": "high",
+    "targetAudience": "trial_users",
+    "triggerCondition": "trial_day_3",
+    "backgroundColor": "bg-gradient-to-r from-green-500 to-emerald-600",
+    "iconColor": "text-green-600",
+    "createdAt": "2025-01-31T19:00:00Z",
+    "expiresAt": "2025-02-01T23:59:59Z",
+    "isActive": true
+  },
+  {
+    "id": "campaign_day4_2025",
+    "type": "promotional_campaign", 
+    "title": "⚡ Última Chance: 20% OFF!",
+    "message": "Assine agora e ganhe 20% de desconto permanente em qualquer plano.",
+    "actionText": "Garantir Desconto",
+    "actionUrl": "/upgrade?campaign=day4_discount",
+    "priority": "high",
+    "targetAudience": "trial_users",
+    "triggerCondition": "trial_day_4",
+    "backgroundColor": "bg-gradient-to-r from-purple-500 to-pink-600",
+    "iconColor": "text-purple-600",
+    "createdAt": "2025-01-31T19:00:00Z", 
+    "expiresAt": "2025-02-02T23:59:59Z",
+    "isActive": true
+  },
+  {
+    "id": "urgency_final_2025",
+    "type": "urgency_notification",
+    "title": "⏰ Seu trial expira em breve!",
+    "message": "Restam apenas {daysLeft} dia(s). Continue aproveitando todas as funcionalidades Premium.",
+    "actionText": "Continuar Premium", 
+    "actionUrl": "/upgrade?campaign=urgency_final",
+    "priority": "urgent",
+    "targetAudience": "trial_users",
+    "triggerCondition": "trial_day_6_plus",
+    "backgroundColor": "bg-gradient-to-r from-red-500 to-orange-600",
+    "iconColor": "text-red-600",
+    "createdAt": "2025-01-31T19:00:00Z",
+    "expiresAt": "2025-02-07T23:59:59Z",
+    "isActive": true
+  },
+  {
+    "id": "welcome_new_user",
+    "type": "welcome",
+    "title": "🚀 Bem-vindo ao TOIT Nexus!",
+    "message": "Sua conta Premium foi ativada. Explore todas as funcionalidades por 7 dias grátis.",
+    "actionText": "Começar Tour",
+    "actionUrl": "/onboarding",
+    "priority": "medium",
+    "targetAudience": "new_users",
+    "triggerCondition": "account_activated",
+    "backgroundColor": "bg-gradient-to-r from-blue-500 to-cyan-600",
+    "iconColor": "text-blue-600",
+    "createdAt": "2025-01-31T19:00:00Z",
+    "expiresAt": "2025-03-31T23:59:59Z",
+    "isActive": true
+  }
 ]

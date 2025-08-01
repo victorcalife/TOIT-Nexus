@@ -3,6 +3,7 @@ import session from "express-session";
 import path from "path";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import { startNotificationCron } from "./notificationService";
 
 const app = express();
 app.use(express.json());
@@ -87,6 +88,13 @@ app.use((req, res, next) => {
     console.log(`🚀 Server running on port ${port}`);
     console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
     console.log(`🌐 Railway Domain: ${process.env.RAILWAY_PUBLIC_DOMAIN || 'localhost'}`);
+    
+    // Inicializar sistema de notificações automáticas
+    if (process.env.NODE_ENV === 'production') {
+      startNotificationCron();
+    } else {
+      console.log(`🔔 Notification cron disabled in development`);
+    }
   });
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
