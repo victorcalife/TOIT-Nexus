@@ -28,6 +28,7 @@ import accessProfileRoutes from "./accessProfileRoutes";
 import stripeCheckoutRoutes from "./stripeCheckoutRoutes";
 import emailTestRoutes from "./emailTestRoutes";
 import trialAdminRoutes from "./trialAdminRoutes";
+import salesMetricsRoutes from "./salesMetricsRoutes";
 import { trialRoutes } from "./trialRoutes";
 import { fileUploadRoutes } from "./fileUploadRoutes";
 import { advancedTaskRoutes } from "./advancedTaskRoutes";
@@ -1849,6 +1850,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Trial Admin routes - Super Admin apenas
   app.use('/api/admin/trials', trialAdminRoutes);
+  
+  // Sales Metrics routes - Super Admin apenas
+  app.use('/api/admin/sales-metrics', salesMetricsRoutes);
   
   // Trial routes - não necessita autenticação
   app.use('/api/trial', trialRoutes);

@@ -35,6 +35,7 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { StandardHeader } from '@/components/standard-header';
 import { useAuth } from '@/hooks/useAuth';
+import { SalesMetricsDashboard } from '@/components/sales-metrics-dashboard';
 
 type Tenant = {
   id: string;
@@ -109,13 +110,14 @@ export default function TOITAdminDashboard() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-7">
+          <TabsList className="grid w-full grid-cols-8">
             <TabsTrigger value="overview">Visão Geral</TabsTrigger>
             <TabsTrigger value="tenants">Empresas</TabsTrigger>
             <TabsTrigger value="users">Usuários</TabsTrigger>
             <TabsTrigger value="departments">Departamentos</TabsTrigger>
             <TabsTrigger value="permissions">Permissões</TabsTrigger>
             <TabsTrigger value="profiles">Perfis de Acesso</TabsTrigger>
+            <TabsTrigger value="sales">Vendas</TabsTrigger>
             <TabsTrigger value="workflows">Workflows</TabsTrigger>
             <TabsTrigger value="monitoring">Monitoramento</TabsTrigger>
           </TabsList>
@@ -462,6 +464,10 @@ export default function TOITAdminDashboard() {
                 </Button>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="sales" className="space-y-4">
+            <SalesMetricsDashboard />
           </TabsContent>
 
           <TabsContent value="workflows" className="space-y-4">
