@@ -68,11 +68,15 @@ function Router() {
   // Not authenticated - show appropriate login or landing page
   if (!isAuthenticated) {
     // Detectar se é subdomínio de suporte para mostrar página de login específica
-    const hostname = window.location.hostname;
-    const isSupportDomain = hostname.startsWith('supnexus.');
+    const hostname = window.location.hostname.toLowerCase();
+    const isSupportDomain = hostname.includes('supnexus.toit.com.br') || hostname.startsWith('supnexus.');
+    
+    // Debug log para verificar detecção
+    console.log(`🌐 Frontend - Hostname: ${hostname} | isSupportDomain: ${isSupportDomain}`);
     
     // Se for domínio de suporte, mostrar APENAS página de suporte (não roteamento completo)
     if (isSupportDomain) {
+      console.log('🚀 Frontend - Mostrando SupportLogin para supnexus');
       return <SupportLogin />;
     }
     
