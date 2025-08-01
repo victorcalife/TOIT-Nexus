@@ -78,15 +78,15 @@ async function createDefaultTenant() {
 async function createSuperAdmin() {
   try {
     // Verificar se já existe
-    const existing = await db.select().from(users).where(eq(users.cpf, '00000000000'));
+    const existing = await db.select().from(users).where(eq(users.cpf, '33656299803'));
     
     if (existing.length === 0) {
       const superAdmin = {
-        cpf: '00000000000',
-        email: 'admin@toit.com.br',
-        password: 'admin123', // Será hasheada pelo authService
-        firstName: 'Super',
-        lastName: 'Admin',
+        cpf: '33656299803',
+        email: 'victor@toit.com.br',
+        password: '15151515', // Será hasheada pelo authService
+        firstName: 'Victor',
+        lastName: 'Calife',
         phone: '+5511999999999',
         role: 'super_admin',
         tenantId: 'toit-enterprise',
@@ -94,7 +94,7 @@ async function createSuperAdmin() {
       };
 
       await authService.createUser(superAdmin);
-      console.log('✅ Super Admin criado - CPF: 00000000000 / Senha: admin123');
+      console.log('✅ Super Admin criado - Victor Calife - CPF: 33656299803 / Senha: 15151515');
     } else {
       console.log('ℹ️  Super Admin já existe');
     }
@@ -192,9 +192,9 @@ export async function validateAuthSystem() {
     console.log('🔍 Validando sistema de autenticação...');
 
     // Verificar se super admin pode fazer login
-    const superAdmin = await authService.authenticate('00000000000', 'admin123');
+    const superAdmin = await authService.authenticate('33656299803', '15151515');
     if (!superAdmin) {
-      throw new Error('Super admin não consegue fazer login');
+      throw new Error('Super admin Victor Calife não consegue fazer login');
     }
 
     // Verificar se demo admin pode fazer login

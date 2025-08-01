@@ -19,8 +19,8 @@ async function testAuthentication() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        cpf: '00000000000',
-        password: 'admin123'
+        cpf: '33656299803',
+        password: '15151515'
       }),
     });
 
