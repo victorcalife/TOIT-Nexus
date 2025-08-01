@@ -1252,8 +1252,14 @@ export default function QueryBuilderPage() {
                       </div>
                     </TabsContent>
                   </Tabs>
-                ) : !executionResult ? (
-                  // Estado inicial - aguardando execução TQL
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Estado inicial - aguardando execução TQL */}
+            {!executionResult && (
+              <Card>
+                <CardContent className="pt-6">
                   <div className="border rounded-lg p-8 min-h-[400px] flex flex-col items-center justify-center text-center">
                     <Code className="w-16 h-16 text-gray-400 mb-4" />
                     <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
@@ -1277,9 +1283,9 @@ export default function QueryBuilderPage() {
                       </Badge>
                     </div>
                   </div>
-                )}
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            )}
           </div>
         </div>
       </div>
