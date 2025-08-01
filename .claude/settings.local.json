@@ -28,7 +28,12 @@
       "Bash(node:*)",
       "Bash(mv:*)",
       "Bash(cp:*)",
-      "Bash(copy:*)"
+      "Bash(copy:*)",
+      "Bash(railway status:*)",
+      "Bash(railway service:*)",
+      "Bash(railway link:*)",
+      "Bash(railway up:*)",
+      "Bash(railway logs:*)"
     ],
     "deny": []
   }
