@@ -19,6 +19,7 @@ import {
   EyeOff
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { formatCpf, cleanCpf, validateCpf } from "@/lib/utils";
 
 export default function Landing() {
   const { isAuthenticated } = useAuth();
@@ -118,23 +119,9 @@ export default function Landing() {
     }
   };
 
-  // Format CPF input
-  const formatCpf = (value: string) => {
-    const numbers = value.replace(/\D/g, '');
-    if (numbers.length <= 11) {
-      return numbers
-        .replace(/(\d{3})(\d)/, '$1.$2')
-        .replace(/(\d{3})(\d)/, '$1.$2')
-        .replace(/(\d{3})(\d{1,2})/, '$1-$2')
-        .replace(/(-\d{2})\d+?$/, '$1');
-    }
-    return numbers.slice(0, 11)
-      .replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-  };
-
   const handleCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formatted = formatCpf(e.target.value);
-    setFormData(prev => ({ ...prev, cpf: formatted }));
+    setFormData(prev => ({ ...prev, cpf: formatted }));    
   };
 
   const handlePlanSelection = (planKey: string) => {
@@ -149,6 +136,19 @@ export default function Landing() {
 
   const handleCheckoutSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validação básica dos campos
+    if (!formData.name || !formData.email || !formData.cpf || !formData.password) {
+      alert('Por favor, preencha todos os campos obrigatórios.');
+      return;
+    }
+
+    // Validação de CPF
+    if (!validateCpf(formData.cpf)) {
+      alert('Por favor, digite um CPF válido.');
+      return;
+    }
+
     setIsLoading(true);
     
     // TODO: Implement 7-day trial signup
@@ -160,7 +160,7 @@ export default function Landing() {
           ...formData,
           plan: selectedPlan,
           cycle: selectedCycle,
-          cpf: formData.cpf.replace(/\D/g, '')
+          cpf: cleanCpf(formData.cpf)
         })
       });
       

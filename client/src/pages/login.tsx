@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { ChartLine, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { StandardHeader } from "@/components/standard-header";
+import { formatCpf, cleanCpf, validateCpf } from "@/lib/utils";
 import workflowLogo from "@/assets/SELOtoit-workflow-logo.svg";
 
 export default function Login() {
@@ -14,22 +15,6 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-
-  const formatCpf = (value: string) => {
-    // Remove all non-numeric characters
-    const numbers = value.replace(/\D/g, '');
-    
-    // Apply CPF formatting: 123.456.789-01
-    if (numbers.length <= 11) {
-      return numbers
-        .replace(/(\d{3})(\d)/, '$1.$2')
-        .replace(/(\d{3})(\d)/, '$1.$2')
-        .replace(/(\d{3})(\d{1,2})/, '$1-$2')
-        .replace(/(-\d{2})\d+?$/, '$1');
-    }
-    return numbers.slice(0, 11)
-      .replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-  };
 
   const handleCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formatted = formatCpf(e.target.value);
@@ -48,6 +33,16 @@ export default function Login() {
       return;
     }
 
+    // Valida CPF antes de enviar
+    if (!validateCpf(cpf)) {
+      toast({
+        title: "CPF Inválido",
+        description: "Por favor, digite um CPF válido.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -57,7 +52,7 @@ export default function Login() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          cpf: cpf.replace(/\D/g, ''), // Remove formatting for API
+          cpf: cleanCpf(cpf), // Remove formatting for API
           password,
         }),
       });
