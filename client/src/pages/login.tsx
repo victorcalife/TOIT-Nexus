@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { ChartLine, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { StandardHeader } from "@/components/standard-header";
-import workflowLogo from "@/assets/SELOtoit-workflow-logo.svg";
+import workflowLogo from "./assets/SELOtoit-workflow-logo.svg";
 
 export default function Login() {
   const [cpf, setCpf] = useState("");
