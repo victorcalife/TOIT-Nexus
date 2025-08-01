@@ -103,24 +103,31 @@ export function setupAuth(app: Express) {
       { usernameField: 'cpf', passwordField: 'password' },
       async (cpf, password, done) => {
         try {
+          console.log(`🔍 LocalStrategy - CPF: ${cpf?.substring(0, 3)}*****`);
+          
           // Remove formatação do CPF
           const cleanCpf = cpf.replace(/\D/g, '');
+          console.log(`🧹 Clean CPF: ${cleanCpf?.substring(0, 3)}*****`);
           
           // Valida CPF
           if (!isValidCPF(cleanCpf)) {
+            console.log('❌ CPF inválido');
             return done(null, false, { message: 'CPF inválido' });
           }
 
           const user = await storage.getUserByCPF(cleanCpf);
+          console.log(`👤 User found: ${user ? 'yes' : 'no'}`);
           if (!user) {
             return done(null, false, { message: 'CPF não encontrado' });
           }
 
+          console.log(`✅ User active: ${user.isActive}, has password: ${!!user.password}`);
           if (!user.isActive) {
             return done(null, false, { message: 'Usuário inativo' });
           }
 
           const isValidPassword = await comparePasswords(password, user.password!);
+          console.log(`🔑 Password valid: ${isValidPassword}`);
           if (!isValidPassword) {
             return done(null, false, { message: 'Senha incorreta' });
           }
@@ -128,8 +135,10 @@ export function setupAuth(app: Express) {
           // Atualiza último login
           await storage.updateUserLastLogin(user.id);
 
+          console.log(`✅ Login successful for user: ${user.firstName} ${user.lastName}`);
           return done(null, user);
         } catch (error) {
+          console.error('❌ LocalStrategy error:', error);
           return done(error);
         }
       }
@@ -224,7 +233,8 @@ export function setupAuth(app: Express) {
   app.post("/api/login", (req, res, next) => {
     try {
       // Extrair loginType do request body
-      const { loginType } = req.body;
+      const { loginType, cpf, password } = req.body;
+      console.log(`🔐 Login attempt - CPF: ${cpf?.substring(0, 3)}*****, loginType: ${loginType}`);
       
       passport.authenticate("local", (err: any, user: any, info: any) => {
         try {
@@ -772,6 +782,31 @@ export function setupAuth(app: Express) {
     } catch (error) {
       console.error('Mark all notifications read error:', error);
       res.status(500).json({ message: "Erro ao marcar todas notificações como lidas" });
+    }
+  });
+
+  // DEBUG: Rota temporária para verificar usuários
+  app.get("/api/debug/users", async (req, res) => {
+    try {
+      const users = await storage.getUsersByTenant(null); // Usuários sem tenant (individuals)
+      const allUsers = await storage.getUsers(); // Todos os usuários
+      
+      res.json({
+        success: true,
+        individualsCount: users.length,
+        totalUsers: allUsers.length,
+        sampleUsers: allUsers.slice(0, 3).map(u => ({
+          id: u.id,
+          cpf: u.cpf?.substring(0, 3) + '*****',
+          firstName: u.firstName,
+          role: u.role,
+          isActive: u.isActive,
+          hasPassword: !!u.password
+        }))
+      });
+    } catch (error) {
+      console.error('Debug users error:', error);
+      res.status(500).json({ message: "Erro ao buscar usuários" });
     }
   });
 }
