@@ -27,7 +27,9 @@ import {
   Zap,
   Link,
   Save,
-  CheckSquare
+  CheckSquare,
+  Building2,
+  Shield
 } from 'lucide-react';
 import { StandardHeader } from '@/components/standard-header';
 import { useAuth } from '@/hooks/useAuth';
@@ -129,6 +131,19 @@ export default function ClientDashboard() {
       functionalTabs.push('webhooks');
     }
     
+    // FUNCIONALIDADES EMPRESARIAIS (Persona 3 - Empresas 5+ funcionários)
+    if (selectedTenant?.userCount > 5 && (user?.role === 'tenant_admin' || user?.role === 'manager')) {
+      if (isModuleActive('user_management')) {
+        functionalTabs.push('team');
+      }
+      if (isModuleActive('department_management')) {
+        functionalTabs.push('departments');
+      }
+      if (isModuleActive('access_control')) {
+        functionalTabs.push('permissions');
+      }
+    }
+    
     return functionalTabs;
   };
 
@@ -162,7 +177,10 @@ export default function ClientDashboard() {
               {selectedTenant.name}
             </h1>
             <p className="text-gray-600">
-              Portal do Cliente - Funcionalidades baseadas no seu plano
+              {user?.role === 'tenant_admin' && selectedTenant.userCount > 5 
+                ? 'Portal Empresarial - Gestão de equipe e dados departamentais'
+                : 'Portal Individual - Suas ferramentas pessoais de produtividade'
+              }
             </p>
           </div>
           <div className="flex items-center space-x-3">
@@ -270,10 +288,13 @@ export default function ClientDashboard() {
           
           {/* Segunda linha de tabs se necessário */}
           {availableTabs.length > 8 && (
-            <TabsList className="grid w-full mt-2" style={{ gridTemplateColumns: `repeat(${availableTabs.length - 8}, 1fr)` }}>
+            <TabsList className="grid w-full mt-2" style={{ gridTemplateColumns: `repeat(${Math.min(availableTabs.length - 8, 6)}, 1fr)` }}>
               {availableTabs.includes('api_connections') && <TabsTrigger value="api_connections">APIs</TabsTrigger>}
               {availableTabs.includes('db_connections') && <TabsTrigger value="db_connections">Bancos</TabsTrigger>}
               {availableTabs.includes('webhooks') && <TabsTrigger value="webhooks">Webhooks</TabsTrigger>}
+              {availableTabs.includes('team') && <TabsTrigger value="team">Equipe</TabsTrigger>}
+              {availableTabs.includes('departments') && <TabsTrigger value="departments">Departamentos</TabsTrigger>}
+              {availableTabs.includes('permissions') && <TabsTrigger value="permissions">Permissões</TabsTrigger>}
             </TabsList>
           )}
 
@@ -506,6 +527,104 @@ export default function ClientDashboard() {
                       <br />
                       <strong>Em desenvolvimento</strong> - Disponível em breve.
                     </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          )}
+
+          {/* FUNCIONALIDADES EMPRESARIAIS - Persona 3 (Empresas 5+ funcionários) */}
+          
+          {availableTabs.includes('team') && (
+            <TabsContent value="team" className="space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>
+                    <Users className="h-5 w-5 mr-2 inline" />
+                    Gestão de Equipe
+                  </CardTitle>
+                  <CardDescription>Gerenciamento de usuários e colaboradores</CardDescription>
+                </CardHeader>
+                <CardContent className="p-6">
+                  <div className="text-center text-muted-foreground py-8">
+                    <Users className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <p className="mb-2">Gestão de Equipe Empresarial</p>
+                    <p className="text-sm">
+                      Vincule e desvincule usuários ao seu ambiente de trabalho.
+                      <br />
+                      <strong>Funcionalidade Persona 3</strong> - Empresas com 5+ funcionários
+                    </p>
+                    <Button className="mt-4" variant="outline">
+                      <Plus className="h-4 w-4 mr-2" />
+                      Convidar Usuário
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          )}
+
+          {availableTabs.includes('departments') && (
+            <TabsContent value="departments" className="space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>
+                    <Building2 className="h-5 w-5 mr-2 inline" />
+                    Departamentos
+                  </CardTitle>
+                  <CardDescription>Gestão de departamentos e controle de dados</CardDescription>
+                </CardHeader>
+                <CardContent className="p-6">
+                  <div className="text-center text-muted-foreground py-8">
+                    <Building2 className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <p className="mb-2">Gestão Departamental</p>
+                    <p className="text-sm">
+                      Configure departamentos e controle o acesso aos dados por setor.
+                      <br />
+                      Ex: Compras não vê dados de Vendas, Vendas não vê dados de Compras.
+                    </p>
+                    <div className="grid grid-cols-2 gap-2 mt-4">
+                      <Button variant="outline" size="sm">
+                        <Plus className="h-4 w-4 mr-2" />
+                        Criar Departamento
+                      </Button>
+                      <Button variant="outline" size="sm">
+                        <Settings className="h-4 w-4 mr-2" />
+                        Configurar Acessos
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          )}
+
+          {availableTabs.includes('permissions') && (
+            <TabsContent value="permissions" className="space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>
+                    <Shield className="h-5 w-5 mr-2 inline" />
+                    Controle de Permissões
+                  </CardTitle>
+                  <CardDescription>Defina quais funcionalidades cada usuário pode acessar</CardDescription>
+                </CardHeader>
+                <CardContent className="p-6">
+                  <div className="text-center text-muted-foreground py-8">
+                    <Shield className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <p className="mb-2">Gestão de Acessos Empresarial</p>
+                    <p className="text-sm">
+                      Configure permissões granulares por usuário e departamento.
+                      <br />
+                      Controle total sobre dados e funcionalidades acessíveis.
+                    </p>
+                    <Alert className="mt-4 text-left">
+                      <Lock className="h-4 w-4" />
+                      <AlertDescription>
+                        <strong>Permissões mantidas por usuário:</strong> Cada usuário mantém suas permissões 
+                        independente do ambiente de trabalho que está acessando.
+                      </AlertDescription>
+                    </Alert>
                   </div>
                 </CardContent>
               </Card>
