@@ -6,6 +6,7 @@ import { eq, and } from 'drizzle-orm';
 import { paymentService } from './paymentService';
 import { nanoid } from 'nanoid';
 import bcrypt from 'bcrypt';
+import { sendToitNexusWelcomeEmail } from './emailService';
 
 const router = Router();
 
@@ -192,14 +193,27 @@ router.post('/confirm-payment', async (req, res) => {
 
     console.log(`✅ Usuário criado automaticamente: ${newUser.email} - Tenant: ${newTenant.name}`);
 
-    // TODO: Enviar email com dados de acesso
-    // await emailService.sendWelcomeEmail(newUser.email, {
-    //   name: newUser.firstName,
-    //   login_url: 'https://nexus.toit.com.br',
-    //   cpf: newUser.cpf,
-    //   temporary_password: temporaryPassword,
-    //   profile_name: metadata.profile_slug.toUpperCase()
-    // });
+    // 📧 ENVIAR EMAIL DE BOAS-VINDAS AUTOMÁTICO
+    console.log('📧 Enviando email de boas-vindas...');
+    try {
+      const emailSent = await sendToitNexusWelcomeEmail(
+        newUser.email!,
+        metadata.customer_name,
+        metadata.profile_slug,
+        temporaryPassword,
+        newTenant.id,
+        false // não é trial
+      );
+      
+      if (emailSent) {
+        console.log('✅ Email de boas-vindas enviado com sucesso');
+      } else {
+        console.log('⚠️ Falha ao enviar email de boas-vindas (usuário criado com sucesso)');
+      }
+    } catch (emailError) {
+      console.error('❌ Erro ao enviar email de boas-vindas:', emailError);
+      // Não falhar a operação por causa do email
+    }
 
     res.json({
       success: true,

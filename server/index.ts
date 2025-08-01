@@ -5,6 +5,7 @@ import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { startNotificationCron } from "./notificationService";
 import { cronJobService } from "./cronJobs";
+import { initializeTrialCronJob } from "./trialManager";
 
 const app = express();
 app.use(express.json());
@@ -216,6 +217,10 @@ app.use((req, res, next) => {
       console.log(`🤖 Sistema de cron jobs inicializado`);
       const jobStatus = cronJobService.getStatus();
       console.log(`📊 Jobs ativos: ${jobStatus.activeJobs}`);
+      
+      // Inicializar gestão automática de trials
+      initializeTrialCronJob();
+      console.log(`⏰ Trial Manager inicializado`);
       if (process.env.REPLIT_DOMAINS) {
         console.log(`  Replit: https://${process.env.REPLIT_DOMAINS}`);
       }

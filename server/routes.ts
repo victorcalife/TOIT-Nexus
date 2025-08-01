@@ -26,6 +26,8 @@ import { moduleRoutes } from "./moduleRoutes";
 import { adaptiveEngine } from "./adaptiveEngine";
 import accessProfileRoutes from "./accessProfileRoutes";
 import stripeCheckoutRoutes from "./stripeCheckoutRoutes";
+import emailTestRoutes from "./emailTestRoutes";
+import trialAdminRoutes from "./trialAdminRoutes";
 import { trialRoutes } from "./trialRoutes";
 import { fileUploadRoutes } from "./fileUploadRoutes";
 import { advancedTaskRoutes } from "./advancedTaskRoutes";
@@ -1841,6 +1843,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register Stripe Checkout integrado routes
   app.use('/api/stripe', stripeCheckoutRoutes);
+  
+  // Email Test routes - Para testes durante desenvolvimento
+  app.use('/api/email-test', emailTestRoutes);
+  
+  // Trial Admin routes - Super Admin apenas
+  app.use('/api/admin/trials', trialAdminRoutes);
   
   // Trial routes - não necessita autenticação
   app.use('/api/trial', trialRoutes);

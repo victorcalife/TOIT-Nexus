@@ -8,6 +8,7 @@ import { storage } from "./storage";
 import connectPg from "connect-pg-simple";
 import { User } from "@shared/schema";
 import { NotificationService } from "./notificationService";
+import { sendToitNexusWelcomeEmail } from "./emailService";
 
 declare global {
   namespace Express {
@@ -457,6 +458,27 @@ export function setupAuth(app: Express) {
       const user = await storage.getUser(verification.userId);
       if (user?.phoneVerified) {
         await storage.activateUser(verification.userId);
+        
+        // 📧 ENVIAR EMAIL DE BOAS-VINDAS TRIAL ATIVADO
+        try {
+          console.log('📧 Enviando email de boas-vindas trial...');
+          const emailSent = await sendToitNexusWelcomeEmail(
+            user.email!,
+            `${user.firstName} ${user.lastName}`.trim(),
+            user.trialPlan || 'premium',
+            undefined, // sem senha temporária para trial
+            user.tenantId,
+            true // é trial
+          );
+          
+          if (emailSent) {
+            console.log('✅ Email de boas-vindas trial enviado com sucesso');
+          } else {
+            console.log('⚠️ Falha ao enviar email de boas-vindas trial');
+          }
+        } catch (emailError) {
+          console.error('❌ Erro ao enviar email de boas-vindas trial:', emailError);
+        }
       }
 
       res.json({
@@ -497,6 +519,27 @@ export function setupAuth(app: Express) {
       const user = await storage.getUser(verification.userId);
       if (user?.emailVerified) {
         await storage.activateUser(verification.userId);
+        
+        // 📧 ENVIAR EMAIL DE BOAS-VINDAS TRIAL ATIVADO
+        try {
+          console.log('📧 Enviando email de boas-vindas trial...');
+          const emailSent = await sendToitNexusWelcomeEmail(
+            user.email!,
+            `${user.firstName} ${user.lastName}`.trim(),
+            user.trialPlan || 'premium',
+            undefined, // sem senha temporária para trial
+            user.tenantId,
+            true // é trial
+          );
+          
+          if (emailSent) {
+            console.log('✅ Email de boas-vindas trial enviado com sucesso');
+          } else {
+            console.log('⚠️ Falha ao enviar email de boas-vindas trial');
+          }
+        } catch (emailError) {
+          console.error('❌ Erro ao enviar email de boas-vindas trial:', emailError);
+        }
       }
 
       res.json({
