@@ -33,7 +33,8 @@ import {
   Filter
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { UnifiedHeader } from '@/components/unified-header';
+import { StandardHeader } from '@/components/standard-header';
+import { useAuth } from '@/hooks/useAuth';
 
 type Tenant = {
   id: string;
@@ -52,24 +53,18 @@ export default function TOITAdminDashboard() {
   const [activeTab, setActiveTab] = useState('overview');
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { user } = useAuth();
 
-  // Mock data for functional demonstration
-  const mockTenants = [
-    { id: '1', name: 'TechCorp', domain: 'techcorp', isActive: true, plan: 'Premium', settings: {}, createdAt: new Date().toISOString(), userCount: 25, departmentCount: 4 },
-    { id: '2', name: 'InvestPlus', domain: 'investplus', isActive: true, plan: 'Standard', settings: {}, createdAt: new Date().toISOString(), userCount: 12, departmentCount: 3 },
-    { id: '3', name: 'FinanceFlow', domain: 'financeflow', isActive: false, plan: 'Basic', settings: {}, createdAt: new Date().toISOString(), userCount: 8, departmentCount: 2 }
-  ];
+  // Fetch real data from API
+  const { data: tenants } = useQuery({
+    queryKey: ['admin-tenants'],
+    queryFn: () => fetch('/api/admin/tenants').then(res => res.json())
+  });
 
-  const mockStats = {
-    totalTenants: 3,
-    totalUsers: 45,
-    totalWorkflows: 28,
-    systemUptime: '99.9%',
-    monthlyRevenue: 125000,
-    activeIntegrations: 15,
-    pendingIssues: 3,
-    successRate: 97.5
-  };
+  const { data: stats } = useQuery({
+    queryKey: ['admin-stats'],
+    queryFn: () => fetch('/api/admin/stats').then(res => res.json())
+  });
 
   const handleCreateTenant = async (data: any) => {
     toast({ title: 'Sucesso', description: 'Empresa criada com sucesso!' });
@@ -79,16 +74,16 @@ export default function TOITAdminDashboard() {
     window.location.href = '/api/logout';
   };
 
-  const filteredTenants = mockTenants.filter((tenant: any) =>
+  const filteredTenants = (tenants || []).filter((tenant: any) =>
     tenant.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     tenant.domain?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <UnifiedHeader 
+      <StandardHeader 
         showUserActions={true}
-        user={{ firstName: 'Super', lastName: 'Admin' }}
+        user={user}
         onLogout={handleLogout}
       />
       
@@ -108,7 +103,7 @@ export default function TOITAdminDashboard() {
               Sistema Online
             </Badge>
             <Badge variant="outline">
-              {mockStats.totalTenants} Empresas Ativas
+              {stats?.totalTenants || 0} Empresas Ativas
             </Badge>
           </div>
         </div>
@@ -132,7 +127,7 @@ export default function TOITAdminDashboard() {
                   <Building2 className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{mockStats.totalTenants}</div>
+                  <div className="text-2xl font-bold">{stats?.totalTenants || 0}</div>
                   <p className="text-xs text-muted-foreground">+2 este mês</p>
                 </CardContent>
               </Card>
@@ -143,7 +138,7 @@ export default function TOITAdminDashboard() {
                   <Users className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{mockStats.totalUsers}</div>
+                  <div className="text-2xl font-bold">{stats?.totalUsers || 0}</div>
                   <p className="text-xs text-muted-foreground">+12% crescimento</p>
                 </CardContent>
               </Card>
@@ -154,7 +149,7 @@ export default function TOITAdminDashboard() {
                   <Workflow className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{mockStats.totalWorkflows}</div>
+                  <div className="text-2xl font-bold">{stats?.totalWorkflows || 0}</div>
                   <p className="text-xs text-muted-foreground">97.5% taxa de sucesso</p>
                 </CardContent>
               </Card>
@@ -165,7 +160,7 @@ export default function TOITAdminDashboard() {
                   <TrendingUp className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">R$ {mockStats.monthlyRevenue.toLocaleString()}</div>
+                  <div className="text-2xl font-bold">R$ {(stats?.monthlyRevenue || 0).toLocaleString()}</div>
                   <p className="text-xs text-muted-foreground">+8% vs mês anterior</p>
                 </CardContent>
               </Card>
@@ -400,15 +395,15 @@ export default function TOITAdminDashboard() {
                   <div className="space-y-2">
                     <div className="flex justify-between">
                       <span>Uptime:</span>
-                      <span className="font-medium">{mockStats.systemUptime}</span>
+                      <span className="font-medium">{stats?.systemUptime || '0%'}</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Integrações Ativas:</span>
-                      <span className="font-medium">{mockStats.activeIntegrations}</span>
+                      <span className="font-medium">{stats?.activeIntegrations || 0}</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Problemas Pendentes:</span>
-                      <span className="font-medium text-orange-600">{mockStats.pendingIssues}</span>
+                      <span className="font-medium text-orange-600">{stats?.pendingIssues || 0}</span>
                     </div>
                   </div>
                 </CardContent>
@@ -422,7 +417,7 @@ export default function TOITAdminDashboard() {
                   <div className="space-y-2">
                     <div className="flex justify-between">
                       <span>Taxa de Sucesso:</span>
-                      <span className="font-medium text-green-600">{mockStats.successRate}%</span>
+                      <span className="font-medium text-green-600">{stats?.successRate || 0}%</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Tempo Médio de Resposta:</span>

@@ -25,7 +25,10 @@
       "Bash(taskkill:*)",
       "Bash(timeout 12 npm run dev)",
       "Bash(find:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(mv:*)",
+      "Bash(cp:*)",
+      "Bash(copy:*)"
     ],
     "deny": []
   }

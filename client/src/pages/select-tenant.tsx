@@ -5,41 +5,18 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Building2, Search, Users, Workflow } from 'lucide-react';
-import { UnifiedHeader } from '@/components/unified-header';
+import { StandardHeader } from '@/components/standard-header';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function SelectTenant() {
   const [searchTerm, setSearchTerm] = useState('');
+  const { user } = useAuth();
 
-  // Mock data for demonstration
-  const mockTenants = [
-    { 
-      id: '1', 
-      name: 'TechCorp', 
-      domain: 'techcorp', 
-      description: 'Empresa de tecnologia e inovação',
-      userCount: 25, 
-      workflowCount: 12,
-      isActive: true
-    },
-    { 
-      id: '2', 
-      name: 'InvestPlus', 
-      domain: 'investplus', 
-      description: 'Gestora de investimentos e fundos',
-      userCount: 18, 
-      workflowCount: 8,
-      isActive: true
-    },
-    { 
-      id: '3', 
-      name: 'FinanceFlow', 
-      domain: 'financeflow', 
-      description: 'Consultoria financeira corporativa',
-      userCount: 15, 
-      workflowCount: 6,
-      isActive: true
-    }
-  ];
+  // Fetch real tenants from API
+  const { data: tenants } = useQuery({
+    queryKey: ['user-tenants'],
+    queryFn: () => fetch('/api/user/tenants').then(res => res.json())
+  });
 
   const handleSelectTenant = (tenant: any) => {
     // Set tenant context and redirect to dashboard
@@ -47,16 +24,16 @@ export default function SelectTenant() {
     window.location.href = '/dashboard';
   };
 
-  const filteredTenants = mockTenants.filter(tenant =>
-    tenant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    tenant.description.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredTenants = (tenants || []).filter((tenant: any) =>
+    tenant.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    tenant.description?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      <UnifiedHeader 
+      <StandardHeader 
         showUserActions={true}
-        user={{ firstName: 'Usuário', lastName: 'Sistema' }}
+        user={user}
       />
       
       <div className="container mx-auto px-6 py-12">

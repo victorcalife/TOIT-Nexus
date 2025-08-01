@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { StandardHeader } from "@/components/standard-header";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useMutation } from "@tanstack/react-query";
@@ -61,14 +62,18 @@ export default function SimpleLogin() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold text-gray-900">TOIT NEXUS</CardTitle>
-          <CardDescription>
-            Sistema de Automação de Workflows
-          </CardDescription>
-        </CardHeader>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+      {/* Header Padronizado */}
+      <StandardHeader />
+      
+      <div className="flex items-center justify-center py-12 px-4">
+        <Card className="w-full max-w-md">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl font-bold text-gray-900">Acesso ao Sistema</CardTitle>
+            <CardDescription>
+              Entre com suas credenciais para continuar
+            </CardDescription>
+          </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
@@ -102,13 +107,6 @@ export default function SimpleLogin() {
             </Button>
           </form>
           
-          <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-            <h4 className="font-medium text-sm text-gray-700 mb-2">Credenciais de Teste:</h4>
-            <div className="text-xs text-gray-600 space-y-1">
-              <div><strong>Super Admin:</strong> CPF: 00000000000, Senha: admin123</div>
-              <div><strong>Tenant Admin:</strong> CPF: 11111111111, Senha: admin123</div>
-            </div>
-          </div>
         </CardContent>
       </Card>
     </div>

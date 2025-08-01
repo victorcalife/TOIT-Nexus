@@ -61,14 +61,14 @@ function Router() {
     return <SystemSetup />;
   }
 
-  // Not authenticated - show simple login
+  // Not authenticated - show landing page as default
   if (!isAuthenticated) {
     return (
       <Switch>
-        <Route path="/landing" component={Landing} />
+        <Route path="/simple-login" component={SimpleLogin} />
         <Route path="/login" component={Login} />
-        <Route path="/" component={SimpleLogin} />
-        <Route component={SimpleLogin} />
+        <Route path="/" component={Landing} />
+        <Route component={Landing} />
       </Switch>
     );
   }

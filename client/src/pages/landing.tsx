@@ -2,366 +2,781 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Play, Users, Zap, Shield, BarChart3, CheckCircle, Workflow, Bot, Globe, Sparkles, Database, Bell, Settings, Send, Filter, Calendar, Mail, FileText, Cpu, GitBranch } from "lucide-react";
-import { UnifiedHeader } from "@/components/unified-header";
-import { useState, useEffect, useRef } from "react";
-
-// Workflow cards for drag and drop
-const WORKFLOW_CARDS = [
-  { id: 'trigger', icon: '🔔', title: 'Trigger', description: 'Inicia o workflow', category: 'triggers', color: 'from-green-500 to-emerald-500' },
-  { id: 'email', icon: '📧', title: 'Send Email', description: 'Envia notificação por email', category: 'actions', color: 'from-blue-500 to-cyan-500' },
-  { id: 'database', icon: '🗄️', title: 'Database', description: 'Consulta ou atualiza dados', category: 'data', color: 'from-purple-500 to-pink-500' },
-  { id: 'filter', icon: '🔍', title: 'Filter', description: 'Filtra dados baseado em condições', category: 'logic', color: 'from-orange-500 to-red-500' },
-  { id: 'webhook', icon: '🔗', title: 'Webhook', description: 'Chama API externa', category: 'integrations', color: 'from-indigo-500 to-blue-500' },
-  { id: 'schedule', icon: '⏰', title: 'Schedule', description: 'Agenda execução', category: 'timing', color: 'from-pink-500 to-rose-500' },
-  { id: 'notification', icon: '🔔', title: 'Notification', description: 'Envia notificação push', category: 'actions', color: 'from-yellow-500 to-amber-500' },
-  { id: 'transform', icon: '🔄', title: 'Transform', description: 'Transforma dados', category: 'data', color: 'from-teal-500 to-green-500' },
-];
-
-const DEMO_WORKFLOW = [
-  { id: 'start', card: WORKFLOW_CARDS[0], position: { x: 50, y: 100 } },
-  { id: 'filter1', card: WORKFLOW_CARDS[3], position: { x: 250, y: 50 } },
-  { id: 'email1', card: WORKFLOW_CARDS[1], position: { x: 450, y: 50 } },
-  { id: 'db1', card: WORKFLOW_CARDS[2], position: { x: 250, y: 150 } },
-];
-
-interface DragItem {
-  id: string;
-  card: typeof WORKFLOW_CARDS[0];
-  position: { x: number; y: number };
-}
+import { StandardHeader } from "@/components/standard-header";
+import { 
+  ArrowRight, 
+  CheckCircle, 
+  Users, 
+  Zap, 
+  Shield, 
+  BarChart3, 
+  Bot, 
+  Globe,
+  Mail,
+  Phone,
+  Building,
+  Star
+} from "lucide-react";
+import { useState } from "react";
 
 export default function Landing() {
-  const [draggedItem, setDraggedItem] = useState<string | null>(null);
-  const [workflowItems, setWorkflowItems] = useState<DragItem[]>(DEMO_WORKFLOW);
-  const [connections, setConnections] = useState<Array<{from: string, to: string}>>([
-    { from: 'start', to: 'filter1' },
-    { from: 'filter1', to: 'email1' },
-    { from: 'start', to: 'db1' }
-  ]);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const canvasRef = useRef<HTMLDivElement>(null);
+  const [showContactForm, setShowContactForm] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    company: '',
+    phone: '',
+    message: ''
+  });
+  const [activeWorkflowStep, setActiveWorkflowStep] = useState(0);
+  const [isWorkflowPlaying, setIsWorkflowPlaying] = useState(false);
 
-  // Auto demo animation
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIsAnimating(true);
-      setTimeout(() => setIsAnimating(false), 2000);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleDragStart = (e: React.DragEvent, cardId: string) => {
-    setDraggedItem(cardId);
-    e.dataTransfer.effectAllowed = 'copy';
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // TODO: Implementar envio do formulário
+    console.log('Form submitted:', formData);
+    alert('Obrigado pelo interesse! Nossa equipe entrará em contato em breve.');
+    setShowContactForm(false);
+    setFormData({ name: '', email: '', company: '', phone: '', message: '' });
   };
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'copy';
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    if (!draggedItem || !canvasRef.current) return;
-
-    const rect = canvasRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left - 60; // Center the card
-    const y = e.clientY - rect.top - 40;
-
-    const card = WORKFLOW_CARDS.find(c => c.id === draggedItem);
-    if (card) {
-      const newItem: DragItem = {
-        id: `${card.id}-${Date.now()}`,
-        card,
-        position: { x, y }
-      };
-      setWorkflowItems(prev => [...prev, newItem]);
+  // Workflow Demo Data
+  const workflowSteps = [
+    { 
+      id: 1, 
+      title: "Cliente Faz Pedido", 
+      description: "E-commerce recebe novo pedido automaticamente",
+      icon: "🛒",
+      status: "trigger",
+      metrics: { time: "0s", success: "100%" },
+      position: { x: 50, y: 100 }
+    },
+    { 
+      id: 2, 
+      title: "Verificar Estoque", 
+      description: "Consulta automática no sistema de inventário",
+      icon: "📦",
+      status: "processing",
+      metrics: { time: "0.3s", success: "99.9%" },
+      position: { x: 280, y: 80 }
+    },
+    { 
+      id: 3, 
+      title: "Confirmar Pagamento", 
+      description: "Validação com gateway de pagamento",
+      icon: "💳",
+      status: "processing", 
+      metrics: { time: "1.2s", success: "98.5%" },
+      position: { x: 280, y: 160 }
+    },
+    { 
+      id: 4, 
+      title: "Notificar Cliente", 
+      description: "Email e SMS de confirmação automáticos",
+      icon: "📧",
+      status: "action",
+      metrics: { time: "0.1s", success: "100%" },
+      position: { x: 510, y: 100 }
+    },
+    { 
+      id: 5, 
+      title: "Gerar Etiqueta", 
+      description: "Integração com transportadora para envio",
+      icon: "📮",
+      status: "completed",
+      metrics: { time: "0.5s", success: "99.7%" },
+      position: { x: 740, y: 120 }
     }
-    setDraggedItem(null);
+  ];
+
+  const playWorkflowDemo = () => {
+    setIsWorkflowPlaying(true);
+    setActiveWorkflowStep(0);
+    
+    workflowSteps.forEach((_, index) => {
+      setTimeout(() => {
+        setActiveWorkflowStep(index);
+        if (index === workflowSteps.length - 1) {
+          setTimeout(() => {
+            setIsWorkflowPlaying(false);
+            setActiveWorkflowStep(0);
+          }, 1500);
+        }
+      }, index * 1000);
+    });
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white overflow-x-hidden">
-      <UnifiedHeader />
-      
-      {/* Particle Background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#00d4ff]/5 via-transparent to-[#6a0dad]/5"></div>
-        {[...Array(50)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-[#00d4ff] rounded-full opacity-30 animate-pulse"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 2}s`,
-              animationDuration: `${2 + Math.random() * 3}s`
-            }}
-          ></div>
-        ))}
-      </div>
+    <div className="min-h-screen bg-white">
+      {/* Header Padronizado */}
+      <StandardHeader 
+        showLoginButton={true}
+        showNavigation={true}
+        onContactClick={() => setShowContactForm(true)}
+      />
 
-      {/* Hero Section */}
-      <section className="relative py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <Badge className="mb-6 bg-gradient-to-r from-[#00d4ff]/20 to-[#6a0dad]/20 text-[#00d4ff] border-[#00d4ff]/30 px-6 py-2 text-sm font-semibold">
-              ✨ Revolução em Automação No-Code
-            </Badge>
+      {/* Hero Section - Moderno + Profissional */}
+      <section className="relative overflow-hidden">
+        {/* Background Gradient Sofisticado */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20"></div>
+        
+        {/* Elementos Visuais Inovadores */}
+        <div className="absolute inset-0 overflow-hidden">
+          {/* Geometric Shapes - Moderno mas Sutil */}
+          <div className="absolute top-20 right-20 w-64 h-64 bg-gradient-to-br from-blue-500/5 to-purple-500/5 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-20 left-20 w-48 h-48 bg-gradient-to-br from-green-500/5 to-blue-500/5 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+          
+          {/* Neural Network Pattern - Sutil e Elegante */}
+          <svg className="absolute inset-0 w-full h-full opacity-30" viewBox="0 0 1000 800">
+            <defs>
+              <linearGradient id="networkGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.1"/>
+                <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.1"/>
+              </linearGradient>
+            </defs>
             
-            <h1 className="text-6xl md:text-8xl font-black mb-8 leading-tight">
-              <span className="bg-gradient-to-r from-[#00d4ff] via-[#6a0dad] to-[#0099ff] bg-clip-text text-transparent">
-                TOIT NEXUS
+            {/* Pontos de Conexão */}
+            <circle cx="100" cy="150" r="3" fill="#3b82f6" opacity="0.4">
+              <animate attributeName="r" values="3;5;3" dur="3s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="300" cy="100" r="3" fill="#8b5cf6" opacity="0.4">
+              <animate attributeName="r" values="3;5;3" dur="3s" begin="1s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="500" cy="200" r="3" fill="#10b981" opacity="0.4">
+              <animate attributeName="r" values="3;5;3" dur="3s" begin="2s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="700" cy="120" r="3" fill="#3b82f6" opacity="0.4">
+              <animate attributeName="r" values="3;5;3" dur="3s" begin="0.5s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="800" cy="180" r="3" fill="#8b5cf6" opacity="0.4">
+              <animate attributeName="r" values="3;5;3" dur="3s" begin="1.5s" repeatCount="indefinite"/>
+            </circle>
+            
+            {/* Linhas de Conexão Animadas */}
+            <line x1="100" y1="150" x2="300" y2="100" stroke="url(#networkGradient)" strokeWidth="1" opacity="0.3">
+              <animate attributeName="opacity" values="0.1;0.5;0.1" dur="4s" repeatCount="indefinite"/>
+            </line>
+            <line x1="300" y1="100" x2="500" y2="200" stroke="url(#networkGradient)" strokeWidth="1" opacity="0.3">
+              <animate attributeName="opacity" values="0.1;0.5;0.1" dur="4s" begin="1s" repeatCount="indefinite"/>
+            </line>
+            <line x1="500" y1="200" x2="700" y2="120" stroke="url(#networkGradient)" strokeWidth="1" opacity="0.3">
+              <animate attributeName="opacity" values="0.1;0.5;0.1" dur="4s" begin="2s" repeatCount="indefinite"/>
+            </line>
+            <line x1="700" y1="120" x2="800" y2="180" stroke="url(#networkGradient)" strokeWidth="1" opacity="0.3">
+              <animate attributeName="opacity" values="0.1;0.5;0.1" dur="4s" begin="3s" repeatCount="indefinite"/>
+            </line>
+          </svg>
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+          <div className="text-center max-w-5xl mx-auto">
+            
+            {/* Badge Inovador */}
+            <div className="mb-8 inline-flex items-center">
+              <Badge className="bg-white/80 backdrop-blur-sm text-blue-700 border border-blue-200/50 px-6 py-3 text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
+                <div className="w-2 h-2 bg-green-500 rounded-full mr-3 animate-pulse"></div>
+                🚀 Plataforma Líder em Automação Empresarial
+                <div className="ml-3 w-2 h-2 bg-blue-500 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
+              </Badge>
+            </div>
+            
+            {/* Título Impactante com Efeito Gradient */}
+            <h1 className="text-6xl md:text-7xl lg:text-8xl font-black mb-8 leading-tight tracking-tight">
+              <span className="text-gray-900">Transforme</span>
+              <br/>
+              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent relative">
+                Processos
+                {/* Underline Animado */}
+                <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full transform scale-x-0 animate-pulse opacity-60" style={{ animation: 'scaleX 3s ease-in-out infinite' }}></div>
+              </span>
+              <br/>
+              <span className="text-gray-900">em </span>
+              <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 bg-clip-text text-transparent">
+                Resultados
               </span>
             </h1>
             
-            <p className="text-xl md:text-2xl text-[#b0b0b8] mb-12 max-w-4xl mx-auto leading-relaxed">
-              Democratize a automação empresarial. Crie workflows inteligentes arrastando e soltando - 
-              sem código, sem complexidade, apenas resultados extraordinários.
+            {/* Subtítulo Sofisticado */}
+            <p className="text-xl md:text-2xl text-gray-600 mb-12 leading-relaxed max-w-4xl mx-auto">
+              Democratize a automação empresarial com nossa plataforma 
+              <span className="font-semibold text-gray-800"> no-code inteligente</span>. 
+              Mais de <span className="font-bold text-blue-600">15.000 empresas</span> já aceleram 
+              resultados com workflows que <span className="font-semibold text-gray-800">pensam por si só</span>.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-20">
-              <Button size="lg" className="bg-gradient-to-r from-[#00d4ff] to-[#6a0dad] hover:from-[#00b8e6] hover:to-[#5a0999] text-white px-10 py-6 text-lg font-bold rounded-xl shadow-2xl shadow-[#00d4ff]/20 transition-all hover:scale-105">
-                🚀 Teste Grátis 7 Dias
-                <ArrowRight className="ml-3 h-6 w-6" />
+            {/* CTAs Sofisticados */}
+            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
+              <Button 
+                onClick={() => setShowContactForm(true)}
+                size="lg" 
+                className="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-10 py-5 text-lg font-bold rounded-2xl shadow-2xl shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300 transform hover:scale-105"
+              >
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-white rounded-full mr-3 animate-pulse"></div>
+                  🎯 Demonstração ao Vivo
+                  <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-1 transition-transform" />
+                </div>
               </Button>
-              <Button size="lg" variant="outline" className="border-2 border-[#00d4ff]/30 text-[#00d4ff] hover:bg-[#00d4ff]/10 px-10 py-6 text-lg rounded-xl backdrop-blur-sm">
-                <Play className="mr-3 h-6 w-6" />
-                Demo Interativa
-              </Button>
+              
+              <Link href="/simple-login">
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="group border-2 border-gray-300 hover:border-blue-400 text-gray-700 hover:text-blue-700 px-10 py-5 text-lg rounded-2xl backdrop-blur-sm bg-white/80 hover:bg-white transition-all duration-300 shadow-lg hover:shadow-xl"
+                >
+                  <div className="flex items-center">
+                    Acessar Plataforma
+                    <div className="ml-3 w-6 h-6 rounded-full border-2 border-current group-hover:rotate-90 transition-transform duration-300 flex items-center justify-center">
+                      <div className="w-2 h-2 bg-current rounded-full"></div>
+                    </div>
+                  </div>
+                </Button>
+              </Link>
+            </div>
+
+            {/* Stats Modernos com Animação */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+              {[
+                { value: "15K+", label: "Empresas Ativas", icon: "🏢", color: "from-blue-500 to-cyan-500" },
+                { value: "99.9%", label: "Uptime SLA", icon: "⚡", color: "from-green-500 to-emerald-500" },
+                { value: "5M+", label: "Workflows Criados", icon: "🔄", color: "from-purple-500 to-pink-500" },
+                { value: "2min", label: "Setup Médio", icon: "⏱️", color: "from-orange-500 to-red-500" }
+              ].map((stat, i) => (
+                <div key={i} className="group relative">
+                  <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:border-white/40 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+                    <div className="text-center">
+                      <div className="text-3xl mb-2">{stat.icon}</div>
+                      <div className={`text-4xl font-black mb-2 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
+                        {stat.value}
+                      </div>
+                      <div className="text-gray-600 text-sm font-medium">{stat.label}</div>
+                    </div>
+                    
+                    {/* Glow Effect */}
+                    <div className={`absolute inset-0 bg-gradient-to-r ${stat.color} opacity-0 group-hover:opacity-5 rounded-2xl transition-opacity duration-300`}></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Trust Indicators */}
+            <div className="mt-16 pt-8 border-t border-gray-200/50">
+              <p className="text-sm text-gray-500 mb-6">Confiado por empresas de todos os segmentos</p>
+              <div className="flex flex-wrap justify-center items-center gap-8 opacity-60">
+                {['FinTech', 'E-commerce', 'SaaS', 'Healthcare', 'Manufacturing', 'Retail'].map((industry, i) => (
+                  <div key={i} className="px-4 py-2 bg-white/40 rounded-full text-sm text-gray-600 font-medium">
+                    {industry}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-          
-          {/* Stats with glow effect */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto text-center">
-            {[
-              { value: "15K+", label: "Empresas Ativas", color: "#00d4ff" },
-              { value: "99.9%", label: "Uptime SLA", color: "#6a0dad" },
-              { value: "5M+", label: "Workflows", color: "#10b981" },
-              { value: "2min", label: "Setup Médio", color: "#0099ff" }
-            ].map((stat, i) => (
-              <div key={i} className="p-6 rounded-2xl bg-gradient-to-b from-white/5 to-white/2 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all">
-                <div className="text-4xl font-black mb-2" style={{ color: stat.color }}>
-                  {stat.value}
-                </div>
-                <div className="text-[#b0b0b8] text-sm font-medium">{stat.label}</div>
+        </div>
+
+        <style jsx>{`
+          @keyframes scaleX {
+            0%, 100% { transform: scaleX(0); }
+            50% { transform: scaleX(1); }
+          }
+        `}</style>
+      </section>
+
+      {/* Interactive Workflow Demo Section - Inovador + Profissional */}
+      <section className="py-24 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
+        {/* Background Pattern Sutil */}
+        <div className="absolute inset-0 opacity-5">
+          <div style={{
+            backgroundImage: `radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
+                             radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.3) 0%, transparent 50%),
+                             radial-gradient(circle at 40% 80%, rgba(16, 185, 129, 0.3) 0%, transparent 50%)`,
+            backgroundSize: '50% 50%',
+            height: '100%'
+          }}></div>
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-20">
+            <div className="inline-flex items-center mb-6">
+              <div className="flex items-center space-x-2 bg-white/80 backdrop-blur-sm rounded-full px-6 py-3 shadow-lg border border-gray-200/50">
+                <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
+                <span className="text-sm font-semibold text-gray-700">Demo Interativa</span>
+                <div className="w-3 h-3 bg-purple-500 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
               </div>
+            </div>
+            
+            <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+              <span className="text-gray-900">Workflow Builder</span>
+              <br/>
+              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                Inteligente
+              </span>
+            </h2>
+            
+            <p className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+              Veja como é <span className="font-semibold text-gray-800">simples e poderoso</span> criar automações 
+              complexas. Nossa interface visual transforma <span className="font-semibold text-blue-600">processos 
+              manuais</span> em <span className="font-semibold text-purple-600">inteligência automatizada</span>.
+            </p>
+          </div>
+
+          {/* Demo: Da Criação aos Resultados */}
+          <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden border border-gray-200/50 relative">
+            {/* Header Inteligente */}
+            <div className="bg-gradient-to-r from-slate-50 to-blue-50/30 px-8 py-6 border-b border-gray-200/50">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div>
+                  <div className="flex items-center space-x-3 mb-2">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                      <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+                      <div className="w-3 h-3 bg-purple-500 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900">Nexus Workflow Studio</h3>
+                  </div>
+                  <p className="text-sm text-gray-600">
+                    <strong>Cenário:</strong> Automatizar processo de aprovação de orçamentos
+                  </p>
+                </div>
+                
+                <div className="flex items-center space-x-4">
+                  <div className="text-right">
+                    <div className="flex items-center space-x-2 mb-1">
+                      <Badge className="bg-green-100 text-green-800 border-green-200 text-xs">
+                        ⚡ Tempo: 2.3s
+                      </Badge>
+                      <Badge className="bg-blue-100 text-blue-800 border-blue-200 text-xs">
+                        📊 ROI: +340%
+                      </Badge>
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      Era manual: 2h → Agora: 2.3s
+                    </div>
+                  </div>
+                  
+                  <Button 
+                    onClick={playWorkflowDemo}
+                    disabled={isWorkflowPlaying}
+                    className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 text-white shadow-lg transition-all duration-300"
+                  >
+                    {isWorkflowPlaying ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                        Criando & Executando...
+                      </>
+                    ) : (
+                      <>
+                        🚀 Ver Criação + Execução
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            {/* Interface do Sistema Nexus */}
+            <div className="p-8 min-h-[600px] relative">
+              {/* Simulação da Interface Real */}
+              <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl border border-gray-200 min-h-[550px] relative overflow-hidden">
+                
+                {/* Barra Superior (Como no Sistema Real) */}
+                <div className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+                      <span className="text-white text-xs font-bold">N</span>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900 text-sm">Novo Workflow</h4>
+                      <p className="text-xs text-gray-500">Aprovação de Orçamentos</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-2 text-xs text-gray-500">
+                    <span>Última execução: há 2 min</span>
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  </div>
+                </div>
+
+                {/* Área Principal Dividida */}
+                <div className="grid lg:grid-cols-3 h-full">
+                  
+                  {/* 1. Criação do Workflow (Esquerda) */}
+                  <div className="bg-gray-50 border-r border-gray-200 p-6">
+                    <div className="mb-4">
+                      <h5 className="font-semibold text-gray-900 mb-2 flex items-center">
+                        <span className="w-6 h-6 bg-blue-500 text-white rounded-full text-xs flex items-center justify-center mr-2">1</span>
+                        Montagem Visual
+                      </h5>
+                      <p className="text-xs text-gray-600 mb-4">Arrastar componentes para criar o fluxo</p>
+                    </div>
+
+                    {/* Componentes Disponíveis */}
+                    <div className="space-y-2">
+                      {[
+                        { icon: "📝", name: "Formulário", desc: "Solicitar orçamento", active: activeWorkflowStep >= 0 },
+                        { icon: "🔍", name: "Validação", desc: "Verificar dados", active: activeWorkflowStep >= 1 },
+                        { icon: "👤", name: "Aprovador", desc: "Enviar p/ gestor", active: activeWorkflowStep >= 2 },
+                        { icon: "✅", name: "Decisão", desc: "Aprovar/Rejeitar", active: activeWorkflowStep >= 3 },
+                        { icon: "📧", name: "Notificar", desc: "Informar resultado", active: activeWorkflowStep >= 4 }
+                      ].map((comp, i) => (
+                        <div key={i} className={`p-3 rounded-lg border transition-all duration-300 ${
+                          comp.active 
+                            ? 'bg-blue-50 border-blue-200 shadow-sm' 
+                            : 'bg-white border-gray-200 opacity-50'
+                        }`}>
+                          <div className="flex items-center space-x-2">
+                            <span className="text-lg">{comp.icon}</span>
+                            <div>
+                              <div className="text-xs font-semibold text-gray-900">{comp.name}</div>
+                              <div className="text-xs text-gray-600">{comp.desc}</div>
+                            </div>
+                            {comp.active && (
+                              <div className="ml-auto">
+                                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {isWorkflowPlaying && activeWorkflowStep < 5 && (
+                      <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                        <div className="flex items-center text-xs text-blue-700">
+                          <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse mr-2"></div>
+                          Conectando automaticamente...
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* 2. Execução em Tempo Real (Centro) */}
+                  <div className="p-6 bg-white">
+                    <div className="mb-4">
+                      <h5 className="font-semibold text-gray-900 mb-2 flex items-center">
+                        <span className="w-6 h-6 bg-green-500 text-white rounded-full text-xs flex items-center justify-center mr-2">2</span>
+                        Execução ao Vivo
+                      </h5>
+                      <p className="text-xs text-gray-600 mb-4">Workflow processando dados reais</p>
+                    </div>
+
+                    {/* Log de Execução */}
+                    <div className="bg-gray-900 rounded-lg p-4 text-green-400 font-mono text-xs h-64 overflow-y-auto">
+                      {isWorkflowPlaying ? (
+                        <div className="space-y-1">
+                          {workflowSteps.slice(0, activeWorkflowStep + 1).map((step, i) => (
+                            <div key={i} className={`transition-all duration-300 ${i === activeWorkflowStep ? 'text-yellow-400' : 'text-green-400'}`}>
+                              <span className="text-gray-500">[{new Date().toLocaleTimeString()}]</span> {step.title}
+                              {i === activeWorkflowStep && <span className="animate-pulse">_</span>}
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="text-gray-500 text-center pt-20">
+                          <span>Aguardando execução...</span>
+                          <br />
+                          <span className="text-xs">Clique em 'Ver Criação + Execução' para iniciar</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {isWorkflowPlaying && (
+                      <div className="mt-3 bg-gray-50 rounded-lg p-3">
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="text-gray-600">Status:</span>
+                          <span className="text-green-600 font-semibold">✓ Executando</span>
+                        </div>
+                        <div className="flex items-center justify-between text-xs mt-1">
+                          <span className="text-gray-600">Progresso:</span>
+                          <span className="text-blue-600 font-semibold">{Math.round((activeWorkflowStep + 1) / workflowSteps.length * 100)}%</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* 3. Resultados & ROI (Direita) */}
+                  <div className="bg-gradient-to-b from-gray-50 to-gray-100 border-l border-gray-200 p-6">
+                    <div className="mb-4">
+                      <h5 className="font-semibold text-gray-900 mb-2 flex items-center">
+                        <span className="w-6 h-6 bg-purple-500 text-white rounded-full text-xs flex items-center justify-center mr-2">3</span>
+                        Impacto nos Negócios
+                      </h5>
+                      <p className="text-xs text-gray-600 mb-4">Resultados em tempo real</p>
+                    </div>
+
+                    {/* Métricas de Impacto */}
+                    <div className="space-y-4">
+                      <div className="bg-white rounded-lg p-4 border shadow-sm">
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-red-600 mb-1">2h → 2.3s</div>
+                          <div className="text-xs text-gray-600">Tempo de Aprovação</div>
+                          <div className="text-xs text-green-600 font-semibold mt-1">99.8% mais rápido</div>
+                        </div>
+                      </div>
+
+                      <div className="bg-white rounded-lg p-4 border shadow-sm">
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-green-600 mb-1">R$ 125K</div>
+                          <div className="text-xs text-gray-600">Economia Anual</div>
+                          <div className="text-xs text-blue-600 font-semibold mt-1">ROI de 340%</div>
+                        </div>
+                      </div>
+
+                      <div className="bg-white rounded-lg p-4 border shadow-sm">
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-blue-600 mb-1">847</div>
+                          <div className="text-xs text-gray-600">Aprovações/Mês</div>
+                          <div className="text-xs text-purple-600 font-semibold mt-1">+2,240% volume</div>
+                        </div>
+                      </div>
+
+                      {isWorkflowPlaying && activeWorkflowStep >= workflowSteps.length - 1 && (
+                        <div className="bg-gradient-to-r from-green-100 to-blue-100 rounded-lg p-4 border border-green-200 animate-pulse">
+                          <div className="text-center">
+                            <div className="text-lg font-bold text-green-700 mb-1">✅ Workflow Ativo</div>
+                            <div className="text-xs text-green-600">Processando novos orçamentos automaticamente</div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {!isWorkflowPlaying && (
+                      <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                        <div className="text-center">
+                          <p className="text-xs text-blue-700 mb-2">
+                            <strong>Resultado esperado:</strong> Economia de 99.8% no tempo + ROI de 340%
+                          </p>
+                          <Button 
+                            onClick={playWorkflowDemo}
+                            size="sm"
+                            className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+                          >
+                            ▶️ Ver em Ação
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* CTA de Impacto */}
+              <div className="mt-8 text-center">
+                <div className="bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 rounded-3xl p-8 border border-blue-200/50 shadow-lg">
+                  <h4 className="text-2xl font-bold text-gray-900 mb-4">
+                    Do Manual ao Automatizado em <span className="text-blue-600">Minutos</span>
+                  </h4>
+                  <p className="text-gray-700 mb-6 max-w-3xl mx-auto">
+                    Viu como é <strong>simples criar</strong> e <strong>poderoso executar</strong>? 
+                    Essa demo representa <strong>milhares de empresas</strong> que já transformaram 
+                    processos de horas em segundos, economizando tempo e multiplicando resultados.
+                  </p>
+                  
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
+                    <Button 
+                      onClick={() => setShowContactForm(true)}
+                      size="lg"
+                      className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 shadow-lg"
+                    >
+                      🚀 Quero Essa Transformação
+                      <ArrowRight className="ml-2 h-5 w-5" />
+                    </Button>
+                    <Button 
+                      onClick={playWorkflowDemo}
+                      size="lg"
+                      variant="outline"
+                      className="border-2 border-blue-300 text-blue-700 hover:bg-blue-50 px-8 py-4"
+                    >
+                      🔄 Ver Demo Novamente
+                    </Button>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center text-sm text-gray-600">
+                    <div>
+                      <div className="font-semibold text-green-600">✓ Sem código necessário</div>
+                      <div>Interface visual intuitiva</div>
+                    </div>
+                    <div>
+                      <div className="font-semibold text-blue-600">✓ Resultados imediatos</div>
+                      <div>Economia desde o primeiro dia</div>
+                    </div>
+                    <div>
+                      <div className="font-semibold text-purple-600">✓ ROI comprovado</div>
+                      <div>Média de 340% de retorno</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Recursos Section */}
+      <section id="recursos" className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Recursos que Fazem a Diferença
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Tudo que sua empresa precisa para automatizar processos e acelerar resultados
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                icon: <Bot className="h-8 w-8 text-blue-600" />,
+                title: "Automação Inteligente",
+                description: "Workflows visuais drag-and-drop que conectam sistemas e automatizam processos complexos sem código."
+              },
+              {
+                icon: <BarChart3 className="h-8 w-8 text-purple-600" />,
+                title: "Analytics Avançado",
+                description: "Dashboards em tempo real, KPIs personalizados e relatórios que orientam decisões estratégicas."
+              },
+              {
+                icon: <Shield className="h-8 w-8 text-green-600" />,
+                title: "Segurança Enterprise",
+                description: "Criptografia AES-256, compliance LGPD/GDPR e controles de acesso granulares."
+              },
+              {
+                icon: <Globe className="h-8 w-8 text-orange-600" />,
+                title: "Integrações Ilimitadas",
+                description: "Conecte com 1000+ aplicações, APIs REST, webhooks e sistemas legados facilmente."
+              },
+              {
+                icon: <Users className="h-8 w-8 text-red-600" />,
+                title: "Colaboração em Equipe",
+                description: "Permissões granulares, workspaces compartilhados e aprovações automatizadas."
+              },
+              {
+                icon: <Zap className="h-8 w-8 text-yellow-600" />,
+                title: "Performance Otimizada",
+                description: "Execução em nuvem escalável com 99.9% de uptime e resposta em milissegundos."
+              }
+            ].map((feature, i) => (
+              <Card key={i} className="border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300">
+                <CardHeader>
+                  <div className="w-12 h-12 bg-gray-50 rounded-lg flex items-center justify-center mb-4">
+                    {feature.icon}
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-gray-900">
+                    {feature.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-gray-600 leading-relaxed">
+                    {feature.description}
+                  </CardDescription>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Interactive Workflow Builder Demo */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent to-[#141420]/50">
-        <div className="max-w-7xl mx-auto">
+      {/* Soluções por Segmento */}
+      <section id="solucoes" className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black text-white mb-6">
-              Arrastar. Soltar. <span className="bg-gradient-to-r from-[#00d4ff] to-[#6a0dad] bg-clip-text text-transparent">Automatizar.</span>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Soluções para Cada Segmento
             </h2>
-            <p className="text-xl text-[#b0b0b8] max-w-3xl mx-auto mb-8">
-              Veja como é fácil criar workflows complexos com nossa interface drag-and-drop. 
-              Experimente arrastar os cards abaixo para o canvas!
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Processos otimizados para diferentes indústrias e necessidades empresariais
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-4 gap-8">
-            {/* Card Palette */}
-            <div className="lg:col-span-1">
-              <h3 className="text-xl font-bold text-white mb-6 flex items-center">
-                <Sparkles className="mr-3 h-6 w-6 text-[#00d4ff]" />
-                Componentes
-              </h3>
-              <div className="grid grid-cols-2 lg:grid-cols-1 gap-4">
-                {WORKFLOW_CARDS.map((card) => (
-                  <div
-                    key={card.id}
-                    draggable
-                    onDragStart={(e) => handleDragStart(e, card.id)}
-                    className="group p-4 rounded-xl bg-gradient-to-b from-white/10 to-white/5 border border-white/10 hover:border-[#00d4ff]/30 cursor-grab active:cursor-grabbing hover:scale-105 transition-all backdrop-blur-sm"
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                title: "E-commerce & Varejo",
+                description: "Automatize pedidos, estoque, logística e atendimento ao cliente.",
+                benefits: ["Gestão de Estoque", "Pedidos Automatizados", "CRM Integrado", "Relatórios de Vendas"]
+              },
+              {
+                title: "Serviços Financeiros",
+                description: "Compliance automatizado, análise de risco e aprovações inteligentes.",
+                benefits: ["Compliance BACEN", "Análise de Crédito", "Aprovações Automáticas", "Auditoria Digital"]
+              },
+              {
+                title: "Saúde & Bem-estar",
+                description: "Agendamentos, prontuários digitais e gestão de consultórios.",
+                benefits: ["Agendamento Online", "Prontuário Digital", "Telemedicina", "LGPD Compliance"]
+              }
+            ].map((solution, i) => (
+              <Card key={i} className="bg-white border-2 border-gray-100 hover:border-blue-300 transition-all">
+                <CardHeader>
+                  <CardTitle className="text-2xl font-bold text-gray-900 mb-2">
+                    {solution.title}
+                  </CardTitle>
+                  <CardDescription className="text-gray-600 text-base">
+                    {solution.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-3">
+                    {solution.benefits.map((benefit, j) => (
+                      <li key={j} className="flex items-center text-gray-700">
+                        <CheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
+                        {benefit}
+                      </li>
+                    ))}
+                  </ul>
+                  <Button 
+                    onClick={() => setShowContactForm(true)}
+                    className="w-full mt-6 bg-blue-600 hover:bg-blue-700"
                   >
-                    <div className={`w-10 h-10 rounded-lg bg-gradient-to-r ${card.color} flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform`}>
-                      {card.icon}
-                    </div>
-                    <div className="text-white font-semibold text-sm mb-1">{card.title}</div>
-                    <div className="text-[#b0b0b8] text-xs">{card.description}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Workflow Canvas */}
-            <div className="lg:col-span-3">
-              <h3 className="text-xl font-bold text-white mb-6 flex items-center">
-                <Workflow className="mr-3 h-6 w-6 text-[#00d4ff]" />
-                Canvas de Workflow
-                <Badge className="ml-3 bg-[#00d4ff]/20 text-[#00d4ff] text-xs">Demo Interativa</Badge>
-              </h3>
-              
-              <div
-                ref={canvasRef}
-                onDragOver={handleDragOver}
-                onDrop={handleDrop}
-                className="relative h-96 bg-gradient-to-br from-[#1e1e2e]/80 to-[#0a0a0f]/80 rounded-2xl border-2 border-dashed border-[#00d4ff]/30 backdrop-blur-sm overflow-hidden"
-              >
-                {/* Grid pattern */}
-                <div className="absolute inset-0 opacity-20">
-                  <div className="absolute inset-0" style={{
-                    backgroundImage: `
-                      linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px)
-                    `,
-                    backgroundSize: '20px 20px'
-                  }}></div>
-                </div>
-
-                {/* Workflow Items */}
-                {workflowItems.map((item) => (
-                  <div
-                    key={item.id}
-                    className={`absolute transform transition-all duration-300 ${isAnimating ? 'animate-pulse scale-110' : ''}`}
-                    style={{
-                      left: item.position.x,
-                      top: item.position.y
-                    }}
-                  >
-                    <div className={`p-3 rounded-xl bg-gradient-to-r ${item.card.color} shadow-lg hover:scale-105 transition-all cursor-pointer`}>
-                      <div className="text-white text-xl mb-1">{item.card.icon}</div>
-                      <div className="text-white text-xs font-semibold">{item.card.title}</div>
-                    </div>
-                  </div>
-                ))}
-
-                {/* Connection Lines */}
-                <svg className="absolute inset-0 w-full h-full pointer-events-none">
-                  {connections.map((conn, i) => {
-                    const fromItem = workflowItems.find(item => item.id === conn.from);
-                    const toItem = workflowItems.find(item => item.id === conn.to);
-                    if (!fromItem || !toItem) return null;
-
-                    return (
-                      <line
-                        key={i}
-                        x1={fromItem.position.x + 60}
-                        y1={fromItem.position.y + 30}
-                        x2={toItem.position.x + 60}
-                        y2={toItem.position.y + 30}
-                        stroke="#00d4ff"
-                        strokeWidth="2"
-                        strokeDasharray="5,5"
-                        className={isAnimating ? 'animate-pulse' : ''}
-                      />
-                    );
-                  })}
-                </svg>
-
-                {/* Drop hint */}
-                {workflowItems.length === DEMO_WORKFLOW.length && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center p-8 rounded-2xl bg-[#00d4ff]/10 border border-[#00d4ff]/30 backdrop-blur-sm">
-                      <div className="text-4xl mb-4">🎯</div>
-                      <div className="text-[#00d4ff] font-semibold mb-2">Arraste componentes aqui!</div>
-                      <div className="text-[#b0b0b8] text-sm">Experimente arrastar qualquer card da esquerda</div>
-                    </div>
-                  </div>
-                )}
-              </div>
-              
-              <div className="mt-6 text-center">
-                <p className="text-[#b0b0b8] text-sm mb-4">
-                  ✨ Este é apenas um exemplo simples. Na plataforma real, você pode criar workflows com centenas de componentes!
-                </p>
-                <Button className="bg-gradient-to-r from-[#00d4ff] to-[#6a0dad] text-white px-6 py-3 rounded-lg hover:scale-105 transition-all">
-                  Ver Workflow Builder Completo
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </div>
-            </div>
+                    Solicitar Demo
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Features with Floating Cards */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-black text-white mb-6">
-              Recursos que <span className="bg-gradient-to-r from-[#00d4ff] to-[#6a0dad] bg-clip-text text-transparent">Impressionam</span>
+      {/* Testimonials */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              O que Nossos Clientes Dizem
             </h2>
-            <p className="text-xl text-[#b0b0b8] max-w-3xl mx-auto">
-              Funcionalidades enterprise em uma interface simples e intuitiva
-            </p>
           </div>
 
-          {/* Floating Feature Cards */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 relative">
+          <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                icon: <Bot className="h-10 w-10" />,
-                title: "IA Inteligente",
-                description: "Assistente que otimiza workflows automaticamente e sugere melhorias baseadas em padrões de uso",
-                color: "from-[#00d4ff] to-[#0099ff]",
-                features: ["Auto-otimização", "Sugestões IA", "Predições", "Machine Learning"]
+                name: "Maria Silva",
+                role: "CTO, TechCorp",
+                content: "Reduziu em 70% o tempo de processamento de pedidos. A automação é impressionante!",
+                rating: 5
               },
               {
-                icon: <BarChart3 className="h-10 w-10" />,
-                title: "Analytics Avançado",
-                description: "KPIs personalizáveis, relatórios em tempo real e dashboards interativos para decisões data-driven",
-                color: "from-[#6a0dad] to-[#9333ea]",
-                features: ["KPIs customizados", "Real-time", "Dashboards", "Alertas inteligentes"]
+                name: "João Santos",
+                role: "CEO, StartupX",
+                content: "Interface intuitiva e suporte excepcional. Economizamos R$ 50k/mês em processos manuais.",
+                rating: 5
               },
               {
-                icon: <Shield className="h-10 w-10" />,
-                title: "Segurança Enterprise",
-                description: "Criptografia de ponta, compliance LGPD/GDPR e auditoria completa de todas as operações",
-                color: "from-[#10b981] to-[#059669]",
-                features: ["Criptografia AES-256", "LGPD/GDPR", "Auditoria 360°", "SSO/SAML"]
-              },
-              {
-                icon: <Globe className="h-10 w-10" />,
-                title: "Integrações Universais",
-                description: "Conecte com 1000+ apps, APIs REST, webhooks e sistemas legados sem esforço",
-                color: "from-[#f59e0b] to-[#d97706]",
-                features: ["1000+ integrações", "APIs REST", "Webhooks", "Sistemas legados"]
-              },
-              {
-                icon: <Bell className="h-10 w-10" />,
-                title: "Notificações Inteligentes",
-                description: "Sistema avançado de alertas multi-canal com filtros inteligentes e escalação automática",
-                color: "from-[#ef4444] to-[#dc2626]",
-                features: ["Multi-canal", "Filtros IA", "Escalação auto", "Templates"]
-              },
-              {
-                icon: <Database className="h-10 w-10" />,
-                title: "Query Builder Visual",
-                description: "Construa consultas complexas sem SQL usando interface drag-and-drop intuitiva",
-                color: "from-[#8b5cf6] to-[#7c3aed]",
-                features: ["Zero SQL", "Drag & Drop", "Preview live", "Consultas complexas"]
+                name: "Ana Costa",
+                role: "Diretora, FinanceMax",
+                content: "Compliance automático e relatórios em tempo real. Transformou nossa operação financeira.",
+                rating: 5
               }
-            ].map((feature, index) => (
-              <Card key={index} className="group relative overflow-hidden bg-gradient-to-b from-white/10 to-white/5 border border-white/10 hover:border-[#00d4ff]/30 transition-all duration-500 backdrop-blur-sm hover:scale-105">
-                <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-[#00d4ff]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                
-                <CardHeader className="pb-4">
-                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${feature.color} flex items-center justify-center text-white mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all duration-300`}>
-                    {feature.icon}
-                  </div>
-                  <CardTitle className="text-white text-xl font-bold group-hover:text-[#00d4ff] transition-colors">
-                    {feature.title}
-                  </CardTitle>
-                </CardHeader>
-                
-                <CardContent className="space-y-4">
-                  <CardDescription className="text-[#b0b0b8] leading-relaxed">
-                    {feature.description}
-                  </CardDescription>
-                  
-                  <div className="flex flex-wrap gap-2">
-                    {feature.features.map((feat, i) => (
-                      <Badge key={i} variant="secondary" className="bg-white/10 text-[#00d4ff] border-none text-xs">
-                        ⚡ {feat}
-                      </Badge>
+            ].map((testimonial, i) => (
+              <Card key={i} className="bg-gray-50 border-none">
+                <CardContent className="pt-6">
+                  <div className="flex mb-4">
+                    {[...Array(testimonial.rating)].map((_, j) => (
+                      <Star key={j} className="h-5 w-5 text-yellow-400 fill-current" />
                     ))}
+                  </div>
+                  <p className="text-gray-700 mb-6 italic">"{testimonial.content}"</p>
+                  <div>
+                    <div className="font-semibold text-gray-900">{testimonial.name}</div>
+                    <div className="text-gray-600 text-sm">{testimonial.role}</div>
                   </div>
                 </CardContent>
               </Card>
@@ -370,99 +785,201 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Epic CTA Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-[#00d4ff]/10 via-[#6a0dad]/10 to-[#0099ff]/10 rounded-3xl"></div>
-        
-        <div className="max-w-5xl mx-auto text-center relative">
-          <div className="mb-12">
-            <h2 className="text-5xl md:text-6xl font-black text-white mb-8 leading-tight">
-              Pronto para a 
-              <span className="bg-gradient-to-r from-[#00d4ff] to-[#6a0dad] bg-clip-text text-transparent block">
-                Revolução?
-              </span>
-            </h2>
-            <p className="text-xl text-[#b0b0b8] mb-12 max-w-3xl mx-auto">
-              Junte-se a mais de 15.000 empresas que já transformaram seus processos 
-              com automação inteligente
-            </p>
+      {/* CTA Section */}
+      <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
+        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            Pronto para Transformar sua Empresa?
+          </h2>
+          <p className="text-xl text-blue-100 mb-10">
+            Junte-se a milhares de empresas que já automatizaram seus processos 
+            e aceleram resultados todos os dias.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              onClick={() => setShowContactForm(true)}
+              size="lg" 
+              className="bg-white text-blue-600 hover:bg-gray-100 px-10 py-4 text-lg font-semibold rounded-lg shadow-lg"
+            >
+              🎯 Agendar Demonstração
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+            <Link href="/simple-login">
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-10 py-4 text-lg rounded-lg"
+              >
+                Fazer Login
+              </Button>
+            </Link>
           </div>
 
-          <div className="bg-gradient-to-r from-white/10 to-white/5 rounded-3xl p-12 border border-white/20 backdrop-blur-sm">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div className="text-left">
-                <h3 className="text-3xl font-black text-white mb-4">
-                  Teste <span className="text-[#00d4ff]">Gratuito</span> por 7 Dias
-                </h3>
-                <p className="text-[#b0b0b8] mb-6 text-lg">
-                  Sem cartão de crédito • Cancelamento fácil • Suporte 24/7
-                </p>
-                <div className="space-y-3">
-                  {[
-                    "⚡ Setup em 2 minutos",
-                    "🎯 Templates prontos para usar",
-                    "🤝 Suporte técnico dedicado",
-                    "📊 Analytics inclusos"
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-center text-[#b0b0b8]">
-                      <CheckCircle className="h-5 w-5 text-[#10b981] mr-3" />
-                      {item}
-                    </div>
-                  ))}
-                </div>
-              </div>
-              
-              <div className="space-y-6">
-                <Link href="/login">
-                  <Button size="lg" className="w-full bg-gradient-to-r from-[#00d4ff] to-[#6a0dad] hover:from-[#00b8e6] hover:to-[#5a0999] text-white px-12 py-6 text-xl font-bold rounded-2xl shadow-2xl shadow-[#00d4ff]/30 hover:scale-105 transition-all">
-                    🚀 Começar Agora
-                    <ArrowRight className="ml-3 h-6 w-6" />
-                  </Button>
-                </Link>
-                
-                <div className="text-center">
-                  <p className="text-sm text-[#808088] mb-2">Mais de 50 workflows criados na última hora</p>
-                  <div className="flex justify-center space-x-1">
-                    {[...Array(5)].map((_, i) => (
-                      <div key={i} className="w-2 h-2 bg-[#00d4ff] rounded-full animate-pulse" style={{ animationDelay: `${i * 0.2}s` }}></div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div className="mt-8 text-blue-100 text-sm">
+            ✅ Teste grátis por 7 dias • ✅ Cancelamento fácil • ✅ Suporte 24/7
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-16 px-4 sm:px-6 lg:px-8 border-t border-white/10 bg-gradient-to-b from-transparent to-[#050508]">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <div className="text-3xl font-black bg-gradient-to-r from-[#00d4ff] to-[#6a0dad] bg-clip-text text-transparent mb-4">
-              TOIT NEXUS
+      <footer className="bg-gray-900 text-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-4 gap-8">
+            <div>
+              <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-4">
+                TOIT NEXUS
+              </div>
+              <p className="text-gray-400 mb-4">
+                Democratizando a automação empresarial com tecnologia de ponta e simplicidade.
+              </p>
+              <div className="flex space-x-4">
+                <Mail className="h-5 w-5 text-gray-400" />
+                <Phone className="h-5 w-5 text-gray-400" />
+                <Building className="h-5 w-5 text-gray-400" />
+              </div>
             </div>
-            <p className="text-[#b0b0b8] max-w-2xl mx-auto">
-              Democratizando a automação empresarial. Transformando processos complexos 
-              em soluções simples e inteligentes.
-            </p>
+            
+            <div>
+              <h3 className="font-semibold mb-4">Produto</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li><a href="#recursos" className="hover:text-white transition-colors">Recursos</a></li>
+                <li><a href="#solucoes" className="hover:text-white transition-colors">Soluções</a></li>
+                <li><a href="#precos" className="hover:text-white transition-colors">Preços</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">API</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold mb-4">Empresa</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li><a href="#" className="hover:text-white transition-colors">Sobre Nós</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Carreiras</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
+                <li><a href="#contato" className="hover:text-white transition-colors">Contato</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold mb-4">Suporte</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li><a href="#" className="hover:text-white transition-colors">Central de Ajuda</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Documentação</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Status</a></li>
+                <li><Link href="/simple-login" className="hover:text-white transition-colors">Portal do Cliente</Link></li>
+              </ul>
+            </div>
           </div>
           
-          <div className="flex flex-wrap justify-center gap-8 text-sm text-[#808088]">
-            <a href="#" className="hover:text-[#00d4ff] transition-colors">Privacidade</a>
-            <a href="#" className="hover:text-[#00d4ff] transition-colors">Termos de Uso</a>
-            <a href="#" className="hover:text-[#00d4ff] transition-colors">Documentação</a>
-            <a href="#" className="hover:text-[#00d4ff] transition-colors">API</a>
-            <a href="#" className="hover:text-[#00d4ff] transition-colors">Suporte</a>
-            <a href="#" className="hover:text-[#00d4ff] transition-colors">Status</a>
-          </div>
-          
-          <div className="text-center mt-8 pt-8 border-t border-white/5">
-            <p className="text-[#808088] text-sm">
-              © 2025 TOIT NEXUS. Todos os direitos reservados. Feito com ❤️ para democratizar a automação.
-            </p>
+          <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+            <p>© 2025 TOIT NEXUS. Todos os direitos reservados. Feito com ❤️ para automatizar o futuro.</p>
           </div>
         </div>
       </footer>
+
+      {/* Modal de Contato */}
+      {showContactForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-md w-full p-6">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-bold text-gray-900">Solicitar Demonstração</h3>
+              <button 
+                onClick={() => setShowContactForm(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                ✕
+              </button>
+            </div>
+            
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Nome Completo *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={formData.name}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Email Corporativo *
+                </label>
+                <input
+                  type="email"
+                  required
+                  value={formData.email}
+                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Empresa *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={formData.company}
+                  onChange={(e) => setFormData({...formData, company: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Telefone
+                </label>
+                <input
+                  type="tel"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Como podemos ajudar?
+                </label>
+                <textarea
+                  value={formData.message}
+                  onChange={(e) => setFormData({...formData, message: e.target.value})}
+                  rows={3}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Descreva suas necessidades de automação..."
+                />
+              </div>
+              
+              <div className="flex gap-3 pt-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setShowContactForm(false)}
+                  className="flex-1"
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  type="submit"
+                  className="flex-1 bg-blue-600 hover:bg-blue-700"
+                >
+                  Enviar Solicitação
+                </Button>
+              </div>
+            </form>
+            
+            <p className="text-xs text-gray-500 mt-4 text-center">
+              Nossa equipe entrará em contato em até 2 horas úteis
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

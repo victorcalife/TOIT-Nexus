@@ -15,10 +15,12 @@ import {
   Calendar,
   Bell
 } from 'lucide-react';
-import { UnifiedHeader } from '@/components/unified-header';
+import { StandardHeader } from '@/components/standard-header';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function Dashboard() {
   const [selectedTenant, setSelectedTenant] = useState<any>(null);
+  const { user } = useAuth();
 
   useEffect(() => {
     const tenant = localStorage.getItem('selectedTenant');
@@ -53,9 +55,9 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <UnifiedHeader 
+      <StandardHeader 
         showUserActions={true}
-        user={{ firstName: 'Usuário', lastName: 'Empresa' }}
+        user={user}
         onLogout={handleLogout}
       />
       
