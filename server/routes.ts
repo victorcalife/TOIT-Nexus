@@ -36,6 +36,7 @@ import { fileUploadRoutes } from "./fileUploadRoutes";
 import { advancedTaskRoutes } from "./advancedTaskRoutes";
 import verificationRoutes from "./verificationRoutes";
 import enterpriseRoutes from "./enterpriseRoutes";
+import adaptiveRoutes from "./adaptiveRoutes";
 
 // Helper function to determine if client should be assigned to a category
 function shouldAssignToCategory(client: any, category: any): boolean {
@@ -1877,6 +1878,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Enterprise routes - Landing page contact forms
   app.use('/api/enterprise', enterpriseRoutes);
+  
+  // Adaptive ML routes - Sistema adaptativo e machine learning
+  app.use('/api/adaptive', adaptiveRoutes);
 
   // Register Query Builder routes
   registerQueryBuilderRoutes(app);

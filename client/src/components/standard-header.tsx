@@ -62,10 +62,7 @@ export function StandardHeader({
                 className="h-16 w-auto cursor-pointer hover:opacity-90 transition-opacity"
               />
             </Link>
-            <Badge className="ml-3 bg-blue-100 text-blue-800 text-xs">
-              Enterprise
-            </Badge>
-          </div>
+         </div>
 
           {/* Navigation Menu */}
           {showNavigation && (
