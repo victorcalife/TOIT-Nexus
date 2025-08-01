@@ -43,6 +43,7 @@ import DataConnectionsPage from './data-connections';
 import Reports from './reports';
 import FileUpload from './file-upload';
 import AdvancedTaskManagement from './advanced-task-management';
+import PlanManagement from '@/components/plan-management';
 
 export default function ClientDashboard() {
   const [selectedTenant, setSelectedTenant] = useState<any>(null);
@@ -152,6 +153,11 @@ export default function ClientDashboard() {
       if (isModuleActive('access_control')) {
         functionalTabs.push('permissions');
       }
+    }
+    
+    // CONFIGURAÇÕES DE CONTA - Sempre disponível para tenant_admin
+    if (user?.role === 'tenant_admin') {
+      functionalTabs.push('account');
     }
     
     return functionalTabs;
@@ -285,21 +291,22 @@ export default function ClientDashboard() {
         </div>
 
         <Tabs defaultValue="workspace" className="w-full">
+          {/* Primeira linha de tabs (principais) */}
           <TabsList className="grid w-full" style={{ gridTemplateColumns: `repeat(${Math.min(availableTabs.length, 8)}, 1fr)` }}>
             {availableTabs.includes('workspace') && <TabsTrigger value="workspace">Workspace</TabsTrigger>}
             {availableTabs.includes('tasks') && <TabsTrigger value="tasks">Tarefas</TabsTrigger>}
-            {availableTabs.includes('advanced_tasks') && <TabsTrigger value="advanced_tasks">Tarefas Avançadas</TabsTrigger>}
+            {availableTabs.includes('advanced_tasks') && <TabsTrigger value="advanced_tasks">T. Avançadas</TabsTrigger>}
             {availableTabs.includes('calendar') && <TabsTrigger value="calendar">Agenda</TabsTrigger>}
             {availableTabs.includes('queries') && <TabsTrigger value="queries">Consultas</TabsTrigger>}
             {availableTabs.includes('reports') && <TabsTrigger value="reports">Relatórios</TabsTrigger>}
             {availableTabs.includes('dashboards') && <TabsTrigger value="dashboards">Dashboards</TabsTrigger>}
             {availableTabs.includes('workflows') && <TabsTrigger value="workflows">Workflows</TabsTrigger>}
-            {availableTabs.includes('notifications') && <TabsTrigger value="notifications">Notificações</TabsTrigger>}
           </TabsList>
           
-          {/* Segunda linha de tabs se necessário */}
+          {/* Segunda linha de tabs (adicionais) se necessário */}
           {availableTabs.length > 8 && (
-            <TabsList className="grid w-full mt-2" style={{ gridTemplateColumns: `repeat(${Math.min(availableTabs.length - 8, 6)}, 1fr)` }}>
+            <TabsList className="grid w-full mt-2" style={{ gridTemplateColumns: `repeat(${Math.min(availableTabs.length - 8, 8)}, 1fr)` }}>
+              {availableTabs.includes('notifications') && <TabsTrigger value="notifications">Notificações</TabsTrigger>}
               {availableTabs.includes('api_connections') && <TabsTrigger value="api_connections">APIs</TabsTrigger>}
               {availableTabs.includes('db_connections') && <TabsTrigger value="db_connections">Bancos</TabsTrigger>}
               {availableTabs.includes('webhooks') && <TabsTrigger value="webhooks">Webhooks</TabsTrigger>}
@@ -307,6 +314,7 @@ export default function ClientDashboard() {
               {availableTabs.includes('team') && <TabsTrigger value="team">Equipe</TabsTrigger>}
               {availableTabs.includes('departments') && <TabsTrigger value="departments">Departamentos</TabsTrigger>}
               {availableTabs.includes('permissions') && <TabsTrigger value="permissions">Permissões</TabsTrigger>}
+              {availableTabs.includes('account') && <TabsTrigger value="account">Conta</TabsTrigger>}
             </TabsList>
           )}
 
@@ -652,6 +660,27 @@ export default function ClientDashboard() {
                   </div>
                 </CardContent>
               </Card>
+            </TabsContent>
+          )}
+
+          {/* Aba de Configurações da Conta - Sistema de Gerenciamento de Planos */}
+          {availableTabs.includes('account') && (
+            <TabsContent value="account" className="space-y-6">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-900">Configurações da Conta</h3>
+                  <p className="text-gray-600">Gerencie seu plano, faturamento e configurações empresariais</p>
+                </div>
+                <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+                  <Crown className="w-3 h-3 mr-1" />
+                  {user?.planType?.toUpperCase() || 'SEM PLANO'}
+                </Badge>
+              </div>
+
+              <PlanManagement 
+                currentUserId={user?.id || ''} 
+                currentPlan={user?.planType || 'unknown'} 
+              />
             </TabsContent>
           )}
         </Tabs>
