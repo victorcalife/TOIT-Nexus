@@ -221,45 +221,69 @@ export function setupAuth(app: Express) {
 
   // Rota de login
   app.post("/api/login", (req, res, next) => {
-    // Extrair loginType do request body
-    const { loginType } = req.body;
-    
-    passport.authenticate("local", (err: any, user: any, info: any) => {
-      if (err) return next(err);
+    try {
+      // Extrair loginType do request body
+      const { loginType } = req.body;
       
-      if (!user) {
-        return res.status(401).json({ 
-          message: info?.message || "Credenciais inválidas" 
-        });
-      }
+      passport.authenticate("local", (err: any, user: any, info: any) => {
+        try {
+          if (err) {
+            console.error('Login authentication error:', err);
+            return res.status(500).json({ 
+              message: "Erro interno do servidor" 
+            });
+          }
+          
+          if (!user) {
+            return res.status(401).json({ 
+              message: info?.message || "Credenciais inválidas" 
+            });
+          }
 
-      // Validar permissões baseado no loginType
-      if (loginType === 'support') {
-        // Para login de suporte, apenas super_admin e toit_admin podem acessar
-        if (user.role !== 'super_admin' && user.role !== 'toit_admin') {
-          return res.status(403).json({
-            message: "Acesso negado. Apenas membros da equipe TOIT podem acessar esta área."
+          // Validar permissões baseado no loginType
+          if (loginType === 'support') {
+            // Para login de suporte, apenas super_admin e toit_admin podem acessar
+            if (user.role !== 'super_admin' && user.role !== 'toit_admin') {
+              return res.status(403).json({
+                message: "Acesso negado. Apenas membros da equipe TOIT podem acessar esta área."
+              });
+            }
+          }
+
+          req.login(user, (err) => {
+            if (err) {
+              console.error('Login session error:', err);
+              return res.status(500).json({
+                message: "Erro ao criar sessão"
+              });
+            }
+            
+            // Remove senha do retorno e adiciona informações adicionais
+            const { password: _, ...userWithoutPassword } = user as any;
+            
+            // Adicionar informações de permissões especiais
+            const userResponse = {
+              ...userWithoutPassword,
+              hasFinancialAccess: user.role === 'super_admin',
+              hasSupportAccess: user.role === 'super_admin' || user.role === 'toit_admin',
+              loginType: loginType || 'client'
+            };
+            
+            res.json(userResponse);
+          });
+        } catch (error) {
+          console.error('Login callback error:', error);
+          return res.status(500).json({
+            message: "Erro interno do servidor"
           });
         }
-      }
-
-      req.login(user, (err) => {
-        if (err) return next(err);
-        
-        // Remove senha do retorno e adiciona informações adicionais
-        const { password: _, ...userWithoutPassword } = user as any;
-        
-        // Adicionar informações de permissões especiais
-        const userResponse = {
-          ...userWithoutPassword,
-          hasFinancialAccess: user.role === 'super_admin',
-          hasSupportAccess: user.role === 'super_admin' || user.role === 'toit_admin',
-          loginType: loginType || 'client'
-        };
-        
-        res.json(userResponse);
+      })(req, res, next);
+    } catch (error) {
+      console.error('Login endpoint error:', error);
+      return res.status(500).json({
+        message: "Erro interno do servidor"
       });
-    })(req, res, next);
+    }
   });
 
   // Rota de logout
