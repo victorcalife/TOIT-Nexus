@@ -57,6 +57,29 @@ export async function initializeSystem() {
       console.log("⚠️ Super Admin já existe ou erro:", error);
     }
 
+    // 2.5. Criar usuário TOIT Admin para equipe de suporte
+    const toitAdminCPF = '11111111111';
+    let toitAdmin;
+    try {
+      toitAdmin = await storage.getUserByCPF(toitAdminCPF);
+      if (!toitAdmin) {
+        const hashedPassword = await hashPassword('admin123');
+        toitAdmin = await storage.createUser({
+          cpf: toitAdminCPF,
+          email: 'suporte@toit.nexus',
+          password: hashedPassword,
+          firstName: 'TOIT',
+          lastName: 'Admin',
+          role: 'toit_admin',
+          tenantId: null, // TOIT admin também não pertence a tenant específico
+          isActive: true
+        });
+        console.log("✅ TOIT Admin criado - CPF: 11111111111, Senha: admin123");
+      }
+    } catch (error) {
+      console.log("⚠️ TOIT Admin já existe ou erro:", error);
+    }
+
     // 3. Criar tenant exemplo
     let exampleTenant;
     try {

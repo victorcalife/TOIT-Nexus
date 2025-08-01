@@ -221,6 +221,9 @@ export function setupAuth(app: Express) {
 
   // Rota de login
   app.post("/api/login", (req, res, next) => {
+    // Extrair loginType do request body
+    const { loginType } = req.body;
+    
     passport.authenticate("local", (err: any, user: any, info: any) => {
       if (err) return next(err);
       
@@ -230,12 +233,31 @@ export function setupAuth(app: Express) {
         });
       }
 
+      // Validar permissões baseado no loginType
+      if (loginType === 'support') {
+        // Para login de suporte, apenas super_admin e toit_admin podem acessar
+        if (user.role !== 'super_admin' && user.role !== 'toit_admin') {
+          return res.status(403).json({
+            message: "Acesso negado. Apenas membros da equipe TOIT podem acessar esta área."
+          });
+        }
+      }
+
       req.login(user, (err) => {
         if (err) return next(err);
         
-        // Remove senha do retorno
+        // Remove senha do retorno e adiciona informações adicionais
         const { password: _, ...userWithoutPassword } = user as any;
-        res.json(userWithoutPassword);
+        
+        // Adicionar informações de permissões especiais
+        const userResponse = {
+          ...userWithoutPassword,
+          hasFinancialAccess: user.role === 'super_admin',
+          hasSupportAccess: user.role === 'super_admin' || user.role === 'toit_admin',
+          loginType: loginType || 'client'
+        };
+        
+        res.json(userResponse);
       });
     })(req, res, next);
   });

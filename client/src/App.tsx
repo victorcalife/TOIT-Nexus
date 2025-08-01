@@ -8,7 +8,8 @@ import { Sidebar } from "@/components/sidebar";
 import NotFound from "@/pages/not-found";
 import Landing from "@/pages/landing";
 import Login from "@/pages/login";
-import SimpleLogin from "@/pages/simple-login";
+import SupportLogin from "@/pages/support-login";
+import SupportDashboard from "@/pages/support-dashboard";
 import Dashboard from "@/pages/dashboard";
 import Home from "@/pages/home";
 import WorkingApp from "@/pages/working-app";
@@ -35,6 +36,7 @@ import MyTasks from "@/pages/my-tasks";
 import ModuleManagement from "@/pages/module-management";
 import TestEverything from "@/pages/test-everything";
 import { useQuery } from "@tanstack/react-query";
+import { detectLoginType, redirectToCorrectLogin } from "@/lib/domainUtils";
 
 function Router() {
   const { isAuthenticated, isLoading, user, isSuperAdmin } = useAuth();
@@ -61,14 +63,31 @@ function Router() {
     return <SystemSetup />;
   }
 
-  // Not authenticated - show landing page as default
+  // Not authenticated - show appropriate login or landing page
   if (!isAuthenticated) {
+    const loginType = detectLoginType();
+    
     return (
       <Switch>
-        <Route path="/simple-login" component={SimpleLogin} />
+        <Route path="/support-login" component={SupportLogin} />
         <Route path="/login" component={Login} />
-        <Route path="/" component={Landing} />
-        <Route component={Landing} />
+        <Route path="/" component={() => {
+          // Se for subdomínio de suporte, redirecionar para login de suporte
+          if (loginType === 'support') {
+            window.location.href = '/support-login';
+            return null;
+          }
+          // Caso contrário, mostrar landing page
+          return <Landing />;
+        }} />
+        <Route component={() => {
+          // Redirecionar para landing page ou login de suporte baseado no domínio
+          if (loginType === 'support') {
+            window.location.href = '/support-login';
+            return null;
+          }
+          return <Landing />;
+        }} />
       </Switch>
     );
   }
@@ -76,6 +95,20 @@ function Router() {
   // Authenticated user routing
   return (
     <Switch>
+      {/* Support Dashboard route */}
+      <Route path="/support/dashboard" component={() => {
+        if (!user || (user.role !== 'super_admin' && user.role !== 'toit_admin')) {
+          return <div className="min-h-screen flex items-center justify-center">
+            <div className="text-center">
+              <h1 className="text-2xl font-bold mb-4">Acesso Negado</h1>
+              <p className="mb-4">Apenas membros da equipe TOIT podem acessar esta área.</p>
+              <a href="/" className="text-blue-600 hover:underline">Voltar ao início</a>
+            </div>
+          </div>;
+        }
+        return <SupportDashboard />;
+      }} />
+
       {/* TOIT Admin routes (super admin only) */}
       <Route path="/admin" component={() => {
         if (!isSuperAdmin) {

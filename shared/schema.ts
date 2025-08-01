@@ -26,7 +26,7 @@ export const sessions = pgTable(
 );
 
 // User roles enum
-export const userRoleEnum = pgEnum('user_role', ['super_admin', 'tenant_admin', 'manager', 'employee']);
+export const userRoleEnum = pgEnum('user_role', ['super_admin', 'toit_admin', 'tenant_admin', 'manager', 'employee']);
 export const riskProfileEnum = pgEnum('risk_profile', ['conservative', 'moderate', 'aggressive']);
 export const integrationTypeEnum = pgEnum('integration_type', ['api', 'database', 'webhook', 'email']);
 export const workflowStatusEnum = pgEnum('workflow_status', ['active', 'inactive', 'draft']);
