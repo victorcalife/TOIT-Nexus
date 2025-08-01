@@ -4,6 +4,7 @@ import path from "path";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { startNotificationCron } from "./notificationService";
+import { cronJobService } from "./cronJobs";
 
 const app = express();
 app.use(express.json());
@@ -210,6 +211,11 @@ app.use((req, res, next) => {
       console.log(`Server URLs:`);
       console.log(`  Local: http://localhost:${port}`);
       console.log(`  Network: http://0.0.0.0:${port}`);
+      
+      // Inicializar cron jobs automáticos
+      console.log(`🤖 Sistema de cron jobs inicializado`);
+      const jobStatus = cronJobService.getStatus();
+      console.log(`📊 Jobs ativos: ${jobStatus.activeJobs}`);
       if (process.env.REPLIT_DOMAINS) {
         console.log(`  Replit: https://${process.env.REPLIT_DOMAINS}`);
       }

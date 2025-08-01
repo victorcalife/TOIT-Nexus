@@ -35,55 +35,37 @@ const DEFAULT_MODULES = [
     sort_order: 1
   },
   {
-    name: 'file_uploader',
-    display_name: 'Upload de Arquivos',
-    description: 'Sistema completo de criação, atribuição e acompanhamento de tarefas para equipes',
-    category: 'core',
-    basePrice: '29.90',
-    pricePerUser: '9.90',
-    priceModel: 'per_user',
+    name: 'file_processing',
+    display_name: 'Processamento de Arquivos',
+    description: 'Upload e processamento inteligente de arquivos Excel (.xls/.xlsx) e CSV',
+    category: 'conectividade',
+    version: '1.0.0',
+    author: 'TOIT',
+    icon: 'FileSpreadsheet',
+    color: '#8B5CF6',
+    is_active: true,
+    is_core: false,
+    target_user_types: ['pessoa_fisica', 'pequena_empresa', 'media_empresa', 'grande_empresa'],
+    dependencies: [],
     features: [
-      'Criação de templates de tarefas',
-      'Atribuição automática de tarefas',
-      'Sistema de notificações em tempo real',
-      'Relatórios de produtividade',
-      'Campos de resposta personalizáveis',
-      'Workflows condicionais'
+      'Upload de arquivos Excel (.xls, .xlsx) e CSV',
+      'Processamento automático e extração de dados',
+      'Preview dos dados com paginação',
+      'Validação automática de formato',
+      'Gestão de arquivos com histórico',
+      'API para integração com workflows',
+      'Estatísticas de uso de armazenamento'
     ],
     limitations: {
-      free: { max_tasks_per_month: 50, max_templates: 5, max_users: 2 },
-      basic: { max_tasks_per_month: 500, max_templates: 25, max_users: 10 },
-      premium: { max_tasks_per_month: 2000, max_templates: 100, max_users: 50 },
-      enterprise: {} // ilimitado
+      free: { maxFileSize: 5, maxFiles: 10, maxStorageGB: 0.5 },
+      basic: { maxFileSize: 10, maxFiles: 50, maxStorageGB: 2 },
+      premium: { maxFileSize: 25, maxFiles: 200, maxStorageGB: 10 },
+      enterprise: { maxFileSize: 100, maxFiles: -1, maxStorageGB: -1 }
     },
-    targetUserTypes: ['pequena_empresa', 'enterprise'],
-    icon: 'CheckSquare',
-    color: '#3b82f6',
-    sortOrder: 1
-  },
-  {
-    name: 'file_uploader',
-    displayName: 'Upload de Arquivos',
-    description: 'Sistema básico de upload e organização de arquivos',
-    category: 'core',
-    base_price: 9.90,
-    pricing_model: 'per_user',
-    features: [
-      'Upload de múltiplos arquivos',
-      'Organização em pastas',
-      'Controle de acesso por usuário',
-      'Versionamento básico'
-    ],
-    limitations: {
-      free: { max_storage_gb: 1, max_file_size_mb: 10, max_users: 1 },
-      basic: { max_storage_gb: 10, max_file_size_mb: 50, max_users: 5 },
-      premium: { max_storage_gb: 100, max_file_size_mb: 200, max_users: 25 },
-      enterprise: {} // ilimitado
-    },
-    target_user_types: ['pessoa_fisica', 'pequena_empresa', 'enterprise'],
-    icon: 'Upload',
-    color: '#10b981',
-    sort_order: 2
+    base_price: 19.90,
+    pricing_model: 'per_tenant',
+    trial_days: 7,
+    sort_order: 3
   },
   {
     name: 'query_builder',

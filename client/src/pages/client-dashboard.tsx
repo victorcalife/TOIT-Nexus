@@ -41,6 +41,7 @@ import QueryBuilderPage from './query-builder';
 import Workflows from './workflows';
 import DataConnectionsPage from './data-connections';
 import Reports from './reports';
+import FileUpload from './file-upload';
 
 export default function ClientDashboard() {
   const [selectedTenant, setSelectedTenant] = useState<any>(null);
@@ -129,6 +130,10 @@ export default function ClientDashboard() {
     
     if (isModuleActive('webhooks')) {
       functionalTabs.push('webhooks');
+    }
+    
+    if (isModuleActive('file_processing')) {
+      functionalTabs.push('files');
     }
     
     // FUNCIONALIDADES EMPRESARIAIS (Persona 3 - Empresas 5+ funcionários)
@@ -292,6 +297,7 @@ export default function ClientDashboard() {
               {availableTabs.includes('api_connections') && <TabsTrigger value="api_connections">APIs</TabsTrigger>}
               {availableTabs.includes('db_connections') && <TabsTrigger value="db_connections">Bancos</TabsTrigger>}
               {availableTabs.includes('webhooks') && <TabsTrigger value="webhooks">Webhooks</TabsTrigger>}
+              {availableTabs.includes('files') && <TabsTrigger value="files">Arquivos</TabsTrigger>}
               {availableTabs.includes('team') && <TabsTrigger value="team">Equipe</TabsTrigger>}
               {availableTabs.includes('departments') && <TabsTrigger value="departments">Departamentos</TabsTrigger>}
               {availableTabs.includes('permissions') && <TabsTrigger value="permissions">Permissões</TabsTrigger>}
@@ -530,6 +536,12 @@ export default function ClientDashboard() {
                   </div>
                 </CardContent>
               </Card>
+            </TabsContent>
+          )}
+
+          {availableTabs.includes('files') && (
+            <TabsContent value="files" className="space-y-4">
+              <FileUpload />
             </TabsContent>
           )}
 

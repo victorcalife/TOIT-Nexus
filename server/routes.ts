@@ -26,6 +26,8 @@ import { moduleRoutes } from "./moduleRoutes";
 import { adaptiveEngine } from "./adaptiveEngine";
 import accessProfileRoutes from "./accessProfileRoutes";
 import stripeCheckoutRoutes from "./stripeCheckoutRoutes";
+import { trialRoutes } from "./trialRoutes";
+import { fileUploadRoutes } from "./fileUploadRoutes";
 
 // Helper function to determine if client should be assigned to a category
 function shouldAssignToCategory(client: any, category: any): boolean {
@@ -1837,6 +1839,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register Stripe Checkout integrado routes
   app.use('/api/stripe', stripeCheckoutRoutes);
+  
+  // Trial routes - não necessita autenticação
+  app.use('/api/trial', trialRoutes);
+  
+  // File Upload routes - necessita autenticação
+  app.use('/api/files', fileUploadRoutes);
 
   // Register Query Builder routes
   registerQueryBuilderRoutes(app);

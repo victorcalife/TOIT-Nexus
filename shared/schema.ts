@@ -876,19 +876,23 @@ export const kpiDashboards = pgTable("kpi_dashboards", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-// Uploaded Files - Gestão de arquivos
+// Uploaded Files - Gestão de arquivos Excel/CSV
 export const uploadedFiles = pgTable("uploaded_files", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
   userId: varchar("user_id").references(() => users.id).notNull(),
   originalName: varchar("original_name", { length: 255 }).notNull(),
-  filename: varchar("filename", { length: 255 }).notNull(),
-  mimetype: varchar("mimetype", { length: 100 }).notNull(),
-  size: integer("size").notNull(),
-  path: varchar("path", { length: 500 }).notNull(),
-  isProcessed: boolean("is_processed").default(false),
-  metadata: jsonb("metadata"), // File analysis results
-  uploadedAt: timestamp("uploaded_at").defaultNow(),
+  fileName: varchar("file_name", { length: 255 }).notNull(), // Nome único no servidor
+  filePath: varchar("file_path", { length: 500 }).notNull(), // Caminho completo no servidor
+  fileSize: integer("file_size").notNull(), // Tamanho em bytes
+  mimeType: varchar("mime_type", { length: 100 }).notNull(),
+  headers: text("headers"), // JSON string com headers das colunas
+  rowCount: integer("row_count").default(0), // Número de linhas processadas
+  processingTime: integer("processing_time").default(0), // Tempo de processamento em ms
+  status: varchar("status", { length: 20 }).default('processing'), // processing, processed, error
+  metadata: jsonb("metadata"), // Metadados adicionais do processamento
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 // Webhook Logs - Logs de webhooks

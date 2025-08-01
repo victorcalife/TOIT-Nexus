@@ -151,23 +151,27 @@ export default function Landing() {
 
     setIsLoading(true);
     
-    // TODO: Implement 7-day trial signup
+    // Sistema de trial 7 dias implementado
     try {
-      const response = await fetch('/api/auth/trial-signup', {
+      const response = await fetch('/api/trial/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          ...formData,
-          plan: selectedPlan,
-          cycle: selectedCycle,
-          cpf: cleanCpf(formData.cpf)
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          cpf: cleanCpf(formData.cpf),
+          password: formData.password,
+          planType: selectedPlan,
+          planCycle: selectedCycle
         })
       });
       
       if (response.ok) {
         const result = await response.json();
-        // Redirect to verification page with user data
-        window.location.href = `/verify-account?userId=${result.userId}&email=${encodeURIComponent(formData.email)}&phone=${encodeURIComponent(formData.phone)}`;
+        // Redirecionar para verificação de email
+        alert(`🎉 Conta trial criada com sucesso!\n\n📧 Verifique seu email para ativar sua conta.\n📱 Você também receberá um SMS no telefone ${formData.phone}.\n\n⏰ Seu trial de 7 dias já começou!`);
+        window.location.href = `/verify-email?userId=${result.userId}`;
       } else {
         const errorData = await response.json();
         alert(errorData.message || 'Erro ao criar conta. Tente novamente.');
