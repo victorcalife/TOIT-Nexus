@@ -1,6 +1,45 @@
 # 🧠 CLAUDE MEMORY - TOIT NEXUS ENTERPRISE PLATFORM
 
-**_ESTE ARQUIVO CONTÉM INFORMAÇÕES E INSTRUÇÕES DE COMO IREMOS INTERAGIR E GARANTIR UMA MEMÓRIA CONTÍNUA PARA NOSSOS PROJETOS_**
+**_ESTE ARQUIVO CONTÉM INFORMAÇÕES FUNCIONAIS SOBRE O PRODUTO FINAL E O QUE DEVE SER DISPONIBILIZADO A CADA PERSONA E INSTRUÇÕES DE COMO VOCE OBRIGATORIA DEVE AGIR E COMO IREMOS INTERAGIR PARA GARANTIR UMA MEMÓRIA CONTÍNUA PARA O SUCESSO DOS NOSSOS PROJETOS_**
+
+**_O QUE CADA PERSONA FAZ_**:
+**NEXUS - PROCESSOS FUNCIONAIS PARA CADA PERSONA QUE DEVEM SER FEITOS VIA UI (frontend)**
+
+#Persona 1: EQUIPE TOIT (Empresa desenvolvedora e proprietária do sistema Nexus)
+
+- Comercializar o sistema para pessoa física (usuário único) ou Empresas (multi usuários em um mesmo ambiente)
+- Ativar ou desativar módulos definindo funcionalidades ativas para cada perfil de usuário ou empresa
+- Criar Empresas e ambientes de trabalho únicos e particulares para cada empresa
+- Gestão completa de usuários
+- Gestão completa de dados
+- Gestão completa de dados e kpis de sistema
+- Acesso, permissão e autorização full em todas as ferramentas/funcionalidades do sistema
+- Configurar, criar, editar e excluir modelos do produto (ex: usuário ou empresa do perfil basic possuem X, Y e Z funcionalidades ativas) e isso ficar definido no sistema.
+- Configurar e comercializar diferentes modelos na landingpage, utilizando stripe com possibilidade do usuário utilizar grátis por 7 dias após criar conta com Nome, Sobrenome, CPF, e-mail (verificar), telefone (verificar), inclusão de cartão de crédito (verificar se está ativo). Sistema precisa fazer gestão automática deste serviço informando que após os 7 dias a assinatura é renovada automaticamente e usuário pode cancelar quando quiser. Em todos os planos, existirão opção de pagamento mensal ou anual. Caso usuário cancele assinatura antes do prazo de 7 dias do teste grátis, sistema deve automaticamente, ao término do prazo dos 7 dias de teste, desativar o acesso e bloquear utilização do sistema direcionado usuário para página de gestão de conta e pagamento.
+- Após verificação de e-mail, telefone e cartão de crédito ativo, sistema deve automaticamente habilitar a conta do usuário e prover acesso ao sistema de acordo com o modelo escolhido ao realizar cadastro.
+- Modelo empresa e grandes corporações, terão opção para solicitar contato com equipe comercial por meio de preenchimento de formulário com:Nome, Sobrenome, Nome da Empresa, CNPJ, Quantidade de Funcionários, Setor de Atividade, E-mail e telefone para contato (nesse modelo, sem necessidade de verificação pois não é criação de conta).
+- Disponbilizar, ajustra e configurar feature adaptativa de machine learning conforme documento C:\Users\victo\Desktop\Dodumentos Pessoais\Victor\TOIT\SISTEMAS\TOIT-Nexus\ADAPTIVE_FEATURES.md
+
+#Persona 2: Usuário pessoa física (CPF)
+
+- Realizar a criação de conta e assinatura sozinho e acessar sistema com suas devidas funcionalidades
+- Conectar sua agenda Nexus com calendários Google, Apple e Outlook/Hotmail/Microsoft
+- Conectar seu e-mail para envio e recebimento de workflows e tarefas
+- Criar tarefas com possibilidade de enviar a outro usuário do mesmo grupo de trabalho (caso tenha) e acompanhar o andamento. As tarefas precisam ter opçoes de atividades como: Pergunta com multipla escolha de resposta, ação necessária com diferente opçoes de resposta (texto, multiplaescolha,
+  opções com apenas uma escolha, etc). Criar tarefas e guardá-las para que possam ser utilizadas em workflows de forma que, dependendo da resposta na tarefa o fluxo segue de diferente formas.. portanto, ele preciso ter a flexibilidade de vincular tarefas no workflow e definir como elas devem agir e impactar o andamento do flxo.
+- Vincular tarefas a workflows para que sejam disparadas automaticamente e atribuí-las a outros usuários ou a ele mesmo.
+- Víncular e desvincular usuários que possuam conta ao seu ambiente de trabalho (permissão das funcionalidades são mantidas de acordo com o usuário e não ambiente de trabalho).
+- Conectar a bancos de dados (host, port, nome db, user, senha), APIs (diferentes tipos) e Webhook -- Não fazer download de dados. Apenas manter visão e utilização deles.
+- Fazer upload de arquivos de .xls .xlsx .csv
+- Criar e guardar em seu perfil, relatórios, kpis, gráficos e dashboards personalizados pra inclusão em workflow.
+- Manejar e trabalhar dados de bancos, apis, webhooks e arquivos .xls .xlsx .csv de forma simples interativa e no code.
+- Vincular tarefas a workflows para que sejam disparadas automaticamente
+- Gestão e visualização completa de status de tarefas, workflows, dashboards todos devidamente rastreáveis e com tracking de data e hora de cada etapa conforme andamento.
+- Quando e-mail vinculado, deve ter possibilidade de incluir no workflow envios automáticos e recebimentos e envios que gera gatilhos atomáticos para próxima etapa do workflow (definir melhor tratativa para que Nexus entenda que determinado email é o que vai gerar o gatilho para determinado workflow).
+
+#Persona 3: EMPRESAS (acima de 5 funcionários)
+
+Possuem todas as funcionalidades descritas na persona 2 porém são os gestores dos acessos às funcionalidades e aos dados. Eles definem qual usuário tem acesso e a quais funcionalidades, configuram a base de dados que vão utilizar e quais dados cada usuário poderá ter acesso e visualizar. Por exemplo: Departamento de Compras e Departamento de Vendas, eles precisam ter funcionalidade para definir que compras não verá dados de vendas e vendas não verá dados de compras. Verificar melhor formato, criando departamentos e incluindo usuários neles, ou mantendo perfil direto para cada usuário.
 
 **REGRAS GLOBAIS**
 **ATUALIZAÇÃO E UTILIZAÇÃO CONTÍNUA OBRIGATÓRIA DO ARQUIVO CLAUDE.MD NO DIRETÓRIO RAIZ DE CADA WORKSPACE**
@@ -241,6 +280,7 @@ shared/
 ### **✅ MÓDULO 1 - SISTEMA DE AUTENTICAÇÃO (100% COMPLETO - GO-LIVE READY):**
 
 #### **Backend Completo:**
+
 - `authService.js` - Autenticação bcrypt + validação multi-tenant ✅
 - `authMiddleware.js` - Middleware de autorização baseado em roles ✅
 - `authRoutes.js` - API endpoints completos (/login, /logout, /me, /check) ✅
@@ -248,18 +288,21 @@ shared/
 - `migrations.js` - Indexes de performance e constraints ✅
 
 #### **Frontend Completo:**
+
 - `useAuthState.ts` - Hook React completo para gestão de estado ✅
 - `login.tsx` - Interface de login integrada com backend ✅
 - `AuthHeader.tsx` - Componente de header com menu de usuário ✅
 - `ProtectedRoute.tsx` - Roteamento protegido baseado em roles ✅
 
 #### **Database Completo:**
+
 - Usuários padrão: Super Admin (00000000000/admin123) ✅
 - Tenants: TOIT Enterprise + Demo Company ✅
 - Indexes de performance para queries de autenticação ✅
 - Views para relatórios e estatísticas ✅
 
 #### **Testes e Validação:**
+
 - `test-auth.js` - Script completo de testes end-to-end ✅
 - 7 cenários de teste cobrindo toda funcionalidade ✅
 - Validação de segurança e integridade ✅
@@ -279,18 +322,21 @@ shared/
 ### **✅ MÓDULO 2 - SISTEMA DE PERFIS DE ACESSO (100% COMPLETO - GO-LIVE READY):**
 
 #### **Backend Completo:**
+
 - `accessProfileRoutes.ts` - CRUD completo para gestão de perfis ✅
 - `initializeAccessProfiles.ts` - Dados iniciais e módulos padrão ✅
 - Schema `accessProfiles` + `moduleDefinitions` atualizados ✅
 - APIs `/api/admin/access-profiles/*` implementadas ✅
 
 #### **Frontend Completo:**
+
 - `profile-builder.tsx` - Interface completa para configuração ✅
 - Dashboard administrativo com aba "Perfis de Acesso" ✅
 - Roteamento protegido para super_admin apenas ✅
 - Integração com backend via React Query ✅
 
 #### **Funcionalidades Implementadas:**
+
 - **CRUD Perfis:** Criar, editar, duplicar e excluir perfis ✅
 - **Configuração Módulos:** Toggle individual por categoria ✅
 - **Pricing Management:** Preços mensais e anuais ✅
@@ -299,6 +345,7 @@ shared/
 - **4 Perfis Padrão:** GRATUITO, BÁSICO, PREMIUM, ENTERPRISE ✅
 
 #### **Testes e Validação:**
+
 - Endpoints funcionais com validação de dados ✅
 - Interface responsiva e intuitiva ✅
 - Integração frontend ↔ backend testada ✅
@@ -307,30 +354,35 @@ shared/
 ### **✅ MÓDULO 3 - INTEGRAÇÃO STRIPE → PERFIS DE ACESSO (100% COMPLETO - GO-LIVE READY):**
 
 #### **Integração Backend Completa:**
+
 - `paymentService.ts` - Integração com webhook existente ✅
 - Função `findAccessProfileByPriceId()` - Busca perfil por Price ID ✅
 - Função `assignAccessProfileToTenant()` - Atribuição automática ✅
 - Schema atualizado com campos Stripe nos perfis ✅
 
 #### **Interface Administrativa:**
+
 - Campos Stripe no Profile Builder ✅
 - `stripe_price_id_monthly` e `stripe_price_id_yearly` ✅
 - `stripe_product_id` para vinculação completa ✅
 - Validação e persistência dos Price IDs ✅
 
 #### **Fluxo Automático Implementado:**
+
 - **Landing Page → Stripe Checkout → Webhook → Perfil Atribuído** ✅
 - Identificação automática por Price ID ✅
 - Criação automática de tenant + usuário ✅
 - Atribuição automática de módulos por perfil ✅
 
 #### **Documentação Completa:**
+
 - `STRIPE_INTEGRATION_GUIDE.md` - Guia passo a passo ✅
 - Exemplos de configuração do Stripe Dashboard ✅
 - Templates de links para landing page ✅
 - Fluxo de teste end-to-end documentado ✅
 
 #### **Sistema Pronto para Produção:**
+
 - Webhook integrado ao sistema existente ✅
 - Processamento automático de pagamentos ✅
 - Zero trabalho manual para novos clientes ✅
@@ -403,6 +455,7 @@ GitHub: https://github.com/victorcalife/TOIT-Nexus
 ### 🛠️ Implementações Técnicas
 
 #### **Frontend - Páginas Funcionais Integradas:**
+
 - **`client-dashboard.tsx`**: Dashboard principal com modularidade dinâmica
 - **`task-management.tsx`**: Sistema completo de gestão de tarefas ✅
 - **`query-builder.tsx`**: Construtor visual de consultas SQL ✅
@@ -411,6 +464,7 @@ GitHub: https://github.com/victorcalife/TOIT-Nexus
 - **`reports.tsx`**: Sistema de relatórios personalizáveis ✅
 
 #### **Sistema de Personas:**
+
 ```typescript
 // PERSONA 1 - Equipe TOIT (supnexus.toit.com.br)
 - AdminDashboard: Ferramenta COMPLETA
@@ -431,6 +485,7 @@ GitHub: https://github.com/victorcalife/TOIT-Nexus
 #### **📋 Conforme Documento de Processos Funcionais:**
 
 **🏢 PERSONA 1 - EQUIPE TOIT (supnexus.toit.com.br):**
+
 - ✅ Comercializar sistema pessoa física/empresas
 - ✅ Ativar/desativar módulos por perfil
 - ✅ Criar empresas e ambientes únicos
@@ -438,6 +493,7 @@ GitHub: https://github.com/victorcalife/TOIT-Nexus
 - ✅ Configurar modelos de produto (basic, premium, enterprise)
 
 **👤 PERSONA 2 - USUÁRIO PF (nexus.toit.com.br):**
+
 - ✅ Conectar agenda (Google, Apple, Outlook)
 - ✅ Conectar e-mail para workflows
 - ✅ Criar tarefas com múltiplas opções
@@ -448,6 +504,7 @@ GitHub: https://github.com/victorcalife/TOIT-Nexus
 - ✅ Workspace pessoal com salvamento
 
 **🏢 PERSONA 3 - EMPRESAS 5+ (nexus.toit.com.br):**
+
 - ✅ TODAS funcionalidades Persona 2 MAIS:
 - ✅ Gestão de acessos por usuário
 - ✅ Controle dados por departamento
@@ -458,6 +515,7 @@ GitHub: https://github.com/victorcalife/TOIT-Nexus
 ### 🛠️ Módulos Funcionais Integrados
 
 #### **✅ FERRAMENTAS PRONTAS E OPERACIONAIS:**
+
 1. **Task Management**: Sistema completo de gestão de tarefas com templates
 2. **Query Builder**: Construtor visual de consultas SQL com gráficos
 3. **Workflows**: Builder de workflows automatizados com triggers
@@ -465,8 +523,9 @@ GitHub: https://github.com/victorcalife/TOIT-Nexus
 5. **Reports**: Sistema de relatórios personalizáveis e dashboards
 
 #### **🔄 MÓDULOS PLANEJADOS (Estrutura Criada):**
+
 1. **Calendar/Email**: Agenda integrada com notificações
-2. **Dashboard Builder**: Construtor de dashboards personalizados  
+2. **Dashboard Builder**: Construtor de dashboards personalizados
 3. **Notifications**: Central de notificações push/email/SMS
 4. **API Connections**: Integração com APIs de terceiros
 5. **Webhooks**: Sistema de webhooks e callbacks
@@ -547,12 +606,14 @@ GitHub: https://github.com/victorcalife/TOIT-Nexus
 ## 🔧 AÇÕES REALIZADAS
 
 ### **1. PaymentService Atualizado (server/paymentService.ts):**
+
 - ✅ Adicionada função `findAccessProfileBySlug()` para busca metadata-driven
 - ✅ Adicionada função `assignAccessProfileByMetadata()` com fallback para Price ID
 - ✅ Webhook atualizado para usar metadata como prioridade
 - ✅ Sistema híbrido mantendo compatibilidade com implementação anterior
 
 ### **2. Stripe Checkout Routes Criado (server/stripeCheckoutRoutes.ts):**
+
 - ✅ **POST /api/stripe/create-payment-intent** - Cria Payment Intent e Customer
 - ✅ **POST /api/stripe/confirm-payment** - Confirma pagamento e cria usuário automaticamente
 - ✅ **GET /api/stripe/profiles** - Lista perfis com preços e descontos calculados
@@ -561,10 +622,12 @@ GitHub: https://github.com/victorcalife/TOIT-Nexus
 - ✅ Geração automática de tenant + usuário admin após pagamento
 
 ### **3. Routes.ts Atualizado:**
+
 - ✅ Importação e registro das rotas Stripe em `/api/stripe/*`
 - ✅ Integração com sistema de autenticação existente
 
 ### **4. Documentação Completa:**
+
 - ✅ **STRIPE_CHECKOUT_INTEGRATION.md** - Guia completo de implementação
 - ✅ HTML/JavaScript completo para landing page
 - ✅ Modal de checkout integrado com Stripe Elements
@@ -574,6 +637,7 @@ GitHub: https://github.com/victorcalife/TOIT-Nexus
 ## 💡 DECISÕES TÉCNICAS IMPLEMENTADAS
 
 ### **🔄 Sistema Metadata-Driven:**
+
 ```typescript
 // Prioridade: metadata do payment, fallback para Price ID
 metadata: {
@@ -586,19 +650,22 @@ metadata: {
 ```
 
 ### **🏗️ Arquitetura de Checkout:**
+
 1. **Landing Page** → Coleta dados + perfil selecionado
-2. **Payment Intent** → Stripe API cria cobrança com metadata  
+2. **Payment Intent** → Stripe API cria cobrança com metadata
 3. **Stripe Elements** → Formulário de cartão integrado
 4. **Confirmação** → Valida pagamento + cria usuário automaticamente
 5. **Sucesso** → Dados de acesso mostrados imediatamente
 
 ### **🔒 Segurança e Validação:**
+
 - Validação de dados obrigatórios (nome, email, perfil)
 - Verificação de status do Payment Intent antes de criar usuário
 - Geração de senhas temporárias seguras com bcrypt
 - Isolamento multi-tenant automático
 
 ### **⚡ Funcionalidades Automáticas:**
+
 - Criação de tenant com slug único
 - Usuário admin criado com role `tenant_admin`
 - Perfil de acesso atribuído baseado em metadata
@@ -608,6 +675,7 @@ metadata: {
 ## 📊 STATUS TÉCNICO COMPLETO
 
 ### **✅ BACKEND (100% IMPLEMENTADO):**
+
 - **PaymentService:** Sistema híbrido metadata + Price ID ✅
 - **StripeCheckoutRoutes:** 4 endpoints completos com validações ✅
 - **Routes:** Integração com sistema existente ✅
@@ -615,6 +683,7 @@ metadata: {
 - **Validações:** Dados obrigatórios e perfis ativos ✅
 
 ### **✅ FRONTEND (100% IMPLEMENTADO):**
+
 - **Stripe Elements:** Integração nativa com formulário de cartão ✅
 - **Modal de Checkout:** Interface completa e responsiva ✅
 - **Validação em Tempo Real:** Feedback visual do cartão ✅
@@ -622,6 +691,7 @@ metadata: {
 - **Mensagem de Sucesso:** Dados de acesso formatados ✅
 
 ### **✅ INTEGRAÇÃO (100% IMPLEMENTADA):**
+
 - **API Stripe v2:** Uso de Payment Intents nativo ✅
 - **Webhook Existente:** Mantém compatibilidade com sistema anterior ✅
 - **Metadata System:** Eliminação de dependência de Price IDs ✅
@@ -629,6 +699,7 @@ metadata: {
 - **Access Profiles:** Integração com sistema de perfis existente ✅
 
 ### **✅ DOCUMENTAÇÃO (100% IMPLEMENTADA):**
+
 - **Guia Técnico:** STRIPE_CHECKOUT_INTEGRATION.md completo ✅
 - **Código Frontend:** HTML/JS pronto para uso ✅
 - **Instruções de Teste:** Cartões de teste e fluxo completo ✅
@@ -637,14 +708,17 @@ metadata: {
 ## 🔗 ARQUIVOS CRIADOS/MODIFICADOS
 
 ### **Novos Arquivos:**
+
 - `server/stripeCheckoutRoutes.ts` - 264 linhas de endpoints completos
 - `STRIPE_CHECKOUT_INTEGRATION.md` - Documentação técnica completa
 
 ### **Arquivos Modificados:**
+
 - `server/paymentService.ts` - Adicionadas funções metadata-driven (linhas 31-95)
 - `server/routes.ts` - Importação e registro de rotas Stripe (linhas 28, 1838-1839)
 
 ### **Variáveis e Constantes Criadas:**
+
 ```typescript
 // stripeCheckoutRoutes.ts
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2024-12-18.acacia' });
@@ -652,7 +726,7 @@ const tenant_id = nanoid();
 const customer_id = nanoid();
 const temporaryPassword = nanoid(8);
 
-// paymentService.ts  
+// paymentService.ts
 async findAccessProfileBySlug(profileSlug: string): Promise<AccessProfile | null>
 async assignAccessProfileByMetadata(tenantId: string, metadata: any): Promise<void>
 ```
@@ -660,6 +734,7 @@ async assignAccessProfileByMetadata(tenantId: string, metadata: any): Promise<vo
 ## 🚀 SISTEMA 100% FUNCIONAL - PRONTO PARA GO-LIVE
 
 ### **Fluxo Completo Implementado:**
+
 1. ✅ Cliente escolhe plano na landing page (preços atualizados)
 2. ✅ Modal de checkout abre com Stripe Elements
 3. ✅ Dados do cliente + cartão são coletados
@@ -670,15 +745,17 @@ async assignAccessProfileByMetadata(tenantId: string, metadata: any): Promise<vo
 8. ✅ Cliente pode fazer login e usar o sistema
 
 ### **Preços Finais Implementados:**
+
 - 💎 **BÁSICO:** R$ 59/mês | R$ 549/ano (economia: R$ 159)
 - ⭐ **STANDARD:** R$ 89/mês | R$ 749/ano (economia: R$ 319) - MAIS POPULAR
 - 🚀 **PREMIUM:** R$ 119/mês | R$ 999/ano (economia: R$ 429) - COM DESCONTO ESPECIAL
 - 🏢 **ENTERPRISE:** A partir de R$ 29/mês (mín. 5 usuários) - FALAR COM VENDAS
 
 ### **Benefícios Alcançados:**
+
 - 🎯 **Zero redirecionamentos** - experiência 100% interna
 - ⚡ **Criação automática** - usuário pronto em segundos
-- 🔒 **Controle total** - sem dependências externas  
+- 🔒 **Controle total** - sem dependências externas
 - 💰 **Metadata-driven** - flexível e não dependente de Stripe Price IDs
 - 🎨 **UX otimizada** - modal integrado e responsivo
 - 📊 **Perfis dinâmicos** - ativação automática de módulos
@@ -688,6 +765,7 @@ async assignAccessProfileByMetadata(tenantId: string, metadata: any): Promise<vo
 ## 📋 ATUALIZAÇÃO FINAL REALIZADA NESTA SESSÃO
 
 ### **🔧 Ajustes de Preços no Backend:**
+
 - ✅ **initializeAccessProfiles.ts** atualizado com preços da landing page
 - ✅ **BÁSICO:** 29.90 → 59.00 (mensal) | 299.00 → 549.00 (anual)
 - ✅ **STANDARD:** Renomeado de "PREMIUM" para "STANDARD" + preços corretos (89.00/749.00)
@@ -696,13 +774,15 @@ async assignAccessProfileByMetadata(tenantId: string, metadata: any): Promise<vo
 - ✅ **Descrição Enterprise:** Inclui "mínimo de 5 usuários" no texto
 
 ### **🔧 Correção de Roteamento por Domínio:**
-- ✅ **Problema identificado:** supnexus.toit.com.br abrindo landing page em vez de login administrativo  
+
+- ✅ **Problema identificado:** supnexus.toit.com.br abrindo landing page em vez de login administrativo
 - ✅ **Middleware servidor:** Adicionado debug logs para detectar hosts corretamente
 - ✅ **Frontend App.tsx:** Melhorada detecção de domínio com .toLowerCase() e verificação robusta
 - ✅ **SupportLogin:** Componente já existia e estava implementado corretamente
 - ✅ **Debug implementado:** Logs para diagnosticar detecção de hostname no frontend/backend
 
 ### **🎯 Consistência Final Alcançada:**
+
 - ✅ Landing page, backend e sistema de checkout 100% alinhados
 - ✅ Enterprise direcionando corretamente para vendas (não comercializado)
 - ✅ Preços otimizados para conversão com descontos anuais atraentes

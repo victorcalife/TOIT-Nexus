@@ -65,7 +65,13 @@ export const users = pgTable("users", {
   profileImageUrl: varchar("profile_image_url"),
   role: userRoleEnum("role").default('employee'),
   tenantId: varchar("tenant_id").references(() => tenants.id), // null for super_admin
-  isActive: boolean("is_active").default(true),
+  isActive: boolean("is_active").default(false), // MUDANÇA: Inativo até validação
+  // Campos para sistema de trial e validação
+  planType: varchar("plan_type", { length: 50 }), // basico, standard, premium, enterprise
+  planCycle: varchar("plan_cycle", { length: 20 }), // monthly, yearly
+  trialEndsAt: timestamp("trial_ends_at"), // Data fim do trial
+  emailVerified: boolean("email_verified").default(false),
+  phoneVerified: boolean("phone_verified").default(false),
   lastLoginAt: timestamp("last_login_at"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
@@ -1057,6 +1063,19 @@ export const businessLeads = pgTable("business_leads", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+// Verification Tokens - Tokens para validação de email e telefone
+export const verificationTokens = pgTable("verification_tokens", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  emailToken: varchar("email_token", { length: 64 }).unique(), // Token para verificação de email
+  phoneToken: varchar("phone_token", { length: 6 }), // Código 6 dígitos para SMS
+  phone: varchar("phone", { length: 20 }), // Telefone associado ao token
+  tokenType: varchar("token_type", { length: 20 }).notNull(), // 'email', 'phone'
+  expiresAt: timestamp("expires_at").notNull(),
+  usedAt: timestamp("used_at"), // NULL = não usado ainda
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // RELATIONS
 export const databaseConnectionsRelations = relations(databaseConnections, ({ one }) => ({
   tenant: one(tenants, { fields: [databaseConnections.tenantId], references: [tenants.id] }),
@@ -1122,6 +1141,10 @@ export const invoicesRelations = relations(invoices, ({ one }) => ({
 
 export const businessLeadsRelations = relations(businessLeads, ({ one }) => ({
   assignedUser: one(users, { fields: [businessLeads.assignedTo], references: [users.id] }),
+}));
+
+export const verificationTokensRelations = relations(verificationTokens, ({ one }) => ({
+  user: one(users, { fields: [verificationTokens.userId], references: [users.id] }),
 }));
 
 // TYPE EXPORTS
@@ -1195,6 +1218,10 @@ export type WebhookEvent = typeof webhookEvents.$inferSelect;
 export type InsertWebhookEvent = typeof webhookEvents.$inferInsert;
 export type BusinessLead = typeof businessLeads.$inferSelect;
 export type InsertBusinessLead = typeof businessLeads.$inferInsert;
+
+// Verification Token Types
+export type VerificationToken = typeof verificationTokens.$inferSelect;
+export type InsertVerificationToken = typeof verificationTokens.$inferInsert;
 
 // Access Profile Types
 export type AccessProfile = typeof accessProfiles.$inferSelect;

@@ -21,6 +21,7 @@ import {
   taskInstances,
   taskComments,
   notifications,
+  verificationTokens,
   type Tenant,
   type InsertTenant,
   type User,
@@ -64,6 +65,8 @@ import {
   type InsertTaskComment,
   type Notification,
   type InsertNotification,
+  type VerificationToken,
+  type InsertVerificationToken,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, count, sql } from "drizzle-orm";
@@ -79,10 +82,21 @@ export interface IStorage {
   // User operations with CPF authentication
   getUser(id: string): Promise<User | undefined>;
   getUserByCPF(cpf: string): Promise<User | undefined>;
+  getUserByEmail(email: string): Promise<User | undefined>;
   getUsersByTenant(tenantId: string): Promise<User[]>;
   createUser(user: any): Promise<User>;
   upsertUser(user: UpsertUser): Promise<User>;
   updateUserLastLogin(id: string): Promise<void>;
+  
+  // Verification system methods
+  createVerificationTokens(data: { userId: string; emailToken: string; phoneToken: string; phone: string; expiresAt: Date }): Promise<void>;
+  getVerificationToken(token: string, type: string): Promise<{ userId: string } | undefined>;
+  getPhoneVerification(phone: string, code: string): Promise<{ userId: string } | undefined>;
+  deleteVerificationToken(token: string, type: string): Promise<void>;
+  deletePhoneVerification(phone: string, code: string): Promise<void>;
+  verifyUserEmail(userId: string): Promise<void>;
+  verifyUserPhone(userId: string): Promise<void>;
+  activateUser(userId: string): Promise<void>;
   
   // Client Category operations (tenant-isolated)
   getClientCategories(tenantId?: string): Promise<ClientCategory[]>;
@@ -322,6 +336,119 @@ export class DatabaseStorage implements IStorage {
       .update(users)
       .set({ lastLoginAt: new Date() })
       .where(eq(users.id, id));
+  }
+
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.email, email));
+    return user;
+  }
+
+  // Verification system methods
+  async createVerificationTokens(data: { userId: string; emailToken: string; phoneToken: string; phone: string; expiresAt: Date }): Promise<void> {
+    // Create email token
+    await db.insert(verificationTokens).values({
+      userId: data.userId,
+      emailToken: data.emailToken,
+      tokenType: 'email',
+      expiresAt: data.expiresAt,
+      createdAt: new Date()
+    });
+
+    // Create phone token  
+    await db.insert(verificationTokens).values({
+      userId: data.userId,
+      phoneToken: data.phoneToken,
+      phone: data.phone,
+      tokenType: 'phone',
+      expiresAt: data.expiresAt,
+      createdAt: new Date()
+    });
+  }
+
+  async getVerificationToken(token: string, type: string): Promise<{ userId: string } | undefined> {
+    const [verification] = await db
+      .select({ userId: verificationTokens.userId })
+      .from(verificationTokens)
+      .where(
+        and(
+          eq(verificationTokens.emailToken, token),
+          eq(verificationTokens.tokenType, type),
+          sql`${verificationTokens.expiresAt} > NOW()`,
+          sql`${verificationTokens.usedAt} IS NULL`
+        )
+      );
+    return verification;
+  }
+
+  async getPhoneVerification(phone: string, code: string): Promise<{ userId: string } | undefined> {
+    const [verification] = await db
+      .select({ userId: verificationTokens.userId })
+      .from(verificationTokens)
+      .where(
+        and(
+          eq(verificationTokens.phoneToken, code),
+          eq(verificationTokens.phone, phone),
+          eq(verificationTokens.tokenType, 'phone'),
+          sql`${verificationTokens.expiresAt} > NOW()`,
+          sql`${verificationTokens.usedAt} IS NULL`
+        )
+      );
+    return verification;
+  }
+
+  async deleteVerificationToken(token: string, type: string): Promise<void> {
+    await db
+      .update(verificationTokens)
+      .set({ usedAt: new Date() })
+      .where(
+        and(
+          eq(verificationTokens.emailToken, token),
+          eq(verificationTokens.tokenType, type)
+        )
+      );
+  }
+
+  async deletePhoneVerification(phone: string, code: string): Promise<void> {
+    await db
+      .update(verificationTokens)
+      .set({ usedAt: new Date() })
+      .where(
+        and(
+          eq(verificationTokens.phoneToken, code),
+          eq(verificationTokens.phone, phone),
+          eq(verificationTokens.tokenType, 'phone')
+        )
+      );
+  }
+
+  async verifyUserEmail(userId: string): Promise<void> {
+    await db
+      .update(users)
+      .set({ 
+        emailVerified: true,
+        updatedAt: new Date() 
+      })
+      .where(eq(users.id, userId));
+  }
+
+  async verifyUserPhone(userId: string): Promise<void> {
+    await db
+      .update(users)
+      .set({ 
+        phoneVerified: true,
+        updatedAt: new Date() 
+      })
+      .where(eq(users.id, userId));
+  }
+
+  async activateUser(userId: string): Promise<void> {
+    await db
+      .update(users)
+      .set({ 
+        isActive: true,
+        updatedAt: new Date() 
+      })
+      .where(eq(users.id, userId));
   }
 
   async upsertUser(user: UpsertUser): Promise<User> {

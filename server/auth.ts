@@ -304,6 +304,185 @@ export function setupAuth(app: Express) {
     const { password: _, ...userWithoutPassword } = req.user as any;
     res.json(userWithoutPassword);
   });
+
+  // Rota para trial signup - 7 dias grátis
+  app.post("/api/auth/trial-signup", async (req, res, next) => {
+    try {
+      const { name, email, phone, cpf, password, plan, cycle } = req.body;
+
+      // Validações obrigatórias
+      if (!name || !email || !phone || !cpf || !password || !plan) {
+        return res.status(400).json({ 
+          message: "Todos os campos são obrigatórios" 
+        });
+      }
+
+      // Remove formatação do CPF
+      const cleanCpf = cpf.replace(/\D/g, '');
+
+      // Valida CPF (ÚNICO E SEMPRE OBRIGATÓRIO)
+      if (!isValidCPF(cleanCpf)) {
+        return res.status(400).json({ message: "CPF inválido" });
+      }
+
+      // Verifica se CPF já existe (ÚNICO)
+      const existingUser = await storage.getUserByCPF(cleanCpf);
+      if (existingUser) {
+        return res.status(400).json({ 
+          message: "CPF já cadastrado. Faça login ou use a opção 'Esqueci minha senha'" 
+        });
+      }
+
+      // Valida email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        return res.status(400).json({ message: "Email inválido" });
+      }
+
+      // Verifica se email já existe
+      const existingEmail = await storage.getUserByEmail(email);
+      if (existingEmail) {
+        return res.status(400).json({ 
+          message: "Email já cadastrado. Faça login ou use a opção 'Esqueci minha senha'" 
+        });
+      }
+
+      // Separa nome e sobrenome
+      const nameParts = name.trim().split(' ');
+      const firstName = nameParts[0];
+      const lastName = nameParts.slice(1).join(' ') || '';
+
+      // Cria o usuário com status PENDENTE
+      const hashedPassword = await hashPassword(password);
+      const user = await storage.createUser({
+        cpf: cleanCpf,
+        email,
+        password: hashedPassword,
+        firstName,
+        lastName,
+        phone,
+        role: 'employee', // Pessoa física = employee
+        tenantId: null, // Individual user
+        isActive: false, // CONTA INATIVA ATÉ VALIDAÇÃO
+        planType: plan,
+        planCycle: cycle,
+        trialEndsAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 dias
+        emailVerified: false,
+        phoneVerified: false,
+        createdAt: new Date()
+      });
+
+      // Gerar tokens de verificação
+      const emailToken = randomBytes(32).toString('hex');
+      const phoneToken = Math.floor(100000 + Math.random() * 900000).toString(); // 6 dígitos
+
+      // Salvar tokens de verificação
+      await storage.createVerificationTokens({
+        userId: user.id,
+        emailToken,
+        phoneToken,
+        phone,
+        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000) // 24h para verificar
+      });
+
+      // TODO: Enviar email de verificação
+      console.log(`📧 Email verification token para ${email}: ${emailToken}`);
+      
+      // TODO: Enviar SMS de verificação  
+      console.log(`📱 Phone verification token para ${phone}: ${phoneToken}`);
+
+      res.status(201).json({
+        success: true,
+        message: "Conta criada! Verifique seu email e telefone para ativar.",
+        userId: user.id,
+        trialEndsAt: user.trialEndsAt,
+        nextSteps: {
+          email: "Enviamos um link de verificação para seu email",
+          phone: "Enviamos um código via SMS para seu telefone"
+        }
+      });
+
+    } catch (error) {
+      console.error('Trial signup error:', error);
+      res.status(500).json({ 
+        message: "Erro interno do servidor. Tente novamente." 
+      });
+    }
+  });
+
+  // Rota para verificação de email
+  app.get("/api/auth/verify-email/:token", async (req, res) => {
+    try {
+      const { token } = req.params;
+      
+      const verification = await storage.getVerificationToken(token, 'email');
+      if (!verification) {
+        return res.status(400).json({ 
+          message: "Token de verificação inválido ou expirado" 
+        });
+      }
+
+      // Marcar email como verificado
+      await storage.verifyUserEmail(verification.userId);
+      await storage.deleteVerificationToken(token, 'email');
+
+      // Verificar se conta pode ser ativada (email + phone verificados)
+      const user = await storage.getUser(verification.userId);
+      if (user?.phoneVerified) {
+        await storage.activateUser(verification.userId);
+      }
+
+      res.json({
+        success: true,
+        message: "Email verificado com sucesso!",
+        accountActivated: user?.phoneVerified || false
+      });
+
+    } catch (error) {
+      console.error('Email verification error:', error);
+      res.status(500).json({ message: "Erro ao verificar email" });
+    }
+  });
+
+  // Rota para verificação de telefone
+  app.post("/api/auth/verify-phone", async (req, res) => {
+    try {
+      const { phone, code } = req.body;
+
+      if (!phone || !code) {
+        return res.status(400).json({ 
+          message: "Telefone e código são obrigatórios" 
+        });
+      }
+
+      const verification = await storage.getPhoneVerification(phone, code);
+      if (!verification) {
+        return res.status(400).json({ 
+          message: "Código de verificação inválido ou expirado" 
+        });
+      }
+
+      // Marcar telefone como verificado
+      await storage.verifyUserPhone(verification.userId);
+      await storage.deletePhoneVerification(phone, code);
+
+      // Verificar se conta pode ser ativada (email + phone verificados)
+      const user = await storage.getUser(verification.userId);
+      if (user?.emailVerified) {
+        await storage.activateUser(verification.userId);
+      }
+
+      res.json({
+        success: true,
+        message: "Telefone verificado com sucesso!",
+        accountActivated: user?.emailVerified || false
+      });
+
+    } catch (error) {
+      console.error('Phone verification error:', error);
+      res.status(500).json({ message: "Erro ao verificar telefone" });
+    }
+  });
 }
 
 export { hashPassword, comparePasswords, isValidCPF };

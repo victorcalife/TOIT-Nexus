@@ -9,6 +9,7 @@ import NotFound from "@/pages/not-found";
 import Landing from "@/pages/landing";
 import Login from "@/pages/login";
 import SupportLogin from "@/pages/support-login";
+import VerifyAccount from "@/pages/verify-account";
 import SupportDashboard from "@/pages/support-dashboard";
 import Dashboard from "@/pages/dashboard";
 import Home from "@/pages/home";
@@ -85,6 +86,7 @@ function Router() {
       <Switch>
         <Route path="/support-login" component={SupportLogin} />
         <Route path="/login" component={Login} />
+        <Route path="/verify-account" component={VerifyAccount} />
         <Route path="/" component={Landing} />
         <Route component={Landing} />
       </Switch>
