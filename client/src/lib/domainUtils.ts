@@ -18,13 +18,12 @@ export function detectLoginType(): LoginType {
   if (
     hostname.startsWith('supnexus.') || 
     hostname.startsWith('support.') ||
-    hostname.startsWith('suporte.') ||
-    hostname === 'localhost:5173' // Para desenvolvimento
+    hostname.startsWith('suporte.')
   ) {
     return 'support';
   }
   
-  // Default para cliente
+  // Default para cliente (incluindo localhost durante desenvolvimento)
   return 'client';
 }
 

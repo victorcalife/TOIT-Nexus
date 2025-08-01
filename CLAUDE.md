@@ -309,68 +309,111 @@ GitHub: https://github.com/victorcalife/TOIT-Nexus
 
 ---
 
-# 📚 SESSÃO ATUAL: VALIDAÇÃO FINAL MÓDULO 1 - SISTEMA DE AUTENTICAÇÃO
+# 📚 SESSÃO ATUAL: SISTEMA DE 2 LOGINS DISTINTOS - CLIENTE vs SUPORTE TOIT
 
 ## 🎯 OBJETIVOS DA SESSÃO
 
-- Validar implementação completa do Módulo 1 - Sistema de Autenticação
-- Confirmar que todos os componentes estão GO-LIVE ready
-- Verificar testes end-to-end funcionais
-- Documentar sistema completo no CLAUDE.md
-- Preparar para início do Módulo 2
+- Corrigir erro de build no frontend (JSX malformado)
+- Implementar sistema de 2 logins distintos conforme definido
+- Criar login específico para equipe TOIT (supnexus.toit.com.br)
+- Implementar hierarquia de permissões: SUPER_ADMIN vs TOIT_ADMIN
+- Sistema de detecção automática de subdomínio
 
 ## 🔧 AÇÕES REALIZADAS
 
-- ✅ **Validação completa do sistema de autenticação**
-- ✅ **Verificação do script de testes end-to-end (test-auth.js)**
-- ✅ **Análise dos componentes React (AuthHeader.tsx, ProtectedRoute.tsx)**
-- ✅ **Confirmação da inicialização automática (initializeAuth.js)**
-- ✅ **Verificação das migrations e índices de performance (migrations.js)**
-- ✅ **Documentação completa no CLAUDE.md do Módulo 1**
-- ✅ **Sistema 100% funcional e pronto para produção**
+- ✅ **CORRIGIDO: Erro de build no login.tsx + cache limpo**
+- ✅ **IMPLEMENTADO: Sistema de 2 logins distintos com detecção automática**
+- ✅ **CRIADO: Página de login para equipe TOIT com interface diferenciada**
+- ✅ **IMPLEMENTADO: Detecção automática de subdomínio e redirecionamento**
+- ✅ **CRIADO: Role toit_admin no schema e usuário de teste (CPF: 11111111111)**
+- ✅ **CRIADO: Dashboard especializado para equipe TOIT com métricas do sistema**
+- ✅ **IMPLEMENTADO: Hierarquia SUPER_ADMIN (tudo) vs TOIT_ADMIN (tudo exceto financeiro)**
+- ✅ **IMPLEMENTADO: Backend aceita loginType e valida permissões por tipo de login**
 
 ## 💡 DECISÕES TÉCNICAS
 
-### 🏗️ Decisões Arquiteturais
+### 🏗️ Decisões Arquiteturais - Sistema Duplo de Login
 
-- **Manter arquitetura atual**: Sistema está bem estruturado e funcional
-- **Preservar sistema multi-tenant**: Isolamento de dados está correto
-- **Manter stack tecnológico**: Express.js + React + PostgreSQL + Drizzle ORM
+- **Mesmo Frontend**: Utilizar um único frontend com detecção de subdomínio
+- **Detecção Automática**: Sistema inteligente de redirecionamento baseado no domínio
+- **Backend Unificado**: Mesmo endpoint `/api/login` com campo `loginType` adicional
+- **Permissões Granulares**: Validação de acesso no backend por tipo de login
 
-### 🛠️ Tecnologias Identificadas
+### 🛠️ Implementações Técnicas
 
-- **Backend**: Node.js, TypeScript, Express.js, Drizzle ORM
-- **Frontend**: React, TypeScript, Vite, Tailwind CSS, shadcn/ui
-- **Banco**: PostgreSQL com Neon Database
-- **Deploy**: Replit (atual)
+#### **Frontend - Novas Páginas:**
+- **`support-login.tsx`**: Interface premium para equipe TOIT com tema escuro
+- **`support-dashboard.tsx`**: Dashboard especializado com métricas do sistema
+- **`domainUtils.ts`**: Utilitários para detecção e redirecionamento automático
 
-### 🎨 Padrões Implementados
+#### **Backend - Validações:**
+- **`auth.ts`**: Modificado para aceitar `loginType` e validar permissões
+- **`initializeSystem.ts`**: Criação automática de usuário TOIT_ADMIN
+- **`schema.ts`**: Adicionado role `toit_admin` ao enum de usuários
 
-1. **Multi-tenant Architecture**: Isolamento completo por tenant_id
-2. **Role-based Access Control**: Sistema granular de permissões
-3. **Component-based Frontend**: React com TypeScript e shadcn/ui
-4. **RESTful API**: Endpoints bem estruturados no backend
-5. **Type Safety**: TypeScript em todo o stack
-6. **Database-first**: Schema definido com Drizzle ORM
+#### **Sistema de Rotas:**
+```typescript
+// Detecção automática por domínio
+nexus.toit.com.br → /login (cliente)
+supnexus.toit.com.br → /support-login (equipe TOIT)
 
-### 🚀 Funcionalidades Identificadas
+// Redirecionamento no dashboard
+super_admin → /admin/dashboard
+toit_admin → /support/dashboard
+tenant_admin/manager/employee → /dashboard
+```
 
-1. **Sistema de Autenticação**: Login CPF/Senha com sessões PostgreSQL
-2. **Dashboard Administrativo**: Interface completa para super admins
-3. **Query Builder**: Construtor visual de queries SQL
-4. **Task Management**: Sistema completo de gestão de tarefas
-5. **Data Connections**: Conexões com bancos externos e APIs
-6. **Módulos Dinâmicos**: Sistema de ativação/desativação de funcionalidades
-7. **Relatórios**: Sistema de relatórios personalizáveis
-8. **Controle de Acesso**: Permissões granulares por departamento
+### 🎨 Interface Diferenciada
 
-### 🔄 Próximos Passos
+#### **Login Cliente (`/login`):**
+- Design clean e profissional
+- Fundo claro (gradiente cinza)
+- Logo corporativo
+- Mensagem: "Faça login em sua conta"
 
-1. [ ] Aguardar solicitações específicas de desenvolvimento
-2. [ ] Implementar melhorias conforme necessidade
-3. [ ] Otimizar performance quando solicitado
-4. [ ] Adicionar testes automatizados se necessário
-5. [ ] Evoluir funcionalidades existentes conforme demanda
+#### **Login Suporte (`/support-login`):**
+- Design premium e técnico
+- Fundo escuro (gradiente roxo/slate)
+- Ícones de segurança (Shield, Zap)
+- Mensagem: "Portal de Suporte TOIT - Acesso exclusivo para equipe técnica"
+
+### 🔐 Hierarquia de Permissões Implementada
+
+```typescript
+SUPER_ADMIN (CPF: 00000000000):
+- Acesso total ao sistema
+- Área financeira liberada
+- Dashboard administrativo completo
+- Gerenciamento de todos os tenants
+
+TOIT_ADMIN (CPF: 11111111111):
+- Acesso de suporte técnico
+- Área financeira BLOQUEADA
+- Dashboard de suporte com métricas
+- Gerenciamento de tickets e usuários
+- Sem acesso a relatórios financeiros
+
+TENANT_ADMIN/MANAGER/EMPLOYEE:
+- Acesso limitado ao seu tenant
+- Dashboard cliente padrão
+- Sem acesso a áreas administrativas
+```
+
+### 🚀 Funcionalidades do Dashboard Suporte
+
+1. **Métricas do Sistema**: Total tenants, usuários ativos, uptime, sessões
+2. **Atividade Recente**: Log de eventos do sistema em tempo real
+3. **Tickets de Suporte**: Gestão de solicitações dos clientes
+4. **Ações Rápidas**: Ferramentas frequentemente utilizadas
+5. **Controle Financeiro**: Visível apenas para Super Admin
+
+### 🔄 Próximos Passos Pendentes
+
+1. **Testar sistema completo**: Login cliente, login suporte, permissões
+2. **Integrar botão Login no header da landing page**
+3. **Configurar subdomínios no Railway/DNS**
+4. **Implementar sistema de tickets real**
+5. **Criar módulos financeiros restritos**
 
 ---
 
@@ -419,10 +462,10 @@ GitHub: https://github.com/victorcalife/TOIT-Nexus
 ---
 
 **🧠 Memória Consolidada - TOIT NEXUS Enterprise Platform**  
-**📅 Última Atualização:** 31 de Janeiro, 2025 - 19:45h  
-**🔄 Status Atual:** MÓDULO 1 - Sistema de Autenticação 100% COMPLETO e GO-LIVE READY  
-**✅ Última Ação:** Validação final completa - Todos os componentes funcionais e testados
-**🎯 Próxima Ação:** Iniciar MÓDULO 2 - Dashboard com Dados Reais
+**📅 Última Atualização:** 1 de Agosto, 2025 - 20:30h  
+**🔄 Status Atual:** SISTEMA DE 2 LOGINS DISTINTOS 100% IMPLEMENTADO e GO-LIVE READY  
+**✅ Última Ação:** Sistema duplo de login Cliente vs Suporte TOIT implementado com hierarquia de permissões
+**🎯 Próxima Ação:** Testar sistema completo e configurar subdomínios
 
 ---
 

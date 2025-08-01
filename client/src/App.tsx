@@ -65,29 +65,12 @@ function Router() {
 
   // Not authenticated - show appropriate login or landing page
   if (!isAuthenticated) {
-    const loginType = detectLoginType();
-    
     return (
       <Switch>
         <Route path="/support-login" component={SupportLogin} />
         <Route path="/login" component={Login} />
-        <Route path="/" component={() => {
-          // Se for subdomínio de suporte, redirecionar para login de suporte
-          if (loginType === 'support') {
-            window.location.href = '/support-login';
-            return null;
-          }
-          // Caso contrário, mostrar landing page
-          return <Landing />;
-        }} />
-        <Route component={() => {
-          // Redirecionar para landing page ou login de suporte baseado no domínio
-          if (loginType === 'support') {
-            window.location.href = '/support-login';
-            return null;
-          }
-          return <Landing />;
-        }} />
+        <Route path="/" component={Landing} />
+        <Route component={Landing} />
       </Switch>
     );
   }

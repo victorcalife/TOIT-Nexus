@@ -91,7 +91,7 @@ export function StandardHeader({
             {showLoginButton && !isAuthenticated && (
               <>
                 <div className="hidden md:flex items-center space-x-4">
-                  <Link href="/simple-login">
+                  <Link href="/login">
                     <Button variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-50">
                       Fazer Login
                     </Button>
