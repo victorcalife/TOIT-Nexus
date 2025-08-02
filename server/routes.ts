@@ -38,6 +38,7 @@ import { advancedTaskManagementRoutes } from "./advancedTaskManagementRoutes";
 import verificationRoutes from "./verificationRoutes";
 import enterpriseRoutes from "./enterpriseRoutes";
 import adaptiveRoutes from "./adaptiveRoutes";
+import quantumMLRoutes from "./quantumMLRoutes";
 import notificationRoutes from "./notificationRoutes";
 import calendarRoutes from "./calendarRoutes";
 import { adminModuleRoutes } from "./adminModuleRoutes";
@@ -1832,6 +1833,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Failed to test integration" });
     }
   });
+
+  // Quantum ML Engine routes
+  app.use('/api/quantum-ml', quantumMLRoutes);
 
   // Report routes
   app.get('/api/reports', isAuthenticated, async (req, res) => {
