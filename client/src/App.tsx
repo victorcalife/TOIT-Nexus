@@ -85,7 +85,7 @@ function Router() {
   if (!isAuthenticated) {
     // Detectar se é subdomínio de suporte para mostrar página de login específica
     const hostname = window.location.hostname.toLowerCase();
-    const isSupportDomain = hostname.includes('supnexus.toit.com.br') || hostname.startsWith('supnexus.');
+    const isSupportDomain = hostname.includes('supnexus.toit.com.br') || hostname.startsWith('supnexus.') || hostname === 'supnexus';
     
     // Debug log para verificar detecção
     console.log(`🌐 Frontend - Hostname: ${hostname} | isSupportDomain: ${isSupportDomain}`);

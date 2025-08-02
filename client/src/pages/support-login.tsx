@@ -45,7 +45,19 @@ export default function SupportLogin() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/login', {
+      // Detectar URL base para API
+      const hostname = window.location.hostname;
+      let apiBase = '';
+      
+      if (hostname.includes('supnexus.toit.com.br') || hostname.startsWith('supnexus')) {
+        // Para supnexus, usar mesma base mas com endpoint correto
+        apiBase = window.location.origin;
+      } else {
+        // Para outros domínios
+        apiBase = window.location.origin;
+      }
+      
+      const response = await fetch(`${apiBase}/api/simple-login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
