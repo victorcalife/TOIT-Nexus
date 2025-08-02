@@ -43,6 +43,10 @@ import calendarRoutes from "./calendarRoutes";
 import { adminModuleRoutes } from "./adminModuleRoutes";
 import { tenantControlRoutes } from "./tenantControlRoutes";
 import { visualWorkflowRoutes } from "./visualWorkflowRoutes";
+import { universalDatabaseRoutes } from "./universalDatabaseRoutes";
+import { dashboardBuilderRoutes } from "./dashboardBuilderRoutes";
+import { apiWebhookRoutes } from "./apiWebhookRoutes";
+import { executiveReportsRoutes } from "./executiveReportsRoutes";
 
 // Helper function to determine if client should be assigned to a category
 function shouldAssignToCategory(client: any, category: any): boolean {
@@ -1902,6 +1906,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Calendar Integration routes - Integração com Google/Apple/Outlook calendários
   app.use('/api/calendar', calendarRoutes);
+
+  // Universal Database Connector routes - Sistema completo de conectividade
+  app.use('/api/database', universalDatabaseRoutes);
+
+  // Dashboard Builder routes - Sistema completo de dashboard builder
+  app.use('/api/dashboards', dashboardBuilderRoutes);
+
+  // API & Webhook Integration routes - Sistema completo de integrações
+  app.use('/api/integrations', apiWebhookRoutes);
+
+  // Executive Reports routes - Sistema completo de relatórios executivos
+  app.use('/api/reports', executiveReportsRoutes);
 
   // Register Query Builder routes
   registerQueryBuilderRoutes(app);

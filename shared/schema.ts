@@ -934,6 +934,256 @@ export const taskDependencies = pgTable("task_dependencies", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+// External Database Connections - Conectividade universal
+export const externalDatabaseConnections = pgTable("external_database_connections", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  
+  // Connection details
+  name: varchar("name", { length: 255 }).notNull(),
+  type: varchar("type", { length: 50 }).notNull(), // 'postgresql', 'mysql', 'sqlserver', 'rest_api', 'webhook'
+  description: text("description"),
+  
+  // Configuration (encrypted)
+  config: jsonb("config").notNull(), // { host, port, database, username, password, ssl, apiUrl, apiKey, etc }
+  
+  // Status and testing
+  isActive: boolean("is_active").default(true),
+  lastTestedAt: timestamp("last_tested_at"),
+  testResult: jsonb("test_result"), // Resultado do último teste
+  
+  // Usage statistics
+  totalQueries: integer("total_queries").default(0),
+  lastUsedAt: timestamp("last_used_at"),
+  
+  // Metadata
+  tags: jsonb("tags").default([]), // Tags para organização
+  createdBy: varchar("created_by").references(() => users.id).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Database Query Cache - Cache para queries executadas
+export const databaseQueryCache = pgTable("database_query_cache", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  
+  // Cache identification
+  cacheKey: varchar("cache_key", { length: 255 }).notNull(),
+  connectionId: varchar("connection_id").references(() => externalDatabaseConnections.id),
+  
+  // Cached data
+  result: jsonb("result").notNull(), // Resultado da query
+  queryHash: varchar("query_hash", { length: 64 }), // Hash da query original
+  
+  // Cache management
+  expiresAt: timestamp("expires_at").notNull(),
+  hitCount: integer("hit_count").default(0),
+  lastHitAt: timestamp("last_hit_at"),
+  
+  // Metadata
+  resultSize: integer("result_size"), // Tamanho do resultado em bytes
+  executionTime: integer("execution_time"), // Tempo de execução original em ms
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => ({
+  uniqueCacheKey: unique().on(table.tenantId, table.cacheKey),
+}));
+
+// File Uploads - Sistema de upload e processamento de arquivos
+export const fileUploads = pgTable("file_uploads", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  
+  // File details
+  originalName: varchar("original_name", { length: 255 }).notNull(),
+  fileName: varchar("file_name", { length: 255 }).notNull(), // Nome único no storage
+  filePath: varchar("file_path", { length: 500 }).notNull(),
+  mimeType: varchar("mime_type", { length: 100 }).notNull(),
+  fileSize: integer("file_size").notNull(), // Em bytes
+  
+  // Processing status
+  status: varchar("status", { length: 30 }).default('uploaded'), // 'uploaded', 'processing', 'processed', 'error'
+  processingResult: jsonb("processing_result"), // Resultado do processamento (schema, rows, etc)
+  errorMessage: text("error_message"),
+  
+  // Data preview
+  previewData: jsonb("preview_data"), // Primeiras linhas para preview
+  columnMapping: jsonb("column_mapping"), // Mapeamento de colunas
+  totalRows: integer("total_rows"),
+  validRows: integer("valid_rows"),
+  
+  // Usage
+  isActive: boolean("is_active").default(true),
+  downloadCount: integer("download_count").default(0),
+  lastAccessedAt: timestamp("last_accessed_at"),
+  
+  // Metadata
+  tags: jsonb("tags").default([]),
+  description: text("description"),
+  uploadedBy: varchar("uploaded_by").references(() => users.id).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Custom Dashboards - Dashboards personalizáveis
+export const customDashboards = pgTable("custom_dashboards", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  
+  // Dashboard details
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description"),
+  slug: varchar("slug", { length: 100 }).notNull(),
+  
+  // Layout and configuration
+  layout: jsonb("layout").notNull(), // Grid layout config
+  widgets: jsonb("widgets").notNull(), // Array de widgets configurados
+  filters: jsonb("filters").default([]), // Filtros globais do dashboard
+  
+  // Access control
+  isPublic: boolean("is_public").default(false),
+  allowedUsers: jsonb("allowed_users").default([]), // Array de user IDs
+  allowedRoles: jsonb("allowed_roles").default([]), // Array de roles
+  
+  // Status
+  isActive: boolean("is_active").default(true),
+  isTemplate: boolean("is_template").default(false), // Se é um template reutilizável
+  
+  // Usage statistics
+  viewCount: integer("view_count").default(0),
+  lastViewedAt: timestamp("last_viewed_at"),
+  
+  // Metadata
+  tags: jsonb("tags").default([]),
+  category: varchar("category", { length: 100 }),
+  createdBy: varchar("created_by").references(() => users.id).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => ({
+  uniqueSlug: unique().on(table.tenantId, table.slug),
+}));
+
+// Dashboard Widgets - Widgets individuais para dashboards
+export const dashboardWidgets = pgTable("dashboard_widgets", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  dashboardId: varchar("dashboard_id").references(() => customDashboards.id).notNull(),
+  
+  // Widget configuration
+  widgetType: varchar("widget_type", { length: 50 }).notNull(), // 'chart', 'table', 'metric', 'text', 'image'
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description"),
+  
+  // Position and size
+  position: jsonb("position").notNull(), // { x, y, w, h }
+  
+  // Data source
+  dataSource: jsonb("data_source"), // Connection ID, query, etc
+  dataQuery: text("data_query"), // SQL ou endpoint
+  dataParameters: jsonb("data_parameters").default({}),
+  
+  // Visualization config
+  chartConfig: jsonb("chart_config"), // Configurações específicas do tipo de chart
+  tableConfig: jsonb("table_config"), // Configurações de tabla
+  styleConfig: jsonb("style_config"), // Cores, fontes, etc
+  
+  // Refresh and caching
+  refreshInterval: integer("refresh_interval").default(300), // Segundos
+  cacheKey: varchar("cache_key", { length: 255 }),
+  lastRefreshAt: timestamp("last_refresh_at"),
+  
+  // Status
+  isActive: boolean("is_active").default(true),
+  hasError: boolean("has_error").default(false),
+  errorMessage: text("error_message"),
+  
+  // Metadata
+  createdBy: varchar("created_by").references(() => users.id).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// API Webhooks - Sistema de webhooks para integração
+export const apiWebhooks = pgTable("api_webhooks", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  
+  // Webhook details
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description"),
+  url: varchar("url", { length: 500 }).notNull(),
+  
+  // Configuration
+  method: varchar("method", { length: 10 }).default('POST'), // GET, POST, PUT, DELETE
+  headers: jsonb("headers").default({}),
+  authentication: jsonb("authentication"), // API key, Bearer token, etc
+  
+  // Events and triggers
+  events: jsonb("events").notNull(), // Array de eventos que disparam o webhook
+  triggers: jsonb("triggers").default([]), // Condições específicas
+  
+  // Request configuration
+  timeout: integer("timeout").default(30), // Segundos
+  retryAttempts: integer("retry_attempts").default(3),
+  retryDelay: integer("retry_delay").default(5), // Segundos
+  
+  // Status and monitoring
+  isActive: boolean("is_active").default(true),
+  lastTriggeredAt: timestamp("last_triggered_at"),
+  totalCalls: integer("total_calls").default(0),
+  successfulCalls: integer("successful_calls").default(0),
+  failedCalls: integer("failed_calls").default(0),
+  
+  // Metadata
+  tags: jsonb("tags").default([]),
+  createdBy: varchar("created_by").references(() => users.id).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Webhook Logs - Logs de execução de webhooks
+export const webhookLogs = pgTable("webhook_logs", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  webhookId: varchar("webhook_id").references(() => apiWebhooks.id).notNull(),
+  
+  // Execution details
+  executionId: varchar("execution_id", { length: 100 }).notNull(),
+  status: varchar("status", { length: 20 }).notNull(), // 'success', 'failed', 'timeout', 'retry'
+  
+  // Request/Response
+  requestPayload: jsonb("request_payload"),
+  requestHeaders: jsonb("request_headers"),
+  responseStatus: integer("response_status"),
+  responseBody: text("response_body"),
+  responseHeaders: jsonb("response_headers"),
+  
+  // Timing
+  executionTime: integer("execution_time"), // Milliseconds
+  triggeredAt: timestamp("triggered_at").notNull(),
+  completedAt: timestamp("completed_at"),
+  
+  // Error handling
+  errorMessage: text("error_message"),
+  errorDetails: jsonb("error_details"),
+  retryAttempt: integer("retry_attempt").default(0),
+  
+  // Metadata
+  eventType: varchar("event_type", { length: 100 }),
+  triggerSource: varchar("trigger_source", { length: 100 }),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Insert schemas for new tables
+export const insertExternalDatabaseConnectionSchema = createInsertSchema(externalDatabaseConnections);
+export const insertDatabaseQueryCacheSchema = createInsertSchema(databaseQueryCache);
+export const insertFileUploadSchema = createInsertSchema(fileUploads);
+export const insertCustomDashboardSchema = createInsertSchema(customDashboards);
+export const insertDashboardWidgetSchema = createInsertSchema(dashboardWidgets);
+export const insertApiWebhookSchema = createInsertSchema(apiWebhooks);
+export const insertWebhookLogSchema = createInsertSchema(webhookLogs);
+
 // Update existing relations to include new tables
 export const tenantsRelations = relations(tenants, ({ many }) => ({
   users: many(users),
