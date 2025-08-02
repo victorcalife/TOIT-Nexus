@@ -26,6 +26,12 @@ app.use((req, res, next) => {
     console.log(`🌐 Host: ${host} | Path: ${req.path} | SupNexus: ${isSupNexus} | Nexus: ${isNexus}`);
   }
   
+  // 🚀 SERVIR LANDING PAGE QUANTUM ML PARA NEXUS.TOIT.COM.BR
+  if (isNexus && req.path === '/') {
+    console.log('🎯 Servindo Landing Page Quantum ML para nexus.toit.com.br');
+    return res.sendFile(path.resolve(import.meta.dirname, '..', 'nexus-landing-page.html'));
+  }
+  
   // O frontend React já tem lógica para detectar supnexus e mostrar SupportLogin
   // Não precisa redirecionar no servidor, deixa o frontend lidar com isso
   
