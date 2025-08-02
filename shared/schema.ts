@@ -659,6 +659,281 @@ export const notifications = pgTable("notifications", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// ==========================================
+// ADVANCED TASK MANAGEMENT SYSTEM - FASE 3
+// ==========================================
+
+// Task Automation Rules - Sistema de automação baseado em eventos
+export const taskAutomationRules = pgTable("task_automation_rules", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  createdById: varchar("created_by_id").references(() => users.id).notNull(),
+  name: varchar("name", { length: 200 }).notNull(),
+  description: text("description"),
+  isActive: boolean("is_active").default(true),
+  
+  // Trigger configuration
+  triggerType: varchar("trigger_type", { length: 50 }).notNull(), // 'time_based', 'event_based', 'condition_based'
+  triggerConfig: jsonb("trigger_config").notNull(), // Configuração específica do trigger
+  
+  // Conditions
+  conditions: jsonb("conditions"), // Array de condições que devem ser atendidas
+  
+  // Actions
+  actions: jsonb("actions").notNull(), // Array de ações a serem executadas
+  
+  // Execution tracking
+  lastTriggeredAt: timestamp("last_triggered_at"),
+  totalExecutions: integer("total_executions").default(0),
+  successfulExecutions: integer("successful_executions").default(0),
+  failedExecutions: integer("failed_executions").default(0),
+  
+  // Metadata
+  metadata: jsonb("metadata"), // Dados adicionais de configuração
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Task Automation Logs - Log de execuções de automação
+export const taskAutomationLogs = pgTable("task_automation_logs", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  ruleId: varchar("rule_id").references(() => taskAutomationRules.id).notNull(),
+  
+  // Execution details
+  executionId: varchar("execution_id").notNull(), // UUID único para esta execução
+  status: varchar("status", { length: 20 }).notNull(), // 'success', 'failed', 'partial'
+  
+  // Trigger details
+  triggerData: jsonb("trigger_data"), // Dados que causaram o trigger
+  triggerTimestamp: timestamp("trigger_timestamp").notNull(),
+  
+  // Execution results
+  actionsExecuted: jsonb("actions_executed"), // Array de ações executadas
+  actionResults: jsonb("action_results"), // Resultados de cada ação
+  
+  // Error handling
+  errorMessage: text("error_message"),
+  errorDetails: jsonb("error_details"),
+  
+  // Performance
+  executionTimeMs: integer("execution_time_ms"),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Task Time Tracking - Tracking avançado de tempo gasto
+export const taskTimeTracking = pgTable("task_time_tracking", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  taskInstanceId: varchar("task_instance_id").references(() => taskInstances.id).notNull(),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  
+  // Time tracking
+  startTime: timestamp("start_time").notNull(),
+  endTime: timestamp("end_time"),
+  durationMs: integer("duration_ms"), // Calculado automaticamente
+  isActive: boolean("is_active").default(false), // Se está trackando agora
+  
+  // Activity details
+  activityType: varchar("activity_type", { length: 50 }), // 'work', 'pause', 'meeting', 'research'
+  description: text("description"),
+  
+  // Productivity metrics
+  productivityScore: integer("productivity_score"), // 1-10 (auto ou manual)
+  focusLevel: integer("focus_level"), // 1-10 (baseado em interruções)
+  interruptions: integer("interruptions").default(0),
+  
+  // Location/device info
+  deviceInfo: jsonb("device_info"), // Info do dispositivo usado
+  locationInfo: jsonb("location_info"), // Info de localização (se permitido)
+  
+  // Metadata
+  metadata: jsonb("metadata"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Task Productivity Metrics - Métricas agregadas de produtividade
+export const taskProductivityMetrics = pgTable("task_productivity_metrics", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  
+  // Time period
+  periodType: varchar("period_type", { length: 20 }).notNull(), // 'daily', 'weekly', 'monthly'
+  periodStart: timestamp("period_start").notNull(),
+  periodEnd: timestamp("period_end").notNull(),
+  
+  // Task metrics
+  tasksCompleted: integer("tasks_completed").default(0),
+  tasksStarted: integer("tasks_started").default(0),
+  tasksOverdue: integer("tasks_overdue").default(0),
+  averageCompletionTime: integer("average_completion_time"), // em minutos
+  
+  // Time metrics
+  totalTimeWorked: integer("total_time_worked").default(0), // em minutos
+  focusTime: integer("focus_time").default(0), // tempo focado sem interruções
+  breakTime: integer("break_time").default(0), // tempo de pausas
+  
+  // Productivity scores
+  overallProductivityScore: decimal("overall_productivity_score", { precision: 3, scale: 1 }),
+  averageFocusLevel: decimal("average_focus_level", { precision: 3, scale: 1 }),
+  completionRate: decimal("completion_rate", { precision: 5, scale: 2 }), // percentual
+  
+  // Quality metrics
+  reworkRequests: integer("rework_requests").default(0),
+  qualityScore: decimal("quality_score", { precision: 3, scale: 1 }),
+  
+  // Collaboration metrics
+  collaborationScore: decimal("collaboration_score", { precision: 3, scale: 1 }),
+  commentsGiven: integer("comments_given").default(0),
+  commentsReceived: integer("comments_received").default(0),
+  
+  // Metadata
+  calculatedAt: timestamp("calculated_at").defaultNow(),
+  metadata: jsonb("metadata"),
+});
+
+// Task Collaboration - Sistema avançado de colaboração
+export const taskCollaborations = pgTable("task_collaborations", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  taskInstanceId: varchar("task_instance_id").references(() => taskInstances.id).notNull(),
+  
+  // Collaboration type
+  collaborationType: varchar("collaboration_type", { length: 50 }).notNull(), // 'assignment', 'review', 'approval', 'consultation'
+  
+  // Participants
+  requesterId: varchar("requester_id").references(() => users.id).notNull(),
+  collaboratorId: varchar("collaborator_id").references(() => users.id).notNull(),
+  
+  // Status and workflow
+  status: varchar("status", { length: 20 }).default('pending'), // 'pending', 'accepted', 'rejected', 'completed'
+  priority: varchar("priority", { length: 20 }).default('normal'), // 'low', 'normal', 'high', 'urgent'
+  
+  // Timing
+  requestedAt: timestamp("requested_at").defaultNow(),
+  respondedAt: timestamp("responded_at"),
+  completedAt: timestamp("completed_at"),
+  dueDate: timestamp("due_date"),
+  
+  // Content
+  requestMessage: text("request_message"),
+  responseMessage: text("response_message"),
+  completionNotes: text("completion_notes"),
+  
+  // Deliverables
+  requiredDeliverables: jsonb("required_deliverables"), // Array de entregáveis esperados
+  actualDeliverables: jsonb("actual_deliverables"), // Array de entregáveis fornecidos
+  
+  // Quality assessment
+  qualityRating: integer("quality_rating"), // 1-5 stars
+  feedbackComments: text("feedback_comments"),
+  
+  // Metadata
+  metadata: jsonb("metadata"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Task Template Categories - Categorias avançadas de templates
+export const taskTemplateCategories = pgTable("task_template_categories", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  name: varchar("name", { length: 100 }).notNull(),
+  description: text("description"),
+  parentCategoryId: varchar("parent_category_id").references(() => taskTemplateCategories.id), // Para hierarquia
+  
+  // Visual
+  color: varchar("color", { length: 7 }).default('#3B82F6'), // Hex color
+  icon: varchar("icon", { length: 50 }), // Lucide icon name
+  
+  // Configuration
+  defaultPriority: varchar("default_priority", { length: 20 }).default('medium'),
+  defaultDuration: integer("default_duration"), // minutos
+  requiredFields: jsonb("required_fields"), // Campos obrigatórios para esta categoria
+  
+  // Ordering and display
+  sortOrder: integer("sort_order").default(0),
+  isActive: boolean("is_active").default(true),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Task Skills and Competencies - Sistema de habilidades
+export const taskSkills = pgTable("task_skills", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  name: varchar("name", { length: 100 }).notNull(),
+  description: text("description"),
+  category: varchar("category", { length: 50 }), // 'technical', 'soft', 'domain_specific'
+  
+  // Skill level system
+  levels: jsonb("levels").notNull(), // Array de níveis (beginner, intermediate, expert)
+  
+  // Metadata
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// User Task Skills - Habilidades dos usuários
+export const userTaskSkills = pgTable("user_task_skills", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  skillId: varchar("skill_id").references(() => taskSkills.id).notNull(),
+  
+  // Skill assessment
+  currentLevel: varchar("current_level", { length: 20 }).notNull(), // 'beginner', 'intermediate', 'expert'
+  certifiedLevel: varchar("certified_level", { length: 20 }), // Nível certificado/validado
+  
+  // Progress tracking
+  experiencePoints: integer("experience_points").default(0),
+  tasksCompleted: integer("tasks_completed").default(0),
+  averageRating: decimal("average_rating", { precision: 3, scale: 1 }),
+  
+  // Validation
+  validatedBy: varchar("validated_by").references(() => users.id),
+  validatedAt: timestamp("validated_at"),
+  validationNotes: text("validation_notes"),
+  
+  // Metadata
+  lastUsedAt: timestamp("last_used_at"),
+  metadata: jsonb("metadata"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Task Dependencies - Sistema de dependências entre tarefas
+export const taskDependencies = pgTable("task_dependencies", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  
+  // Task relationship
+  dependentTaskId: varchar("dependent_task_id").references(() => taskInstances.id).notNull(), // Tarefa que depende
+  dependsOnTaskId: varchar("depends_on_task_id").references(() => taskInstances.id).notNull(), // Tarefa da qual depende
+  
+  // Dependency type
+  dependencyType: varchar("dependency_type", { length: 30 }).notNull(), // 'finish_to_start', 'start_to_start', 'finish_to_finish', 'start_to_finish'
+  
+  // Timing
+  lagTime: integer("lag_time").default(0), // Tempo de espera em minutos
+  leadTime: integer("lead_time").default(0), // Tempo de antecipação em minutos
+  
+  // Status
+  isActive: boolean("is_active").default(true),
+  resolvedAt: timestamp("resolved_at"), // Quando a dependência foi resolvida
+  
+  // Metadata
+  notes: text("notes"),
+  createdBy: varchar("created_by").references(() => users.id).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 // Update existing relations to include new tables
 export const tenantsRelations = relations(tenants, ({ many }) => ({
   users: many(users),
@@ -775,6 +1050,59 @@ export const insertTaskCommentSchema = createInsertSchema(taskComments).omit({
 export const insertNotificationSchema = createInsertSchema(notifications).omit({
   id: true,
   createdAt: true,
+});
+
+// INSERT SCHEMAS FOR ADVANCED TASK MANAGEMENT
+export const insertTaskAutomationRuleSchema = createInsertSchema(taskAutomationRules).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertTaskAutomationLogSchema = createInsertSchema(taskAutomationLogs).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertTaskTimeTrackingSchema = createInsertSchema(taskTimeTracking).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertTaskProductivityMetricsSchema = createInsertSchema(taskProductivityMetrics).omit({
+  id: true,
+  calculatedAt: true,
+});
+
+export const insertTaskCollaborationSchema = createInsertSchema(taskCollaborations).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertTaskTemplateCategorySchema = createInsertSchema(taskTemplateCategories).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertTaskSkillSchema = createInsertSchema(taskSkills).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertUserTaskSkillSchema = createInsertSchema(userTaskSkills).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertTaskDependencySchema = createInsertSchema(taskDependencies).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
 });
 
 export const insertRolePermissionSchema = createInsertSchema(rolePermissions).omit({
@@ -1264,6 +1592,26 @@ export type InsertTaskComment = typeof taskComments.$inferInsert;
 export type Notification = typeof notifications.$inferSelect;
 export type InsertNotification = typeof notifications.$inferInsert;
 
+// ADVANCED TASK MANAGEMENT TYPES
+export type TaskAutomationRule = typeof taskAutomationRules.$inferSelect;
+export type InsertTaskAutomationRule = typeof taskAutomationRules.$inferInsert;
+export type TaskAutomationLog = typeof taskAutomationLogs.$inferSelect;
+export type InsertTaskAutomationLog = typeof taskAutomationLogs.$inferInsert;
+export type TaskTimeTracking = typeof taskTimeTracking.$inferSelect;
+export type InsertTaskTimeTracking = typeof taskTimeTracking.$inferInsert;
+export type TaskProductivityMetrics = typeof taskProductivityMetrics.$inferSelect;
+export type InsertTaskProductivityMetrics = typeof taskProductivityMetrics.$inferInsert;
+export type TaskCollaboration = typeof taskCollaborations.$inferSelect;
+export type InsertTaskCollaboration = typeof taskCollaborations.$inferInsert;
+export type TaskTemplateCategory = typeof taskTemplateCategories.$inferSelect;
+export type InsertTaskTemplateCategory = typeof taskTemplateCategories.$inferInsert;
+export type TaskSkill = typeof taskSkills.$inferSelect;
+export type InsertTaskSkill = typeof taskSkills.$inferInsert;
+export type UserTaskSkill = typeof userTaskSkills.$inferSelect;
+export type InsertUserTaskSkill = typeof userTaskSkills.$inferInsert;
+export type TaskDependency = typeof taskDependencies.$inferSelect;
+export type InsertTaskDependency = typeof taskDependencies.$inferInsert;
+
 // Payment System Types
 export type PaymentPlan = typeof paymentPlans.$inferSelect;
 export type InsertPaymentPlan = typeof paymentPlans.$inferInsert;
@@ -1295,3 +1643,296 @@ export type CalendarIntegration = typeof calendarIntegrations.$inferSelect;
 export type InsertCalendarIntegration = typeof calendarIntegrations.$inferInsert;
 export type CalendarEvent = typeof calendarEvents.$inferSelect;
 export type InsertCalendarEvent = typeof calendarEvents.$inferInsert;
+
+// ==========================================
+// WORKFLOW ENGINE - VISUAL BUILDER TABLES
+// ==========================================
+
+// Node types for visual workflow builder
+export const nodeTypeEnum = pgEnum('node_type', [
+  'trigger', 
+  'action', 
+  'condition', 
+  'loop', 
+  'delay', 
+  'webhook', 
+  'email', 
+  'api_call', 
+  'database_query', 
+  'file_process',
+  'approval',
+  'notification',
+  'data_transform',
+  'schedule'
+]);
+
+export const triggerTypeEnum = pgEnum('trigger_type', [
+  'manual',
+  'schedule', 
+  'webhook', 
+  'email_received', 
+  'data_change', 
+  'api_call', 
+  'file_upload',
+  'approval_request',
+  'task_completed'
+]);
+
+export const executionStatusEnum = pgEnum('execution_status', [
+  'pending',
+  'running', 
+  'completed', 
+  'failed', 
+  'cancelled',
+  'waiting_approval'
+]);
+
+// Visual workflow canvas definitions
+export const visualWorkflows = pgTable("visual_workflows", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  name: varchar("name", { length: 200 }).notNull(),
+  description: text("description"),
+  version: integer("version").default(1),
+  
+  // Canvas and visual properties
+  canvasData: jsonb("canvas_data").default({}), // Nodes positions, connections, zoom, etc
+  nodes: jsonb("nodes").default([]), // Array of workflow nodes
+  connections: jsonb("connections").default([]), // Array of node connections
+  
+  // Execution properties
+  isActive: boolean("is_active").default(false),
+  triggerConfig: jsonb("trigger_config").default({}), // Trigger configuration
+  variables: jsonb("variables").default({}), // Workflow-level variables
+  settings: jsonb("settings").default({}), // Execution settings
+  
+  // Statistics
+  executionCount: integer("execution_count").default(0),
+  successRate: decimal("success_rate", { precision: 5, scale: 2 }).default('0'),
+  lastExecuted: timestamp("last_executed"),
+  avgExecutionTime: integer("avg_execution_time"), // in milliseconds
+  
+  // Metadata
+  tags: jsonb("tags").default([]), // Array of tags for organization
+  category: varchar("category", { length: 100 }),
+  isTemplate: boolean("is_template").default(false),
+  templateInfo: jsonb("template_info"), // If it's a template
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Individual workflow nodes with visual properties
+export const workflowNodes = pgTable("workflow_nodes", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  workflowId: varchar("workflow_id").references(() => visualWorkflows.id, { onDelete: "cascade" }).notNull(),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  
+  // Node identification
+  nodeKey: varchar("node_key", { length: 50 }).notNull(), // Unique within workflow
+  nodeType: nodeTypeEnum("node_type").notNull(),
+  name: varchar("name", { length: 200 }).notNull(),
+  description: text("description"),
+  
+  // Visual properties
+  position: jsonb("position").notNull(), // { x: number, y: number }
+  size: jsonb("size").default({ width: 200, height: 100 }), // { width: number, height: number }
+  style: jsonb("style").default({}), // Visual styling properties
+  
+  // Configuration
+  config: jsonb("config").notNull(), // Node-specific configuration
+  inputSchema: jsonb("input_schema").default({}), // Expected input structure
+  outputSchema: jsonb("output_schema").default({}), // Output structure
+  
+  // Execution properties
+  isEnabled: boolean("is_enabled").default(true),
+  timeout: integer("timeout").default(30000), // Timeout in milliseconds
+  retryCount: integer("retry_count").default(0),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Node connections/edges
+export const workflowConnections = pgTable("workflow_connections", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  workflowId: varchar("workflow_id").references(() => visualWorkflows.id, { onDelete: "cascade" }).notNull(),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  
+  // Connection endpoints
+  sourceNodeId: varchar("source_node_id").references(() => workflowNodes.id, { onDelete: "cascade" }).notNull(),
+  targetNodeId: varchar("target_node_id").references(() => workflowNodes.id, { onDelete: "cascade" }).notNull(),
+  sourceHandle: varchar("source_handle", { length: 50 }), // Output handle identifier
+  targetHandle: varchar("target_handle", { length: 50 }), // Input handle identifier
+  
+  // Connection properties
+  label: varchar("label", { length: 100 }),
+  style: jsonb("style").default({}), // Visual styling
+  
+  // Conditional connections
+  condition: jsonb("condition"), // Condition for this connection to be taken
+  priority: integer("priority").default(0), // For multiple connections from same node
+  
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Workflow execution logs with detailed tracking
+export const visualWorkflowExecutions = pgTable("visual_workflow_executions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  workflowId: varchar("workflow_id").references(() => visualWorkflows.id).notNull(),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  userId: varchar("user_id").references(() => users.id),
+  
+  // Execution tracking
+  executionId: varchar("execution_id").notNull().unique(), // Unique execution identifier
+  status: executionStatusEnum("status").default('pending'),
+  triggerType: triggerTypeEnum("trigger_type").notNull(),
+  triggerData: jsonb("trigger_data"), // Data that triggered the execution
+  
+  // Execution context
+  context: jsonb("context").default({}), // Execution context and variables
+  input: jsonb("input"), // Input data for execution
+  output: jsonb("output"), // Final output
+  
+  // Timing
+  startedAt: timestamp("started_at").defaultNow(),
+  completedAt: timestamp("completed_at"),
+  duration: integer("duration"), // Duration in milliseconds
+  
+  // Error handling
+  error: text("error"),
+  errorNode: varchar("error_node"), // Node that caused the error
+  stackTrace: text("stack_trace"),
+  
+  // Statistics
+  nodesExecuted: integer("nodes_executed").default(0),
+  totalNodes: integer("total_nodes").default(0),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Node execution logs for detailed tracking
+export const nodeExecutions = pgTable("node_executions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  executionId: varchar("execution_id").references(() => visualWorkflowExecutions.executionId, { onDelete: "cascade" }).notNull(),
+  nodeId: varchar("node_id").references(() => workflowNodes.id).notNull(),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  
+  // Execution details
+  status: executionStatusEnum("status").default('pending'),
+  input: jsonb("input"), // Input data for this node
+  output: jsonb("output"), // Output data from this node
+  
+  // Timing
+  startedAt: timestamp("started_at").defaultNow(),
+  completedAt: timestamp("completed_at"),
+  duration: integer("duration"), // Duration in milliseconds
+  
+  // Error handling
+  error: text("error"),
+  retryCount: integer("retry_count").default(0),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Workflow triggers configuration
+export const workflowTriggers = pgTable("workflow_triggers", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  workflowId: varchar("workflow_id").references(() => visualWorkflows.id, { onDelete: "cascade" }).notNull(),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  
+  // Trigger configuration
+  triggerType: triggerTypeEnum("trigger_type").notNull(),
+  name: varchar("name", { length: 200 }).notNull(),
+  description: text("description"),
+  
+  // Configuration based on trigger type
+  config: jsonb("config").notNull(), // Trigger-specific configuration
+  conditions: jsonb("conditions").default([]), // Array of conditions
+  
+  // Schedule specific (for schedule triggers)
+  cronExpression: varchar("cron_expression"), // Cron expression for scheduling
+  timezone: varchar("timezone").default('UTC'),
+  
+  // Webhook specific
+  webhookUrl: varchar("webhook_url"), // Generated webhook URL
+  webhookSecret: varchar("webhook_secret"), // Secret for webhook validation
+  
+  // Email specific
+  emailFilters: jsonb("email_filters"), // Email filtering rules
+  
+  // Status
+  isActive: boolean("is_active").default(true),
+  lastTriggered: timestamp("last_triggered"),
+  triggerCount: integer("trigger_count").default(0),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Workflow templates for reusability
+export const workflowTemplates = pgTable("workflow_templates", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: varchar("name", { length: 200 }).notNull(),
+  description: text("description"),
+  category: varchar("category", { length: 100 }),
+  
+  // Template data
+  templateData: jsonb("template_data").notNull(), // Complete workflow structure
+  previewImage: varchar("preview_image"), // Preview image URL
+  
+  // Metadata
+  tags: jsonb("tags").default([]),
+  difficulty: varchar("difficulty", { length: 20 }).default('beginner'), // beginner, intermediate, advanced
+  estimatedTime: integer("estimated_time"), // Setup time in minutes
+  
+  // Usage statistics
+  useCount: integer("use_count").default(0),
+  rating: decimal("rating", { precision: 3, scale: 2 }).default('0'),
+  
+  // Availability
+  isPublic: boolean("is_public").default(false),
+  isPremium: boolean("is_premium").default(false),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Workflow variables for dynamic data handling
+export const workflowVariables = pgTable("workflow_variables", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  workflowId: varchar("workflow_id").references(() => visualWorkflows.id, { onDelete: "cascade" }).notNull(),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  
+  // Variable definition
+  name: varchar("name", { length: 100 }).notNull(),
+  type: varchar("type", { length: 50 }).notNull(), // string, number, boolean, object, array
+  defaultValue: jsonb("default_value"),
+  
+  // Metadata
+  description: text("description"),
+  isRequired: boolean("is_required").default(false),
+  isSecret: boolean("is_secret").default(false), // For sensitive data
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Types for Visual Workflow Engine
+export type VisualWorkflow = typeof visualWorkflows.$inferSelect;
+export type InsertVisualWorkflow = typeof visualWorkflows.$inferInsert;
+export type WorkflowNode = typeof workflowNodes.$inferSelect;
+export type InsertWorkflowNode = typeof workflowNodes.$inferInsert;
+export type WorkflowConnection = typeof workflowConnections.$inferSelect;
+export type InsertWorkflowConnection = typeof workflowConnections.$inferInsert;
+export type VisualWorkflowExecution = typeof visualWorkflowExecutions.$inferSelect;
+export type InsertVisualWorkflowExecution = typeof visualWorkflowExecutions.$inferInsert;
+export type NodeExecution = typeof nodeExecutions.$inferSelect;
+export type InsertNodeExecution = typeof nodeExecutions.$inferInsert;
+export type WorkflowTrigger = typeof workflowTriggers.$inferSelect;
+export type InsertWorkflowTrigger = typeof workflowTriggers.$inferInsert;
+export type WorkflowTemplate = typeof workflowTemplates.$inferSelect;
+export type InsertWorkflowTemplate = typeof workflowTemplates.$inferInsert;
+export type WorkflowVariable = typeof workflowVariables.$inferSelect;
+export type InsertWorkflowVariable = typeof workflowVariables.$inferInsert;

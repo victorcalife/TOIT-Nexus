@@ -34,6 +34,7 @@ import planManagementRoutes from "./planManagementRoutes";
 import { trialRoutes } from "./trialRoutes";
 import { fileUploadRoutes } from "./fileUploadRoutes";
 import { advancedTaskRoutes } from "./advancedTaskRoutes";
+import { advancedTaskManagementRoutes } from "./advancedTaskManagementRoutes";
 import verificationRoutes from "./verificationRoutes";
 import enterpriseRoutes from "./enterpriseRoutes";
 import adaptiveRoutes from "./adaptiveRoutes";
@@ -41,6 +42,7 @@ import notificationRoutes from "./notificationRoutes";
 import calendarRoutes from "./calendarRoutes";
 import { adminModuleRoutes } from "./adminModuleRoutes";
 import { tenantControlRoutes } from "./tenantControlRoutes";
+import { visualWorkflowRoutes } from "./visualWorkflowRoutes";
 
 // Helper function to determine if client should be assigned to a category
 function shouldAssignToCategory(client: any, category: any): boolean {
@@ -1883,6 +1885,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Advanced Task routes - necessita autenticação
   app.use('/api/advanced-tasks', advancedTaskRoutes);
   
+  // Advanced Task Management routes - Sistema completo com automação, colaboração e tracking
+  app.use('/api/advanced-tasks', advancedTaskManagementRoutes);
+  
   // Verification routes - Email/Phone verification system
   app.use('/api/verification', verificationRoutes);
   
@@ -1909,6 +1914,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // SISTEMA DE MÓDULOS - Controle e Monetização
   app.use('/api/modules', moduleRoutes);
+
+  // VISUAL WORKFLOW ENGINE - Construtor visual drag-and-drop
+  app.use('/api/visual-workflows', visualWorkflowRoutes);
 
   const httpServer = createServer(app);
   return httpServer;
