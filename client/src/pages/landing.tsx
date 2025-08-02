@@ -25,7 +25,9 @@ import {
   TrendingUp,
   Clock,
   Award,
-  X
+  X,
+  Atom,
+  Brain
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -393,6 +395,40 @@ export default function Landing() {
               </CardContent>
             </Card>
 
+            <Card className="border-2 hover:border-purple-200 transition-colors bg-gradient-to-br from-purple-50 to-cyan-50">
+              <CardHeader>
+                <div className="flex items-center space-x-3">
+                  <Atom className="w-8 h-8 text-purple-600" />
+                  <CardTitle className="flex items-center">
+                    Quantum ML
+                    <Badge className="ml-2 bg-gradient-to-r from-purple-600 to-cyan-600 text-white text-xs">
+                      🇧🇷 PIONEIRO NO BRASIL
+                    </Badge>
+                  </CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600 mb-4">
+                  Primeira plataforma brasileira com algoritmos de ML Quântico simulados. 
+                  Otimizações significativas em processamento e análise de dados.
+                </p>
+                <ul className="space-y-2 text-sm text-gray-500">
+                  <li className="flex items-center"><Check className="w-4 h-4 mr-2 text-green-500" />5 algoritmos simulados</li>
+                  <li className="flex items-center"><Check className="w-4 h-4 mr-2 text-green-500" />10-100x otimização</li>
+                  <li className="flex items-center"><Check className="w-4 h-4 mr-2 text-green-500" />Implementação avançada</li>
+                </ul>
+                <div className="mt-4">
+                  <a 
+                    href="/quantum-ml" 
+                    className="inline-flex items-center text-purple-600 hover:text-purple-800 font-semibold text-sm"
+                  >
+                    Saiba mais sobre Quantum ML
+                    <ArrowRight className="w-4 h-4 ml-1" />
+                  </a>
+                </div>
+              </CardContent>
+            </Card>
+
             <Card className="border-2 hover:border-yellow-200 transition-colors">
               <CardHeader>
                 <div className="flex items-center space-x-3">
@@ -683,6 +719,10 @@ export default function Landing() {
               <h4 className="font-semibold mb-4">Produto</h4>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li><a href="#features" className="hover:text-white">Funcionalidades</a></li>
+                <li><a href="/quantum-ml" className="hover:text-white flex items-center">
+                  <Atom className="w-4 h-4 mr-2" />
+                  Quantum ML
+                </a></li>
                 <li><a href="#pricing" className="hover:text-white">Preços</a></li>
                 <li><a href="#" className="hover:text-white">Integrações</a></li>
                 <li><a href="#" className="hover:text-white">Segurança</a></li>

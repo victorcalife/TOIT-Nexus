@@ -23,7 +23,6 @@ import {
   AlertCircle, 
   Clock,
   ExternalLink,
-  Sync,
   Settings
 } from 'lucide-react';
 
@@ -358,7 +357,7 @@ export default function CalendarIntegrations() {
                   {syncingAll ? (
                     <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
                   ) : (
-                    <Sync className="h-4 w-4 mr-2" />
+                    <RefreshCw className="h-4 w-4 mr-2" />
                   )}
                   Sincronizar Todos
                 </Button>

@@ -54,6 +54,7 @@ const TestEverything = lazy(() => import("@/pages/test-everything"));
 const ClientDashboard = lazy(() => import("@/pages/client-dashboard"));
 const CalendarIntegrations = lazy(() => import("@/pages/calendar-integrations"));
 const CalendarCallback = lazy(() => import("@/pages/calendar-callback"));
+const QuantumMLCommercial = lazy(() => import("@/pages/quantum-ml-commercial"));
 
 function Router() {
   const { isAuthenticated, isLoading, user, isSuperAdmin } = useAuth();
@@ -103,6 +104,7 @@ function Router() {
         <Route path="/verify-account" component={VerifyAccount} />
         <Route path="/verify-email" component={VerifyEmail} />
         <Route path="/verify-phone" component={VerifyPhone} />
+        <Route path="/quantum-ml" component={QuantumMLCommercial} />
         <Route path="/" component={Landing} />
         <Route component={Landing} />
       </Switch>
