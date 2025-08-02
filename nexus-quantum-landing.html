@@ -122,7 +122,7 @@
         }
 
         /* ========================================================================= */
-        /* NAVIGATION */
+        /* NAVIGATION - COMPACT HEADER WITH SECTION SHORTCUTS */
         /* ========================================================================= */
         
         nav {
@@ -134,86 +134,118 @@
             border-bottom: 1px solid var(--border-color);
             z-index: 1000;
             transition: all var(--animation-speed);
+            padding: 0.5rem 0; /* Reduced padding for compact header */
         }
 
         .nav-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 1rem 2rem;
+            padding: 0 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            height: 60px; /* Fixed compact height */
         }
 
+        /* TOIT NEXUS Logo with SVG */
         .logo {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--text-primary);
             text-decoration: none;
+            height: 40px; /* Compact logo height */
         }
 
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            background: var(--quantum-gradient);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
+        .logo svg {
+            height: 40px;
+            width: auto;
         }
 
+        /* Section Navigation Menu */
         .nav-menu {
             display: flex;
             list-style: none;
-            gap: 2rem;
+            gap: 1.5rem;
             align-items: center;
+            margin: 0;
+            padding: 0;
         }
 
         .nav-link {
             color: var(--text-secondary);
             text-decoration: none;
             font-weight: 500;
-            transition: color var(--animation-speed);
+            font-size: 0.9rem;
+            transition: all var(--animation-speed);
             position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
         }
 
         .nav-link:hover {
             color: var(--text-primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .nav-link.active {
+            color: var(--quantum-primary);
+            background: rgba(99, 102, 241, 0.15);
         }
 
         .nav-link::before {
             content: '';
             position: absolute;
-            bottom: -2px;
-            left: 0;
+            bottom: 0;
+            left: 50%;
             width: 0;
             height: 2px;
             background: var(--quantum-gradient);
-            transition: width var(--animation-speed);
+            transition: all var(--animation-speed);
+            transform: translateX(-50%);
         }
 
-        .nav-link:hover::before {
-            width: 100%;
+        .nav-link:hover::before,
+        .nav-link.active::before {
+            width: 80%;
         }
 
         .cta-nav {
             background: var(--quantum-gradient);
             color: white;
-            padding: 0.75rem 1.5rem;
+            padding: 0.6rem 1.2rem;
             border-radius: 8px;
             text-decoration: none;
             font-weight: 600;
+            font-size: 0.9rem;
             transition: all var(--animation-speed);
         }
 
         .cta-nav:hover {
             transform: translateY(-2px);
             box-shadow: var(--quantum-glow);
+        }
+
+        /* Mobile Navigation Toggle */
+        .mobile-nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* ========================================================================= */
+        /* FULL-SCREEN SECTIONS */
+        /* ========================================================================= */
+        
+        .page-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding: 80px 2rem 2rem; /* Account for compact header */
+            scroll-margin-top: 60px; /* Offset for fixed header */
         }
 
         /* ========================================================================= */
@@ -225,7 +257,7 @@
             display: flex;
             align-items: center;
             position: relative;
-            padding: 6rem 2rem 4rem;
+            padding: 80px 2rem 2rem; /* Reduced top padding for compact header */
             background: radial-gradient(ellipse at center top, rgba(99, 102, 241, 0.1) 0%, transparent 50%);
         }
 
@@ -355,8 +387,61 @@
             background: rgba(99, 102, 241, 0.1);
         }
 
+        /* Discover More Section */
+        .discover-more {
+            margin-top: 4rem;
+            text-align: center;
+            animation: discover-pulse 3s ease-in-out infinite;
+        }
+
+        .discover-text {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .discover-btn {
+            background: transparent;
+            border: 2px solid rgba(99, 102, 241, 0.3);
+            color: var(--text-primary);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .discover-btn:hover {
+            border-color: var(--quantum-primary);
+            background: rgba(99, 102, 241, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.2);
+        }
+
+        .discover-arrow {
+            font-size: 1.2rem;
+            animation: discover-bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes discover-pulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes discover-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(3px); }
+        }
+
         /* ========================================================================= */
-        /* QUANTUM CIRCUIT VISUALIZATION */
+        /* QUANTUM CIRCUIT VISUALIZATION - 3D ENHANCED */
         /* ========================================================================= */
         
         .quantum-circuit {
@@ -366,6 +451,49 @@
             border: 1px solid var(--border-color);
             position: relative;
             overflow: hidden;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            transition: all 0.4s ease;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .quantum-circuit:hover {
+            transform: rotateX(5deg) rotateY(5deg) translateZ(20px);
+            box-shadow: 
+                0 20px 50px rgba(99, 102, 241, 0.2),
+                0 15px 35px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .quantum-circuit::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                135deg,
+                rgba(99, 102, 241, 0.1) 0%,
+                transparent 30%,
+                transparent 70%,
+                rgba(139, 92, 246, 0.1) 100%
+            );
+            border-radius: 16px;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .quantum-circuit:hover::before {
+            opacity: 1;
+        }
+
+        .quantum-circuit > * {
+            position: relative;
+            z-index: 2;
         }
 
         .circuit-header {
@@ -477,12 +605,283 @@
         }
 
         /* ========================================================================= */
+        /* NEXUS FLOW SECTION - EPIC PROCESS VISUALIZATION */
+        /* ========================================================================= */
+        
+        .nexus-flow {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 80px 2rem 2rem;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.05) 0%, rgba(99, 102, 241, 0.05) 100%);
+            scroll-margin-top: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nexus-flow::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
+            z-index: 1;
+        }
+
+        .flow-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .flow-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .flow-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #a0a0c0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .flow-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* Process Flow */
+        .process-flow {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .process-step {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            position: relative;
+            transition: all 0.4s ease;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .process-step:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.3),
+                0 0 30px rgba(99, 102, 241, 0.2);
+            border-color: var(--quantum-primary);
+        }
+
+        .process-step::before {
+            content: attr(data-step);
+            position: absolute;
+            top: -15px;
+            left: 2rem;
+            background: var(--quantum-gradient);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--quantum-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2.5rem;
+            position: relative;
+            animation: step-float 3s ease-in-out infinite;
+        }
+
+        .step-icon::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--quantum-gradient);
+            opacity: 0.3;
+            transform: translate(-50%, -50%) scale(1.2);
+            animation: step-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes step-float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        @keyframes step-pulse {
+            0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1.2); }
+            50% { opacity: 0.1; transform: translate(-50%, -50%) scale(1.5); }
+        }
+
+        .step-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .step-description {
+            color: var(--text-secondary);
+            text-align: center;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-features {
+            list-style: none;
+            padding: 0;
+        }
+
+        .step-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .step-features li::before {
+            content: '⚡';
+            color: var(--quantum-primary);
+            font-size: 1rem;
+        }
+
+        /* Machine Learning Integration */
+        .ml-integration {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 3rem;
+            border: 2px solid var(--quantum-primary);
+            margin-top: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ml-integration::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                45deg,
+                rgba(99, 102, 241, 0.05) 0%,
+                transparent 30%,
+                transparent 70%,
+                rgba(139, 92, 246, 0.05) 100%
+            );
+            animation: ml-glow 4s ease-in-out infinite;
+        }
+
+        @keyframes ml-glow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        .ml-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .ml-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: var(--quantum-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .ml-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .ml-benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .ml-benefit {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .ml-benefit:hover {
+            transform: translateY(-5px);
+            background: rgba(99, 102, 241, 0.15);
+            border-color: var(--quantum-primary);
+        }
+
+        .ml-benefit-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .ml-benefit-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--quantum-primary);
+        }
+
+        .ml-benefit-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* ========================================================================= */
         /* QUANTUM ADVANTAGE SECTION */
         /* ========================================================================= */
         
         .quantum-advantage {
-            padding: 6rem 2rem;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 80px 2rem 2rem;
             background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%);
+            scroll-margin-top: 60px;
         }
 
         .advantage-container {
@@ -598,7 +997,11 @@
         /* ========================================================================= */
         
         .use-cases {
-            padding: 6rem 2rem;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 80px 2rem 2rem;
+            scroll-margin-top: 60px;
         }
 
         .cases-container {
@@ -679,8 +1082,12 @@
         /* ========================================================================= */
         
         .pricing {
-            padding: 6rem 2rem;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 80px 2rem 2rem;
             background: linear-gradient(135deg, rgba(15, 15, 35, 0.8) 0%, rgba(26, 26, 58, 0.8) 100%);
+            scroll-margin-top: 60px;
         }
 
         .pricing-container {
@@ -916,6 +1323,23 @@
             gap: 0.5rem;
         }
 
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        /* Responsive form layout */
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+
         .form-label {
             font-weight: 600;
             color: var(--text-primary);
@@ -977,12 +1401,160 @@
         }
 
         /* ========================================================================= */
-        /* RESPONSIVE DESIGN */
+        /* HIGH-LEVEL RESPONSIVE DESIGN */
         /* ========================================================================= */
         
-        @media (max-width: 768px) {
+        /* Large Desktop (1440px+) */
+        @media (min-width: 1440px) {
+            .nav-container {
+                max-width: 1600px;
+            }
+            
+            .hero-container,
+            .advantage-container,
+            .cases-container,
+            .pricing-container {
+                max-width: 1400px;
+            }
+            
+            .hero-content h1 {
+                font-size: 4rem;
+            }
+            
+            .advantage-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Standard Desktop (1024px - 1439px) */
+        @media (min-width: 1024px) and (max-width: 1439px) {
+            .advantage-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .cases-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Tablet Landscape (768px - 1023px) */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .nav-menu {
+                gap: 1rem;
+            }
+            
+            .nav-link {
+                font-size: 0.85rem;
+                padding: 0.4rem 0.8rem;
+            }
+            
+            .hero-container {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+                text-align: center;
+            }
+            
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+            
+            .quantum-stats {
+                justify-content: center;
+                gap: 1.5rem;
+            }
+            
+            .advantage-grid,
+            .cases-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+            
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+        }
+
+        /* Mobile (320px - 767px) */
+        @media (max-width: 767px) {
+            .mobile-nav-toggle {
+                display: block;
+            }
+            
             .nav-menu {
                 display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(15, 15, 35, 0.98);
+                border-top: 1px solid var(--border-color);
+                flex-direction: column;
+                padding: 1rem;
+                gap: 0.5rem;
+            }
+            
+            .nav-menu.active {
+                display: flex;
+            }
+            
+            .nav-link {
+                padding: 0.75rem 1rem;
+                width: 100%;
+                text-align: center;
+                border-radius: 8px;
+            }
+            
+            .cta-nav {
+                margin-top: 0.5rem;
+                text-align: center;
+            }
+
+            .page-section,
+            .hero,
+            .nexus-flow,
+            .quantum-advantage,
+            .use-cases,
+            .pricing {
+                padding: 70px 1rem 1rem;
+                min-height: 100vh;
+            }
+
+            .flow-title {
+                font-size: 2.2rem;
+            }
+
+            .flow-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .process-flow {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .process-step {
+                padding: 1.5rem;
+            }
+
+            .step-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 2rem;
+            }
+
+            .ml-integration {
+                padding: 2rem;
+            }
+
+            .ml-title {
+                font-size: 1.8rem;
+            }
+
+            .ml-benefits {
+                grid-template-columns: 1fr;
+                gap: 1rem;
             }
 
             .hero-container {
@@ -992,16 +1564,49 @@
             }
 
             .hero-content h1 {
-                font-size: 2.5rem;
+                font-size: 2.2rem;
+                line-height: 1.2;
             }
 
             .quantum-stats {
+                flex-wrap: wrap;
                 justify-content: center;
+                gap: 1rem;
+            }
+            
+            .stat-item {
+                min-width: 120px;
             }
 
             .hero-cta {
                 flex-direction: column;
                 align-items: stretch;
+                gap: 0.75rem;
+            }
+
+            .advantage-grid,
+            .cases-grid,
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .quantum-circuit {
+                padding: 1.5rem;
+                transform: none !important;
+            }
+            
+            .quantum-circuit:hover {
+                transform: none !important;
+            }
+
+            .quantum-metrics {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+            
+            .metric-card {
+                padding: 0.75rem;
             }
 
             .pricing-card.featured {
@@ -1011,19 +1616,78 @@
             .pricing-card.featured:hover {
                 transform: translateY(-5px);
             }
-
-            .advantage-grid,
-            .cases-grid,
-            .pricing-grid {
-                grid-template-columns: 1fr;
+            
+            .section-title {
+                font-size: 2rem;
             }
+            
+            .section-subtitle {
+                font-size: 1.1rem;
+            }
+        }
 
+        /* Small Mobile (320px - 480px) */
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+            
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero-description {
+                font-size: 1.1rem;
+            }
+            
+            .quantum-stats {
+                gap: 0.75rem;
+            }
+            
+            .stat-item {
+                min-width: 100px;
+            }
+            
+            .stat-number {
+                font-size: 1.5rem;
+            }
+            
             .quantum-circuit {
                 padding: 1rem;
             }
-
+            
             .quantum-metrics {
                 grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 1.75rem;
+            }
+
+            .flow-title {
+                font-size: 1.8rem;
+            }
+
+            .process-step {
+                padding: 1.25rem;
+            }
+
+            .step-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+
+            .step-title {
+                font-size: 1.2rem;
+            }
+
+            .ml-integration {
+                padding: 1.5rem;
+            }
+
+            .ml-title {
+                font-size: 1.6rem;
             }
         }
 
@@ -1147,17 +1811,36 @@
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <a href="#" class="logo">
-                <div class="logo-icon">N</div>
-                TOIT NEXUS
+            <a href="#hero" class="logo">
+                <svg viewBox="0 0 400 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="brandGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#581c87;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="brand1Gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#001366ff;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#581c87;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#1e3a8a;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <g transform="translate(105,50)">
+                        <text x="-35" y="15" font-family="Arial Black, sans-serif" font-size="45" font-weight="700" fill="url(#brand1Gradient)">TOIT</text>
+                        <text x="75" y="15" font-family="Arial, sans-serif" font-size="45" font-weight="300" fill="url(#brandGradient)">NEXUS</text>
+                    </g>
+                </svg>
             </a>
             <ul class="nav-menu">
-                <li><a href="#quantum-advantage" class="nav-link">Quantum ML</a></li>
+                <li><a href="#hero" class="nav-link active">Início</a></li>
+                <li><a href="#nexus-flow" class="nav-link">Como Funciona</a></li>
+                <li><a href="#quantum-advantage" class="nav-link">Vantagens Quantum</a></li>
                 <li><a href="#use-cases" class="nav-link">Casos de Uso</a></li>
                 <li><a href="#pricing" class="nav-link">Preços</a></li>
                 <li><a href="#" class="nav-link" onclick="openModal('demoModal')">Demo ao Vivo</a></li>
                 <li><a href="#" class="cta-nav" onclick="openModal('trialModal')">Teste 7 Dias Grátis</a></li>
             </ul>
+            <button class="mobile-nav-toggle" onclick="toggleMobileNav()">☰</button>
         </div>
     </nav>
 
@@ -1165,7 +1848,7 @@
     <section class="hero" id="hero">
         <div class="hero-container">
             <div class="hero-content">
-                <h1>A Primeira Plataforma <span class="quantum-highlight">No-Code</span> com <span class="quantum-highlight">Quantum ML</span> do Mundo</h1>
+                <h1>A Primeira Plataforma <span class="quantum-highlight">No-Code</span> com <span class="quantum-highlight">Quantum Machine Learning</span> do Mundo</h1>
                 
                 <p class="hero-description">
                     Revolucione seus workflows com processamento quântico real. 16 qubits, 65.536 universos paralelos, 
@@ -1197,6 +1880,15 @@
                     </button>
                     <button class="btn-secondary" onclick="openModal('demoModal')">
                         🎥 Solicitar Demo
+                    </button>
+                </div>
+
+                <!-- Discover More CTA -->
+                <div class="discover-more">
+                    <p class="discover-text">Descubra como funciona a revolução</p>
+                    <button class="discover-btn" onclick="scrollToSection('nexus-flow')">
+                        <span>✨ Ver o Processo NEXUS</span>
+                        <div class="discover-arrow">↓</div>
                     </button>
                 </div>
             </div>
@@ -1268,11 +1960,181 @@
         </div>
     </section>
 
+    <!-- NEXUS Flow Process Section -->
+    <section class="nexus-flow" id="nexus-flow">
+        <div class="flow-container">
+            <div class="flow-header fade-in">
+                <h2 class="flow-title">Como o <span class="quantum-highlight">TOIT NEXUS</span> Funciona</h2>
+                <p class="flow-subtitle">
+                    Descubra o processo revolucionário que transforma dados em insights poderosos com Machine Learning Quântico integrado em cada etapa.
+                </p>
+            </div>
+
+            <div class="process-flow">
+                <!-- Step 1: Connect -->
+                <div class="process-step fade-in" data-step="PASSO 1">
+                    <div class="step-icon">🔗</div>
+                    <h3 class="step-title">Conectar Dados</h3>
+                    <p class="step-description">
+                        Conecte qualquer fonte de dados em segundos. Banco de dados, APIs ou upload de arquivos - tudo no-code.
+                    </p>
+                    <ul class="step-features">
+                        <li>Bancos SQL/NoSQL</li>
+                        <li>APIs REST/GraphQL</li>
+                        <li>Planilhas Excel/CSV</li>
+                        <li>Webhooks em tempo real</li>
+                        <li>Conexão sem código</li>
+                    </ul>
+                </div>
+
+                <!-- Step 2: Process -->
+                <div class="process-step fade-in" data-step="PASSO 2">
+                    <div class="step-icon">⚙️</div>
+                    <h3 class="step-title">Processar com TQL</h3>
+                    <p class="step-description">
+                        Use TQL (TOIT Query Language) ou interface visual para transformar e analisar seus dados.
+                    </p>
+                    <ul class="step-features">
+                        <li>TQL - Linguagem própria</li>
+                        <li>Interface drag-and-drop</li>
+                        <li>Processamento em tempo real</li>
+                        <li>Quantum Machine Learning integrado</li>
+                        <li>Validação automática</li>
+                    </ul>
+                </div>
+
+                <!-- Step 3: Visualize -->
+                <div class="process-step fade-in" data-step="PASSO 3">
+                    <div class="step-icon">📊</div>
+                    <h3 class="step-title">Gerar Insights</h3>
+                    <p class="step-description">
+                        Crie relatórios e dashboards interativos que se atualizam automaticamente com predições ML.
+                    </p>
+                    <ul class="step-features">
+                        <li>Dashboards interativos</li>
+                        <li>Relatórios automáticos</li>
+                        <li>Predições em tempo real</li>
+                        <li>Alertas inteligentes</li>
+                        <li>Export multi-formato</li>
+                    </ul>
+                </div>
+
+                <!-- Step 4: Automate -->
+                <div class="process-step fade-in" data-step="PASSO 4">
+                    <div class="step-icon">🔄</div>
+                    <h3 class="step-title">Automatizar Tarefas</h3>
+                    <p class="step-description">
+                        Crie e atribua tarefas para equipe com workflows inteligentes que se adaptam aos resultados.
+                    </p>
+                    <ul class="step-features">
+                        <li>Criação de tarefas automática</li>
+                        <li>Atribuição inteligente</li>
+                        <li>Workflow condicional</li>
+                        <li>Notificações personalizadas</li>
+                        <li>Tracking de progresso</li>
+                    </ul>
+                </div>
+
+                <!-- Step 5: Workflow -->
+                <div class="process-step fade-in" data-step="PASSO 5">
+                    <div class="step-icon">🌊</div>
+                    <h3 class="step-title">Orquestrar Workflows</h3>
+                    <p class="step-description">
+                        Conecte todos os processos em workflows poderosos com triggers inteligentes e ações condicionais.
+                    </p>
+                    <ul class="step-features">
+                        <li>Workflows visuais</li>
+                        <li>Triggers por eventos</li>
+                        <li>Lógica condicional</li>
+                        <li>Execução paralela</li>
+                        <li>Histórico completo</li>
+                    </ul>
+                </div>
+
+                <!-- Step 6: Scale -->
+                <div class="process-step fade-in" data-step="PASSO 6">
+                    <div class="step-icon">🚀</div>
+                    <h3 class="step-title">Escalar com ML</h3>
+                    <p class="step-description">
+                        Configure recorrências, triggers e deixe o Machine Learning otimizar automaticamente todos os processos.
+                    </p>
+                    <ul class="step-features">
+                        <li>Agendamento inteligente</li>
+                        <li>Auto-otimização ML</li>
+                        <li>Triggers por resultados</li>
+                        <li>Escalabilidade quantum</li>
+                        <li>Aprendizado contínuo</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Machine Learning Integration -->
+            <div class="ml-integration fade-in">
+                <div class="ml-header">
+                    <h3 class="ml-title">🧠 Machine Learning Quântico Integrado</h3>
+                    <p class="ml-subtitle">
+                        O diferencial revolucionário: ML quântico potencializa cada etapa do processo
+                    </p>
+                </div>
+
+                <div class="ml-benefits">
+                    <div class="ml-benefit">
+                        <span class="ml-benefit-icon">⚡</span>
+                        <h4 class="ml-benefit-title">Conexão Inteligente</h4>
+                        <p class="ml-benefit-desc">
+                            ML detecta automaticamente padrões de dados e sugere as melhores conexões e transformações
+                        </p>
+                    </div>
+
+                    <div class="ml-benefit">
+                        <span class="ml-benefit-icon">🔮</span>
+                        <h4 class="ml-benefit-title">Processamento Preditivo</h4>
+                        <p class="ml-benefit-desc">
+                            Algoritmos quânticos processam 65.536 cenários paralelos para otimizar queries TQL automaticamente
+                        </p>
+                    </div>
+
+                    <div class="ml-benefit">
+                        <span class="ml-benefit-icon">📈</span>
+                        <h4 class="ml-benefit-title">Insights Automáticos</h4>
+                        <p class="ml-benefit-desc">
+                            Relatórios se autocompletam com predições ML e identificam tendências antes que aconteçam
+                        </p>
+                    </div>
+
+                    <div class="ml-benefit">
+                        <span class="ml-benefit-icon">🎯</span>
+                        <h4 class="ml-benefit-title">Tarefas Inteligentes</h4>
+                        <p class="ml-benefit-desc">
+                            Sistema aprende com histórico e cria tarefas automáticas baseadas em padrões identificados
+                        </p>
+                    </div>
+
+                    <div class="ml-benefit">
+                        <span class="ml-benefit-icon">🌊</span>
+                        <h4 class="ml-benefit-title">Workflows Adaptativos</h4>
+                        <p class="ml-benefit-desc">
+                            Fluxos se modificam sozinhos baseados em resultados, otimizando performance continuamente
+                        </p>
+                    </div>
+
+                    <div class="ml-benefit">
+                        <span class="ml-benefit-icon">🚀</span>
+                        <h4 class="ml-benefit-title">Escalabilidade Quântica</h4>
+                        <p class="ml-benefit-desc">
+                            Quantum ML escala infinitamente, mantendo performance mesmo com trilhões de dados
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Quantum Advantage Section -->
     <section class="quantum-advantage" id="quantum-advantage">
         <div class="advantage-container">
             <div class="section-header fade-in">
-                <h2 class="section-title">Por Que <span class="quantum-highlight">Quantum ML</span>?</h2>
+                <h2 class="section-title">Por Que <span class="quantum-highlight">Quantum Machine Learning</span>?</h2>
                 <p class="section-subtitle">
                     Descubra como o processamento quântico revoluciona workflows empresariais com vantagens exponenciais sobre métodos clássicos.
                 </p>
@@ -1579,7 +2441,7 @@
                         <li><span class="feature-check">✓</span> 100.000 Créditos/mês</li>
                         <li><span class="feature-check">✓</span> Operações ilimitadas</li>
                         <li><span class="feature-check">✓</span> Algoritmo de Shor</li>
-                        <li><span class="feature-check">✓</span> Quantum Machine Learning</li>
+                        <li><span class="feature-check">✓</span> Quantum Machine Learning Avançado</li>
                         <li><span class="feature-check">✓</span> Simulações quânticas</li>
                         <li><span class="feature-check">✓</span> QPU dedicado</li>
                         <li><span class="feature-check">✓</span> Quantum Consulting</li>
@@ -1730,13 +2592,15 @@
                     <label class="form-label">Empresa *</label>
                     <input type="text" class="form-input" name="company" required>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">CNPJ</label>
-                    <input type="text" class="form-input" name="cnpj" placeholder="00.000.000/0001-00">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Cargo *</label>
-                    <input type="text" class="form-input" name="position" required>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">CNPJ</label>
+                        <input type="text" class="form-input" name="cnpj" placeholder="00.000.000/0001-00">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Cargo *</label>
+                        <input type="text" class="form-input" name="position" required>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Telefone *</label>
@@ -1750,20 +2614,6 @@
                         <option value="201-1000">201-1000 funcionários</option>
                         <option value="1000-5000">1000-5000 funcionários</option>
                         <option value="5000+">5000+ funcionários</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Desafio Empresarial Principal *</label>
-                    <textarea class="form-input form-textarea" name="challenge" required 
-                              placeholder="Descreva o principal desafio que sua empresa enfrenta e como acredita que tecnologia quântica poderia ajudar..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Melhor Horário para Demo</label>
-                    <select class="form-input" name="preferred_time">
-                        <option value="">Selecione...</option>
-                        <option value="morning">Manhã (9h-12h)</option>
-                        <option value="afternoon">Tarde (14h-17h)</option>
-                        <option value="evening">Início da noite (18h-20h)</option>
                     </select>
                 </div>
                 <button type="submit" class="form-submit">
@@ -2198,11 +3048,57 @@
         });
 
         // ====================================================================
-        // NAVIGATION SCROLL EFFECT
+        // SECTION NAVIGATION & SCROLL EFFECTS
         // ====================================================================
         
+        function toggleMobileNav() {
+            const navMenu = document.querySelector('.nav-menu');
+            navMenu.classList.toggle('active');
+        }
+
+        function updateActiveNavLink() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.offsetHeight;
+                if (window.pageYOffset >= sectionTop && window.pageYOffset < sectionTop + sectionHeight) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${currentSection}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // Smooth scroll to sections
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                const offsetTop = section.offsetTop - 70; // Account for fixed header
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
+                });
+                
+                // Close mobile nav if open
+                const navMenu = document.querySelector('.nav-menu');
+                navMenu.classList.remove('active');
+            }
+        }
+
+        // Update nav on scroll
         window.addEventListener('scroll', function() {
             const nav = document.querySelector('nav');
+            
+            // Update background based on scroll
             if (window.scrollY > 100) {
                 nav.style.background = 'rgba(15, 15, 35, 0.98)';
                 nav.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.3)';
@@ -2210,6 +3106,25 @@
                 nav.style.background = 'rgba(15, 15, 35, 0.95)';
                 nav.style.boxShadow = 'none';
             }
+            
+            // Update active nav link
+            updateActiveNavLink();
+        });
+
+        // Add click handlers to nav links
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    scrollToSection(targetId);
+                });
+            });
+            
+            // Update active nav on load
+            updateActiveNavLink();
         });
     </script>
 </body>

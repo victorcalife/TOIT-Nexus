@@ -1,0 +1,2045 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOIT-Nexus - The One in Tech | Nº 1 em Automação Inteligente no Brasil</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="TOIT-Nexus: Automação inteligente para todos os brasileiros. Workflows, dashboards, relatórios com IA Quantum. A partir de R$ 99/mês. Tecnologia de ponta não é mais exclusividade dos grandes.">
+    <meta name="keywords" content="automação, workflow, brasil, inteligência artificial, quantum ml, zapier brasileiro, produtividade, toit">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="TOIT-Nexus - Nº 1 em Automação Inteligente no Brasil">
+    <meta property="og:description" content="Elimine tarefas repetitivas. Surpreenda com insights. Tecnologia quantum para todos os brasileiros.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://nexus.toit.com.br/">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Stripe -->
+    <script src="https://js.stripe.com/v3/"></script>
+    
+    <style>
+        :root {
+            /* TOIT Brand Colors - Revolutionary */
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #141420;
+            --bg-card: #1e1e2e;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b8;
+            --text-muted: #808088;
+            
+            /* Revolutionary Gradients */
+            --toit-cyan: #00d4ff;
+            --toit-blue: #0099ff;
+            --toit-purple: #6a0dad;
+            --toit-green: #10b981;
+            --gradient-epic: linear-gradient(135deg, #00d4ff 0%, #6a0dad 50%, #0099ff 100%);
+            --gradient-card: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
+            
+            /* Fonts */
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+            
+            /* Physics */
+            --animation-speed: 0.6s;
+            --hover-lift: -8px;
+            --glow-intensity: 0 0 30px rgba(0, 212, 255, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+            padding-top: 60px; /* Ajustado para header mais fino */
+        }
+
+        /* ========================================================================= */
+        /* REVOLUTIONARY BACKGROUND */
+        /* ========================================================================= */
+        
+        .revolutionary-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(106, 13, 173, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+                linear-gradient(180deg, var(--bg-primary) 0%, #050508 100%);
+            animation: backgroundShift 20s ease-in-out infinite;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { transform: scale(1) rotate(0deg); filter: hue-rotate(0deg); }
+            33% { transform: scale(1.05) rotate(1deg); filter: hue-rotate(10deg); }
+            66% { transform: scale(0.95) rotate(-1deg); filter: hue-rotate(-10deg); }
+        }
+
+        /* ========================================================================= */
+        /* NAVIGATION REVOLUTIONARY */
+        /* ========================================================================= */
+        
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all var(--animation-speed);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px; /* Ainda mais fino */
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+        
+        .logo:hover {
+            transform: scale(1.02);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-epic);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 0;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            padding: 0.2rem 0.4rem; /* Margens reduzidas */
+            height: 40px; /* Container mais fino */
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.4rem 1rem; /* Padding reduzido */
+            border-radius: 18px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: all var(--animation-speed);
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .nav-link.active {
+            background: var(--gradient-epic);
+            color: white;
+            box-shadow: var(--glow-intensity);
+        }
+
+        .nav-link:hover:not(.active) {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-cta {
+            background: var(--gradient-epic);
+            color: white;
+            padding: 0.5rem 1.2rem; /* Padding reduzido */
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all var(--animation-speed);
+            margin-left: 0.5rem; /* Margem drasticamente reduzida */
+            white-space: nowrap;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--glow-intensity);
+        }
+
+        /* ========================================================================= */
+        /* HERO SECTION REVOLUTIONARY */
+        /* ========================================================================= */
+        
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 2rem 4rem; /* Ainda mais reduzido para header ultra-compacto */
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-epic);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-tagline {
+            font-size: 1.5rem;
+            color: var(--toit-cyan);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--gradient-epic);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+            font-family: var(--font-mono);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn-primary {
+            background: var(--gradient-epic);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all var(--animation-speed);
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 212, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            padding: 1rem 2rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all var(--animation-speed);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--toit-cyan);
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        /* ========================================================================= */
+        /* 3D CARDS CAROUSEL - MODELO TOP_carousel_optimized.html */
+        /* ========================================================================= */
+        
+        .hero-visual {
+            position: relative;
+            height: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1500px;
+            overflow: visible;
+        }
+
+        .cards-carousel {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            height: 263px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform-style: preserve-3d;
+        }
+
+        .carousel-card {
+            position: absolute;
+            width: 210px;
+            height: 263px;
+            background: var(--gradient-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform-style: preserve-3d;
+            cursor: pointer;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3);
+        }
+
+        .carousel-card.left {
+            left: 50%;
+            transform: translateX(calc(-50% - 110px)) rotateY(12deg) scale(0.85);
+            z-index: 1;
+            opacity: 0.8;
+        }
+
+        .carousel-card.center {
+            left: 50%;
+            transform: translateX(-50%) scale(1);
+            z-index: 10;
+            opacity: 1;
+            box-shadow: 0 20px 50px rgba(0, 212, 255, 0.15);
+        }
+
+        .carousel-card.right {
+            left: 50%;
+            transform: translateX(calc(-50% + 110px)) rotateY(-12deg) scale(0.85);
+            z-index: 1;
+            opacity: 0.8;
+        }
+
+        .carousel-card:hover {
+            transform: translateY(-8px) scale(1.02) !important;
+            z-index: 20 !important;
+            opacity: 1 !important;
+            box-shadow: 0 20px 50px rgba(0, 212, 255, 0.2) !important;
+            border-color: rgba(0, 212, 255, 0.4) !important;
+        }
+
+        .carousel-card.center:hover {
+            transform: translateX(-50%) translateY(-10px) scale(1.02) !important;
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-epic);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem; /* Aumentado para melhor visualização */
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-icon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                45deg,
+                rgba(0, 0, 0, 0.3) 0%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.1) 100%
+            );
+        }
+
+        .card-title {
+            font-size: 1.1rem; /* Ajustado para cards menores */
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        .card-description {
+            color: var(--text-secondary);
+            line-height: 1.4;
+            margin-bottom: 1rem;
+            font-size: 0.85rem; /* Ajustado para cards menores */
+        }
+
+        .card-features {
+            list-style: none;
+        }
+
+        .card-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.75rem; /* Ajustado para cards menores */
+        }
+
+        .card-features li::before {
+            content: "⚡";
+            font-size: 0.7rem;
+            color: var(--toit-cyan);
+        }
+
+        /* ========================================================================= */
+        /* DYNAMIC BADGES REVOLUTIONARY */
+        /* ========================================================================= */
+        
+        .dynamic-badges {
+            position: fixed;
+            top: 50%;
+            right: 2rem;
+            transform: translateY(-50%);
+            z-index: 500;
+            pointer-events: none;
+        }
+
+        .floating-badge {
+            background: var(--gradient-epic);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            margin-bottom: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.3);
+            opacity: 0;
+            transform: translateX(100px);
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            font-size: 0.875rem;
+            font-weight: 600;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .floating-badge.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .floating-badge.hide {
+            opacity: 0;
+            transform: translateX(100px);
+        }
+
+        /* ========================================================================= */
+        /* CONTENT SECTIONS */
+        /* ========================================================================= */
+        
+        .content-section {
+            display: none;
+            min-height: 50vh;
+            padding: 4rem 2rem;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: var(--gradient-epic);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 4rem;
+        }
+
+        /* ========================================================================= */
+        /* PRICING REVOLUTIONARY */
+        /* ========================================================================= */
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .pricing-card {
+            background: var(--gradient-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            position: relative;
+            transition: all var(--animation-speed);
+            backdrop-filter: blur(20px);
+        }
+
+        .pricing-card.featured {
+            border-color: var(--toit-cyan);
+            transform: scale(1.05);
+            box-shadow: var(--glow-intensity);
+        }
+
+        .pricing-card.featured::before {
+            content: "MAIS POPULAR";
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient-epic);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .pricing-card.featured:hover {
+            transform: scale(1.05) translateY(-8px);
+        }
+
+        .plan-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .plan-description {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .plan-price {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .price-currency {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .price-amount {
+            font-size: 3rem;
+            font-weight: 800;
+            font-family: var(--font-mono);
+            color: var(--text-primary);
+        }
+
+        .price-period {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .price-annual {
+            font-size: 0.875rem;
+            color: var(--toit-green);
+            margin-bottom: 2rem;
+        }
+
+        .plan-features {
+            list-style: none;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .plan-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            color: var(--text-secondary);
+        }
+
+        .feature-check {
+            width: 20px;
+            height: 20px;
+            background: var(--toit-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .plan-cta {
+            width: 100%;
+            background: transparent;
+            color: var(--text-primary);
+            padding: 1rem 2rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--animation-speed);
+        }
+
+        .plan-cta:hover {
+            border-color: var(--toit-cyan);
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .pricing-card.featured .plan-cta {
+            background: var(--gradient-epic);
+            border-color: transparent;
+            color: white;
+        }
+
+        .pricing-card.featured .plan-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        /* ========================================================================= */
+        /* RESPONSIVE */
+        /* ========================================================================= */
+        
+        @media (max-width: 1024px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .nav-container {
+                padding: 0 1rem;
+            }
+            
+            .logo svg {
+                width: 280px; /* Dobrado também no tablet */
+                height: 70px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding-top: 55px; /* Ajustado para mobile */
+            }
+            
+            .nav-container {
+                height: 55px; /* Mais fino no mobile */
+                padding: 0 1rem;
+            }
+            
+            .logo svg {
+                width: 240px; /* Dobrado no mobile também */
+                height: 60px;
+            }
+            
+            .nav-cta {
+                padding: 0.4rem 0.8rem; /* Ainda menor no mobile */
+                font-size: 0.8rem;
+                margin-left: 0.3rem; /* Margem mínima no mobile */
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .cards-carousel {
+                height: 240px;
+                max-width: 375px;
+            }
+
+            .carousel-card {
+                width: 180px;
+                height: 240px;
+                padding: 1.125rem;
+            }
+
+            .carousel-card.left {
+                transform: translateX(calc(-50% - 78px)) rotateY(20deg) scale(0.75);
+                z-index: 1;
+            }
+            
+            .carousel-card.center {
+                transform: translateX(-50%) scale(1);
+                z-index: 15;
+            }
+            
+            .carousel-card.right {
+                transform: translateX(calc(-50% + 78px)) rotateY(-20deg) scale(0.75);
+                z-index: 1;
+            }
+
+            .dynamic-badges {
+                right: 1rem;
+                top: auto;
+                bottom: 2rem;
+                transform: none;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-card.featured {
+                transform: none;
+            }
+
+            .pricing-card.featured:hover {
+                transform: translateY(-8px);
+            }
+        }
+
+        /* ========================================================================= */
+        /* LOADING ANIMATION */
+        /* ========================================================================= */
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ========================================================================= */
+        /* MODAL STYLES */
+        /* ========================================================================= */
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: modalFadeIn 0.3s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideUp 0.3s ease-out;
+        }
+
+        @keyframes modalSlideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--animation-speed);
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .modal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        .form-input {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 0.75rem;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all var(--animation-speed);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--toit-cyan);
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+        }
+
+        .form-submit {
+            background: var(--gradient-epic);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--animation-speed);
+            margin-top: 1rem;
+        }
+
+        .form-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .form-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--toit-green);
+            border-radius: 8px;
+            padding: 1rem;
+            color: var(--toit-green);
+            text-align: center;
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            border-radius: 8px;
+            padding: 1rem;
+            color: #ef4444;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Revolutionary Background -->
+    <div class="revolutionary-background"></div>
+
+    <!-- Dynamic Badges -->
+    <div class="dynamic-badges" id="dynamicBadges"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="javascript:void(0)" class="logo">
+                <!-- Logo Aumentado 100% Senior UI Design -->
+                <svg width="320" height="80" viewBox="0 0 400 100" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="brandGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
+                      <stop offset="50%" style="stop-color:#581c87;stop-opacity:1" />
+                      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+                    </linearGradient>
+                    <linearGradient id="brand1Gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" style="stop-color:#001366ff;stop-opacity:1" />
+                      <stop offset="50%" style="stop-color:#581c87;stop-opacity:1" />
+                      <stop offset="100%" style="stop-color:#1e3a8a;stop-opacity:1" />
+                    </linearGradient>
+                  </defs>
+                  <g transform="translate(105,50)">
+                    <text x="-35" y="15" font-family="Inter, Arial Black, sans-serif" font-size="42" font-weight="800" fill="url(#brand1Gradient)">
+                      TOIT
+                    </text>
+                    <text x="75" y="15" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="300" fill="url(#brandGradient)">
+                      NEXUS
+                    </text>
+                  </g>
+                </svg>
+            </a>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="javascript:void(0)" class="nav-link active" data-section="hero">
+                        Início
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:void(0)" class="nav-link" data-section="workflows">
+                        Workflows
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:void(0)" class="nav-link" data-section="automation">
+                        Automação
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:void(0)" class="nav-link" data-section="dashboards">
+                        Dashboards
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:void(0)" class="nav-link" data-section="reports">
+                        Reports
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:void(0)" class="nav-link" data-section="quantum">
+                        Quantum
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:void(0)" class="nav-link" data-section="pricing">
+                        Preços
+                    </a>
+                </li>
+            </ul>
+            
+            <a href="javascript:void(0)" class="nav-cta" onclick="openModal('trialModal')">
+                Começar Grátis
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero content-section active" id="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-tagline">🇧🇷 Agora nº 1 no Brasil</div>
+                <h1>TOIT-Nexus<br>Automação para<br><span style="color: var(--toit-cyan);">Todos</span></h1>
+                <p class="hero-subtitle">
+                    Elimine tarefas repetitivas. Surpreenda com insights.<br>
+                    <strong>Tecnologia de ponta não é mais exclusividade dos grandes.</strong>
+                </p>
+                
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">200M+</span>
+                        <div class="stat-label">Brasileiros</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">47%</span>
+                        <div class="stat-label">Tempo Economizado</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">R$ 99</span>
+                        <div class="stat-label">A partir de</div>
+                    </div>
+                </div>
+                
+                <div class="hero-cta">
+                    <button class="btn-primary" onclick="openModal('trialModal')">
+                        🚀 Começar Grátis
+                    </button>
+                    <a href="javascript:void(0)" class="btn-secondary" onclick="scrollToSection('quantum')">
+                        ⚡ Ver Quantum ML
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hero-visual">
+                <div class="cards-carousel">
+                    <div class="carousel-card left">
+                        <div class="card-icon">📋</div>
+                        <h3 class="card-title">Workflows</h3>
+                        <p class="card-description">Automatize processos complexos com drag-and-drop visual</p>
+                        <ul class="card-features">
+                            <li>Triggers inteligentes</li>
+                            <li>Condições avançadas</li>
+                            <li>Integrações ilimitadas</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="carousel-card center">
+                        <div class="card-icon">🤖</div>
+                        <h3 class="card-title">IA Quantum</h3>
+                        <p class="card-description">Predições e insights com tecnologia quantum de 16 qubits físicos</p>
+                        <ul class="card-features">
+                            <li>65.536 universos paralelos</li>
+                            <li>Vantagem quântica 10.000x</li>
+                            <li>Insights preditivos 78% precisos</li>
+                            <li>Auto-otimização contínua</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="carousel-card right">
+                        <div class="card-icon">📊</div>
+                        <h3 class="card-title">Dashboards</h3>
+                        <p class="card-description">Visualize dados em tempo real com charts dinâmicos</p>
+                        <ul class="card-features">
+                            <li>16+ tipos de widgets</li>
+                            <li>Customização total</li>
+                            <li>Tempo real</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workflows Section -->
+    <section class="content-section" id="workflows">
+        <div class="section-container">
+            <h2 class="section-title">Workflows Inteligentes</h2>
+            <p class="section-subtitle">
+                Construa automações poderosas sem programar. Interface visual drag-and-drop com TQL (TOIT Query Language).
+            </p>
+            <!-- Content will be added here -->
+        </div>
+    </section>
+
+    <!-- Automation Section -->
+    <section class="content-section" id="automation">
+        <div class="section-container">
+            <h2 class="section-title">Automação Total</h2>
+            <p class="section-subtitle">
+                Elimine tarefas repetitivas. Conecte aplicativos. Surpreenda seu chefe com produtividade.
+            </p>
+            <!-- Content will be added here -->
+        </div>
+    </section>
+
+    <!-- Dashboards Section -->
+    <section class="content-section" id="dashboards">
+        <div class="section-container">
+            <h2 class="section-title">Dashboards Dinâmicos</h2>
+            <p class="section-subtitle">
+                Visualize dados em tempo real. 16+ tipos de widgets. Customização total.
+            </p>
+            <!-- Content will be added here -->
+        </div>
+    </section>
+
+    <!-- Reports Section -->
+    <section class="content-section" id="reports">
+        <div class="section-container">
+            <h2 class="section-title">Relatórios Automáticos</h2>
+            <p class="section-subtitle">
+                Relatórios gerados automaticamente. Export em PDF, Excel. Envio programado.
+            </p>
+            <!-- Content will be added here -->
+        </div>
+    </section>
+
+    <!-- Quantum Section -->
+    <section class="content-section" id="quantum">
+        <div class="section-container">
+            <h2 class="section-title">Quantum ML Engine</h2>
+            <p class="section-subtitle">
+                16 qubits. 65.536 universos paralelos. Vantagem quântica de até 10.000x vs. computação clássica.
+            </p>
+            <!-- Content will be added here -->
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="content-section" id="pricing">
+        <div class="section-container">
+            <h2 class="section-title">Preços Revolucionários</h2>
+            <p class="section-subtitle">
+                Tecnologia mundial. Preços brasileiros. Para pessoas físicas e empresas.
+            </p>
+            
+            <div class="pricing-grid">
+                <!-- Básico -->
+                <div class="pricing-card">
+                    <h3 class="plan-name">TOIT-Nexus BÁSICO</h3>
+                    <p class="plan-description">Automação essencial com ML Quantum básico</p>
+                    
+                    <div class="plan-price">
+                        <span class="price-currency">R$</span>
+                        <span class="price-amount">99</span>
+                        <span class="price-period">/mês</span>
+                    </div>
+                    <div class="price-annual">ou R$ 899/ano (economia R$ 289)</div>
+                    
+                    <ul class="plan-features">
+                        <li><span class="feature-check">✓</span> Workflows ilimitados</li>
+                        <li><span class="feature-check">✓</span> 50 automações/mês</li>
+                        <li><span class="feature-check">✓</span> ML Quantum 4 qubits</li>
+                        <li><span class="feature-check">✓</span> 5 dashboards</li>
+                        <li><span class="feature-check">✓</span> Suporte email</li>
+                    </ul>
+                    
+                    <button class="plan-cta" onclick="openModal('trialModal', 'basico')">
+                        Começar Grátis 7 Dias
+                    </button>
+                </div>
+
+                <!-- Standard -->
+                <div class="pricing-card featured">
+                    <h3 class="plan-name">TOIT-Nexus STANDARD</h3>
+                    <p class="plan-description">Automação avançada + TQL + ML Quantum intermediário</p>
+                    
+                    <div class="plan-price">
+                        <span class="price-currency">R$</span>
+                        <span class="price-amount">139</span>
+                        <span class="price-period">/mês</span>
+                    </div>
+                    <div class="price-annual">ou R$ 1.199/ano (economia R$ 469)</div>
+                    
+                    <ul class="plan-features">
+                        <li><span class="feature-check">✓</span> Tudo do Básico</li>
+                        <li><span class="feature-check">✓</span> 200 automações/mês</li>
+                        <li><span class="feature-check">✓</span> TQL - TOIT Query Language</li>
+                        <li><span class="feature-check">✓</span> ML Quantum 8 qubits</li>
+                        <li><span class="feature-check">✓</span> 20 dashboards</li>
+                        <li><span class="feature-check">✓</span> Relatórios automáticos</li>
+                        <li><span class="feature-check">✓</span> Suporte prioritário</li>
+                    </ul>
+                    
+                    <button class="plan-cta" onclick="openModal('trialModal', 'standard')">
+                        Começar Grátis 7 Dias
+                    </button>
+                </div>
+
+                <!-- Premium -->
+                <div class="pricing-card">
+                    <h3 class="plan-name">TOIT-Nexus PREMIUM</h3>
+                    <p class="plan-description">Automação completa + ML Quantum avançado</p>
+                    
+                    <div class="plan-price">
+                        <span class="price-currency">R$</span>
+                        <span class="price-amount">199</span>
+                        <span class="price-period">/mês</span>
+                    </div>
+                    <div class="price-annual">ou R$ 1.799/ano (economia R$ 589)</div>
+                    
+                    <ul class="plan-features">
+                        <li><span class="feature-check">✓</span> Tudo do Standard</li>
+                        <li><span class="feature-check">✓</span> Automações ilimitadas</li>
+                        <li><span class="feature-check">✓</span> ML Quantum 12 qubits</li>
+                        <li><span class="feature-check">✓</span> Dashboards ilimitados</li>
+                        <li><span class="feature-check">✓</span> API completa</li>
+                        <li><span class="feature-check">✓</span> Integrações premium</li>
+                        <li><span class="feature-check">✓</span> Suporte 24/7</li>
+                    </ul>
+                    
+                    <button class="plan-cta" onclick="openModal('trialModal', 'premium')">
+                        Começar Grátis 7 Dias
+                    </button>
+                </div>
+
+                <!-- Quantum -->
+                <div class="pricing-card">
+                    <h3 class="plan-name">TOIT-Nexus QUANTUM</h3>
+                    <p class="plan-description">Full quantum power - 16 qubits completos</p>
+                    
+                    <div class="plan-price">
+                        <span class="price-currency">R$</span>
+                        <span class="price-amount">299</span>
+                        <span class="price-period">/mês</span>
+                    </div>
+                    <div class="price-annual">ou R$ 2.899/ano (economia R$ 689)</div>
+                    
+                    <ul class="plan-features">
+                        <li><span class="feature-check">✓</span> Tudo do Premium</li>
+                        <li><span class="feature-check">✓</span> ML Quantum 16 qubits</li>
+                        <li><span class="feature-check">✓</span> 65.536 universos paralelos</li>
+                        <li><span class="feature-check">✓</span> Vantagem quântica 10.000x</li>
+                        <li><span class="feature-check">✓</span> Predições avançadas</li>
+                        <li><span class="feature-check">✓</span> Quantum consulting</li>
+                        <li><span class="feature-check">✓</span> Suporte dedicado</li>
+                    </ul>
+                    
+                    <button class="plan-cta" onclick="openModal('trialModal', 'quantum')">
+                        Começar Grátis 7 Dias
+                    </button>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 3rem; padding: 2rem; background: rgba(255,255,255,0.05); border-radius: 15px;">
+                <h4 style="color: var(--toit-cyan); margin-bottom: 1rem;">💼 Para Empresas</h4>
+                <p style="color: var(--text-secondary);">
+                    Preços diferenciados para empresas. Mínimo 5 usuários.<br>
+                    <strong>Entre em contato para proposta personalizada.</strong>
+                </p>
+                <button class="btn-primary" onclick="openModal('enterpriseModal')" style="margin-top: 1rem;">
+                    Falar com Vendas
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trial Modal -->
+    <div class="modal" id="trialModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('trialModal')">&times;</button>
+            <h2 class="modal-title">🚀 Comece seu Teste Grátis</h2>
+            <form class="modal-form" id="trialForm">
+                <div class="form-group">
+                    <label class="form-label">Nome Completo</label>
+                    <input type="text" class="form-input" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Telefone</label>
+                    <input type="tel" class="form-input" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Empresa (opcional)</label>
+                    <input type="text" class="form-input" name="company">
+                </div>
+                
+                <button type="submit" class="form-submit">
+                    Ativar 7 Dias Grátis
+                </button>
+                
+                <div id="trialMessage"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Enterprise Modal -->
+    <div class="modal" id="enterpriseModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('enterpriseModal')">&times;</button>
+            <h2 class="modal-title">💼 Soluções Enterprise</h2>
+            <form class="modal-form" id="enterpriseForm">
+                <div class="form-group">
+                    <label class="form-label">Nome Completo</label>
+                    <input type="text" class="form-input" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email Corporativo</label>
+                    <input type="email" class="form-input" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Empresa</label>
+                    <input type="text" class="form-input" name="company" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">CNPJ</label>
+                    <input type="text" class="form-input" name="cnpj">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Número de Usuários</label>
+                    <select class="form-input" name="users" required>
+                        <option value="">Selecione</option>
+                        <option value="5-10">5-10 usuários</option>
+                        <option value="11-25">11-25 usuários</option>
+                        <option value="26-50">26-50 usuários</option>
+                        <option value="51-100">51-100 usuários</option>
+                        <option value="100+">Mais de 100 usuários</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Setor de Atividade</label>
+                    <input type="text" class="form-input" name="sector" required>
+                </div>
+                
+                <button type="submit" class="form-submit">
+                    Solicitar Proposta
+                </button>
+                
+                <div id="enterpriseMessage"></div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // ====================================================================
+        // REVOLUTIONARY VARIABLES
+        // ====================================================================
+        
+        let currentSection = 'hero';
+        let carouselIndex = 1; // Center card
+        let badgeIndex = 0;
+        let badgeInterval;
+        let stripe = null;
+
+        // Revolutionary badges
+        const revolutionaryBadges = [
+            "⚡ João automatizou 47 tarefas hoje",
+            "🧠 Maria economizou 3.2h com TQL",
+            "💰 Pedro aumentou vendas em 34% este mês",
+            "📊 Ana criou 12 relatórios automáticos",
+            "🚀 Carlos eliminou 89% das tarefas manuais",
+            "💎 Sofia usa Quantum ML para predições",
+            "📈 Rafael monitora KPIs em tempo real",
+            "🎯 Julia integrou 15 aplicativos hoje",
+            "⚡ Workflow Vendas: Processando 23 leads",
+            "✅ Relatório Financeiro: Concluído em 2.3s",
+            "🧠 Insight Quantum: ROI previsto +29%",
+            "📊 Dashboard RH: 8 tarefas automatizadas",
+            "🎯 TQL Query: 'Vendas > R$ 10k' → 47 resultados"
+        ];
+
+        // ====================================================================
+        // INITIALIZATION
+        // ====================================================================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeRevolutionaryExperience();
+            initializeNavigation();
+            initializeBadges();
+            initializeCarousel();
+            initializeForms();
+        });
+
+        function initializeRevolutionaryExperience() {
+            console.log('🚀 TOIT-Nexus Revolutionary Experience Initialized!');
+            
+            // Preload next section content
+            preloadSectionContent();
+            
+            // Initialize smooth scrolling
+            enableSmoothScrolling();
+        }
+
+        function initializeNavigation() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const sectionId = this.getAttribute('data-section');
+                    switchToSection(sectionId);
+                    
+                    // Update active nav link
+                    navLinks.forEach(nl => nl.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        }
+
+        function switchToSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show target section
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                currentSection = sectionId;
+                
+                // Load section content if needed
+                loadSectionContent(sectionId);
+            }
+        }
+
+        function loadSectionContent(sectionId) {
+            // Dynamic content loading based on section
+            switch(sectionId) {
+                case 'workflows':
+                    loadWorkflowsContent();
+                    break;
+                case 'automation':
+                    loadAutomationContent();
+                    break;
+                case 'dashboards':
+                    loadDashboardsContent();
+                    break;
+                case 'reports':
+                    loadReportsContent();
+                    break;
+                case 'quantum':
+                    loadQuantumContent();
+                    break;
+            }
+        }
+
+        function preloadSectionContent() {
+            // Preload critical content for faster navigation
+            setTimeout(() => {
+                loadWorkflowsContent();
+                loadAutomationContent();
+            }, 1000);
+        }
+
+        function enableSmoothScrolling() {
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const href = this.getAttribute('href');
+                    if (href && href !== '#' && href.length > 1) {
+                        const target = document.querySelector(href);
+                        if (target) {
+                            target.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    }
+                });
+            });
+        }
+
+        // ====================================================================
+        // DYNAMIC BADGES SYSTEM
+        // ====================================================================
+        
+        function initializeBadges() {
+            startBadgeRotation();
+        }
+
+        function startBadgeRotation() {
+            badgeInterval = setInterval(showNextBadge, 4000);
+            showNextBadge(); // Show first badge immediately
+        }
+
+        function showNextBadge() {
+            const badgeContainer = document.getElementById('dynamicBadges');
+            
+            // Create new badge
+            const badge = document.createElement('div');
+            badge.className = 'floating-badge';
+            badge.textContent = revolutionaryBadges[badgeIndex];
+            
+            badgeContainer.appendChild(badge);
+            
+            // Show badge
+            setTimeout(() => {
+                badge.classList.add('show');
+            }, 100);
+            
+            // Hide and remove badge
+            setTimeout(() => {
+                badge.classList.add('hide');
+                setTimeout(() => {
+                    if (badge.parentNode) {
+                        badge.parentNode.removeChild(badge);
+                    }
+                }, 600);
+            }, 3500);
+            
+            // Next badge
+            badgeIndex = (badgeIndex + 1) % revolutionaryBadges.length;
+        }
+
+        // ====================================================================
+        // 3D CAROUSEL SYSTEM
+        // ====================================================================
+        
+        function initializeCarousel() {
+            const cards = document.querySelectorAll('.carousel-card');
+            
+            cards.forEach((card, index) => {
+                card.addEventListener('click', () => {
+                    rotateCarouselTo(index);
+                });
+            });
+            
+            // Auto-rotate every 6 seconds
+            setInterval(autoRotateCarousel, 6000);
+        }
+
+        function rotateCarouselTo(targetIndex) {
+            const cards = document.querySelectorAll('.carousel-card');
+            
+            cards.forEach((card, index) => {
+                card.classList.remove('left', 'center', 'right');
+                
+                if (index === targetIndex) {
+                    card.classList.add('center');
+                } else if (index === (targetIndex - 1 + cards.length) % cards.length) {
+                    card.classList.add('left');
+                } else if (index === (targetIndex + 1) % cards.length) {
+                    card.classList.add('right');
+                }
+            });
+            
+            carouselIndex = targetIndex;
+        }
+
+        function autoRotateCarousel() {
+            const cards = document.querySelectorAll('.carousel-card');
+            const nextIndex = (carouselIndex + 1) % cards.length;
+            rotateCarouselTo(nextIndex);
+        }
+
+        // ====================================================================
+        // CONTENT LOADERS
+        // ====================================================================
+        
+        function loadWorkflowsContent() {
+            const section = document.querySelector('#workflows .section-container');
+            if (section.children.length > 2) return; // Already loaded
+            
+            // Add workflows content
+            section.innerHTML += `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem;">
+                    <div style="background: var(--gradient-card); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1);">
+                        <h3 style="color: var(--toit-cyan); margin-bottom: 1rem;">🎯 TQL - TOIT Query Language</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 1rem;">Consulte dados em português simples:</p>
+                        <code style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; display: block; color: var(--toit-cyan);">
+                            "Mostre vendas do João > R$ 5000 este mês"
+                        </code>
+                    </div>
+                    <div style="background: var(--gradient-card); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1);">
+                        <h3 style="color: var(--toit-cyan); margin-bottom: 1rem;">⚡ Triggers Inteligentes</h3>
+                        <p style="color: var(--text-secondary);">Dispare automações com:</p>
+                        <ul style="list-style: none; margin-top: 1rem;">
+                            <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">📧 Emails recebidos</li>
+                            <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">📅 Eventos de calendário</li>
+                            <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">📊 Mudanças em dados</li>
+                            <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">🕐 Agendamentos</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadAutomationContent() {
+            const section = document.querySelector('#automation .section-container');
+            if (section.children.length > 2) return; // Already loaded
+            
+            section.innerHTML += `
+                <div style="text-align: center; margin: 3rem 0;">
+                    <h3 style="color: var(--toit-cyan); margin-bottom: 2rem;">Casos de Uso Reais</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
+                        <div style="background: var(--gradient-card); padding: 2rem; border-radius: 15px;">
+                            <h4 style="margin-bottom: 1rem;">👔 Para Funcionários</h4>
+                            <p style="color: var(--text-secondary);">"Automatizei meus relatórios semanais. Agora meu chefe fica impressionado com minha produtividade!"</p>
+                        </div>
+                        <div style="background: var(--gradient-card); padding: 2rem; border-radius: 15px;">
+                            <h4 style="margin-bottom: 1rem;">🏢 Para Gestores</h4>
+                            <p style="color: var(--text-secondary);">"Controlo toda minha equipe em tempo real. Sei exatamente quem está fazendo o quê."</p>
+                        </div>
+                        <div style="background: var(--gradient-card); padding: 2rem; border-radius: 15px;">
+                            <h4 style="margin-bottom: 1rem;">🚀 Para Empreendedores</h4>
+                            <p style="color: var(--text-secondary);">"Eliminei 70% das tarefas manuais. Agora foco no estratégico."</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadDashboardsContent() {
+            const section = document.querySelector('#dashboards .section-container');
+            if (section.children.length > 2) return;
+            
+            section.innerHTML += `
+                <div style="text-align: center; margin: 3rem 0;">
+                    <div style="background: var(--gradient-card); padding: 3rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">
+                        <h3 style="color: var(--toit-cyan); margin-bottom: 2rem;">📊 16+ Tipos de Widgets</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 2rem;">
+                            <div style="padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 10px;">📈 Gráficos de Linha</div>
+                            <div style="padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 10px;">📊 Barras & Colunas</div>
+                            <div style="padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 10px;">🥧 Pizza & Donut</div>
+                            <div style="padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 10px;">🔢 KPIs Numéricos</div>
+                            <div style="padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 10px;">⚡ Gauges</div>
+                            <div style="padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 10px;">📋 Tabelas</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadReportsContent() {
+            const section = document.querySelector('#reports .section-container');
+            if (section.children.length > 2) return;
+            
+            section.innerHTML += `
+                <div style="margin: 3rem 0;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
+                        <div>
+                            <h3 style="color: var(--toit-cyan); margin-bottom: 1rem;">⚡ Geração Automática</h3>
+                            <ul style="list-style: none; margin-top: 1rem;">
+                                <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">📅 Relatórios diários, semanais, mensais</li>
+                                <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">📧 Envio automático por email</li>
+                                <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">📊 Export PDF, Excel, CSV</li>
+                                <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">🎯 Filtros inteligentes</li>
+                                <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">🧠 Insights com IA Quantum</li>
+                            </ul>
+                        </div>
+                        <div style="background: var(--gradient-card); padding: 2rem; border-radius: 15px; text-align: center;">
+                            <h4 style="margin-bottom: 1rem;">📈 Exemplo de Insight</h4>
+                            <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; border-left: 4px solid var(--toit-cyan);">
+                                <p style="color: var(--toit-cyan); font-weight: 600;">🧠 Quantum Insight:</p>
+                                <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                                    "Com base no histórico, suas vendas aumentarão 23% na próxima semana. 
+                                    Recomendo focar em leads do setor tecnológico."
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadQuantumContent() {
+            const section = document.querySelector('#quantum .section-container');
+            if (section.children.length > 2) return;
+            
+            section.innerHTML += `
+                <div style="margin: 3rem 0;">
+                    <!-- Vantagens Quantum Expandidas -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+                        <div style="background: var(--gradient-card); padding: 2rem; border-radius: 15px; border: 1px solid rgba(0,212,255,0.3);">
+                            <h3 style="color: var(--toit-cyan); margin-bottom: 1rem;">🔬 16 Qubits Físicos</h3>
+                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                                Processamento quântico real com superposição e emaranhamento.
+                            </p>
+                            <div style="color: var(--toit-cyan); font-family: var(--font-mono); font-size: 0.9rem;">
+                                Superposition: |0⟩ + |1⟩<br>
+                                Entanglement: Bell States<br>
+                                Coherence: 150μs<br>
+                                Fidelity: 99.95%
+                            </div>
+                        </div>
+                        
+                        <div style="background: var(--gradient-card); padding: 2rem; border-radius: 15px; border: 1px solid rgba(106,13,173,0.3);">
+                            <h3 style="color: var(--toit-purple); margin-bottom: 1rem;">🌌 65.536 Universos Paralelos</h3>
+                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                                Processamento simultâneo em múltiplas realidades quânticas.
+                            </p>
+                            <div style="color: var(--toit-purple); font-family: var(--font-mono); font-size: 0.9rem;">
+                                Parallel States: 2^16<br>
+                                Quantum Volume: 128<br>
+                                Error Rate: 0.05%<br>
+                                Speedup: Exponencial
+                            </div>
+                        </div>
+                        
+                        <div style="background: var(--gradient-card); padding: 2rem; border-radius: 15px; border: 1px solid rgba(16,185,129,0.3);">
+                            <h3 style="color: var(--toit-green); margin-bottom: 1rem;">⚡ Vantagem Quântica 10.000x</h3>
+                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                                Algoritmos quânticos que superam computação clássica.
+                            </p>
+                            <div style="color: var(--toit-green); font-family: var(--font-mono); font-size: 0.9rem;">
+                                VQE Optimization: 10.000x<br>
+                                Shor Algorithm: Exponencial<br>
+                                Grover Search: √N advantage<br>
+                                QAOA: 1000x+ speedup
+                            </div>
+                        </div>
+                        
+                        <div style="background: var(--gradient-card); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255,165,0,0.3);">
+                            <h3 style="color: #ffa500; margin-bottom: 1rem;">🧠 Inteligência Híbrida</h3>
+                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                                Combinação de computação clássica e quântica para máxima eficiência.
+                            </p>
+                            <div style="color: #ffa500; font-family: var(--font-mono); font-size: 0.9rem;">
+                                Classical+Quantum ML<br>
+                                Adaptive Algorithms<br>
+                                Real-time Optimization<br>
+                                Auto-tuning Circuits
+                            </div>
+                        </div>
+                        
+                        <div style="background: var(--gradient-card); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255,20,147,0.3);">
+                            <h3 style="color: #ff1493; margin-bottom: 1rem;">🔮 Predições Temporais</h3>
+                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                                Análise de séries temporais com precisão quântica para o futuro.
+                            </p>
+                            <div style="color: #ff1493; font-family: var(--font-mono); font-size: 0.9rem;">
+                                Time Series Analysis<br>
+                                Trend Prediction: 78%<br>
+                                Market Forecasting<br>
+                                Quantum Chronodynamics
+                            </div>
+                        </div>
+                        
+                        <div style="background: var(--gradient-card); padding: 2rem; border-radius: 15px; border: 1px solid rgba(50,205,50,0.3);">
+                            <h3 style="color: #32cd32; margin-bottom: 1rem;">🚀 Escalabilidade Infinita</h3>
+                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                                Arquitetura quântica que escala exponencialmente com complexidade.
+                            </p>
+                            <div style="color: #32cd32; font-family: var(--font-mono); font-size: 0.9rem;">
+                                Exponential Scaling<br>
+                                Fault-tolerant Codes<br>
+                                Cloud Quantum Access<br>
+                                Distributed Computing
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 3rem; padding: 2rem; background: rgba(0,212,255,0.1); border-radius: 15px; border: 1px solid rgba(0,212,255,0.3);">
+                        <h4 style="color: var(--toit-cyan); margin-bottom: 2rem; font-size: 1.5rem;">💎 5 Casos de Uso Reais com TOIT-Nexus Quantum</h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                            <div style="padding: 2rem; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(0,212,255,0.2);">
+                                <div style="font-size: 2rem; margin-bottom: 1rem;">📋</div>
+                                <strong style="color: var(--toit-cyan); font-size: 1.1rem;">Workflows Inteligentes</strong><br>
+                                <p style="color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.5;">IA Quantum otimiza automaticamente sequências de tarefas, prevendo gargalos e sugerindo melhorias em workflows complexos com 89% de precisão.</p>
+                            </div>
+                            <div style="padding: 2rem; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(106,13,173,0.2);">
+                                <div style="font-size: 2rem; margin-bottom: 1rem;">📊</div>
+                                <strong style="color: var(--toit-purple); font-size: 1.1rem;">Dashboards Preditivos</strong><br>
+                                <p style="color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.5;">Algoritmos quânticos analisam padrões em tempo real, gerando dashboards que mostram não apenas o presente, mas preveem tendências futuras com 78% de acurácia.</p>
+                            </div>
+                            <div style="padding: 2rem; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(16,185,129,0.2);">
+                                <div style="font-size: 2rem; margin-bottom: 1rem;">📈</div>
+                                <strong style="color: var(--toit-green); font-size: 1.1rem;">Reports Auto-Insights</strong><br>
+                                <p style="color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.5;">Sistema quantum gera relatórios que não apenas mostram dados, mas descobrem correlações ocultas e insights estratégicos automaticamente.</p>
+                            </div>
+                            <div style="padding: 2rem; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,165,0,0.2);">
+                                <div style="font-size: 2rem; margin-bottom: 1rem;">🎯</div>
+                                <strong style="color: #ffa500; font-size: 1.1rem;">Task Optimization</strong><br>
+                                <p style="color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.5;">IA Quantum reorganiza automaticamente tarefas da equipe baseado em capacidade, deadline e dependências, aumentando produtividade em 47%.</p>
+                            </div>
+                            <div style="padding: 2rem; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,20,147,0.2);">
+                                <div style="font-size: 2rem; margin-bottom: 1rem;">🔮</div>
+                                <strong style="color: #ff1493; font-size: 1.1rem;">Interface Adaptativa</strong><br>
+                                <p style="color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.5;">Sistema aprende com comportamento do usuário e adapta interface automaticamente, otimizando workflows pessoais e reduzindo tempo de execução em 34%.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ====================================================================
+        // FORM HANDLING
+        // ====================================================================
+        
+        function initializeForms() {
+            // Trial Form
+            const trialForm = document.getElementById('trialForm');
+            if (trialForm) {
+                trialForm.addEventListener('submit', handleTrialSubmit);
+            }
+            
+            // Enterprise Form
+            const enterpriseForm = document.getElementById('enterpriseForm');
+            if (enterpriseForm) {
+                enterpriseForm.addEventListener('submit', handleEnterpriseSubmit);
+            }
+        }
+
+        async function handleTrialSubmit(e) {
+            e.preventDefault();
+            
+            const form = e.target;
+            const submitBtn = form.querySelector('.form-submit');
+            const messageDiv = document.getElementById('trialMessage');
+            
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="loading"></span> Ativando...';
+            
+            try {
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData);
+                
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                messageDiv.innerHTML = `
+                    <div class="success-message">
+                        <h3>✅ Teste Grátis Ativado!</h3>
+                        <p><strong>Parabéns ${data.name}!</strong></p>
+                        <p>Seu teste de 7 dias foi ativado com sucesso!</p>
+                        <p><strong>Dados de Acesso:</strong></p>
+                        <p>• Email: ${data.email}</p>
+                        <p>• Status: Trial Ativo (7 dias)</p>
+                        <p>• Login: <a href="https://app.nexus.toit.com.br" style="color: var(--toit-cyan);">app.nexus.toit.com.br</a></p>
+                        <p><em>Verifique seu email para instruções detalhadas.</em></p>
+                    </div>
+                `;
+                
+                form.reset();
+                
+            } catch (error) {
+                messageDiv.innerHTML = `
+                    <div class="error-message">
+                        <p>Ops! Algo deu errado. Tente novamente.</p>
+                    </div>
+                `;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Ativar 7 Dias Grátis';
+            }
+        }
+
+        async function handleEnterpriseSubmit(e) {
+            e.preventDefault();
+            
+            const form = e.target;
+            const submitBtn = form.querySelector('.form-submit');
+            const messageDiv = document.getElementById('enterpriseMessage');
+            
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="loading"></span> Enviando...';
+            
+            try {
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData);
+                
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                messageDiv.innerHTML = `
+                    <div class="success-message">
+                        <h3>✅ Proposta Solicitada!</h3>
+                        <p><strong>Obrigado ${data.name}!</strong></p>
+                        <p>Nossa equipe comercial entrará em contato em até 4 horas úteis.</p>
+                        <p><strong>Próximos passos:</strong></p>
+                        <p>• Análise das suas necessidades</p>
+                        <p>• Proposta personalizada</p>
+                        <p>• Demo exclusiva da plataforma</p>
+                        <p><em>Prepare-se para revolucionar sua empresa!</em></p>
+                    </div>
+                `;
+                
+                form.reset();
+                
+            } catch (error) {
+                messageDiv.innerHTML = `
+                    <div class="error-message">
+                        <p>Ops! Algo deu errado. Tente novamente.</p>
+                    </div>
+                `;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Solicitar Proposta';
+            }
+        }
+
+        // ====================================================================
+        // MODAL MANAGEMENT
+        // ====================================================================
+        
+        function openModal(modalId, planType = '') {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                
+                if (modalId === 'trialModal' && planType) {
+                    updateTrialModalForPlan(planType);
+                }
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+                
+                // Clear messages
+                const messageElements = modal.querySelectorAll('[id$="Message"]');
+                messageElements.forEach(el => el.innerHTML = '');
+                
+                // Reset forms
+                const forms = modal.querySelectorAll('form');
+                forms.forEach(form => form.reset());
+            }
+        }
+
+        function updateTrialModalForPlan(planType) {
+            const title = document.querySelector('#trialModal .modal-title');
+            const planNames = {
+                'basico': 'TOIT-Nexus BÁSICO',
+                'standard': 'TOIT-Nexus STANDARD',
+                'premium': 'TOIT-Nexus PREMIUM',
+                'quantum': 'TOIT-Nexus QUANTUM'
+            };
+            
+            if (planNames[planType]) {
+                title.innerHTML = `🚀 Teste ${planNames[planType]} Grátis`;
+            }
+        }
+
+        // ====================================================================
+        // UTILITY FUNCTIONS
+        // ====================================================================
+        
+        function scrollToSection(sectionId) {
+            switchToSection(sectionId);
+            
+            // Update nav
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-section') === sectionId) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // Close modals when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                const modalId = e.target.id;
+                closeModal(modalId);
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const activeModal = document.querySelector('.modal.active');
+                if (activeModal) {
+                    closeModal(activeModal.id);
+                }
+            }
+        });
+
+        // ====================================================================
+        // REVOLUTION STARTS HERE! 🚀
+        // ====================================================================
+        
+        console.log('🇧🇷 TOIT-Nexus: The One in Tech - Agora nº 1 no Brasil! 🚀');
+    </script>
+</body>
+</html>

@@ -35,7 +35,8 @@
       "Bash(railway up:*)",
       "Bash(railway logs:*)",
       "Bash(npm ls:*)",
-      "Bash(dir:*)"
+      "Bash(dir:*)",
+      "WebFetch(domain:clickup.com)"
     ],
     "deny": []
   }
