@@ -1147,7 +1147,7 @@
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <a href="#" class="logo">
+            <a href="javascript:void(0)" class="logo">
                 <div class="logo-icon">N</div>
                 TOIT NEXUS
             </a>
@@ -1155,8 +1155,8 @@
                 <li><a href="#quantum-advantage" class="nav-link">Quantum ML</a></li>
                 <li><a href="#use-cases" class="nav-link">Casos de Uso</a></li>
                 <li><a href="#pricing" class="nav-link">Preços</a></li>
-                <li><a href="#" class="nav-link" onclick="openModal('demoModal')">Demo ao Vivo</a></li>
-                <li><a href="#" class="cta-nav" onclick="openModal('trialModal')">Teste 7 Dias Grátis</a></li>
+                <li><a href="javascript:void(0)" class="nav-link" onclick="openModal('demoModal')">Demo ao Vivo</a></li>
+                <li><a href="javascript:void(0)" class="cta-nav" onclick="openModal('trialModal')">Teste 7 Dias Grátis</a></li>
             </ul>
         </div>
     </nav>
@@ -1604,12 +1604,12 @@
                 Transformando empresas através da vantagem quântica.
             </p>
             <div class="footer-links">
-                <a href="#" class="footer-link">Política de Privacidade</a>
-                <a href="#" class="footer-link">Termos de Uso</a>
-                <a href="#" class="footer-link">Documentação</a>
-                <a href="#" class="footer-link">API Reference</a>
-                <a href="#" class="footer-link">Status</a>
-                <a href="#" class="footer-link">Suporte</a>
+                <a href="javascript:void(0)" class="footer-link">Política de Privacidade</a>
+                <a href="javascript:void(0)" class="footer-link">Termos de Uso</a>
+                <a href="javascript:void(0)" class="footer-link">Documentação</a>
+                <a href="javascript:void(0)" class="footer-link">API Reference</a>
+                <a href="javascript:void(0)" class="footer-link">Status</a>
+                <a href="javascript:void(0)" class="footer-link">Suporte</a>
             </div>
             <div class="footer-copyright">
                 © 2025 TOIT Enterprise. Todos os direitos reservados. 
@@ -1886,10 +1886,17 @@
         // ====================================================================
         
         function initializeStripe() {
-            // Initialize Stripe (replace with your publishable key)
-            stripe = Stripe('pk_test_your_stripe_publishable_key_here');
-            
-            const elements = stripe.elements({
+            try {
+                // Check if Stripe is loaded
+                if (typeof Stripe === 'undefined') {
+                    console.warn('Stripe.js not loaded. Using demo mode.');
+                    return;
+                }
+                
+                // Initialize Stripe with test key for demo
+                stripe = Stripe('pk_test_51H123456789_test_key_demo_nexus_toit');
+                
+                const elements = stripe.elements({
                 appearance: {
                     theme: 'night',
                     variables: {
@@ -1905,6 +1912,13 @@
             });
 
             cardElement = elements.create('card');
+            
+            } catch (error) {
+                console.error('Error initializing Stripe:', error);
+                // Fallback to demo mode
+                stripe = null;
+                cardElement = null;
+            }
         }
 
         // ====================================================================
@@ -2044,6 +2058,23 @@
                         const formData = new FormData(subscriptionForm);
                         const data = Object.fromEntries(formData);
                         
+                        // Check if Stripe is available
+                        if (!stripe || !cardElement) {
+                            // Demo mode - simulate success
+                            messageDiv.innerHTML = `
+                                <div class="success-message">
+                                    <h3>✅ Teste Grátis Ativado!</h3>
+                                    <p><strong>DEMO MODE</strong> - Seu teste de 7 dias foi simulado com sucesso!</p>
+                                    <p><strong>Dados de Acesso:</strong></p>
+                                    <p>• Email: ${data.email}</p>
+                                    <p>• Plano: ${currentPlan}</p>
+                                    <p>• Status: Trial Ativo (7 dias)</p>
+                                    <p><em>Para implementação real, configure as chaves Stripe no backend.</em></p>
+                                </div>
+                            `;
+                            return;
+                        }
+                        
                         // Create payment method with Stripe
                         const { error, paymentMethod } = await stripe.createPaymentMethod({
                             type: 'card',
@@ -2147,12 +2178,16 @@
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                const href = this.getAttribute('href');
+                // Skip empty href or just "#"
+                if (href && href !== '#' && href.length > 1) {
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
                 }
             });
         });
