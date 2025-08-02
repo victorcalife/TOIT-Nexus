@@ -105,8 +105,8 @@ function Router() {
         <Route path="/verify-email" component={VerifyEmail} />
         <Route path="/verify-phone" component={VerifyPhone} />
         <Route path="/quantum-ml" component={QuantumMLCommercial} />
-        <Route path="/" component={Landing} />
-        <Route component={Landing} />
+        <Route path="/" component={QuantumMLCommercial} />
+        <Route component={QuantumMLCommercial} />
       </Switch>
     );
   }

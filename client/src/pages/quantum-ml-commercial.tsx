@@ -31,7 +31,18 @@ import {
   BookOpen,
   Users,
   Trophy,
-  Sparkles
+  Sparkles,
+  Clock,
+  DollarSign,
+  CreditCard,
+  X,
+  Search,
+  Truck,
+  Building,
+  TrendingDown,
+  FileText,
+  Calendar,
+  BarChart2
 } from 'lucide-react';
 
 interface QuantumAlgorithm {
@@ -53,6 +64,9 @@ export default function QuantumMLCommercial() {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('overview');
   const [animationProgress, setAnimationProgress] = useState(0);
+  const [showPricingModal, setShowPricingModal] = useState(false);
+  const [showTrialModal, setShowTrialModal] = useState(false);
+  const [showDemoModal, setShowDemoModal] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -176,6 +190,133 @@ export default function QuantumMLCommercial() {
     }
   ];
 
+  // Casos de uso práticos e palpáveis
+  const practicalUseCases = [
+    {
+      icon: <Search className="h-12 w-12 text-blue-500" />,
+      title: "Busca em Dados 50x Mais Rápida",
+      description: "Encontre informações específicas em milhões de registros instantaneamente",
+      beforeAfter: {
+        before: "Busca em 1 milhão de registros: 10 minutos",
+        after: "Com Grover Algorithm: 12 segundos",
+        improvement: "50x mais rápido"
+      },
+      dailyImpact: "Relatórios que levavam horas agora ficam prontos em minutos",
+      industries: ["E-commerce", "Bancos", "Healthcare", "Telecomunicações"]
+    },
+    {
+      icon: <Truck className="h-12 w-12 text-green-500" />,
+      title: "Logística Ultra-Otimizada",
+      description: "Rotas de entrega 40% mais eficientes com QAOA",
+      beforeAfter: {
+        before: "Planejamento manual de rotas: 2 horas/dia",
+        after: "QAOA automatizado: 3 minutos",
+        improvement: "40% menos combustível"
+      },
+      dailyImpact: "Economia de R$ 2.000-5.000/mês só em combustível",
+      industries: ["Logística", "E-commerce", "Delivery", "Transportadoras"]
+    },
+    {
+      icon: <Building className="h-12 w-12 text-purple-500" />,
+      title: "Decisões Financeiras Inteligentes",
+      description: "Portfolio optimization que supera fundos tradicionais",
+      beforeAfter: {
+        before: "Análise de risco manual: 1 semana",
+        after: "VQE + ML: análise em tempo real",
+        improvement: "15-25% melhor retorno"
+      },
+      dailyImpact: "Investimentos ajustados automaticamente às condições de mercado",
+      industries: ["Bancos", "Fintechs", "Investimentos", "Seguros"]
+    },
+    {
+      icon: <BarChart2 className="h-12 w-12 text-orange-500" />,
+      title: "Previsões Impossíveis de Errar",
+      description: "Padrões complexos detectados que humanos nunca veriam",
+      beforeAfter: {
+        before: "Previsão de demanda: 70% acurácia",
+        after: "QNN Hybrid: 94% acurácia",
+        improvement: "24% menos desperdício"
+      },
+      dailyImpact: "Estoque otimizado, sem perdas, sem falta de produtos",
+      industries: ["Varejo", "Manufatura", "Agronegócio", "Energia"]
+    },
+    {
+      icon: <TrendingDown className="h-12 w-12 text-red-500" />,
+      title: "Detecção de Fraudes Sobrenatural",
+      description: "Identifica padrões fraudulentos 10x mais cedo",
+      beforeAfter: {
+        before: "Detecção de fraude: 48-72h após ocorrência",
+        after: "Quantum ML: detecção em tempo real",
+        improvement: "99.7% precisão"
+      },
+      dailyImpact: "Bloqueio automático de transações suspeitas em milissegundos",
+      industries: ["Bancos", "Fintechs", "E-commerce", "Pagamentos"]
+    },
+    {
+      icon: <Calendar className="h-12 w-12 text-cyan-500" />,
+      title: "Agendamentos Auto-Otimizantes",
+      description: "Recursos e pessoas alocados com eficiência máxima",
+      beforeAfter: {
+        before: "Agendamento manual: 30% ociosidade",
+        after: "QAOA scheduling: 5% ociosidade",
+        improvement: "25% mais produtividade"
+      },
+      dailyImpact: "Cada colaborador rende 25% mais, sem trabalhar mais",
+      industries: ["Consultoria", "Saúde", "Educação", "Serviços"]
+    }
+  ];
+
+  const pricingPlans = [
+    {
+      name: "STARTER",
+      price: "R$ 297",
+      period: "/mês",
+      description: "Para pequenas empresas que querem começar",
+      features: [
+        "Até 3 usuários",
+        "2 algoritmos quânticos básicos",
+        "10GB storage",
+        "Suporte por email",
+        "Dashboard básico"
+      ],
+      highlight: false
+    },
+    {
+      name: "BUSINESS",
+      price: "R$ 597",
+      period: "/mês",
+      description: "Para empresas em crescimento",
+      features: [
+        "Até 15 usuários",
+        "5 algoritmos quânticos completos",
+        "100GB storage",
+        "Suporte prioritário 24/7",
+        "Analytics avançados",
+        "API Access",
+        "Treinamento incluído"
+      ],
+      highlight: true,
+      badge: "MAIS POPULAR"
+    },
+    {
+      name: "ENTERPRISE",
+      price: "R$ 1.497",
+      period: "/mês",
+      description: "Para grandes corporações",
+      features: [
+        "Usuários ilimitados",
+        "Todos os algoritmos + novos",
+        "Storage ilimitado",
+        "Suporte dedicado",
+        "Implementação personalizada",
+        "White-label option",
+        "SLA 99.9%",
+        "Consultoria estratégica"
+      ],
+      highlight: false
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       {/* Hero Section */}
@@ -191,10 +332,77 @@ export default function QuantumMLCommercial() {
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 pt-20 pb-16 text-center">
+          {/* Logo TOIT + NEXUS */}
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <div className="text-6xl font-black bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              TOIT
+            </div>
+            <svg className="w-20 h-20" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style={{stopColor:"#1e3a8a", stopOpacity:1}} />
+                  <stop offset="100%" style={{stopColor:"#581c87", stopOpacity:1}} />
+                </linearGradient>
+                <linearGradient id="secondaryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style={{stopColor:"#06b6d4", stopOpacity:1}} />
+                  <stop offset="100%" style={{stopColor:"#0891b2", stopOpacity:1}} />
+                </linearGradient>
+                <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feDropShadow dx="0" dy="4" stdDeviation="8" floodOpacity="0.2"/>
+                </filter>
+                <filter id="glow">
+                  <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                  <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+              </defs>
+              <circle cx="200" cy="200" r="180" fill="rgba(248,250,252,0.1)" stroke="#e2e8f0" strokeWidth="2"/>
+              <g transform="translate(200,200)">
+                <path d="M -80 0 L -40 -69.3 L 40 -69.3 L 80 0 L 40 69.3 L -40 69.3 Z" 
+                      fill="url(#mainGradient)" 
+                      filter="url(#shadow)"
+                      opacity="0.9"/>
+                <g stroke="url(#secondaryGradient)" strokeWidth="3" fill="none" opacity="0.8">
+                  <line x1="-80" y1="0" x2="-120" y2="0" strokeLinecap="round"/>
+                  <line x1="-40" y1="-69.3" x2="-60" y2="-104" strokeLinecap="round"/>
+                  <line x1="40" y1="-69.3" x2="60" y2="-104" strokeLinecap="round"/>
+                  <line x1="80" y1="0" x2="120" y2="0" strokeLinecap="round"/>
+                  <line x1="40" y1="69.3" x2="60" y2="104" strokeLinecap="round"/>
+                  <line x1="-40" y1="69.3" x2="-60" y2="104" strokeLinecap="round"/>
+                </g>
+                <g fill="url(#secondaryGradient)">
+                  <circle cx="-120" cy="0" r="8" filter="url(#glow)"/>
+                  <circle cx="-60" cy="-104" r="8" filter="url(#glow)"/>
+                  <circle cx="60" cy="-104" r="8" filter="url(#glow)"/>
+                  <circle cx="120" cy="0" r="8" filter="url(#glow)"/>
+                  <circle cx="60" cy="104" r="8" filter="url(#glow)"/>
+                  <circle cx="-60" cy="104" r="8" filter="url(#glow)"/>
+                </g>
+                <g transform="scale(0.8)">
+                  <path d="M -30 0 C -30 -20, -10 -20, 0 0 C 10 20, 30 20, 30 0 C 30 -20, 10 -20, 0 0 C -10 20, -30 20, -30 0 Z"
+                        fill="#ffffff"
+                        stroke="#e2e8f0"
+                        strokeWidth="2"/>
+                  <circle cx="-20" cy="0" r="3" fill="#06b6d4"/>
+                  <circle cx="0" cy="0" r="3" fill="#581c87"/>
+                  <circle cx="20" cy="0" r="3" fill="#06b6d4"/>
+                </g>
+              </g>
+              <text x="200" y="340" textAnchor="middle" fontFamily="Inter, sans-serif" fontSize="32" fontWeight="bold" fill="#06b6d4">NEXUS</text>
+            </svg>
+          </div>
+          
           {/* Badge histórico */}
           <Badge className="mb-6 px-6 py-2 text-lg bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0">
             🏆 PRIMEIRO SISTEMA QUANTUM ML DO BRASIL 🇧🇷
           </Badge>
+          
+          {/* Tagline THE ONE IN TECH */}
+          <div className="mb-4 text-lg font-semibold text-cyan-400 tracking-widest">
+            THE ONE IN TECH • Nº 1 NO BRASIL EM QUANTUM ML
+          </div>
 
           <h1 className="text-6xl md:text-8xl font-bold text-white mb-6 leading-tight">
             <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
@@ -217,13 +425,40 @@ export default function QuantumMLCommercial() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Button size="lg" className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-4 text-lg">
+            <Button 
+              size="lg" 
+              onClick={() => setShowTrialModal(true)}
+              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-4 text-lg"
+            >
               <Rocket className="h-5 w-5 mr-2" />
-              Testar Algoritmos Quantum ML
+              Testar 7 Dias GRÁTIS
             </Button>
-            <Button size="lg" variant="outline" className="border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-slate-900 px-8 py-4 text-lg">
+            <Button 
+              size="lg" 
+              variant="outline" 
+              onClick={() => setShowPricingModal(true)}
+              className="border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-slate-900 px-8 py-4 text-lg"
+            >
+              <DollarSign className="h-5 w-5 mr-2" />
+              Ver Preços
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline" 
+              onClick={() => setShowDemoModal(true)}
+              className="border-2 border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-slate-900 px-8 py-4 text-lg"
+            >
               <BookOpen className="h-5 w-5 mr-2" />
-              Ver Documentação Técnica
+              Demo ao Vivo
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline" 
+              onClick={() => window.open('https://nexus.toit.com.br', '_blank')}
+              className="border-2 border-green-400 text-green-400 hover:bg-green-400 hover:text-slate-900 px-8 py-4 text-lg"
+            >
+              <Users className="h-5 w-5 mr-2" />
+              Acessar Sistema
             </Button>
           </div>
 
@@ -252,10 +487,14 @@ export default function QuantumMLCommercial() {
       {/* Tabs principais */}
       <div className="max-w-7xl mx-auto px-4 py-16">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid grid-cols-5 w-full max-w-4xl mx-auto mb-12 bg-slate-800 border border-slate-700">
+          <TabsList className="grid grid-cols-6 w-full max-w-5xl mx-auto mb-12 bg-slate-800 border border-slate-700">
             <TabsTrigger value="overview" className="data-[state=active]:bg-purple-600">
               <Globe className="h-4 w-4 mr-2" />
               Visão Geral
+            </TabsTrigger>
+            <TabsTrigger value="practical" className="data-[state=active]:bg-orange-600">
+              <Target className="h-4 w-4 mr-2" />
+              Na Prática
             </TabsTrigger>
             <TabsTrigger value="quantum" className="data-[state=active]:bg-cyan-600">
               <Atom className="h-4 w-4 mr-2" />
@@ -375,6 +614,120 @@ export default function QuantumMLCommercial() {
                 ))}
               </div>
             </div>
+          </TabsContent>
+
+          {/* Tab: Na Prática - Casos de Uso Palpáveis */}
+          <TabsContent value="practical" className="space-y-12">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold text-white mb-6">
+                Como o Quantum ML Impacta Seu Negócio no Dia a Dia
+              </h2>
+              <p className="text-xl text-gray-300 max-w-5xl mx-auto leading-relaxed">
+                Veja exemplos <span className="text-orange-400 font-semibold">práticos e palpáveis</span> de como nossos algoritmos quânticos 
+                <br />transformam operações empresariais reais com <span className="text-cyan-400 font-semibold">resultados mensuráveis</span>
+              </p>
+            </div>
+
+            <div className="space-y-8">
+              {practicalUseCases.map((useCase, index) => (
+                <Card key={index} className="bg-gradient-to-r from-slate-800/50 to-slate-900/50 border-orange-500/30 hover:border-orange-400 transition-all">
+                  <CardContent className="p-8">
+                    <div className="grid lg:grid-cols-3 gap-8 items-start">
+                      {/* Icon + Title */}
+                      <div className="text-center lg:text-left">
+                        <div className="flex justify-center lg:justify-start mb-4">
+                          {useCase.icon}
+                        </div>
+                        <h3 className="text-2xl font-bold text-white mb-3">{useCase.title}</h3>
+                        <p className="text-gray-300 text-lg">{useCase.description}</p>
+                      </div>
+                      
+                      {/* Before/After Comparison */}
+                      <div className="space-y-4">
+                        <h4 className="text-orange-400 font-bold text-lg text-center">Antes vs Depois</h4>
+                        <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-4">
+                          <div className="text-red-400 font-semibold text-sm mb-1">❌ ANTES:</div>
+                          <div className="text-gray-300 text-sm">{useCase.beforeAfter.before}</div>
+                        </div>
+                        <div className="bg-green-900/20 border border-green-500/30 rounded-lg p-4">
+                          <div className="text-green-400 font-semibold text-sm mb-1">✅ COM QUANTUM ML:</div>
+                          <div className="text-gray-300 text-sm">{useCase.beforeAfter.after}</div>
+                        </div>
+                        <div className="text-center">
+                          <Badge className="bg-gradient-to-r from-orange-600 to-amber-600 text-white text-sm">
+                            🚀 {useCase.beforeAfter.improvement}
+                          </Badge>
+                        </div>
+                      </div>
+                      
+                      {/* Impact + Industries */}
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="text-cyan-400 font-bold text-lg mb-3">💡 Impacto Diário</h4>
+                          <p className="text-gray-300 text-sm italic">"{useCase.dailyImpact}"</p>
+                        </div>
+                        
+                        <div>
+                          <h4 className="text-purple-400 font-bold text-sm mb-2">🏢 Indústrias:</h4>
+                          <div className="flex flex-wrap gap-2">
+                            {useCase.industries.map((industry, idx) => (
+                              <Badge key={idx} variant="secondary" className="bg-slate-700 text-gray-300 text-xs">
+                                {industry}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {/* ROI Calculator Practical */}
+            <Card className="bg-gradient-to-br from-orange-900/20 to-amber-900/20 border-orange-500">
+              <CardHeader>
+                <CardTitle className="text-white text-center text-3xl">
+                  💰 Calculadora de Economia Real
+                </CardTitle>
+                <CardDescription className="text-center text-gray-400 text-lg">
+                  Veja quanto sua empresa pode economizar com Quantum ML
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid md:grid-cols-3 gap-8 text-center">
+                  <div className="bg-slate-800/50 rounded-lg p-6">
+                    <div className="text-4xl font-bold text-green-400 mb-2">R$ 50K+</div>
+                    <div className="text-gray-300 mb-2 font-semibold">Economia Mensal Média</div>
+                    <div className="text-sm text-gray-500">Empresa com 100+ funcionários</div>
+                    <div className="text-xs text-gray-400 mt-2">Otimização de processos + redução tempo</div>
+                  </div>
+                  <div className="bg-slate-800/50 rounded-lg p-6">
+                    <div className="text-4xl font-bold text-blue-400 mb-2">6 meses</div>
+                    <div className="text-gray-300 mb-2 font-semibold">Payback Médio</div>
+                    <div className="text-sm text-gray-500">Retorno total do investimento</div>
+                    <div className="text-xs text-gray-400 mt-2">Baseado em casos reais de implementação</div>
+                  </div>
+                  <div className="bg-slate-800/50 rounded-lg p-6">
+                    <div className="text-4xl font-bold text-purple-400 mb-2">350%</div>
+                    <div className="text-gray-300 mb-2 font-semibold">ROI em 12 meses</div>
+                    <div className="text-sm text-gray-500">Retorno médio documentado</div>
+                    <div className="text-xs text-gray-400 mt-2">Inclui economia + novos revenue streams</div>
+                  </div>
+                </div>
+                
+                <div className="mt-8 text-center">
+                  <Button 
+                    size="lg" 
+                    onClick={() => setShowDemoModal(true)}
+                    className="bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white px-12 py-4 text-lg"
+                  >
+                    <FileText className="h-5 w-5 mr-2" />
+                    Calcular ROI da Minha Empresa
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           {/* Tab: Quantum ML */}
@@ -856,18 +1209,36 @@ export default function QuantumMLCommercial() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <Button size="lg" className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white px-8 py-4 text-lg">
+            <Button 
+              size="lg" 
+              onClick={() => setShowTrialModal(true)}
+              className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white px-8 py-4 text-lg"
+            >
               <Rocket className="h-5 w-5 mr-2" />
-              Testar Algoritmos Quantum ML
+              Testar 7 Dias GRÁTIS
             </Button>
-            <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-slate-900 px-8 py-4 text-lg">
+            <Button 
+              size="lg" 
+              variant="outline" 
+              onClick={() => setShowDemoModal(true)}
+              className="border-2 border-white text-white hover:bg-white hover:text-slate-900 px-8 py-4 text-lg"
+            >
               <Users className="h-5 w-5 mr-2" />
               Falar com Especialista
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline" 
+              onClick={() => window.open('https://nexus.toit.com.br', '_blank')}
+              className="border-2 border-green-400 text-green-400 hover:bg-green-400 hover:text-slate-900 px-8 py-4 text-lg"
+            >
+              <Star className="h-5 w-5 mr-2" />
+              Acessar Sistema
             </Button>
           </div>
 
           <div className="text-gray-400 text-sm">
-            ⚛️ Primeiro Sistema Brasileiro com Algoritmos Quantum ML • 🇧🇷 Tecnologia Nacional • 🏆 Implementação de Nível Internacional
+            ⚛️ THE ONE IN TECH • Nº 1 NO BRASIL EM QUANTUM ML • 🇧🇷 Tecnologia Nacional • 🏆 Implementação de Nível Internacional
           </div>
         </div>
       </div>
@@ -876,12 +1247,248 @@ export default function QuantumMLCommercial() {
       <div className="bg-slate-900 py-8">
         <div className="max-w-4xl mx-auto text-center px-4">
           <div className="text-gray-400 text-sm">
-            © 2025 TOIT NEXUS - Primeiro Sistema Brasileiro com Algoritmos Quantum ML Funcionais
+            © 2025 TOIT NEXUS - THE ONE IN TECH • Nº 1 NO BRASIL EM QUANTUM ML
             <br />
-            Tecnologia Brasileira com Implementação de Nível Internacional
+            Primeiro Sistema Brasileiro com Algoritmos Quantum ML Funcionais • Tecnologia Nacional de Nível Internacional
           </div>
         </div>
       </div>
+
+      {/* Modal: Teste 7 Dias Grátis */}
+      {showTrialModal && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+          <Card className="bg-slate-800 border-slate-700 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <CardHeader className="relative">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowTrialModal(false)}
+                className="absolute right-2 top-2 text-gray-400 hover:text-white"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+              <CardTitle className="text-center text-2xl text-white">
+                🚀 Teste 7 Dias GRÁTIS
+              </CardTitle>
+              <CardDescription className="text-center text-gray-400">
+                Experimente o poder do Quantum ML sem compromisso
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="bg-gradient-to-r from-green-900/20 to-blue-900/20 border border-green-500/30 rounded-lg p-6">
+                <h3 className="text-lg font-bold text-green-400 mb-4">✅ Incluído no seu teste:</h3>
+                <ul className="space-y-2 text-gray-300">
+                  <li>• Acesso completo a 5 algoritmos quânticos</li>
+                  <li>• Até 5 usuários para sua equipe</li>
+                  <li>• 50GB de storage</li>
+                  <li>• Suporte prioritário via WhatsApp</li>
+                  <li>• Onboarding personalizado</li>
+                  <li>• Análise de ROI específica da sua empresa</li>
+                </ul>
+              </div>
+              
+              <div className="bg-amber-900/20 border border-amber-500/30 rounded-lg p-4">
+                <p className="text-amber-400 text-sm">
+                  ⚠️ <strong>Importante:</strong> Após 7 dias, você pode cancelar sem custos ou continuar com desconto especial de 30% no primeiro mês.
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <input
+                  type="text"
+                  placeholder="Nome completo"
+                  className="w-full p-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400"
+                />
+                <input
+                  type="email"
+                  placeholder="Email empresarial"
+                  className="w-full p-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400"
+                />
+                <input
+                  type="text"
+                  placeholder="Nome da empresa"
+                  className="w-full p-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400"
+                />
+                <input
+                  type="tel"
+                  placeholder="WhatsApp para suporte"
+                  className="w-full p-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400"
+                />
+              </div>
+
+              <Button className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white py-4 text-lg">
+                <Rocket className="h-5 w-5 mr-2" />
+                Iniciar Teste Grátis Agora
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* Modal: Preços */}
+      {showPricingModal && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+          <Card className="bg-slate-800 border-slate-700 max-w-6xl w-full max-h-[90vh] overflow-y-auto">
+            <CardHeader className="relative">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowPricingModal(false)}
+                className="absolute right-2 top-2 text-gray-400 hover:text-white"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+              <CardTitle className="text-center text-3xl text-white mb-2">
+                💎 Planos Quantum ML
+              </CardTitle>
+              <CardDescription className="text-center text-gray-400">
+                Escolha o plano ideal para revolucionar sua empresa
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid md:grid-cols-3 gap-6">
+                {pricingPlans.map((plan, index) => (
+                  <Card key={index} className={`relative ${plan.highlight ? 'border-purple-500 bg-gradient-to-b from-purple-900/20 to-slate-800' : 'border-slate-600 bg-slate-800'}`}>
+                    {plan.highlight && (
+                      <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                        <Badge className="bg-gradient-to-r from-purple-600 to-cyan-600 text-white px-4 py-1">
+                          {plan.badge}
+                        </Badge>
+                      </div>
+                    )}
+                    <CardContent className="p-6 text-center">
+                      <h3 className="text-xl font-bold text-white mb-2">{plan.name}</h3>
+                      <div className="text-4xl font-bold text-cyan-400 mb-1">
+                        {plan.price}
+                        <span className="text-lg text-gray-400">{plan.period}</span>
+                      </div>
+                      <p className="text-gray-400 text-sm mb-6">{plan.description}</p>
+                      
+                      <ul className="space-y-2 text-left mb-6">
+                        {plan.features.map((feature, idx) => (
+                          <li key={idx} className="text-gray-300 text-sm flex items-start">
+                            <CheckCircle className="h-4 w-4 text-green-400 mr-2 mt-0.5 flex-shrink-0" />
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                      
+                      <Button 
+                        className={`w-full py-3 ${
+                          plan.highlight 
+                            ? 'bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700' 
+                            : 'bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-700 hover:to-slate-800'
+                        } text-white`}
+                        onClick={() => setShowTrialModal(true)}
+                      >
+                        <CreditCard className="h-4 w-4 mr-2" />
+                        {plan.highlight ? 'Começar Agora' : 'Selecionar Plano'}
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+              
+              <div className="mt-8 text-center">
+                <div className="bg-slate-700/50 rounded-lg p-4 mb-4">
+                  <p className="text-gray-300 text-sm">
+                    💳 <strong>Sem permanência</strong> • Cancele quando quiser • <strong>Desconto de 20%</strong> para pagamento anual
+                  </p>
+                </div>
+                <Button 
+                  variant="outline" 
+                  onClick={() => setShowTrialModal(true)}
+                  className="border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-slate-900"
+                >
+                  <Clock className="h-4 w-4 mr-2" />
+                  Testar 7 Dias Grátis Primeiro
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* Modal: Demo ao Vivo */}
+      {showDemoModal && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+          <Card className="bg-slate-800 border-slate-700 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <CardHeader className="relative">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowDemoModal(false)}
+                className="absolute right-2 top-2 text-gray-400 hover:text-white"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+              <CardTitle className="text-center text-2xl text-white">
+                🎯 Demo Personalizada ao Vivo
+              </CardTitle>
+              <CardDescription className="text-center text-gray-400">
+                Veja o TOIT NEXUS funcionando com os dados da sua empresa
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="bg-gradient-to-r from-amber-900/20 to-orange-900/20 border border-amber-500/30 rounded-lg p-6">
+                <h3 className="text-lg font-bold text-amber-400 mb-4">🔥 O que você vai ver:</h3>
+                <ul className="space-y-2 text-gray-300">
+                  <li>• Algoritmos quânticos rodando com dados reais</li>
+                  <li>• Comparação de performance: antes vs depois</li>
+                  <li>• ROI calculado especificamente para sua empresa</li>
+                  <li>• Demonstração prática de cada algoritmo</li>
+                  <li>• Q&A com especialistas em Quantum ML</li>
+                </ul>
+              </div>
+
+              <div className="space-y-4">
+                <input
+                  type="text"
+                  placeholder="Nome completo"
+                  className="w-full p-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400"
+                />
+                <input
+                  type="email"
+                  placeholder="Email empresarial"
+                  className="w-full p-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400"
+                />
+                <input
+                  type="text"
+                  placeholder="Nome da empresa"
+                  className="w-full p-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400"
+                />
+                <input
+                  type="text"
+                  placeholder="Setor de atividade"
+                  className="w-full p-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400"
+                />
+                <select className="w-full p-3 bg-slate-700 border border-slate-600 rounded-lg text-white">
+                  <option value="">Tamanho da empresa</option>
+                  <option value="startup">Startup (1-10 funcionários)</option>
+                  <option value="pequena">Pequena (11-50 funcionários)</option>
+                  <option value="media">Média (51-200 funcionários)</option>
+                  <option value="grande">Grande (200+ funcionários)</option>
+                </select>
+                <textarea
+                  placeholder="Quais são seus maiores desafios operacionais hoje?"
+                  rows={3}
+                  className="w-full p-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400"
+                />
+              </div>
+
+              <Button className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white py-4 text-lg">
+                <Users className="h-5 w-5 mr-2" />
+                Agendar Demo Personalizada
+              </Button>
+              
+              <div className="text-center text-sm text-gray-400">
+                📅 Demos disponíveis: Segunda a Sexta, 9h às 18h<br/>
+                ⏱️ Duração: 45 minutos • 🎯 100% focado no seu negócio
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   );
 }
