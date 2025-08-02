@@ -34,7 +34,8 @@
       "Bash(railway link:*)",
       "Bash(railway up:*)",
       "Bash(railway logs:*)",
-      "Bash(npm ls:*)"
+      "Bash(npm ls:*)",
+      "Bash(dir:*)"
     ],
     "deny": []
   }

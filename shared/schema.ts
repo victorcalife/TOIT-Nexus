@@ -36,6 +36,9 @@ export const departmentTypeEnum = pgEnum('department_type', ['sales', 'purchases
 export const databaseTypeEnum = pgEnum('database_type', ['postgresql', 'mysql', 'mssql', 'oracle', 'sqlite']);
 export const chartTypeEnum = pgEnum('chart_type', ['bar', 'line', 'pie', 'doughnut', 'area', 'scatter']);
 export const workflowStepTypeEnum = pgEnum('workflow_step_type', ['condition', 'action', 'webhook', 'email', 'api_call', 'file_process', 'database_query']);
+export const triggerTypeEnum = pgEnum('trigger_type', ['email_received', 'email_sent', 'calendar_event', 'calendar_reminder', 'contact_update']);
+export const emailTriggerTypeEnum = pgEnum('email_trigger_type', ['sender_match', 'subject_contains', 'body_contains', 'attachment_exists', 'keyword_match']);
+export const calendarTriggerTypeEnum = pgEnum('calendar_trigger_type', ['event_created', 'event_updated', 'event_starts_soon', 'event_ends', 'reminder_time']);
 
 // Tenants table (empresas/clientes)
 export const tenants = pgTable("tenants", {
@@ -2186,3 +2189,257 @@ export type WorkflowTemplate = typeof workflowTemplates.$inferSelect;
 export type InsertWorkflowTemplate = typeof workflowTemplates.$inferInsert;
 export type WorkflowVariable = typeof workflowVariables.$inferSelect;
 export type InsertWorkflowVariable = typeof workflowVariables.$inferInsert;
+
+// ==============================================
+// EMAIL & CALENDAR WORKFLOW TRIGGERS - SISTEMA CRÍTICO
+// ==============================================
+
+// Email Accounts - Contas de email conectadas
+export const emailAccounts = pgTable("email_accounts", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  
+  // Account details
+  email: varchar("email").notNull(),
+  displayName: varchar("display_name"),
+  provider: varchar("provider", { length: 50 }).notNull(), // 'gmail', 'outlook', 'yahoo', 'imap'
+  
+  // Authentication
+  accessToken: text("access_token"), // OAuth token (encrypted)
+  refreshToken: text("refresh_token"), // OAuth refresh token (encrypted)
+  
+  // IMAP/SMTP configuration for non-OAuth providers
+  imapHost: varchar("imap_host"),
+  imapPort: integer("imap_port"),
+  smtpHost: varchar("smtp_host"),
+  smtpPort: integer("smtp_port"),
+  
+  // Status
+  isActive: boolean("is_active").default(true),
+  lastSyncAt: timestamp("last_sync_at"),
+  lastError: text("last_error"),
+  
+  // Settings
+  syncSettings: jsonb("sync_settings").default({
+    syncFrequency: 5, // minutes
+    maxEmailsPerSync: 100,
+    syncFolders: ['INBOX'],
+    enableRealTimeSync: true
+  }),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Calendar Accounts - Contas de calendário conectadas  
+export const calendarAccounts = pgTable("calendar_accounts", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  
+  // Account details
+  email: varchar("email").notNull(),
+  displayName: varchar("display_name"),
+  provider: varchar("provider", { length: 50 }).notNull(), // 'google', 'outlook', 'apple', 'caldav'
+  
+  // Authentication
+  accessToken: text("access_token"), // OAuth token (encrypted)
+  refreshToken: text("refresh_token"), // OAuth refresh token (encrypted)
+  
+  // CalDAV configuration
+  caldavUrl: varchar("caldav_url"),
+  caldavUsername: varchar("caldav_username"),
+  caldavPassword: text("caldav_password"), // encrypted
+  
+  // Status
+  isActive: boolean("is_active").default(true),
+  lastSyncAt: timestamp("last_sync_at"),
+  lastError: text("last_error"),
+  
+  // Settings
+  syncSettings: jsonb("sync_settings").default({
+    syncFrequency: 15, // minutes
+    maxEventsPerSync: 200,
+    syncCalendars: ['primary'],
+    enableRealTimeSync: true,
+    reminderMinutes: [15, 60, 1440] // 15min, 1h, 1day
+  }),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Email Triggers - Triggers baseados em emails
+export const emailTriggers = pgTable("email_triggers", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  workflowId: varchar("workflow_id").references(() => visualWorkflows.id, { onDelete: "cascade" }).notNull(),
+  emailAccountId: varchar("email_account_id").references(() => emailAccounts.id).notNull(),
+  
+  // Trigger configuration
+  name: varchar("name", { length: 200 }).notNull(),
+  description: text("description"),
+  triggerType: emailTriggerTypeEnum("trigger_type").notNull(),
+  
+  // Email matching rules
+  senderRules: jsonb("sender_rules").default([]), // Array de regras de remetente
+  subjectRules: jsonb("subject_rules").default([]), // Array de regras de assunto
+  bodyRules: jsonb("body_rules").default([]), // Array de regras de corpo
+  attachmentRules: jsonb("attachment_rules").default([]), // Array de regras de anexos
+  
+  // Advanced filtering
+  folders: jsonb("folders").default(['INBOX']), // Pastas para monitorar
+  isRead: boolean("is_read"), // null = any, true = read only, false = unread only
+  hasAttachments: boolean("has_attachments"), // null = any, true = with, false = without
+  priority: varchar("priority", { length: 20 }), // 'high', 'normal', 'low', null = any
+  
+  // Data extraction rules
+  dataExtractionRules: jsonb("data_extraction_rules").default({}), // Como extrair dados do email
+  
+  // Status and statistics
+  isActive: boolean("is_active").default(true),
+  lastTriggered: timestamp("last_triggered"),
+  triggerCount: integer("trigger_count").default(0),
+  lastProcessedEmailId: varchar("last_processed_email_id"), // Para evitar reprocessamento
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Calendar Triggers - Triggers baseados em eventos de calendário
+export const calendarTriggers = pgTable("calendar_triggers", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  workflowId: varchar("workflow_id").references(() => visualWorkflows.id, { onDelete: "cascade" }).notNull(),
+  calendarAccountId: varchar("calendar_account_id").references(() => calendarAccounts.id).notNull(),
+  
+  // Trigger configuration
+  name: varchar("name", { length: 200 }).notNull(),
+  description: text("description"),
+  triggerType: calendarTriggerTypeEnum("trigger_type").notNull(),
+  
+  // Event matching rules
+  titleRules: jsonb("title_rules").default([]), // Array de regras de título
+  descriptionRules: jsonb("description_rules").default([]), // Array de regras de descrição
+  attendeeRules: jsonb("attendee_rules").default([]), // Array de regras de participantes
+  locationRules: jsonb("location_rules").default([]), // Array de regras de localização
+  
+  // Calendar filtering
+  calendars: jsonb("calendars").default(['primary']), // Calendários para monitorar
+  eventTypes: jsonb("event_types").default([]), // Tipos de evento para filtrar
+  
+  // Time-based triggers
+  minutesBeforeStart: integer("minutes_before_start"), // Para event_starts_soon
+  minutesAfterEnd: integer("minutes_after_end"), // Para event_ends
+  reminderOffsets: jsonb("reminder_offsets").default([15, 60]), // Minutos antes para lembretes
+  
+  // Recurrence handling
+  handleRecurring: boolean("handle_recurring").default(true),
+  maxRecurrenceInstances: integer("max_recurrence_instances").default(10),
+  
+  // Data extraction rules
+  dataExtractionRules: jsonb("data_extraction_rules").default({}), // Como extrair dados do evento
+  
+  // Status and statistics
+  isActive: boolean("is_active").default(true),
+  lastTriggered: timestamp("last_triggered"),
+  triggerCount: integer("trigger_count").default(0),
+  lastProcessedEventId: varchar("last_processed_event_id"), // Para evitar reprocessamento
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Email Processing Queue - Fila de processamento de emails
+export const emailProcessingQueue = pgTable("email_processing_queue", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  emailAccountId: varchar("email_account_id").references(() => emailAccounts.id).notNull(),
+  
+  // Email data
+  messageId: varchar("message_id").notNull(), // Email message ID
+  emailData: jsonb("email_data").notNull(), // Dados completos do email
+  
+  // Processing status
+  status: varchar("status", { length: 20 }).default('pending'), // 'pending', 'processing', 'completed', 'failed'
+  triggersMatched: jsonb("triggers_matched").default([]), // Array de trigger IDs que matcharam
+  
+  // Execution tracking
+  processedAt: timestamp("processed_at"),
+  error: text("error"),
+  retryCount: integer("retry_count").default(0),
+  maxRetries: integer("max_retries").default(3),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Calendar Event Processing Queue - Fila de processamento de eventos
+export const calendarEventProcessingQueue = pgTable("calendar_event_processing_queue", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  calendarAccountId: varchar("calendar_account_id").references(() => calendarAccounts.id).notNull(),
+  
+  // Event data
+  eventId: varchar("event_id").notNull(), // Calendar event ID
+  eventData: jsonb("event_data").notNull(), // Dados completos do evento
+  
+  // Processing status
+  status: varchar("status", { length: 20 }).default('pending'), // 'pending', 'processing', 'completed', 'failed'
+  triggersMatched: jsonb("triggers_matched").default([]), // Array de trigger IDs que matcharam
+  
+  // Execution tracking
+  processedAt: timestamp("processed_at"),
+  error: text("error"),
+  retryCount: integer("retry_count").default(0),
+  maxRetries: integer("max_retries").default(3),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Trigger Execution History - Histórico de execuções de triggers
+export const triggerExecutionHistory = pgTable("trigger_execution_history", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  
+  // Trigger reference
+  triggerType: varchar("trigger_type", { length: 50 }).notNull(), // 'email' or 'calendar'
+  triggerId: varchar("trigger_id").notNull(), // ID do email_trigger ou calendar_trigger
+  workflowId: varchar("workflow_id").references(() => visualWorkflows.id).notNull(),
+  
+  // Execution data
+  executionId: varchar("execution_id"), // Link para workflow execution
+  triggerData: jsonb("trigger_data").notNull(), // Dados que causaram o trigger
+  extractedData: jsonb("extracted_data").default({}), // Dados extraídos pelo trigger
+  
+  // Result
+  status: varchar("status", { length: 20 }).notNull(), // 'success', 'failed', 'skipped'
+  error: text("error"),
+  
+  // Timing
+  triggeredAt: timestamp("triggered_at").defaultNow(),
+  completedAt: timestamp("completed_at"),
+  duration: integer("duration"), // Duração em milliseconds
+  
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Export types for Email & Calendar Triggers
+export type EmailAccount = typeof emailAccounts.$inferSelect;
+export type InsertEmailAccount = typeof emailAccounts.$inferInsert;
+export type CalendarAccount = typeof calendarAccounts.$inferSelect;
+export type InsertCalendarAccount = typeof calendarAccounts.$inferInsert;
+export type EmailTrigger = typeof emailTriggers.$inferSelect;
+export type InsertEmailTrigger = typeof emailTriggers.$inferInsert;
+export type CalendarTrigger = typeof calendarTriggers.$inferSelect;
+export type InsertCalendarTrigger = typeof calendarTriggers.$inferInsert;
+export type EmailProcessingQueue = typeof emailProcessingQueue.$inferSelect;
+export type InsertEmailProcessingQueue = typeof emailProcessingQueue.$inferInsert;
+export type CalendarEventProcessingQueue = typeof calendarEventProcessingQueue.$inferSelect;
+export type InsertCalendarEventProcessingQueue = typeof calendarEventProcessingQueue.$inferInsert;
+export type TriggerExecutionHistory = typeof triggerExecutionHistory.$inferSelect;
+export type InsertTriggerExecutionHistory = typeof triggerExecutionHistory.$inferInsert;

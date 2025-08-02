@@ -7,6 +7,8 @@ import { startNotificationCron } from "./notificationService";
 import { cronJobService } from "./cronJobs";
 import { initializeTrialCronJob } from "./trialManager";
 import { startCalendarSyncCron } from "./calendarIntegrationService";
+import { emailWorkflowService } from "./emailWorkflowService";
+import { calendarWorkflowService } from "./calendarWorkflowService";
 
 const app = express();
 app.use(express.json());
@@ -96,9 +98,17 @@ app.use((req, res, next) => {
     if (process.env.NODE_ENV === 'production') {
       startNotificationCron();
       startCalendarSyncCron();
+      
+      // ⚡ INICIALIZAR SISTEMAS CRÍTICOS DE EMAIL E CALENDAR TRIGGERS
+      console.log('🚀 Iniciando sistemas de Email & Calendar Workflow Triggers...');
+      emailWorkflowService.startAutoSync();
+      calendarWorkflowService.startAutoSync();
+      console.log('✅ Email & Calendar Workflow Triggers iniciados com sucesso!');
     } else {
       console.log(`🔔 Notification cron disabled in development`);
       console.log(`📅 Calendar sync cron disabled in development`);
+      console.log(`📧 Email workflow triggers disabled in development`);
+      console.log(`📅 Calendar workflow triggers disabled in development`);
     }
   });
 

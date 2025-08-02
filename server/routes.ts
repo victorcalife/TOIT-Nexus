@@ -56,6 +56,8 @@ import { universalDatabaseRoutes } from "./universalDatabaseRoutes";
 import { dashboardBuilderRoutes } from "./dashboardBuilderRoutes";
 import { apiWebhookRoutes } from "./apiWebhookRoutes";
 import { executiveReportsRoutes } from "./executiveReportsRoutes";
+import { emailTriggerRoutes } from "./emailTriggerRoutes";
+import { calendarTriggerRoutes } from "./calendarTriggerRoutes";
 
 // Helper function to determine if client should be assigned to a category
 function shouldAssignToCategory(client: any, category: any): boolean {
@@ -1969,6 +1971,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // INLINE DASHBOARD EDITOR ROUTES - Editor visual com single-click/double-click
   app.use('/api/inline-dashboard', inlineDashboardEditorRoutes);
+
+  // ====================================================
+  // EMAIL & CALENDAR WORKFLOW TRIGGERS - ROUTES CRÍTICAS
+  // ====================================================
+  app.use('/api/email-triggers', emailTriggerRoutes);
+  app.use('/api/calendar-triggers', calendarTriggerRoutes);
 
   const httpServer = createServer(app);
   return httpServer;
