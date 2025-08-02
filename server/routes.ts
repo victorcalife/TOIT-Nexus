@@ -58,6 +58,7 @@ import { apiWebhookRoutes } from "./apiWebhookRoutes";
 import { executiveReportsRoutes } from "./executiveReportsRoutes";
 import { emailTriggerRoutes } from "./emailTriggerRoutes";
 import { calendarTriggerRoutes } from "./calendarTriggerRoutes";
+import { adaptiveEngineRoutes } from "./adaptiveEngineRoutes";
 
 // Helper function to determine if client should be assigned to a category
 function shouldAssignToCategory(client: any, category: any): boolean {
@@ -1977,6 +1978,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // ====================================================
   app.use('/api/email-triggers', emailTriggerRoutes);
   app.use('/api/calendar-triggers', calendarTriggerRoutes);
+  
+  // ====================================================
+  // REVOLUTIONARY ADAPTIVE ENGINE - MOTOR ML 100X MAIS PODEROSO
+  // ====================================================
+  app.use('/api/adaptive-engine', adaptiveEngineRoutes);
 
   const httpServer = createServer(app);
   return httpServer;

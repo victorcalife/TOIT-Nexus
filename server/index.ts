@@ -9,6 +9,7 @@ import { initializeTrialCronJob } from "./trialManager";
 import { startCalendarSyncCron } from "./calendarIntegrationService";
 import { emailWorkflowService } from "./emailWorkflowService";
 import { calendarWorkflowService } from "./calendarWorkflowService";
+import { revolutionaryAdaptiveEngine } from "./revolutionaryAdaptiveEngine";
 
 const app = express();
 app.use(express.json());
@@ -104,6 +105,11 @@ app.use((req, res, next) => {
       emailWorkflowService.startAutoSync();
       calendarWorkflowService.startAutoSync();
       console.log('✅ Email & Calendar Workflow Triggers iniciados com sucesso!');
+      
+      // 🧠 INICIALIZAR MOTOR ADAPTATIVO REVOLUCIONÁRIO
+      console.log('🧠 Iniciando Revolutionary Adaptive Engine...');
+      await revolutionaryAdaptiveEngine.initializeRevolutionarySystem();
+      console.log('✅ Revolutionary Adaptive Engine 100x mais poderoso iniciado!');
     } else {
       console.log(`🔔 Notification cron disabled in development`);
       console.log(`📅 Calendar sync cron disabled in development`);
