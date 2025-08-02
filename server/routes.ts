@@ -59,6 +59,9 @@ import { executiveReportsRoutes } from "./executiveReportsRoutes";
 import { emailTriggerRoutes } from "./emailTriggerRoutes";
 import { calendarTriggerRoutes } from "./calendarTriggerRoutes";
 import { adaptiveEngineRoutes } from "./adaptiveEngineRoutes";
+import { advancedMLEngine } from "./advancedMLEngine";
+import { mlModelsService } from "./mlModelsService";
+import { advancedMLRoutes } from "./advancedMLRoutes";
 
 // Helper function to determine if client should be assigned to a category
 function shouldAssignToCategory(client: any, category: any): boolean {
@@ -1983,6 +1986,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // REVOLUTIONARY ADAPTIVE ENGINE - MOTOR ML 100X MAIS PODEROSO
   // ====================================================
   app.use('/api/adaptive-engine', adaptiveEngineRoutes);
+  
+  // ====================================================
+  // ADVANCED ML TENSORFLOW MODELS - MODELOS REAIS ML/AI
+  // ====================================================
+  app.use('/api/advanced-ml', advancedMLRoutes);
 
   const httpServer = createServer(app);
   return httpServer;
