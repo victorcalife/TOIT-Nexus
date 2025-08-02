@@ -49,6 +49,29 @@ Possuem todas as funcionalidades descritas na persona 2 porém são os gestores 
 
 ---
 
+**Você é meu programador de par de IA especialista. Você tem o julgamento, a habilidade e a consciência contextual de um engenheiro de software sênior de uma empresa de tecnologia líder. Você sempre pensa criticamente sobre os requisitos, identifica proativamente ambiguidades e sinaliza qualquer coisa obscura. Você é obcecado por qualidade de código, capacidade de manutenção e confiabilidade no mundo real. Quando possível, você explica seu raciocínio e as melhores práticas, mas evita a verbosidade desnecessária. Se você detectar contexto ou requisitos ausentes, faça perguntas precisas antes de codificar. Você opera como um verdadeiro colaborador, não apenas um assistente. Você é um engenheiro de software sênior, não um assistente de codificação. Você é um parceiro de engenharia, não um assistente de codificação.**
+**Esta seção fornece contexto de projeto de alto nível. Descreva brevemente o objetivo geral, os principais objetivos e os usuários ou fluxos de trabalho pretendidos para o projeto, recurso ou módulo. Resuma o que este código deve alcançar e por que isso é importante para o usuário ou a empresa. Exemplo: 'Um painel da web React para visualizar dados de sensores IoT em tempo real para gerentes de chão de fábrica. Fluxos principais: gráficos ao vivo, integridade do dispositivo, gerenciamento de alertas**
+**Esta seção descreve todos os requisitos técnicos relevantes. Especifique a(s) linguagem(s) de programação, estruturas, padrões de arquitetura, convenções de nomenclatura, bibliotecas preferidas e qualquer estrutura de arquivo/pasta necessária. Inclua quaisquer restrições não negociáveis ​​— desempenho, segurança, acessibilidade ou padrões regulatórios. Exemplo: 'Todo o código em TypeScript com React 18. Use apenas componentes funcionais. Siga o guia de estilo Airbnb JS. Cada função deve ter anotações de tipo e cobertura de teste de 80% ou mais.**
+**Antes de gerar qualquer código, sempre: (1) Restabeleça sua compreensão da tarefa, (2) Identifique quaisquer ambiguidades ou informações ausentes e peça esclarecimentos, se necessário, (3) Divida a tarefa em etapas claras — requisitos, plano e geração de código, (4) Para tarefas complexas, use o raciocínio em cadeia e explique seu plano brevemente. Gere código somente após a conclusão deste processo.**
+**Esta seção descreve o escopo do código que você deve gerar. Seja específico sobre quais arquivos, funções ou módulos você deve criar ou modificar. Liste os nomes dos arquivos, as funções necessárias e quaisquer dependências externas. Exemplo: 'Crie um componente React chamado SensorDashboard.tsx com gráficos de linha para dados de temperatura e um botão de atualização. Use a biblioteca Chart.js para gráficos.'**
+
+'Sempre entregue sua saída da seguinte forma:
+
+1. Comece com um bloco de código contendo código totalmente funcional, pronto para copiar e colar.
+2. Use comentários concisos e significativos para explicar partes não óbvias do código e decisões de design críticas.
+3. Após o bloco de código, forneça uma breve explicação: o que o código faz, por que você fez as principais escolhas e como integrá-lo ou testá-lo, se aplicável.
+4. Se o código abranger vários arquivos, separe claramente cada arquivo com seu caminho e um cabeçalho.
+5. Certifique-se de que toda a saída esteja devidamente formatada para facilitar a leitura em markdown e IDEs.'
+
+**Todo o código deve ser claro, conciso e idiomático para a linguagem e estrutura especificadas. Estruture o código para capacidade de manutenção e legibilidade. Prefira design modular, nomes significativos e digitação forte, sempre que possível. Sempre lide com erros e casos extremos de forma defensiva. Evite a superengenharia e priorize soluções simples e robustas. O código deve estar pronto para revisão, fácil de integrar e ser um prazer para outros engenheiros trabalharem.**
+
+**SEJA BRUTALMENTE HONESTO sobre o que você pode ou não fazer. Se você não tiver certeza, diga isso claramente. Se a tarefa for muito complexa ou vaga, solicite mais informações ou divida-a em etapas menores. Nunca comprometa a qualidade do código ou a clareza da intenção.**
+**SEJA SINCERO E NÃO TENHA MEDO DE QUESTIONAR. Se você detectar problemas com os requisitos, inconsistências ou riscos técnicos, comunique-os imediatamente. Se algo não fizer sentido ou parecer errado, questione-o. Seu objetivo é entregar o melhor código possível, não apenas seguir instruções cegamente.**
+**NÃO PUXE MEU SACO**
+**NÃO FAÇA INTERRUPÇÕES E FINALIZE TAREFAS ANTES DE DESENVOLVER, TESTAR E GARANTIR QUE TODO O CICLO ENTRE FRONTEND, BACKEND E BANCO DE DADOS ESTEJA COMPLETO E FUNCIONAL PARA TODAS AS NECESSIDAES DE NEGÓCIO E FUNCIONALIDADES NECESSÁRIAS PARA ENTREGA TOTAL E REAL EM AMBIENTE PRODUTIVO**
+
+# CLAUDE MEMORY - TOIT NEXUS ENTERPRISE PLATFORM
+
 ## 🎯 CONTEXTO DO PROJETO TOIT NEXUS
 
 **TOIT NEXUS** é uma plataforma empresarial multi-tenant completa desenvolvida como um sistema adaptativo para gestão de dados, workflows, clientes e relatórios. O sistema foi assumido de outro grupo de desenvolvedores e IA, sendo agora mantido e evoluído pela equipe atual.
@@ -824,7 +847,7 @@ async assignAccessProfileByMetadata(tenantId: string, metadata: any): Promise<vo
 ## 🎯 OBJETIVOS ALCANÇADOS - SISTEMA 100% FUNCIONAL PARA TODAS AS 3 PERSONAS
 
 - ✅ **TASK 1:** Sistema de Verificação Completo (email/telefone/cartão) - 100% IMPLEMENTADO
-- ✅ **TASK 2:** Landing Page Comercial com Trial Automático - 100% IMPLEMENTADO  
+- ✅ **TASK 2:** Landing Page Comercial com Trial Automático - 100% IMPLEMENTADO
 - ✅ **TASK 3:** Interface de Notificações (sininho) Completa - 100% IMPLEMENTADO
 - ✅ **TASK 4:** Integrações Externas (Google/Apple/Outlook calendários) - 100% IMPLEMENTADO
 - ✅ **SISTEMA COMPLETO:** Todas as 4 funcionalidades críticas para as 3 personas funcionais
@@ -834,6 +857,7 @@ async assignAccessProfileByMetadata(tenantId: string, metadata: any): Promise<vo
 ## 🏆 RESULTADO FINAL - SISTEMA NEXUS EMPRESARIAL COMPLETO
 
 ### **🔧 TASK 1 - SISTEMA DE VERIFICAÇÃO COMPLETO:**
+
 - **Backend:** `verificationRoutes.ts` com endpoints públicos e rate limiting ✅
 - **Frontend:** `verify-email.tsx`, `verify-phone.tsx`, `verify-card.tsx` integrados ✅
 - **Funcionalidades:** Verificação por código (email), SMS (telefone), Stripe (cartão) ✅
@@ -841,6 +865,7 @@ async assignAccessProfileByMetadata(tenantId: string, metadata: any): Promise<vo
 - **Security:** Rate limiting, validação de entrada, códigos temporários ✅
 
 ### **🌐 TASK 2 - LANDING PAGE COMERCIAL COM TRIAL:**
+
 - **Frontend:** `landing-commercial.tsx` com preços e planos completos ✅
 - **Trial System:** 7 dias automáticos com gestão de expiração ✅
 - **Planos:** BÁSICO (R$59), STANDARD (R$89), PREMIUM (R$119), ENTERPRISE ✅
@@ -848,6 +873,7 @@ async assignAccessProfileByMetadata(tenantId: string, metadata: any): Promise<vo
 - **Automation:** Criação automática de usuário após verificações ✅
 
 ### **🔔 TASK 3 - INTERFACE DE NOTIFICAÇÕES (SININHO):**
+
 - **Backend:** `notificationRoutes.ts` com campanhas automáticas ✅
 - **Frontend:** Componente de sino integrado ao header ✅
 - **Funcionalidades:** Campanhas personalizadas, notificações trial ✅
@@ -855,6 +881,7 @@ async assignAccessProfileByMetadata(tenantId: string, metadata: any): Promise<vo
 - **Personalização:** Notificações baseadas no perfil do usuário ✅
 
 ### **📅 TASK 4 - INTEGRAÇÕES CALENDÁRIOS EXTERNOS:**
+
 - **Backend:** `calendarIntegrationService.ts` + `calendarRoutes.ts` ✅
 - **Frontend:** `calendar-integrations.tsx` + `calendar-callback.tsx` ✅
 - **OAuth 2.0:** Google Calendar + Microsoft Outlook integrados ✅
@@ -868,6 +895,7 @@ async assignAccessProfileByMetadata(tenantId: string, metadata: any): Promise<vo
 **DEPOIS:** Sistema empresarial completo com todas as funcionalidades das 3 personas
 
 **CAPACIDADES FINAIS:**
+
 - 👥 **PERSONA 1 (TOIT):** Controle completo, comercialização, gestão trial
 - 👤 **PERSONA 2 (PF):** Verificações, notificações, calendários, workflows
 - 🏢 **PERSONA 3 (EMPRESAS):** Todas funcionalidades PF + gestão de equipe
@@ -876,6 +904,143 @@ async assignAccessProfileByMetadata(tenantId: string, metadata: any): Promise<vo
 - 🚀 **GO-LIVE READY:** Sistema pronto para produção empresarial
 
 **Sistema TOIT NEXUS agora está 100% completo para atender todas as 3 personas conforme especificação!**
+
+---
+
+# 🎯 ROADMAP COMPLETO PARA SISTEMA NEXUS NO-CODE FUNCIONAL
+
+## 🏗️ **FASE 1: FUNDAÇÃO ADMINISTRATIVA (EM ANDAMENTO)**
+
+### **✅ 1. ADMIN: Sistema de configuração de módulos e perfis**
+
+- Interface para TOIT configurar quais módulos cada empresa pode usar
+- Ativação/desativação dinâmica de funcionalidades por tenant
+- Sistema de permissões granulares por perfil
+
+### **✅ 2. ADMIN: Modelos de produto configuráveis**
+
+- Interface para criar/editar planos (Basic, Premium, Enterprise)
+- Definir quais funcionalidades cada plano inclui
+- Sistema de upgrade/downgrade automático
+
+### **✅ 3. ADMIN: Controle de funcionalidades por tenant**
+
+- Dashboard para TOIT ver/controlar o que cada empresa acessa
+- Sistema de billing baseado em funcionalidades ativas
+- Logs de uso e métricas por empresa
+
+## 🔥 **FASE 2: WORKFLOW ENGINE (CORE DO SISTEMA)**
+
+### **4. WORKFLOW: Builder visual drag-and-drop**
+
+- Interface gamificada estilo Zapier/Make
+- Nodes visuais para ações, condições, dados
+- Preview em tempo real do fluxo
+
+### **5. WORKFLOW: Sistema de triggers automáticos**
+
+- Triggers por email (recebimento/envio)
+- Triggers por webhook (APIs externas)
+- Triggers por schedule (cron jobs)
+- Triggers por mudança de dados
+
+### **6. WORKFLOW: Lógica condicional avançada**
+
+- If/else visual com múltiplas condições
+- Loops e iterações sobre dados
+- Variáveis e manipulação de dados
+- Tratamento de erros e fallbacks
+
+## 📋 **FASE 3: SISTEMA DE TAREFAS AVANÇADO**
+
+### **7. TASK: Tarefas com múltiplas possibilidades**
+
+- Formulários dinâmicos (texto, múltipla escolha, arquivos)
+- Aprovações sequenciais e paralelas
+- Tarefas condicionais baseadas em respostas
+
+### **8. TASK: Templates e reutilização**
+
+- Biblioteca de templates de tarefas
+- Compartilhamento entre usuários
+- Versionamento de templates
+
+### **9. TASK: Dashboard gerencial**
+
+- Visão para managers acompanharem equipe
+- Métricas de produtividade e cumprimento
+- Alertas e notificações automáticas
+
+## 💾 **FASE 4: CONECTIVIDADE DE DADOS**
+
+### **10. DATA: Upload e processamento de arquivos**
+
+- Drag-and-drop de .xls, .xlsx, .csv
+- Parser automático com preview
+- Mapeamento de colunas inteligente
+
+### **11. DATA: Conexões com bancos externos**
+
+- Interface para configurar conexões SQL
+- Query builder visual para extrair dados
+- Sincronização automática e cache
+
+### **12. DATA: APIs e Webhooks**
+
+- Interface para configurar conexões REST/GraphQL
+- Autenticação automática (OAuth, API Keys)
+- Transformação de dados sem código
+
+## 📊 **FASE 5: RELATÓRIOS E DASHBOARDS**
+
+### **13. REPORT: Builder visual de relatórios**
+
+- Drag-and-drop de campos e filtros
+- Visualizações automáticas (tabelas, gráficos)
+- Exportação automática (PDF, Excel)
+
+### **14. DASHBOARD: KPIs e gráficos interativos**
+
+- Widgets drag-and-drop
+- Múltiplos tipos de visualização
+- Atualização em tempo real
+
+### **15. INTEGRATION: Email e Calendar**
+
+- Conexão SMTP/IMAP para envio/recebimento
+- Triggers baseados em emails recebidos
+- Integração com calendários para agendamentos
+
+## 🏢 **FASE 6: FUNCIONALIDADES EMPRESARIAIS**
+
+### **16. ENTERPRISE: Departamentos e hierarquias**
+
+- Sistema de departamentos configuráveis
+- Hierarquias de aprovação
+- Fluxos departamentais isolados
+
+### **17. ENTERPRISE: Controle de acesso granular**
+
+- Permissões por usuário/departamento
+- Isolamento de dados (Vendas ≠ Compras)
+- Auditoria de acessos
+
+## ⚡ **CRONOGRAMA DE IMPLEMENTAÇÃO:**
+
+**FASE 1 (SEMANA 1-2):** Base administrativa - EM ANDAMENTO  
+**FASE 2 (SEMANA 3-5):** Workflow engine  
+**FASE 3 (SEMANA 6-7):** Tarefas avançadas  
+**FASE 4 (SEMANA 8-9):** Conectividade  
+**FASE 5 (SEMANA 10-11):** Relatórios/Dashboards  
+**FASE 6 (SEMANA 12+):** Enterprise features
+
+## 🎯 **RESULTADO FINAL:**
+
+- Sistema no-code completo e gamificado
+- TOIT controla tudo administrativamente
+- Usuários criam workflows complexos sem programar
+- Empresas gerenciam equipes e departamentos
+- Integração total entre todas as funcionalidades
 
 ---
 

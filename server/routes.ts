@@ -39,6 +39,8 @@ import enterpriseRoutes from "./enterpriseRoutes";
 import adaptiveRoutes from "./adaptiveRoutes";
 import notificationRoutes from "./notificationRoutes";
 import calendarRoutes from "./calendarRoutes";
+import { adminModuleRoutes } from "./adminModuleRoutes";
+import { tenantControlRoutes } from "./tenantControlRoutes";
 
 // Helper function to determine if client should be assigned to a category
 function shouldAssignToCategory(client: any, category: any): boolean {
@@ -1844,6 +1846,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register TOIT admin routes
   app.use('/api/admin', adminRoutes);
+
+  // Register Admin Module Management routes (TOIT team only)
+  app.use('/api/admin', adminModuleRoutes);
+  
+  // Register Tenant Control routes (TOIT team only)
+  app.use('/api/admin/tenant-control', tenantControlRoutes);
   
   // Register Access Profile management routes (TOIT admin only)
   app.use('/api/admin/access-profiles', accessProfileRoutes);

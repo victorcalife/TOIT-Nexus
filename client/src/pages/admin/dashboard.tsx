@@ -37,6 +37,8 @@ import { StandardHeader } from '@/components/standard-header';
 import { useAuth } from '@/hooks/useAuth';
 import { SalesMetricsDashboard } from '@/components/sales-metrics-dashboard';
 import { SubscriptionReportsDashboard } from '@/components/subscription-reports-dashboard';
+import ModuleManager from './module-manager';
+import TenantControlDashboard from './tenant-control-dashboard';
 
 type Tenant = {
   id: string;
@@ -111,16 +113,17 @@ export default function TOITAdminDashboard() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-9">
+          <TabsList className="grid w-full grid-cols-11">
             <TabsTrigger value="overview">Visão Geral</TabsTrigger>
             <TabsTrigger value="tenants">Empresas</TabsTrigger>
+            <TabsTrigger value="tenant-control">Controle Total</TabsTrigger>
+            <TabsTrigger value="modules">Módulos</TabsTrigger>
             <TabsTrigger value="users">Usuários</TabsTrigger>
             <TabsTrigger value="departments">Departamentos</TabsTrigger>
             <TabsTrigger value="permissions">Permissões</TabsTrigger>
             <TabsTrigger value="profiles">Perfis de Acesso</TabsTrigger>
             <TabsTrigger value="sales">Vendas</TabsTrigger>
             <TabsTrigger value="subscriptions">Assinaturas</TabsTrigger>
-            <TabsTrigger value="workflows">Workflows</TabsTrigger>
             <TabsTrigger value="monitoring">Monitoramento</TabsTrigger>
           </TabsList>
 
@@ -308,6 +311,14 @@ export default function TOITAdminDashboard() {
                 </Card>
               ))}
             </div>
+          </TabsContent>
+
+          <TabsContent value="modules" className="space-y-4">
+            <ModuleManager />
+          </TabsContent>
+
+          <TabsContent value="tenant-control" className="space-y-4">
+            <TenantControlDashboard />
           </TabsContent>
 
           <TabsContent value="users" className="space-y-4">
