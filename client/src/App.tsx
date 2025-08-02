@@ -96,15 +96,14 @@ function Router() {
       return <SupportLogin />;
     }
     
-    // Para domínio normal, mostrar roteamento completo
+    // Para nexus.toit.com.br - mostrar landing page comercial ou login baseado na rota
     return (
       <Switch>
-        <Route path="/support-login" component={SupportLogin} />
         <Route path="/login" component={Login} />
         <Route path="/verify-account" component={VerifyAccount} />
         <Route path="/verify-email" component={VerifyEmail} />
         <Route path="/verify-phone" component={VerifyPhone} />
-        <Route path="/quantum-ml" component={QuantumMLCommercial} />
+        <Route path="/support-login" component={SupportLogin} />
         <Route path="/" component={QuantumMLCommercial} />
         <Route component={QuantumMLCommercial} />
       </Switch>

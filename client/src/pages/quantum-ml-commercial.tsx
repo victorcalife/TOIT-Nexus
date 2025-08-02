@@ -67,6 +67,7 @@ export default function QuantumMLCommercial() {
   const [showPricingModal, setShowPricingModal] = useState(false);
   const [showTrialModal, setShowTrialModal] = useState(false);
   const [showDemoModal, setShowDemoModal] = useState(false);
+  const [isFirstVisit, setIsFirstVisit] = useState(true);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -454,11 +455,11 @@ export default function QuantumMLCommercial() {
             <Button 
               size="lg" 
               variant="outline" 
-              onClick={() => window.open('https://nexus.toit.com.br', '_blank')}
+              onClick={() => window.location.href = '/login'}
               className="border-2 border-green-400 text-green-400 hover:bg-green-400 hover:text-slate-900 px-8 py-4 text-lg"
             >
               <Users className="h-5 w-5 mr-2" />
-              Acessar Sistema
+              Fazer Login
             </Button>
           </div>
 
@@ -1229,11 +1230,11 @@ export default function QuantumMLCommercial() {
             <Button 
               size="lg" 
               variant="outline" 
-              onClick={() => window.open('https://nexus.toit.com.br', '_blank')}
+              onClick={() => window.location.href = '/login'}
               className="border-2 border-green-400 text-green-400 hover:bg-green-400 hover:text-slate-900 px-8 py-4 text-lg"
             >
               <Star className="h-5 w-5 mr-2" />
-              Acessar Sistema
+              Fazer Login
             </Button>
           </div>
 
