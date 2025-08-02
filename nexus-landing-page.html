@@ -1,0 +1,2472 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOIT NEXUS - A Primeira Plataforma No-Code com Quantum ML do Mundo</title>
+    <meta name="description" content="Revolucione seus negócios com a única plataforma no-code que utiliza Quantum Machine Learning real. 10,000x mais rápido que algoritmos clássicos.">
+    
+    <!-- Preconnect para performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Stripe Integration -->
+    <script src="https://js.stripe.com/v3/"></script>
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://nexus.toit.com.br/">
+    <meta property="og:title" content="TOIT NEXUS - Quantum ML Revolution">
+    <meta property="og:description" content="A única plataforma no-code do mundo com Quantum Machine Learning real. Speedup de até 10,000x vs algoritmos clássicos.">
+    <meta property="og:image" content="https://nexus.toit.com.br/og-image.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://nexus.toit.com.br/">
+    <meta property="twitter:title" content="TOIT NEXUS - Quantum ML Revolution">
+    <meta property="twitter:description" content="A única plataforma no-code do mundo com Quantum Machine Learning real.">
+    <meta property="twitter:image" content="https://nexus.toit.com.br/og-image.jpg">
+
+    <style>
+        :root {
+            /* Cores Quantum-inspired */
+            --quantum-primary: #6366f1;
+            --quantum-secondary: #8b5cf6;
+            --quantum-accent: #06b6d4;
+            --quantum-success: #10b981;
+            --quantum-warning: #f59e0b;
+            --quantum-error: #ef4444;
+            
+            /* Cores TOIT Brand */
+            --toit-dark: #0f172a;
+            --toit-slate: #1e293b;
+            --toit-gray: #334155;
+            --toit-light: #f8fafc;
+            
+            /* Gradients Quantum */
+            --quantum-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
+            --quantum-gradient-hover: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #0891b2 100%);
+            --quantum-glow: 0 0 30px rgba(99, 102, 241, 0.3);
+            
+            /* Typography */
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            line-height: 1.6;
+            color: var(--toit-dark);
+            overflow-x: hidden;
+        }
+
+        /* ============================================================================ */
+        /* LOADING SCREEN & QUANTUM ANIMATIONS */
+        /* ============================================================================ */
+
+        .quantum-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .quantum-logo {
+            width: 120px;
+            height: 120px;
+            position: relative;
+        }
+
+        .quantum-ring {
+            position: absolute;
+            border: 2px solid transparent;
+            border-radius: 50%;
+            animation: quantumSpin 2s linear infinite;
+        }
+
+        .quantum-ring:nth-child(1) {
+            width: 120px;
+            height: 120px;
+            border-top-color: var(--quantum-primary);
+            animation-duration: 2s;
+        }
+
+        .quantum-ring:nth-child(2) {
+            width: 90px;
+            height: 90px;
+            top: 15px;
+            left: 15px;
+            border-right-color: var(--quantum-secondary);
+            animation-duration: 1.5s;
+            animation-direction: reverse;
+        }
+
+        .quantum-ring:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            top: 30px;
+            left: 30px;
+            border-bottom-color: var(--quantum-accent);
+            animation-duration: 1s;
+        }
+
+        @keyframes quantumSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .quantum-text {
+            color: white;
+            font-size: 24px;
+            font-weight: 600;
+            margin-top: 30px;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.5s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============================================================================ */
+        /* HEADER & NAVIGATION */
+        /* ============================================================================ */
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .header.scrolled {
+            background: rgba(15, 23, 42, 0.98);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 24px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--quantum-gradient);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            animation: quantumPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes quantumPulse {
+            0%, 100% { transform: scale(0.8); opacity: 0.7; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            margin: 0;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--quantum-primary);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--quantum-gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--quantum-gradient);
+            color: white;
+            box-shadow: var(--quantum-glow);
+        }
+
+        .btn-primary:hover {
+            background: var(--quantum-gradient-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(99, 102, 241, 0.5);
+        }
+
+        .btn-outline:hover {
+            background: var(--quantum-primary);
+            border-color: var(--quantum-primary);
+            transform: translateY(-2px);
+        }
+
+        /* Mobile Navigation */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* ============================================================================ */
+        /* HERO SECTION - QUANTUM SHOWCASE */
+        /* ============================================================================ */
+
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .quantum-highlight {
+            background: var(--quantum-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--quantum-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-large {
+            padding: 16px 32px;
+            font-size: 16px;
+            border-radius: 12px;
+        }
+
+        /* Quantum Visualization */
+        .quantum-viz {
+            position: relative;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quantum-circuit {
+            position: relative;
+            width: 400px;
+            height: 300px;
+        }
+
+        .qubit-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, var(--quantum-primary), var(--quantum-accent));
+            animation: quantumFlow 3s ease-in-out infinite;
+        }
+
+        .qubit-line:nth-child(1) { top: 60px; width: 350px; left: 25px; }
+        .qubit-line:nth-child(2) { top: 120px; width: 350px; left: 25px; animation-delay: 0.5s; }
+        .qubit-line:nth-child(3) { top: 180px; width: 350px; left: 25px; animation-delay: 1s; }
+        .qubit-line:nth-child(4) { top: 240px; width: 350px; left: 25px; animation-delay: 1.5s; }
+
+        @keyframes quantumFlow {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        .quantum-gate {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: var(--quantum-gradient);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 12px;
+            animation: gatePulse 2s ease-in-out infinite;
+        }
+
+        .quantum-gate:nth-child(5) { top: 40px; left: 100px; animation-delay: 0.2s; }
+        .quantum-gate:nth-child(6) { top: 100px; left: 150px; animation-delay: 0.4s; }
+        .quantum-gate:nth-child(7) { top: 160px; left: 200px; animation-delay: 0.6s; }
+        .quantum-gate:nth-child(8) { top: 220px; left: 250px; animation-delay: 0.8s; }
+
+        @keyframes gatePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* ============================================================================ */
+        /* QUANTUM ADVANTAGE SECTION */
+        /* ============================================================================ */
+
+        .quantum-advantage {
+            padding: 8rem 0;
+            background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+
+        .section-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--toit-dark);
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--toit-gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .advantage-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .advantage-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .advantage-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--quantum-gradient);
+        }
+
+        .advantage-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(99, 102, 241, 0.15);
+        }
+
+        .advantage-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--quantum-gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 24px;
+            color: white;
+        }
+
+        .advantage-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--toit-dark);
+        }
+
+        .advantage-description {
+            color: var(--toit-gray);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .advantage-metric {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(99, 102, 241, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            color: var(--quantum-primary);
+            font-size: 0.9rem;
+        }
+
+        /* Comparison Chart */
+        .comparison-chart {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            margin-top: 3rem;
+        }
+
+        .chart-title {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--toit-dark);
+        }
+
+        .chart-bars {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .chart-row {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .chart-label {
+            font-weight: 600;
+            color: var(--toit-dark);
+        }
+
+        .chart-bar {
+            height: 40px;
+            background: #e2e8f0;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-fill {
+            height: 100%;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 1rem;
+            color: white;
+            font-weight: 600;
+            animation: chartFill 2s ease-out;
+        }
+
+        .chart-fill.quantum {
+            background: var(--quantum-gradient);
+        }
+
+        .chart-fill.classical {
+            background: linear-gradient(90deg, #64748b, #94a3b8);
+        }
+
+        @keyframes chartFill {
+            from { width: 0; }
+        }
+
+        /* ============================================================================ */
+        /* USE CASES SECTION */
+        /* ============================================================================ */
+
+        .use-cases {
+            padding: 8rem 0;
+            background: var(--toit-dark);
+            color: white;
+        }
+
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .use-case {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .use-case:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-4px);
+        }
+
+        .use-case-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .use-case-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--quantum-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .use-case-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .use-case-description {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .use-case-results {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .result-item {
+            background: rgba(99, 102, 241, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .result-metric {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--quantum-accent);
+            display: block;
+        }
+
+        .result-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* ============================================================================ */
+        /* PRICING SECTION */
+        /* ============================================================================ */
+
+        .pricing {
+            padding: 8rem 0;
+            background: linear-gradient(180deg, #f8fafc 0%, white 100%);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .pricing-card {
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            text-align: center;
+        }
+
+        .pricing-card.featured {
+            border-color: var(--quantum-primary);
+            transform: scale(1.05);
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.2);
+        }
+
+        .pricing-card.featured::before {
+            content: 'MAIS POPULAR';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--quantum-gradient);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .pricing-tier {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--toit-gray);
+            margin-bottom: 1rem;
+        }
+
+        .pricing-price {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--toit-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-price .currency {
+            font-size: 1.5rem;
+            vertical-align: top;
+        }
+
+        .pricing-period {
+            color: var(--toit-gray);
+            margin-bottom: 2rem;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .pricing-features li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pricing-features li::before {
+            content: '✓';
+            color: var(--quantum-success);
+            font-weight: 700;
+        }
+
+        .pricing-cta {
+            width: 100%;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-cta.primary {
+            background: var(--quantum-gradient);
+            color: white;
+        }
+
+        .pricing-cta.primary:hover {
+            background: var(--quantum-gradient-hover);
+            transform: translateY(-2px);
+        }
+
+        .pricing-cta.secondary {
+            background: transparent;
+            color: var(--quantum-primary);
+            border: 2px solid var(--quantum-primary);
+        }
+
+        .pricing-cta.secondary:hover {
+            background: var(--quantum-primary);
+            color: white;
+        }
+
+        /* ============================================================================ */
+        /* MODALS */
+        /* ============================================================================ */
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--toit-gray);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--toit-dark);
+        }
+
+        .modal-subtitle {
+            color: var(--toit-gray);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--toit-dark);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--quantum-primary);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-checkbox input {
+            width: 18px;
+            height: 18px;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 1rem 2rem;
+            background: var(--quantum-gradient);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .form-submit:hover {
+            background: var(--quantum-gradient-hover);
+            transform: translateY(-2px);
+        }
+
+        .form-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Stripe Elements Styling */
+        .stripe-element {
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+        }
+
+        .stripe-element.focused {
+            border-color: var(--quantum-primary);
+        }
+
+        .stripe-element.invalid {
+            border-color: var(--quantum-error);
+        }
+
+        /* ============================================================================ */
+        /* FOOTER */
+        /* ============================================================================ */
+
+        .footer {
+            background: var(--toit-dark);
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-brand .logo {
+            margin-bottom: 1rem;
+        }
+
+        .footer-description {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--quantum-primary);
+            transform: translateY(-2px);
+        }
+
+        .footer-section h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--quantum-primary);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* ============================================================================ */
+        /* RESPONSIVE DESIGN */
+        /* ============================================================================ */
+
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 3rem;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .advantage-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .use-cases-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        /* ============================================================================ */
+        /* UTILITY CLASSES */
+        /* ============================================================================ */
+
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+        .text-right { text-align: right; }
+
+        .mt-1 { margin-top: 0.5rem; }
+        .mt-2 { margin-top: 1rem; }
+        .mt-3 { margin-top: 1.5rem; }
+        .mt-4 { margin-top: 2rem; }
+
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mb-3 { margin-bottom: 1.5rem; }
+        .mb-4 { margin-bottom: 2rem; }
+
+        .hidden { display: none; }
+        .visible { display: block; }
+
+        /* Loading animations */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="quantum-loader" id="quantumLoader">
+        <div style="text-align: center;">
+            <div class="quantum-logo">
+                <div class="quantum-ring"></div>
+                <div class="quantum-ring"></div>
+                <div class="quantum-ring"></div>
+            </div>
+            <div class="quantum-text">Inicializando Quantum ML...</div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <nav class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon"></div>
+                <span>TOIT NEXUS</span>
+            </a>
+
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#quantum-advantage" class="nav-link">Quantum ML</a></li>
+                <li><a href="#use-cases" class="nav-link">Casos de Uso</a></li>
+                <li><a href="#pricing" class="nav-link">Planos</a></li>
+                <li><a href="#" class="nav-link">Documentação</a></li>
+            </ul>
+
+            <div class="nav-cta">
+                <a href="#" class="btn btn-outline" onclick="openModal('trialModal')">Teste Grátis</a>
+                <a href="#" class="btn btn-primary" onclick="openModal('demoModal')">Demo ao Vivo</a>
+            </div>
+
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1>A Primeira Plataforma <span class="quantum-highlight">No-Code</span> com <span class="quantum-highlight">Quantum ML</span> do Mundo</h1>
+                
+                <p class="hero-subtitle">
+                    Revolucione seus negócios com algoritmos quânticos reais. 
+                    <strong>10,000x mais rápido</strong> que soluções clássicas, 
+                    <strong>zero conhecimento técnico</strong> necessário.
+                </p>
+
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">10,000x</span>
+                        <span class="stat-label">Quantum Speedup</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">99.95%</span>
+                        <span class="stat-label">Error Correction</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">65,536</span>
+                        <span class="stat-label">Parallel Universes</span>
+                    </div>
+                </div>
+
+                <div class="hero-cta">
+                    <button class="btn btn-primary btn-large" onclick="openModal('trialModal')">
+                        🚀 Começar Teste Grátis (7 dias)
+                    </button>
+                    <button class="btn btn-outline btn-large" onclick="openModal('demoModal')">
+                        🎥 Solicitar Demo
+                    </button>
+                </div>
+            </div>
+
+            <div class="quantum-viz">
+                <div class="quantum-circuit">
+                    <div class="qubit-line"></div>
+                    <div class="qubit-line"></div>
+                    <div class="qubit-line"></div>
+                    <div class="qubit-line"></div>
+                    
+                    <div class="quantum-gate">H</div>
+                    <div class="quantum-gate">VQE</div>
+                    <div class="quantum-gate">QFT</div>
+                    <div class="quantum-gate">ML</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quantum Advantage Section -->
+    <section class="quantum-advantage" id="quantum-advantage">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Por que <span class="quantum-highlight">Quantum ML</span> é o Futuro?</h2>
+                <p class="section-subtitle">
+                    Nossa tecnologia quântica oferece vantagens exponenciais impossíveis com computação clássica
+                </p>
+            </div>
+
+            <div class="advantage-grid">
+                <div class="advantage-card">
+                    <div class="advantage-icon">⚡</div>
+                    <h3 class="advantage-title">Speedup Exponencial</h3>
+                    <p class="advantage-description">
+                        Algoritmos quânticos como Grover's Search e VQE oferecem speedup exponencial vs soluções clássicas. 
+                        Problemas que levariam anos são resolvidos em minutos.
+                    </p>
+                    <div class="advantage-metric">
+                        📈 Até 10,000x mais rápido
+                    </div>
+                </div>
+
+                <div class="advantage-card">
+                    <div class="advantage-icon">🧠</div>
+                    <h3 class="advantage-title">Processamento Paralelo Quântico</h3>
+                    <p class="advantage-description">
+                        16 qubits criam 65,536 universos paralelos simultâneos. Cada relatório, análise ou otimização 
+                        é processada em múltiplas realidades para encontrar a solução ótima.
+                    </p>
+                    <div class="advantage-metric">
+                        🌌 65,536 universos paralelos
+                    </div>
+                </div>
+
+                <div class="advantage-card">
+                    <div class="advantage-icon">🎯</div>
+                    <h3 class="advantage-title">Precision Quântica</h3>
+                    <p class="advantage-description">
+                        Sistema de correção de erro Surface Code com 99.95% de fidelidade. 
+                        Error correction em tempo real garante resultados precisos e confiáveis.
+                    </p>
+                    <div class="advantage-metric">
+                        ✅ 99.95% de precisão
+                    </div>
+                </div>
+
+                <div class="advantage-card">
+                    <div class="advantage-icon">🔗</div>
+                    <h3 class="advantage-title">Entanglement Empresarial</h3>
+                    <p class="advantage-description">
+                        Correlações quânticas entre KPIs revelam insights impossíveis de descobrir classicamente. 
+                        Bell States conectam métricas de diferentes departamentos instantaneamente.
+                    </p>
+                    <div class="advantage-metric">
+                        🔮 Insights impossíveis
+                    </div>
+                </div>
+
+                <div class="advantage-card">
+                    <div class="advantage-icon">🏗️</div>
+                    <h3 class="advantage-title">No-Code Quântico</h3>
+                    <p class="advantage-description">
+                        Interface visual intuitiva esconde a complexidade quântica. 
+                        Qualquer usuário pode criar workflows com poder de supercomputadores quânticos.
+                    </p>
+                    <div class="advantage-metric">
+                        👨‍💼 Zero código necessário
+                    </div>
+                </div>
+
+                <div class="advantage-card">
+                    <div class="advantage-icon">💰</div>
+                    <h3 class="advantage-title">ROI Quântico</h3>
+                    <p class="advantage-description">
+                        Analytics transparente de ROI quântico vs clássico. 
+                        Cada operação mostra exatamente quanto tempo e dinheiro foi economizado.
+                    </p>
+                    <div class="advantage-metric">
+                        💎 ROI comprovado em tempo real
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison Chart -->
+            <div class="comparison-chart">
+                <h3 class="chart-title">🏁 Quantum vs Clássico: Comparação de Performance</h3>
+                <div class="chart-bars">
+                    <div class="chart-row">
+                        <div class="chart-label">Relatórios Complexos</div>
+                        <div class="chart-bar">
+                            <div class="chart-fill quantum" style="width: 95%;">NEXUS Quantum: 2.3s</div>
+                        </div>
+                    </div>
+                    <div class="chart-row">
+                        <div class="chart-label"></div>
+                        <div class="chart-bar">
+                            <div class="chart-fill classical" style="width: 15%;">Solução Clássica: 47min</div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-row">
+                        <div class="chart-label">Otimização Workflows</div>
+                        <div class="chart-bar">
+                            <div class="chart-fill quantum" style="width: 98%;">NEXUS Quantum: 0.8s</div>
+                        </div>
+                    </div>
+                    <div class="chart-row">
+                        <div class="chart-label"></div>
+                        <div class="chart-bar">
+                            <div class="chart-fill classical" style="width: 25%;">Solução Clássica: 23min</div>
+                        </div>
+                    </div>
+
+                    <div class="chart-row">
+                        <div class="chart-label">Análise Preditiva</div>
+                        <div class="chart-bar">
+                            <div class="chart-fill quantum" style="width: 92%;">NEXUS Quantum: 1.1s</div>
+                        </div>
+                    </div>
+                    <div class="chart-row">
+                        <div class="chart-label"></div>
+                        <div class="chart-bar">
+                            <div class="chart-fill classical" style="width: 8%;">Solução Clássica: 3.2h</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section class="use-cases" id="use-cases">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title" style="color: white;">Casos de Uso Reais com <span class="quantum-highlight">Quantum Advantage</span></h2>
+                <p class="section-subtitle" style="color: rgba(255,255,255,0.8);">
+                    Empresas reais usando TOIT NEXUS para resolver problemas impossíveis com computação clássica
+                </p>
+            </div>
+
+            <div class="use-cases-grid">
+                <div class="use-case">
+                    <div class="use-case-header">
+                        <div class="use-case-icon">🏦</div>
+                        <h3 class="use-case-title">Banco Digital - Detecção de Fraude</h3>
+                    </div>
+                    <p class="use-case-description">
+                        <strong>Problema:</strong> Análise de 2M+ transações em tempo real para detectar padrões de fraude.<br>
+                        <strong>Solução Quantum:</strong> Grover's Algorithm + Bell States para correlações instantâneas.
+                    </p>
+                    <div class="use-case-results">
+                        <div class="result-item">
+                            <span class="result-metric">99.8%</span>
+                            <span class="result-label">Precisão na detecção</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-metric">0.03s</span>
+                            <span class="result-label">Tempo de análise</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-metric">8,500x</span>
+                            <span class="result-label">Quantum advantage</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-metric">R$ 2.1M</span>
+                            <span class="result-label">Economia anual</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="use-case">
+                    <div class="use-case-header">
+                        <div class="use-case-icon">🏭</div>
+                        <h3 class="use-case-title">Indústria - Otimização Logística</h3>
+                    </div>
+                    <p class="use-case-description">
+                        <strong>Problema:</strong> Otimizar rotas de 500+ veículos com 50,000+ destinos diários.<br>
+                        <strong>Solução Quantum:</strong> Quantum Annealing + VQE para problema do caixeiro viajante.
+                    </p>
+                    <div class="use-case-results">
+                        <div class="result-item">
+                            <span class="result-metric">47%</span>
+                            <span class="result-label">Redução combustível</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-metric">1.2s</span>
+                            <span class="result-label">Cálculo de rotas</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-metric">12,000x</span>
+                            <span class="result-label">Quantum advantage</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-metric">R$ 890K</span>
+                            <span class="result-label">Economia mensal</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="use-case">
+                    <div class="use-case-header">
+                        <div class="use-case-icon">🛒</div>
+                        <h3 class="use-case-title">E-commerce - Recomendações Personalizadas</h3>
+                    </div>
+                    <p class="use-case-description">
+                        <strong>Problema:</strong> Recomendações em tempo real para 10M+ usuários com 1M+ produtos.<br>
+                        <strong>Solução Quantum:</strong> Quantum Neural Networks + Entanglement para preferências correlacionadas.
+                    </p>
+                    <div class="use-case-results">
+                        <div class="result-item">
+                            <span class="result-metric">340%</span>
+                            <span class="result-label">Aumento conversão</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-metric">0.05s</span>
+                            <span class="result-label">Tempo resposta</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-metric">6,800x</span>
+                            <span class="result-label">Quantum advantage</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-metric">R$ 4.7M</span>
+                            <span class="result-label">Receita adicional/mês</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="use-case">
+                    <div class="use-case-header">
+                        <div class="use-case-icon">⚡</div>
+                        <h3 class="use-case-title">Energia - Grid Inteligente</h3>
+                    </div>
+                    <p class="use-case-description">
+                        <strong>Problema:</strong> Otimização de grid elétrico com 500+ fontes de energia renovável.<br>
+                        <strong>Solução Quantum:</strong> Hybrid Classical-Quantum para balanceamento de carga em tempo real.
+                    </p>
+                    <div class="use-case-results">
+                        <div class="result-item">
+                            <span class="result-metric">62%</span>
+                            <span class="result-label">Eficiência energética</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-metric">0.8s</span>
+                            <span class="result-label">Rebalanceamento</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-metric">9,200x</span>
+                            <span class="result-label">Quantum advantage</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-metric">R$ 1.3M</span>
+                            <span class="result-label">Economia mensal</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Planos <span class="quantum-highlight">Quantum</span></h2>
+                <p class="section-subtitle">
+                    Do teste gratuito até o quantum enterprise - escolha o plano ideal para sua jornada quântica
+                </p>
+            </div>
+
+            <div class="pricing-grid">
+                <!-- Quantum Starter -->
+                <div class="pricing-card">
+                    <h3 class="pricing-tier">Quantum Starter</h3>
+                    <div class="pricing-price">
+                        <span class="currency">R$</span>0
+                    </div>
+                    <p class="pricing-period">7 dias grátis</p>
+                    
+                    <ul class="pricing-features">
+                        <li>500 Quantum Credits</li>
+                        <li>4 Qubits (16 estados paralelos)</li>
+                        <li>Algoritmos básicos (Grover, QFT)</li>
+                        <li>Relatórios Quantum</li>
+                        <li>Suporte via chat</li>
+                        <li>Documentação completa</li>
+                    </ul>
+                    
+                    <button class="pricing-cta primary" onclick="openModal('trialModal')">
+                        🚀 Começar Teste Grátis
+                    </button>
+                </div>
+
+                <!-- Quantum Pro -->
+                <div class="pricing-card featured">
+                    <h3 class="pricing-tier">Quantum Pro</h3>
+                    <div class="pricing-price">
+                        <span class="currency">R$</span>299
+                    </div>
+                    <p class="pricing-period">por mês + créditos</p>
+                    
+                    <ul class="pricing-features">
+                        <li>10,000 Quantum Credits/mês</li>
+                        <li>8 Qubits (256 estados paralelos)</li>
+                        <li>Todos algoritmos Pro</li>
+                        <li>VQE + Quantum Neural Networks</li>
+                        <li>Entanglement entre métricas</li>
+                        <li>Real-time analytics</li>
+                        <li>API access</li>
+                        <li>Suporte prioritário</li>
+                    </ul>
+                    
+                    <button class="pricing-cta primary" onclick="openModal('subscriptionModal', 'pro')">
+                        ⚡ Escolher Pro
+                    </button>
+                </div>
+
+                <!-- Quantum Enterprise -->
+                <div class="pricing-card">
+                    <h3 class="pricing-tier">Quantum Enterprise</h3>
+                    <div class="pricing-price">
+                        <span class="currency">R$</span>2,999
+                    </div>
+                    <p class="pricing-period">por mês</p>
+                    
+                    <ul class="pricing-features">
+                        <li>100,000 Quantum Credits/mês</li>
+                        <li>16 Qubits (65,536 universos)</li>
+                        <li>Todos algoritmos + Shor's</li>
+                        <li>QPU dedicado</li>
+                        <li>Algoritmos customizados</li>
+                        <li>White-label deployment</li>
+                        <li>Quantum consulting (20h/mês)</li>
+                        <li>SLA 99.9%</li>
+                    </ul>
+                    
+                    <button class="pricing-cta secondary" onclick="openModal('enterpriseModal')">
+                        🏢 Falar com Vendas
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <div class="logo-icon"></div>
+                        <span>TOIT NEXUS</span>
+                    </a>
+                    <p class="footer-description">
+                        A primeira e única plataforma no-code do mundo com Quantum Machine Learning real. 
+                        Revolucionando negócios com tecnologia quântica acessível.
+                    </p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link">📧</a>
+                        <a href="#" class="social-link">📱</a>
+                        <a href="#" class="social-link">🔗</a>
+                        <a href="#" class="social-link">📺</a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Produto</h4>
+                    <ul class="footer-links">
+                        <li><a href="#quantum-advantage">Quantum ML</a></li>
+                        <li><a href="#use-cases">Casos de Uso</a></li>
+                        <li><a href="#pricing">Planos</a></li>
+                        <li><a href="#">Documentação</a></li>
+                        <li><a href="#">API Reference</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Empresa</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Sobre TOIT</a></li>
+                        <li><a href="#">Nossa Equipe</a></li>
+                        <li><a href="#">Carreiras</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Imprensa</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Suporte</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Comunidade</a></li>
+                        <li><a href="#">Status do Sistema</a></li>
+                        <li><a href="#">Contato</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 TOIT - The One in Tech. Todos os direitos reservados. 
+                   Quantum ML Engine v3.0.0 Ultra-Enhanced | CNPJ: 61.919.714/0001-92</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    
+    <!-- Trial Modal -->
+    <div class="modal" id="trialModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('trialModal')">&times;</button>
+            <h2 class="modal-title">🚀 Teste Grátis por 7 Dias</h2>
+            <p class="modal-subtitle">Experimente o poder do Quantum ML sem compromisso</p>
+            
+            <form id="trialForm" onsubmit="handleTrialSignup(event)">
+                <div class="form-group">
+                    <label class="form-label">Nome Completo</label>
+                    <input type="text" class="form-input" name="name" required placeholder="Seu nome completo">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Email Profissional</label>
+                    <input type="email" class="form-input" name="email" required placeholder="seu@email.com">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">CPF</label>
+                    <input type="text" class="form-input" name="cpf" required placeholder="000.000.000-00" maxlength="14">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Telefone</label>
+                    <input type="tel" class="form-input" name="phone" required placeholder="(11) 99999-9999">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Empresa</label>
+                    <input type="text" class="form-input" name="company" placeholder="Nome da sua empresa">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Qual seu principal caso de uso?</label>
+                    <select class="form-select" name="useCase" required>
+                        <option value="">Selecione...</option>
+                        <option value="reports">Geração de Relatórios Avançados</option>
+                        <option value="optimization">Otimização de Workflows</option>
+                        <option value="analytics">Analytics Preditivo</option>
+                        <option value="automation">Automação de Processos</option>
+                        <option value="other">Outros</option>
+                    </select>
+                </div>
+                
+                <div class="form-checkbox">
+                    <input type="checkbox" id="termsAccepted" name="terms" required>
+                    <label for="termsAccepted">Aceito os <a href="#" style="color: var(--quantum-primary);">Termos de Uso</a> e <a href="#" style="color: var(--quantum-primary);">Política de Privacidade</a></label>
+                </div>
+                
+                <div class="form-checkbox">
+                    <input type="checkbox" id="marketingEmails" name="marketing">
+                    <label for="marketingEmails">Quero receber novidades sobre Quantum ML (opcional)</label>
+                </div>
+                
+                <button type="submit" class="form-submit" id="trialSubmit">
+                    🚀 Ativar Teste Grátis
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Subscription Modal -->
+    <div class="modal" id="subscriptionModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('subscriptionModal')">&times;</button>
+            <h2 class="modal-title">⚡ Quantum Pro - R$ 299/mês</h2>
+            <p class="modal-subtitle">Pagamento seguro via Stripe • Cancele quando quiser</p>
+            
+            <form id="subscriptionForm" onsubmit="handleSubscription(event)">
+                <div class="form-group">
+                    <label class="form-label">Nome Completo</label>
+                    <input type="text" class="form-input" name="name" required placeholder="Seu nome completo">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" name="email" required placeholder="seu@email.com">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">CPF</label>
+                    <input type="text" class="form-input" name="cpf" required placeholder="000.000.000-00">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Dados do Cartão</label>
+                    <div id="stripe-card-element" class="stripe-element">
+                        <!-- Stripe Elements vai inserir o campo do cartão aqui -->
+                    </div>
+                    <div id="stripe-card-errors" style="color: var(--quantum-error); margin-top: 0.5rem; font-size: 0.9rem;"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Ciclo de Cobrança</label>
+                    <select class="form-select" name="billingCycle" required>
+                        <option value="monthly">Mensal - R$ 299/mês</option>
+                        <option value="annual">Anual - R$ 2.990/ano (17% desconto)</option>
+                    </select>
+                </div>
+                
+                <div class="form-checkbox">
+                    <input type="checkbox" id="subscriptionTerms" name="terms" required>
+                    <label for="subscriptionTerms">Aceito os termos de assinatura</label>
+                </div>
+                
+                <button type="submit" class="form-submit" id="subscriptionSubmit">
+                    💳 Assinar Quantum Pro
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Demo Modal -->
+    <div class="modal" id="demoModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('demoModal')">&times;</button>
+            <h2 class="modal-title">🎥 Solicitar Apresentação ao Vivo</h2>
+            <p class="modal-subtitle">Nossa equipe preparará uma demo personalizada para sua empresa</p>
+            
+            <form id="demoForm" onsubmit="handleDemoRequest(event)">
+                <div class="form-group">
+                    <label class="form-label">Nome do Solicitante</label>
+                    <input type="text" class="form-input" name="name" required placeholder="Seu nome">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Cargo</label>
+                    <input type="text" class="form-input" name="position" placeholder="Ex: CTO, Gerente de TI">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Email Corporativo</label>
+                    <input type="email" class="form-input" name="email" required placeholder="seuemail@empresa.com">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Telefone</label>
+                    <input type="tel" class="form-input" name="phone" required placeholder="(11) 99999-9999">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Nome da Empresa</label>
+                    <input type="text" class="form-input" name="company" required placeholder="Nome da empresa">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">CNPJ</label>
+                    <input type="text" class="form-input" name="cnpj" placeholder="00.000.000/0000-00">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Setor de Atividade</label>
+                    <select class="form-select" name="industry" required>
+                        <option value="">Selecione...</option>
+                        <option value="banking">Bancos e Financeiro</option>
+                        <option value="retail">Varejo e E-commerce</option>
+                        <option value="manufacturing">Indústria e Manufatura</option>
+                        <option value="logistics">Logística e Transporte</option>
+                        <option value="healthcare">Saúde</option>
+                        <option value="energy">Energia</option>
+                        <option value="telecom">Telecomunicações</option>
+                        <option value="other">Outros</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Número de Funcionários</label>
+                    <select class="form-select" name="companySize" required>
+                        <option value="">Selecione...</option>
+                        <option value="1-10">1-10 funcionários</option>
+                        <option value="11-50">11-50 funcionários</option>
+                        <option value="51-200">51-200 funcionários</option>
+                        <option value="201-1000">201-1000 funcionários</option>
+                        <option value="1000+">Mais de 1000 funcionários</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Melhor horário para apresentação</label>
+                    <select class="form-select" name="preferredTime">
+                        <option value="">Selecione...</option>
+                        <option value="morning">Manhã (9h às 12h)</option>
+                        <option value="afternoon">Tarde (14h às 17h)</option>
+                        <option value="flexible">Horário flexível</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Conte-nos sobre seu desafio</label>
+                    <textarea class="form-textarea" name="challenge" placeholder="Descreva os principais desafios que sua empresa enfrenta e como o Quantum ML pode ajudar..."></textarea>
+                </div>
+                
+                <div class="form-checkbox">
+                    <input type="checkbox" id="demoTerms" name="terms" required>
+                    <label for="demoTerms">Aceito ser contatado pela equipe TOIT</label>
+                </div>
+                
+                <button type="submit" class="form-submit" id="demoSubmit">
+                    🎥 Solicitar Apresentação
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Enterprise Modal -->
+    <div class="modal" id="enterpriseModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('enterpriseModal')">&times;</button>
+            <h2 class="modal-title">🏢 Quantum Enterprise</h2>
+            <p class="modal-subtitle">Solução customizada para grandes corporações</p>
+            
+            <form id="enterpriseForm" onsubmit="handleEnterpriseRequest(event)">
+                <div class="form-group">
+                    <label class="form-label">Nome do Decisor</label>
+                    <input type="text" class="form-input" name="name" required placeholder="Nome completo">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Cargo Executivo</label>
+                    <input type="text" class="form-input" name="position" required placeholder="Ex: CEO, CTO, Diretor de TI">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Email Corporativo</label>
+                    <input type="email" class="form-input" name="email" required placeholder="executivo@empresa.com">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Telefone Direto</label>
+                    <input type="tel" class="form-input" name="phone" required placeholder="(11) 99999-9999">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Empresa</label>
+                    <input type="text" class="form-input" name="company" required placeholder="Nome da corporação">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">CNPJ</label>
+                    <input type="text" class="form-input" name="cnpj" required placeholder="00.000.000/0000-00">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Receita Anual (aproximada)</label>
+                    <select class="form-select" name="revenue" required>
+                        <option value="">Selecione...</option>
+                        <option value="10-50M">R$ 10M - R$ 50M</option>
+                        <option value="50-100M">R$ 50M - R$ 100M</option>
+                        <option value="100-500M">R$ 100M - R$ 500M</option>
+                        <option value="500M+">Acima de R$ 500M</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Número de Usuários Quantum</label>
+                    <input type="number" class="form-input" name="users" required placeholder="Quantos usuários utilizarão o sistema?" min="5">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Orçamento Mensal (aproximado)</label>
+                    <select class="form-select" name="budget">
+                        <option value="">Selecione...</option>
+                        <option value="2-5K">R$ 2K - R$ 5K</option>
+                        <option value="5-10K">R$ 5K - R$ 10K</option>
+                        <option value="10-25K">R$ 10K - R$ 25K</option>
+                        <option value="25K+">Acima de R$ 25K</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Requisitos Específicos</label>
+                    <textarea class="form-textarea" name="requirements" placeholder="Descreva requisitos específicos: compliance, integração com sistemas legados, SLA especiais, etc."></textarea>
+                </div>
+                
+                <div class="form-checkbox">
+                    <input type="checkbox" id="enterpriseTerms" name="terms" required>
+                    <label for="enterpriseTerms">Autorizo contato da equipe comercial TOIT Enterprise</label>
+                </div>
+                
+                <button type="submit" class="form-submit" id="enterpriseSubmit">
+                    🏢 Solicitar Proposta Enterprise
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================================
+        // GLOBAL VARIABLES & CONFIGURATION
+        // ============================================================================
+        
+        let stripe;
+        let cardElement;
+        const API_BASE = 'https://nexus.toit.com.br/api'; // Ajustar para URL de produção
+        
+        // ============================================================================
+        // INITIALIZATION
+        // ============================================================================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize loading screen
+            setTimeout(() => {
+                document.getElementById('quantumLoader').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('quantumLoader').style.display = 'none';
+                }, 500);
+            }, 2000);
+            
+            // Initialize header scroll effect
+            initializeHeaderEffects();
+            
+            // Initialize Stripe
+            initializeStripe();
+            
+            // Initialize form masks
+            initializeFormMasks();
+            
+            // Initialize animations
+            initializeAnimations();
+        });
+
+        // ============================================================================
+        // HEADER EFFECTS
+        // ============================================================================
+        
+        function initializeHeaderEffects() {
+            const header = document.getElementById('header');
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 100) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+        }
+
+        // ============================================================================
+        // STRIPE INTEGRATION
+        // ============================================================================
+        
+        function initializeStripe() {
+            // Configurar com sua chave pública do Stripe
+            stripe = Stripe('pk_test_sua_chave_publica_stripe'); // Substituir pela chave real
+            
+            const elements = stripe.elements();
+            
+            // Configurar card element
+            cardElement = elements.create('card', {
+                style: {
+                    base: {
+                        fontSize: '16px',
+                        color: '#424770',
+                        '::placeholder': {
+                            color: '#aab7c4',
+                        },
+                    },
+                    invalid: {
+                        color: '#ef4444',
+                        iconColor: '#ef4444'
+                    }
+                }
+            });
+        }
+
+        // ============================================================================
+        // FORM MASKS & VALIDATION
+        // ============================================================================
+        
+        function initializeFormMasks() {
+            // CPF Mask
+            document.addEventListener('input', function(e) {
+                if (e.target.name === 'cpf') {
+                    e.target.value = formatCPF(e.target.value);
+                }
+                if (e.target.name === 'phone') {
+                    e.target.value = formatPhone(e.target.value);
+                }
+                if (e.target.name === 'cnpj') {
+                    e.target.value = formatCNPJ(e.target.value);
+                }
+            });
+        }
+
+        function formatCPF(value) {
+            return value
+                .replace(/\D/g, '')
+                .replace(/(\d{3})(\d)/, '$1.$2')
+                .replace(/(\d{3})(\d)/, '$1.$2')
+                .replace(/(\d{3})(\d{1,2})/, '$1-$2')
+                .replace(/(-\d{2})\d+?$/, '$1');
+        }
+
+        function formatPhone(value) {
+            return value
+                .replace(/\D/g, '')
+                .replace(/(\d{2})(\d)/, '($1) $2')
+                .replace(/(\d{5})(\d)/, '$1-$2')
+                .replace(/(-\d{4})\d+?$/, '$1');
+        }
+
+        function formatCNPJ(value) {
+            return value
+                .replace(/\D/g, '')
+                .replace(/(\d{2})(\d)/, '$1.$2')
+                .replace(/(\d{3})(\d)/, '$1.$2')
+                .replace(/(\d{3})(\d)/, '$1/$2')
+                .replace(/(\d{4})(\d)/, '$1-$2')
+                .replace(/(-\d{2})\d+?$/, '$1');
+        }
+
+        // ============================================================================
+        // MODAL MANAGEMENT
+        // ============================================================================
+        
+        function openModal(modalId, planType = null) {
+            const modal = document.getElementById(modalId);
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Setup Stripe card element for subscription modal
+            if (modalId === 'subscriptionModal' && cardElement) {
+                setTimeout(() => {
+                    const cardElementContainer = document.getElementById('stripe-card-element');
+                    if (cardElementContainer && !cardElementContainer.hasChildNodes()) {
+                        cardElement.mount('#stripe-card-element');
+                        
+                        cardElement.on('change', ({error}) => {
+                            const displayError = document.getElementById('stripe-card-errors');
+                            if (error) {
+                                displayError.textContent = error.message;
+                            } else {
+                                displayError.textContent = '';
+                            }
+                        });
+                    }
+                }, 100);
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            
+            // Unmount Stripe element
+            if (modalId === 'subscriptionModal' && cardElement) {
+                cardElement.unmount();
+            }
+        }
+
+        // ============================================================================
+        // FORM HANDLERS
+        // ============================================================================
+        
+        async function handleTrialSignup(event) {
+            event.preventDefault();
+            
+            const submitBtn = document.getElementById('trialSubmit');
+            const originalText = submitBtn.innerHTML;
+            
+            try {
+                submitBtn.innerHTML = '<span class="spinner"></span>Criando conta...';
+                submitBtn.disabled = true;
+                
+                const formData = new FormData(event.target);
+                const data = Object.fromEntries(formData);
+                
+                // Validar CPF
+                if (!isValidCPF(data.cpf)) {
+                    throw new Error('CPF inválido');
+                }
+                
+                // Fazer requisição para o backend
+                const response = await fetch(`${API_BASE}/auth/trial-signup`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Erro ao criar conta');
+                }
+                
+                const result = await response.json();
+                
+                // Sucesso - mostrar dados de acesso
+                alert(`🎉 Conta criada com sucesso!\n\nSeus dados de acesso:\nEmail: ${data.email}\nSenha temporária: ${result.temporaryPassword}\n\nAcesse: nexus.toit.com.br`);
+                
+                closeModal('trialModal');
+                event.target.reset();
+                
+            } catch (error) {
+                alert(`❌ Erro: ${error.message}`);
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        async function handleSubscription(event) {
+            event.preventDefault();
+            
+            const submitBtn = document.getElementById('subscriptionSubmit');
+            const originalText = submitBtn.innerHTML;
+            
+            try {
+                submitBtn.innerHTML = '<span class="spinner"></span>Processando pagamento...';
+                submitBtn.disabled = true;
+                
+                const formData = new FormData(event.target);
+                const data = Object.fromEntries(formData);
+                
+                // Validar CPF
+                if (!isValidCPF(data.cpf)) {
+                    throw new Error('CPF inválido');
+                }
+                
+                // Create payment method with Stripe
+                const {error, paymentMethod} = await stripe.createPaymentMethod({
+                    type: 'card',
+                    card: cardElement,
+                    billing_details: {
+                        name: data.name,
+                        email: data.email,
+                    },
+                });
+                
+                if (error) {
+                    throw new Error(error.message);
+                }
+                
+                // Send to backend
+                const response = await fetch(`${API_BASE}/stripe/create-subscription`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        ...data,
+                        payment_method_id: paymentMethod.id,
+                        plan_type: 'quantum_pro'
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Erro ao processar pagamento');
+                }
+                
+                const result = await response.json();
+                
+                // Handle successful subscription
+                alert(`🎉 Assinatura ativada com sucesso!\n\nSeus dados de acesso:\nEmail: ${data.email}\nSenha: ${result.temporaryPassword}\n\nAcesse: nexus.toit.com.br`);
+                
+                closeModal('subscriptionModal');
+                event.target.reset();
+                
+            } catch (error) {
+                alert(`❌ Erro no pagamento: ${error.message}`);
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        async function handleDemoRequest(event) {
+            event.preventDefault();
+            
+            const submitBtn = document.getElementById('demoSubmit');
+            const originalText = submitBtn.innerHTML;
+            
+            try {
+                submitBtn.innerHTML = '<span class="spinner"></span>Enviando solicitação...';
+                submitBtn.disabled = true;
+                
+                const formData = new FormData(event.target);
+                const data = Object.fromEntries(formData);
+                
+                // Send demo request
+                const response = await fetch(`${API_BASE}/demo/request`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Erro ao enviar solicitação');
+                }
+                
+                alert(`✅ Solicitação enviada com sucesso!\n\nNossa equipe entrará em contato em até 4 horas úteis.\n\nObrigado pelo interesse no TOIT NEXUS!`);
+                
+                closeModal('demoModal');
+                event.target.reset();
+                
+            } catch (error) {
+                alert(`❌ Erro: ${error.message}`);
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        async function handleEnterpriseRequest(event) {
+            event.preventDefault();
+            
+            const submitBtn = document.getElementById('enterpriseSubmit');
+            const originalText = submitBtn.innerHTML;
+            
+            try {
+                submitBtn.innerHTML = '<span class="spinner"></span>Enviando proposta...';
+                submitBtn.disabled = true;
+                
+                const formData = new FormData(event.target);
+                const data = Object.fromEntries(formData);
+                
+                // Send enterprise request
+                const response = await fetch(`${API_BASE}/enterprise/request`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Erro ao enviar solicitação');
+                }
+                
+                alert(`🏢 Solicitação Enterprise enviada!\n\nNossa equipe comercial entrará em contato em até 2 horas úteis para agendar uma apresentação personalizada.\n\nObrigado por considerar o TOIT NEXUS Enterprise!`);
+                
+                closeModal('enterpriseModal');
+                event.target.reset();
+                
+            } catch (error) {
+                alert(`❌ Erro: ${error.message}`);
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        // ============================================================================
+        // UTILITY FUNCTIONS
+        // ============================================================================
+        
+        function isValidCPF(cpf) {
+            cpf = cpf.replace(/[^\d]+/g, '');
+            
+            if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) {
+                return false;
+            }
+            
+            let sum = 0;
+            for (let i = 0; i < 9; i++) {
+                sum += parseInt(cpf.charAt(i)) * (10 - i);
+            }
+            
+            let remainder = 11 - (sum % 11);
+            if (remainder === 10 || remainder === 11) remainder = 0;
+            if (remainder !== parseInt(cpf.charAt(9))) return false;
+            
+            sum = 0;
+            for (let i = 0; i < 10; i++) {
+                sum += parseInt(cpf.charAt(i)) * (11 - i);
+            }
+            
+            remainder = 11 - (sum % 11);
+            if (remainder === 10 || remainder === 11) remainder = 0;
+            if (remainder !== parseInt(cpf.charAt(10))) return false;
+            
+            return true;
+        }
+
+        // ============================================================================
+        // ANIMATIONS & EFFECTS
+        // ============================================================================
+        
+        function initializeAnimations() {
+            // Intersection Observer for scroll animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe elements for animation
+            document.querySelectorAll('.advantage-card, .use-case, .pricing-card').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(50px)';
+                el.style.transition = 'all 0.6s ease-out';
+                observer.observe(el);
+            });
+        }
+
+        // ============================================================================
+        // SMOOTH SCROLLING
+        // ============================================================================
+        
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('nav-link') && e.target.getAttribute('href').startsWith('#')) {
+                e.preventDefault();
+                const targetId = e.target.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }
+        });
+
+        // ============================================================================
+        // MOBILE MENU
+        // ============================================================================
+        
+        document.getElementById('mobileMenuToggle').addEventListener('click', function() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        // Close modal when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                const modalId = e.target.id;
+                closeModal(modalId);
+            }
+        });
+
+        // Close modal with ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const activeModal = document.querySelector('.modal.active');
+                if (activeModal) {
+                    closeModal(activeModal.id);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

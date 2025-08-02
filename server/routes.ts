@@ -39,6 +39,7 @@ import verificationRoutes from "./verificationRoutes";
 import enterpriseRoutes from "./enterpriseRoutes";
 import adaptiveRoutes from "./adaptiveRoutes";
 import quantumMLRoutes from "./quantumMLRoutes";
+import quantumCommercialRoutes from "./quantumCommercialRoutes";
 import notificationRoutes from "./notificationRoutes";
 import calendarRoutes from "./calendarRoutes";
 import { adminModuleRoutes } from "./adminModuleRoutes";
@@ -1836,6 +1837,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Quantum ML Engine routes
   app.use('/api/quantum-ml', quantumMLRoutes);
+  
+  // Quantum Commercial routes
+  app.use('/api/quantum-commercial', quantumCommercialRoutes);
 
   // Report routes
   app.get('/api/reports', isAuthenticated, async (req, res) => {
