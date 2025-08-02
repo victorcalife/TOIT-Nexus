@@ -62,6 +62,9 @@ import { adaptiveEngineRoutes } from "./adaptiveEngineRoutes";
 import { advancedMLEngine } from "./advancedMLEngine";
 import { mlModelsService } from "./mlModelsService";
 import { advancedMLRoutes } from "./advancedMLRoutes";
+import { nextGenMLEngine } from "./nextGenMLEngine";
+import { quantumMLService } from "./quantumMLService";
+import { nextGenMLRoutes } from "./nextGenMLRoutes";
 
 // Helper function to determine if client should be assigned to a category
 function shouldAssignToCategory(client: any, category: any): boolean {
@@ -1991,6 +1994,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // ADVANCED ML TENSORFLOW MODELS - MODELOS REAIS ML/AI
   // ====================================================
   app.use('/api/advanced-ml', advancedMLRoutes);
+  
+  // ====================================================
+  // NEXT-GENERATION ML ENGINE - SISTEMA 10X SUPERIOR
+  // ====================================================
+  app.use('/api/next-gen-ml', nextGenMLRoutes);
 
   const httpServer = createServer(app);
   return httpServer;
