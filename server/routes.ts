@@ -43,6 +43,15 @@ import calendarRoutes from "./calendarRoutes";
 import { adminModuleRoutes } from "./adminModuleRoutes";
 import { tenantControlRoutes } from "./tenantControlRoutes";
 import { visualWorkflowRoutes } from "./visualWorkflowRoutes";
+import { workflowIntegrationRoutes } from "./workflowIntegrationRoutes";
+import { workflowBuilderRoutes } from "./workflowBuilderRoutes";
+import { workflowTaskIntegrationRoutes } from "./workflowTaskIntegrationRoutes";
+import { workflowDashboardIntegrationRoutes } from "./workflowDashboardIntegrationRoutes";
+import { workflowReportIntegrationRoutes } from "./workflowReportIntegrationRoutes";
+import { unifiedDataStudioRoutes } from "./unifiedDataStudioRoutes";
+import { compactUnifiedStudioRoutes } from "./compactUnifiedStudioRoutes";
+import { advancedDashboardBuilderRoutes } from "./advancedDashboardBuilderRoutes";
+import { inlineDashboardEditorRoutes } from "./inlineDashboardEditorRoutes";
 import { universalDatabaseRoutes } from "./universalDatabaseRoutes";
 import { dashboardBuilderRoutes } from "./dashboardBuilderRoutes";
 import { apiWebhookRoutes } from "./apiWebhookRoutes";
@@ -1933,6 +1942,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // VISUAL WORKFLOW ENGINE - Construtor visual drag-and-drop
   app.use('/api/visual-workflows', visualWorkflowRoutes);
+
+  // WORKFLOW INTEGRATION ROUTES - Integrações críticas cross-módulos
+  app.use('/api/workflow-integration', workflowIntegrationRoutes);
+
+  // WORKFLOW BUILDER ROUTES - Painel completo de criação com todos objetos
+  app.use('/api/workflow-builder', workflowBuilderRoutes);
+
+  // WORKFLOW TASK INTEGRATION ROUTES - Integração avançada workflow ↔ tasks
+  app.use('/api/workflow-task-integration', workflowTaskIntegrationRoutes);
+
+  // WORKFLOW DASHBOARD INTEGRATION ROUTES - Dashboards criados por workflows
+  app.use('/api/workflow-dashboard-integration', workflowDashboardIntegrationRoutes);
+
+  // WORKFLOW REPORT INTEGRATION ROUTES - Relatórios automáticos em workflows
+  app.use('/api/workflow-report-integration', workflowReportIntegrationRoutes);
+
+  // UNIFIED DATA STUDIO ROUTES - Painel unificado NO-CODE completo
+  app.use('/api/unified-data-studio', unifiedDataStudioRoutes);
+
+  // COMPACT UNIFIED STUDIO ROUTES - Interface compacta com modais e carrossel
+  app.use('/api/compact-studio', compactUnifiedStudioRoutes);
+
+  // ADVANCED DASHBOARD BUILDER ROUTES - Sistema completo com 16+ tipos de widgets
+  app.use('/api/advanced-dashboard', advancedDashboardBuilderRoutes);
+
+  // INLINE DASHBOARD EDITOR ROUTES - Editor visual com single-click/double-click
+  app.use('/api/inline-dashboard', inlineDashboardEditorRoutes);
 
   const httpServer = createServer(app);
   return httpServer;

@@ -4,7 +4,7 @@
  */
 
 import express from 'express';
-import { eq, desc, and, or, ilike } from 'drizzle-orm';
+import { eq, desc, and, or, ilike, sql } from 'drizzle-orm';
 import { db } from './db';
 import { 
   externalDatabaseConnections,
@@ -90,12 +90,23 @@ router.get('/connections', async (req: any, res) => {
       total: connections.length
     });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching database connections:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Falha ao buscar conexões de banco de dados'
-    });
+    
+    // Enhanced error handling with type checking
+    if (error instanceof Error) {
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+        type: 'database_error'
+      });
+    } else {
+      return res.status(500).json({
+        success: false,
+        error: 'Falha ao buscar conexões de banco de dados',
+        type: 'internal_error'
+      });
+    }
   }
 });
 
@@ -133,18 +144,28 @@ router.post('/connections', async (req: any, res) => {
       message: result.message
     });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error creating database connection:', error);
+    
+    // Enhanced error handling with type checking
     if (error instanceof z.ZodError) {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         error: 'Dados inválidos',
-        details: error.errors
+        details: error.errors,
+        type: 'validation_error'
+      });
+    } else if (error instanceof Error) {
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+        type: 'connection_error'
       });
     } else {
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
-        error: 'Falha ao criar conexão de banco de dados'
+        error: 'Falha ao criar conexão de banco de dados',
+        type: 'internal_error'
       });
     }
   }
@@ -203,18 +224,28 @@ router.put('/connections/:id', async (req: any, res) => {
         `Conexão atualizada, mas teste falhou: ${testResult.error}`
     });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error updating database connection:', error);
+    
+    // Enhanced error handling with type checking
     if (error instanceof z.ZodError) {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         error: 'Dados inválidos',
-        details: error.errors
+        details: error.errors,
+        type: 'validation_error'
+      });
+    } else if (error instanceof Error) {
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+        type: 'update_error'
       });
     } else {
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
-        error: 'Falha ao atualizar conexão'
+        error: 'Falha ao atualizar conexão',
+        type: 'internal_error'
       });
     }
   }
@@ -257,12 +288,23 @@ router.delete('/connections/:id', async (req: any, res) => {
       message: 'Conexão removida com sucesso'
     });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error deleting database connection:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Falha ao remover conexão'
-    });
+    
+    // Enhanced error handling with type checking
+    if (error instanceof Error) {
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+        type: 'deletion_error'
+      });
+    } else {
+      return res.status(500).json({
+        success: false,
+        error: 'Falha ao remover conexão',
+        type: 'internal_error'
+      });
+    }
   }
 });
 
@@ -318,12 +360,23 @@ router.post('/connections/:id/test', async (req: any, res) => {
         `Teste de conexão falhou: ${testResult.error}`
     });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error testing database connection:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Falha ao testar conexão'
-    });
+    
+    // Enhanced error handling with type checking
+    if (error instanceof Error) {
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+        type: 'connection_test_error'
+      });
+    } else {
+      return res.status(500).json({
+        success: false,
+        error: 'Falha ao testar conexão',
+        type: 'internal_error'
+      });
+    }
   }
 });
 
@@ -358,18 +411,28 @@ router.post('/execute', async (req: any, res) => {
       executedAt: result.executedAt
     });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error executing query:', error);
+    
+    // Enhanced error handling with type checking
     if (error instanceof z.ZodError) {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         error: 'Dados inválidos',
-        details: error.errors
+        details: error.errors,
+        type: 'validation_error'
+      });
+    } else if (error instanceof Error) {
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+        type: 'query_execution_error'
       });
     } else {
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
-        error: 'Falha ao executar query'
+        error: 'Falha ao executar query',
+        type: 'internal_error'
       });
     }
   }
@@ -499,12 +562,23 @@ router.post('/connections/:id/schema', async (req: any, res) => {
       cachedAt: result.cachedAt
     });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error getting database schema:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Falha ao obter schema do banco de dados'
-    });
+    
+    // Enhanced error handling with type checking
+    if (error instanceof Error) {
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+        type: 'schema_error'
+      });
+    } else {
+      return res.status(500).json({
+        success: false,
+        error: 'Falha ao obter schema do banco de dados',
+        type: 'internal_error'
+      });
+    }
   }
 });
 
@@ -548,12 +622,23 @@ router.get('/cache', async (req: any, res) => {
       total: cacheEntries.length
     });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching query cache:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Falha ao buscar cache de queries'
-    });
+    
+    // Enhanced error handling with type checking
+    if (error instanceof Error) {
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+        type: 'cache_error'
+      });
+    } else {
+      return res.status(500).json({
+        success: false,
+        error: 'Falha ao buscar cache de queries',
+        type: 'internal_error'
+      });
+    }
   }
 });
 
@@ -575,12 +660,23 @@ router.delete('/cache/:cacheKey', async (req: any, res) => {
       message: 'Entry de cache removida com sucesso'
     });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error clearing cache entry:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Falha ao limpar entry de cache'
-    });
+    
+    // Enhanced error handling with type checking
+    if (error instanceof Error) {
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+        type: 'cache_clear_error'
+      });
+    } else {
+      return res.status(500).json({
+        success: false,
+        error: 'Falha ao limpar entry de cache',
+        type: 'internal_error'
+      });
+    }
   }
 });
 
@@ -599,12 +695,23 @@ router.delete('/cache', async (req: any, res) => {
       deletedEntries: result.rowCount || 0
     });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error clearing all cache:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Falha ao limpar cache'
-    });
+    
+    // Enhanced error handling with type checking
+    if (error instanceof Error) {
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+        type: 'cache_clear_error'
+      });
+    } else {
+      return res.status(500).json({
+        success: false,
+        error: 'Falha ao limpar cache',
+        type: 'internal_error'
+      });
+    }
   }
 });
 
@@ -672,12 +779,23 @@ router.get('/stats', async (req: any, res) => {
       }
     });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching database stats:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Falha ao buscar estatísticas'
-    });
+    
+    // Enhanced error handling with type checking
+    if (error instanceof Error) {
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+        type: 'stats_error'
+      });
+    } else {
+      return res.status(500).json({
+        success: false,
+        error: 'Falha ao buscar estatísticas',
+        type: 'internal_error'
+      });
+    }
   }
 });
 

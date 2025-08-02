@@ -1,6 +1,8 @@
 import type { Express } from "express";
 import { z } from "zod";
 import { storage } from "./storage";
+import { requireAuth } from "./authMiddleware";
+import { tenantMiddleware } from "./tenantMiddleware";
 
 // Schema validation for query builder
 const queryBuilderSchema = z.object({
@@ -37,86 +39,200 @@ const visualizationSchema = z.object({
 });
 
 export function registerQueryBuilderRoutes(app: Express) {
+  // Apply middleware for all query builder routes
+  app.use('/api/query-builder', requireAuth);
+  app.use('/api/query-builder', tenantMiddleware);
+
   // Execute query
-  app.post('/api/query-builder/execute', async (req, res) => {
+  app.post('/api/query-builder/execute', async (req: any, res) => {
     try {
       const { query } = req.body;
+      const tenantId = req.tenant.id;
+      const userId = req.user.id;
+      
+      console.log(`🔍 Executing query - User: ${userId}, Tenant: ${tenantId}`);
+      
       const validatedQuery = queryBuilderSchema.parse(query);
       
-      // Generate SQL from query builder config
-      const sql = generateSQL(validatedQuery);
+      // Generate SQL from query builder config with tenant filtering
+      const sql = generateSQL(validatedQuery, tenantId);
       
-      // Execute query using storage
-      const results = await storage.executeRawQuery(sql);
+      // Execute query using storage with tenant context
+      const results = await storage.executeRawQuery(sql, tenantId);
       
       res.json({ 
         success: true, 
         results,
-        query: sql 
+        query: sql,
+        metadata: {
+          tenantId,
+          executedBy: userId,
+          executedAt: new Date()
+        }
       });
     } catch (error: any) {
       console.error('Query execution error:', error);
-      res.status(400).json({ 
-        success: false, 
-        error: error.message 
-      });
+      
+      // Enhanced error handling with type checking
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ 
+          success: false, 
+          error: 'Dados de query inválidos',
+          details: error.errors,
+          type: 'validation_error'
+        });
+      } else if (error instanceof Error) {
+        return res.status(400).json({ 
+          success: false, 
+          error: error.message,
+          type: 'execution_error'
+        });
+      } else {
+        return res.status(500).json({ 
+          success: false, 
+          error: 'Erro interno do servidor',
+          type: 'internal_error'
+        });
+      }
     }
   });
 
   // Save query
-  app.post('/api/query-builder/queries', async (req, res) => {
+  app.post('/api/query-builder/queries', async (req: any, res) => {
     try {
       const { query, visualization } = req.body;
+      const tenantId = req.tenant.id;
+      const userId = req.user.id;
+      
+      console.log(`💾 Saving query - User: ${userId}, Tenant: ${tenantId}`);
       
       const validatedQuery = queryBuilderSchema.parse(query);
       const validatedVisualization = visualizationSchema.parse(visualization);
-      
-      // Get tenant ID from request
-      const tenantId = (req as any).tenantId || 'default';
       
       const savedQuery = await storage.saveQuery({
         tenantId,
         name: validatedQuery.name,
         description: validatedQuery.description,
         queryConfig: validatedQuery,
-        visualizationConfig: validatedVisualization
+        visualizationConfig: validatedVisualization,
+        createdBy: userId
       });
       
-      res.json(savedQuery);
+      res.json({
+        success: true,
+        data: savedQuery,
+        message: 'Query salva com sucesso'
+      });
     } catch (error: any) {
       console.error('Save query error:', error);
-      res.status(400).json({ error: error.message });
+      
+      // Enhanced error handling with type checking
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ 
+          success: false,
+          error: 'Dados de query inválidos',
+          details: error.errors,
+          type: 'validation_error'
+        });
+      } else if (error instanceof Error) {
+        return res.status(500).json({ 
+          success: false,
+          error: error.message,
+          type: 'database_error'
+        });
+      } else {
+        return res.status(500).json({ 
+          success: false,
+          error: 'Erro interno do servidor',
+          type: 'internal_error'
+        });
+      }
     }
   });
 
   // Get saved queries
-  app.get('/api/query-builder/queries', async (req, res) => {
+  app.get('/api/query-builder/queries', async (req: any, res) => {
     try {
-      const tenantId = (req as any).tenantId || 'default';
+      const tenantId = req.tenant.id;
+      const userId = req.user.id;
+      
+      console.log(`📋 Getting saved queries - User: ${userId}, Tenant: ${tenantId}`);
+      
       const queries = await storage.getSavedQueries(tenantId);
-      res.json(queries);
+      
+      res.json({
+        success: true,
+        data: queries,
+        total: queries.length
+      });
     } catch (error: any) {
       console.error('Get queries error:', error);
-      res.status(500).json({ error: error.message });
+      
+      // Enhanced error handling with type checking
+      if (error instanceof Error) {
+        return res.status(500).json({ 
+          success: false,
+          error: error.message,
+          type: 'database_error'
+        });
+      } else {
+        return res.status(500).json({ 
+          success: false,
+          error: 'Falha ao buscar queries salvas',
+          type: 'internal_error'
+        });
+      }
     }
   });
 
   // Get database schema
-  app.get('/api/query-builder/schema', async (req, res) => {
+  app.get('/api/query-builder/schema', async (req: any, res) => {
     try {
-      const schema = await storage.getDatabaseSchema();
-      res.json(schema);
+      const tenantId = req.tenant.id;
+      const userId = req.user.id;
+      
+      console.log(`🗂️ Getting database schema - User: ${userId}, Tenant: ${tenantId}`);
+      
+      // Get schema with tenant-specific context
+      const schema = await storage.getDatabaseSchema(tenantId);
+      
+      res.json({
+        success: true,
+        data: schema,
+        metadata: {
+          tenantId,
+          requestedBy: userId
+        }
+      });
     } catch (error: any) {
       console.error('Get schema error:', error);
-      res.status(500).json({ error: error.message });
+      
+      // Enhanced error handling with type checking
+      if (error instanceof Error) {
+        return res.status(500).json({ 
+          success: false,
+          error: error.message,
+          type: 'database_error'
+        });
+      } else {
+        return res.status(500).json({ 
+          success: false,
+          error: 'Falha ao buscar schema do banco de dados',
+          type: 'internal_error'
+        });
+      }
     }
   });
 
   // Update saved query
-  app.put('/api/query-builder/queries/:id', async (req, res) => {
+  app.put('/api/query-builder/queries/:id', async (req: any, res) => {
     try {
       const { id } = req.params;
       const { query, visualization } = req.body;
+      const tenantId = req.tenant.id;
+      const userId = req.user.id;
+      
+      console.log(`✏️ Updating query ${id} - User: ${userId}, Tenant: ${tenantId}`);
       
       const validatedQuery = queryBuilderSchema.parse(query);
       const validatedVisualization = visualizationSchema.parse(visualization);
@@ -125,65 +241,146 @@ export function registerQueryBuilderRoutes(app: Express) {
         name: validatedQuery.name,
         description: validatedQuery.description,
         queryConfig: validatedQuery,
-        visualizationConfig: validatedVisualization
-      });
+        visualizationConfig: validatedVisualization,
+        updatedBy: userId
+      }, tenantId);
       
-      res.json(updatedQuery);
+      res.json({
+        success: true,
+        data: updatedQuery,
+        message: 'Query atualizada com sucesso'
+      });
     } catch (error: any) {
       console.error('Update query error:', error);
-      res.status(400).json({ error: error.message });
+      
+      // Enhanced error handling with type checking
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ 
+          success: false,
+          error: 'Dados de query inválidos',
+          details: error.errors,
+          type: 'validation_error'
+        });
+      } else if (error instanceof Error) {
+        return res.status(500).json({ 
+          success: false,
+          error: error.message,
+          type: 'database_error'
+        });
+      } else {
+        return res.status(500).json({ 
+          success: false,
+          error: 'Erro interno do servidor',
+          type: 'internal_error'
+        });
+      }
     }
   });
 
   // Delete saved query
-  app.delete('/api/query-builder/queries/:id', async (req, res) => {
+  app.delete('/api/query-builder/queries/:id', async (req: any, res) => {
     try {
       const { id } = req.params;
-      await storage.deleteSavedQuery(id);
-      res.json({ success: true });
+      const tenantId = req.tenant.id;
+      const userId = req.user.id;
+      
+      console.log(`🗑️ Deleting query ${id} - User: ${userId}, Tenant: ${tenantId}`);
+      
+      await storage.deleteSavedQuery(id, tenantId);
+      
+      res.json({ 
+        success: true,
+        message: 'Query removida com sucesso'
+      });
     } catch (error: any) {
       console.error('Delete query error:', error);
-      res.status(500).json({ error: error.message });
+      
+      // Enhanced error handling with type checking
+      if (error instanceof Error) {
+        return res.status(500).json({ 
+          success: false,
+          error: error.message,
+          type: 'database_error'
+        });
+      } else {
+        return res.status(500).json({ 
+          success: false,
+          error: 'Falha ao deletar query',
+          type: 'internal_error'
+        });
+      }
     }
   });
 
   // Execute saved query
-  app.post('/api/query-builder/queries/:id/execute', async (req, res) => {
+  app.post('/api/query-builder/queries/:id/execute', async (req: any, res) => {
     try {
       const { id } = req.params;
-      const savedQuery = await storage.getSavedQuery(id);
+      const tenantId = req.tenant.id;
+      const userId = req.user.id;
+      
+      console.log(`▶️ Executing saved query ${id} - User: ${userId}, Tenant: ${tenantId}`);
+      
+      const savedQuery = await storage.getSavedQuery(id, tenantId);
       
       if (!savedQuery) {
-        return res.status(404).json({ error: 'Query not found' });
+        return res.status(404).json({ 
+          success: false,
+          error: 'Query não encontrada'
+        });
       }
       
-      const sql = generateSQL(savedQuery.queryConfig);
-      const results = await storage.executeRawQuery(sql);
+      const sql = generateSQL(savedQuery.queryConfig, tenantId);
+      const results = await storage.executeRawQuery(sql, tenantId);
       
       res.json({ 
         success: true, 
         results,
         query: sql,
-        visualization: savedQuery.visualizationConfig
+        visualization: savedQuery.visualizationConfig,
+        metadata: {
+          tenantId,
+          executedBy: userId,
+          executedAt: new Date()
+        }
       });
     } catch (error: any) {
       console.error('Execute saved query error:', error);
-      res.status(400).json({ error: error.message });
+      
+      // Enhanced error handling with type checking
+      if (error instanceof Error) {
+        return res.status(400).json({ 
+          success: false,
+          error: error.message,
+          type: 'execution_error'
+        });
+      } else {
+        return res.status(500).json({ 
+          success: false,
+          error: 'Falha ao executar query salva',
+          type: 'internal_error'
+        });
+      }
     }
   });
 
   // Generate KPI from query
-  app.post('/api/query-builder/queries/:id/create-kpi', async (req, res) => {
+  app.post('/api/query-builder/queries/:id/create-kpi', async (req: any, res) => {
     try {
       const { id } = req.params;
       const { kpiConfig } = req.body;
+      const tenantId = req.tenant.id;
+      const userId = req.user.id;
       
-      const savedQuery = await storage.getSavedQuery(id);
+      console.log(`📈 Creating KPI from query ${id} - User: ${userId}, Tenant: ${tenantId}`);
+      
+      const savedQuery = await storage.getSavedQuery(id, tenantId);
       if (!savedQuery) {
-        return res.status(404).json({ error: 'Query not found' });
+        return res.status(404).json({ 
+          success: false,
+          error: 'Query não encontrada'
+        });
       }
-      
-      const tenantId = (req as any).tenantId || 'default';
       
       const kpi = await storage.createKPI({
         tenantId,
@@ -196,21 +393,40 @@ export function registerQueryBuilderRoutes(app: Express) {
           queryId: id,
           field: kpiConfig.field
         },
-        calculationFormula: generateSQL(savedQuery.queryConfig),
+        calculationFormula: generateSQL(savedQuery.queryConfig, tenantId),
         targetValue: kpiConfig.targetValue,
-        alertThresholds: kpiConfig.alertThresholds
+        alertThresholds: kpiConfig.alertThresholds,
+        createdBy: userId
       });
       
-      res.json(kpi);
+      res.json({
+        success: true,
+        data: kpi,
+        message: 'KPI criado com sucesso'
+      });
     } catch (error: any) {
       console.error('Create KPI error:', error);
-      res.status(400).json({ error: error.message });
+      
+      // Enhanced error handling with type checking
+      if (error instanceof Error) {
+        return res.status(400).json({ 
+          success: false,
+          error: error.message,
+          type: 'kpi_creation_error'
+        });
+      } else {
+        return res.status(500).json({ 
+          success: false,
+          error: 'Falha ao criar KPI',
+          type: 'internal_error'
+        });
+      }
     }
   });
 }
 
-// Generate SQL from query builder configuration
-function generateSQL(query: any): string {
+// Generate SQL from query builder configuration with tenant isolation
+function generateSQL(query: any, tenantId?: string): string {
   let sql = 'SELECT ';
   
   // Fields
@@ -238,9 +454,24 @@ function generateSQL(query: any): string {
     sql += ` LEFT JOIN ${query.tables[i]} ON ${query.tables[0]}.id = ${query.tables[i]}.${query.tables[0].slice(0, -1)}_id`;
   }
   
-  // WHERE
+  // WHERE - Always include tenant isolation
+  const whereConditions: string[] = [];
+  
+  // Add tenant isolation filter - CRITICAL MULTI-TENANT SECURITY
+  if (tenantId) {
+    const primaryTable = query.tables[0];
+    // Force tenant isolation on all queries - security critical
+    whereConditions.push(`${primaryTable}.tenant_id = '${tenantId}'`);
+    
+    // Also apply to joined tables for complete isolation
+    for (let i = 1; i < query.tables.length; i++) {
+      whereConditions.push(`${query.tables[i]}.tenant_id = '${tenantId}'`);
+    }
+  }
+  
+  // Add user-defined filters
   if (query.filters && query.filters.length > 0) {
-    const whereConditions = query.filters.map((filter: any) => {
+    const userFilters = query.filters.map((filter: any) => {
       let condition = `${filter.field} ${filter.operator}`;
       if (filter.operator === 'LIKE') {
         condition += ` '%${filter.value}%'`;
@@ -251,6 +482,10 @@ function generateSQL(query: any): string {
       }
       return condition;
     });
+    whereConditions.push(...userFilters);
+  }
+  
+  if (whereConditions.length > 0) {
     sql += ` WHERE ${whereConditions.join(' AND ')}`;
   }
   
@@ -264,10 +499,9 @@ function generateSQL(query: any): string {
     sql += ` ORDER BY ${query.orderBy.join(', ')}`;
   }
   
-  // LIMIT
-  if (query.limit) {
-    sql += ` LIMIT ${query.limit}`;
-  }
+  // LIMIT - Default limit for performance
+  const limit = query.limit || 1000; // Default 1000 rows max
+  sql += ` LIMIT ${limit}`;
   
   return sql;
 }
