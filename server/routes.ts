@@ -42,6 +42,8 @@ import quantumMLRoutes from "./quantumMLRoutes";
 import quantumCommercialRoutes from "./quantumCommercialRoutes";
 import realQuantumRoutes from "./realQuantumRoutes";
 import nativeQuantumRoutes from "./nativeQuantumRoutes";
+import qiskitTranspilerRoutes from "./qiskitTranspilerRoutes";
+import longRangeEntanglementRoutes from "./longRangeEntanglementRoutes";
 import notificationRoutes from "./notificationRoutes";
 import calendarRoutes from "./calendarRoutes";
 import { adminModuleRoutes } from "./adminModuleRoutes";
@@ -66,6 +68,7 @@ import { adaptiveEngineRoutes } from "./adaptiveEngineRoutes";
 import { advancedMLEngine } from "./advancedMLEngine";
 import { mlModelsService } from "./mlModelsService";
 import { advancedMLRoutes } from "./advancedMLRoutes";
+import qlibRoutes from "./qlibRoutes";
 import { nextGenMLEngine } from "./nextGenMLEngine";
 import { quantumMLService } from "./quantumMLService";
 import { nextGenMLRoutes } from "./nextGenMLRoutes";
@@ -1848,6 +1851,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // NATIVE QUANTUM ENGINE routes - TOIT NEXUS Motor Quântico (IBM_SECRET)
   app.use('/api/native-quantum', nativeQuantumRoutes);
+  
+  // QLIB INTEGRATION routes - Biblioteca de notebooks quânticos
+  app.use('/api/qlib', qlibRoutes);
+  
+  // Register Qiskit Transpiler Service routes
+  app.use('/api/qiskit-transpiler', qiskitTranspilerRoutes);
+  
+  // LONG-RANGE ENTANGLEMENT routes - Dynamic Circuits + Teleportation
+  app.use('/api/long-range-entanglement', longRangeEntanglementRoutes);
 
   // Report routes
   app.get('/api/reports', isAuthenticated, async (req, res) => {

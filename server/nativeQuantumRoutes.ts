@@ -7,6 +7,7 @@
 
 import { Router } from 'express';
 import { nativeQuantumEngine } from './nativeQuantumEngine';
+import { qiskitTranspiler } from './qiskitTranspilerIntegration';
 import { authMiddleware } from './authMiddleware';
 import { tenantMiddleware } from './tenantMiddleware';
 import { z } from 'zod';
@@ -118,7 +119,21 @@ router.post('/search', authMiddleware, tenantMiddleware, async (req, res) => {
     console.log(`🔍 Executando busca quântica nativa - ${searchSpace.length} items`);
     
     const startTime = Date.now();
-    const result = await nativeQuantumEngine.nativeQuantumSearch(searchSpace, targetValue);
+    
+    // Usar Qiskit AI Enhancement se IBM_SECRET configurado
+    const ibmSecret = process.env.IBM_SECRET;
+    let result;
+    let qiskitOptimized;
+    
+    if (ibmSecret) {
+      console.log('🤖 Aplicando Qiskit AI enhancement...');
+      const enhancedResult = await qiskitTranspiler.enhancedQuantumSearch(searchSpace, targetValue, true);
+      result = enhancedResult.nativeResult;
+      qiskitOptimized = enhancedResult.qiskitOptimized;
+    } else {
+      result = await nativeQuantumEngine.nativeQuantumSearch(searchSpace, targetValue);
+    }
+    
     const executionTime = Date.now() - startTime;
     
     res.json({
@@ -141,8 +156,15 @@ router.post('/search', authMiddleware, tenantMiddleware, async (req, res) => {
         engine: {
           type: 'Native Quantum Processing Unit',
           backend: 'TOIT NEXUS Quantum Engine',
-          processingMode: 'Real-time Native Quantum'
-        }
+          processingMode: 'Real-time Native Quantum',
+          qiskitAI: ibmSecret ? 'ENHANCED' : 'DISABLED'
+        },
+        qiskitOptimization: qiskitOptimized ? {
+          optimizationAchieved: qiskitOptimized.optimization_achieved,
+          aiUsed: qiskitOptimized.ai_used,
+          gateCount: qiskitOptimized.gates,
+          depth: qiskitOptimized.depth
+        } : null
       }
     });
   } catch (error) {
@@ -187,7 +209,21 @@ router.post('/machine-learning', authMiddleware, tenantMiddleware, async (req, r
     console.log(`🧠 Treinando ML quântico nativo - ${trainingData.length} amostras`);
     
     const startTime = Date.now();
-    const result = await nativeQuantumEngine.nativeQuantumML(trainingData);
+    
+    // Usar Qiskit AI Enhancement se IBM_SECRET configurado
+    const ibmSecret = process.env.IBM_SECRET;
+    let result;
+    let qiskitOptimized;
+    
+    if (ibmSecret) {
+      console.log('🤖 Aplicando Qiskit AI enhancement para ML...');
+      const enhancedResult = await qiskitTranspiler.enhancedQuantumML(trainingData, true);
+      result = enhancedResult.nativeResult;
+      qiskitOptimized = enhancedResult.qiskitOptimized;
+    } else {
+      result = await nativeQuantumEngine.nativeQuantumML(trainingData);
+    }
+    
     const executionTime = Date.now() - startTime;
     
     res.json({
@@ -211,8 +247,16 @@ router.post('/machine-learning', authMiddleware, tenantMiddleware, async (req, r
         engine: {
           type: 'Native Quantum ML Engine',
           backend: 'TOIT NEXUS Quantum Processing',
-          modelType: 'Variational Quantum Classifier'
-        }
+          modelType: 'Variational Quantum Classifier',
+          qiskitAI: ibmSecret ? 'ENHANCED' : 'DISABLED'
+        },
+        qiskitOptimization: qiskitOptimized ? {
+          optimizationAchieved: qiskitOptimized.optimization_achieved,
+          aiUsed: qiskitOptimized.ai_used,
+          gateCount: qiskitOptimized.gates,
+          depth: qiskitOptimized.depth,
+          improvementEstimate: `${(qiskitOptimized.optimization_achieved).toFixed(1)}%`
+        } : null
       }
     });
   } catch (error) {
@@ -261,7 +305,21 @@ router.post('/optimization', authMiddleware, tenantMiddleware, async (req, res) 
       solution.reduce((sum, item, index) => sum + (item?.value || index + 1), 0);
     
     const startTime = Date.now();
-    const result = await nativeQuantumEngine.nativeQuantumOptimization(problem, defaultCostFunction);
+    
+    // Usar Qiskit AI Enhancement se IBM_SECRET configurado
+    const ibmSecret = process.env.IBM_SECRET;
+    let result;
+    let qiskitOptimized;
+    
+    if (ibmSecret) {
+      console.log('🤖 Aplicando Qiskit AI enhancement para otimização...');
+      const enhancedResult = await qiskitTranspiler.enhancedQuantumOptimization(problem, defaultCostFunction, true);
+      result = enhancedResult.nativeResult;
+      qiskitOptimized = enhancedResult.qiskitOptimized;
+    } else {
+      result = await nativeQuantumEngine.nativeQuantumOptimization(problem, defaultCostFunction);
+    }
+    
     const executionTime = Date.now() - startTime;
     
     res.json({
@@ -284,8 +342,16 @@ router.post('/optimization', authMiddleware, tenantMiddleware, async (req, res) 
         engine: {
           type: 'Native Quantum Optimization Engine',
           backend: 'TOIT NEXUS Quantum Processing',
-          algorithmType: 'Quantum Approximate Optimization'
-        }
+          algorithmType: 'Quantum Approximate Optimization',
+          qiskitAI: ibmSecret ? 'ENHANCED' : 'DISABLED'
+        },
+        qiskitOptimization: qiskitOptimized ? {
+          optimizationAchieved: qiskitOptimized.optimization_achieved,
+          aiUsed: qiskitOptimized.ai_used,
+          gateCount: qiskitOptimized.gates,
+          depth: qiskitOptimized.depth,
+          improvementEstimate: `${(qiskitOptimized.optimization_achieved).toFixed(1)}%`
+        } : null
       }
     });
   } catch (error) {
@@ -446,6 +512,50 @@ router.post('/process', authMiddleware, tenantMiddleware, async (req, res) => {
       error: 'Failed to execute native quantum process',
       details: error instanceof Error ? error.message : 'Unknown error',
       type: 'native_quantum_process_error'
+    });
+  }
+});
+
+// ==========================================
+// QISKIT TRANSPILER SERVICE STATUS
+// ==========================================
+
+/**
+ * GET /api/native-quantum/qiskit-status
+ * Status do Qiskit Transpiler Service AI Integration
+ */
+router.get('/qiskit-status', authMiddleware, tenantMiddleware, async (req, res) => {
+  try {
+    console.log('🤖 Verificando status do Qiskit Transpiler Service...');
+    
+    const serviceStatus = await qiskitTranspiler.getServiceStatus();
+    const healthCheck = await qiskitTranspiler.checkServiceHealth();
+    
+    res.json({
+      success: true,
+      data: {
+        qiskitTranspilerService: serviceStatus,
+        healthCheck,
+        integration: {
+          available: serviceStatus.available,
+          configured: serviceStatus.configured,
+          enhancesNativeQuantum: true,
+          aiCapabilities: serviceStatus.capabilities
+        },
+        usage: {
+          enhancedSearch: serviceStatus.available,
+          enhancedML: serviceStatus.available,
+          enhancedOptimization: serviceStatus.available,
+          circuitOptimization: serviceStatus.available
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Qiskit service status error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to get Qiskit Transpiler Service status',
+      type: 'qiskit_service_error'
     });
   }
 });

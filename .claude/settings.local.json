@@ -36,7 +36,11 @@
       "Bash(railway logs:*)",
       "Bash(npm ls:*)",
       "Bash(dir:*)",
-      "WebFetch(domain:clickup.com)"
+      "WebFetch(domain:clickup.com)",
+      "Bash(touch:*)",
+      "Bash(pip install:*)",
+      "Bash(python:*)",
+      "Bash(pip uninstall:*)"
     ],
     "deny": []
   }
