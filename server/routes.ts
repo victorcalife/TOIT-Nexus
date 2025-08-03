@@ -41,6 +41,7 @@ import adaptiveRoutes from "./adaptiveRoutes";
 import quantumMLRoutes from "./quantumMLRoutes";
 import quantumCommercialRoutes from "./quantumCommercialRoutes";
 import realQuantumRoutes from "./realQuantumRoutes";
+import nativeQuantumRoutes from "./nativeQuantumRoutes";
 import notificationRoutes from "./notificationRoutes";
 import calendarRoutes from "./calendarRoutes";
 import { adminModuleRoutes } from "./adminModuleRoutes";
@@ -1844,6 +1845,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // REAL QUANTUM COMPUTING routes - IBM Quantum Network
   app.use('/api/real-quantum', realQuantumRoutes);
+  
+  // NATIVE QUANTUM ENGINE routes - TOIT NEXUS Motor Quântico (IBM_SECRET)
+  app.use('/api/native-quantum', nativeQuantumRoutes);
 
   // Report routes
   app.get('/api/reports', isAuthenticated, async (req, res) => {
