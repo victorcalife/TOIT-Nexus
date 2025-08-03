@@ -44,9 +44,11 @@ import realQuantumRoutes from "./realQuantumRoutes";
 import nativeQuantumRoutes from "./nativeQuantumRoutes";
 import qiskitTranspilerRoutes from "./qiskitTranspilerRoutes";
 import longRangeEntanglementRoutes from "./longRangeEntanglementRoutes";
+import quantumBillingRoutes from "./quantumBillingRoutes";
 import notificationRoutes from "./notificationRoutes";
 import calendarRoutes from "./calendarRoutes";
 import { adminModuleRoutes } from "./adminModuleRoutes";
+import quantumMonitoringRoutes from "./quantumMonitoringRoutes";
 import { tenantControlRoutes } from "./tenantControlRoutes";
 import { visualWorkflowRoutes } from "./visualWorkflowRoutes";
 import { workflowIntegrationRoutes } from "./workflowIntegrationRoutes";
@@ -1851,6 +1853,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // NATIVE QUANTUM ENGINE routes - TOIT NEXUS Motor Quântico (IBM_SECRET)
   app.use('/api/native-quantum', nativeQuantumRoutes);
+  
+  // QUANTUM BILLING SYSTEM routes - Monetização e créditos quantum
+  app.use('/api/quantum-billing', quantumBillingRoutes);
+  
+  // QUANTUM MONITORING ENTERPRISE routes - Monitoramento 260 qubits em tempo real
+  app.use('/api/quantum-monitoring', quantumMonitoringRoutes);
   
   // QLIB INTEGRATION routes - Biblioteca de notebooks quânticos
   app.use('/api/qlib', qlibRoutes);

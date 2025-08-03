@@ -10,6 +10,8 @@ import { nativeQuantumEngine } from './nativeQuantumEngine';
 import { qiskitTranspiler } from './qiskitTranspilerIntegration';
 import { authMiddleware } from './authMiddleware';
 import { tenantMiddleware } from './tenantMiddleware';
+import { QuantumBillingService } from './quantumBillingService';
+import { nanoid } from 'nanoid';
 import { z } from 'zod';
 
 const router = Router();
@@ -98,7 +100,7 @@ router.get('/status', authMiddleware, tenantMiddleware, async (req, res) => {
  */
 router.post('/search', authMiddleware, tenantMiddleware, async (req, res) => {
   try {
-    const { searchSpace, targetValue } = req.body;
+    const { searchSpace, targetValue, workflowId, workflowExecutionId } = req.body;
     
     if (!searchSpace || !Array.isArray(searchSpace)) {
       return res.status(400).json({
@@ -115,8 +117,38 @@ router.post('/search', authMiddleware, tenantMiddleware, async (req, res) => {
         type: 'validation_error'
       });
     }
+
+    // ===== QUANTUM BILLING INTEGRATION =====
+    const executionId = nanoid();
+    const tenantId = req.user.tenantId;
+    const userId = req.user.id;
     
-    console.log(`🔍 Executando busca quântica nativa - ${searchSpace.length} items`);
+    // Verificar e cobrar créditos para algoritmo Grover's Search
+    const billingResult = await QuantumBillingService.chargeCreditsForExecution(
+      tenantId,
+      userId,
+      'grovers_search',
+      executionId,
+      { searchSpace: searchSpace.length, targetValue },
+      { workflowId, workflowExecutionId }
+    );
+
+    // Se não conseguiu cobrar, retornar erro específico
+    if (!billingResult.success) {
+      return res.status(400).json({
+        success: false,
+        error: billingResult.error,
+        code: billingResult.error === 'Saldo insuficiente' ? 'INSUFFICIENT_CREDITS' : 
+               billingResult.error === 'Algoritmo requer pacote Quantum Unstoppable' ? 'UPGRADE_REQUIRED' :
+               'BILLING_ERROR',
+        type: 'quantum_billing_error',
+        creditsRequired: billingResult.error === 'Saldo insuficiente' ? 3 : undefined,
+        currentBalance: billingResult.newBalance
+      });
+    }
+
+    console.log(`🔍 Executando busca quântica nativa - ${searchSpace.length} items (Execution ID: ${executionId})`);
+    console.log(`💰 Créditos cobrados: ${billingResult.creditsCharged} (Saldo restante: ${billingResult.newBalance})`);
     
     const startTime = Date.now();
     
@@ -125,53 +157,102 @@ router.post('/search', authMiddleware, tenantMiddleware, async (req, res) => {
     let result;
     let qiskitOptimized;
     
-    if (ibmSecret) {
-      console.log('🤖 Aplicando Qiskit AI enhancement...');
-      const enhancedResult = await qiskitTranspiler.enhancedQuantumSearch(searchSpace, targetValue, true);
-      result = enhancedResult.nativeResult;
-      qiskitOptimized = enhancedResult.qiskitOptimized;
-    } else {
-      result = await nativeQuantumEngine.nativeQuantumSearch(searchSpace, targetValue);
-    }
-    
-    const executionTime = Date.now() - startTime;
-    
-    res.json({
-      success: true,
-      data: {
-        algorithm: 'Native Quantum Search',
-        execution: 'TOIT_NATIVE_QPU',
-        result,
-        parameters: {
-          searchSpace: searchSpace.length,
-          targetValue,
-          quantumQubits: Math.ceil(Math.log2(searchSpace.length))
-        },
-        performance: {
-          executionTime,
-          quantumAdvantage: result.quantumAdvantage,
-          found: result.found,
-          probability: result.probability
-        },
-        engine: {
-          type: 'Native Quantum Processing Unit',
-          backend: 'TOIT NEXUS Quantum Engine',
-          processingMode: 'Real-time Native Quantum',
-          qiskitAI: ibmSecret ? 'ENHANCED' : 'DISABLED'
-        },
-        qiskitOptimization: qiskitOptimized ? {
-          optimizationAchieved: qiskitOptimized.optimization_achieved,
-          aiUsed: qiskitOptimized.ai_used,
-          gateCount: qiskitOptimized.gates,
-          depth: qiskitOptimized.depth
-        } : null
+    try {
+      if (ibmSecret) {
+        console.log('🤖 Aplicando Qiskit AI enhancement...');
+        const enhancedResult = await qiskitTranspiler.enhancedQuantumSearch(searchSpace, targetValue, true);
+        result = enhancedResult.nativeResult;
+        qiskitOptimized = enhancedResult.qiskitOptimized;
+      } else {
+        result = await nativeQuantumEngine.nativeQuantumSearch(searchSpace, targetValue);
       }
-    });
+      
+      const executionTime = Date.now() - startTime;
+
+      // Finalizar execução com sucesso
+      await QuantumBillingService.updateExecutionStatus(
+        executionId,
+        'completed',
+        result,
+        {
+          executionTimeMs: executionTime,
+          quantumAdvantage: result.quantumAdvantage || 1,
+          classicalComparison: {
+            classicalTime: searchSpace.length, // O(N) classical
+            quantumTime: Math.sqrt(searchSpace.length), // O(√N) quantum
+            advantage: result.quantumAdvantage || 1
+          },
+          qiskitOptimizationApplied: qiskitOptimized
+        }
+      );
+      
+      res.json({
+        success: true,
+        data: {
+          algorithm: 'Native Quantum Search (Grover\'s Algorithm)',
+          execution: 'TOIT_NATIVE_QPU',
+          executionId,
+          result,
+          parameters: {
+            searchSpace: searchSpace.length,
+            targetValue,
+            quantumQubits: Math.ceil(Math.log2(searchSpace.length))
+          },
+          performance: {
+            executionTime,
+            quantumAdvantage: result.quantumAdvantage,
+            found: result.found,
+            probability: result.probability
+          },
+          billing: {
+            creditsCharged: billingResult.creditsCharged,
+            remainingBalance: billingResult.newBalance,
+            algorithmTier: 'Quantum Unstoppable'
+          },
+          engine: {
+            type: 'Native Quantum Processing Unit',
+            backend: 'TOIT NEXUS Quantum Engine',
+            processingMode: 'Real-time Native Quantum',
+            qiskitAI: ibmSecret ? 'ENHANCED' : 'DISABLED'
+          },
+          qiskitOptimization: qiskitOptimized ? {
+            optimizationAchieved: qiskitOptimized.optimization_achieved,
+            aiUsed: qiskitOptimized.ai_used,
+            gateCount: qiskitOptimized.gates,
+            depth: qiskitOptimized.depth
+          } : null
+        }
+      });
+
+    } catch (executionError) {
+      console.error('Quantum execution error:', executionError);
+      
+      // Marcar execução como falha e considerar reembolso
+      await QuantumBillingService.updateExecutionStatus(
+        executionId,
+        'failed',
+        undefined,
+        undefined,
+        executionError instanceof Error ? executionError.message : 'Unknown execution error'
+      );
+
+      return res.status(500).json({
+        success: false,
+        error: 'Failed to execute quantum search algorithm',
+        details: executionError instanceof Error ? executionError.message : 'Unknown error',
+        type: 'quantum_execution_error',
+        executionId,
+        billing: {
+          note: 'Partial refund applied automatically for failed execution'
+        }
+      });
+    }
+
   } catch (error) {
     console.error('Native quantum search error:', error);
     res.status(500).json({
       success: false,
-      error: 'Failed to execute native quantum search',
+      error: 'Failed to process quantum search request',
       details: error instanceof Error ? error.message : 'Unknown error',
       type: 'native_quantum_search_error'
     });

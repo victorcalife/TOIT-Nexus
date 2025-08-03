@@ -1,4 +1,5 @@
 import { storage } from "./storage";
+import { initializeQuantumAlgorithmPricing } from "./quantumBillingService";
 import { scrypt, randomBytes } from "crypto";
 import { promisify } from "util";
 
@@ -49,10 +50,19 @@ export async function initializeSystem() {
       console.log("⚠️ Erro ao verificar Super Admin Victor:", error);
     }
 
+    // 3. Inicializar preços dos algoritmos quantum
+    try {
+      await initializeQuantumAlgorithmPricing();
+      console.log("✅ Quantum Algorithm Pricing inicializado");
+    } catch (error) {
+      console.log("⚠️ Erro ao inicializar Quantum Pricing:", error);
+    }
+
     // Sistema limpo - sem dados de exemplo hardcoded
     console.log("🧹 Sistema inicializado sem dados de exemplo");
 
-    console.log("🎉 Sistema inicializado com sucesso!");
+    console.log("🎉 Sistema TOIT NEXUS inicializado com sucesso!");
+    console.log("🔮 Quantum Billing System ativo e configurado!");
 
   } catch (error) {
     console.error("❌ Erro inicializando sistema:", error);

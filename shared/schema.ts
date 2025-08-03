@@ -8,6 +8,7 @@ import {
   text,
   integer,
   boolean,
+  unique,
   decimal,
   pgEnum,
 } from "drizzle-orm/pg-core";
@@ -1476,17 +1477,8 @@ export const uploadedFiles = pgTable("uploaded_files", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-// Webhook Logs - Logs de webhooks
-export const webhookLogs = pgTable("webhook_logs", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  tenantId: varchar("tenant_id").references(() => tenants.id),
-  webhookId: varchar("webhook_id", { length: 255 }).notNull(),
-  payload: jsonb("payload").notNull(),
-  headers: jsonb("headers"),
-  processed: boolean("processed").default(false),
-  processingResult: jsonb("processing_result"),
-  receivedAt: timestamp("received_at").defaultNow(),
-});
+// Webhook Logs - Logs de webhooks (removendo duplicação)
+// Já definido na linha 1149
 
 // Complete Workflows - Workflows avançados
 export const completeWorkflows = pgTable("complete_workflows", {
@@ -1919,17 +1911,7 @@ export const nodeTypeEnum = pgEnum('node_type', [
   'schedule'
 ]);
 
-export const triggerTypeEnum = pgEnum('trigger_type', [
-  'manual',
-  'schedule', 
-  'webhook', 
-  'email_received', 
-  'data_change', 
-  'api_call', 
-  'file_upload',
-  'approval_request',
-  'task_completed'
-]);
+// triggerTypeEnum duplicado removido - já definido na linha 39
 
 export const executionStatusEnum = pgEnum('execution_status', [
   'pending',
@@ -2443,3 +2425,180 @@ export type CalendarEventProcessingQueue = typeof calendarEventProcessingQueue.$
 export type InsertCalendarEventProcessingQueue = typeof calendarEventProcessingQueue.$inferInsert;
 export type TriggerExecutionHistory = typeof triggerExecutionHistory.$inferSelect;
 export type InsertTriggerExecutionHistory = typeof triggerExecutionHistory.$inferInsert;
+
+// ===== QUANTUM MONETIZATION SYSTEM =====
+
+// Quantum Package Types
+export const quantumPackageTypeEnum = pgEnum('quantum_package_type', ['lite', 'unstoppable']);
+export const quantumTransactionTypeEnum = pgEnum('quantum_transaction_type', ['credit_purchase', 'execution_charge', 'refund', 'bonus']);
+export const quantumAlgorithmTypeEnum = pgEnum('quantum_algorithm_type', [
+  // Lite (incluído na mensalidade)
+  'adaptive_engine', 'basic_optimization', 'pattern_recognition',
+  // Unstoppable (pago por execução)
+  'grovers_search', 'qaoa_optimization', 'quantum_ml', 'business_analytics', 
+  'qiskit_transpiler', 'long_range_entanglement', 'quantum_teleportation',
+  'real_quantum_hardware', 'ai_enhanced_circuits'
+]);
+
+// Quantum Packages - Pacotes de quantum computing
+export const quantumPackages = pgTable("quantum_packages", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  
+  // Package configuration
+  packageType: quantumPackageTypeEnum("package_type").notNull(),
+  isActive: boolean("is_active").default(true),
+  
+  // Lite package settings (incluído na mensalidade)
+  liteAlgorithmsIncluded: jsonb("lite_algorithms_included").default([
+    'adaptive_engine', 'basic_optimization', 'pattern_recognition'
+  ]),
+  
+  // Unstoppable package settings (sistema de créditos)
+  creditsBalance: integer("credits_balance").default(0), // Créditos disponíveis
+  totalCreditsSpent: integer("total_credits_spent").default(0), // Total gasto histórico
+  
+  // Pricing configuration (em centavos)
+  creditPriceInCents: integer("credit_price_in_cents").default(500), // R$ 5,00 por crédito
+  autoRechargeEnabled: boolean("auto_recharge_enabled").default(false),
+  autoRechargeAmount: integer("auto_recharge_amount").default(100), // Comprar 100 créditos quando acabar
+  lowBalanceThreshold: integer("low_balance_threshold").default(10), // Alertar quando < 10 créditos
+  
+  // Usage limits
+  monthlyExecutionLimit: integer("monthly_execution_limit"), // null = unlimited
+  monthlyExecutionsUsed: integer("monthly_executions_used").default(0),
+  lastMonthlyReset: timestamp("last_monthly_reset").defaultNow(),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Quantum Algorithm Pricing - Preços por algoritmo
+export const quantumAlgorithmPricing = pgTable("quantum_algorithm_pricing", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  
+  algorithmType: quantumAlgorithmTypeEnum("algorithm_type").notNull().unique(),
+  packageRequired: quantumPackageTypeEnum("package_required").notNull(),
+  
+  // Pricing
+  creditsPerExecution: integer("credits_per_execution").notNull(), // Créditos consumidos por execução
+  estimatedExecutionTime: integer("estimated_execution_time"), // Tempo estimado em milliseconds
+  
+  // Metadata
+  displayName: varchar("display_name", { length: 100 }).notNull(),
+  description: text("description"),
+  isActive: boolean("is_active").default(true),
+  
+  // Computational complexity
+  complexityLevel: varchar("complexity_level", { length: 20 }).default('medium'), // 'low', 'medium', 'high', 'extreme'
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Quantum Transactions - Histórico de compras e consumo de créditos
+export const quantumTransactions = pgTable("quantum_transactions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  quantumPackageId: varchar("quantum_package_id").references(() => quantumPackages.id).notNull(),
+  
+  // Transaction details
+  transactionType: quantumTransactionTypeEnum("transaction_type").notNull(),
+  amount: integer("amount").notNull(), // Créditos (positivo = ganho, negativo = gasto)
+  balanceBefore: integer("balance_before").notNull(),
+  balanceAfter: integer("balance_after").notNull(),
+  
+  // Payment information (para compras)
+  priceInCents: integer("price_in_cents"), // Valor pago em centavos (apenas para compras)
+  stripePaymentIntentId: varchar("stripe_payment_intent_id"),
+  stripeInvoiceId: varchar("stripe_invoice_id"),
+  
+  // Execution information (para execuções)
+  algorithmType: quantumAlgorithmTypeEnum("algorithm_type"),
+  executionId: varchar("execution_id"), // ID da execução que consumiu créditos
+  executionMetadata: jsonb("execution_metadata"), // Dados da execução
+  
+  // Metadata
+  description: text("description"),
+  metadata: jsonb("metadata"), // Dados extras
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Quantum Executions - Log de todas as execuções quantum
+export const quantumExecutions = pgTable("quantum_executions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  quantumPackageId: varchar("quantum_package_id").references(() => quantumPackages.id).notNull(),
+  
+  // Execution details
+  algorithmType: quantumAlgorithmTypeEnum("algorithm_type").notNull(),
+  inputData: jsonb("input_data").notNull(), // Dados de entrada
+  outputData: jsonb("output_data"), // Resultado da execução
+  
+  // Performance metrics
+  executionTimeMs: integer("execution_time_ms"), // Tempo de execução
+  quantumAdvantage: decimal("quantum_advantage", { precision: 5, scale: 2 }), // Fator de vantagem quântica
+  classicalComparison: jsonb("classical_comparison"), // Comparação com algoritmo clássico
+  
+  // Billing
+  creditsCharged: integer("credits_charged").notNull(), // Créditos cobrados
+  transactionId: varchar("transaction_id").references(() => quantumTransactions.id),
+  
+  // Status
+  status: varchar("status", { length: 20 }).notNull(), // 'running', 'completed', 'failed', 'timeout'
+  error: text("error"),
+  
+  // Context
+  workflowId: varchar("workflow_id").references(() => visualWorkflows.id), // Se executado via workflow
+  workflowExecutionId: varchar("workflow_execution_id"),
+  
+  // Enhanced with IBM Qiskit
+  useQiskitEnhancement: boolean("use_qiskit_enhancement").default(false),
+  qiskitOptimizationApplied: jsonb("qiskit_optimization_applied"), // Otimizações aplicadas
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Quantum Usage Analytics - Analytics de uso quantum por tenant
+export const quantumUsageAnalytics = pgTable("quantum_usage_analytics", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tenantId: varchar("tenant_id").references(() => tenants.id).notNull(),
+  
+  // Period
+  period: varchar("period", { length: 7 }).notNull(), // 'YYYY-MM' format
+  
+  // Usage metrics
+  totalExecutions: integer("total_executions").default(0),
+  totalCreditsSpent: integer("total_credits_spent").default(0),
+  totalExecutionTimeMs: integer("total_execution_time_ms").default(0),
+  
+  // Algorithm breakdown
+  algorithmUsage: jsonb("algorithm_usage").default({}), // { "algorithm_type": execution_count }
+  
+  // Performance metrics
+  avgQuantumAdvantage: decimal("avg_quantum_advantage", { precision: 5, scale: 2 }),
+  successRate: decimal("success_rate", { precision: 5, scale: 2 }), // % de execuções bem-sucedidas
+  
+  // Business impact
+  estimatedTimeSaved: integer("estimated_time_saved"), // Tempo economizado vs clássico (segundos)
+  costPerExecution: decimal("cost_per_execution", { precision: 8, scale: 2 }), // Custo médio por execução
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Export types for Quantum Monetization
+export type QuantumPackage = typeof quantumPackages.$inferSelect;
+export type InsertQuantumPackage = typeof quantumPackages.$inferInsert;
+export type QuantumAlgorithmPricing = typeof quantumAlgorithmPricing.$inferSelect;
+export type InsertQuantumAlgorithmPricing = typeof quantumAlgorithmPricing.$inferInsert;
+export type QuantumTransaction = typeof quantumTransactions.$inferSelect;
+export type InsertQuantumTransaction = typeof quantumTransactions.$inferInsert;
+export type QuantumExecution = typeof quantumExecutions.$inferSelect;
+export type InsertQuantumExecution = typeof quantumExecutions.$inferInsert;
+export type QuantumUsageAnalytics = typeof quantumUsageAnalytics.$inferSelect;
+export type InsertQuantumUsageAnalytics = typeof quantumUsageAnalytics.$inferInsert;
