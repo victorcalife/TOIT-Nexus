@@ -40,6 +40,7 @@ import enterpriseRoutes from "./enterpriseRoutes";
 import adaptiveRoutes from "./adaptiveRoutes";
 import quantumMLRoutes from "./quantumMLRoutes";
 import quantumCommercialRoutes from "./quantumCommercialRoutes";
+import realQuantumRoutes from "./realQuantumRoutes";
 import notificationRoutes from "./notificationRoutes";
 import calendarRoutes from "./calendarRoutes";
 import { adminModuleRoutes } from "./adminModuleRoutes";
@@ -1835,11 +1836,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Quantum ML Engine routes
+  // Quantum ML Engine routes (SIMULATION)
   app.use('/api/quantum-ml', quantumMLRoutes);
   
   // Quantum Commercial routes
   app.use('/api/quantum-commercial', quantumCommercialRoutes);
+  
+  // REAL QUANTUM COMPUTING routes - IBM Quantum Network
+  app.use('/api/real-quantum', realQuantumRoutes);
 
   // Report routes
   app.get('/api/reports', isAuthenticated, async (req, res) => {

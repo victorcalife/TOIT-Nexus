@@ -34,17 +34,26 @@ export class QuantumCircuit {
     }
   }
   
-  // Hadamard Gate - Creates superposition
+  // Hadamard Gate - Creates superposition (ALGORITMO QUÂNTICO REAL)
   hadamard(qubit: number): QuantumCircuit {
     const h = new Complex(1 / Math.sqrt(2), 0);
+    const newState = new Array(this.state.length);
+    
+    // Apply Hadamard transformation matrix: H = (1/√2) * [[1, 1], [1, -1]]
     for (let i = 0; i < this.state.length; i++) {
-      if ((i >> qubit) & 1) {
-        // |1⟩ state
-        const newState = this.state[i ^ (1 << qubit)].mul(h).sub(this.state[i].mul(h));
-        this.state[i] = this.state[i ^ (1 << qubit)].mul(h).add(this.state[i].mul(h));
-        this.state[i ^ (1 << qubit)] = newState;
+      const bit = (i >> qubit) & 1;
+      const flipped = i ^ (1 << qubit);
+      
+      if (bit === 0) {
+        // |0⟩ → (|0⟩ + |1⟩)/√2
+        newState[i] = this.state[i].mul(h).add(this.state[flipped].mul(h));
+      } else {
+        // |1⟩ → (|0⟩ - |1⟩)/√2
+        newState[i] = this.state[flipped].mul(h).sub(this.state[i].mul(h));
       }
     }
+    
+    this.state = newState;
     this.gates.push({ type: 'H', qubit, params: [] });
     return this;
   }
