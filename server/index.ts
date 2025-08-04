@@ -24,8 +24,14 @@ app.use((req, res, next) => {
     'http://localhost:5000'
   ];
   
+  console.log(`🔒 [CORS] Origin: ${origin} | Allowed: ${allowedOrigins.includes(origin || '')}`);
+  
+  // SEMPRE definir o header, mesmo que seja origem permitida ou localhost
   if (origin && allowedOrigins.includes(origin)) {
     res.header('Access-Control-Allow-Origin', origin);
+  } else if (!origin) {
+    // Para requisições sem origin (mesmo servidor)
+    res.header('Access-Control-Allow-Origin', '*');
   }
   
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -49,9 +55,9 @@ app.use((req, res, next) => {
   
   console.log(`🌐 [MIDDLEWARE] Host: ${host} | Path: ${req.path} | isNexus: ${isNexusDomain}`);
   
-  // Para domínio nexus, interceptar TODAS as rotas que não sejam API
-  if (isNexusDomain && !req.path.startsWith('/api/')) {
-    console.log('🎯 Interceptando requisição nexus - servindo Landing Page');
+  // Para domínio nexus, interceptar ABSOLUTAMENTE TUDO - incluindo assets e APIs
+  if (isNexusDomain) {
+    console.log('🎯 Interceptando TUDO do nexus - servindo Landing Page');
     return res.sendFile(path.resolve(import.meta.dirname, '..', 'nexus-quantum-landing.html'));
   }
   
