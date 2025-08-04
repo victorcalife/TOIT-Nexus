@@ -15,7 +15,19 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Domain middleware removido - deixando o frontend React lidar com o roteamento
+// Middleware para servir landing page estática apenas para nexus.toit.com.br
+app.use((req, res, next) => {
+  const host = req.get('host');
+  const isNexusDomain = host?.includes('nexus.toit.com.br') && !host?.includes('supnexus');
+  
+  // Servir landing page HTML estática apenas para nexus.toit.com.br na rota raiz
+  if (isNexusDomain && req.path === '/') {
+    console.log('🎯 Servindo Landing Page para nexus.toit.com.br');
+    return res.sendFile(path.resolve(import.meta.dirname, '..', 'nexus-quantum-landing.html'));
+  }
+  
+  next();
+});
 
 // Configure session
 app.use(session({
