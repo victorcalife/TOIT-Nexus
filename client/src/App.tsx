@@ -84,6 +84,7 @@ function Router() {
   // Not authenticated - show appropriate login or landing page
   if (!isAuthenticated) {
     // Detectar se é subdomínio de suporte para mostrar página de login específica
+    const hostname = window.location.hostname.toLowerCase();
     const isSupportDomain = hostname.includes('supnexus.toit.com.br') || hostname.startsWith('supnexus.') || hostname === 'supnexus';
     
     // Debug log para verificar detecção
