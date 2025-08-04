@@ -943,6 +943,11 @@
             margin: 0 auto;
             position: relative;
             z-index: 2;
+            padding: 0 2rem;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .flow-header {
@@ -970,43 +975,148 @@
 
         /* Process Flow */
         .process-flow {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-            margin-bottom: 4rem;
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 0.5rem;
+            margin-bottom: 6rem;
+            margin-top: 4rem;
+            overflow: visible;
+            padding: 5rem 6rem;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            justify-content: center;
+            width: 100%;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+            transform: translateY(-40px);
+            perspective: 1200px;
+            transform-style: preserve-3d;
+        }
+
+        .process-flow::-webkit-scrollbar {
+            display: none;
         }
 
         .process-step {
             background: var(--bg-card);
-            border-radius: 20px;
-            padding: 2rem;
+            flex: 0 0 180px;
+            min-height: 220px;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            border-radius: 15px;
+            padding: 15px;
+            padding-top: 35px;
             border: 1px solid var(--border-color);
             position: relative;
-            transition: all 0.4s ease;
             transform-style: preserve-3d;
-            cursor: pointer;
+            transform-origin: center center;
+            z-index: 1;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
         }
-
-        .process-step:hover {
-            transform: translateY(-10px) rotateX(5deg);
-            box-shadow:
-                0 20px 40px rgba(0, 0, 0, 0.3),
-                0 0 30px rgba(99, 102, 241, 0.2);
-            border-color: var(--quantum-primary);
+        
+        /* Efeito de perspectiva 3D no container */
+        .process-flow {
+            perspective: 1200px;
+            perspective-origin: center center;
+        }
+        
+        /* Estados base para direções específicas */
+        .process-step:nth-child(1), .process-step:nth-child(2), .process-step:nth-child(3) {
+            transform-origin: left center;
+        }
+        
+        .process-step:nth-child(4), .process-step:nth-child(5), .process-step:nth-child(6) {
+            transform-origin: right center;
+        }
+        
+        /* Hover básico (sem expanded) */
+        .process-step:hover:not(.expanded) {
+            transform: translateY(-5px) rotateX(5deg);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* EXPANSÕES ÉPICAS DIRECIONAIS */
+        .process-step.expanded {
+            z-index: 100;
+            border: 2px solid transparent;
+            background: linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
+                       var(--quantum-gradient) border-box;
+            backdrop-filter: blur(20px);
+        }
+        
+        /* Cards 1,2,3: Expandem para DIREITA */
+        .process-step:nth-child(1).expanded,
+        .process-step:nth-child(2).expanded,
+        .process-step:nth-child(3).expanded {
+            flex: 0 0 320px;
+            min-height: 380px;
+            transform: translateY(-25px) translateX(15px) rotateY(-8deg) rotateX(3deg) scale(1.05);
+            box-shadow: 
+                0 40px 80px rgba(0, 0, 0, 0.3),
+                0 0 60px rgba(99, 102, 241, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Cards 4,5,6: Expandem para ESQUERDA */
+        .process-step:nth-child(4).expanded,
+        .process-step:nth-child(5).expanded,
+        .process-step:nth-child(6).expanded {
+            flex: 0 0 320px;
+            min-height: 380px;
+            transform: translateY(-25px) translateX(-15px) rotateY(8deg) rotateX(3deg) scale(1.05);
+            box-shadow: 
+                0 40px 80px rgba(0, 0, 0, 0.3),
+                0 0 60px rgba(99, 102, 241, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Efeito de glow pulsante */
+        .process-step.expanded::before {
+            animation: quantum-glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes quantum-glow {
+            0% { box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); }
+            100% { box-shadow: 0 4px 20px rgba(99, 102, 241, 0.6); }
+        }
+        
+        /* Efeito de partículas nos cards expandidos */
+        .process-step.expanded::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(139, 69, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(34, 197, 94, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            opacity: 0;
+            animation: particle-dance 3s ease-in-out infinite;
+        }
+        
+        @keyframes particle-dance {
+            0%, 100% { opacity: 0; transform: scale(0.8) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1.1) rotate(180deg); }
         }
 
         .process-step::before {
             content: attr(data-step);
             position: absolute;
-            top: -15px;
-            left: 2rem;
+            top: -8px;
+            left: 1.5rem;
             background: var(--quantum-gradient);
             color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
             font-weight: 700;
             box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            z-index: 5;
         }
 
         .step-icon {
@@ -1081,6 +1191,16 @@
         .step-features {
             list-style: none;
             padding: 0;
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            margin-top: 1rem;
+        }
+
+        .process-step.expanded .step-features {
+            opacity: 1;
+            max-height: 300px;
         }
 
         .step-features li {
@@ -1090,6 +1210,12 @@
             margin-bottom: 0.75rem;
             font-size: 0.9rem;
             color: var(--text-secondary);
+            transform: translateY(10px);
+            transition: transform 0.3s ease;
+        }
+
+        .process-step.expanded .step-features li {
+            transform: translateY(0);
         }
 
         .step-features li::before {
@@ -2575,12 +2701,22 @@
             }
 
             .process-flow {
-                grid-template-columns: 1fr;
+                flex-direction: column;
                 gap: 1.5rem;
+                overflow-x: visible;
+                padding: 2rem 1rem;
             }
 
             .process-step {
                 padding: 1.5rem;
+                flex: 0 0 180px !important;
+                min-height: 180px !important;
+            }
+
+            .process-step.expanded {
+                transform: translateY(-5px) scale(1.02) !important;
+                flex: 0 0 220px !important;
+                min-height: 250px !important;
             }
 
             .step-icon {
@@ -3097,26 +3233,7 @@
     <section class="nexus-flow" id="nexus-flow">
         <div class="flow-container">
             <div class="flow-header fade-in">
-                <h2 class="flow-title">Como o 
-                    <svg class="inline-logo" viewBox="0 0 400 100" xmlns="http://www.w3.org/2000/svg" style="height: 1em; width: auto; vertical-align: baseline; margin: 0 0.2em;">
-                        <defs>
-                            <linearGradient id="brandGradientInline1" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
-                                <stop offset="50%" style="stop-color:#06b6d4;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
-                            </linearGradient>
-                            <linearGradient id="brandGradientInline2" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
-                                <stop offset="50%" style="stop-color:#581c87;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
-                            </linearGradient>
-                        </defs>
-                        <g transform="translate(105,50)">
-                            <text x="-35" y="15" font-family="Arial Black, sans-serif" font-size="45" font-weight="700" fill="url(#brandGradientInline1)">TOIT</text>
-                            <text x="75" y="15" font-family="Arial, sans-serif" font-size="45" font-weight="300" fill="url(#brandGradientInline2)">NEXUS</text>
-                        </g>
-                    </svg>
-                    Funciona</h2>
+                <h2 class="flow-title">Como o <span style="background: linear-gradient(135deg, #001366ff 0%, #581c87 50%, #1e3a8a 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 800;">TOIT</span><span style="background: linear-gradient(135deg, #1e3a8a 0%, #581c87 50%, #06b6d4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 500;">NEXUS</span> Funciona</h2>
                 <p class="flow-subtitle">
                     Descubra o processo revolucionário que transforma dados em insights poderosos com Machine Learning
                     Quântico integrado em cada etapa.
@@ -3896,7 +4013,205 @@
             initializeScrollAnimations();
             initializeLiveMetrics();
             initializeStripe();
+            initializeProcessStepExpansion();
         } );
+
+        // ====================================================================
+        // PROCESS STEP CARD EXPANSION
+        // ====================================================================
+        // ====================================================================
+        // REVOLUTIONARY CARD EXPANSION SYSTEM - ÉPICO E FUNCIONAL
+        // ====================================================================
+        
+        function initializeProcessStepExpansion() {
+            const processSteps = document.querySelectorAll('.process-step');
+            const container = document.querySelector('.process-flow');
+            let currentExpanded = null;
+            let expansionTimeout = null;
+            let isTransitioning = false;
+            
+            // Initialize all cards in clean state
+            function resetAllCards() {
+                processSteps.forEach((step, index) => {
+                    step.classList.remove('expanded');
+                    step.style.removeProperty('transform');
+                    step.style.removeProperty('z-index');
+                    step.style.removeProperty('flex');
+                    step.style.removeProperty('min-height');
+                });
+                currentExpanded = null;
+                isTransitioning = false;
+            }
+            
+            // Epic expansion effect with directional logic
+            function expandCard(targetStep, index) {
+                if (isTransitioning || currentExpanded === targetStep) return;
+                
+                isTransitioning = true;
+                
+                // Reset all cards first
+                processSteps.forEach(step => {
+                    if (step !== targetStep) {
+                        step.classList.remove('expanded');
+                    }
+                });
+                
+                // Physics-based expansion with delay for smoothness
+                requestAnimationFrame(() => {
+                    targetStep.classList.add('expanded');
+                    currentExpanded = targetStep;
+                    
+                    // Add ripple effect from expansion point
+                    createExpansionRipple(targetStep, index);
+                    
+                    setTimeout(() => {
+                        isTransitioning = false;
+                    }, 600);
+                });
+                
+                console.log(`🚀 EPIC EXPANSION: Card ${index + 1} expandido com efeitos revolucionários!`);
+            }
+            
+            // Collapse with smooth physics
+            function collapseCard(targetStep, index) {
+                if (!targetStep) return;
+                
+                isTransitioning = true;
+                
+                // Force remove expanded class and reset styles immediately
+                targetStep.classList.remove('expanded');
+                targetStep.style.removeProperty('transform');
+                targetStep.style.removeProperty('z-index');
+                targetStep.style.removeProperty('flex');
+                targetStep.style.removeProperty('min-height');
+                
+                // Reset current expanded reference immediately
+                if (currentExpanded === targetStep) {
+                    currentExpanded = null;
+                }
+                
+                // Clear any pending expansion timeouts
+                if (expansionTimeout) {
+                    clearTimeout(expansionTimeout);
+                    expansionTimeout = null;
+                }
+                
+                setTimeout(() => {
+                    isTransitioning = false;
+                }, 300);
+                
+                console.log(`⚡ SMOOTH COLLAPSE: Card ${index + 1} recolhido suavemente!`);
+            }
+            
+            // Create ripple effect on expansion
+            function createExpansionRipple(step, index) {
+                const ripple = document.createElement('div');
+                ripple.style.cssText = `
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    width: 20px;
+                    height: 20px;
+                    background: radial-gradient(circle, rgba(99, 102, 241, 0.4) 0%, transparent 70%);
+                    border-radius: 50%;
+                    transform: translate(-50%, -50%) scale(0);
+                    animation: expansion-ripple 0.8s ease-out forwards;
+                    pointer-events: none;
+                    z-index: 5;
+                `;
+                
+                step.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 800);
+            }
+            
+            // Add ripple keyframes if not exists
+            if (!document.querySelector('#expansion-ripple-keyframes')) {
+                const style = document.createElement('style');
+                style.id = 'expansion-ripple-keyframes';
+                style.textContent = `
+                    @keyframes expansion-ripple {
+                        0% {
+                            transform: translate(-50%, -50%) scale(0);
+                            opacity: 1;
+                        }
+                        100% {
+                            transform: translate(-50%, -50%) scale(8);
+                            opacity: 0;
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            // Event listeners with debounce
+            processSteps.forEach((step, index) => {
+                // Mouse enter with debounce
+                step.addEventListener('mouseenter', function(e) {
+                    e.stopPropagation();
+                    
+                    // Clear any pending collapse
+                    clearTimeout(expansionTimeout);
+                    
+                    // Set expansion timeout
+                    expansionTimeout = setTimeout(() => {
+                        if (!step.classList.contains('expanded') && !isTransitioning) {
+                            expandCard(step, index);
+                        }
+                    }, 150);
+                });
+                
+                // Mouse leave with immediate collapse
+                step.addEventListener('mouseleave', function(e) {
+                    e.stopPropagation();
+                    
+                    // Clear expansion timeout
+                    clearTimeout(expansionTimeout);
+                    
+                    // Immediate collapse if this card is expanded
+                    if (step.classList.contains('expanded')) {
+                        collapseCard(step, index);
+                    }
+                });
+                
+                // Click for mobile with improved UX
+                step.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    if (step.classList.contains('expanded')) {
+                        collapseCard(step, index);
+                    } else {
+                        expandCard(step, index);
+                    }
+                });
+                
+                // Prevent text selection during animations
+                step.addEventListener('selectstart', e => e.preventDefault());
+            });
+            
+            // Global click to collapse all
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.process-step')) {
+                    resetAllCards();
+                }
+            });
+            
+            // Global mouse leave from process-flow container
+            container.addEventListener('mouseleave', function(e) {
+                // If mouse leaves the entire container, collapse all cards
+                setTimeout(() => {
+                    resetAllCards();
+                }, 200);
+            });
+            
+            // Initialize clean state
+            resetAllCards();
+            
+            console.log('🎯 REVOLUTIONARY EXPANSION SYSTEM INITIALIZED - 6 cards with directional epic effects!');
+        }
 
         // ====================================================================
         // QUANTUM NEURAL BACKGROUND
