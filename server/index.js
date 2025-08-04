@@ -82,18 +82,34 @@ app.use((req, res, next) => {
       const host = req.get('host') || '';
       const isNexusDomain = host.includes('nexus.toit.com.br') || host.startsWith('nexus.');
       
-      console.log(`🌐 [DEBUG] Host: ${host} | Path: ${req.path} | NexusDomain: ${isNexusDomain}`);
+      console.log(`🌐 [DEBUG] Host: ${host} | Path: ${req.path} | Method: ${req.method} | NexusDomain: ${isNexusDomain}`);
       
-      // Se for domínio nexus e requisição GET (exceto APIs)
-      if (isNexusDomain && req.method === 'GET' && !req.path.startsWith('/api')) {
-        const filePath = path.resolve(process.cwd(), 'nexus-quantum-landing.html');
-        console.log(`🚀 [NEXUS LANDING] Servindo nexus-quantum-landing.html para ${host}${req.path}`);
-        return res.sendFile(filePath, (err) => {
-          if (err) {
-            console.error('❌ Erro ao servir nexus-quantum-landing.html:', err);
-            res.status(500).send('Erro ao carregar página');
-          }
-        });
+      // Se for domínio nexus e requisição GET 
+      if (isNexusDomain && req.method === 'GET') {
+        // EXCEÇÕES: permitir apenas APIs 
+        const isAPI = req.path.startsWith('/api');
+        
+        // BLOQUEAR completamente assets React (main.tsx, etc) para forçar HTML estático
+        const isReactAsset = req.path.includes('main.tsx') || req.path.includes('src/') || req.path.includes('client/');
+        
+        if (isReactAsset) {
+          console.log(`🚫 [NEXUS BLOCK] Bloqueando asset React: ${req.path}`);
+          return res.status(404).send('Asset React bloqueado no domínio Nexus');
+        }
+        
+        if (!isAPI) {
+          const filePath = path.resolve(process.cwd(), 'nexus-quantum-landing.html');
+          console.log(`🚀 [NEXUS LANDING] Servindo nexus-quantum-landing.html para ${host}${req.path}`);
+          return res.sendFile(filePath, (err) => {
+            if (err) {
+              console.error('❌ Erro ao servir nexus-quantum-landing.html:', err);
+              res.status(500).send('Erro ao carregar página');
+            }
+          });
+        }
+        
+        // Para APIs, deixar passar normalmente
+        console.log(`📁 [NEXUS API] Permitindo API: ${req.path}`);
       }
       
       next();
