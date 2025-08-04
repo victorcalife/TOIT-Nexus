@@ -76,40 +76,54 @@ app.use((req, res, next) => {
     
     await import('./initializeSystem.js');
 
-    // MIDDLEWARE CRÍTICO: Servir nexus-quantum-landing.html para nexus.toit.com.br
+    // MIDDLEWARE ULTRA CRÍTICO: Servir nexus-quantum-landing.html para nexus.toit.com.br
     // DEVE ser a PRIMEIRA coisa após middlewares básicos, ANTES de qualquer route
     app.use((req, res, next) => {
       const host = req.get('host') || '';
       const isNexusDomain = host.includes('nexus.toit.com.br') || host.startsWith('nexus.');
       
-      console.log(`🌐 [DEBUG] Host: ${host} | Path: ${req.path} | Method: ${req.method} | NexusDomain: ${isNexusDomain}`);
+      console.log(`🌐 [MIDDLEWARE] Host: "${host}" | Path: "${req.path}" | Method: "${req.method}" | NexusDomain: ${isNexusDomain}`);
       
       // Se for domínio nexus e requisição GET 
       if (isNexusDomain && req.method === 'GET') {
-        // EXCEÇÕES: permitir apenas APIs 
+        // EXCEÇÕES: permitir apenas APIs e rotas de teste
         const isAPI = req.path.startsWith('/api');
+        const isTestRoute = req.path.startsWith('/test-');
         
         // BLOQUEAR completamente assets React (main.tsx, etc) para forçar HTML estático
-        const isReactAsset = req.path.includes('main.tsx') || req.path.includes('src/') || req.path.includes('client/');
+        const isReactAsset = req.path.includes('main.tsx') || req.path.includes('src/') || req.path.includes('client/') || req.path.includes('@vite') || req.path.includes('node_modules');
         
         if (isReactAsset) {
           console.log(`🚫 [NEXUS BLOCK] Bloqueando asset React: ${req.path}`);
           return res.status(404).send('Asset React bloqueado no domínio Nexus');
         }
         
-        if (!isAPI) {
+        if (!isAPI && !isTestRoute) {
+          const fs = require('fs');
           const filePath = path.resolve(process.cwd(), 'nexus-quantum-landing.html');
-          console.log(`🚀 [NEXUS LANDING] Servindo nexus-quantum-landing.html para ${host}${req.path}`);
-          return res.sendFile(filePath, (err) => {
-            if (err) {
-              console.error('❌ Erro ao servir nexus-quantum-landing.html:', err);
-              res.status(500).send('Erro ao carregar página');
-            }
-          });
+          
+          console.log(`🔍 [NEXUS CHECK] CWD: ${process.cwd()}`);
+          console.log(`🔍 [NEXUS CHECK] FilePath: ${filePath}`);
+          console.log(`🔍 [NEXUS CHECK] FileExists: ${fs.existsSync(filePath)}`);
+          
+          if (fs.existsSync(filePath)) {
+            console.log(`🚀 [NEXUS LANDING] SERVINDO nexus-quantum-landing.html para ${host}${req.path}`);
+            return res.sendFile(filePath, (err) => {
+              if (err) {
+                console.error('❌ [NEXUS ERROR] Erro ao servir nexus-quantum-landing.html:', err);
+                return res.status(500).send(`Erro ao carregar página: ${err.message}`);
+              } else {
+                console.log(`✅ [NEXUS SUCCESS] Arquivo servido com sucesso!`);
+              }
+            });
+          } else {
+            console.log(`❌ [NEXUS ERROR] Arquivo nexus-quantum-landing.html NÃO EXISTE`);
+            return res.status(404).send(`Arquivo não encontrado: ${filePath}`);
+          }
         }
         
-        // Para APIs, deixar passar normalmente
-        console.log(`📁 [NEXUS API] Permitindo API: ${req.path}`);
+        // Para APIs e rotas de teste, deixar passar normalmente
+        console.log(`📁 [NEXUS PASS] Permitindo rota: ${req.path}`);
       }
       
       next();
@@ -169,6 +183,39 @@ app.use((req, res, next) => {
     // Add a simple health check route
     app.get('/health', (req, res) => {
       res.send('OK - TOIT NEXUS Server Running');
+    });
+
+    // ROTA DE TESTE CRÍTICA - Servir nexus-quantum-landing.html diretamente
+    app.get('/test-nexus-landing', (req, res) => {
+      const filePath = path.resolve(process.cwd(), 'nexus-quantum-landing.html');
+      console.log(`🔧 [TEST] Tentando servir: ${filePath}`);
+      
+      // Verificar se arquivo existe
+      const fs = require('fs');
+      if (fs.existsSync(filePath)) {
+        console.log(`✅ [TEST] Arquivo existe, servindo...`);
+        res.sendFile(filePath);
+      } else {
+        console.log(`❌ [TEST] Arquivo NÃO existe`);
+        res.status(404).send(`Arquivo não encontrado: ${filePath}`);
+      }
+    });
+
+    // ROTA DE TESTE - Informações do servidor
+    app.get('/test-server-info', (req, res) => {
+      const fs = require('fs');
+      const cwd = process.cwd();
+      const filePath = path.resolve(cwd, 'nexus-quantum-landing.html');
+      
+      res.json({
+        cwd: cwd,
+        filePath: filePath,
+        fileExists: fs.existsSync(filePath),
+        host: req.get('host'),
+        path: req.path,
+        method: req.method,
+        timestamp: new Date().toISOString()
+      });
     });
 
     // Payment system health check
