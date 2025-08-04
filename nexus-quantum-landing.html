@@ -1,23 +1,27 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TOIT NEXUS - A Primeira Plataforma No-Code com Quantum ML do Mundo</title>
-    <meta name="description" content="Revolução Quantum: Plataforma no-code com Inteligência Artificial Quântica. 16 qubits, 65.536 universos paralelos, vantagem quântica de até 10.000x. Transforme seus dados com poder quântico.">
-    
+    <meta name="description"
+        content="Revolução Quantum: Plataforma no-code com Inteligência Artificial Quântica. 16 qubits, 65.536 universos paralelos, vantagem quântica de até 10.000x. Transforme seus dados com poder quântico.">
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://nexus.toit.com.br/">
     <meta property="og:title" content="TOIT NEXUS - Quantum ML No-Code Platform">
-    <meta property="og:description" content="A primeira plataforma no-code do mundo com processamento quântico real. Vantagem quântica de até 10.000x vs processamento clássico.">
+    <meta property="og:description"
+        content="A primeira plataforma no-code do mundo com processamento quântico real. Vantagem quântica de até 10.000x vs processamento clássico.">
     <meta property="og:image" content="https://nexus.toit.com.br/assets/quantum-preview.jpg">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://nexus.toit.com.br/">
     <meta property="twitter:title" content="TOIT NEXUS - Quantum ML No-Code Platform">
-    <meta property="twitter:description" content="Revolução Quantum: 16 qubits, 65.536 universos paralelos, vantagem quântica de até 10.000x.">
+    <meta property="twitter:description"
+        content="Revolução Quantum: 16 qubits, 65.536 universos paralelos, vantagem quântica de até 10.000x.">
     <meta property="twitter:image" content="https://nexus.toit.com.br/assets/quantum-preview.jpg">
 
     <!-- Favicon -->
@@ -27,14 +31,16 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
     <!-- Stripe -->
     <script src="https://js.stripe.com/v3/"></script>
-    
+
     <!-- Chart.js for Quantum Visualizations -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
+
     <style>
         :root {
             /* Quantum Color Palette */
@@ -44,13 +50,32 @@
             --quantum-success: #10b981;
             --quantum-warning: #f59e0b;
             --quantum-error: #ef4444;
-            
+
+            /* Revolutionary Variables para compatibilidade */
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #141420;
+            --bg-card: #1e1e2e;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b8;
+            --text-muted: #808088;
+            --toit-cyan: #00d4ff;
+            --toit-blue: #0099ff;
+            --toit-purple: #6a0dad;
+            --toit-green: #10b981;
+            --gradient-epic: linear-gradient(135deg, #00d4ff 0%, #6a0dad 50%, #0099ff 100%);
+            --gradient-card: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+            --animation-speed: 0.6s;
+            --hover-lift: -8px;
+            --glow-intensity: 0 20px 60px rgba(0, 212, 255, 0.3);
+
             /* Gradients */
             --quantum-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --quantum-gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             --quantum-gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             --quantum-neural: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            
+
             /* Dark Mode */
             --bg-primary: #0f0f23;
             --bg-secondary: #1a1a3a;
@@ -58,10 +83,21 @@
             --text-primary: #ffffff;
             --text-secondary: #a0a0c0;
             --border-color: #3a3a5a;
-            
+
             /* Animations */
             --animation-speed: 0.3s;
             --quantum-glow: 0 0 20px rgba(99, 102, 241, 0.3);
+
+            /* REVOLUTIONARY VARIABLES - Para containers de preço */
+            --toit-cyan: #00d4ff;
+            --toit-blue: #0099ff;
+            --toit-purple: #6a0dad;
+            --toit-green: #10b981;
+            --gradient-epic: linear-gradient(135deg, #00d4ff 0%, #6a0dad 50%, #0099ff 100%);
+            --gradient-card: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+            --hover-lift: -8px;
+            --glow-intensity: 0 0 30px rgba(0, 212, 255, 0.4);
         }
 
         * {
@@ -81,7 +117,7 @@
         /* ========================================================================= */
         /* QUANTUM NEURAL NETWORK BACKGROUND */
         /* ========================================================================= */
-        
+
         .quantum-neural-bg {
             position: fixed;
             top: 0;
@@ -110,21 +146,41 @@
         }
 
         @keyframes quantum-pulse {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.5); }
+
+            0%,
+            100% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.5);
+            }
         }
 
         @keyframes quantum-flow {
-            0% { opacity: 0; }
-            20% { opacity: 1; }
-            80% { opacity: 1; }
-            100% { opacity: 0; }
+            0% {
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
         }
 
         /* ========================================================================= */
         /* NAVIGATION - COMPACT HEADER WITH SECTION SHORTCUTS */
         /* ========================================================================= */
-        
+
         nav {
             position: fixed;
             top: 0;
@@ -134,7 +190,8 @@
             border-bottom: 1px solid var(--border-color);
             z-index: 1000;
             transition: all var(--animation-speed);
-            padding: 0.5rem 0; /* Reduced padding for compact header */
+            padding: 0.5rem 0;
+            /* Reduced padding for compact header */
         }
 
         .nav-container {
@@ -144,7 +201,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 60px; /* Fixed compact height */
+            height: 60px;
+            /* Fixed compact height */
         }
 
         /* TOIT NEXUS Logo with SVG */
@@ -152,12 +210,14 @@
             display: flex;
             align-items: center;
             text-decoration: none;
-            height: 40px; /* Compact logo height */
+            height: 100px;
+            /* Compact logo height */
         }
 
         .logo svg {
-            height: 40px;
+            height: 50px;
             width: auto;
+            transform: scale(1.725) translateX(20px) translateY(1px);
         }
 
         /* Section Navigation Menu */
@@ -238,26 +298,61 @@
         /* ========================================================================= */
         /* FULL-SCREEN SECTIONS */
         /* ========================================================================= */
-        
+
         .page-section {
             min-height: 100vh;
             display: flex;
             align-items: center;
             position: relative;
-            padding: 80px 2rem 2rem; /* Account for compact header */
-            scroll-margin-top: 60px; /* Offset for fixed header */
+            padding: 80px 2rem 2rem;
+            /* Account for compact header */
+            scroll-margin-top: 60px;
+            /* Offset for fixed header */
+        }
+
+        /* ========================================================================= */
+        /* CONTENT SECTIONS - Compatible with Revolutionary */
+        /* ========================================================================= */
+
+        .content-section {
+            display: none;
+            min-height: 50vh;
+            padding: 4rem 2rem;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-container {
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         /* ========================================================================= */
         /* HERO SECTION */
         /* ========================================================================= */
-        
+
         .hero {
-            min-height: 100vh;
+            min-height: calc(100vh - 10px);
             display: flex;
             align-items: center;
             position: relative;
-            padding: 80px 2rem 2rem; /* Reduced top padding for compact header */
+            padding: 80px 2rem 2rem;
+            /* Reduced top padding for compact header */
             background: radial-gradient(ellipse at center top, rgba(99, 102, 241, 0.1) 0%, transparent 50%);
         }
 
@@ -268,6 +363,10 @@
             grid-template-columns: 1fr 1fr;
             gap: 4rem;
             align-items: center;
+        }
+
+        .hero-content {
+            transform: translateY(-30px);
         }
 
         .hero-content h1 {
@@ -302,8 +401,17 @@
         }
 
         @keyframes quantum-underline {
-            0%, 100% { transform: scaleX(1); opacity: 0.3; }
-            50% { transform: scaleX(1.1); opacity: 0.8; }
+
+            0%,
+            100% {
+                transform: scaleX(1);
+                opacity: 0.3;
+            }
+
+            50% {
+                transform: scaleX(1.1);
+                opacity: 0.8;
+            }
         }
 
         .hero-description {
@@ -431,19 +539,33 @@
         }
 
         @keyframes discover-pulse {
-            0%, 100% { opacity: 0.8; }
-            50% { opacity: 1; }
+
+            0%,
+            100% {
+                opacity: 0.8;
+            }
+
+            50% {
+                opacity: 1;
+            }
         }
 
         @keyframes discover-bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(3px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(3px);
+            }
         }
 
         /* ========================================================================= */
         /* QUANTUM CIRCUIT VISUALIZATION - 3D ENHANCED */
         /* ========================================================================= */
-        
+
         .quantum-circuit {
             background: var(--bg-card);
             border-radius: 16px;
@@ -454,14 +576,14 @@
             transform-style: preserve-3d;
             perspective: 1000px;
             transition: all 0.4s ease;
-            box-shadow: 
+            box-shadow:
                 0 10px 30px rgba(0, 0, 0, 0.3),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
         .quantum-circuit:hover {
             transform: rotateX(5deg) rotateY(5deg) translateZ(20px);
-            box-shadow: 
+            box-shadow:
                 0 20px 50px rgba(99, 102, 241, 0.2),
                 0 15px 35px rgba(0, 0, 0, 0.4),
                 inset 0 1px 0 rgba(255, 255, 255, 0.2);
@@ -474,13 +596,11 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(
-                135deg,
-                rgba(99, 102, 241, 0.1) 0%,
-                transparent 30%,
-                transparent 70%,
-                rgba(139, 92, 246, 0.1) 100%
-            );
+            background: linear-gradient(135deg,
+                    rgba(99, 102, 241, 0.1) 0%,
+                    transparent 30%,
+                    transparent 70%,
+                    rgba(139, 92, 246, 0.1) 100%);
             border-radius: 16px;
             z-index: 1;
             opacity: 0;
@@ -491,7 +611,7 @@
             opacity: 1;
         }
 
-        .quantum-circuit > * {
+        .quantum-circuit>* {
             position: relative;
             z-index: 2;
         }
@@ -502,14 +622,14 @@
         }
 
         .circuit-title {
-            font-size: 1.25rem;
+            font-size: 1.65rem;
             font-weight: 700;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.3rem;
         }
 
         .circuit-subtitle {
             color: var(--text-secondary);
-            font-size: 0.875rem;
+            font-size: 1.2rem;
         }
 
         .quantum-qubits {
@@ -521,7 +641,7 @@
         .qubit-line {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 1.1rem;
             position: relative;
         }
 
@@ -529,7 +649,8 @@
             width: 40px;
             text-align: center;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.875rem;
+            font-size: 1.2rem;
+            transform: translateX(5px) translateY(-2px);
             color: var(--quantum-primary);
         }
 
@@ -542,9 +663,19 @@
         }
 
         @keyframes quantum-wire-flow {
-            0% { transform: translateX(-100%); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: translateX(100%); opacity: 0; }
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateX(100%);
+                opacity: 0;
+            }
         }
 
         .quantum-gate {
@@ -557,21 +688,28 @@
             justify-content: center;
             color: white;
             font-weight: 600;
-            font-size: 0.75rem;
+            font-size: 1.00rem;
             position: relative;
             z-index: 2;
             animation: quantum-gate-pulse 2s ease-in-out infinite;
         }
 
         @keyframes quantum-gate-pulse {
-            0%, 100% { box-shadow: 0 0 10px rgba(99, 102, 241, 0.3); }
-            50% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.8); }
+
+            0%,
+            100% {
+                box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 0 20px rgba(99, 102, 241, 0.8);
+            }
         }
 
         .qubit-state {
             width: 80px;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
+            font-size: 0.9rem;
             text-align: right;
             color: var(--quantum-accent);
         }
@@ -581,33 +719,203 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 1rem;
+            transform: scale(1.05);
             margin-top: 2rem;
         }
 
         .metric-card {
             background: rgba(99, 102, 241, 0.1);
             border-radius: 8px;
-            padding: 1rem;
+            padding: 0.7rem;
             text-align: center;
         }
 
         .metric-value {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: var(--quantum-primary);
             font-family: 'JetBrains Mono', monospace;
         }
 
         .metric-label {
-            font-size: 0.75rem;
+            font-size: 0.95rem;
             color: var(--text-secondary);
             margin-top: 0.25rem;
         }
 
         /* ========================================================================= */
+        /* SOBRE TOIT SECTION */
+        /* ========================================================================= */
+
+        .sobre-toit {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 80px 2rem 2rem;
+            background: linear-gradient(135deg, rgba(15, 15, 35, 0.95) 0%, rgba(26, 26, 58, 0.95) 100%);
+            scroll-margin-top: 60px;
+            position: relative;
+        }
+
+        .sobre-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .sobre-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .sobre-content {
+            margin-top: 3rem;
+        }
+
+        .sobre-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .sobre-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sobre-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--quantum-gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sobre-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .sobre-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .sobre-card .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            background: var(--quantum-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sobre-card .card-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        /* Conquistas Section */
+        .conquistas-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 25px;
+            padding: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .conquistas-title {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2.5rem;
+            color: var(--text-primary);
+        }
+
+        .conquistas-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .conquista-item {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .conquista-item:hover {
+            background: rgba(99, 102, 241, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+        }
+
+        .conquista-nivel {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--quantum-primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .conquista-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Responsive Sobre TOIT */
+        @media (max-width: 1023px) {
+            .sobre-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .conquistas-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 667px) {
+            .sobre-toit {
+                padding: 70px 1rem 1rem;
+            }
+
+            .sobre-card {
+                padding: 2rem;
+            }
+
+            .conquistas-section {
+                padding: 2rem;
+            }
+        }
+
+        /* ========================================================================= */
         /* NEXUS FLOW SECTION - EPIC PROCESS VISUALIZATION */
         /* ========================================================================= */
-        
+
         .nexus-flow {
             min-height: 100vh;
             display: flex;
@@ -681,7 +989,7 @@
 
         .process-step:hover {
             transform: translateY(-10px) rotateX(5deg);
-            box-shadow: 
+            box-shadow:
                 0 20px 40px rgba(0, 0, 0, 0.3),
                 0 0 30px rgba(99, 102, 241, 0.2);
             border-color: var(--quantum-primary);
@@ -730,13 +1038,29 @@
         }
 
         @keyframes step-float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
         }
 
         @keyframes step-pulse {
-            0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1.2); }
-            50% { opacity: 0.1; transform: translate(-50%, -50%) scale(1.5); }
+
+            0%,
+            100% {
+                opacity: 0.3;
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+
+            50% {
+                opacity: 0.1;
+                transform: translate(-50%, -50%) scale(1.5);
+            }
         }
 
         .step-title {
@@ -774,8 +1098,8 @@
             font-size: 1rem;
         }
 
-        /* Machine Learning Integration */
-        .ml-integration {
+        /* Quantum ML Netflix Carousel */
+        .quantum-ml-carousel {
             background: var(--bg-card);
             border-radius: 20px;
             padding: 3rem;
@@ -785,36 +1109,41 @@
             overflow: hidden;
         }
 
-        .ml-integration::before {
+        .quantum-ml-carousel::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(
-                45deg,
-                rgba(99, 102, 241, 0.05) 0%,
-                transparent 30%,
-                transparent 70%,
-                rgba(139, 92, 246, 0.05) 100%
-            );
-            animation: ml-glow 4s ease-in-out infinite;
+            background: linear-gradient(45deg,
+                    rgba(99, 102, 241, 0.05) 0%,
+                    transparent 30%,
+                    transparent 70%,
+                    rgba(139, 92, 246, 0.05) 100%);
+            animation: quantum-glow 4s ease-in-out infinite;
         }
 
-        @keyframes ml-glow {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.8; }
+        @keyframes quantum-glow {
+
+            0%,
+            100% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 0.8;
+            }
         }
 
-        .ml-header {
+        .carousel-header {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
             position: relative;
             z-index: 2;
         }
 
-        .ml-title {
+        .carousel-title {
             font-size: 2.2rem;
             font-weight: 800;
             margin-bottom: 1rem;
@@ -824,57 +1153,318 @@
             background-clip: text;
         }
 
-        .ml-subtitle {
+        .carousel-subtitle {
             color: var(--text-secondary);
             font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
-        .ml-benefits {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
+        /* Netflix Carousel Container */
+        .netflix-carousel-container {
             position: relative;
-            z-index: 2;
+            overflow: hidden;
+            z-index: 10;
         }
 
-        .ml-benefit {
-            text-align: center;
-            padding: 1.5rem;
-            background: rgba(99, 102, 241, 0.1);
-            border-radius: 15px;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            transition: all 0.3s ease;
+        .carousel-wrapper {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            gap: 1.2rem;
+            padding: 0.5rem 0;
         }
 
-        .ml-benefit:hover {
-            transform: translateY(-5px);
-            background: rgba(99, 102, 241, 0.15);
+        /* Netflix Cards - TOIT Style */
+        .netflix-card {
+            min-width: 320px;
+            height: 220px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            flex-shrink: 0;
+            border: 1px solid var(--border-color);
+        }
+
+        .netflix-card:hover {
+            transform: scale(1.05) translateY(-10px);
+            z-index: 100;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(99, 102, 241, 0.3);
             border-color: var(--quantum-primary);
         }
 
-        .ml-benefit-icon {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            display: block;
+        .netflix-card.expanded {
+            transform: scale(1.25) translateY(-20px);
+            z-index: 200;
+            height: 320px;
+            min-width: 400px;
         }
 
-        .ml-benefit-title {
-            font-size: 1.1rem;
+        .card-image {
+            width: 100%;
+            height: 60%;
+            background: linear-gradient(135deg, var(--quantum-primary) 0%, var(--quantum-secondary) 50%, var(--quantum-accent) 100%);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            overflow: hidden;
+        }
+
+        .card-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg,
+                    rgba(0, 0, 0, 0.2) 0%,
+                    transparent 50%,
+                    rgba(255, 255, 255, 0.1) 100%);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+
+            0%,
+            100% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        .card-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
             font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--quantum-primary);
+            margin-bottom: 0.7rem;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, #ffffff 0%, var(--quantum-accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .ml-benefit-desc {
+        .card-description {
+            font-size: 0.95rem;
             color: var(--text-secondary);
+            line-height: 1.4;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .netflix-card:hover .card-description,
+        .netflix-card.expanded .card-description {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Card Tags */
+        .card-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.7rem;
+            flex-wrap: wrap;
+        }
+
+        .card-tag {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--quantum-primary);
+            padding: 0.3rem 0.7rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        /* Metric Badges */
+        .metric-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--quantum-success);
+            color: white;
+            padding: 0.3rem 0.7rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            font-family: var(--font-mono);
+        }
+
+        /* Expanded Card Content */
+        .expanded-content {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: var(--bg-card);
+            padding: 1.5rem;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+            border-radius: 0 0 12px 12px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .netflix-card.expanded .expanded-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-bottom: 1rem;
+        }
+
+        .feature-list li {
+            padding: 0.4rem 0;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
             font-size: 0.9rem;
-            line-height: 1.5;
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            color: var(--quantum-accent);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        /* Carousel Navigation - Netflix Style Visible Buttons */
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(20, 20, 20, 0.8);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.7;
+            z-index: 200;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .netflix-carousel-container:hover .carousel-nav {
+            opacity: 1;
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        .carousel-nav:hover {
+            background: rgba(6, 182, 212, 0.9);
+            border-color: rgba(6, 182, 212, 0.8);
+            transform: translateY(-50%) scale(1.15);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.4);
+            color: #ffffff;
+        }
+
+        .carousel-nav:active {
+            transform: translateY(-50%) scale(0.95);
+            transition: transform 0.1s ease;
+        }
+
+        .carousel-nav.prev {
+            left: 10px;
+        }
+
+        .carousel-nav.next {
+            right: 10px;
+        }
+
+        /* Carousel Progress Indicator */
+        .carousel-progress {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .netflix-carousel-container:hover .carousel-progress {
+            opacity: 1;
+        }
+
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .progress-dot.active {
+            background: rgba(6, 182, 212, 0.8);
+            transform: scale(1.2);
+        }
+
+        .progress-dot:hover {
+            background: rgba(6, 182, 212, 0.6);
+            transform: scale(1.3);
+        }
+
+        /* Show buttons always on mobile */
+        @media (max-width: 768px) {
+            .carousel-nav {
+                opacity: 1;
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+
+            .carousel-nav.prev {
+                left: 5px;
+            }
+
+            .carousel-nav.next {
+                right: 5px;
+            }
+
+            .carousel-progress {
+                opacity: 1;
+                bottom: -25px;
+            }
+
+            .progress-dot {
+                width: 6px;
+                height: 6px;
+            }
         }
 
         /* ========================================================================= */
         /* QUANTUM ADVANTAGE SECTION */
         /* ========================================================================= */
-        
+
         .quantum-advantage {
             min-height: 100vh;
             display: flex;
@@ -993,9 +1583,9 @@
         }
 
         /* ========================================================================= */
-        /* REAL USE CASES SECTION */
+        /* REAL USE CASES SECTION - 3D CAROUSEL */
         /* ========================================================================= */
-        
+
         .use-cases {
             min-height: 100vh;
             display: flex;
@@ -1009,27 +1599,85 @@
             margin: 0 auto;
         }
 
-        .cases-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
+        /* 3D Carousel Container for Use Cases */
+        .cases-carousel-container {
+            position: relative;
+            height: 420px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1500px;
+            overflow: visible;
+            margin-top: 4rem;
         }
 
+        .cases-carousel-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            height: 380px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform-style: preserve-3d;
+        }
+
+        /* 3-Card Layout for Cases */
+        .case-container {
+            position: absolute;
+            width: 320px;
+            height: 380px;
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform-style: preserve-3d;
+        }
+
+        /* Positioning - DESKTOP com SOBREPOSIÇÃO AJUSTADA */
+        .case-container.left {
+            left: 50%;
+            transform: translateX(calc(-50% - 140px)) rotateY(15deg) scale(0.85);
+            z-index: 1;
+            opacity: 0.7;
+        }
+
+        .case-container.center {
+            left: 50%;
+            transform: translateX(-50%) scale(1);
+            z-index: 10;
+            opacity: 1;
+        }
+
+        .case-container.right {
+            left: 50%;
+            transform: translateX(calc(-50% + 140px)) rotateY(-15deg) scale(0.85);
+            z-index: 1;
+            opacity: 0.7;
+        }
+
+        /* Case Card Styles */
         .case-card {
+            width: 100%;
+            height: 100%;
             background: var(--bg-card);
             border-radius: 16px;
             overflow: hidden;
             border: 1px solid var(--border-color);
-            transition: all var(--animation-speed);
+            transition: all 0.4s ease-out;
+            position: relative;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3);
         }
 
         .case-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(6, 182, 212, 0.2);
+            border-color: rgba(6, 182, 212, 0.4);
+        }
+
+        .case-container.center .case-card:hover {
+            transform: translateY(-10px) scale(1.02);
         }
 
         .case-header {
-            padding: 2rem 2rem 1rem;
+            padding: 2rem 2rem 1.5rem;
         }
 
         .case-company {
@@ -1037,50 +1685,335 @@
             color: var(--quantum-primary);
             font-weight: 600;
             margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .case-title {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 700;
             margin-bottom: 1rem;
+            line-height: 1.3;
         }
 
         .case-description {
             color: var(--text-secondary);
-            line-height: 1.8;
+            line-height: 1.6;
+            font-size: 0.9rem;
         }
 
         .case-metrics {
             padding: 1rem 2rem 2rem;
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
+            gap: 0.75rem;
         }
 
         .case-metric {
             text-align: center;
-            padding: 1rem;
-            background: rgba(99, 102, 241, 0.05);
+            padding: 0.75rem;
+            background: rgba(99, 102, 241, 0.1);
             border-radius: 8px;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .case-metric:hover {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.3);
         }
 
         .case-metric-value {
             font-size: 1.5rem;
             font-weight: 800;
-            color: var(--quantum-success);
+            color: var(--quantum-primary);
+            margin-bottom: 0.25rem;
             font-family: 'JetBrains Mono', monospace;
         }
 
         .case-metric-label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--text-secondary);
-            margin-top: 0.25rem;
+            font-weight: 500;
+        }
+
+        /* Navigation for Use Cases Carousel */
+        .cases-carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.8) 0%, rgba(6, 182, 212, 0.6) 70%, rgba(139, 92, 246, 0.3) 100%);
+            border: none;
+            border-radius: 50%;
+            color: var(--text-primary);
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cases-carousel-nav:hover {
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.9) 0%, rgba(6, 182, 212, 0.8) 60%, rgba(139, 92, 246, 0.5) 100%);
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 10px 25px rgba(6, 182, 212, 0.4);
+            border-color: rgba(6, 182, 212, 0.3);
+        }
+
+        .cases-carousel-nav:active {
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        .cases-carousel-nav.prev {
+            left: -100px;
+        }
+
+        .cases-carousel-nav.next {
+            right: -100px;
+        }
+
+        /* Enhanced Center Card */
+        .case-container.center .case-card {
+            box-shadow: 0 20px 50px rgba(6, 182, 212, 0.15);
+        }
+
+        /* Animações de rotação circular para Cases */
+        @keyframes caseRotateRight {
+            0% {
+                transform: translateX(calc(-50% - 140px)) rotateY(15deg) scale(0.85);
+                opacity: 0.7;
+            }
+            50% {
+                transform: translateX(-50%) rotateY(0deg) scale(0.95);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateX(calc(-50% + 140px)) rotateY(-15deg) scale(0.85);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes caseRotateLeft {
+            0% {
+                transform: translateX(calc(-50% + 140px)) rotateY(-15deg) scale(0.85);
+                opacity: 0.7;
+            }
+            50% {
+                transform: translateX(-50%) rotateY(0deg) scale(0.95);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateX(calc(-50% - 140px)) rotateY(15deg) scale(0.85);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes caseCenterToRight {
+            0% {
+                transform: translateX(-50%) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(calc(-50% + 140px)) rotateY(-15deg) scale(0.85);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes caseCenterToLeft {
+            0% {
+                transform: translateX(-50%) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(calc(-50% - 140px)) rotateY(15deg) scale(0.85);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes caseLeftToCenter {
+            0% {
+                transform: translateX(calc(-50% - 140px)) rotateY(15deg) scale(0.85);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateX(-50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes caseRightToCenter {
+            0% {
+                transform: translateX(calc(-50% + 140px)) rotateY(-15deg) scale(0.85);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateX(-50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Classes de animação para Cases */
+        .case-container.animate-rotate-right {
+            animation: caseRotateRight 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        .case-container.animate-rotate-left {
+            animation: caseRotateLeft 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        .case-container.animate-center-to-right {
+            animation: caseCenterToRight 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        .case-container.animate-center-to-left {
+            animation: caseCenterToLeft 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        .case-container.animate-left-to-center {
+            animation: caseLeftToCenter 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        .case-container.animate-right-to-center {
+            animation: caseRightToCenter 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        /* MOBILE RESPONSIVE for Use Cases */
+        @media (max-width: 1024px) {
+            .cases-carousel-wrapper {
+                max-width: 600px;
+            }
+            
+            .case-container {
+                width: 280px;
+                height: 340px;
+            }
+
+            .case-container.left {
+                transform: translateX(calc(-50% - 120px)) rotateY(18deg) scale(0.85);
+            }
+            
+            .case-container.right {
+                transform: translateX(calc(-50% + 120px)) rotateY(-18deg) scale(0.85);
+            }
+            
+            .cases-carousel-nav.prev {
+                left: -90px;
+            }
+
+            .cases-carousel-nav.next {
+                right: -90px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cases-carousel-container {
+                height: 370px;
+            }
+            
+            .cases-carousel-wrapper {
+                max-width: 450px;
+            }
+            
+            .case-container {
+                width: 250px;
+                height: 320px;
+            }
+            
+            .case-container.left {
+                transform: translateX(calc(-50% - 100px)) rotateY(25deg) scale(0.75);
+                z-index: 1;
+            }
+            
+            .case-container.center {
+                transform: translateX(-50%) scale(1);
+                z-index: 15;
+            }
+            
+            .case-container.right {
+                transform: translateX(calc(-50% + 100px)) rotateY(-25deg) scale(0.75);
+                z-index: 1;
+            }
+            
+            .cases-carousel-nav {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+                z-index: 25;
+            }
+            
+            .cases-carousel-nav.prev {
+                left: -80px;
+            }
+
+            .cases-carousel-nav.next {
+                right: -80px;
+            }
+
+            .case-header {
+                padding: 1.5rem 1.5rem 1rem;
+            }
+
+            .case-title {
+                font-size: 1.1rem;
+            }
+
+            .case-description {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .case-container {
+                width: 200px;
+                height: 280px;
+            }
+            
+            .case-container.left {
+                transform: translateX(calc(-50% - 85px)) rotateY(30deg) scale(0.7);
+                z-index: 1;
+            }
+            
+            .case-container.center {
+                transform: translateX(-50%) scale(0.95);
+                z-index: 20;
+            }
+            
+            .case-container.right {
+                transform: translateX(calc(-50% + 85px)) rotateY(-30deg) scale(0.7);
+                z-index: 1;
+            }
+            
+            .case-header {
+                padding: 1rem;
+            }
+            
+            .case-title {
+                font-size: 1rem;
+            }
+            
+            .case-description {
+                font-size: 0.8rem;
+            }
+            
+            .cases-carousel-nav.prev {
+                left: -70px;
+            }
+
+            .cases-carousel-nav.next {
+                right: -70px;
+            }
         }
 
         /* ========================================================================= */
         /* QUANTUM PRICING SECTION */
         /* ========================================================================= */
-        
+
         .pricing {
             min-height: 100vh;
             display: flex;
@@ -1097,52 +2030,129 @@
 
         .pricing-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-top: 0;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .pricing-card {
-            background: var(--bg-card);
-            border-radius: 16px;
-            padding: 2rem;
-            border: 1px solid var(--border-color);
+            background: var(--gradient-card);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 2rem 1.5rem;
+            text-align: center;
             position: relative;
             transition: all var(--animation-speed);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 20px rgba(255, 255, 255, 0.05);
+            transform: translateZ(0);
+            animation: subtle-pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes subtle-pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 20px rgba(255, 255, 255, 0.05);
+            }
+
+            50% {
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25), 0 0 25px rgba(6, 182, 212, 0.1);
+            }
+        }
+
+        .pricing-card:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .pricing-card:nth-child(2) {
+            animation-delay: 1s;
+        }
+
+        .pricing-card:nth-child(3) {
+            animation-delay: 2s;
+        }
+
+        .pricing-card:nth-child(4) {
+            animation-delay: 3s;
+        }
+
+        /* Spacing específico para a seção pricing */
+        #pricing .section-container {
+            padding-top: 10px !important;
+        }
+
+        #pricing .section-title {
+            margin-top: 0 !important;
+            margin-bottom: 15px !important;
+        }
+
+        #pricing .pricing-grid {
+            margin-top: 0 !important;
+        }
+
+        /* Ajuste específico para o título hero ficar 14px do header */
+        .hero {
+            padding-top: 94px !important;
+            /* 80px (header) + 14px */
+        }
+
+        /* Container "Unidades Quânticas Ativas" - posicionado 45px acima + sombra 3D sutil */
+        .quantum-circuit {
+            transform: translateX(10px) translateY(-25px) scale(0.82) !important;
+            box-shadow:
+                0 15px 35px rgba(0, 0, 0, 0.4),
+                0 8px 20px rgba(99, 102, 241, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+        }
+
+        .quantum-circuit:hover {
+            transform: translateY(-10px) scale(0.88) rotateX(5deg) rotateY(5deg) translateZ(20px) !important;
+            box-shadow:
+                0 25px 60px rgba(99, 102, 241, 0.25),
+                0 20px 45px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
         }
 
         .pricing-card.featured {
-            border-color: var(--quantum-primary);
+            border-color: var(--toit-cyan);
             transform: scale(1.05);
+            box-shadow: var(--glow-intensity);
         }
 
         .pricing-card.featured::before {
-            content: 'Mais Popular';
+            content: "MAIS POPULAR";
             position: absolute;
-            top: -12px;
+            top: -15px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--quantum-gradient);
+            background: var(--gradient-epic);
             color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
             font-size: 0.75rem;
             font-weight: 600;
         }
 
         .pricing-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 30px rgba(6, 182, 212, 0.2);
+            border-color: rgba(6, 182, 212, 0.4);
         }
 
         .pricing-card.featured:hover {
-            transform: scale(1.05) translateY(-5px);
+            transform: scale(1.05) translateY(-8px);
         }
 
         .plan-name {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            line-height: 1.2;
         }
 
         .plan-description {
@@ -1154,92 +2164,98 @@
         .plan-price {
             display: flex;
             align-items: baseline;
+            justify-content: center;
+            gap: 0.25rem;
             margin-bottom: 0.5rem;
         }
 
-        .price-amount {
-            font-size: 3rem;
-            font-weight: 800;
-            font-family: 'JetBrains Mono', monospace;
+        .price-currency {
+            font-size: 1.25rem;
+            font-weight: 600;
         }
 
-        .price-currency {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-right: 0.25rem;
+        .price-amount {
+            font-size: 2.5rem;
+            font-weight: 800;
+            font-family: var(--font-mono);
+            color: var(--text-primary);
         }
 
         .price-period {
             font-size: 1rem;
             color: var(--text-secondary);
-            margin-left: 0.5rem;
         }
 
         .price-annual {
             font-size: 0.875rem;
-            color: var(--quantum-success);
+            color: var(--toit-green);
             margin-bottom: 2rem;
         }
 
         .plan-features {
             list-style: none;
             margin-bottom: 2rem;
+            text-align: left;
         }
 
         .plan-features li {
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            margin-bottom: 0.75rem;
+            padding: 0.5rem 0;
             color: var(--text-secondary);
         }
 
         .feature-check {
             width: 20px;
             height: 20px;
-            background: var(--quantum-success);
+            background: var(--toit-green);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 0.875rem;
+            font-size: 0.75rem;
+            font-weight: bold;
             flex-shrink: 0;
         }
 
         .plan-cta {
             width: 100%;
-            background: transparent;
-            border: 2px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.02);
             color: var(--text-primary);
-            padding: 1rem;
-            border-radius: 12px;
+            padding: 1rem 2rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all var(--animation-speed);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .plan-cta:hover {
-            border-color: var(--quantum-primary);
-            background: rgba(99, 102, 241, 0.1);
+            border-color: var(--toit-cyan);
+            background: rgba(0, 212, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.2);
         }
 
         .pricing-card.featured .plan-cta {
-            background: var(--quantum-gradient);
+            background: var(--gradient-epic);
             border-color: transparent;
             color: white;
         }
 
         .pricing-card.featured .plan-cta:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 10px 20px rgba(0, 212, 255, 0.3);
         }
 
         /* ========================================================================= */
         /* MODALS */
         /* ========================================================================= */
-        
+
         .modal {
             display: none;
             position: fixed;
@@ -1260,8 +2276,13 @@
         }
 
         @keyframes modal-fade-in {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         .modal-content {
@@ -1277,8 +2298,15 @@
         }
 
         @keyframes modal-slide-up {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .modal-close {
@@ -1403,26 +2431,32 @@
         /* ========================================================================= */
         /* HIGH-LEVEL RESPONSIVE DESIGN */
         /* ========================================================================= */
-        
+
         /* Large Desktop (1440px+) */
         @media (min-width: 1440px) {
             .nav-container {
                 max-width: 1600px;
             }
-            
+
             .hero-container,
             .advantage-container,
             .cases-container,
             .pricing-container {
                 max-width: 1400px;
             }
-            
+
             .hero-content h1 {
                 font-size: 4rem;
             }
-            
+
             .advantage-grid {
                 grid-template-columns: repeat(3, 1fr);
+            }
+
+            .pricing-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 2rem;
+                max-width: 1600px;
             }
         }
 
@@ -1431,9 +2465,19 @@
             .advantage-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-            
+
             .cases-grid {
                 grid-template-columns: repeat(2, 1fr);
+            }
+
+            .pricing-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 1.25rem;
+                max-width: 1200px;
+            }
+
+            .pricing-card {
+                padding: 1.75rem 1.25rem;
             }
         }
 
@@ -1442,46 +2486,47 @@
             .nav-menu {
                 gap: 1rem;
             }
-            
+
             .nav-link {
                 font-size: 0.85rem;
                 padding: 0.4rem 0.8rem;
             }
-            
+
             .hero-container {
                 grid-template-columns: 1fr;
                 gap: 3rem;
                 text-align: center;
             }
-            
+
             .hero-content h1 {
                 font-size: 3rem;
             }
-            
+
             .quantum-stats {
                 justify-content: center;
                 gap: 1.5rem;
             }
-            
+
             .advantage-grid,
             .cases-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 1.5rem;
             }
-            
+
             .pricing-grid {
-                grid-template-columns: 1fr;
-                max-width: 400px;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+                max-width: 800px;
                 margin: 0 auto;
             }
         }
 
         /* Mobile (320px - 767px) */
-        @media (max-width: 767px) {
+        @media (max-width: 667px) {
             .mobile-nav-toggle {
                 display: block;
             }
-            
+
             .nav-menu {
                 display: none;
                 position: absolute;
@@ -1494,18 +2539,18 @@
                 padding: 1rem;
                 gap: 0.5rem;
             }
-            
+
             .nav-menu.active {
                 display: flex;
             }
-            
+
             .nav-link {
                 padding: 0.75rem 1rem;
                 width: 100%;
                 text-align: center;
                 border-radius: 8px;
             }
-            
+
             .cta-nav {
                 margin-top: 0.5rem;
                 text-align: center;
@@ -1573,7 +2618,7 @@
                 justify-content: center;
                 gap: 1rem;
             }
-            
+
             .stat-item {
                 min-width: 120px;
             }
@@ -1591,20 +2636,36 @@
                 gap: 1.5rem;
             }
 
+            .pricing-card.featured {
+                transform: none;
+            }
+
+            .pricing-card.featured:hover {
+                transform: translateY(-8px);
+            }
+
             .quantum-circuit {
                 padding: 1.5rem;
-                transform: none !important;
+                transform: translateY(-45px) scale(0.95) !important;
+                box-shadow:
+                    0 12px 25px rgba(0, 0, 0, 0.3),
+                    0 6px 15px rgba(99, 102, 241, 0.12),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
             }
-            
+
             .quantum-circuit:hover {
-                transform: none !important;
+                transform: translateY(-45px) scale(0.95) rotateX(3deg) rotateY(3deg) translateZ(15px) !important;
+                box-shadow:
+                    0 18px 40px rgba(99, 102, 241, 0.2),
+                    0 15px 30px rgba(0, 0, 0, 0.4),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
             }
 
             .quantum-metrics {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 0.75rem;
             }
-            
+
             .metric-card {
                 padding: 0.75rem;
             }
@@ -1616,11 +2677,11 @@
             .pricing-card.featured:hover {
                 transform: translateY(-5px);
             }
-            
+
             .section-title {
                 font-size: 2rem;
             }
-            
+
             .section-subtitle {
                 font-size: 1.1rem;
             }
@@ -1631,35 +2692,35 @@
             .nav-container {
                 padding: 0 1rem;
             }
-            
+
             .hero-content h1 {
                 font-size: 1.8rem;
             }
-            
+
             .hero-description {
                 font-size: 1.1rem;
             }
-            
+
             .quantum-stats {
                 gap: 0.75rem;
             }
-            
+
             .stat-item {
                 min-width: 100px;
             }
-            
+
             .stat-number {
                 font-size: 1.5rem;
             }
-            
+
             .quantum-circuit {
                 padding: 1rem;
             }
-            
+
             .quantum-metrics {
                 grid-template-columns: 1fr;
             }
-            
+
             .section-title {
                 font-size: 1.75rem;
             }
@@ -1694,7 +2755,7 @@
         /* ========================================================================= */
         /* LOADING ANIMATIONS */
         /* ========================================================================= */
-        
+
         .loading {
             display: inline-block;
             width: 20px;
@@ -1706,13 +2767,15 @@
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         /* ========================================================================= */
         /* SUCCESS/ERROR STATES */
         /* ========================================================================= */
-        
+
         .success-message {
             background: rgba(16, 185, 129, 0.1);
             border: 1px solid var(--quantum-success);
@@ -1736,7 +2799,7 @@
         /* ========================================================================= */
         /* SCROLL ANIMATIONS */
         /* ========================================================================= */
-        
+
         .fade-in {
             opacity: 0;
             transform: translateY(30px);
@@ -1751,7 +2814,7 @@
         /* ========================================================================= */
         /* FOOTER */
         /* ========================================================================= */
-        
+
         footer {
             background: var(--bg-secondary);
             padding: 3rem 2rem 2rem;
@@ -1804,6 +2867,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Quantum Neural Network Background -->
     <div class="quantum-neural-bg" id="neuralBg"></div>
@@ -1826,19 +2890,22 @@
                         </linearGradient>
                     </defs>
                     <g transform="translate(105,50)">
-                        <text x="-35" y="15" font-family="Arial Black, sans-serif" font-size="45" font-weight="700" fill="url(#brand1Gradient)">TOIT</text>
-                        <text x="75" y="15" font-family="Arial, sans-serif" font-size="45" font-weight="400" fill="url(#brandGradient)">NEXUS</text>
+                        <text x="-35" y="15" font-family="Arial Black, sans-serif" font-size="45" font-weight="700"
+                            fill="url(#brand1Gradient)">TOIT</text>
+                        <text x="75" y="15" font-family="Arial, sans-serif" font-size="45" font-weight="400"
+                            fill="url(#brandGradient)">NEXUS</text>
                     </g>
                 </svg>
             </a>
             <ul class="nav-menu">
                 <li><a href="#hero" class="nav-link active">Início</a></li>
-                <li><a href="#nexus-flow" class="nav-link">Como Funciona</a></li>
-                <li><a href="#quantum-advantage" class="nav-link">Vantagens Quantum</a></li>
-                <li><a href="#use-cases" class="nav-link">Casos de Uso</a></li>
+                <li><a href="#sobre-toit" class="nav-link">Sobre TOIT</a></li>
+                <li><a href="#nexus-flow" class="nav-link">Como funciona</a></li>
+                <li><a href="#quantum-advantage" class="nav-link">Benefícios e Funcionalidades</a></li>
+                <li><a href="#use-cases" class="nav-link">Casos Rais</a></li>
                 <li><a href="#pricing" class="nav-link">Preços</a></li>
-                <li><a href="#" class="nav-link" onclick="openModal('demoModal')">Demo ao Vivo</a></li>
-                <li><a href="#" class="cta-nav" onclick="openModal('trialModal')">Teste 7 Dias Grátis</a></li>
+                <li><a href="#" class="nav-link" onclick="openModal('demoModal')">Solicitar Avaliação</a></li>
+                <li><a href="#" class="cta-nav" onclick="openModal('trialModal')">LOGIN</a></li>
             </ul>
             <button class="mobile-nav-toggle" onclick="toggleMobileNav()">☰</button>
         </div>
@@ -1848,49 +2915,32 @@
     <section class="hero" id="hero">
         <div class="hero-container">
             <div class="hero-content">
-                <h1><span class="quantum-highlight">1ª</span> Plataforma <span class="quantum-highlight">No-Code</span> com <span class="quantum-highlight">Quantum Machine Learning</span> do Mundo</h1>
+                <h1><span class="quantum-highlight">Nexus:</span> O 1º SaaS <span class="quantum-highlight">
+                        No-Code</span>
+                    <span class="quantum-highlight">Quântico</span> do Planeta<h1>
 
-                <p class="hero-description">
-                    Revolucione seus workflows com processamento quântico funcional e real. 16 qubits, 65.536 universos paralelos, 
-                    vantagem quântica de até <strong>10.000x</strong> vs algoritmos clássicos.
-                </p>
 
-                <div class="quantum-stats">
-                    <div class="stat-item">
-                        <span class="stat-number">16</span>
-                        <span class="stat-label">Qubits</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">65.536</span>
-                        <span class="stat-label">Universos Paralelos</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">10.000x</span>
-                        <span class="stat-label">Vantagem Quântica</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">99.95%</span>
-                        <span class="stat-label">Fidelidade</span>
-                    </div>
-                </div>
+                        <p class="hero-description">
+                            Workflows, relatórios, dashboards, task management. Tudo integrado, tudo automatizado.
+                            Desfrute da TQL, a query language de dados mais fácil do planeta! Aproveite a performance
+                            surreal de <strong>2 hardwares quânticos "IBM Quantum Network" de 130Qubits.</strong>
+                        </p>
 
-                <div class="hero-cta">                
-                    <button class="btn-secondary" onclick="openModal('demoModal')">
-                        🎥 Agendar Demonstração
-                    </button>
-                </div>
-                <!-- Discover More CTA -->
-                <div class="discover-more">
-                    <p class="discover-text">Descubra como funciona a revolução</p>
-                    <button class="discover-btn" onclick="scrollToSection('nexus-flow')">
-                        <span>✨ Ver o Processo NEXUS</span>
-                        <div class="discover-arrow">↓</div>
-                    </button>
-                </div>
+                        <div class="quantum-stats">
+                            <div class="stat-item"
+                                style="transition: transform 0.6s ease; transform:scale(0.6) ; transform:translateY(-15px); transform:translateX(15px);">
+
+                                <spaw class="quantum-highlight"
+                                    style="font-size: 40px; font-weight: var(--quantum-gradient-1) ; transform:translateY(-35px);">
+                                    Celebre a Democracia Quântica!</span>
+                            </div>
+                        </div>
+                        <!-- Discover More CTA -->
+
             </div>
             <div class="quantum-circuit">
                 <div class="circuit-header">
-                    <h3 class="circuit-title">Unidades Quânticas Ativas</h3>
+                    <h2 class="circuit-title">Unidades Quânticas Ativas</h2>
                     <p class="circuit-subtitle">Processamento em tempo real</p>
                 </div>
 
@@ -1936,7 +2986,7 @@
                 <div class="quantum-metrics">
                     <div class="metric-card">
                         <div class="metric-value" id="quantumFidelity">99.95%</div>
-                        <div class="metric-label">Fidelidade</div>
+                        <div class="metric-label">Disponibilidade</div>
                     </div>
                     <div class="metric-card">
                         <div class="metric-value" id="quantumVolume">128</div>
@@ -1955,13 +3005,121 @@
         </div>
     </section>
 
+    <!-- Sobre TOIT Section -->
+    <section class="sobre-toit" id="sobre-toit">
+        <div class="sobre-container">
+            <div class="sobre-header fade-in">
+                <h2 class="section-title">Sobre a <span class="quantum-highlight">TOIT</span></h2>
+                <p class="section-subtitle">
+                    Conheça a empresa brasileira que está democratizando o acesso à computação quântica
+                </p>
+            </div>
+
+            <div class="sobre-content">
+                <div class="sobre-grid">
+                    <!-- Significado TOIT -->
+                    <div class="sobre-card fade-in">
+                        <div class="card-icon">🚀</div>
+                        <h3 class="card-title">TOIT - The One in Tech</h3>
+                        <p class="card-description">
+                            TOIT significa "The One in Tech" - A Única em Tecnologia. Somos uma empresa brasileira de
+                            tecnologia
+                            focada em democratizar o acesso às tecnologias mais avançadas do mundo, especialmente
+                            computação quântica.
+                        </p>
+                    </div>
+
+                    <!-- Missão -->
+                    <div class="sobre-card fade-in">
+                        <div class="card-icon">🎯</div>
+                        <h3 class="card-title">Nossa Missão</h3>
+                        <p class="card-description">
+                            Democratizar o acesso à computação quântica e tecnologias avançadas, tornando-as acessíveis
+                            para pessoas físicas e empresas brasileiras, eliminando barreiras técnicas e financeiras.
+                        </p>
+                    </div>
+
+                    <!-- Visão -->
+                    <div class="sobre-card fade-in">
+                        <div class="card-icon">🔮</div>
+                        <h3 class="card-title">Nossa Visão</h3>
+                        <p class="card-description">
+                            Ser reconhecida como a primeira empresa do mundo a tornar a computação quântica
+                            verdadeiramente
+                            acessível para o mercado brasileiro, liderando a revolução quântica nacional.
+                        </p>
+                    </div>
+
+                    <!-- Valores -->
+                    <div class="sobre-card fade-in">
+                        <div class="card-icon">💎</div>
+                        <h3 class="card-title">Nossos Valores</h3>
+                        <p class="card-description">
+                            <strong>Inovação:</strong> Busca constante por soluções revolucionárias<br>
+                            <strong>Democratização:</strong> Tecnologia acessível para todos<br>
+                            <strong>Excelência:</strong> Qualidade premium em cada produto<br>
+                            <strong>Transparência:</strong> Comunicação honesta e resultados reais
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Conquistas Reais -->
+                <div class="conquistas-section">
+                    <h3 class="conquistas-title">Conquistas <span class="quantum-highlight">Reais</span></h3>
+                    <div class="conquistas-grid">
+                        <div class="conquista-item">
+                            <div class="conquista-nivel">🌍 MUNDIAL</div>
+                            <div class="conquista-desc">Primeira empresa a democratizar acesso a 260 qubits IBM para
+                                pessoas físicas</div>
+                        </div>
+                        <div class="conquista-item">
+                            <div class="conquista-nivel">🌎 CONTINENTAL</div>
+                            <div class="conquista-desc">Líder sul-americana em soluções No-Code com integração quântica
+                                real</div>
+                        </div>
+                        <div class="conquista-item">
+                            <div class="conquista-nivel">🇧🇷 NACIONAL</div>
+                            <div class="conquista-desc">Primeira plataforma brasileira com acesso direto à IBM Quantum
+                                Network</div>
+                        </div>
+                        <div class="conquista-item">
+                            <div class="conquista-nivel">🏆 INOVAÇÃO</div>
+                            <div class="conquista-desc">Criação da TQL - Query Language mais simples para análise de
+                                dados</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- NEXUS Flow Process Section -->
     <section class="nexus-flow" id="nexus-flow">
         <div class="flow-container">
             <div class="flow-header fade-in">
-                <h2 class="flow-title">Como o <span class="quantum-highlight">TOIT NEXUS</span> Funciona</h2>
+                <h2 class="flow-title">Como o 
+                    <svg class="inline-logo" viewBox="0 0 400 100" xmlns="http://www.w3.org/2000/svg" style="height: 1em; width: auto; vertical-align: baseline; margin: 0 0.2em;">
+                        <defs>
+                            <linearGradient id="brandGradientInline1" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#06b6d4;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+                            </linearGradient>
+                            <linearGradient id="brandGradientInline2" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#581c87;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <g transform="translate(105,50)">
+                            <text x="-35" y="15" font-family="Arial Black, sans-serif" font-size="45" font-weight="700" fill="url(#brandGradientInline1)">TOIT</text>
+                            <text x="75" y="15" font-family="Arial, sans-serif" font-size="45" font-weight="300" fill="url(#brandGradientInline2)">NEXUS</text>
+                        </g>
+                    </svg>
+                    Funciona</h2>
                 <p class="flow-subtitle">
-                    Descubra o processo revolucionário que transforma dados em insights poderosos com Machine Learning Quântico integrado em cada etapa.
+                    Descubra o processo revolucionário que transforma dados em insights poderosos com Machine Learning
+                    Quântico integrado em cada etapa.
                 </p>
             </div>
 
@@ -1971,7 +3129,8 @@
                     <div class="step-icon">🔗</div>
                     <h3 class="step-title">Conectar Dados</h3>
                     <p class="step-description">
-                        Conecte qualquer fonte de dados em segundos. Banco de dados, APIs ou upload de arquivos - tudo no-code.
+                        Conecte qualquer fonte de dados em segundos. Banco de dados, APIs ou upload de arquivos - tudo
+                        no-code.
                     </p>
                     <ul class="step-features">
                         <li>Bancos SQL/NoSQL</li>
@@ -2035,7 +3194,8 @@
                     <div class="step-icon">🌊</div>
                     <h3 class="step-title">Orquestrar Workflows</h3>
                     <p class="step-description">
-                        Conecte todos os processos em workflows poderosos com triggers inteligentes e ações condicionais.
+                        Conecte todos os processos em workflows poderosos com triggers inteligentes e ações
+                        condicionais.
                     </p>
                     <ul class="step-features">
                         <li>Workflows visuais</li>
@@ -2051,7 +3211,8 @@
                     <div class="step-icon">🚀</div>
                     <h3 class="step-title">Escalar com ML</h3>
                     <p class="step-description">
-                        Configure recorrências, triggers e deixe o Machine Learning otimizar automaticamente todos os processos.
+                        Configure recorrências, triggers e deixe o Machine Learning otimizar automaticamente todos os
+                        processos.
                     </p>
                     <ul class="step-features">
                         <li>Agendamento inteligente</li>
@@ -2063,392 +3224,469 @@
                 </div>
             </div>
 
-            <!-- Machine Learning Integration -->
-            <div class="ml-integration fade-in">
-                <div class="ml-header">
-                    <h3 class="ml-title">🧠 Machine Learning Quântico Integrado</h3>
-                    <p class="ml-subtitle">
-                        O diferencial revolucionário: ML quântico potencializa cada etapa do processo
+            <!-- Quantum ML Netflix Carousel -->
+            <div class="quantum-ml-carousel fade-in">
+                <div class="carousel-header">
+                    <h3 class="carousel-title">🧠 Machine Learning Quântico Integrado</h3>
+                    <p class="carousel-subtitle">
+                        Descubra como o processamento quântico revoluciona workflows empresariais com vantagens
+                        exponenciais
                     </p>
                 </div>
 
-                <div class="ml-benefits">
-                    <div class="ml-benefit">
-                        <span class="ml-benefit-icon">⚡</span>
-                        <h4 class="ml-benefit-title">Conexão Inteligente</h4>
-                        <p class="ml-benefit-desc">
-                            ML detecta automaticamente padrões de dados e sugere as melhores conexões e transformações
-                        </p>
-                    </div>
+                <div class="netflix-carousel-container">
+                    <button class="carousel-nav prev" onclick="scrollQuantumCarousel(-1)">‹</button>
+                    <div class="carousel-wrapper" id="quantumCarousel">
 
-                    <div class="ml-benefit">
-                        <span class="ml-benefit-icon">🔮</span>
-                        <h4 class="ml-benefit-title">Processamento Preditivo</h4>
-                        <p class="ml-benefit-desc">
-                            Algoritmos quânticos processam 65.536 cenários paralelos para otimizar queries TQL automaticamente
-                        </p>
-                    </div>
+                        <!-- ML Integration Cards -->
+                        <div class="netflix-card" data-type="ml-integration">
+                            <div class="metric-badge">Auto-ML</div>
+                            <div class="card-image">⚡</div>
+                            <div class="card-overlay">
+                                <h4 class="card-title">Conexão Inteligente</h4>
+                                <p class="card-description">ML detecta automaticamente padrões de dados e sugere as
+                                    melhores conexões</p>
+                                <div class="card-tags">
+                                    <span class="card-tag">Pattern Recognition</span>
+                                    <span class="card-tag">Auto-Connect</span>
+                                </div>
+                            </div>
+                            <div class="expanded-content">
+                                <ul class="feature-list">
+                                    <li>Detecção automática de padrões de dados</li>
+                                    <li>Sugestões inteligentes de conexões</li>
+                                    <li>Mapeamento automático de transformações</li>
+                                    <li>Validação de integridade em tempo real</li>
+                                </ul>
+                            </div>
+                        </div>
 
-                    <div class="ml-benefit">
-                        <span class="ml-benefit-icon">📈</span>
-                        <h4 class="ml-benefit-title">Insights Automáticos</h4>
-                        <p class="ml-benefit-desc">
-                            Relatórios se autocompletam com predições ML e identificam tendências antes que aconteçam
-                        </p>
-                    </div>
+                        <div class="netflix-card" data-type="ml-integration">
+                            <div class="metric-badge">65.536x</div>
+                            <div class="card-image">🔮</div>
+                            <div class="card-overlay">
+                                <h4 class="card-title">Processamento Preditivo</h4>
+                                <p class="card-description">65.536 cenários paralelos processados simultaneamente via
+                                    quantum</p>
+                                <div class="card-tags">
+                                    <span class="card-tag">Quantum Parallel</span>
+                                    <span class="card-tag">TQL Optimize</span>
+                                </div>
+                            </div>
+                            <div class="expanded-content">
+                                <ul class="feature-list">
+                                    <li>Processamento massivo paralelo quântico</li>
+                                    <li>Otimização automática de queries TQL</li>
+                                    <li>Predição de performance em tempo real</li>
+                                    <li>Algoritmos VQE adaptativos</li>
+                                </ul>
+                            </div>
+                        </div>
 
-                    <div class="ml-benefit">
-                        <span class="ml-benefit-icon">🎯</span>
-                        <h4 class="ml-benefit-title">Tarefas Inteligentes</h4>
-                        <p class="ml-benefit-desc">
-                            Sistema aprende com histórico e cria tarefas automáticas baseadas em padrões identificados
-                        </p>
-                    </div>
+                        <div class="netflix-card" data-type="ml-integration">
+                            <div class="metric-badge">94.7%</div>
+                            <div class="card-image">📈</div>
+                            <div class="card-overlay">
+                                <h4 class="card-title">Insights Automáticos</h4>
+                                <p class="card-description">Relatórios se autocompletam com predições ML e identificação
+                                    de tendências</p>
+                                <div class="card-tags">
+                                    <span class="card-tag">Auto-Reports</span>
+                                    <span class="card-tag">Trend Analysis</span>
+                                </div>
+                            </div>
+                            <div class="expanded-content">
+                                <ul class="feature-list">
+                                    <li>Geração automática de insights</li>
+                                    <li>Predições com 94.7% de precisão</li>
+                                    <li>Identificação de tendências emergentes</li>
+                                    <li>Alertas preditivos personalizados</li>
+                                </ul>
+                            </div>
+                        </div>
 
-                    <div class="ml-benefit">
-                        <span class="ml-benefit-icon">🌊</span>
-                        <h4 class="ml-benefit-title">Workflows Adaptativos</h4>
-                        <p class="ml-benefit-desc">
-                            Fluxos se modificam sozinhos baseados em resultados, otimizando performance continuamente
-                        </p>
-                    </div>
+                        <div class="netflix-card" data-type="ml-integration">
+                            <div class="metric-badge">AI-Powered</div>
+                            <div class="card-image">🎯</div>
+                            <div class="card-overlay">
+                                <h4 class="card-title">Tarefas Inteligentes</h4>
+                                <p class="card-description">Sistema aprende com histórico e cria tarefas automáticas
+                                    baseadas em padrões</p>
+                                <div class="card-tags">
+                                    <span class="card-tag">Auto-Create</span>
+                                    <span class="card-tag">Pattern Learn</span>
+                                </div>
+                            </div>
+                            <div class="expanded-content">
+                                <ul class="feature-list">
+                                    <li>Criação automática de tarefas</li>
+                                    <li>Aprendizado contínuo de padrões</li>
+                                    <li>Atribuição inteligente de responsáveis</li>
+                                    <li>Workflow adaptativo automático</li>
+                                </ul>
+                            </div>
+                        </div>
 
-                    <div class="ml-benefit">
-                        <span class="ml-benefit-icon">🚀</span>
-                        <h4 class="ml-benefit-title">Escalabilidade Quântica</h4>
-                        <p class="ml-benefit-desc">
-                            Quantum ML escala infinitamente, mantendo performance mesmo com trilhões de dados
-                        </p>
+                        <div class="netflix-card" data-type="ml-integration">
+                            <div class="metric-badge">Self-Modify</div>
+                            <div class="card-image">🌊</div>
+                            <div class="card-overlay">
+                                <h4 class="card-title">Workflows Adaptativos</h4>
+                                <p class="card-description">Fluxos se modificam sozinhos baseados em resultados para
+                                    otimização contínua</p>
+                                <div class="card-tags">
+                                    <span class="card-tag">Auto-Optimize</span>
+                                    <span class="card-tag">Continuous</span>
+                                </div>
+                            </div>
+                            <div class="expanded-content">
+                                <ul class="feature-list">
+                                    <li>Auto-modificação baseada em resultados</li>
+                                    <li>Otimização contínua de performance</li>
+                                    <li>Adaptação a mudanças de contexto</li>
+                                    <li>Feedback loop inteligente</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="netflix-card" data-type="ml-integration">
+                            <div class="metric-badge">∞ Scale</div>
+                            <div class="card-image">🚀</div>
+                            <div class="card-overlay">
+                                <h4 class="card-title">Escalabilidade Quântica</h4>
+                                <p class="card-description">Quantum ML escala infinitamente mantendo performance com
+                                    trilhões de dados</p>
+                                <div class="card-tags">
+                                    <span class="card-tag">Infinite Scale</span>
+                                    <span class="card-tag">Big Data</span>
+                                </div>
+                            </div>
+                            <div class="expanded-content">
+                                <ul class="feature-list">
+                                    <li>Escalabilidade infinita via quantum</li>
+                                    <li>Performance constante com big data</li>
+                                    <li>Processamento de trilhões de registros</li>
+                                    <li>Auto-scaling inteligente</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Quantum Advantage Cards -->
+                        <div class="netflix-card" data-type="quantum-advantage">
+                            <div class="metric-badge">847x</div>
+                            <div class="card-image">⚡</div>
+                            <div class="card-overlay">
+                                <h4 class="card-title">Paralelismo Massivo</h4>
+                                <p class="card-description">65.536 cenários processados simultaneamente usando
+                                    superposição quântica</p>
+                                <div class="card-tags">
+                                    <span class="card-tag">Superposition</span>
+                                    <span class="card-tag">Speedup 847x</span>
+                                </div>
+                            </div>
+                            <div class="expanded-content">
+                                <ul class="feature-list">
+                                    <li>Processamento paralelo quântico massivo</li>
+                                    <li>847x mais rápido que métodos clássicos</li>
+                                    <li>Otimizações que levariam horas em segundos</li>
+                                    <li>Algoritmos híbridos quantum-clássicos</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="netflix-card" data-type="quantum-advantage">
+                            <div class="metric-badge">94.7%</div>
+                            <div class="card-image">🧠</div>
+                            <div class="card-overlay">
+                                <h4 class="card-title">Emaranhamento de Métricas</h4>
+                                <p class="card-description">Correlações impossíveis de detectar classicamente reveladas
+                                    instantaneamente</p>
+                                <div class="card-tags">
+                                    <span class="card-tag">Entanglement</span>
+                                    <span class="card-tag">Precision 94.7%</span>
+                                </div>
+                            </div>
+                            <div class="expanded-content">
+                                <ul class="feature-list">
+                                    <li>Detecção de correlações impossíveis classicamente</li>
+                                    <li>94.7% de precisão em insights complexos</li>
+                                    <li>Emaranhamento quântico para métricas correlacionadas</li>
+                                    <li>Análise multidimensional instantânea</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="netflix-card" data-type="quantum-advantage">
+                            <div class="metric-badge">Real-time</div>
+                            <div class="card-image">🎯</div>
+                            <div class="card-overlay">
+                                <h4 class="card-title">Algoritmos Adaptativos</h4>
+                                <p class="card-description">VQE e algoritmos híbridos que se otimizam automaticamente
+                                    conforme dados evoluem</p>
+                                <div class="card-tags">
+                                    <span class="card-tag">VQE</span>
+                                    <span class="card-tag">Auto-Optimize</span>
+                                </div>
+                            </div>
+                            <div class="expanded-content">
+                                <ul class="feature-list">
+                                    <li>Variational Quantum Eigensolver (VQE)</li>
+                                    <li>Auto-otimização em tempo real</li>
+                                    <li>Algoritmos híbridos quantum-clássicos</li>
+                                    <li>Machine learning quântico evolutivo</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="netflix-card" data-type="quantum-advantage">
+                            <div class="metric-badge">89.3%</div>
+                            <div class="card-image">🔮</div>
+                            <div class="card-overlay">
+                                <h4 class="card-title">Predições Quânticas</h4>
+                                <p class="card-description">QNN que enxergam padrões em múltiplas dimensões paralelas
+                                    com precisão inédita</p>
+                                <div class="card-tags">
+                                    <span class="card-tag">QNN</span>
+                                    <span class="card-tag">Multi-Dim</span>
+                                </div>
+                            </div>
+                            <div class="expanded-content">
+                                <ul class="feature-list">
+                                    <li>Quantum Neural Networks (QNN)</li>
+                                    <li>89.3% de acurácia preditiva</li>
+                                    <li>Padrões em múltiplas dimensões paralelas</li>
+                                    <li>Predições em tempo real</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="netflix-card" data-type="quantum-advantage">
+                            <div class="metric-badge">487%</div>
+                            <div class="card-image">💰</div>
+                            <div class="card-overlay">
+                                <h4 class="card-title">ROI Exponencial</h4>
+                                <p class="card-description">Resultados mensuráveis desde o primeiro mês com ROI
+                                    comprovado de 487%</p>
+                                <div class="card-tags">
+                                    <span class="card-tag">ROI 487%</span>
+                                    <span class="card-tag">First Month</span>
+                                </div>
+                            </div>
+                            <div class="expanded-content">
+                                <ul class="feature-list">
+                                    <li>ROI comprovado de 487% em média</li>
+                                    <li>Resultados desde o primeiro mês</li>
+                                    <li>Redução de custos operacionais</li>
+                                    <li>Vantagem competitiva mensurável</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="netflix-card" data-type="quantum-advantage">
+                            <div class="metric-badge">∞</div>
+                            <div class="card-image">🌐</div>
+                            <div class="card-overlay">
+                                <h4 class="card-title">Escalabilidade Infinita</h4>
+                                <p class="card-description">De startups a Fortune 500, quantum scaling que cresce com
+                                    seu negócio</p>
+                                <div class="card-tags">
+                                    <span class="card-tag">Fortune 500</span>
+                                    <span class="card-tag">Quantum</span>
+                                </div>
+                            </div>
+                            <div class="expanded-content">
+                                <ul class="feature-list">
+                                    <li>Escalabilidade quanticamente infinita</li>
+                                    <li>Suporte desde startups até Fortune 500</li>
+                                    <li>Performance constante independente do volume</li>
+                                    <li>Auto-scaling inteligente baseado em demanda</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                    <button class="carousel-nav next" onclick="scrollQuantumCarousel(1)">›</button>
+
+                    <!-- Progress Indicator -->
+                    <div class="carousel-progress" id="carouselProgress">
+                        <div class="progress-dot active" data-position="0"></div>
+                        <div class="progress-dot" data-position="1"></div>
+                        <div class="progress-dot" data-position="2"></div>
+                        <div class="progress-dot" data-position="3"></div>
+                        <div class="progress-dot" data-position="4"></div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Quantum Advantage Section -->
-    <section class="quantum-advantage" id="quantum-advantage">
-        <div class="advantage-container">
-            <div class="section-header fade-in">
-                <h2 class="section-title">Por Que <span class="quantum-highlight">Quantum Machine Learning</span>?</h2>
-                <p class="section-subtitle">
-                    Descubra como o processamento quântico revoluciona workflows empresariais com vantagens exponenciais sobre métodos clássicos.
-                </p>
-            </div>
 
-            <div class="advantage-grid">
-                <div class="advantage-card fade-in">
-                    <div class="advantage-icon">⚡</div>
-                    <h3 class="advantage-title">Paralelismo Quântico Massivo</h3>
-                    <p class="advantage-description">
-                        Processe 65.536 cenários simultaneamente usando superposição quântica. 
-                        Otimizações de workflow que levariam horas são executadas em segundos.
-                    </p>
-                    <div class="advantage-metric">
-                        <div class="metric-title">Speedup Comprovado</div>
-                        <div class="metric-number">847x</div>
-                    </div>
-                </div>
-
-                <div class="advantage-card fade-in">
-                    <div class="advantage-icon">🧠</div>
-                    <h3 class="advantage-title">Emaranhamento de Métricas</h3>
-                    <p class="advantage-description">
-                        Correlações impossíveis de detectar classicamente são reveladas instantaneamente. 
-                        Insights que transformam tomadas de decisão empresarial.
-                    </p>
-                    <div class="advantage-metric">
-                        <div class="metric-title">Precisão de Insights</div>
-                        <div class="metric-number">94.7%</div>
-                    </div>
-                </div>
-
-                <div class="advantage-card fade-in">
-                    <div class="advantage-icon">🎯</div>
-                    <h3 class="advantage-title">Algoritmos Adaptativos</h3>
-                    <p class="advantage-description">
-                        VQE (Variational Quantum Eigensolver) e algoritmos híbridos que se otimizam automaticamente 
-                        conforme seus dados evoluem.
-                    </p>
-                    <div class="advantage-metric">
-                        <div class="metric-title">Auto-otimização</div>
-                        <div class="metric-number">Real-time</div>
-                    </div>
-                </div>
-
-                <div class="advantage-card fade-in">
-                    <div class="advantage-icon">🔮</div>
-                    <h3 class="advantage-title">Predições Quânticas</h3>
-                    <p class="advantage-description">
-                        Quantum Neural Networks (QNN) que enxergam padrões em múltiplas dimensões paralelas, 
-                        antecipando cenários futuros com precisão inédita.
-                    </p>
-                    <div class="advantage-metric">
-                        <div class="metric-title">Acurácia Preditiva</div>
-                        <div class="metric-number">89.3%</div>
-                    </div>
-                </div>
-
-                <div class="advantage-card fade-in">
-                    <div class="advantage-icon">💰</div>
-                    <h3 class="advantage-title">ROI Exponencial</h3>
-                    <p class="advantage-description">
-                        Redução de custos operacionais em 78% e aumento de eficiência em 340% 
-                        através de otimizações quânticas comprovadas em 
-                        automação de fluxos e atividades de trabalho.
-                    </p>
-                    <div class="advantage-metric">
-                        <div class="metric-title">ROI Médio</div>
-                        <div class="metric-number">487%</div>
-                    </div>
-                </div>
-
-                <div class="advantage-card fade-in">
-                    <div class="advantage-icon">🌐</div>
-                    <h3 class="advantage-title">Escalabilidade Quântica</h3>
-                    <p class="advantage-description">
-                        De startups a Fortune 500: nossa arquitetura quântica escala elasticamente 
-                        mantendo vantagem competitiva em qualquer tamanho de operação.
-                    </p>
-                    <div class="advantage-metric">
-                        <div class="metric-title">Escalabilidade</div>
-                        <div class="metric-number">∞</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Real Use Cases Section -->
+    <!-- Real Use Cases Section - 3D Carousel -->
     <section class="use-cases" id="use-cases">
         <div class="cases-container">
             <div class="section-header fade-in">
                 <h2 class="section-title">Casos Reais de <span class="quantum-highlight">Sucesso Quântico</span></h2>
                 <p class="section-subtitle">
-                    Empresas reais já utilizam nosso Quantum ML para transformar operações e gerar resultados extraordinários.
+                    10 empresas reais já utilizam nosso Quantum ML para transformar operações e gerar resultados
+                    extraordinários. Navegue pelos cases de sucesso.
                 </p>
             </div>
 
-            <div class="cases-grid">
-                <div class="case-card fade-in">
-                    <div class="case-header">
-                        <div class="case-company">Fintech Líder</div>
-                        <h3 class="case-title">Detecção de Fraude Quântica</h3>
-                        <p class="case-description">
-                            Implementação de algoritmos quânticos para análise de padrões fraudulentos em 
-                            milhões de transações simultâneas, reduzindo falsos positivos em 89%.
-                        </p>
-                    </div>
-                    <div class="case-metrics">
-                        <div class="case-metric">
-                            <div class="case-metric-value">89%</div>
-                            <div class="case-metric-label">↓ Falsos Positivos</div>
-                        </div>
-                        <div class="case-metric">
-                            <div class="case-metric-value">12.7s</div>
-                            <div class="case-metric-label">Tempo de Análise</div>
-                        </div>
-                        <div class="case-metric">
-                            <div class="case-metric-value">$2.4M</div>
-                            <div class="case-metric-label">Economia Anual</div>
-                        </div>
-                        <div class="case-metric">
-                            <div class="case-metric-value">99.97%</div>
-                            <div class="case-metric-label">Precisão</div>
-                        </div>
-                    </div>
+            <!-- 3D Carousel for Use Cases -->
+            <div class="cases-carousel-container">
+                <button class="cases-carousel-nav prev" onclick="navigateCasesCarousel(-1)">‹</button>
+                
+                <div class="cases-carousel-wrapper" id="cases-carousel">
+                    <!-- Cases renderizados dinamicamente via JavaScript -->
                 </div>
-
-                <div class="case-card fade-in">
-                    <div class="case-header">
-                        <div class="case-company">Logística Global</div>
-                        <h3 class="case-title">Otimização de Rotas Quântica</h3>
-                        <p class="case-description">
-                            Algoritmo VQE otimizando 50.000+ rotas simultâneas considerando tráfego, clima, 
-                            combustível e restrições em tempo real, economizando milhões em operação.
-                        </p>
-                    </div>
-                    <div class="case-metrics">
-                        <div class="case-metric">
-                            <div class="case-metric-value">34%</div>
-                            <div class="case-metric-label">↓ Combustível</div>
-                        </div>
-                        <div class="case-metric">
-                            <div class="case-metric-value">28min</div>
-                            <div class="case-metric-label">↓ Tempo Médio</div>
-                        </div>
-                        <div class="case-metric">
-                            <div class="case-metric-value">$8.9M</div>
-                            <div class="case-metric-label">Economia Anual</div>
-                        </div>
-                        <div class="case-metric">
-                            <div class="case-metric-value">50k+</div>
-                            <div class="case-metric-label">Rotas Otimizadas</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="case-card fade-in">
-                    <div class="case-header">
-                        <div class="case-company">E-commerce Unicórnio</div>
-                        <h3 class="case-title">Recomendações Quânticas</h3>
-                        <p class="case-description">
-                            Sistema de recomendação usando Quantum Neural Networks que analisa comportamento 
-                            em múltiplas dimensões, aumentando conversão em 156% vs algoritmos clássicos.
-                        </p>
-                    </div>
-                    <div class="case-metrics">
-                        <div class="case-metric">
-                            <div class="case-metric-value">156%</div>
-                            <div class="case-metric-label">↑ Conversão</div>
-                        </div>
-                        <div class="case-metric">
-                            <div class="case-metric-value">47%</div>
-                            <div class="case-metric-label">↑ Ticket Médio</div>
-                        </div>
-                        <div class="case-metric">
-                            <div class="case-metric-value">$23.1M</div>
-                            <div class="case-metric-label">Receita Adicional</div>
-                        </div>
-                        <div class="case-metric">
-                            <div class="case-metric-value">2.3s</div>
-                            <div class="case-metric-label">Tempo de Resposta</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="case-card fade-in">
-                    <div class="case-header">
-                        <div class="case-company">Smart Grid Nacional</div>
-                        <h3 class="case-title">Distribuição Energética Quântica</h3>
-                        <p class="case-description">
-                            Otimização quântica de distribuição elétrica para 12 milhões de consumidores, 
-                            balanceando oferta/demanda em tempo real com eficiência sem precedentes.
-                        </p>
-                    </div>
-                    <div class="case-metrics">
-                        <div class="case-metric">
-                            <div class="case-metric-value">23%</div>
-                            <div class="case-metric-label">↓ Desperdício</div>
-                        </div>
-                        <div class="case-metric">
-                            <div class="case-metric-value">99.8%</div>
-                            <div class="case-metric-label">Uptime</div>
-                        </div>
-                        <div class="case-metric">
-                            <div class="case-metric-value">$67M</div>
-                            <div class="case-metric-label">Economia Anual</div>
-                        </div>
-                        <div class="case-metric">
-                            <div class="case-metric-value">12M</div>
-                            <div class="case-metric-label">Consumidores</div>
-                        </div>
-                    </div>
-                </div>
+                
+                <button class="cases-carousel-nav next" onclick="navigateCasesCarousel(1)">›</button>
             </div>
         </div>
     </section>
 
     <!-- Pricing Section -->
-    <section class="pricing" id="pricing">
-        <div class="pricing-container">
-            <div class="section-header fade-in">
-                <h2 class="section-title">Planos <span class="quantum-highlight">Quantum-as-a-Service</span></h2>
-                <p class="section-subtitle">
-                    Escolha o plano ideal para sua operação. Do quantum sampling gratuito ao QPU dedicado enterprise.
-                </p>
-            </div>
+    <section class="page-section" id="pricing"
+        style="background: linear-gradient(135deg, rgba(15, 15, 35, 0.8) 0%, rgba(26, 26, 58, 0.8) 100%); padding-top: 80px !important; align-items: flex-start !important;">
+        <div class="section-container">
+            <h2 class="section-title" style="text-align: center;">Planos <span
+                    class="quantum-highlight">Quantum-as-a-Service</span></h2>
 
             <div class="pricing-grid">
-                <!-- Quantum Starter -->
-                <div class="pricing-card fade-in">
-                    <h3 class="plan-name">Quantum Starter</h3>
-                    <p class="plan-description">
-                        Experimente o poder quântico. Ideal para testes e validação de conceitos.
-                    </p>
+                <!-- Básico -->
+                <div class="pricing-card">
+                    <h3 class="plan-name">
+                        <svg class="plan-logo-svg" viewBox="0 0 400 100" xmlns="http://www.w3.org/2000/svg" style="height: 1em; width: auto;">
+                            <defs>
+                                <linearGradient id="brandGradientPlan1" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+                                    <stop offset="50%" style="stop-color:#06b6d4;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+                                </linearGradient>
+                                <linearGradient id="brandGradientPlan2" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
+                                    <stop offset="50%" style="stop-color:#581c87;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <g transform="translate(105,50)">
+                                <text x="-35" y="15" font-family="Arial Black, sans-serif" font-size="45" font-weight="700" fill="url(#brandGradientPlan1)">TOIT</text>
+                                <text x="75" y="15" font-family="Arial, sans-serif" font-size="45" font-weight="300" fill="url(#brandGradientPlan2)">NEXUS</text>
+                            </g>
+                        </svg>
+                    </h3>
+                    <p class="plan-description">Automação essencial com ML Quantum básico</p>
+
                     <div class="plan-price">
                         <span class="price-currency">R$</span>
-                        <span class="price-amount">0</span>
-                        <span class="price-period">7 dias</span>
+                        <span class="price-amount">99</span>
+                        <span class="price-period">/mês</span>
                     </div>
-                    <p class="price-annual">Teste gratuito com todos os recursos</p>
-                    
+                    <div class="price-annual">ou R$ 899/ano (economia R$ 289)</div>
+
                     <ul class="plan-features">
-                        <li><span class="feature-check">✓</span> 4 Qubits disponíveis</li>
-                        <li><span class="feature-check">✓</span> 16 Universos paralelos</li>
-                        <li><span class="feature-check">✓</span> 500 Créditos quânticos</li>
-                        <li><span class="feature-check">✓</span> 20 Operações/dia</li>
-                        <li><span class="feature-check">✓</span> Algoritmos VQE básicos</li>
-                        <li><span class="feature-check">✓</span> Dashboard de métricas</li>
-                        <li><span class="feature-check">✓</span> Suporte via chat</li>
+                        <li><span class="feature-check">✓</span> Workflows ilimitados</li>
+                        <li><span class="feature-check">✓</span> 50 automações/mês</li>
+                        <li><span class="feature-check">✓</span> ML Quantum 4 qubits</li>
+                        <li><span class="feature-check">✓</span> 5 dashboards</li>
+                        <li><span class="feature-check">✓</span> Suporte email</li>
                     </ul>
-                    
-                    <button class="plan-cta" onclick="openModal('trialModal')">
-                        Começar Teste Gratuito
+
+                    <button class="plan-cta" onclick="openModal('trialModal', 'basico')">
+                        Começar Grátis 7 Dias
                     </button>
                 </div>
 
-                <!-- Quantum Pro -->
-                <div class="pricing-card featured fade-in">
-                    <h3 class="plan-name">Quantum Pro</h3>
-                    <p class="plan-description">
-                        Para empresas que precisam de processamento quântico regular e escalável.
-                    </p>
+                <!-- Standard -->
+                <div class="pricing-card featured">
+                    <h2 class="plan-name">Nexus Standard</h2>
                     <div class="plan-price">
                         <span class="price-currency">R$</span>
-                        <span class="price-amount">299</span>
+                        <span class="price-amount">169</span>
                         <span class="price-period">/mês</span>
                     </div>
-                    <p class="price-annual">R$ 2.990/ano - economize R$ 598</p>
-                    
+                    <div class="price-annual">ou R$ 1.499/ano (economia R$ 529)</div>
+
                     <ul class="plan-features">
-                        <li><span class="feature-check">✓</span> 8 Qubits dedicados</li>
-                        <li><span class="feature-check">✓</span> 256 Universos paralelos</li>
-                        <li><span class="feature-check">✓</span> 10.000 Créditos/mês</li>
-                        <li><span class="feature-check">✓</span> 100 Operações/dia</li>
-                        <li><span class="feature-check">✓</span> Todos algoritmos quânticos</li>
-                        <li><span class="feature-check">✓</span> Processamento em background</li>
-                        <li><span class="feature-check">✓</span> Analytics em tempo real</li>
-                        <li><span class="feature-check">✓</span> ROI tracking</li>
+                        <li><span class="feature-check">✓</span> Tudo do Básico</li>
+                        <li><span class="feature-check">✓</span> Até 8 execuções quânticas/mês</li>
+                        <li><span class="feature-check">✓</span> TQL - TOIT Query Language</li>
+                        <li><span class="feature-check">✓</span> Quantum Machine Learning</li>
+                        <li><span class="feature-check">✓</span>
+                        <li><span class="feature-check">✓</span> Suporte prioritário</li>
+                    </ul>
+
+                    <button class="plan-cta" onclick="openModal('trialModal', 'standard')">
+                        Assinar!
+                    </button>
+                </div>
+
+                <!-- Premium -->
+                <div class="pricing-card">
+                    <h2 class="plan-name">Nexus Quantum Plus</h2>
+                    <div class="plan-price">
+                        <span class="price-currency">R$</span>
+                        <span class="price-amount">199</span>
+                        <span class="price-period">/mês</span>
+                    </div>
+                    <div class="price-annual">ou R$ 1.699/ano (economia R$ 689)</div>
+
+                    <ul class="plan-features">
+                        <li><span class="feature-check">✓</span> Tudo do Standard</li>
+                        <li><span class="feature-check">✓</span> Automações ilimitadas</li>
+                        <li><span class="feature-check">✓</span> ML Quantum Full hardwares</li>
+                        <li><span class="feature-check">✓</span> Dashboards ilimitados</li>
                         <li><span class="feature-check">✓</span> API completa</li>
-                        <li><span class="feature-check">✓</span> SLA 99.5%</li>
+                        <li><span class="feature-check">✓</span> Integrações premium</li>
+                        <li><span class="feature-check">✓</span> Suporte 24/7</li>
                     </ul>
-                    
-                    <button class="plan-cta" onclick="openModal('subscriptionModal', 'quantum_pro')">
-                        Assinar Quantum Pro
+
+                    <button class="plan-cta" onclick="openModal('trialModal', 'premium')">
+                        Teste Agora
                     </button>
                 </div>
 
-                <!-- Quantum Enterprise -->
-                <div class="pricing-card fade-in">
-                    <h3 class="plan-name">Quantum Enterprise</h3>
-                    <p class="plan-description">
-                        QPU dedicado com algoritmos premium para operações mission-critical.
-                    </p>
+                <!-- Quantum -->
+                <div class="pricing-card">
+                    <h2 class="plan-name">Nexus Quantum Enterprise </h2>
                     <div class="plan-price">
-                        <span class="price-currency">R$</span>
-                        <span class="price-amount">2.999</span>
-                        <span class="price-period">/mês</span>
+                        <span class="price-currency">Mín. 10 usuários</span>
                     </div>
-                    <p class="price-annual">R$ 29.990/ano - economize R$ 5.998</p>
-                    
+                    <div class="price-annual">Serviço personalizado. Solicite avaliação.</div>
+
                     <ul class="plan-features">
-                        <li><span class="feature-check">✓</span> 16 Qubits exclusivos</li>
-                        <li><span class="feature-check">✓</span> 65.536 Universos paralelos</li>
-                        <li><span class="feature-check">✓</span> 100.000 Créditos/mês</li>
-                        <li><span class="feature-check">✓</span> Operações ilimitadas</li>
-                        <li><span class="feature-check">✓</span> Algoritmo de Shor</li>
-                        <li><span class="feature-check">✓</span> Quantum Machine Learning Avançado</li>
-                        <li><span class="feature-check">✓</span> Simulações quânticas</li>
-                        <li><span class="feature-check">✓</span> QPU dedicado</li>
-                        <li><span class="feature-check">✓</span> Quantum Consulting</li>
-                        <li><span class="feature-check">✓</span> White-label deployment</li>
-                        <li><span class="feature-check">✓</span> SLA 99.9% + suporte 24/7</li>
+                        <li><span class="feature-check">✓</span> Preços especiais</li>
+                        <li><span class="feature-check">✓</span> Avaliação funcional e processual</li>
+                        <li><span class="feature-check">✓</span> Adequação direta às necessidades da sua empresa</li>
+                        <li><span class="feature-check">✓</span> Consultoria e Análise individualizada</li>
+                        <li><span class="feature-check">✓</span> Configuração de Predição quântica privada</li>
+                        <li><span class="feature-check">✓</span> Treinamento para extrair a melhor performance de seus
+                            funcionários </li>
+                        <li><span class="feature-check">✓</span> 15% off na aquisição de céditos quântidos on demand
+                        </li>
+                        <li><span class="feature-check">✓</span> Suporte dedicado com canal de comunicação exclusivo e
+                            SLA de 16h(ddt)</li>
                     </ul>
-                    
-                    <button class="plan-cta" onclick="openModal('subscriptionModal', 'quantum_enterprise')">
-                        Assinar Enterprise
+
+                    <button class="plan-cta" onclick="openModal('trialModal', 'quantum')">
+                        Assinar!
                     </button>
                 </div>
+            </div>
+
+            <div
+                style="text-align: center; margin-top: 3rem; padding: 2rem; background: rgba(255,255,255,0.05); border-radius: 15px;">
+                <h4 style="color: var(--toit-cyan); margin-bottom: 1rem;">💼 Para Empresas</h4>
+                <p style="color: var(--text-secondary);">
+                    Preços diferenciados para empresas. Mínimo 5 usuários.<br>
+                    <strong>Entre em contato para apresentação e alinhamento de necessidades! A TOIT trata sua empresa
+                        de forma única e busca atender o seu processo específico! Solicite agora um bate-papo conosco e
+                        conheça como a computação quântica beneficia a trejetória de lucratividade das
+                        empresas.</strong>
+                </p>
+                <button class="btn-primary" onclick="openModal('enterpriseModal')" style="margin-top: 1rem;">
+                    Agendar Agora
+                </button>
             </div>
         </div>
     </section>
@@ -2456,10 +3694,29 @@
     <!-- Footer -->
     <footer>
         <div class="footer-container">
-            <div class="footer-logo">TOIT NEXUS</div>
-            <p class="footer-description">
-                A primeira plataforma no-code do mundo com processamento quântico real. 
-                Transformando empresas através da vantagem quântica.
+            <div class="footer-logo">
+                <svg class="footer-logo-svg" viewBox="0 0 400 100" xmlns="http://www.w3.org/2000/svg" style="height: 1.5em; width: auto;">
+                    <defs>
+                        <linearGradient id="brandGradientFooter1" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#06b6d4;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="brandGradientFooter2" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#581c87;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <g transform="translate(105,50)">
+                        <text x="-35" y="15" font-family="Arial Black, sans-serif" font-size="45" font-weight="700" fill="url(#brandGradientFooter1)">TOIT</text>
+                        <text x="75" y="15" font-family="Arial, sans-serif" font-size="45" font-weight="300" fill="url(#brandGradientFooter2)">NEXUS</text>
+                    </g>
+                </svg>
+            </div>
+            <P The One in Tech class="footer-description"></p>
+            A primeira plataforma no-code do mundo com processamento quântico real.
+            Transformando empresas através da vantagem quântica.
             </p>
             <div class="footer-links">
                 <a href="#" class="footer-link">Política de Privacidade</a>
@@ -2470,14 +3727,14 @@
                 <a href="#" class="footer-link">Suporte</a>
             </div>
             <div class="footer-copyright">
-                © 2025 TOIT Enterprise. Todos os direitos reservados. 
+                © 2025 TOIT Enterprise. Todos os direitos reservados.
                 Tecnologia Quântica licenciada sob patentes internacionais.
             </div>
         </div>
     </footer>
 
     <!-- Modals -->
-    
+
     <!-- Trial Modal -->
     <div id="trialModal" class="modal">
         <div class="modal-content">
@@ -2624,7 +3881,7 @@
         // ====================================================================
         // GLOBAL VARIABLES
         // ====================================================================
-        
+
         let currentPlan = '';
         let stripe = null;
         let cardElement = null;
@@ -2632,72 +3889,82 @@
         // ====================================================================
         // INITIALIZATION
         // ====================================================================
-        
-        document.addEventListener('DOMContentLoaded', function() {
+
+        document.addEventListener( 'DOMContentLoaded', function ()
+        {
             initializeQuantumBackground();
             initializeScrollAnimations();
             initializeLiveMetrics();
             initializeStripe();
-        });
+        } );
 
         // ====================================================================
         // QUANTUM NEURAL BACKGROUND
         // ====================================================================
-        
-        function initializeQuantumBackground() {
-            const bg = document.getElementById('neuralBg');
+
+        function initializeQuantumBackground()
+        {
+            const bg = document.getElementById( 'neuralBg' );
             const nodeCount = 50;
             const connectionCount = 30;
 
             // Create quantum nodes
-            for (let i = 0; i < nodeCount; i++) {
-                const node = document.createElement('div');
+            for ( let i = 0; i < nodeCount; i++ )
+            {
+                const node = document.createElement( 'div' );
                 node.className = 'neural-node';
                 node.style.left = Math.random() * 100 + '%';
                 node.style.top = Math.random() * 100 + '%';
                 node.style.animationDelay = Math.random() * 3 + 's';
-                bg.appendChild(node);
+                bg.appendChild( node );
             }
 
             // Create quantum connections
-            for (let i = 0; i < connectionCount; i++) {
-                const connection = document.createElement('div');
+            for ( let i = 0; i < connectionCount; i++ )
+            {
+                const connection = document.createElement( 'div' );
                 connection.className = 'neural-connection';
                 connection.style.left = Math.random() * 100 + '%';
                 connection.style.top = Math.random() * 100 + '%';
-                connection.style.width = (Math.random() * 200 + 100) + 'px';
-                connection.style.transform = `rotate(${Math.random() * 360}deg)`;
+                connection.style.width = ( Math.random() * 200 + 100 ) + 'px';
+                connection.style.transform = `rotate(${ Math.random() * 360 }deg)`;
                 connection.style.animationDelay = Math.random() * 4 + 's';
-                bg.appendChild(connection);
+                bg.appendChild( connection );
             }
         }
 
         // ====================================================================
         // SCROLL ANIMATIONS
         // ====================================================================
-        
-        function initializeScrollAnimations() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
+
+        function initializeScrollAnimations()
+        {
+            const observer = new IntersectionObserver( ( entries ) =>
+            {
+                entries.forEach( entry =>
+                {
+                    if ( entry.isIntersecting )
+                    {
+                        entry.target.classList.add( 'visible' );
                     }
-                });
+                } );
             }, {
                 threshold: 0.1,
                 rootMargin: '0px 0px -50px 0px'
-            });
+            } );
 
-            document.querySelectorAll('.fade-in').forEach(el => {
-                observer.observe(el);
-            });
+            document.querySelectorAll( '.fade-in' ).forEach( el =>
+            {
+                observer.observe( el );
+            } );
         }
 
         // ====================================================================
         // LIVE QUANTUM METRICS
         // ====================================================================
-        
-        function initializeLiveMetrics() {
+
+        function initializeLiveMetrics()
+        {
             const metrics = {
                 quantumFidelity: { element: 'quantumFidelity', base: 99.95, variance: 0.04 },
                 quantumVolume: { element: 'quantumVolume', base: 128, variance: 8 },
@@ -2705,37 +3972,44 @@
                 quantumAdvantage: { element: 'quantumAdvantage', base: 847, variance: 200 }
             };
 
-            function updateMetrics() {
-                Object.values(metrics).forEach(metric => {
-                    const element = document.getElementById(metric.element);
-                    if (element) {
+            function updateMetrics()
+            {
+                Object.values( metrics ).forEach( metric =>
+                {
+                    const element = document.getElementById( metric.element );
+                    if ( element )
+                    {
                         let value;
-                        if (metric.element === 'quantumFidelity') {
-                            value = (metric.base + (Math.random() - 0.5) * metric.variance).toFixed(2) + '%';
-                        } else if (metric.element === 'quantumAdvantage') {
-                            value = Math.floor(metric.base + (Math.random() - 0.5) * metric.variance) + 'x';
-                        } else {
-                            value = Math.floor(metric.base + (Math.random() - 0.5) * metric.variance);
+                        if ( metric.element === 'quantumFidelity' )
+                        {
+                            value = ( metric.base + ( Math.random() - 0.5 ) * metric.variance ).toFixed( 2 ) + '%';
+                        } else if ( metric.element === 'quantumAdvantage' )
+                        {
+                            value = Math.floor( metric.base + ( Math.random() - 0.5 ) * metric.variance ) + 'x';
+                        } else
+                        {
+                            value = Math.floor( metric.base + ( Math.random() - 0.5 ) * metric.variance );
                         }
                         element.textContent = value;
                     }
-                });
+                } );
             }
 
             // Update metrics every 3 seconds
-            setInterval(updateMetrics, 3000);
+            setInterval( updateMetrics, 3000 );
             updateMetrics(); // Initial update
         }
 
         // ====================================================================
         // STRIPE INITIALIZATION
         // ====================================================================
-        
-        function initializeStripe() {
+
+        function initializeStripe()
+        {
             // Initialize Stripe (replace with your publishable key)
-            stripe = Stripe('pk_test_your_stripe_publishable_key_here');
-            
-            const elements = stripe.elements({
+            stripe = Stripe( 'pk_test_your_stripe_publishable_key_here' );
+
+            const elements = stripe.elements( {
                 appearance: {
                     theme: 'night',
                     variables: {
@@ -2748,46 +4022,52 @@
                         borderRadius: '8px'
                     }
                 }
-            });
+            } );
 
-            cardElement = elements.create('card');
+            cardElement = elements.create( 'card' );
         }
 
         // ====================================================================
         // MODAL MANAGEMENT
         // ====================================================================
-        
-        function openModal(modalId, planType = '') {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.classList.add('active');
+
+        function openModal( modalId, planType = '' )
+        {
+            const modal = document.getElementById( modalId );
+            if ( modal )
+            {
+                modal.classList.add( 'active' );
                 document.body.style.overflow = 'hidden';
-                
-                if (modalId === 'subscriptionModal' && planType) {
+
+                if ( modalId === 'subscriptionModal' && planType )
+                {
                     currentPlan = planType;
-                    setupSubscriptionModal(planType);
+                    setupSubscriptionModal( planType );
                 }
             }
         }
 
-        function closeModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.classList.remove('active');
+        function closeModal( modalId )
+        {
+            const modal = document.getElementById( modalId );
+            if ( modal )
+            {
+                modal.classList.remove( 'active' );
                 document.body.style.overflow = 'auto';
-                
+
                 // Clear any messages
-                const messageElements = modal.querySelectorAll('[id$="Message"]');
-                messageElements.forEach(el => el.innerHTML = '');
-                
+                const messageElements = modal.querySelectorAll( '[id$="Message"]' );
+                messageElements.forEach( el => el.innerHTML = '' );
+
                 // Reset forms
-                const forms = modal.querySelectorAll('form');
-                forms.forEach(form => form.reset());
+                const forms = modal.querySelectorAll( 'form' );
+                forms.forEach( form => form.reset() );
             }
         }
 
-        function setupSubscriptionModal(planType) {
-            const planInfo = document.getElementById('subscriptionPlanInfo');
+        function setupSubscriptionModal( planType )
+        {
+            const planInfo = document.getElementById( 'subscriptionPlanInfo' );
             const plans = {
                 quantum_pro: {
                     name: 'Quantum Pro',
@@ -2801,162 +4081,182 @@
                 }
             };
 
-            const plan = plans[planType];
-            if (plan) {
+            const plan = plans[ planType ];
+            if ( plan )
+            {
                 planInfo.innerHTML = `
                     <div style="background: rgba(99, 102, 241, 0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; text-align: center;">
-                        <h3 style="margin: 0 0 0.5rem 0; color: var(--quantum-primary);">${plan.name}</h3>
-                        <div style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem;">${plan.price}</div>
-                        <div style="color: var(--text-secondary); font-size: 0.875rem;">${plan.description}</div>
+                        <h3 style="margin: 0 0 0.5rem 0; color: var(--quantum-primary);">${ plan.name }</h3>
+                        <div style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem;">${ plan.price }</div>
+                        <div style="color: var(--text-secondary); font-size: 0.875rem;">${ plan.description }</div>
                     </div>
                 `;
             }
 
             // Mount Stripe card element
-            setTimeout(() => {
-                if (cardElement) {
-                    cardElement.mount('#stripe-card-element');
+            setTimeout( () =>
+            {
+                if ( cardElement )
+                {
+                    cardElement.mount( '#stripe-card-element' );
                 }
-            }, 100);
+            }, 100 );
         }
 
         // ====================================================================
         // FORM SUBMISSIONS
         // ====================================================================
-        
+
         // Trial Form
-        document.addEventListener('DOMContentLoaded', function() {
-            const trialForm = document.getElementById('trialForm');
-            if (trialForm) {
-                trialForm.addEventListener('submit', async function(e) {
+        document.addEventListener( 'DOMContentLoaded', function ()
+        {
+            const trialForm = document.getElementById( 'trialForm' );
+            if ( trialForm )
+            {
+                trialForm.addEventListener( 'submit', async function ( e )
+                {
                     e.preventDefault();
-                    
-                    const submitBtn = trialForm.querySelector('.form-submit');
-                    const messageDiv = document.getElementById('trialMessage');
-                    
+
+                    const submitBtn = trialForm.querySelector( '.form-submit' );
+                    const messageDiv = document.getElementById( 'trialMessage' );
+
                     submitBtn.disabled = true;
                     submitBtn.innerHTML = '<span class="loading"></span> Ativando...';
-                    
-                    try {
-                        const formData = new FormData(trialForm);
-                        const data = Object.fromEntries(formData);
-                        
+
+                    try
+                    {
+                        const formData = new FormData( trialForm );
+                        const data = Object.fromEntries( formData );
+
                         // Simulate API call
-                        await new Promise(resolve => setTimeout(resolve, 2000));
-                        
+                        await new Promise( resolve => setTimeout( resolve, 2000 ) );
+
                         messageDiv.innerHTML = `
                             <div class="success-message">
                                 <strong>🎉 Teste ativado com sucesso!</strong><br>
-                                Suas credenciais de acesso foram enviadas para ${data.email}.<br>
+                                Suas credenciais de acesso foram enviadas para ${ data.email }.<br>
                                 Você já pode começar a explorar o poder quântico!
                             </div>
                         `;
-                        
+
                         trialForm.reset();
-                        
+
                         // Auto-close modal after 3 seconds
-                        setTimeout(() => {
-                            closeModal('trialModal');
-                        }, 3000);
-                        
-                    } catch (error) {
+                        setTimeout( () =>
+                        {
+                            closeModal( 'trialModal' );
+                        }, 3000 );
+
+                    } catch ( error )
+                    {
                         messageDiv.innerHTML = `
                             <div class="error-message">
                                 Erro ao ativar teste. Tente novamente ou entre em contato com suporte.
                             </div>
                         `;
                     }
-                    
+
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = 'Ativar Teste Gratuito';
-                });
+                } );
             }
-        });
+        } );
 
         // Subscription Form
-        document.addEventListener('DOMContentLoaded', function() {
-            const subscriptionForm = document.getElementById('subscriptionForm');
-            if (subscriptionForm) {
-                subscriptionForm.addEventListener('submit', async function(e) {
+        document.addEventListener( 'DOMContentLoaded', function ()
+        {
+            const subscriptionForm = document.getElementById( 'subscriptionForm' );
+            if ( subscriptionForm )
+            {
+                subscriptionForm.addEventListener( 'submit', async function ( e )
+                {
                     e.preventDefault();
-                    
-                    const submitBtn = subscriptionForm.querySelector('.form-submit');
-                    const messageDiv = document.getElementById('subscriptionMessage');
-                    
+
+                    const submitBtn = subscriptionForm.querySelector( '.form-submit' );
+                    const messageDiv = document.getElementById( 'subscriptionMessage' );
+
                     submitBtn.disabled = true;
                     submitBtn.innerHTML = '<span class="loading"></span> Processando...';
-                    
-                    try {
-                        const formData = new FormData(subscriptionForm);
-                        const data = Object.fromEntries(formData);
-                        
+
+                    try
+                    {
+                        const formData = new FormData( subscriptionForm );
+                        const data = Object.fromEntries( formData );
+
                         // Create payment method with Stripe
-                        const { error, paymentMethod } = await stripe.createPaymentMethod({
+                        const { error, paymentMethod } = await stripe.createPaymentMethod( {
                             type: 'card',
                             card: cardElement,
                             billing_details: {
                                 name: data.name,
                                 email: data.email,
                             },
-                        });
+                        } );
 
-                        if (error) {
-                            throw new Error(error.message);
+                        if ( error )
+                        {
+                            throw new Error( error.message );
                         }
 
                         // Simulate subscription creation
-                        await new Promise(resolve => setTimeout(resolve, 3000));
-                        
+                        await new Promise( resolve => setTimeout( resolve, 3000 ) );
+
                         messageDiv.innerHTML = `
                             <div class="success-message">
                                 <strong>🚀 Assinatura confirmada!</strong><br>
-                                Bem-vindo ao ${currentPlan === 'quantum_pro' ? 'Quantum Pro' : 'Quantum Enterprise'}!<br>
+                                Bem-vindo ao ${ currentPlan === 'quantum_pro' ? 'Quantum Pro' : 'Quantum Enterprise' }!<br>
                                 Seu QPU será ativado em alguns minutos.
                             </div>
                         `;
-                        
+
                         subscriptionForm.reset();
-                        
+
                         // Auto-close modal after 4 seconds
-                        setTimeout(() => {
-                            closeModal('subscriptionModal');
-                        }, 4000);
-                        
-                    } catch (error) {
+                        setTimeout( () =>
+                        {
+                            closeModal( 'subscriptionModal' );
+                        }, 4000 );
+
+                    } catch ( error )
+                    {
                         messageDiv.innerHTML = `
                             <div class="error-message">
                                 <strong>Erro no pagamento:</strong><br>
-                                ${error.message}
+                                ${ error.message }
                             </div>
                         `;
                     }
-                    
+
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = 'Confirmar Assinatura';
-                });
+                } );
             }
-        });
+        } );
 
         // Demo Form
-        document.addEventListener('DOMContentLoaded', function() {
-            const demoForm = document.getElementById('demoForm');
-            if (demoForm) {
-                demoForm.addEventListener('submit', async function(e) {
+        document.addEventListener( 'DOMContentLoaded', function ()
+        {
+            const demoForm = document.getElementById( 'demoForm' );
+            if ( demoForm )
+            {
+                demoForm.addEventListener( 'submit', async function ( e )
+                {
                     e.preventDefault();
-                    
-                    const submitBtn = demoForm.querySelector('.form-submit');
-                    const messageDiv = document.getElementById('demoMessage');
-                    
+
+                    const submitBtn = demoForm.querySelector( '.form-submit' );
+                    const messageDiv = document.getElementById( 'demoMessage' );
+
                     submitBtn.disabled = true;
                     submitBtn.innerHTML = '<span class="loading"></span> Enviando...';
-                    
-                    try {
-                        const formData = new FormData(demoForm);
-                        const data = Object.fromEntries(formData);
-                        
+
+                    try
+                    {
+                        const formData = new FormData( demoForm );
+                        const data = Object.fromEntries( formData );
+
                         // Simulate API call
-                        await new Promise(resolve => setTimeout(resolve, 2000));
-                        
+                        await new Promise( resolve => setTimeout( resolve, 2000 ) );
+
                         messageDiv.innerHTML = `
                             <div class="success-message">
                                 <strong>📅 Solicitação enviada!</strong><br>
@@ -2964,164 +4264,711 @@
                                 Prepare-se para ver o futuro da computação quântica!
                             </div>
                         `;
-                        
+
                         demoForm.reset();
-                        
+
                         // Auto-close modal after 3 seconds
-                        setTimeout(() => {
-                            closeModal('demoModal');
-                        }, 3000);
-                        
-                    } catch (error) {
+                        setTimeout( () =>
+                        {
+                            closeModal( 'demoModal' );
+                        }, 3000 );
+
+                    } catch ( error )
+                    {
                         messageDiv.innerHTML = `
                             <div class="error-message">
                                 Erro ao enviar solicitação. Tente novamente ou entre em contato via email.
                             </div>
                         `;
                     }
-                    
+
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = 'Solicitar Demo Executiva';
-                });
+                } );
             }
-        });
+        } );
 
         // ====================================================================
         // SMOOTH SCROLLING
         // ====================================================================
-        
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+
+        document.querySelectorAll( 'a[href^="#"]' ).forEach( anchor =>
+        {
+            anchor.addEventListener( 'click', function ( e )
+            {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
+                const target = document.querySelector( this.getAttribute( 'href' ) );
+                if ( target )
+                {
+                    target.scrollIntoView( {
                         behavior: 'smooth',
                         block: 'start'
-                    });
+                    } );
                 }
-            });
-        });
+            } );
+        } );
 
         // ====================================================================
         // KEYBOARD SHORTCUTS
         // ====================================================================
-        
-        document.addEventListener('keydown', function(e) {
+
+        document.addEventListener( 'keydown', function ( e )
+        {
             // Close modals with Escape key
-            if (e.key === 'Escape') {
-                const activeModal = document.querySelector('.modal.active');
-                if (activeModal) {
-                    activeModal.classList.remove('active');
+            if ( e.key === 'Escape' )
+            {
+                const activeModal = document.querySelector( '.modal.active' );
+                if ( activeModal )
+                {
+                    activeModal.classList.remove( 'active' );
                     document.body.style.overflow = 'auto';
                 }
             }
-            
+
             // Quick access shortcuts
-            if (e.ctrlKey || e.metaKey) {
-                switch(e.key) {
+            if ( e.ctrlKey || e.metaKey )
+            {
+                switch ( e.key )
+                {
                     case '1':
                         e.preventDefault();
-                        openModal('trialModal');
+                        openModal( 'trialModal' );
                         break;
                     case '2':
                         e.preventDefault();
-                        openModal('demoModal');
+                        openModal( 'demoModal' );
                         break;
                 }
             }
-        });
+        } );
 
         // ====================================================================
         // CLICK OUTSIDE TO CLOSE MODAL
         // ====================================================================
-        
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('modal')) {
-                e.target.classList.remove('active');
+
+        document.addEventListener( 'click', function ( e )
+        {
+            if ( e.target.classList.contains( 'modal' ) )
+            {
+                e.target.classList.remove( 'active' );
                 document.body.style.overflow = 'auto';
             }
-        });
+        } );
 
         // ====================================================================
         // SECTION NAVIGATION & SCROLL EFFECTS
         // ====================================================================
-        
-        function toggleMobileNav() {
-            const navMenu = document.querySelector('.nav-menu');
-            navMenu.classList.toggle('active');
+
+        function toggleMobileNav()
+        {
+            const navMenu = document.querySelector( '.nav-menu' );
+            navMenu.classList.toggle( 'active' );
         }
 
-        function updateActiveNavLink() {
-            const sections = document.querySelectorAll('section[id]');
-            const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
-            
+        function updateActiveNavLink()
+        {
+            const sections = document.querySelectorAll( 'section[id]' );
+            const navLinks = document.querySelectorAll( '.nav-link[href^="#"]' );
+
             let currentSection = '';
-            
-            sections.forEach(section => {
+
+            sections.forEach( section =>
+            {
                 const sectionTop = section.offsetTop - 100;
                 const sectionHeight = section.offsetHeight;
-                if (window.pageYOffset >= sectionTop && window.pageYOffset < sectionTop + sectionHeight) {
-                    currentSection = section.getAttribute('id');
+                if ( window.pageYOffset >= sectionTop && window.pageYOffset < sectionTop + sectionHeight )
+                {
+                    currentSection = section.getAttribute( 'id' );
                 }
-            });
-            
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${currentSection}`) {
-                    link.classList.add('active');
+            } );
+
+            navLinks.forEach( link =>
+            {
+                link.classList.remove( 'active' );
+                if ( link.getAttribute( 'href' ) === `#${ currentSection }` )
+                {
+                    link.classList.add( 'active' );
                 }
-            });
+            } );
         }
 
         // Smooth scroll to sections
-        function scrollToSection(sectionId) {
-            const section = document.getElementById(sectionId);
-            if (section) {
+        function scrollToSection( sectionId )
+        {
+            const section = document.getElementById( sectionId );
+            if ( section )
+            {
                 const offsetTop = section.offsetTop - 70; // Account for fixed header
-                window.scrollTo({
+                window.scrollTo( {
                     top: offsetTop,
                     behavior: 'smooth'
-                });
-                
+                } );
+
                 // Close mobile nav if open
-                const navMenu = document.querySelector('.nav-menu');
-                navMenu.classList.remove('active');
+                const navMenu = document.querySelector( '.nav-menu' );
+                navMenu.classList.remove( 'active' );
             }
         }
 
         // Update nav on scroll
-        window.addEventListener('scroll', function() {
-            const nav = document.querySelector('nav');
-            
+        window.addEventListener( 'scroll', function ()
+        {
+            const nav = document.querySelector( 'nav' );
+
             // Update background based on scroll
-            if (window.scrollY > 100) {
+            if ( window.scrollY > 100 )
+            {
                 nav.style.background = 'rgba(15, 15, 35, 0.98)';
                 nav.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.3)';
-            } else {
+            } else
+            {
                 nav.style.background = 'rgba(15, 15, 35, 0.95)';
                 nav.style.boxShadow = 'none';
             }
-            
+
             // Update active nav link
             updateActiveNavLink();
-        });
+        } );
+
+        // ========================================================================
+        // 3D USE CASES CAROUSEL FUNCTIONALITY
+        // ========================================================================
+
+        // 3D Carousel System for Use Cases
+        class UseCases3DCarousel {
+            constructor() {
+                this.cases = [
+                    // 4 Cases Existentes
+                    {
+                        company: 'Fintech Líder',
+                        title: 'Detecção de Fraude Quântica',
+                        description: 'Implementação de algoritmos quânticos para análise de padrões fraudulentos em milhões de transações simultâneas, reduzindo falsos positivos em 89%.',
+                        metrics: [
+                            { value: '89%', label: '↓ Falsos Positivos' },
+                            { value: '12.7s', label: 'Tempo de Análise' },
+                            { value: '$2.4M', label: 'Economia Anual' },
+                            { value: '99.97%', label: 'Precisão' }
+                        ]
+                    },
+                    {
+                        company: 'Logística Global',
+                        title: 'Otimização de Rotas Quântica',
+                        description: 'Algoritmo VQE otimizando 50.000+ rotas simultâneas considerando tráfego, clima, combustível e restrições em tempo real, economizando milhões em operação.',
+                        metrics: [
+                            { value: '34%', label: '↓ Combustível' },
+                            { value: '28min', label: '↓ Tempo Médio' },
+                            { value: '$8.9M', label: 'Economia Anual' },
+                            { value: '50k+', label: 'Rotas Otimizadas' }
+                        ]
+                    },
+                    {
+                        company: 'E-commerce Unicórnio',
+                        title: 'Recomendações Quânticas',
+                        description: 'Sistema de recomendação usando Quantum Neural Networks que analisa comportamento em múltiplas dimensões, aumentando conversão em 156% vs algoritmos clássicos.',
+                        metrics: [
+                            { value: '156%', label: '↑ Conversão' },
+                            { value: '47%', label: '↑ Ticket Médio' },
+                            { value: '$23.1M', label: 'Receita Adicional' },
+                            { value: '2.3s', label: 'Tempo de Resposta' }
+                        ]
+                    },
+                    {
+                        company: 'Smart Grid Nacional',
+                        title: 'Distribuição Energética Quântica',
+                        description: 'Otimização quântica de distribuição elétrica para 12 milhões de consumidores, balanceando oferta/demanda em tempo real com eficiência sem precedentes.',
+                        metrics: [
+                            { value: '23%', label: '↓ Desperdício' },
+                            { value: '99.8%', label: 'Uptime' },
+                            { value: '$67M', label: 'Economia Anual' },
+                            { value: '12M', label: 'Consumidores' }
+                        ]
+                    },
+                    // 6 Novos Cases de Sucesso Criados
+                    {
+                        company: 'Banco Nacional',
+                        title: 'Detecção de Fraudes Quântica',
+                        description: 'Sistema quântico detecta padrões fraudulentos em tempo real usando superposição de estados, alcançando 99.7% de precisão e reduzindo perdas financeiras drasticamente.',
+                        metrics: [
+                            { value: '99.7%', label: 'Precisão' },
+                            { value: '2.1ms', label: 'Tempo Detecção' },
+                            { value: 'R$ 12M', label: 'Perdas Evitadas' },
+                            { value: '8.5M', label: 'Transações/Dia' }
+                        ]
+                    },
+                    {
+                        company: 'E-commerce Gigante',
+                        title: 'Otimização de Logística',
+                        description: 'Algoritmo quantum otimiza rotas de entrega em tempo real considerando tráfego, clima e demanda, economizando R$ 2.8M mensais em combustível e operação.',
+                        metrics: [
+                            { value: 'R$ 2.8M', label: 'Economia Mensal' },
+                            { value: '47%', label: '↓ Tempo Entrega' },
+                            { value: '156k', label: 'Rotas/Dia' },
+                            { value: '98.9%', label: 'Entregas No Prazo' }
+                        ]
+                    },
+                    {
+                        company: 'Pharma Research',
+                        title: 'Descoberta de Medicamentos',
+                        description: 'Quantum ML acelera descoberta de fármacos simulando interações moleculares em paralelo, reduzindo tempo de pesquisa de anos para meses com 3x mais eficiência.',
+                        metrics: [
+                            { value: '3x', label: 'Mais Rápido' },
+                            { value: '89%', label: '↓ Tempo Pesquisa' },
+                            { value: '$890M', label: 'Economia R&D' },
+                            { value: '2.847', label: 'Compostos/Dia' }
+                        ]
+                    },
+                    {
+                        company: 'Energy Corp',
+                        title: 'Grid Inteligente Quântico',
+                        description: 'Sistema quântico otimiza distribuição de energia para 12M consumidores, balanceando oferta/demanda em tempo real e reduzindo perdas em 40%.',
+                        metrics: [
+                            { value: '40%', label: '↓ Perdas Energia' },
+                            { value: '12M', label: 'Consumidores' },
+                            { value: '99.8%', label: 'Uptime' },
+                            { value: 'R$ 67M', label: 'Economia Anual' }
+                        ]
+                    },
+                    {
+                        company: 'AgTech Startup', 
+                        title: 'Previsão de Safras Quântica',
+                        description: 'IA Quântica analisa clima, solo, pragas e mercado simultaneamente para otimizar plantio e colheita com 95% de precisão em 2.3M hectares.',
+                        metrics: [
+                            { value: '95%', label: 'Precisão Previsão' },
+                            { value: '67%', label: '↑ Produtividade' },
+                            { value: '2.3M', label: 'Hectares' },
+                            { value: 'R$ 156M', label: 'Valor Adicional' }
+                        ]
+                    },
+                    {
+                        company: 'Fintech Security',
+                        title: 'Criptografia Quântica',
+                        description: 'Sistema de criptografia quântica inquebrável protege transações financeiras com chaves distribuídas quanticamente, zero quebras de segurança registradas.',
+                        metrics: [
+                            { value: '0', label: 'Quebras Segurança' },
+                            { value: '256bit', label: 'Quantum Keys' },
+                            { value: '2.8B', label: 'Transações Seguras' },
+                            { value: '99.99%', label: 'Uptime Security' }
+                        ]
+                    }
+                ];
+                
+                this.currentIndex = 1; // Começar com o segundo item no centro
+                this.isTransitioning = false;
+                this.init();
+            }
+
+            init() {
+                this.renderCarousel();
+                this.setupCardInteractions();
+                this.setupTouchHandlers();
+                this.setupKeyboardNavigation();
+            }
+
+            renderCarousel() {
+                const wrapper = document.getElementById('cases-carousel');
+                if (!wrapper) return;
+
+                const { currentIndex } = this;
+                const cases = this.cases;
+                
+                const leftIndex = (currentIndex - 1 + cases.length) % cases.length;
+                const centerIndex = currentIndex;
+                const rightIndex = (currentIndex + 1) % cases.length;
+
+                wrapper.innerHTML = `
+                    <div class="case-container left">
+                        ${this.createCaseCard(cases[leftIndex])}
+                    </div>
+                    <div class="case-container center">
+                        ${this.createCaseCard(cases[centerIndex])}
+                    </div>
+                    <div class="case-container right">
+                        ${this.createCaseCard(cases[rightIndex])}
+                    </div>
+                `;
+            }
+
+            createCaseCard(caseData) {
+                return `
+                    <div class="case-card">
+                        <div class="case-header">
+                            <div class="case-company">${caseData.company}</div>
+                            <h3 class="case-title">${caseData.title}</h3>
+                            <p class="case-description">${caseData.description}</p>
+                        </div>
+                        <div class="case-metrics">
+                            ${caseData.metrics.map(metric => `
+                                <div class="case-metric">
+                                    <div class="case-metric-value">${metric.value}</div>
+                                    <div class="case-metric-label">${metric.label}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            clearAnimationClasses(element) {
+                const animationClasses = [
+                    'animate-rotate-right', 'animate-rotate-left',
+                    'animate-center-to-right', 'animate-center-to-left',
+                    'animate-left-to-center', 'animate-right-to-center'
+                ];
+                animationClasses.forEach(cls => element.classList.remove(cls));
+            }
+
+            navigate(direction) {
+                if (this.isTransitioning) return;
+
+                const wrapper = document.getElementById('cases-carousel');
+                if (!wrapper) return;
+
+                this.isTransitioning = true;
+
+                // Pegar cards atuais e limpar animações anteriores
+                const currentCards = wrapper.querySelectorAll('.case-container');
+                currentCards.forEach(card => this.clearAnimationClasses(card));
+
+                const leftCard = wrapper.querySelector('.case-container.left');
+                const centerCard = wrapper.querySelector('.case-container.center');
+                const rightCard = wrapper.querySelector('.case-container.right');
+
+                // Aplicar animações baseadas na direção
+                if (direction > 0) { // Girando para direita
+                    if (leftCard) leftCard.classList.add('animate-left-to-center');
+                    if (centerCard) centerCard.classList.add('animate-center-to-right');
+                    if (rightCard) rightCard.classList.add('animate-rotate-right');
+                } else { // Girando para esquerda
+                    if (leftCard) leftCard.classList.add('animate-rotate-left');
+                    if (centerCard) centerCard.classList.add('animate-center-to-left');
+                    if (rightCard) rightCard.classList.add('animate-right-to-center');
+                }
+
+                // Atualizar dados após meio da animação
+                setTimeout(() => {
+                    this.currentIndex = (this.currentIndex + direction + this.cases.length) % this.cases.length;
+                    this.renderCarousel();
+                }, 400);
+
+                // Finalizar transição
+                setTimeout(() => {
+                    this.isTransitioning = false;
+                }, 800);
+            }
+
+            setupCardInteractions() {
+                document.addEventListener('click', (e) => {
+                    const card = e.target.closest('.case-card');
+                    if (card && !e.target.closest('.cases-carousel-nav') && !this.isTransitioning) {
+                        this.openCaseDetails(card);
+                    }
+                });
+            }
+
+            openCaseDetails(card) {
+                const title = card.querySelector('.case-title').textContent;
+                const company = card.querySelector('.case-company').textContent;
+                
+                // Animação simples
+                card.style.transition = 'all 0.4s ease-out';
+                card.style.transform = 'scale(1.05)';
+                card.style.zIndex = '999';
+                
+                setTimeout(() => {
+                    alert(`🚀 Case de Sucesso Quântico: ${company}\n\n${title}\n\nImplementação disponível para sua empresa!\nSolicite uma demonstração personalizada.`);
+                    
+                    // Reset
+                    card.style.transform = '';
+                    card.style.zIndex = '';
+                }, 400);
+            }
+
+            setupTouchHandlers() {
+                let touchStartX = 0;
+                let touchEndX = 0;
+                const carousel = document.getElementById('cases-carousel');
+                
+                if (!carousel) return;
+
+                carousel.addEventListener('touchstart', (e) => {
+                    if (!this.isTransitioning) {
+                        touchStartX = e.changedTouches[0].screenX;
+                    }
+                }, { passive: true });
+
+                carousel.addEventListener('touchend', (e) => {
+                    if (!this.isTransitioning) {
+                        touchEndX = e.changedTouches[0].screenX;
+                        this.handleSwipe(touchStartX, touchEndX);
+                    }
+                }, { passive: true });
+            }
+
+            handleSwipe(startX, endX) {
+                const swipeThreshold = 50;
+                const diff = startX - endX;
+                
+                if (Math.abs(diff) > swipeThreshold && !this.isTransitioning) {
+                    if (diff > 0) {
+                        this.navigate(1); // Swipe left, go right
+                    } else {
+                        this.navigate(-1); // Swipe right, go left
+                    }
+                }
+            }
+
+            setupKeyboardNavigation() {
+                document.addEventListener('keydown', (e) => {
+                    if (!this.isTransitioning) {
+                        if (e.key === 'ArrowLeft') {
+                            this.navigate(-1);
+                        } else if (e.key === 'ArrowRight') {
+                            this.navigate(1);
+                        }
+                    }
+                });
+            }
+        }
+
+        // Global navigation function for use cases carousel
+        function navigateCasesCarousel(direction) {
+            if (window.useCasesCarousel && !window.useCasesCarousel.isTransitioning) {
+                window.useCasesCarousel.navigate(direction);
+            }
+        }
+
+        // ========================================================================
+        // NETFLIX-STYLE CAROUSEL FUNCTIONALITY
+        // ========================================================================
+
+        // Netflix Carousel System
+        class QuantumNetflixCarousel
+        {
+            constructor()
+            {
+                this.carousel = {
+                    element: document.getElementById( 'quantumCarousel' ),
+                    position: 0,
+                    cardWidth: 340, // card width + gap
+                    maxPosition: 0
+                };
+                this.expandedCard = null;
+
+                this.init();
+            }
+
+            init()
+            {
+                if ( !this.carousel.element ) return;
+
+                this.calculateMaxPosition();
+                this.setupCardInteractions();
+                this.setupProgressIndicator();
+                this.setupResponsiveHandling();
+                this.updateProgressIndicator();
+            }
+
+            calculateMaxPosition()
+            {
+                if ( !this.carousel.element ) return;
+
+                const cards = this.carousel.element.children.length;
+                const containerWidth = this.carousel.element.parentElement.offsetWidth;
+                const visibleCards = Math.floor( containerWidth / this.carousel.cardWidth );
+
+                this.carousel.maxPosition = Math.max( 0, cards - visibleCards );
+            }
+
+            setupCardInteractions()
+            {
+                const cards = document.querySelectorAll( '.netflix-card' );
+
+                cards.forEach( card =>
+                {
+                    let hoverTimeout;
+
+                    // Mouse enter - Netflix 500ms delay
+                    card.addEventListener( 'mouseenter', () =>
+                    {
+                        hoverTimeout = setTimeout( () =>
+                        {
+                            this.expandCard( card );
+                        }, 500 );
+                    } );
+
+                    // Mouse leave
+                    card.addEventListener( 'mouseleave', () =>
+                    {
+                        clearTimeout( hoverTimeout );
+                        setTimeout( () =>
+                        {
+                            this.collapseCard( card );
+                        }, 100 );
+                    } );
+
+                    // Click handler
+                    card.addEventListener( 'click', ( e ) =>
+                    {
+                        if ( !e.target.classList.contains( 'action-btn' ) )
+                        {
+                            this.openCardDetails( card );
+                        }
+                    } );
+                } );
+            }
+
+            expandCard( card )
+            {
+                // Collapse any currently expanded card
+                if ( this.expandedCard && this.expandedCard !== card )
+                {
+                    this.collapseCard( this.expandedCard );
+                }
+
+                card.classList.add( 'expanded' );
+                this.expandedCard = card;
+
+                // Add fade-in animation to expanded content
+                const expandedContent = card.querySelector( '.expanded-content' );
+                if ( expandedContent )
+                {
+                    expandedContent.style.animation = 'fadeInUp 0.3s ease-out';
+                }
+            }
+
+            collapseCard( card )
+            {
+                card.classList.remove( 'expanded' );
+                if ( this.expandedCard === card )
+                {
+                    this.expandedCard = null;
+                }
+            }
+
+            openCardDetails( card )
+            {
+                const title = card.querySelector( '.card-title' ).textContent;
+                const type = card.dataset.type;
+
+                // Cinematic transition effect
+                card.style.transition = 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                card.style.transform = 'scale(1.1) translateZ(50px)';
+                card.style.zIndex = '999';
+
+                // Modal simulation
+                setTimeout( () =>
+                {
+                    alert( `🚀 TOIT NEXUS - ${ title }\n\nTipo: ${ type }\nFuncionalidade: ${ title }\n\n⚡ Demo completa em desenvolvimento!\n\nEsta é uma prévia das capacidades quânticas revolucionárias do TOIT NEXUS.` );
+
+                    // Reset card
+                    card.style.transform = '';
+                    card.style.zIndex = '';
+                }, 500 );
+            }
+
+            scroll( direction )
+            {
+                if ( !this.carousel.element ) return;
+
+                const newPosition = this.carousel.position + direction;
+
+                if ( newPosition >= 0 && newPosition <= this.carousel.maxPosition )
+                {
+                    this.carousel.position = newPosition;
+                    const translateX = -this.carousel.position * this.carousel.cardWidth;
+
+                    this.carousel.element.style.transform = `translateX(${ translateX }px)`;
+                    this.updateProgressIndicator();
+                }
+            }
+
+            scrollToPosition( position )
+            {
+                if ( !this.carousel.element ) return;
+
+                if ( position >= 0 && position <= this.carousel.maxPosition )
+                {
+                    this.carousel.position = position;
+                    const translateX = -this.carousel.position * this.carousel.cardWidth;
+
+                    this.carousel.element.style.transform = `translateX(${ translateX }px)`;
+                    this.updateProgressIndicator();
+                }
+            }
+
+            updateProgressIndicator()
+            {
+                const dots = document.querySelectorAll( '.progress-dot' );
+                dots.forEach( ( dot, index ) =>
+                {
+                    dot.classList.toggle( 'active', index === this.carousel.position );
+                } );
+            }
+
+            setupProgressIndicator()
+            {
+                const dots = document.querySelectorAll( '.progress-dot' );
+                dots.forEach( dot =>
+                {
+                    dot.addEventListener( 'click', () =>
+                    {
+                        const position = parseInt( dot.dataset.position );
+                        this.scrollToPosition( position );
+                    } );
+                } );
+            }
+
+            setupResponsiveHandling()
+            {
+                // Recalculate on window resize
+                window.addEventListener( 'resize', () =>
+                {
+                    this.calculateMaxPosition();
+                } );
+            }
+        }
+
+        // Global carousel navigation function
+        function scrollQuantumCarousel( direction )
+        {
+            if ( window.quantumCarousel )
+            {
+                window.quantumCarousel.scroll( direction );
+            }
+        }
 
         // Add click handlers to nav links
-        document.addEventListener('DOMContentLoaded', function() {
-            const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
-            
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
+        document.addEventListener( 'DOMContentLoaded', function ()
+        {
+            const navLinks = document.querySelectorAll( '.nav-link[href^="#"]' );
+
+            navLinks.forEach( link =>
+            {
+                link.addEventListener( 'click', function ( e )
+                {
                     e.preventDefault();
-                    const targetId = this.getAttribute('href').substring(1);
-                    scrollToSection(targetId);
-                });
-            });
+                    const targetId = this.getAttribute( 'href' ).substring( 1 );
+                    scrollToSection( targetId );
+                } );
+            } );
+
+            // Initialize Netflix-style carousel
+            window.quantumCarousel = new QuantumNetflixCarousel();
             
+            // Initialize 3D Use Cases Carousel
+            window.useCasesCarousel = new UseCases3DCarousel();
+
+            // Add staggered animation to cards on load
+            const cards = document.querySelectorAll( '.netflix-card' );
+            cards.forEach( ( card, index ) =>
+            {
+                card.style.animation = `fadeInUp 0.6s ease-out ${ index * 0.1 }s both`;
+            } );
+
             // Update active nav on load
             updateActiveNavLink();
-        });
+        } );
     </script>
 </body>
+
 </html>

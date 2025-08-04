@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOIT Carousel Component</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Netflix Dark Theme */
+            --bg-primary: transparent; /* Changed to transparent */
+            --bg-secondary: transparent; /* Changed to transparent */
+            --bg-card: #2f2f2f;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --text-muted: #808080;
+            
+            /* TOIT Brand Colors */
+            --netflix-red: #e50914;
+            --toit-cyan: #00d4ff;
+            --toit-purple: #6a0dad;
+            --toit-blue: #0099ff;
+            --toit-green: #10b981;
+            
+            /* Epic Gradients */
+            --gradient-toit: linear-gradient(135deg, #00d4ff 0%, #6a0dad 50%, #0099ff 100%);
+            --gradient-overlay: linear-gradient(to right, rgba(20,20,20,1) 0%, rgba(20,20,20,0) 100%);
+            
+            /* Fonts */
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background: transparent; /* Transparent background */
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+            padding: 2rem 0;
+        }
+
+        /* Netflix Content Rows */
+        .netflix-content {
+            padding: 2rem 0;
+            background: transparent; /* Transparent background */
+        }
+
+        .netflix-row {
+            margin-bottom: 4rem;
+            padding: 0 4rem;
+        }
+
+        .row-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .row-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .system-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-toit);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .view-all {
+            color: var(--toit-cyan);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .view-all:hover {
+            color: var(--text-primary);
+        }
+
+        /* Carousel Container */
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .carousel-wrapper {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            gap: 1rem;
+            padding: 0.5rem 0;
+        }
+
+        /* Netflix Cards */
+        .netflix-card {
+            min-width: 300px;
+            height: 200px;
+            background: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .netflix-card:hover {
+            transform: scale(1.05) translateY(-10px);
+            z-index: 100;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .netflix-card.expanded {
+            transform: scale(1.3) translateY(-20px);
+            z-index: 200;
+            height: 300px;
+            min-width: 400px;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-toit);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            overflow: hidden;
+        }
+
+        .card-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                45deg,
+                rgba(0, 0, 0, 0.3) 0%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.1) 100%
+            );
+        }
+
+        .card-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .card-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .netflix-card:hover .card-description,
+        .netflix-card.expanded .card-description {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Expanded Card Content */
+        .expanded-content {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: var(--bg-card);
+            padding: 1.5rem;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .netflix-card.expanded .expanded-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-bottom: 1rem;
+        }
+
+        .feature-list li {
+            padding: 0.3rem 0;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            color: var(--toit-cyan);
+            font-weight: bold;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .action-btn {
+            background: var(--toit-cyan);
+            color: var(--bg-primary);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background: var(--text-primary);
+            transform: scale(1.05);
+        }
+
+        .action-btn.secondary {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--text-secondary);
+        }
+
+        .action-btn.secondary:hover {
+            background: var(--text-secondary);
+            color: var(--bg-primary);
+        }
+
+        /* Carousel Navigation */
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.7);
+            border: none;
+            border-radius: 50%;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            z-index: 150;
+        }
+
+        .netflix-row:hover .carousel-nav {
+            opacity: 1;
+        }
+
+        .carousel-nav:hover {
+            background: rgba(0, 0, 0, 0.9);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-nav.prev {
+            left: -25px;
+        }
+
+        .carousel-nav.next {
+            right: -25px;
+        }
+
+        /* Genre Tags */
+        .genre-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .genre-tag {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .netflix-row {
+                padding: 0 2rem;
+            }
+            
+            .netflix-card {
+                min-width: 250px;
+                height: 170px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .netflix-row {
+                padding: 0 1rem;
+            }
+            
+            .netflix-card {
+                min-width: 280px;
+                height: 160px;
+            }
+            
+            .carousel-nav {
+                display: none;
+            }
+        }
+
+        /* Loading States */
+        .loading-skeleton {
+            background: linear-gradient(90deg, #2f2f2f 25%, #404040 50%, #2f2f2f 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Epic Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Netflix Content Rows -->
+    <main class="netflix-content">
+        
+        <!-- Portal TOIT Row -->
+        <section class="netflix-row" id="portal">
+            <div class="row-header">
+                <h2 class="row-title">
+                    <div class="system-icon">🔐</div>
+                    Portal TOIT - Gateway SSO Empresarial
+                </h2>
+                <a href="#" class="view-all">Ver Todas →</a>
+            </div>
+            <div class="carousel-container">
+                <button class="carousel-nav prev" onclick="scrollCarousel('portal', -1)">‹</button>
+                <div class="carousel-wrapper" id="carousel-portal">
+                    
+                    <div class="netflix-card" data-feature="sso">
+                        <div class="card-image">🔑</div>
+                        <div class="card-overlay">
+                            <h3 class="card-title">Single Sign-On Avançado</h3>
+                            <p class="card-description">Autenticação unificada e segura para todos os sistemas</p>
+                            <div class="genre-tags">
+                                <span class="genre-tag">Segurança</span>
+                                <span class="genre-tag">JWT</span>
+                                <span class="genre-tag">Multi-tenant</span>
+                            </div>
+                        </div>
+                        <div class="expanded-content">
+                            <ul class="feature-list">
+                                <li>Autenticação JWT com refresh tokens</li>
+                                <li>Integração Redis para sessões</li>
+                                <li>Multi-tenant architecture</li>
+                                <li>Two-factor authentication</li>
+                            </ul>
+                            <div class="card-actions">
+                                <button class="action-btn">Demo</button>
+                                <button class="action-btn secondary">Detalhes</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="netflix-card" data-feature="dashboard">
+                        <div class="card-image">📊</div>
+                        <div class="card-overlay">
+                            <h3 class="card-title">Dashboard Executivo</h3>
+                            <p class="card-description">Analytics em tempo real e métricas de negócio</p>
+                            <div class="genre-tags">
+                                <span class="genre-tag">Analytics</span>
+                                <span class="genre-tag">Real-time</span>
+                                <span class="genre-tag">KPIs</span>
+                            </div>
+                        </div>
+                        <div class="expanded-content">
+                            <ul class="feature-list">
+                                <li>KPIs de negócio em tempo real</li>
+                                <li>Dashboards personalizáveis</li>
+                                <li>Relatórios automatizados</li>
+                                <li>Alertas inteligentes</li>
+                            </ul>
+                            <div class="card-actions">
+                                <button class="action-btn">Demo</button>
+                                <button class="action-btn secondary">Detalhes</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="netflix-card" data-feature="permissions">
+                        <div class="card-image">👥</div>
+                        <div class="card-overlay">
+                            <h3 class="card-title">Gestão de Usuários</h3>
+                            <p class="card-description">Controle total de permissões e acessos</p>
+                            <div class="genre-tags">
+                                <span class="genre-tag">RBAC</span>
+                                <span class="genre-tag">Permissions</span>
+                                <span class="genre-tag">Users</span>
+                            </div>
+                        </div>
+                        <div class="expanded-content">
+                            <ul class="feature-list">
+                                <li>Role-based access control</li>
+                                <li>Permissões granulares</li>
+                                <li>Gestão de grupos</li>
+                                <li>Auditoria de acessos</li>
+                            </ul>
+                            <div class="card-actions">
+                                <button class="action-btn">Demo</button>
+                                <button class="action-btn secondary">Detalhes</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="netflix-card" data-feature="integration">
+                        <div class="card-image">🔗</div>
+                        <div class="card-overlay">
+                            <h3 class="card-title">Integração Universal</h3>
+                            <p class="card-description">APIs REST e webhooks para qualquer sistema</p>
+                            <div class="genre-tags">
+                                <span class="genre-tag">API</span>
+                                <span class="genre-tag">Webhooks</span>
+                                <span class="genre-tag">Integration</span>
+                            </div>
+                        </div>
+                        <div class="expanded-content">
+                            <ul class="feature-list">
+                                <li>APIs REST documentadas</li>
+                                <li>Webhooks em tempo real</li>
+                                <li>SDKs para múltiplas linguagens</li>
+                                <li>Rate limiting inteligente</li>
+                            </ul>
+                            <div class="card-actions">
+                                <button class="action-btn">Demo</button>
+                                <button class="action-btn secondary">Detalhes</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="netflix-card" data-feature="security">
+                        <div class="card-image">🛡️</div>
+                        <div class="card-overlay">
+                            <h3 class="card-title">Segurança Avançada</h3>
+                            <p class="card-description">Criptografia de ponta e compliance total</p>
+                            <div class="genre-tags">
+                                <span class="genre-tag">Security</span>
+                                <span class="genre-tag">Encryption</span>
+                                <span class="genre-tag">Compliance</span>
+                            </div>
+                        </div>
+                        <div class="expanded-content">
+                            <ul class="feature-list">
+                                <li>Criptografia AES-256</li>
+                                <li>Compliance LGPD/GDPR</li>
+                                <li>Logs de auditoria</li>
+                                <li>Detecção de anomalias</li>
+                            </ul>
+                            <div class="card-actions">
+                                <button class="action-btn">Demo</button>
+                                <button class="action-btn secondary">Detalhes</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <button class="carousel-nav next" onclick="scrollCarousel('portal', 1)">›</button>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Netflix-style JavaScript System
+        class NetflixTOIT {
+            constructor() {
+                this.carousels = {};
+                this.expandedCard = null;
+                this.scrollPositions = {};
+                
+                this.init();
+            }
+
+            init() {
+                this.setupCarousels();
+                this.setupCardInteractions();
+            }
+
+            setupCarousels() {
+                const carouselIds = ['portal'];
+                
+                carouselIds.forEach(id => {
+                    this.carousels[id] = {
+                        element: document.getElementById(`carousel-${id}`),
+                        position: 0,
+                        cardWidth: 320, // card width + gap
+                        maxPosition: 0
+                    };
+                    
+                    this.calculateMaxPosition(id);
+                });
+            }
+
+            calculateMaxPosition(carouselId) {
+                const carousel = this.carousels[carouselId];
+                const cards = carousel.element.children.length;
+                const containerWidth = carousel.element.parentElement.offsetWidth;
+                const visibleCards = Math.floor(containerWidth / carousel.cardWidth);
+                
+                carousel.maxPosition = Math.max(0, cards - visibleCards);
+            }
+
+            setupCardInteractions() {
+                document.querySelectorAll('.netflix-card').forEach(card => {
+                    let hoverTimeout;
+
+                    card.addEventListener('mouseenter', () => {
+                        hoverTimeout = setTimeout(() => {
+                            this.expandCard(card);
+                        }, 500); // Delay like Netflix
+                    });
+
+                    card.addEventListener('mouseleave', () => {
+                        clearTimeout(hoverTimeout);
+                        setTimeout(() => {
+                            this.collapseCard(card);
+                        }, 100);
+                    });
+
+                    card.addEventListener('click', (e) => {
+                        if (!e.target.classList.contains('action-btn')) {
+                            this.openCardDetails(card);
+                        }
+                    });
+                });
+            }
+
+            expandCard(card) {
+                if (this.expandedCard && this.expandedCard !== card) {
+                    this.collapseCard(this.expandedCard);
+                }
+                
+                card.classList.add('expanded');
+                this.expandedCard = card;
+                
+                // Add fade in animation to expanded content
+                const expandedContent = card.querySelector('.expanded-content');
+                if (expandedContent) {
+                    expandedContent.style.animation = 'fadeInUp 0.3s ease-out';
+                }
+            }
+
+            collapseCard(card) {
+                card.classList.remove('expanded');
+                if (this.expandedCard === card) {
+                    this.expandedCard = null;
+                }
+            }
+
+            openCardDetails(card) {
+                const feature = card.dataset.feature;
+                const title = card.querySelector('.card-title').textContent;
+                
+                // Create cinematic transition
+                card.style.transition = 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                card.style.transform = 'scale(1.1) translateZ(50px)';
+                card.style.zIndex = '999';
+                
+                // Show details modal (simplified)
+                setTimeout(() => {
+                    alert(`🎬 Abrindo detalhes épicos de: ${title}\n\nFeature: ${feature}\n\nDemo completa em desenvolvimento!`);
+                    
+                    // Reset
+                    card.style.transform = '';
+                    card.style.zIndex = '';
+                }, 500);
+            }
+        }
+
+        // Carousel Navigation Functions
+        function scrollCarousel(carouselId, direction) {
+            const system = window.netflixTOIT;
+            const carousel = system.carousels[carouselId];
+            
+            if (!carousel) return;
+            
+            const newPosition = carousel.position + direction;
+            
+            if (newPosition >= 0 && newPosition <= carousel.maxPosition) {
+                carousel.position = newPosition;
+                const translateX = -carousel.position * carousel.cardWidth;
+                
+                carousel.element.style.transform = `translateX(${translateX}px)`;
+            }
+        }
+
+        // Initialize Netflix TOIT System
+        document.addEventListener('DOMContentLoaded', () => {
+            window.netflixTOIT = new NetflixTOIT();
+            
+            // Add loading skeleton animation
+            document.querySelectorAll('.netflix-card').forEach((card, index) => {
+                card.style.animation = `fadeInUp 0.6s ease-out ${index * 0.1}s both`;
+            });
+        });
+
+        // Responsive carousel recalculation
+        window.addEventListener('resize', () => {
+            if (window.netflixTOIT) {
+                Object.keys(window.netflixTOIT.carousels).forEach(id => {
+                    window.netflixTOIT.calculateMaxPosition(id);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

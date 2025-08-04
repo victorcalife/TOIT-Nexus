@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOIT NEXUS - Quantum ML Carousel</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* TOIT NEXUS Brand Colors */
+            --quantum-primary: #6366f1;
+            --quantum-secondary: #8b5cf6;
+            --quantum-accent: #06b6d4;
+            --quantum-success: #10b981;
+            --quantum-warning: #f59e0b;
+            --quantum-error: #ef4444;
+            
+            /* Background Colors */
+            --bg-primary: #0f0f23;
+            --bg-secondary: #1a1a3a;
+            --bg-card: #252545;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0c0;
+            --text-muted: #808088;
+            --border-color: #3a3a5a;
+            
+            /* TOIT Brand Colors */
+            --toit-cyan: #00d4ff;
+            --toit-purple: #6a0dad;
+            --toit-blue: #0099ff;
+            --toit-green: #10b981;
+            
+            /* Epic Gradients */
+            --gradient-toit: linear-gradient(135deg, #00d4ff 0%, #6a0dad 50%, #0099ff 100%);
+            --gradient-overlay: linear-gradient(to right, rgba(20,20,20,1) 0%, rgba(20,20,20,0) 100%);
+            --quantum-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --quantum-neural: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            
+            /* Fonts */
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+            
+            /* Animations */
+            --animation-speed: 0.3s;
+            --quantum-glow: 0 0 20px rgba(99, 102, 241, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+            padding: 2rem 0;
+        }
+
+        /* Quantum ML Section */
+        .quantum-ml-section {
+            padding: 4rem 0;
+            background: var(--bg-primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Quantum Particles Background */
+        .quantum-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            opacity: 0.4;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--quantum-accent);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .particle:nth-child(2) { animation-delay: -1s; background: var(--quantum-primary); }
+        .particle:nth-child(3) { animation-delay: -2s; background: var(--quantum-secondary); }
+        .particle:nth-child(4) { animation-delay: -3s; background: var(--toit-cyan); }
+        .particle:nth-child(5) { animation-delay: -4s; background: var(--toit-green); }
+        .particle:nth-child(6) { animation-delay: -5s; background: var(--quantum-accent); }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+            25% { opacity: 1; transform: translate(100px, -100px) rotate(90deg); }
+            50% { transform: translate(-80px, -200px) rotate(180deg); opacity: 0.8; }
+            75% { opacity: 0.6; transform: translate(150px, -120px) rotate(270deg); }
+        }
+
+        /* Netflix Content Rows */
+        .netflix-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        .netflix-row {
+            margin-bottom: 4rem;
+            padding: 0 4rem;
+        }
+
+        .row-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .row-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .system-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-toit);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            animation: quantum-pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes quantum-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .view-all {
+            color: var(--toit-cyan);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--toit-cyan);
+            border-radius: 20px;
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .view-all:hover {
+            color: var(--text-primary);
+            background: var(--toit-cyan);
+        }
+
+        /* Carousel Container */
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .carousel-wrapper {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            gap: 1.2rem;
+            padding: 0.5rem 0;
+        }
+
+        /* Netflix Cards - TOIT Style */
+        .netflix-card {
+            min-width: 320px;
+            height: 220px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            flex-shrink: 0;
+            border: 1px solid var(--border-color);
+        }
+
+        .netflix-card:hover {
+            transform: scale(1.05) translateY(-10px);
+            z-index: 100;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 30px var(--quantum-glow);
+            border-color: var(--quantum-primary);
+        }
+
+        .netflix-card.expanded {
+            transform: scale(1.25) translateY(-20px);
+            z-index: 200;
+            height: 320px;
+            min-width: 400px;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 60%;
+            background: var(--gradient-toit);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            overflow: hidden;
+        }
+
+        .card-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                45deg,
+                rgba(0, 0, 0, 0.2) 0%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.1) 100%
+            );
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+        }
+
+        .card-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.7rem;
+            color: var(--text-primary);
+            background: var(--quantum-neural);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card-description {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .netflix-card:hover .card-description,
+        .netflix-card.expanded .card-description {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Expanded Card Content */
+        .expanded-content {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: var(--bg-card);
+            padding: 1.5rem;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+            border-radius: 0 0 12px 12px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .netflix-card.expanded .expanded-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-bottom: 1rem;
+        }
+
+        .feature-list li {
+            padding: 0.4rem 0;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-size: 0.9rem;
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            color: var(--toit-cyan);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.7rem;
+            margin-top: 1rem;
+        }
+
+        .action-btn {
+            background: var(--toit-cyan);
+            color: var(--bg-primary);
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--font-primary);
+        }
+
+        .action-btn:hover {
+            background: var(--text-primary);
+            transform: scale(1.05);
+        }
+
+        .action-btn.secondary {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--text-secondary);
+        }
+
+        .action-btn.secondary:hover {
+            background: var(--text-secondary);
+            color: var(--bg-primary);
+        }
+
+        /* Carousel Navigation */
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.7);
+            border: none;
+            border-radius: 50%;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            z-index: 150;
+            backdrop-filter: blur(10px);
+        }
+
+        .netflix-row:hover .carousel-nav {
+            opacity: 1;
+        }
+
+        .carousel-nav:hover {
+            background: rgba(0, 0, 0, 0.9);
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 0 20px var(--quantum-glow);
+        }
+
+        .carousel-nav.prev {
+            left: -25px;
+        }
+
+        .carousel-nav.next {
+            right: -25px;
+        }
+
+        /* Advantage Tags */
+        .advantage-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.7rem;
+            flex-wrap: wrap;
+        }
+
+        .advantage-tag {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--quantum-primary);
+            padding: 0.3rem 0.7rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        /* Metric Badges */
+        .metric-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--quantum-success);
+            color: white;
+            padding: 0.3rem 0.7rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            font-family: var(--font-mono);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .netflix-row {
+                padding: 0 2rem;
+            }
+            
+            .netflix-card {
+                min-width: 280px;
+                height: 200px;
+            }
+
+            .row-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .netflix-row {
+                padding: 0 1rem;
+            }
+            
+            .netflix-card {
+                min-width: 300px;
+                height: 180px;
+            }
+            
+            .carousel-nav {
+                display: none;
+            }
+
+            .row-title {
+                font-size: 1.5rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .row-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+
+        /* Loading States */
+        .loading-skeleton {
+            background: linear-gradient(90deg, #252545 25%, #3a3a5a 50%, #252545 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Epic Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Quantum ML Section with Netflix Carousel -->
+    <section class="quantum-ml-section" id="quantum-ml">
+        
+        <!-- Quantum Particles Background -->
+        <div class="quantum-particles">
+            <div class="particle" style="left: 10%; top: 20%;"></div>
+            <div class="particle" style="left: 80%; top: 15%;"></div>
+            <div class="particle" style="left: 20%; top: 60%;"></div>
+            <div class="particle" style="left: 90%; top: 70%;"></div>
+            <div class="particle" style="left: 50%; top: 40%;"></div>
+            <div class="particle" style="left: 70%; top: 30%;"></div>
+        </div>
+
+        <!-- Netflix Content Rows -->
+        <main class="netflix-content">
+            
+            <!-- ML Quântico Integrado Row -->
+            <section class="netflix-row" id="ml-integrado">
+                <div class="row-header">
+                    <h2 class="row-title">
+                        <div class="system-icon">🧠</div>
+                        Machine Learning Quântico Integrado
+                    </h2>
+                    <a href="#quantum-advantage" class="view-all">Ver Vantagens →</a>
+                </div>
+                <div class="carousel-container">
+                    <button class="carousel-nav prev" onclick="scrollCarousel('ml-integrado', -1)">‹</button>
+                    <div class="carousel-wrapper" id="carousel-ml-integrado">
+                        
+                        <div class="netflix-card" data-feature="conexao-inteligente">
+                            <div class="metric-badge">Auto-ML</div>
+                            <div class="card-image">⚡</div>
+                            <div class="card-overlay">
+                                <h3 class="card-title">Conexão Inteligente</h3>
+                                <p class="card-description">ML detecta automaticamente padrões de dados e sugere as melhores conexões</p>
+                                <div class="advantage-tags">
+                                    <span class="advantage-tag">Pattern Recognition</span>
+                                    <span class="advantage-tag">Auto-Connect</span>
+                                    <span class="advantage-tag">Smart Mapping</span>
+                                </div>
+                            </div>
+                            <div class="expanded-content">
+                                <ul class="feature-list">
+                                    <li>Detecção automática de padrões de dados</li>
+                                    <li>Sugestões inteligentes de conexões</li>
+                                    <li>Mapeamento automático de transformações</li>
+                                    <li>Validação de integridade em tempo real</li>
+                                    <li>Otimização contínua de performance</li>
+                                </ul>
+                                <div class="card-actions">
+                                    <button class="action-btn">Testar IA</button>
+                                    <button class="action-btn secondary">Documentação</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="netflix-card" data-feature="processamento-preditivo">
+                            <div class="metric-badge">65.536x</div>
+                            <div class="card-image">🔮</div>
+                            <div class="card-overlay">
+                                <h3 class="card-title">Processamento Preditivo</h3>
+                                <p class="card-description">65.536 cenários paralelos processados simultaneamente via quantum</p>
+                                <div class="advantage-tags">
+                                    <span class="advantage-tag">Quantum Parallel</span>
+                                    <span class="advantage-tag">TQL Optimize</span>
+                                    <span class="advantage-tag">Superposition</span>
+                                </div>
+                            </div>
+                            <div class="expanded-content">
+                                <ul class="feature-list">
+                                    <li>Processamento massivo paralelo quântico</li>
+                                    <li>Otimização automática de queries TQL</li>
+                                    <li>Predição de performance em tempo real</li>
+                                    <li>Superposição quântica para cenários múltiplos</li>
+                                    <li>Algoritmos VQE adaptativos</li>
+                                </ul>
+                                <div class="card-actions">
+                                    <button class="action-btn">Demo Quantum</button>
+                                    <button class="action-btn secondary">Ver Casos</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="netflix-card" data-feature="insights-automaticos">
+                            <div class="metric-badge">94.7%</div>
+                            <div class="card-image">📈</div>
+                            <div class="card-overlay">
+                                <h3 class="card-title">Insights Automáticos</h3>
+                                <p class="card-description">Relatórios se autocompletam com predições ML e identificação de tendências</p>
+                                <div class="advantage-tags">
+                                    <span class="advantage-tag">Auto-Reports</span>
+                                    <span class="advantage-tag">Trend Analysis</span>
+                                    <span class="advantage-tag">ML Prediction</span>
+                                </div>
+                            </div>
+                            <div class="expanded-content">
+                                <ul class="feature-list">
+                                    <li>Geração automática de insights</li>
+                                    <li>Predições com 94.7% de precisão</li>
+                                    <li>Identificação de tendências emergentes</li>
+                                    <li>Relatórios auto-adaptativos</li>
+                                    <li>Alertas preditivos personalizados</li>
+                                </ul>
+                                <div class="card-actions">
+                                    <button class="action-btn">Ver Insights</button>
+                                    <button class="action-btn secondary">Configurar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="netflix-card" data-feature="tarefas-inteligentes">
+                            <div class="metric-badge">AI-Powered</div>
+                            <div class="card-image">🎯</div>
+                            <div class="card-overlay">
+                                <h3 class="card-title">Tarefas Inteligentes</h3>
+                                <p class="card-description">Sistema aprende com histórico e cria tarefas automáticas baseadas em padrões</p>
+                                <div class="advantage-tags">
+                                    <span class="advantage-tag">Auto-Create</span>
+                                    <span class="advantage-tag">Pattern Learn</span>
+                                    <span class="advantage-tag">Smart Assign</span>
+                                </div>
+                            </div>
+                            <div class="expanded-content">
+                                <ul class="feature-list">
+                                    <li>Criação automática de tarefas</li>
+                                    <li>Aprendizado contínuo de padrões</li>
+                                    <li>Atribuição inteligente de responsáveis</li>
+                                    <li>Priorização baseada em contexto</li>
+                                    <li>Workflow adaptativo automático</li>
+                                </ul>
+                                <div class="card-actions">
+                                    <button class="action-btn">Criar Tasks</button>
+                                    <button class="action-btn secondary">Ver Histórico</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="netflix-card" data-feature="workflows-adaptativos">
+                            <div class="metric-badge">Self-Modify</div>
+                            <div class="card-image">🌊</div>
+                            <div class="card-overlay">
+                                <h3 class="card-title">Workflows Adaptativos</h3>
+                                <p class="card-description">Fluxos se modificam sozinhos baseados em resultados para otimização contínua</p>
+                                <div class="advantage-tags">
+                                    <span class="advantage-tag">Auto-Optimize</span>
+                                    <span class="advantage-tag">Self-Modify</span>
+                                    <span class="advantage-tag">Continuous</span>
+                                </div>
+                            </div>
+                            <div class="expanded-content">
+                                <ul class="feature-list">
+                                    <li>Auto-modificação baseada em resultados</li>
+                                    <li>Otimização contínua de performance</li>
+                                    <li>Adaptação a mudanças de contexto</li>
+                                    <li>Machine learning de processo</li>
+                                    <li>Feedback loop inteligente</li>
+                                </ul>
+                                <div class="card-actions">
+                                    <button class="action-btn">Ver Flows</button>
+                                    <button class="action-btn secondary">Configurar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="netflix-card" data-feature="escalabilidade-quantica">
+                            <div class="metric-badge">∞ Scale</div>
+                            <div class="card-image">🚀</div>
+                            <div class="card-overlay">
+                                <h3 class="card-title">Escalabilidade Quântica</h3>
+                                <p class="card-description">Quantum ML escala infinitamente mantendo performance com trilhões de dados</p>
+                                <div class="advantage-tags">
+                                    <span class="advantage-tag">Infinite Scale</span>
+                                    <span class="advantage-tag">Quantum ML</span>
+                                    <span class="advantage-tag">Big Data</span>
+                                </div>
+                            </div>
+                            <div class="expanded-content">
+                                <ul class="feature-list">
+                                    <li>Escalabilidade infinita via quantum</li>
+                                    <li>Performance constante com big data</li>
+                                    <li>Processamento de trilhões de registros</li>
+                                    <li>Complexidade O(log n) quântica</li>
+                                    <li>Auto-scaling inteligente</li>
+                                </ul>
+                                <div class="card-actions">
+                                    <button class="action-btn">Testar Scale</button>
+                                    <button class="action-btn secondary">Benchmark</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <button class="carousel-nav next" onclick="scrollCarousel('ml-integrado', 1)">›</button>
+                </div>
+            </section>
+
+            <!-- Vantagens Quânticas Row -->
+            <section class="netflix-row" id="vantagens-quanticas">
+                <div class="row-header">
+                    <h2 class="row-title">
+                        <div class="system-icon">⚡</div>
+                        Por Que Quantum Machine Learning?
+                    </h2>
+                    <a href="#pricing" class="view-all">Ver Planos →</a>
+                </div>
+                <div class="carousel-container">
+                    <button class="carousel-nav prev" onclick="scrollCarousel('vantagens-quanticas', -1)">‹</button>
+                    <div class="carousel-wrapper" id="carousel-vantagens-quanticas">
+                        
+                        <div class="netflix-card" data-feature="paralelismo-massivo">
+                            <div class="metric-badge">847x</div>
+                            <div class="card-image">⚡</div>
+                            <div class="card-overlay">
+                                <h3 class="card-title">Paralelismo Massivo</h3>
+                                <p class="card-description">65.536 cenários processados simultaneamente usando superposição quântica</p>
+                                <div class="advantage-tags">
+                                    <span class="advantage-tag">Superposition</span>
+                                    <span class="advantage-tag">Speedup 847x</span>
+                                    <span class="advantage-tag">Quantum</span>
+                                </div>
+                            </div>
+                            <div class="expanded-content">
+                                <ul class="feature-list">
+                                    <li>Processamento paralelo quântico massivo</li>
+                                    <li>847x mais rápido que métodos clássicos</li>
+                                    <li>Otimizações que levariam horas em segundos</li>
+                                    <li>Superposição quântica para cenários múltiplos</li>
+                                    <li>Algoritmos híbridos quantum-clássicos</li>
+                                </ul>
+                                <div class="card-actions">
+                                    <button class="action-btn">Ver Speedup</button>
+                                    <button class="action-btn secondary">Benchmark</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="netflix-card" data-feature="emaranhamento-metricas">
+                            <div class="metric-badge">94.7%</div>
+                            <div class="card-image">🧠</div>
+                            <div class="card-overlay">
+                                <h3 class="card-title">Emaranhamento de Métricas</h3>
+                                <p class="card-description">Correlações impossíveis de detectar classicamente reveladas instantaneamente</p>
+                                <div class="advantage-tags">
+                                    <span class="advantage-tag">Entanglement</span>
+                                    <span class="advantage-tag">Precision 94.7%</span>
+                                    <span class="advantage-tag">Insight</span>
+                                </div>
+                            </div>
+                            <div class="expanded-content">
+                                <ul class="feature-list">
+                                    <li>Detecção de correlações impossíveis classicamente</li>
+                                    <li>94.7% de precisão em insights complexos</li>
+                                    <li>Emaranhamento quântico para métricas correlacionadas</li>
+                                    <li>Insights que transformam decisões empresariais</li>
+                                    <li>Análise multidimensional instantânea</li>
+                                </ul>
+                                <div class="card-actions">
+                                    <button class="action-btn">Ver Insights</button>
+                                    <button class="action-btn secondary">Casos Reais</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="netflix-card" data-feature="algoritmos-adaptativos">
+                            <div class="metric-badge">Real-time</div>
+                            <div class="card-image">🎯</div>
+                            <div class="card-overlay">
+                                <h3 class="card-title">Algoritmos Adaptativos</h3>
+                                <p class="card-description">VQE e algoritmos híbridos que se otimizam automaticamente conforme dados evoluem</p>
+                                <div class="advantage-tags">
+                                    <span class="advantage-tag">VQE</span>
+                                    <span class="advantage-tag">Auto-Optimize</span>
+                                    <span class="advantage-tag">Hybrid</span>
+                                </div>
+                            </div>
+                            <div class="expanded-content">
+                                <ul class="feature-list">
+                                    <li>Variational Quantum Eigensolver (VQE)</li>
+                                    <li>Auto-otimização em tempo real</li>
+                                    <li>Algoritmos híbridos quantum-clássicos</li>
+                                    <li>Adaptação contínua aos dados</li>
+                                    <li>Machine learning quântico evolutivo</li>
+                                </ul>
+                                <div class="card-actions">
+                                    <button class="action-btn">Ver VQE</button>
+                                    <button class="action-btn secondary">Algoritmos</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="netflix-card" data-feature="predicoes-quanticas">
+                            <div class="metric-badge">89.3%</div>
+                            <div class="card-image">🔮</div>
+                            <div class="card-overlay">
+                                <h3 class="card-title">Predições Quânticas</h3>
+                                <p class="card-description">QNN que enxergam padrões em múltiplas dimensões paralelas com precisão inédita</p>
+                                <div class="advantage-tags">
+                                    <span class="advantage-tag">QNN</span>
+                                    <span class="advantage-tag">Accuracy 89.3%</span>
+                                    <span class="advantage-tag">Multi-Dim</span>
+                                </div>
+                            </div>
+                            <div class="expanded-content">
+                                <ul class="feature-list">
+                                    <li>Quantum Neural Networks (QNN)</li>
+                                    <li>89.3% de acurácia preditiva</li>
+                                    <li>Padrões em múltiplas dimensões paralelas</li>
+                                    <li>Antecipação de cenários futuros</li>
+                                    <li>Predições em tempo real</li>
+                                </ul>
+                                <div class="card-actions">
+                                    <button class="action-btn">Testar QNN</button>
+                                    <button class="action-btn secondary">Ver Predições</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="netflix-card" data-feature="roi-exponencial">
+                            <div class="metric-badge">487%</div>
+                            <div class="card-image">💰</div>
+                            <div class="card-overlay">
+                                <h3 class="card-title">ROI Exponencial</h3>
+                                <p class="card-description">Resultados mensuráveis desde o primeiro mês com ROI comprovado de 487%</p>
+                                <div class="advantage-tags">
+                                    <span class="advantage-tag">ROI 487%</span>
+                                    <span class="advantage-tag">First Month</span>
+                                    <span class="advantage-tag">Proven</span>
+                                </div>
+                            </div>
+                            <div class="expanded-content">
+                                <ul class="feature-list">
+                                    <li>ROI comprovado de 487% em média</li>
+                                    <li>Resultados desde o primeiro mês</li>
+                                    <li>Redução de custos operacionais</li>
+                                    <li>Aumento de eficiência exponencial</li>
+                                    <li>Vantagem competitiva mensurável</li>
+                                </ul>
+                                <div class="card-actions">
+                                    <button class="action-btn">Calcular ROI</button>
+                                    <button class="action-btn secondary">Casos Sucesso</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="netflix-card" data-feature="escalabilidade-infinita">
+                            <div class="metric-badge">∞</div>
+                            <div class="card-image">🌐</div>
+                            <div class="card-overlay">
+                                <h3 class="card-title">Escalabilidade Infinita</h3>
+                                <p class="card-description">De startups a Fortune 500, quantum scaling que cresce com seu negócio</p>
+                                <div class="advantage-tags">
+                                    <span class="advantage-tag">Infinite Scale</span>
+                                    <span class="advantage-tag">Fortune 500</span>
+                                    <span class="advantage-tag">Quantum</span>
+                                </div>
+                            </div>
+                            <div class="expanded-content">
+                                <ul class="feature-list">
+                                    <li>Escalabilidade quanticamente infinita</li>
+                                    <li>Suporte desde startups até Fortune 500</li>
+                                    <li>Performance constante independente do volume</li>
+                                    <li>Auto-scaling inteligente baseado em demanda</li>
+                                    <li>Arquitetura quantum-ready para futuro</li>
+                                </ul>
+                                <div class="card-actions">
+                                    <button class="action-btn">Ver Escala</button>
+                                    <button class="action-btn secondary">Enterprise</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <button class="carousel-nav next" onclick="scrollCarousel('vantagens-quanticas', 1)">›</button>
+                </div>
+            </section>
+
+        </main>
+    </section>
+
+    <script>
+        // Netflix-style Quantum ML Carousel System
+        class QuantumMLCarousel {
+            constructor() {
+                this.carousels = {};
+                this.expandedCard = null;
+                this.scrollPositions = {};
+                
+                this.init();
+            }
+
+            init() {
+                this.setupCarousels();
+                this.setupCardInteractions();
+                this.setupIntersectionObserver();
+            }
+
+            setupCarousels() {
+                const carouselIds = ['ml-integrado', 'vantagens-quanticas'];
+                
+                carouselIds.forEach(id => {
+                    this.carousels[id] = {
+                        element: document.getElementById(`carousel-${id}`),
+                        position: 0,
+                        cardWidth: 340, // card width + gap
+                        maxPosition: 0
+                    };
+                    
+                    this.calculateMaxPosition(id);
+                });
+            }
+
+            calculateMaxPosition(carouselId) {
+                const carousel = this.carousels[carouselId];
+                if (!carousel.element) return;
+                
+                const cards = carousel.element.children.length;
+                const containerWidth = carousel.element.parentElement.offsetWidth;
+                const visibleCards = Math.floor(containerWidth / carousel.cardWidth);
+                
+                carousel.maxPosition = Math.max(0, cards - visibleCards);
+            }
+
+            setupCardInteractions() {
+                document.querySelectorAll('.netflix-card').forEach((card, index) => {
+                    let hoverTimeout;
+
+                    // Staggered entry animation
+                    card.style.animation = `fadeInUp 0.6s ease-out ${index * 0.1}s both`;
+
+                    card.addEventListener('mouseenter', () => {
+                        hoverTimeout = setTimeout(() => {
+                            this.expandCard(card);
+                        }, 500); // Netflix-style delay
+                    });
+
+                    card.addEventListener('mouseleave', () => {
+                        clearTimeout(hoverTimeout);
+                        setTimeout(() => {
+                            this.collapseCard(card);
+                        }, 100);
+                    });
+
+                    card.addEventListener('click', (e) => {
+                        if (!e.target.classList.contains('action-btn')) {
+                            this.openCardDetails(card);
+                        }
+                    });
+                });
+            }
+
+            setupIntersectionObserver() {
+                const options = {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -100px 0px'
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('fade-in-up');
+                        }
+                    });
+                }, options);
+
+                document.querySelectorAll('.netflix-card').forEach(card => {
+                    observer.observe(card);
+                });
+            }
+
+            expandCard(card) {
+                if (this.expandedCard && this.expandedCard !== card) {
+                    this.collapseCard(this.expandedCard);
+                }
+                
+                card.classList.add('expanded');
+                this.expandedCard = card;
+                
+                // Add fade in animation to expanded content
+                const expandedContent = card.querySelector('.expanded-content');
+                if (expandedContent) {
+                    expandedContent.style.animation = 'fadeInUp 0.3s ease-out';
+                }
+
+                // Quantum glow effect
+                card.style.boxShadow = '0 25px 50px rgba(0, 0, 0, 0.5), 0 0 40px rgba(99, 102, 241, 0.4)';
+            }
+
+            collapseCard(card) {
+                card.classList.remove('expanded');
+                card.style.boxShadow = '';
+                if (this.expandedCard === card) {
+                    this.expandedCard = null;
+                }
+            }
+
+            openCardDetails(card) {
+                const feature = card.dataset.feature;
+                const title = card.querySelector('.card-title').textContent;
+                
+                // Create cinematic transition
+                card.style.transition = 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                card.style.transform = 'scale(1.1) translateZ(50px)';
+                card.style.zIndex = '999';
+                card.style.boxShadow = '0 30px 60px rgba(99, 102, 241, 0.4)';
+                
+                // Show quantum modal (simplified)
+                setTimeout(() => {
+                    alert(`🌟 Quantum Feature: ${title}\n\n🧬 Feature ID: ${feature}\n\n🚀 Sistema TOIT NEXUS\n\nDemo completa disponível no painel principal!`);
+                    
+                    // Reset with quantum effect
+                    card.style.transform = '';
+                    card.style.zIndex = '';
+                    card.style.boxShadow = '';
+                }, 500);
+            }
+        }
+
+        // Carousel Navigation Functions
+        function scrollCarousel(carouselId, direction) {
+            const system = window.quantumMLCarousel;
+            const carousel = system.carousels[carouselId];
+            
+            if (!carousel || !carousel.element) return;
+            
+            const newPosition = carousel.position + direction;
+            
+            if (newPosition >= 0 && newPosition <= carousel.maxPosition) {
+                carousel.position = newPosition;
+                const translateX = -carousel.position * carousel.cardWidth;
+                
+                carousel.element.style.transform = `translateX(${translateX}px)`;
+                
+                // Add quantum glow to navigation
+                const navButton = event.target;
+                navButton.style.boxShadow = '0 0 20px rgba(99, 102, 241, 0.6)';
+                setTimeout(() => {
+                    navButton.style.boxShadow = '';
+                }, 300);
+            }
+        }
+
+        // Initialize Quantum ML Carousel System
+        document.addEventListener('DOMContentLoaded', () => {
+            window.quantumMLCarousel = new QuantumMLCarousel();
+            
+            // Quantum particle animation randomization
+            document.querySelectorAll('.particle').forEach(particle => {
+                const randomDelay = Math.random() * 8;
+                const randomDuration = 6 + Math.random() * 4;
+                particle.style.animationDelay = `-${randomDelay}s`;
+                particle.style.animationDuration = `${randomDuration}s`;
+            });
+        });
+
+        // Responsive carousel recalculation
+        window.addEventListener('resize', () => {
+            if (window.quantumMLCarousel) {
+                Object.keys(window.quantumMLCarousel.carousels).forEach(id => {
+                    window.quantumMLCarousel.calculateMaxPosition(id);
+                });
+            }
+        });
+
+        // Performance optimization - pause animations when not visible
+        document.addEventListener('visibilitychange', () => {
+            const particles = document.querySelectorAll('.particle');
+            particles.forEach(particle => {
+                if (document.hidden) {
+                    particle.style.animationPlayState = 'paused';
+                } else {
+                    particle.style.animationPlayState = 'running';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
