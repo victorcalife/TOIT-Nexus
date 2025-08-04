@@ -81,6 +81,21 @@ app.use((req, res, next) => {
     const { initializeAuth } = await import('./initializeAuth.js');
     await initializeAuth();
     
+    // Middleware para servir nexus-quantum-landing.html para nexus.toit.com.br
+    app.use((req, res, next) => {
+      const host = req.get('host') || '';
+      const isNexusDomain = host.includes('nexus.toit.com.br') || host.startsWith('nexus.');
+      
+      // Se for domínio nexus e requisição para página raiz (não API)
+      if (isNexusDomain && req.method === 'GET' && !req.path.startsWith('/api')) {
+        const filePath = path.resolve(process.cwd(), 'nexus-quantum-landing.html');
+        console.log(`🌐 Servindo nexus-quantum-landing.html para ${host}`);
+        return res.sendFile(filePath);
+      }
+      
+      next();
+    });
+
     // Register authentication routes FIRST (highest priority)
     const authRoutes = await import('./authRoutes.js');
     app.use('/api/auth', authRoutes.default);
