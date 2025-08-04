@@ -45,6 +45,17 @@ export async function setupVite(app, server) {
 
   app.use(vite.middlewares);
   app.use("*", async (req, res, next) => {
+    const host = req.get('host') || '';
+    const isNexusDomain = host.includes('nexus.toit.com.br') || host.startsWith('nexus.');
+    
+    console.log(`🔍 [VITE DEV] Host: ${host} | Path: ${req.path} | NexusDomain: ${isNexusDomain}`);
+    
+    // Se for domínio nexus, o middleware anterior já deve ter tratado
+    if (isNexusDomain) {
+      console.log(`⚠️  [VITE DEV] Domínio nexus chegou ao catch-all - retornando 404`);
+      return res.status(404).send('Página não encontrada no domínio Nexus');
+    }
+    
     const url = req.originalUrl;
 
     try {
@@ -81,8 +92,21 @@ export function serveStatic(app) {
 
   app.use(express.static(distPath));
 
-  // fall through to index.html if the file doesn't exist
-  app.use("*", (_req, res) => {
+  // fall through to index.html APENAS se NÃO for domínio nexus
+  app.use("*", (req, res) => {
+    const host = req.get('host') || '';
+    const isNexusDomain = host.includes('nexus.toit.com.br') || host.startsWith('nexus.');
+    
+    console.log(`🔍 [SERVE STATIC] Host: ${host} | Path: ${req.path} | NexusDomain: ${isNexusDomain}`);
+    
+    // Se for domínio nexus, o middleware anterior já deve ter tratado
+    // Se chegou aqui no nexus, algo deu errado - retornar 404
+    if (isNexusDomain) {
+      console.log(`⚠️  [SERVE STATIC] Domínio nexus chegou ao catch-all - retornando 404`);
+      return res.status(404).send('Página não encontrada no domínio Nexus');
+    }
+    
+    // Para outros domínios, servir React App normalmente
     res.sendFile(path.resolve(distPath, "index.html"));
   });
 }

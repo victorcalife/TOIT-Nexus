@@ -76,25 +76,33 @@ app.use((req, res, next) => {
     
     await import('./initializeSystem.js');
 
-    // Inicializar sistema de autenticação
-    console.log('🔐 Inicializando sistema de autenticação...');
-    const { initializeAuth } = await import('./initializeAuth.js');
-    await initializeAuth();
-    
-    // Middleware para servir nexus-quantum-landing.html para nexus.toit.com.br
+    // MIDDLEWARE CRÍTICO: Servir nexus-quantum-landing.html para nexus.toit.com.br
+    // DEVE ser a PRIMEIRA coisa após middlewares básicos, ANTES de qualquer route
     app.use((req, res, next) => {
       const host = req.get('host') || '';
       const isNexusDomain = host.includes('nexus.toit.com.br') || host.startsWith('nexus.');
       
-      // Se for domínio nexus e requisição para página raiz (não API)
+      console.log(`🌐 [DEBUG] Host: ${host} | Path: ${req.path} | NexusDomain: ${isNexusDomain}`);
+      
+      // Se for domínio nexus e requisição GET (exceto APIs)
       if (isNexusDomain && req.method === 'GET' && !req.path.startsWith('/api')) {
         const filePath = path.resolve(process.cwd(), 'nexus-quantum-landing.html');
-        console.log(`🌐 Servindo nexus-quantum-landing.html para ${host}`);
-        return res.sendFile(filePath);
+        console.log(`🚀 [NEXUS LANDING] Servindo nexus-quantum-landing.html para ${host}${req.path}`);
+        return res.sendFile(filePath, (err) => {
+          if (err) {
+            console.error('❌ Erro ao servir nexus-quantum-landing.html:', err);
+            res.status(500).send('Erro ao carregar página');
+          }
+        });
       }
       
       next();
     });
+
+    // Inicializar sistema de autenticação
+    console.log('🔐 Inicializando sistema de autenticação...');
+    const { initializeAuth } = await import('./initializeAuth.js');
+    await initializeAuth();
 
     // Register authentication routes FIRST (highest priority)
     const authRoutes = await import('./authRoutes.js');
