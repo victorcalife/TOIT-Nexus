@@ -238,6 +238,23 @@ app.use((req, res, next) => {
       }
     });
 
+    // CRÍTICO: Registrar middleware nexus ANTES do Vite/Static
+    // Eles também usam app.use('*') e sobrescrevem o nosso
+    app.use((req, res, next) => {
+      const host = req.get('host') || '';
+      const isNexusDomain = host.includes('nexus.toit.com.br') || host.startsWith('nexus.');
+      
+      console.log(`🔥 [FINAL CHECK] Host: ${host} | Nexus: ${isNexusDomain} | Path: ${req.path}`);
+      
+      if (isNexusDomain && !req.path.startsWith('/api')) {
+        const filePath = path.resolve(process.cwd(), 'nexus-quantum-landing.html');
+        console.log(`🚀 [FINAL SERVE] ${filePath}`);
+        return res.sendFile(filePath);
+      }
+      
+      next();
+    });
+
     // importantly only setup vite in development and after
     // setting up all the other routes so the catch-all route
     // doesn't interfere with the other routes
