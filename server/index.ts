@@ -57,8 +57,8 @@ app.use((req, res, next) => {
   
   // Para domínio nexus, interceptar ABSOLUTAMENTE TUDO - incluindo assets e APIs
   if (isNexusDomain) {
-    console.log('🎯 Interceptando TUDO do nexus - servindo Landing Page');
-    return res.sendFile(path.resolve(import.meta.dirname, '..', 'nexus-quantum-landing.html'));
+    console.log('🎯 Interceptando TUDO do nexus - servindo TESTE');
+    return res.sendFile(path.resolve(import.meta.dirname, '..', 'test-nexus.html'));
   }
   
   next();
