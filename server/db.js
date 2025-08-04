@@ -6,8 +6,8 @@ import * as schema from "../shared/schema.js";
 // Configure para Neon (compatível com Railway PostgreSQL)
 neonConfig.webSocketConstructor = ws;
 
-// URL temporária para desenvolvimento (usar a mesma do drizzle.config.js)
-const DATABASE_URL = process.env.DATABASE_URL || "postgresql://postgres:foalaCypsSEvgsygpcDaySNcGiweMsmv@crossover.proxy.rlwy.net:41834/railway";
+// DATABASE_URL definida no Railway Dashboard como variável de ambiente
+const DATABASE_URL = process.env.DATABASE_URL;
 
 if (!DATABASE_URL) {
   console.error("DATABASE_URL not set - database operations will fail");
