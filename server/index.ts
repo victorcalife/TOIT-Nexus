@@ -12,17 +12,46 @@ import { calendarWorkflowService } from "./calendarWorkflowService";
 import { revolutionaryAdaptiveEngine } from "./revolutionaryAdaptiveEngine";
 
 const app = express();
+
+// CORS middleware para permitir requisições de nexus.toit.com.br
+app.use((req, res, next) => {
+  const origin = req.get('origin');
+  const allowedOrigins = [
+    'https://nexus.toit.com.br',
+    'https://supnexus.toit.com.br',
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://localhost:5000'
+  ];
+  
+  if (origin && allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+  }
+  
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  
+  next();
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Middleware para servir landing page estática apenas para nexus.toit.com.br
+// Middleware para servir landing page estática para nexus.toit.com.br
 app.use((req, res, next) => {
   const host = req.get('host');
   const isNexusDomain = host?.includes('nexus.toit.com.br') && !host?.includes('supnexus');
   
-  // Servir landing page HTML estática apenas para nexus.toit.com.br na rota raiz
-  if (isNexusDomain && req.path === '/') {
-    console.log('🎯 Servindo Landing Page para nexus.toit.com.br');
+  console.log(`🌐 [MIDDLEWARE] Host: ${host} | Path: ${req.path} | isNexus: ${isNexusDomain}`);
+  
+  // Para domínio nexus, interceptar TODAS as rotas que não sejam API
+  if (isNexusDomain && !req.path.startsWith('/api/')) {
+    console.log('🎯 Interceptando requisição nexus - servindo Landing Page');
     return res.sendFile(path.resolve(import.meta.dirname, '..', 'nexus-quantum-landing.html'));
   }
   
