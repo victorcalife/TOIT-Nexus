@@ -2878,9 +2878,9 @@
             }
 
             .pricing-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(4, 1fr);
                 gap: 1rem;
-                max-width: 800px;
+                max-width: 1200px;
                 margin: 0 auto;
             }
         }
@@ -3004,10 +3004,14 @@
             }
 
             .advantage-grid,
-            .cases-grid,
-            .pricing-grid {
+            .cases-grid {
                 grid-template-columns: 1fr;
                 gap: 1.5rem;
+            }
+            
+            .pricing-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 1rem;
             }
 
             .pricing-card.featured {
@@ -3289,27 +3293,29 @@
     <section class="hero" id="hero">
         <div class="hero-container">
             <div class="hero-content">
-                <h1 style="transform: translateY(22px);"><span class="quantum-highlight">Nexus:</span> O 1º SaaS <span class="quantum-highlight">
+                <h1 style="transform: translateY(22px);"><span class="quantum-highlight">Nexus:</span> O 1º SaaS <span
+                        class="quantum-highlight">
                         No-Code</span>
-                    <span class="quantum-highlight">Quântico</span> do Planeta</h1>
+                    <span class="quantum-highlight">Quântico</span> do Planeta
+                </h1>
 
 
-                        <p class="hero-description" style="transform: translateY(22px);">
-                            Workflows, relatórios, dashboards, task management. Tudo integrado, tudo automatizado.
-                            Desfrute da TQL, a query language de dados mais fácil do planeta! Aproveite a performance
-                            surreal de <strong>2 hardwares quânticos "IBM Quantum Network" de 130Qubits.</strong>
-                        </p>
+                <p class="hero-description" style="transform: translateY(22px);">
+                    Workflows, relatórios, dashboards, task management. Tudo integrado, tudo automatizado.
+                    Desfrute da TQL, a query language de dados mais fácil do planeta! Aproveite a performance
+                    surreal de <strong>2 hardwares quânticos "IBM Quantum Network" de 130Qubits.</strong>
+                </p>
 
-                        <div class="quantum-stats">
-                            <div class="stat-item"
-                                style="transition: transform 0.6s ease; transform:scale(0.6) ; transform:translateY(-15px); transform:translateX(15px);">
+                <div class="quantum-stats">
+                    <div class="stat-item"
+                        style="transition: transform 0.6s ease; transform:scale(0.6) ; transform:translateY(-15px); transform:translateX(15px);">
 
-                                <spaw class="quantum-highlight"
-                                    style="font-size: 40px; font-weight: var(--quantum-gradient-1) ; transform:translateY(-35px);">
-                                    Celebre a Democracia Quântica!</span>
-                            </div>
-                        </div>
-                        <!-- Discover More CTA -->
+                        <spaw class="quantum-highlight"
+                            style="font-size: 40px; font-weight: var(--quantum-gradient-1) ; transform:translateY(-35px);">
+                            Celebre a Democracia Quântica!</span>
+                    </div>
+                </div>
+                <!-- Discover More CTA -->
 
             </div>
             <div class="quantum-circuit">
@@ -3894,8 +3900,8 @@
             <div class="section-header fade-in">
                 <h2 class="section-title">Casos Reais de <span class="quantum-highlight">Sucesso Quântico</span></h2>
                 <p class="section-subtitle">
-                    10 empresas reais já utilizam nosso Quantum ML para transformar operações e gerar resultados
-                    extraordinários. Navegue pelos cases de sucesso.
+                    10 empresas já utilizam computação quântica para transformar seus resultados. Coheça alguns cases de
+                    sucesso.
                 </p>
             </div>
 
@@ -3922,143 +3928,125 @@
             <div class="pricing-grid">
                 <!-- Básico -->
                 <div class="pricing-card">
-                    <h3 class="plan-name">
-                        <svg class="plan-logo-svg" viewBox="0 0 400 100" xmlns="http://www.w3.org/2000/svg"
-                            style="height: 1em; width: auto;">
-                            <defs>
-                                <linearGradient id="brandGradientPlan1" x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
-                                    <stop offset="50%" style="stop-color:#06b6d4;stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
-                                </linearGradient>
-                                <linearGradient id="brandGradientPlan2" x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
-                                    <stop offset="50%" style="stop-color:#581c87;stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
-                                </linearGradient>
-                            </defs>
-                            <g transform="translate(105,50)">
-                                <text x="-35" y="15" font-family="Arial Black, sans-serif" font-size="45"
-                                    font-weight="700" fill="url(#brandGradientPlan1)">TOIT</text>
-                                <text x="75" y="15" font-family="Arial, sans-serif" font-size="45" font-weight="300"
-                                    fill="url(#brandGradientPlan2)">NEXUS</text>
-                            </g>
-                        </svg>
-                    </h3>
-                    <p class="plan-description">Automação essencial com ML Quantum básico</p>
+                    <div class="pricing-card featured">
+                        <h2 class="plan-name">Nexus Starter</h2>
+                        <p class="plan-description">Automação essencial para o seu dia-a-dia</p>
+                        <div class="plan-price">
+                            <span class="price-currency">R$</span>
+                            <span class="price-amount">99</span>
+                            <span class="price-period">/mês</span>
+                        </div>
+                        <div class="price-annual">ou R$ 899/ano (economia R$ 289)</div>
+                        <ul class="plan-features">
+                            <li><span class="feature-check">✓</span> Workflows ilimitados</li>
+                            <li><span class="feature-check">✓</span> 50 automações/mês</li>
+                            <li><span class="feature-check">✓</span> ML Quantum 4 qubits</li>
+                            <li><span class="feature-check">✓</span> 5 dashboards</li>
+                            <li><span class="feature-check">✓</span> Suporte email</li>
+                        </ul>
 
-                    <div class="plan-price">
-                        <span class="price-currency">R$</span>
-                        <span class="price-amount">99</span>
-                        <span class="price-period">/mês</span>
+                        <button class="plan-cta" onclick="openModal('trialModal', 'basico')">
+                            Assinar
+                        </button>
                     </div>
-                    <div class="price-annual">ou R$ 899/ano (economia R$ 289)</div>
 
-                    <ul class="plan-features">
-                        <li><span class="feature-check">✓</span> Workflows ilimitados</li>
-                        <li><span class="feature-check">✓</span> 50 automações/mês</li>
-                        <li><span class="feature-check">✓</span> ML Quantum 4 qubits</li>
-                        <li><span class="feature-check">✓</span> 5 dashboards</li>
-                        <li><span class="feature-check">✓</span> Suporte email</li>
-                    </ul>
+                    <!-- Standard -->
+                    <div class="pricing-card featured">
+                        <h2 class="plan-name">Nexus Standard</h2>
+                        <div class="plan-price">
+                            <span class="price-currency">R$</span>
+                            <span class="price-amount">169</span>
+                            <span class="price-period">/mês</span>
+                        </div>
+                        <div class="price-annual">ou R$ 1.499/ano (economia R$ 529)</div>
 
-                    <button class="plan-cta" onclick="openModal('trialModal', 'basico')">
-                        Começar Grátis 7 Dias
-                    </button>
+                        <ul class="plan-features">
+                            <li><span class="feature-check">✓</span> Tudo do Básico</li>
+                            <li><span class="feature-check">✓</span> Até 8 execuções quânticas/mês</li>
+                            <li><span class="feature-check">✓</span> TQL - TOIT Query Language</li>
+                            <li><span class="feature-check">✓</span> Quantum Machine Learning</li>
+                            <li><span class="feature-check">✓</span>
+                            <li><span class="feature-check">✓</span> Suporte prioritário</li>
+                        </ul>
+
+                        <button class="plan-cta" onclick="openModal('trialModal', 'standard')">
+                            Assinar!
+                        </button>
+                    </div>
+
+                    <!-- Premium -->
+                    <div class="pricing-card">
+                        <h2 class="plan-name">Nexus Quantum Plus</h2>
+                        <div class="plan-price">
+                            <span class="price-currency">R$</span>
+                            <span class="price-amount">199</span>
+                            <span class="price-period">/mês</span>
+                        </div>
+                        <div class="price-annual">ou R$ 1.699/ano (economia R$ 689)</div>
+
+                        <ul class="plan-features">
+                            <li><span class="feature-check">✓</span> Tudo do Standard</li>
+                            <li><span class="feature-check">✓</span> Automações ilimitadas</li>
+                            <li><span class="feature-check">✓</span> ML Quantum Full hardwares</li>
+                            <li><span class="feature-check">✓</span> Dashboards ilimitados</li>
+                            <li><span class="feature-check">✓</span> API completa</li>
+                            <li><span class="feature-check">✓</span> Integrações premium</li>
+                            <li><span class="feature-check">✓</span> Suporte 24/7</li>
+                        </ul>
+
+                        <button class="plan-cta" onclick="openModal('trialModal', 'premium')">
+                            Teste Agora
+                        </button>
+                    </div>
+
+                    <!-- Quantum -->
+                    <div class="pricing-card">
+                        <h2 class="plan-name">Nexus Quantum Enterprise </h2>
+                        <div class="plan-price">
+                            <span class="price-currency">Mín. 10 usuários</span>
+                        </div>
+                        <div class="price-annual">Serviço personalizado. Solicite avaliação.</div>
+
+                        <ul class="plan-features">
+                            <li><span class="feature-check">✓</span> Preços especiais</li>
+                            <li><span class="feature-check">✓</span> Avaliação funcional e processual</li>
+                            <li><span class="feature-check">✓</span> Adequação direta às necessidades da sua empresa
+                            </li>
+                            <li><span class="feature-check">✓</span> Consultoria e Análise individualizada</li>
+                            <li><span class="feature-check">✓</span> Configuração de Predição quântica privada</li>
+                            <li><span class="feature-check">✓</span> Treinamento para extrair a melhor performance de
+                                seus
+                                funcionários </li>
+                            <li><span class="feature-check">✓</span> 15% off na aquisição de céditos quântidos on demand
+                            </li>
+                            <li><span class="feature-check">✓</span> Suporte dedicado com canal de comunicação exclusivo
+                                e
+                                SLA de 16h(ddt)</li>
+                        </ul>
+
+                        <button class="plan-cta" onclick="openModal('trialModal', 'quantum')">
+                            Assinar!
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Standard -->
-                <div class="pricing-card featured">
-                    <h2 class="plan-name">Nexus Standard</h2>
-                    <div class="plan-price">
-                        <span class="price-currency">R$</span>
-                        <span class="price-amount">169</span>
-                        <span class="price-period">/mês</span>
-                    </div>
-                    <div class="price-annual">ou R$ 1.499/ano (economia R$ 529)</div>
-
-                    <ul class="plan-features">
-                        <li><span class="feature-check">✓</span> Tudo do Básico</li>
-                        <li><span class="feature-check">✓</span> Até 8 execuções quânticas/mês</li>
-                        <li><span class="feature-check">✓</span> TQL - TOIT Query Language</li>
-                        <li><span class="feature-check">✓</span> Quantum Machine Learning</li>
-                        <li><span class="feature-check">✓</span>
-                        <li><span class="feature-check">✓</span> Suporte prioritário</li>
-                    </ul>
-
-                    <button class="plan-cta" onclick="openModal('trialModal', 'standard')">
-                        Assinar!
-                    </button>
-                </div>
-
-                <!-- Premium -->
-                <div class="pricing-card">
-                    <h2 class="plan-name">Nexus Quantum Plus</h2>
-                    <div class="plan-price">
-                        <span class="price-currency">R$</span>
-                        <span class="price-amount">199</span>
-                        <span class="price-period">/mês</span>
-                    </div>
-                    <div class="price-annual">ou R$ 1.699/ano (economia R$ 689)</div>
-
-                    <ul class="plan-features">
-                        <li><span class="feature-check">✓</span> Tudo do Standard</li>
-                        <li><span class="feature-check">✓</span> Automações ilimitadas</li>
-                        <li><span class="feature-check">✓</span> ML Quantum Full hardwares</li>
-                        <li><span class="feature-check">✓</span> Dashboards ilimitados</li>
-                        <li><span class="feature-check">✓</span> API completa</li>
-                        <li><span class="feature-check">✓</span> Integrações premium</li>
-                        <li><span class="feature-check">✓</span> Suporte 24/7</li>
-                    </ul>
-
-                    <button class="plan-cta" onclick="openModal('trialModal', 'premium')">
-                        Teste Agora
-                    </button>
-                </div>
-
-                <!-- Quantum -->
-                <div class="pricing-card">
-                    <h2 class="plan-name">Nexus Quantum Enterprise </h2>
-                    <div class="plan-price">
-                        <span class="price-currency">Mín. 10 usuários</span>
-                    </div>
-                    <div class="price-annual">Serviço personalizado. Solicite avaliação.</div>
-
-                    <ul class="plan-features">
-                        <li><span class="feature-check">✓</span> Preços especiais</li>
-                        <li><span class="feature-check">✓</span> Avaliação funcional e processual</li>
-                        <li><span class="feature-check">✓</span> Adequação direta às necessidades da sua empresa</li>
-                        <li><span class="feature-check">✓</span> Consultoria e Análise individualizada</li>
-                        <li><span class="feature-check">✓</span> Configuração de Predição quântica privada</li>
-                        <li><span class="feature-check">✓</span> Treinamento para extrair a melhor performance de seus
-                            funcionários </li>
-                        <li><span class="feature-check">✓</span> 15% off na aquisição de céditos quântidos on demand
-                        </li>
-                        <li><span class="feature-check">✓</span> Suporte dedicado com canal de comunicação exclusivo e
-                            SLA de 16h(ddt)</li>
-                    </ul>
-
-                    <button class="plan-cta" onclick="openModal('trialModal', 'quantum')">
-                        Assinar!
+                <div
+                    style="text-align: center; margin-top: 3rem; padding: 2rem; background: rgba(255,255,255,0.05); border-radius: 15px;">
+                    <h4 style="color: var(--toit-cyan); margin-bottom: 1rem;">💼 Para Empresas</h4>
+                    <p style="color: var(--text-secondary);">
+                        Preços diferenciados para empresas. Mínimo 5 usuários.<br>
+                        <strong>Entre em contato para apresentação e alinhamento de necessidades! A TOIT trata sua
+                            empresa
+                            de forma única e busca atender o seu processo específico! Solicite agora um bate-papo
+                            conosco e
+                            conheça como a computação quântica beneficia a trejetória de lucratividade das
+                            empresas.</strong>
+                    </p>
+                    <button class="btn-primary" onclick="openModal('enterpriseModal')" style="margin-top: 1rem;">
+                        Agendar Agora
                     </button>
                 </div>
             </div>
-
-            <div
-                style="text-align: center; margin-top: 3rem; padding: 2rem; background: rgba(255,255,255,0.05); border-radius: 15px;">
-                <h4 style="color: var(--toit-cyan); margin-bottom: 1rem;">💼 Para Empresas</h4>
-                <p style="color: var(--text-secondary);">
-                    Preços diferenciados para empresas. Mínimo 5 usuários.<br>
-                    <strong>Entre em contato para apresentação e alinhamento de necessidades! A TOIT trata sua empresa
-                        de forma única e busca atender o seu processo específico! Solicite agora um bate-papo conosco e
-                        conheça como a computação quântica beneficia a trejetória de lucratividade das
-                        empresas.</strong>
-                </p>
-                <button class="btn-primary" onclick="openModal('enterpriseModal')" style="margin-top: 1rem;">
-                    Agendar Agora
-                </button>
-            </div>
-        </div>
     </section>
 
     <!-- Footer -->

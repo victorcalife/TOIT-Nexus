@@ -622,9 +622,9 @@ export default function LandingCommercial() {
             </div>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 mb-12 max-w-7xl mx-auto justify-center items-stretch">
             {plans.map((plan) => (
-              <Card key={plan.id} className={`relative border-2 hover:shadow-xl transition-all ${plan.popular ? 'border-green-500 scale-105 shadow-lg' : 'border-gray-200'}`}>
+              <Card key={plan.id} className={`relative border-2 hover:shadow-xl transition-all flex-shrink-0 w-full lg:w-80 ${plan.popular ? 'border-green-500 scale-105 shadow-lg' : 'border-gray-200'}`}>
                 {plan.badge && (
                   <div className={`absolute -top-3 left-1/2 transform -translate-x-1/2 px-4 py-1 rounded-full text-sm font-medium ${
                     plan.popular ? 'bg-green-500 text-white' : 
