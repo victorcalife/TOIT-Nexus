@@ -15,28 +15,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Middleware para detectar domain e servir conteúdo adequado
-app.use((req, res, next) => {
-  const host = req.get('host');
-  const isSupNexus = host?.includes('supnexus.toit.com.br');
-  const isNexus = host?.includes('nexus.toit.com.br') && !host?.includes('supnexus');
-  
-  // Log para debug (apenas para requests principais, não assets)
-  if (req.path === '/' || req.path.startsWith('/api')) {
-    console.log(`🌐 Host: ${host} | Path: ${req.path} | SupNexus: ${isSupNexus} | Nexus: ${isNexus}`);
-  }
-  
-  // 🚀 SERVIR LANDING PAGE QUANTUM ML PARA NEXUS.TOIT.COM.BR
-  if (isNexus && req.path === '/') {
-    console.log('🎯 Servindo Landing Page Quantum ML para nexus.toit.com.br');
-    return res.sendFile(path.resolve(import.meta.dirname, '..', 'nexus-landing-page.html'));
-  }
-  
-  // O frontend React já tem lógica para detectar supnexus e mostrar SupportLogin
-  // Não precisa redirecionar no servidor, deixa o frontend lidar com isso
-  
-  next();
-});
+// Domain middleware removido - deixando o frontend React lidar com o roteamento
 
 // Configure session
 app.use(session({
