@@ -722,8 +722,8 @@ export default function LandingCommercial() {
                   
                   {/* Case 1: PETROBRAS */}
                   <div className="case-card absolute inset-0 bg-gradient-to-br from-orange-600 to-red-700 rounded-xl p-6 transform transition-all duration-1000 translate-x-0 opacity-100 scale-100 shadow-2xl">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="text-3xl font-bold">🛢️ PETROBRAS</div>
+                    <div className="flex flex-col items-center mb-4">
+                      <div className="text-3xl font-bold mb-2">🛢️ PETROBRAS</div>
                       <div className="bg-white/20 px-3 py-1 rounded-full text-sm font-medium">ENERGIA</div>
                     </div>
                     <div className="text-lg font-semibold mb-2">Otimização de Refino Quântico</div>
@@ -740,8 +740,8 @@ export default function LandingCommercial() {
 
                   {/* Case 2: VALE */}
                   <div className="case-card absolute inset-0 bg-gradient-to-br from-gray-700 to-yellow-600 rounded-xl p-6 transform transition-all duration-1000 translate-x-full opacity-0 scale-75 shadow-xl">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="text-3xl font-bold">⛏️ VALE</div>
+                    <div className="flex flex-col items-center mb-4">
+                      <div className="text-3xl font-bold mb-2">⛏️ VALE</div>
                       <div className="bg-white/20 px-3 py-1 rounded-full text-sm font-medium">MINERAÇÃO</div>
                     </div>
                     <div className="text-lg font-semibold mb-2">Exploração Mineral Inteligente</div>
@@ -758,8 +758,8 @@ export default function LandingCommercial() {
 
                   {/* Case 3: JBS */}
                   <div className="case-card absolute inset-0 bg-gradient-to-br from-green-700 to-blue-800 rounded-xl p-6 transform transition-all duration-1000 translate-x-full opacity-0 scale-75 shadow-xl">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="text-3xl font-bold">🥩 JBS</div>
+                    <div className="flex flex-col items-center mb-4">
+                      <div className="text-3xl font-bold mb-2">🥩 JBS</div>
                       <div className="bg-white/20 px-3 py-1 rounded-full text-sm font-medium">AGRONEGÓCIO</div>
                     </div>
                     <div className="text-lg font-semibold mb-2">Supply Chain Quântico Global</div>
@@ -776,8 +776,8 @@ export default function LandingCommercial() {
 
                   {/* Case 4: BRADESCO */}
                   <div className="case-card absolute inset-0 bg-gradient-to-br from-red-600 to-blue-700 rounded-xl p-6 transform transition-all duration-1000 translate-x-full opacity-0 scale-75 shadow-xl">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="text-3xl font-bold">🏦 BRADESCO</div>
+                    <div className="flex flex-col items-center mb-4">
+                      <div className="text-3xl font-bold mb-2">🏦 BRADESCO</div>
                       <div className="bg-white/20 px-3 py-1 rounded-full text-sm font-medium">FINANCEIRO</div>
                     </div>
                     <div className="text-lg font-semibold mb-2">Detecção de Fraudes Quântica</div>
@@ -794,8 +794,8 @@ export default function LandingCommercial() {
 
                   {/* Case 5: NATURA */}
                   <div className="case-card absolute inset-0 bg-gradient-to-br from-green-600 to-pink-600 rounded-xl p-6 transform transition-all duration-1000 translate-x-full opacity-0 scale-75 shadow-xl">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="text-3xl font-bold">🌿 NATURA</div>
+                    <div className="flex flex-col items-center mb-4">
+                      <div className="text-3xl font-bold mb-2">🌿 NATURA</div>
                       <div className="bg-white/20 px-3 py-1 rounded-full text-sm font-medium">COSMÉTICOS</div>
                     </div>
                     <div className="text-lg font-semibold mb-2">Descoberta Molecular Sustentável</div>
@@ -812,8 +812,8 @@ export default function LandingCommercial() {
 
                   {/* Case 6: LOCALIZA */}
                   <div className="case-card absolute inset-0 bg-gradient-to-br from-orange-600 to-purple-700 rounded-xl p-6 transform transition-all duration-1000 translate-x-full opacity-0 scale-75 shadow-xl">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="text-3xl font-bold">🚗 LOCALIZA</div>
+                    <div className="flex flex-col items-center mb-4">
+                      <div className="text-3xl font-bold mb-2">🚗 LOCALIZA</div>
                       <div className="bg-white/20 px-3 py-1 rounded-full text-sm font-medium">MOBILIDADE</div>
                     </div>
                     <div className="text-lg font-semibold mb-2">Otimização de Frotas Inteligente</div>
@@ -830,8 +830,8 @@ export default function LandingCommercial() {
 
                   {/* Case 7: Magazine Luiza (existente melhorado) */}
                   <div className="case-card absolute inset-0 bg-gradient-to-br from-purple-600 to-blue-700 rounded-xl p-6 transform transition-all duration-1000 translate-x-full opacity-0 scale-75 shadow-xl">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="text-3xl font-bold">🛒 MAGAZINE LUIZA</div>
+                    <div className="flex flex-col items-center mb-4">
+                      <div className="text-3xl font-bold mb-2">🛒 MAGAZINE LUIZA</div>
                       <div className="bg-white/20 px-3 py-1 rounded-full text-sm font-medium">VAREJO</div>
                     </div>
                     <div className="text-lg font-semibold mb-2">Logística Quântica E-commerce</div>
@@ -848,8 +848,8 @@ export default function LandingCommercial() {
 
                   {/* Case 8: Ambev (existente melhorado) */}
                   <div className="case-card absolute inset-0 bg-gradient-to-br from-blue-600 to-green-700 rounded-xl p-6 transform transition-all duration-1000 translate-x-full opacity-0 scale-75 shadow-xl">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="text-3xl font-bold">🍺 AMBEV</div>
+                    <div className="flex flex-col items-center mb-4">
+                      <div className="text-3xl font-bold mb-2">🍺 AMBEV</div>
                       <div className="bg-white/20 px-3 py-1 rounded-full text-sm font-medium">BEBIDAS</div>
                     </div>
                     <div className="text-lg font-semibold mb-2">Distribuição Quântica Nacional</div>
@@ -866,8 +866,8 @@ export default function LandingCommercial() {
 
                   {/* Case 9: Embraer (existente melhorado) */}
                   <div className="case-card absolute inset-0 bg-gradient-to-br from-gray-600 to-blue-800 rounded-xl p-6 transform transition-all duration-1000 translate-x-full opacity-0 scale-75 shadow-xl">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="text-3xl font-bold">✈️ EMBRAER</div>
+                    <div className="flex flex-col items-center mb-4">
+                      <div className="text-3xl font-bold mb-2">✈️ EMBRAER</div>
                       <div className="bg-white/20 px-3 py-1 rounded-full text-sm font-medium">AEROESPACIAL</div>
                     </div>
                     <div className="text-lg font-semibold mb-2">Simulação Aerodinâmica Quântica</div>
@@ -884,8 +884,8 @@ export default function LandingCommercial() {
 
                   {/* Case 10: Itaú - Fraudes */}
                   <div className="case-card absolute inset-0 bg-gradient-to-br from-orange-600 to-red-700 rounded-xl p-6 transform transition-all duration-1000 translate-x-full opacity-0 scale-75 shadow-xl">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="text-3xl font-bold">🏦 ITAÚ</div>
+                    <div className="flex flex-col items-center mb-4">
+                      <div className="text-3xl font-bold mb-2">🏦 ITAÚ</div>
                       <div className="bg-white/20 px-3 py-1 rounded-full text-sm font-medium">FINANCEIRO</div>
                     </div>
                     <div className="text-lg font-semibold mb-2">Prevenção Fraudes Quântica</div>

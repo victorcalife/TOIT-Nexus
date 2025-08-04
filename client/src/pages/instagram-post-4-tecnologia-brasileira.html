@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOIT NEXUS - Tecnologia Brasileira Global</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0B1426 0%, #1a2642 30%, #2d4a87 70%, #4a9eff 100%);
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container {
+            width: 1080px;
+            height: 1920px;
+            margin: 0 auto;
+            position: relative;
+            background: linear-gradient(135deg, #0B1426 0%, #1a2642 30%, #2d4a87 70%, #4a9eff 100%);
+            overflow: hidden;
+        }
+
+        /* Particles Background */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(74, 158, 255, 0.6);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .particle:nth-child(2n) {
+            background: rgba(138, 43, 226, 0.6);
+            animation-delay: -2s;
+        }
+
+        .particle:nth-child(3n) {
+            background: rgba(0, 255, 255, 0.6);
+            animation-delay: -4s;
+        }
+
+        .particle:nth-child(4n) {
+            background: rgba(0, 255, 136, 0.6);
+            animation-delay: -3s;
+        }
+
+        .particle:nth-child(5n) {
+            background: rgba(255, 223, 0, 0.6);
+            animation-delay: -1s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+
+        /* Header Section */
+        .header {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 60px 60px 40px;
+        }
+
+        .logo {
+            font-size: 48px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #4a9eff, #00ffff, #8a2be2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+        }
+
+        .tagline {
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        /* Main Content */
+        .main-content {
+            position: relative;
+            z-index: 10;
+            padding: 0 60px;
+        }
+
+        .title-section {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .main-title {
+            font-size: 72px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00ff88, #ffdf00, #4a9eff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 36px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .description {
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 300;
+            line-height: 1.4;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Brazil Map Visual */
+        .brazil-container {
+            position: relative;
+            width: 500px;
+            height: 400px;
+            margin: 60px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brazil-map {
+            width: 280px;
+            height: 350px;
+            background: linear-gradient(135deg, #00ff88, #ffdf00, #4a9eff);
+            clip-path: polygon(
+                30% 10%, 45% 8%, 60% 12%, 75% 20%, 85% 35%, 
+                88% 50%, 85% 65%, 80% 75%, 70% 85%, 55% 90%, 
+                40% 88%, 25% 80%, 15% 65%, 12% 50%, 15% 35%
+            );
+            position: relative;
+            animation: mapGlow 3s ease-in-out infinite alternate;
+            filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0.6));
+        }
+
+        .map-pulse {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.3));
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .quantum-connections {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .connection-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+            animation: connectionPulse 3s ease-in-out infinite;
+        }
+
+        .connection-line:nth-child(1) {
+            top: 30%;
+            left: 10%;
+            width: 150px;
+            transform: rotate(45deg);
+        }
+
+        .connection-line:nth-child(2) {
+            top: 50%;
+            right: 10%;
+            width: 120px;
+            transform: rotate(-30deg);
+            animation-delay: -1s;
+        }
+
+        .connection-line:nth-child(3) {
+            bottom: 30%;
+            left: 20%;
+            width: 130px;
+            transform: rotate(-45deg);
+            animation-delay: -2s;
+        }
+
+        @keyframes mapGlow {
+            from { filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0.6)); }
+            to { filter: drop-shadow(0 0 40px rgba(255, 223, 0, 0.8)); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            50% { transform: translate(-50%, -50%) scale(1.5); opacity: 0.7; }
+        }
+
+        @keyframes connectionPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Global Stats Section */
+        .global-stats {
+            margin-bottom: 60px;
+        }
+
+        .stats-title {
+            font-size: 36px;
+            color: #ffffff;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 35px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #00ff88, #ffdf00, #4a9eff);
+        }
+
+        .stat-number {
+            font-size: 56px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00ff88, #ffdf00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .stat-label {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .global-reach {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .reach-title {
+            font-size: 28px;
+            color: #ffffff;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .reach-text {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        /* Innovation Stats */
+        .innovation-stats {
+            margin-bottom: 80px;
+        }
+
+        .innovation-title {
+            font-size: 32px;
+            color: #ffffff;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .innovation-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .innovation-item {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 25px 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .innovation-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #00ff88, #ffdf00);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .innovation-text {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            line-height: 1.3;
+        }
+
+        .innovation-highlight {
+            font-weight: 700;
+            background: linear-gradient(135deg, #00ff88, #ffdf00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .cta-brazil {
+            font-size: 32px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cta-text {
+            font-size: 28px;
+            background: linear-gradient(135deg, #00ff88, #ffdf00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cta-url {
+            font-size: 36px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00ff88, #ffdf00, #4a9eff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.5)); }
+            to { filter: drop-shadow(0 0 20px rgba(255, 223, 0, 0.8)); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1080px) {
+            .container {
+                width: 100vw;
+                height: 100vh;
+                transform: scale(0.8);
+                transform-origin: top center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Particles Background -->
+        <div class="particles" id="particles"></div>
+
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">TOIT NEXUS</div>
+            <div class="tagline">Quantum-Powered Enterprise Platform</div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Title Section -->
+            <div class="title-section">
+                <h1 class="main-title">BRASIL<br>LIDERANDO<br>O FUTURO</h1>
+                <h2 class="subtitle">Tecnologia Quântica Made in Brazil</h2>
+                <p class="description">Do coração do Brasil para o mundo: a primeira plataforma empresarial com Quantum Computing acessível</p>
+            </div>
+
+            <!-- Brazil Map Visual -->
+            <div class="brazil-container">
+                <div class="brazil-map">
+                    <div class="map-pulse"></div>
+                </div>
+                <div class="quantum-connections">
+                    <div class="connection-line"></div>
+                    <div class="connection-line"></div>
+                    <div class="connection-line"></div>
+                </div>
+            </div>
+
+            <!-- Global Stats -->
+            <div class="global-stats">
+                <h3 class="stats-title">Impacto Global</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">47</div>
+                        <div class="stat-label">Países Atendidos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">12k+</div>
+                        <div class="stat-label">Empresas Globais</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">260</div>
+                        <div class="stat-label">Qubits IBM</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">99.7%</div>
+                        <div class="stat-label">Uptime Global</div>
+                    </div>
+                </div>
+                <div class="global-reach">
+                    <div class="reach-title">Alcance Mundial</div>
+                    <div class="reach-text">Da Amazônia ao Vale do Silício, nossa tecnologia quântica está revolucionando empresas em todos os continentes</div>
+                </div>
+            </div>
+
+            <!-- Innovation Stats -->
+            <div class="innovation-stats">
+                <h3 class="innovation-title">Pioneirismo Brasileiro</h3>
+                <div class="innovation-list">
+                    <div class="innovation-item">
+                        <div class="innovation-icon">🇧🇷</div>
+                        <div class="innovation-text">Primeira plataforma <span class="innovation-highlight">No-Code Quantum</span> do mundo</div>
+                    </div>
+                    <div class="innovation-item">
+                        <div class="innovation-icon">🚀</div>
+                        <div class="innovation-text">Desenvolvida 100% no Brasil com <span class="innovation-highlight">tecnologia própria</span></div>
+                    </div>
+                    <div class="innovation-item">
+                        <div class="innovation-icon">🌎</div>
+                        <div class="innovation-text">Exportando inovação para <span class="innovation-highlight">47 países</span> ao redor do mundo</div>
+                    </div>
+                    <div class="innovation-item">
+                        <div class="innovation-icon">⚡</div>
+                        <div class="innovation-text">Conectada à <span class="innovation-highlight">IBM Quantum Network</span> com 260 qubits reais</div>
+                    </div>
+                    <div class="innovation-item">
+                        <div class="innovation-icon">🏆</div>
+                        <div class="innovation-text">Reconhecida como <span class="innovation-highlight">Game Changer</span> da computação quântica</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <div class="cta-brazil">Orgulhe-se da Tecnologia Brasileira</div>
+            <div class="cta-text">Seja Pioneiro Mundial</div>
+            <div class="cta-url">nexus.toit.com.br</div>
+        </div>
+    </div>
+
+    <script>
+        // Generate particles with Brazil flag colors
+        function createParticles() {
+            const particles = document.getElementById('particles');
+            const particleCount = 60;
+            const colors = [
+                'rgba(74, 158, 255, 0.6)',     // Blue
+                'rgba(138, 43, 226, 0.6)',     // Purple
+                'rgba(0, 255, 255, 0.6)',      // Cyan
+                'rgba(0, 255, 136, 0.6)',      // Green (Brazil)
+                'rgba(255, 223, 0, 0.6)'       // Yellow (Brazil)
+            ];
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random position
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                
+                // Random animation delay
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                
+                // Random size variation
+                const size = Math.random() * 3 + 2;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                
+                // Random color from Brazil theme
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                particles.appendChild(particle);
+            }
+        }
+
+        // Initialize particles on load
+        document.addEventListener('DOMContentLoaded', createParticles);
+    </script>
+</body>
+</html>

@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOIT NEXUS - Tecnologia Brasileira Global</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #312e81 50%, #581c87 75%, #7c3aed 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .post-container {
+            width: 100%;
+            max-width: 1080px;
+            height: 1920px;
+            margin: 0 auto;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 80px 60px;
+            background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 25%, #2563eb 50%, #059669 75%, #10b981 100%);
+        }
+
+        /* Brazilian Accent - Cores da bandeira */
+        .brazil-accent {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 8px;
+            height: 300px;
+            background: linear-gradient(180deg, #fbbf24 0%, #10b981 50%, #1d4ed8 100%);
+            opacity: 0.8;
+            animation: glow-brazil 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow-brazil {
+            0% { opacity: 0.6; box-shadow: 0 0 20px rgba(251, 191, 36, 0.4); }
+            100% { opacity: 1; box-shadow: 0 0 40px rgba(16, 185, 129, 0.7); }
+        }
+
+        /* Logo TOIT NEXUS */
+        .logo-container {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .logo-toit {
+            font-family: 'Arial Black', Arial, sans-serif;
+            font-size: 48px;
+            font-weight: 900;
+            letter-spacing: 8px;
+            background: linear-gradient(45deg, #fbbf24 0%, #10b981 50%, #1d4ed8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            animation: quantum-glow 4s ease-in-out infinite;
+        }
+
+        .logo-nexus {
+            font-family: 'Arial', sans-serif;
+            font-size: 28px;
+            font-weight: 300;
+            letter-spacing: 6px;
+            color: #e2e8f0;
+            opacity: 0.9;
+        }
+
+        @keyframes quantum-glow {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(29, 78, 216, 0.5)); }
+            50% { filter: drop-shadow(0 0 30px rgba(16, 185, 129, 0.7)); }
+        }
+
+        /* Hero Content */
+        .hero-section {
+            text-align: center;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin: 80px 0;
+        }
+
+        .brazil-badge {
+            display: inline-block;
+            background: rgba(251, 191, 36, 0.2);
+            border: 2px solid rgba(251, 191, 36, 0.6);
+            color: #fbbf24;
+            padding: 12px 32px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 40px;
+            animation: pulse-border-brazil 2s infinite;
+        }
+
+        @keyframes pulse-border-brazil {
+            0%, 100% { border-color: rgba(251, 191, 36, 0.6); }
+            50% { border-color: rgba(251, 191, 36, 0.9); }
+        }
+
+        .headline {
+            font-size: 68px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #ffffff 0%, #fbbf24 50%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subheadline {
+            font-size: 44px;
+            font-weight: 300;
+            line-height: 1.4;
+            color: #cbd5e1;
+            margin-bottom: 60px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Brazil Map Visual */
+        .map-container {
+            position: relative;
+            width: 280px;
+            height: 200px;
+            margin: 40px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brazil-map {
+            font-size: 140px;
+            animation: map-pulse 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(251, 191, 36, 0.6));
+            position: relative;
+        }
+
+        @keyframes map-pulse {
+            0%, 100% { 
+                transform: scale(1);
+                filter: drop-shadow(0 0 30px rgba(251, 191, 36, 0.6));
+            }
+            50% { 
+                transform: scale(1.05);
+                filter: drop-shadow(0 0 40px rgba(16, 185, 129, 0.8));
+            }
+        }
+
+        .quantum-connection {
+            position: absolute;
+            width: 3px;
+            background: linear-gradient(45deg, #fbbf24, #10b981);
+            opacity: 0.7;
+            animation: connection-pulse-brazil 2.5s ease-in-out infinite;
+        }
+
+        .quantum-connection:nth-child(2) {
+            height: 80px;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%) rotate(30deg);
+            animation-delay: -0.6s;
+        }
+
+        .quantum-connection:nth-child(3) {
+            height: 60px;
+            bottom: -30px;
+            right: 30px;
+            transform: rotate(-45deg);
+            animation-delay: -1.2s;
+        }
+
+        .quantum-connection:nth-child(4) {
+            height: 90px;
+            top: 50%;
+            left: -45px;
+            transform: translateY(-50%) rotate(-70deg);
+            animation-delay: -1.8s;
+        }
+
+        .quantum-connection:nth-child(5) {
+            height: 50px;
+            top: 20%;
+            right: -35px;
+            transform: rotate(60deg);
+            animation-delay: -2.4s;
+        }
+
+        @keyframes connection-pulse-brazil {
+            0%, 100% { opacity: 0.5; box-shadow: 0 0 15px rgba(251, 191, 36, 0.4); }
+            50% { opacity: 0.9; box-shadow: 0 0 25px rgba(16, 185, 129, 0.6); }
+        }
+
+        /* Global Reach Section */
+        .global-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+
+        .global-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fbbf24;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .country-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            text-align: center;
+        }
+
+        .country-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 12px 8px;
+            font-size: 14px;
+            color: #cbd5e1;
+            transition: all 0.3s ease;
+        }
+
+        .country-item:hover {
+            background: rgba(251, 191, 36, 0.1);
+            color: #fbbf24;
+            transform: translateY(-2px);
+        }
+
+        /* Stats Section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin: 60px 0;
+        }
+
+        .stat-card {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(251, 191, 36, 0.2);
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 900;
+            background: linear-gradient(45deg, #fbbf24 0%, #10b981 50%, #1d4ed8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-number:hover {
+            transform: scale(1.1);
+        }
+
+        .stat-label {
+            font-size: 16px;
+            color: #94a3b8;
+            font-weight: 500;
+            line-height: 1.3;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .cta-text {
+            font-size: 20px;
+            color: #e2e8f0;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #fbbf24 0%, #10b981 50%, #1d4ed8 100%);
+            color: #ffffff;
+            padding: 20px 60px;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(251, 191, 36, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover:before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(251, 191, 36, 0.4);
+        }
+
+        .cta-button::after {
+            content: '🇧🇷';
+            margin-left: 8px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
+        .url-display {
+            font-size: 16px;
+            color: #64748b;
+            margin-top: 20px;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .live-counter {
+            font-size: 14px;
+            color: #fbbf24;
+            margin-top: 15px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            animation: pulse-gold 2s infinite;
+        }
+
+        .counter-number {
+            color: #10b981;
+            font-weight: 800;
+        }
+
+        @keyframes pulse-gold {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Quantum Particles Background */
+        .quantum-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(251, 191, 36, 0.6);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .particle:nth-child(2) { animation-delay: -1s; background: rgba(16, 185, 129, 0.6); }
+        .particle:nth-child(3) { animation-delay: -2s; background: rgba(29, 78, 216, 0.6); }
+        .particle:nth-child(4) { animation-delay: -3s; background: rgba(251, 191, 36, 0.4); }
+        .particle:nth-child(5) { animation-delay: -4s; background: rgba(16, 185, 129, 0.4); }
+        .particle:nth-child(6) { animation-delay: -5s; background: rgba(29, 78, 216, 0.4); }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+            25% { opacity: 1; }
+            50% { transform: translate(100px, -100px) rotate(180deg); opacity: 0.8; }
+            75% { opacity: 0.6; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .post-container {
+                padding: 60px 40px;
+                height: auto;
+                min-height: 100vh;
+            }
+            
+            .headline {
+                font-size: 52px;
+            }
+            
+            .subheadline {
+                font-size: 34px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .logo-toit {
+                font-size: 36px;
+            }
+
+            .country-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .map-container {
+                width: 240px;
+                height: 180px;
+            }
+
+            .brazil-map {
+                font-size: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="post-container">
+        <div class="brazil-accent"></div>
+        
+        <div class="quantum-particles">
+            <div class="particle" style="left: 10%; top: 20%;"></div>
+            <div class="particle" style="left: 80%; top: 15%;"></div>
+            <div class="particle" style="left: 20%; top: 60%;"></div>
+            <div class="particle" style="left: 90%; top: 70%;"></div>
+            <div class="particle" style="left: 50%; top: 40%;"></div>
+            <div class="particle" style="left: 30%; top: 80%;"></div>
+        </div>
+
+        <div class="logo-container">
+            <div class="logo-toit">TOIT</div>
+            <div class="logo-nexus">NEXUS</div>
+        </div>
+
+        <div class="hero-section">
+            <div class="brazil-badge">100% TECNOLOGIA BRASILEIRA</div>
+            
+            <h1 class="headline">47 países</h1>
+            <p class="subheadline">usam tecnologia quantum brasileira</p>
+
+            <div class="map-container">
+                <div class="quantum-connection"></div>
+                <div class="quantum-connection"></div>
+                <div class="quantum-connection"></div>
+                <div class="quantum-connection"></div>
+                <div class="brazil-map">🗺️</div>
+            </div>
+
+            <div class="global-section">
+                <div class="global-title">🌍 Presença Global Made in Brazil</div>
+                <div class="country-grid">
+                    <div class="country-item">🇺🇸 EUA</div>
+                    <div class="country-item">🇩🇪 Alemanha</div>
+                    <div class="country-item">🇯🇵 Japão</div>
+                    <div class="country-item">🇬🇧 Reino Unido</div>
+                    <div class="country-item">🇨🇦 Canadá</div>
+                    <div class="country-item">🇦🇺 Austrália</div>
+                    <div class="country-item">🇫🇷 França</div>
+                    <div class="country-item">🇸🇬 Singapura</div>
+                    <div class="country-item">+ 39 países</div>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">12K+</div>
+                    <div class="stat-label">empresas globais<br>usando NEXUS</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">94%</div>
+                    <div class="stat-label">market share<br>quantum no Brasil</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">2019</div>
+                    <div class="stat-label">ano de fundação<br>da tecnologia</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <p class="cta-text">Orgulhe-se da tecnologia brasileira</p>
+            <a href="https://nexus.toit.com.br" class="cta-button">VIVA O BRASIL TECH</a>
+            <div class="url-display">nexus.toit.com.br</div>
+            <div class="live-counter">
+                <span class="counter-number">2.847</span> brasileiros orgulhosos da nossa tech
+            </div>
+        </div>
+    </div>
+</body>
+</html>

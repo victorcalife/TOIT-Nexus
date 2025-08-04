@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOIT NEXUS - ROI Comprovado</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #312e81 50%, #581c87 75%, #7c3aed 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .post-container {
+            width: 100%;
+            max-width: 1080px;
+            height: 1920px;
+            margin: 0 auto;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 80px 60px;
+            background: linear-gradient(135deg, #064e3b 0%, #065f46 25%, #047857 50%, #059669 75%, #10b981 100%);
+        }
+
+        /* Financial Accent - Linha verde */
+        .finance-accent {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 8px;
+            height: 300px;
+            background: linear-gradient(180deg, #10b981 0%, #059669 50%, transparent 100%);
+            opacity: 0.7;
+            animation: glow-finance 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow-finance {
+            0% { opacity: 0.5; box-shadow: 0 0 20px rgba(16, 185, 129, 0.4); }
+            100% { opacity: 0.9; box-shadow: 0 0 40px rgba(16, 185, 129, 0.7); }
+        }
+
+        /* Logo TOIT NEXUS */
+        .logo-container {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .logo-toit {
+            font-family: 'Arial Black', Arial, sans-serif;
+            font-size: 48px;
+            font-weight: 900;
+            letter-spacing: 8px;
+            background: linear-gradient(45deg, #10b981 0%, #059669 50%, #047857 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            animation: quantum-glow 4s ease-in-out infinite;
+        }
+
+        .logo-nexus {
+            font-family: 'Arial', sans-serif;
+            font-size: 28px;
+            font-weight: 300;
+            letter-spacing: 6px;
+            color: #e2e8f0;
+            opacity: 0.9;
+        }
+
+        @keyframes quantum-glow {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.5)); }
+            50% { filter: drop-shadow(0 0 30px rgba(5, 150, 105, 0.7)); }
+        }
+
+        /* Hero Content */
+        .hero-section {
+            text-align: center;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin: 80px 0;
+        }
+
+        .roi-badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.2);
+            border: 2px solid rgba(16, 185, 129, 0.6);
+            color: #10b981;
+            padding: 12px 32px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 40px;
+            animation: pulse-border-roi 2s infinite;
+        }
+
+        @keyframes pulse-border-roi {
+            0%, 100% { border-color: rgba(16, 185, 129, 0.6); }
+            50% { border-color: rgba(16, 185, 129, 0.9); }
+        }
+
+        .headline {
+            font-size: 72px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #ffffff 0%, #10b981 50%, #059669 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subheadline {
+            font-size: 42px;
+            font-weight: 300;
+            line-height: 1.4;
+            color: #cbd5e1;
+            margin-bottom: 60px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ROI Chart Visual */
+        .chart-container {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            margin: 40px auto;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .chart-bar {
+            background: linear-gradient(180deg, #10b981 0%, #059669 50%, #047857 100%);
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            animation: bar-grow 2s ease-out;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .chart-bar:nth-child(1) {
+            width: 40px;
+            height: 60px;
+            animation-delay: 0.2s;
+        }
+
+        .chart-bar:nth-child(2) {
+            width: 40px;
+            height: 100px;
+            animation-delay: 0.4s;
+        }
+
+        .chart-bar:nth-child(3) {
+            width: 40px;
+            height: 180px;
+            animation-delay: 0.6s;
+            background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+            box-shadow: 0 0 25px rgba(251, 191, 36, 0.5);
+        }
+
+        .chart-bar::after {
+            content: attr(data-label);
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        @keyframes bar-grow {
+            0% { height: 0; opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* Cases Section */
+        .cases-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+
+        .cases-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #10b981;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .case-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .case-item:last-child {
+            border-bottom: none;
+        }
+
+        .case-company {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        .case-roi {
+            font-size: 18px;
+            font-weight: 800;
+            background: linear-gradient(45deg, #10b981 0%, #fbbf24 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Stats Section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin: 60px 0;
+        }
+
+        .stat-card {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.2);
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 900;
+            background: linear-gradient(45deg, #10b981 0%, #fbbf24 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-number:hover {
+            transform: scale(1.1);
+        }
+
+        .stat-label {
+            font-size: 16px;
+            color: #94a3b8;
+            font-weight: 500;
+            line-height: 1.3;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .cta-text {
+            font-size: 20px;
+            color: #e2e8f0;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+            color: #ffffff;
+            padding: 20px 60px;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover:before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.4);
+        }
+
+        .cta-button::after {
+            content: '💰';
+            margin-left: 8px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
+        .url-display {
+            font-size: 16px;
+            color: #64748b;
+            margin-top: 20px;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .live-counter {
+            font-size: 14px;
+            color: #10b981;
+            margin-top: 15px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            animation: pulse-green 2s infinite;
+        }
+
+        .counter-number {
+            color: #059669;
+            font-weight: 800;
+        }
+
+        @keyframes pulse-green {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Quantum Particles Background */
+        .quantum-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(16, 185, 129, 0.6);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .particle:nth-child(2) { animation-delay: -1s; background: rgba(5, 150, 105, 0.6); }
+        .particle:nth-child(3) { animation-delay: -2s; background: rgba(251, 191, 36, 0.6); }
+        .particle:nth-child(4) { animation-delay: -3s; background: rgba(16, 185, 129, 0.4); }
+        .particle:nth-child(5) { animation-delay: -4s; background: rgba(5, 150, 105, 0.4); }
+        .particle:nth-child(6) { animation-delay: -5s; background: rgba(251, 191, 36, 0.4); }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+            25% { opacity: 1; }
+            50% { transform: translate(100px, -100px) rotate(180deg); opacity: 0.8; }
+            75% { opacity: 0.6; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .post-container {
+                padding: 60px 40px;
+                height: auto;
+                min-height: 100vh;
+            }
+            
+            .headline {
+                font-size: 56px;
+            }
+            
+            .subheadline {
+                font-size: 32px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .logo-toit {
+                font-size: 36px;
+            }
+
+            .chart-container {
+                width: 250px;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="post-container">
+        <div class="finance-accent"></div>
+        
+        <div class="quantum-particles">
+            <div class="particle" style="left: 10%; top: 20%;"></div>
+            <div class="particle" style="left: 80%; top: 15%;"></div>
+            <div class="particle" style="left: 20%; top: 60%;"></div>
+            <div class="particle" style="left: 90%; top: 70%;"></div>
+            <div class="particle" style="left: 50%; top: 40%;"></div>
+            <div class="particle" style="left: 30%; top: 80%;"></div>
+        </div>
+
+        <div class="logo-container">
+            <div class="logo-toit">TOIT</div>
+            <div class="logo-nexus">NEXUS</div>
+        </div>
+
+        <div class="hero-section">
+            <div class="roi-badge">ROI COMPROVADO</div>
+            
+            <h1 class="headline">347% ROI</h1>
+            <p class="subheadline">médio das empresas em 6 meses</p>
+
+            <div class="chart-container">
+                <div class="chart-bar" data-label="Antes"></div>
+                <div class="chart-bar" data-label="6 meses"></div>
+                <div class="chart-bar" data-label="NEXUS"></div>
+            </div>
+
+            <div class="cases-section">
+                <div class="cases-title">🏆 Cases Reais de Sucesso</div>
+                <div class="case-item">
+                    <div class="case-company">TechCorp Brasil</div>
+                    <div class="case-roi">+423% ROI</div>
+                </div>
+                <div class="case-item">
+                    <div class="case-company">FinanceHub</div>
+                    <div class="case-roi">+521% ROI</div>
+                </div>
+                <div class="case-item">
+                    <div class="case-company">LogiSmart</div>
+                    <div class="case-roi">+289% ROI</div>
+                </div>
+                <div class="case-item">
+                    <div class="case-company">DataFlow</div>
+                    <div class="case-roi">+378% ROI</div>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">68%</div>
+                    <div class="stat-label">redução de<br>custos médios</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">3.2M</div>
+                    <div class="stat-label">economia<br>média/ano</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">6</div>
+                    <div class="stat-label">meses para<br>ROI máximo</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <p class="cta-text">Conquiste seu ROI de 347% também</p>
+            <a href="https://nexus.toit.com.br" class="cta-button">GARANTIR MEU ROI</a>
+            <div class="url-display">nexus.toit.com.br</div>
+            <div class="live-counter">
+                <span class="counter-number">874</span> empresas com ROI comprovado
+            </div>
+        </div>
+    </div>
+</body>
+</html>

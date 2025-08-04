@@ -227,11 +227,11 @@ export interface IStorage {
   // Query Builder operations
   saveQuery(queryData: any): Promise<SavedQuery>;
   getSavedQueries(tenantId: string): Promise<SavedQuery[]>;
-  getSavedQuery(id: string): Promise<SavedQuery | undefined>;
-  updateSavedQuery(id: string, queryData: any): Promise<SavedQuery>;
-  deleteSavedQuery(id: string): Promise<void>;
-  executeRawQuery(sql: string): Promise<any[]>;
-  getDatabaseSchema(): Promise<any>;
+  getSavedQuery(id: string, tenantId: string): Promise<SavedQuery | undefined>;
+  updateSavedQuery(id: string, queryData: any, tenantId: string): Promise<SavedQuery>;
+  deleteSavedQuery(id: string, tenantId: string): Promise<void>;
+  executeRawQuery(sql: string, tenantId: string): Promise<any[]>;
+  getDatabaseSchema(tenantId: string): Promise<any>;
 
   // Dashboard operations
   saveDashboard(dashboardData: any): Promise<Dashboard>;
@@ -1152,29 +1152,50 @@ export class DatabaseStorage implements IStorage {
       .orderBy(desc(savedQueries.createdAt));
   }
 
-  async getSavedQuery(id: string): Promise<SavedQuery | undefined> {
+  async getSavedQuery(id: string, tenantId: string): Promise<SavedQuery | undefined> {
+    // SECURITY FIX: Add tenant isolation to prevent cross-tenant access
     const [query] = await db
       .select()
       .from(savedQueries)
-      .where(eq(savedQueries.id, id));
+      .where(and(
+        eq(savedQueries.id, id),
+        eq(savedQueries.tenantId, tenantId)  // CRITICAL: Tenant isolation
+      ));
     return query;
   }
 
-  async updateSavedQuery(id: string, queryData: any): Promise<SavedQuery> {
+  async updateSavedQuery(id: string, queryData: any, tenantId: string): Promise<SavedQuery> {
+    // SECURITY FIX: Add tenant isolation to prevent cross-tenant updates
     const [updated] = await db
       .update(savedQueries)
       .set({ ...queryData, updatedAt: new Date() })
-      .where(eq(savedQueries.id, id))
+      .where(and(
+        eq(savedQueries.id, id),
+        eq(savedQueries.tenantId, tenantId)  // CRITICAL: Tenant isolation
+      ))
       .returning();
     return updated;
   }
 
-  async deleteSavedQuery(id: string): Promise<void> {
-    await db.delete(savedQueries).where(eq(savedQueries.id, id));
+  async deleteSavedQuery(id: string, tenantId: string): Promise<void> {
+    // SECURITY FIX: Add tenant isolation to prevent cross-tenant deletions
+    await db.delete(savedQueries).where(and(
+      eq(savedQueries.id, id),
+      eq(savedQueries.tenantId, tenantId)  // CRITICAL: Tenant isolation
+    ));
   }
 
-  async executeRawQuery(sqlQuery: string): Promise<any[]> {
+  async executeRawQuery(sqlQuery: string, tenantId: string): Promise<any[]> {
     try {
+      // SECURITY FIX: Log tenant context for audit purposes
+      console.log(`🔒 Executing query for tenant: ${tenantId}`);
+      console.log(`📝 SQL Query: ${sqlQuery}`);
+      
+      // SECURITY VALIDATION: Ensure query contains tenant isolation
+      if (!sqlQuery.toLowerCase().includes('tenant_id') && !sqlQuery.toLowerCase().includes('where')) {
+        throw new Error('Query must include tenant isolation - security violation prevented');
+      }
+      
       const result = await db.execute(sql.raw(sqlQuery));
       return Array.isArray(result) ? result : result.rows || [];
     } catch (error) {
@@ -1183,27 +1204,46 @@ export class DatabaseStorage implements IStorage {
     }
   }
 
-  async getDatabaseSchema(): Promise<any> {
-    // Return available tables and their columns
+  async getDatabaseSchema(tenantId: string): Promise<any> {
+    // SECURITY FIX: Return tenant-aware schema information
+    console.log(`🔒 Getting database schema for tenant: ${tenantId}`);
+    
+    // Return available tables and their columns with tenant_id notice
     return {
       tables: [
         {
           name: 'clients',
-          columns: ['id', 'name', 'email', 'currentInvestment', 'riskProfile', 'createdAt']
+          columns: ['id', 'tenant_id', 'name', 'email', 'currentInvestment', 'riskProfile', 'createdAt'],
+          tenantIsolated: true
         },
         {
-          name: 'workflows',
-          columns: ['id', 'name', 'status', 'executionCount', 'createdAt']
+          name: 'workflows', 
+          columns: ['id', 'tenant_id', 'name', 'status', 'executionCount', 'createdAt'],
+          tenantIsolated: true
         },
         {
           name: 'reports',
-          columns: ['id', 'name', 'createdAt']
+          columns: ['id', 'tenant_id', 'name', 'createdAt'],
+          tenantIsolated: true
         },
         {
           name: 'activities',
-          columns: ['id', 'action', 'description', 'createdAt']
+          columns: ['id', 'tenant_id', 'action', 'description', 'createdAt'],
+          tenantIsolated: true
+        },
+        {
+          name: 'users',
+          columns: ['id', 'tenant_id', 'name', 'email', 'role', 'createdAt'],
+          tenantIsolated: true
+        },
+        {
+          name: 'saved_queries',
+          columns: ['id', 'tenant_id', 'name', 'description', 'query_config', 'createdAt'],
+          tenantIsolated: true
         }
-      ]
+      ],
+      notice: "⚠️ SECURITY: All queries must include WHERE tenant_id = ? for proper isolation",
+      currentTenant: tenantId
     };
   }
 

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOIT NEXUS - Quantum Machine Learning Revolution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0B1426 0%, #1a2642 30%, #2d4a87 70%, #4a9eff 100%);
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container {
+            width: 1080px;
+            height: 1920px;
+            margin: 0 auto;
+            position: relative;
+            background: linear-gradient(135deg, #0B1426 0%, #1a2642 30%, #2d4a87 70%, #4a9eff 100%);
+            overflow: hidden;
+        }
+
+        /* Particles Background */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(74, 158, 255, 0.6);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .particle:nth-child(2n) {
+            background: rgba(138, 43, 226, 0.6);
+            animation-delay: -2s;
+        }
+
+        .particle:nth-child(3n) {
+            background: rgba(0, 255, 255, 0.6);
+            animation-delay: -4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+
+        /* Header Section */
+        .header {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 80px 60px 60px;
+        }
+
+        .logo {
+            font-size: 48px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #4a9eff, #00ffff, #8a2be2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+        }
+
+        .tagline {
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        /* Main Content */
+        .main-content {
+            position: relative;
+            z-index: 10;
+            padding: 0 60px;
+        }
+
+        .title-section {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .main-title {
+            font-size: 72px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00ffff, #4a9eff, #8a2be2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 32px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .description {
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 300;
+            line-height: 1.4;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* AI Brain Visual */
+        .ai-brain-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin: 60px auto 80px;
+        }
+
+        .ai-brain {
+            width: 100%;
+            height: 100%;
+            border: 3px solid rgba(0, 255, 255, 0.6);
+            border-radius: 50%;
+            position: relative;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .brain-core {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(74, 158, 255, 0.3), rgba(138, 43, 226, 0.3));
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .neural-connection {
+            position: absolute;
+            width: 2px;
+            background: linear-gradient(45deg, #00ffff, #4a9eff);
+            opacity: 0.7;
+            animation: neuralPulse 2s ease-in-out infinite;
+        }
+
+        .neural-connection:nth-child(1) {
+            height: 120px;
+            top: 20px;
+            left: 100px;
+            transform: rotate(45deg);
+        }
+
+        .neural-connection:nth-child(2) {
+            height: 100px;
+            top: 50px;
+            right: 80px;
+            transform: rotate(-30deg);
+            animation-delay: -0.5s;
+        }
+
+        .neural-connection:nth-child(3) {
+            height: 140px;
+            bottom: 30px;
+            left: 120px;
+            transform: rotate(-60deg);
+            animation-delay: -1s;
+        }
+
+        .neural-connection:nth-child(4) {
+            height: 110px;
+            bottom: 60px;
+            right: 100px;
+            transform: rotate(30deg);
+            animation-delay: -1.5s;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(0, 255, 255, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(0, 255, 255, 0.8); }
+        }
+
+        @keyframes neuralPulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        /* Metrics Section */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #4a9eff, #00ffff, #8a2be2);
+        }
+
+        .metric-number {
+            font-size: 48px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00ffff, #4a9eff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .metric-label {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Features Section */
+        .features-section {
+            margin-bottom: 80px;
+        }
+
+        .features-title {
+            font-size: 36px;
+            color: #ffffff;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .features-list {
+            display: grid;
+            gap: 25px;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 25px 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #4a9eff, #00ffff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .feature-text {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            line-height: 1.3;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .cta-text {
+            font-size: 28px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cta-url {
+            font-size: 36px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00ffff, #4a9eff, #8a2be2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.5)); }
+            to { filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.8)); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1080px) {
+            .container {
+                width: 100vw;
+                height: 100vh;
+                transform: scale(0.8);
+                transform-origin: top center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Particles Background -->
+        <div class="particles" id="particles"></div>
+
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">TOIT NEXUS</div>
+            <div class="tagline">Quantum-Powered Enterprise Platform</div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Title Section -->
+            <div class="title-section">
+                <h1 class="main-title">QUANTUM<br>MACHINE<br>LEARNING</h1>
+                <h2 class="subtitle">Revolução da IA Quântica</h2>
+                <p class="description">Algoritmos de Machine Learning executados em processadores quânticos IBM para resultados 650% mais precisos</p>
+            </div>
+
+            <!-- AI Brain Visual -->
+            <div class="ai-brain-container">
+                <div class="ai-brain">
+                    <div class="neural-connection"></div>
+                    <div class="neural-connection"></div>
+                    <div class="neural-connection"></div>
+                    <div class="neural-connection"></div>
+                    <div class="brain-core"></div>
+                </div>
+            </div>
+
+            <!-- Metrics Grid -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-number">650%</div>
+                    <div class="metric-label">Mais Precisão</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">260</div>
+                    <div class="metric-label">Qubits IBM</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">15min</div>
+                    <div class="metric-label">vs 8 Horas</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">99.7%</div>
+                    <div class="metric-label">Acurácia ML</div>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <div class="features-section">
+                <h3 class="features-title">Capacidades Quânticas</h3>
+                <div class="features-list">
+                    <div class="feature-item">
+                        <div class="feature-icon">🧠</div>
+                        <div class="feature-text">Neural Networks Quânticas com Variational Quantum Eigensolver</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">⚡</div>
+                        <div class="feature-text">Processamento Paralelo em 260 Qubits Simultâneos</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🎯</div>
+                        <div class="feature-text">Predições com 99.7% de Acurácia em Tempo Real</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🚀</div>
+                        <div class="feature-text">Quantum Advantage: 32x mais rápido que supercomputadores</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <div class="cta-text">Seja Pioneiro da IA Quântica</div>
+            <div class="cta-url">nexus.toit.com.br</div>
+        </div>
+    </div>
+
+    <script>
+        // Generate particles
+        function createParticles() {
+            const particles = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random position
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                
+                // Random animation delay
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                
+                // Random size variation
+                const size = Math.random() * 3 + 2;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                
+                particles.appendChild(particle);
+            }
+        }
+
+        // Initialize particles on load
+        document.addEventListener('DOMContentLoaded', createParticles);
+    </script>
+</body>
+</html>

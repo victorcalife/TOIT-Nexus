@@ -321,12 +321,13 @@ export function registerQueryBuilderRoutes(app: Express) {
       
       console.log(`▶️ Executing saved query ${id} - User: ${userId}, Tenant: ${tenantId}`);
       
+      // SECURITY FIX: Pass tenantId to getSavedQuery for proper isolation
       const savedQuery = await storage.getSavedQuery(id, tenantId);
       
       if (!savedQuery) {
         return res.status(404).json({ 
           success: false,
-          error: 'Query não encontrada'
+          error: 'Query não encontrada ou acesso negado'
         });
       }
       
@@ -374,11 +375,12 @@ export function registerQueryBuilderRoutes(app: Express) {
       
       console.log(`📈 Creating KPI from query ${id} - User: ${userId}, Tenant: ${tenantId}`);
       
+      // SECURITY FIX: Pass tenantId to getSavedQuery for proper isolation
       const savedQuery = await storage.getSavedQuery(id, tenantId);
       if (!savedQuery) {
         return res.status(404).json({ 
           success: false,
-          error: 'Query não encontrada'
+          error: 'Query não encontrada ou acesso negado'
         });
       }
       

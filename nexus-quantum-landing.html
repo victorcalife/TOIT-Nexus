@@ -418,7 +418,7 @@
             font-size: 1.25rem;
             color: var(--text-secondary);
             margin-bottom: 2rem;
-            line-height: 1.8;
+            line-height: 2.1;
         }
 
         .quantum-stats {
@@ -744,172 +744,316 @@
         }
 
         /* ========================================================================= */
-        /* SOBRE TOIT SECTION */
+        /* SOBRE TOIT SECTION - LAYOUT DUAS COLUNAS */
         /* ========================================================================= */
 
         .sobre-toit {
             min-height: 100vh;
+            max-height: 100vh;
             display: flex;
             align-items: center;
-            padding: 80px 2rem 2rem;
-            background: linear-gradient(135deg, rgba(15, 15, 35, 0.95) 0%, rgba(26, 26, 58, 0.95) 100%);
+            padding: 20px 2rem;
+            background: var(--section-bg-primary);
             scroll-margin-top: 60px;
             position: relative;
+            overflow: hidden;
+            z-index: 10;
         }
 
         .sobre-container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
             width: 100%;
+            height: calc(100vh - 80px);
+            display: flex;
+            flex-direction: column;
         }
 
         .sobre-header {
             text-align: center;
-            margin-bottom: 4rem;
+            margin-bottom: 1rem;
+            flex-shrink: 0;
         }
 
-        .sobre-content {
-            margin-top: 3rem;
-        }
-
-        .sobre-grid {
+        .sobre-content-wrapper {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2.5rem;
-            margin-bottom: 4rem;
-        }
-
-        .sobre-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 2.5rem;
-            transition: all 0.3s ease;
-            position: relative;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 2rem;
+            flex: 1;
+            align-items: start;
             overflow: hidden;
         }
 
-        .sobre-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--quantum-gradient);
-            opacity: 0;
-            transition: opacity 0.3s ease;
+        /* Coluna Esquerda - Institucional */
+        .sobre-institucional {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        .sobre-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
-            border-color: rgba(99, 102, 241, 0.3);
+        .institucional-content {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 1.2rem;
+            height: fit-content;
         }
 
-        .sobre-card:hover::before {
-            opacity: 1;
-        }
-
-        .card-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            display: block;
-        }
-
-        .sobre-card .card-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-primary);
+        .mission-statement {
             margin-bottom: 1rem;
+        }
+
+        .mission-icon {
+            font-size: 2rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .mission-title {
+            font-size: 1.2rem;
+            font-weight: 700;
             background: var(--quantum-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            margin-bottom: 0.8rem;
         }
 
-        .sobre-card .card-description {
+        .mission-text {
             color: var(--text-secondary);
-            line-height: 1.6;
-            font-size: 1rem;
+            line-height: 1.5;
+            font-size: 0.9rem;
         }
 
-        /* Conquistas Section */
-        .conquistas-section {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 25px;
-            padding: 3rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .values-compact {
+            margin-bottom: 1rem;
+        }
+
+        .value-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .value-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            margin-top: 0.2rem;
+        }
+
+        .value-content h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.2rem;
+        }
+
+        .value-content p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.3;
+        }
+
+        .impact-statement {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1rem;
+            text-align: center;
+        }
+
+        .impact-text {
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            line-height: 1.4;
+            font-style: italic;
+        }
+
+        /* Coluna Direita - Conquistas Compactas */
+        .conquistas-compact {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .conquistas-title {
-            font-size: 2rem;
+            font-size: 1.1rem;
             font-weight: 700;
             text-align: center;
-            margin-bottom: 2.5rem;
+            margin-bottom: 0.8rem;
             color: var(--text-primary);
         }
 
-        .conquistas-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
+        .conquistas-list {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 1rem;
+            margin-bottom: 0.6rem;
         }
 
-        .conquista-item {
-            background: rgba(99, 102, 241, 0.1);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 15px;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
+        .conquista-item-compact {
+            margin-bottom: 0.6rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .conquista-item:hover {
-            background: rgba(99, 102, 241, 0.15);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+        .conquista-item-compact:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
         }
 
-        .conquista-nivel {
+        .conquista-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
             font-weight: 700;
-            font-size: 0.9rem;
-            color: var(--quantum-primary);
             margin-bottom: 0.5rem;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
-        .conquista-desc {
+        .conquista-badge.mundial {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .conquista-badge.continental {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .conquista-badge.nacional {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+
+        .conquista-badge.inovacao {
+            background: rgba(139, 92, 246, 0.2);
+            color: #8b5cf6;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .conquista-text {
             color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.5;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .stats-mini {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.8rem;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1rem;
+        }
+
+        .stat-mini {
+            text-align: center;
+        }
+
+        .stat-number-mini {
+            font-size: 1.3rem;
+            font-weight: 800;
+            background: var(--quantum-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-label-mini {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            line-height: 1.2;
         }
 
         /* Responsive Sobre TOIT */
         @media (max-width: 1023px) {
-            .sobre-grid {
+            .sobre-toit {
+                height: auto;
+                min-height: 100vh;
+                max-height: none;
+                padding: 40px 1.5rem 2rem;
+                overflow: visible;
+            }
+
+            .sobre-container {
+                height: auto;
+            }
+
+            .sobre-content-wrapper {
                 grid-template-columns: 1fr;
                 gap: 2rem;
             }
 
-            .conquistas-grid {
+            .sobre-institucional,
+            .conquistas-compact {
+                height: auto;
+            }
+
+            .stats-mini {
                 grid-template-columns: 1fr;
-                gap: 1.5rem;
+                gap: 0.8rem;
+            }
+
+            .stat-mini {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                text-align: left;
+            }
+
+            .stat-number-mini {
+                font-size: 1.5rem;
+                margin-bottom: 0;
+            }
+
+            .value-item {
+                margin-bottom: 1rem;
+            }
+
+            .mission-title {
+                font-size: 1.2rem;
+            }
+
+            .mission-text {
+                font-size: 0.95rem;
             }
         }
 
-        @media (max-width: 667px) {
+        @media (max-width: 768px) {
             .sobre-toit {
-                padding: 70px 1rem 1rem;
+                padding: 30px 1rem 2rem;
             }
 
-            .sobre-card {
-                padding: 2rem;
+            .sobre-header {
+                margin-bottom: 1rem;
             }
 
-            .conquistas-section {
-                padding: 2rem;
+            .institucional-content,
+            .conquistas-list,
+            .stats-mini {
+                padding: 1.2rem;
             }
+
+            .mission-icon {
+                font-size: 2rem;
+            }
+
+            .value-icon {
+                font-size: 1.2rem;
+            }
+
         }
 
         /* ========================================================================= */
@@ -923,9 +1067,9 @@
             padding: 30px 2rem 2rem;
             background: linear-gradient(135deg, rgba(6, 181, 212, 0.155) 0%, rgba(20, 21, 43, 0.097) 100%);
             scroll-margin-top: 20px;
-            transform: translateY(-10px);
             position: relative;
             overflow: hidden;
+            z-index: 5;
         }
 
         .nexus-flow::before {
@@ -933,7 +1077,6 @@
             position: absolute;
             top: 0;
             left: 0;
-            transform: translateY(-100px);
             right: 0;
             bottom: 0;
             background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
@@ -984,7 +1127,7 @@
             flex-wrap: nowrap;
             gap: 0.5rem;
             margin-bottom: 6rem;
-            margin-top: 4rem;
+            margin-top: calc(4rem - 10px);
             overflow: visible;
             padding: 5rem 6rem;
             scrollbar-width: none;
@@ -994,7 +1137,7 @@
             max-width: 1400px;
             margin-left: auto;
             margin-right: auto;
-            transform: translateY(-80px);
+            transform: translateY(-112px);
             perspective: 1200px;
             transform-style: preserve-3d;
         }
@@ -1250,12 +1393,35 @@
             font-size: 1rem;
         }
 
+        /* Section Divider */
+        .section-divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, rgba(99, 102, 241, 0.3) 20%, rgba(99, 102, 241, 0.6) 50%, rgba(99, 102, 241, 0.3) 80%, transparent 100%);
+            margin: 1rem 0;
+            position: relative;
+        }
+
+        .section-divider::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 5px;
+            background: linear-gradient(90deg, transparent 0%, var(--quantum-primary) 50%, transparent 100%);
+            border-radius: 3px;
+            opacity: 0.7;
+        }
+
         /* Quantum ML Netflix Carousel */
         .quantum-ml-carousel {
             background: transparent;
             padding: 0;
-            margin-top: 3rem;
+            margin-top: -8rem;
             position: relative;
+            transform: translateY(-130px);
         }
 
 
@@ -1334,10 +1500,25 @@
         }
 
         @keyframes tooltipFadeIn {
-            0% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
-            20% { opacity: 1; transform: translateX(-50%) translateY(0); }
-            80% { opacity: 1; transform: translateX(-50%) translateY(0); }
-            100% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-10px);
+            }
+
+            20% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+
+            80% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-10px);
+            }
         }
 
         .carousel-wrapper {
@@ -1451,6 +1632,7 @@
         /* Card Tags */
         .card-tags {
             display: flex;
+            justify-content: center;
             gap: 0.5rem;
             margin-top: 0.7rem;
             flex-wrap: wrap;
@@ -1470,7 +1652,8 @@
         .metric-badge {
             position: absolute;
             top: 1rem;
-            right: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
             background: var(--quantum-success);
             color: white;
             padding: 0.3rem 0.7rem;
@@ -3106,12 +3289,12 @@
     <section class="hero" id="hero">
         <div class="hero-container">
             <div class="hero-content">
-                <h1><span class="quantum-highlight">Nexus:</span> O 1º SaaS <span class="quantum-highlight">
+                <h1 style="transform: translateY(22px);"><span class="quantum-highlight">Nexus:</span> O 1º SaaS <span class="quantum-highlight">
                         No-Code</span>
-                    <span class="quantum-highlight">Quântico</span> do Planeta<h1>
+                    <span class="quantum-highlight">Quântico</span> do Planeta</h1>
 
 
-                        <p class="hero-description">
+                        <p class="hero-description" style="transform: translateY(22px);">
                             Workflows, relatórios, dashboards, task management. Tudo integrado, tudo automatizado.
                             Desfrute da TQL, a query language de dados mais fácil do planeta! Aproveite a performance
                             surreal de <strong>2 hardwares quânticos "IBM Quantum Network" de 130Qubits.</strong>
@@ -3196,87 +3379,92 @@
         </div>
     </section>
 
+    <!-- Divisória entre Hero e Sobre TOIT -->
+    <div class="section-divider"></div>
+
     <!-- Sobre TOIT Section -->
     <section class="sobre-toit" id="sobre-toit">
         <div class="sobre-container">
             <div class="sobre-header fade-in">
                 <h2 class="section-title">Sobre a <span class="quantum-highlight">TOIT</span></h2>
                 <p class="section-subtitle">
-                    Conheça a empresa brasileira que está democratizando o acesso à computação quântica
+                    Democratizando tecnologia de ponta: do privilégio dos gigantes ao poder de todos
                 </p>
             </div>
 
-            <div class="sobre-content">
-                <div class="sobre-grid">
-                    <!-- Significado TOIT -->
-                    <div class="sobre-card fade-in">
-                        <div class="card-icon">🚀</div>
-                        <h3 class="card-title">TOIT - The One in Tech</h3>
-                        <p class="card-description">
-                            TOIT significa "The One in Tech" - A Única em Tecnologia. Somos uma empresa brasileira de
-                            tecnologia
-                            focada em democratizar o acesso às tecnologias mais avançadas do mundo, especialmente
-                            computação quântica.
-                        </p>
-                    </div>
+            <div class="sobre-content-wrapper">
+                <!-- Coluna Esquerda: Conteúdo Institucional -->
+                <div class="sobre-institucional fade-in">
+                    <div class="institucional-content">
+                        <div class="mission-statement">
+                            <div class="mission-icon">🌍</div>
+                            <h3 class="mission-title">Democratizando o Futuro</h3>
+                            <p class="mission-text">
+                                Transformamos tecnologia de elite em ferramenta acessível. Quebramos a barreira
+                                que limitava computação quântica aos gigantes tecnológicos.
+                            </p>
+                        </div>
 
-                    <!-- Missão -->
-                    <div class="sobre-card fade-in">
-                        <div class="card-icon">🎯</div>
-                        <h3 class="card-title">Nossa Missão</h3>
-                        <p class="card-description">
-                            Democratizar o acesso à computação quântica e tecnologias avançadas, tornando-as acessíveis
-                            para pessoas físicas e empresas brasileiras, eliminando barreiras técnicas e financeiras.
-                        </p>
-                    </div>
+                        <div class="values-compact">
+                            <div class="value-item">
+                                <span class="value-icon">⚡</span>
+                                <div class="value-content">
+                                    <h4>Motor de Crescimento</h4>
+                                    <p>Tecnologia avançada como direito universal</p>
+                                </div>
+                            </div>
+                            <div class="value-item">
+                                <span class="value-icon">🇧🇷</span>
+                                <div class="value-content">
+                                    <h4>Orgulho Nacional</h4>
+                                    <p>Brasil liderando revolução quântica mundial</p>
+                                </div>
+                            </div>
+                        </div>
 
-                    <!-- Visão -->
-                    <div class="sobre-card fade-in">
-                        <div class="card-icon">🔮</div>
-                        <h3 class="card-title">Nossa Visão</h3>
-                        <p class="card-description">
-                            Ser reconhecida como a primeira empresa do mundo a tornar a computação quântica
-                            verdadeiramente
-                            acessível para o mercado brasileiro, liderando a revolução quântica nacional.
-                        </p>
-                    </div>
-
-                    <!-- Valores -->
-                    <div class="sobre-card fade-in">
-                        <div class="card-icon">💎</div>
-                        <h3 class="card-title">Nossos Valores</h3>
-                        <p class="card-description">
-                            <strong>Inovação:</strong> Busca constante por soluções revolucionárias<br>
-                            <strong>Democratização:</strong> Tecnologia acessível para todos<br>
-                            <strong>Excelência:</strong> Qualidade premium em cada produto<br>
-                            <strong>Transparência:</strong> Comunicação honesta e resultados reais
-                        </p>
+                        <div class="impact-statement">
+                            <p class="impact-text">
+                                <strong>"Tecnologia não deve ser privilégio de poucos,
+                                    mas ferramenta de crescimento para todos."</strong>
+                            </p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Conquistas Reais -->
-                <div class="conquistas-section">
+                <!-- Coluna Direita: Conquistas Compactas -->
+                <div class="conquistas-compact fade-in">
                     <h3 class="conquistas-title">Conquistas <span class="quantum-highlight">Reais</span></h3>
-                    <div class="conquistas-grid">
-                        <div class="conquista-item">
-                            <div class="conquista-nivel">🌍 MUNDIAL</div>
-                            <div class="conquista-desc">Primeira empresa a democratizar acesso a 260 qubits IBM para
-                                pessoas físicas</div>
+                    <div class="conquistas-list">
+                        <div class="conquista-item-compact">
+                            <div class="conquista-badge mundial">🌍 MUNDIAL</div>
+                            <p class="conquista-text">Primeira a democratizar 260 qubits IBM para pessoas físicas</p>
                         </div>
-                        <div class="conquista-item">
-                            <div class="conquista-nivel">🌎 CONTINENTAL</div>
-                            <div class="conquista-desc">Líder sul-americana em soluções No-Code com integração quântica
-                                real</div>
+                        <div class="conquista-item-compact">
+                            <div class="conquista-badge continental">🌎 AMÉRICA</div>
+                            <p class="conquista-text">Líder sul-americana em No-Code com quantum real</p>
                         </div>
-                        <div class="conquista-item">
-                            <div class="conquista-nivel">🇧🇷 NACIONAL</div>
-                            <div class="conquista-desc">Primeira plataforma brasileira com acesso direto à IBM Quantum
-                                Network</div>
+                        <div class="conquista-item-compact">
+                            <div class="conquista-badge nacional">🇧🇷 BRASIL</div>
+                            <p class="conquista-text">Primeira plataforma BR na IBM Quantum Network</p>
                         </div>
-                        <div class="conquista-item">
-                            <div class="conquista-nivel">🏆 INOVAÇÃO</div>
-                            <div class="conquista-desc">Criação da TQL - Query Language mais simples para análise de
-                                dados</div>
+                        <div class="conquista-item-compact">
+                            <div class="conquista-badge inovacao">🏆 TECH</div>
+                            <p class="conquista-text">Criação da TQL - linguagem query mais simples</p>
+                        </div>
+                    </div>
+
+                    <div class="stats-mini">
+                        <div class="stat-mini">
+                            <div class="stat-number-mini">2.847</div>
+                            <div class="stat-label-mini">Brasileiros pioneiros</div>
+                        </div>
+                        <div class="stat-mini">
+                            <div class="stat-number-mini">47</div>
+                            <div class="stat-label-mini">Países alcançados</div>
+                        </div>
+                        <div class="stat-mini">
+                            <div class="stat-number-mini">347%</div>
+                            <div class="stat-label-mini">ROI médio empresas</div>
                         </div>
                     </div>
                 </div>
@@ -3285,9 +3473,9 @@
     </section>
 
     <!-- NEXUS Flow Process Section -->
-    <section class="nexus-flow" id="nexus-flow" style="transform: translateY(-70px);">
+    <section class="nexus-flow" id="nexus-flow">
         <div class="flow-container">
-            <div class="flow-header fade-in" style="transform: translateY(60px);">
+            <div class="flow-header fade-in">
                 <h2 class="flow-title">Como o <span
                         style="background: linear-gradient(135deg, #001366ff 0%, #581c87 50%, #1e3a8a 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 800;">TOIT</span><span
                         style="background: linear-gradient(135deg, #1e3a8a 0%, #581c87 50%, #06b6d4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 500;">NEXUS</span>
@@ -3395,8 +3583,11 @@
                 </div>
             </div>
 
+            <!-- Divisão sutil entre seções -->
+            <div class="section-divider" style="transform: translateY(-230px);"></div>
+
             <!-- Quantum ML Netflix Carousel -->
-            <div class="quantum-ml-carousel fade-in">
+            <div class="quantum-ml-carousel fade-in" style="transform: translateY(-48px);">
                 <div class="carousel-header">
                     <h3 class="carousel-title">🧠 Machine Learning Quântico Integrado</h3>
                     <p class="carousel-subtitle">
@@ -3410,7 +3601,7 @@
                     <div class="carousel-help-tooltip" id="carouselTooltip">
                         <span>← Use as setas para navegar →</span>
                     </div>
-                    
+
                     <button class="carousel-nav prev" onclick="scrollQuantumCarousel(-1)">‹</button>
                     <div class="carousel-wrapper" id="quantumCarousel">
 
