@@ -9,26 +9,6 @@ import webhookRoutes from "./webhookRoutes.js";
 
 const app = express();
 
-// PRIMEIRA COISA: Interceptar nexus.toit.com.br ANTES de qualquer middleware
-app.get('*', (req, res, next) => {
-  const host = req.get('host') || '';
-  const isNexusDomain = host.includes('nexus.toit.com.br') || host.startsWith('nexus.');
-  
-  console.log(`🌐 HOST: ${host} | NEXUS: ${isNexusDomain} | PATH: ${req.path}`);
-  
-  if (isNexusDomain) {
-    if (req.path.startsWith('/api')) {
-      console.log(`📁 API: ${req.path}`);
-      return next();
-    }
-    
-    const filePath = path.resolve(process.cwd(), 'nexus-quantum-landing.html');
-    console.log(`🚀 SERVINDO: ${filePath}`);
-    return res.sendFile(filePath);
-  }
-  
-  next();
-});
 
 // Configure raw body processing for Stripe webhooks BEFORE other middleware
 app.use('/api/webhooks/stripe', express.raw({ type: 'application/json' }));
@@ -155,6 +135,7 @@ app.use((req, res, next) => {
     });
 
 
+
     // Payment system health check
     app.get('/api/payment/health', (req, res) => {
       const stripeConfigured = !!process.env.STRIPE_SECRET_KEY;
@@ -238,22 +219,6 @@ app.use((req, res, next) => {
       }
     });
 
-    // CRÍTICO: Registrar middleware nexus ANTES do Vite/Static
-    // Eles também usam app.use('*') e sobrescrevem o nosso
-    app.use((req, res, next) => {
-      const host = req.get('host') || '';
-      const isNexusDomain = host.includes('nexus.toit.com.br') || host.startsWith('nexus.');
-      
-      console.log(`🔥 [FINAL CHECK] Host: ${host} | Nexus: ${isNexusDomain} | Path: ${req.path}`);
-      
-      if (isNexusDomain && !req.path.startsWith('/api')) {
-        const filePath = path.resolve(process.cwd(), 'nexus-quantum-landing.html');
-        console.log(`🚀 [FINAL SERVE] ${filePath}`);
-        return res.sendFile(filePath);
-      }
-      
-      next();
-    });
 
     // importantly only setup vite in development and after
     // setting up all the other routes so the catch-all route
