@@ -57,6 +57,16 @@ const CalendarCallback = lazy(() => import("@/pages/calendar-callback"));
 const QuantumMLCommercial = lazy(() => import("@/pages/quantum-ml-commercial"));
 
 function Router() {
+  // SOLUÇÃO SIMPLES: Se for nexus domain, NÃO renderizar React App
+  const hostname = window.location.hostname.toLowerCase();
+  const isNexusDomain = hostname.includes('nexus.toit.com.br') || hostname.startsWith('nexus.');
+  
+  if (isNexusDomain) {
+    // Recarregar página para forçar backend servir HTML estático
+    window.location.reload();
+    return null;
+  }
+
   const { isAuthenticated, isLoading, user, isSuperAdmin } = useAuth();
   
   // Check if system needs setup
@@ -84,7 +94,6 @@ function Router() {
   // Not authenticated - show appropriate login or landing page
   if (!isAuthenticated) {
     // Detectar se é subdomínio de suporte para mostrar página de login específica
-    const hostname = window.location.hostname.toLowerCase();
     const isSupportDomain = hostname.includes('supnexus.toit.com.br') || hostname.startsWith('supnexus.') || hostname === 'supnexus';
     
     // Debug log para verificar detecção
@@ -96,7 +105,7 @@ function Router() {
       return <SupportLogin />;
     }
     
-    // Para nexus.toit.com.br - mostrar landing page comercial ou login baseado na rota
+    // Para outros domínios (localhost, etc) - mostrar login
     return (
       <Switch>
         <Route path="/login" component={Login} />
@@ -104,8 +113,8 @@ function Router() {
         <Route path="/verify-email" component={VerifyEmail} />
         <Route path="/verify-phone" component={VerifyPhone} />
         <Route path="/support-login" component={SupportLogin} />
-        <Route path="/" component={QuantumMLCommercial} />
-        <Route component={QuantumMLCommercial} />
+        <Route path="/" component={Login} />
+        <Route component={Login} />
       </Switch>
     );
   }
