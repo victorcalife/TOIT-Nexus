@@ -106,7 +106,7 @@ export default function LandingCommercial() {
   // Carousel 3D Logic
   useEffect(() => {
     let currentCase = 0;
-    const totalCases = 9;
+    const totalCases = 10;
     let carouselInterval: NodeJS.Timeout;
     
     function updateCarousel() {
@@ -713,7 +713,7 @@ export default function LandingCommercial() {
             <div className="bg-gradient-to-r from-green-500 to-blue-600 text-white p-8 rounded-lg">
               <h3 className="text-3xl font-bold mb-6">🇧🇷 CASES DE SUCESSO QUÂNTICO BRASILEIROS 🇧🇷</h3>
               <p className="text-lg mb-8 text-blue-100">
-                <strong>9 empresas brasileiras</strong> que já usam nosso quantum em produção
+                <strong>10 empresas brasileiras</strong> que já usam nosso quantum em produção
               </p>
               
               {/* Carousel 3D Container */}
@@ -882,11 +882,29 @@ export default function LandingCommercial() {
                     </div>
                   </div>
 
+                  {/* Case 10: Itaú - Fraudes */}
+                  <div className="case-card absolute inset-0 bg-gradient-to-br from-orange-600 to-red-700 rounded-xl p-6 transform transition-all duration-1000 translate-x-full opacity-0 scale-75 shadow-xl">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="text-3xl font-bold">🏦 ITAÚ</div>
+                      <div className="bg-white/20 px-3 py-1 rounded-full text-sm font-medium">FINANCEIRO</div>
+                    </div>
+                    <div className="text-lg font-semibold mb-2">Prevenção Fraudes Quântica</div>
+                    <div className="text-5xl font-bold text-yellow-300 mb-2">94%</div>
+                    <div className="text-lg mb-3">precisão detecção</div>
+                    <div className="text-sm opacity-90 mb-4">
+                      Quantum ML para padrões complexos • 83% redução falsos positivos
+                    </div>
+                    <div className="bg-white/20 rounded-lg p-3">
+                      <div className="text-2xl font-bold text-yellow-300">R$ 89.5M</div>
+                      <div className="text-xs">perdas evitadas por ano</div>
+                    </div>
+                  </div>
+
                 </div>
                 
                 {/* Navigation Dots */}
                 <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                  {[...Array(9)].map((_, i) => (
+                  {[...Array(10)].map((_, i) => (
                     <button
                       key={i}
                       className="w-3 h-3 rounded-full bg-white/30 hover:bg-white/60 transition-all duration-300 case-dot"
