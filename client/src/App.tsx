@@ -57,16 +57,6 @@ const CalendarCallback = lazy(() => import("@/pages/calendar-callback"));
 const QuantumMLCommercial = lazy(() => import("@/pages/quantum-ml-commercial"));
 
 function Router() {
-  // SOLUÇÃO SIMPLES: Se for nexus domain, NÃO renderizar React App
-  const hostname = window.location.hostname.toLowerCase();
-  const isNexusDomain = hostname.includes('nexus.toit.com.br') || hostname.startsWith('nexus.');
-  
-  if (isNexusDomain) {
-    // Recarregar página para forçar backend servir HTML estático
-    window.location.reload();
-    return null;
-  }
-
   const { isAuthenticated, isLoading, user, isSuperAdmin } = useAuth();
   
   // Check if system needs setup
