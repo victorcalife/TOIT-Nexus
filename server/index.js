@@ -9,6 +9,27 @@ import webhookRoutes from "./webhookRoutes.js";
 
 const app = express();
 
+// PRIMEIRA COISA: Interceptar nexus.toit.com.br ANTES de qualquer middleware
+app.get('*', (req, res, next) => {
+  const host = req.get('host') || '';
+  const isNexusDomain = host.includes('nexus.toit.com.br') || host.startsWith('nexus.');
+  
+  console.log(`🌐 HOST: ${host} | NEXUS: ${isNexusDomain} | PATH: ${req.path}`);
+  
+  if (isNexusDomain) {
+    if (req.path.startsWith('/api')) {
+      console.log(`📁 API: ${req.path}`);
+      return next();
+    }
+    
+    const filePath = path.resolve(process.cwd(), 'nexus-quantum-landing.html');
+    console.log(`🚀 SERVINDO: ${filePath}`);
+    return res.sendFile(filePath);
+  }
+  
+  next();
+});
+
 // Configure raw body processing for Stripe webhooks BEFORE other middleware
 app.use('/api/webhooks/stripe', express.raw({ type: 'application/json' }));
 
@@ -76,31 +97,6 @@ app.use((req, res, next) => {
     
     await import('./initializeSystem.js');
 
-    // SIMPLES: Servir nexus-quantum-landing.html para nexus.toit.com.br
-    // MÁXIMA PRIORIDADE - ANTES DE TUDO
-    app.get('*', (req, res, next) => {
-      const host = req.get('host') || '';
-      const isNexusDomain = host.includes('nexus.toit.com.br') || host.startsWith('nexus.');
-      
-      console.log(`🌐 Host: ${host} | NexusDomain: ${isNexusDomain} | Path: ${req.path}`);
-      
-      // Se for domínio nexus, servir APENAS o HTML
-      if (isNexusDomain) {
-        // Permitir apenas APIs
-        if (req.path.startsWith('/api')) {
-          console.log(`📁 API permitida: ${req.path}`);
-          return next();
-        }
-        
-        // QUALQUER OUTRA COISA = HTML ESTÁTICO
-        const filePath = path.resolve(process.cwd(), 'nexus-quantum-landing.html');
-        console.log(`🚀 NEXUS LANDING: ${filePath}`);
-        return res.sendFile(filePath);
-      }
-      
-      // Não é nexus, continuar normal
-      next();
-    });
 
     // Inicializar sistema de autenticação
     console.log('🔐 Inicializando sistema de autenticação...');
