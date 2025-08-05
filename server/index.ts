@@ -211,22 +211,23 @@ app.use((req, res, next) => {
       next();
     });
     
+    // ROTA ESPECÍFICA PARA EQUIPE TOIT - REGISTRAR ANTES DE registerRoutes()
+    app.get('/team', (req, res) => {
+      const clientIndexPath = path.resolve(import.meta.dirname, '..', 'client', 'index.html');
+      console.log('👥 [TEAM] Servindo React app para equipe TOIT');
+      
+      if (fs.existsSync(clientIndexPath)) {
+        console.log(`✅ [TEAM] Servindo arquivo: ${clientIndexPath}`);
+        return res.sendFile(clientIndexPath);
+      } else {
+        console.error(`❌ [TEAM] Client index.html não encontrado: ${clientIndexPath}`);
+        return res.status(404).send('<h1>Sistema TOIT temporariamente indisponível</h1><p>Contate o administrador do sistema.</p>');
+      }
+    });
+    
     const server = await registerRoutes(app);
 
   // ROTAS ESPECÍFICAS APÓS registerRoutes para evitar conflitos
-
-  // ROTA ESPECÍFICA PARA EQUIPE TOIT (já que Railway Edge interfere com domínios)
-  app.get('/team', (req, res) => {
-    const clientIndexPath = path.resolve(import.meta.dirname, '..', 'client', 'index.html');
-    console.log('👥 [TEAM] Servindo React app para equipe TOIT');
-    
-    if (fs.existsSync(clientIndexPath)) {
-      return res.sendFile(clientIndexPath);
-    } else {
-      console.error(`❌ [TEAM] Client index.html não encontrado`);
-      return res.status(404).send('<h1>Sistema TOIT temporariamente indisponível</h1><p>Contate o administrador do sistema.</p>');
-    }
-  });
 
   // Roteamento por domínio APENAS na rota raiz (sem extensões)
   app.get('/', (req, res, next) => {
