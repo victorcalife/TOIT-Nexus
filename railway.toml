@@ -25,10 +25,5 @@
   NODE_VERSION = "18.x"
   PORT = "3000"
 
-# Domínios personalizados
-[[deploy]]
-  [[deploy.custom_domains]]
-    name = "nexus.toit.com.br"
-  
-  [[deploy.custom_domains]]
-    name = "supnexus.toit.com.br"
+# NOTA: Os domínios personalizados devem ser configurados diretamente no painel do Railway
+# sob as configurações de domínio do projeto.
