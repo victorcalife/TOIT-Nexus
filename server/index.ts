@@ -112,6 +112,35 @@ app.use((req, res, next) => {
     // await initializeDefaultModules();
     // await createProductConfigurations();
     
+    // MIDDLEWARE DE LOGGING GLOBAL - Debug completo
+    app.use((req, res, next) => {
+      if (req.path.includes('favicon') || req.path.includes('debug')) {
+        console.log(`🔍 [REQUEST] ${req.method} ${req.path}`);
+        console.log(`🔍 [REQUEST] Host: ${req.get('host')}`);
+        console.log(`🔍 [REQUEST] Protocol: ${req.protocol}`);
+        console.log(`🔍 [REQUEST] Secure: ${req.secure}`);
+        console.log(`🔍 [REQUEST] Headers:`, JSON.stringify(req.headers, null, 2));
+      }
+      next();
+    });
+
+    // ROTA DE DIAGNÓSTICO - Debug de redirecionamentos
+    app.get('/debug/favicon', (req, res) => {
+      console.log(`🔍 [DEBUG] Executando rota de debug com sucesso`);
+      
+      res.json({
+        message: 'Debug info - Rota executada com sucesso',
+        host: req.get('host'),
+        protocol: req.protocol,
+        url: req.url,
+        originalUrl: req.originalUrl,
+        secure: req.secure,
+        method: req.method,
+        path: req.path,
+        timestamp: new Date().toISOString()
+      });
+    });
+
     // ROTAS ESPECÍFICAS PARA ASSETS ESTÁTICOS - ANTES DE TUDO
     // Resolver favicon ANTES de qualquer middleware para evitar loops
     
