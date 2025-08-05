@@ -24,8 +24,33 @@ app.get('/', (req, res) => {
 });
 
 
-// Para outras rotas, redirecionar para o backend
+// ROTA ESPECÍFICA PARA EQUIPE TOIT - SERVIR REACT APP DIRETAMENTE
+app.get('/team', (req, res) => {
+  console.log(`👥 [TEAM] Servindo React app diretamente do frontend`);
+  
+  const clientIndexPath = path.join(__dirname, 'client', 'index.html');
+  
+  if (fs.existsSync(clientIndexPath)) {
+    console.log(`✅ [TEAM] Servindo React app: ${clientIndexPath}`);
+    res.sendFile(clientIndexPath);
+  } else {
+    console.error(`❌ [TEAM] Client index.html não encontrado: ${clientIndexPath}`);
+    res.status(404).send(`
+      <h1>Sistema TOIT Indisponível</h1>
+      <p>React app não encontrado</p>
+      <p>Tentando: ${clientIndexPath}</p>
+      <p>Contate o administrador do sistema</p>
+    `);
+  }
+});
+
+// Para outras rotas (EXCETO /team), redirecionar para o backend  
 app.use('*', (req, res) => {
+  // Evitar loops - não interceptar rotas que já foram processadas
+  if (req.originalUrl === '/team') {
+    return res.status(404).send('<h1>Rota /team deveria ter sido processada acima</h1>');
+  }
+  
   console.log(`🔄 Redirecionando ${req.originalUrl} para backend`);
   res.redirect(`https://toit-nexus-backend-main.up.railway.app${req.originalUrl}`);
 });
