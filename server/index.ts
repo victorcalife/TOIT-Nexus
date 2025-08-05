@@ -49,19 +49,32 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Servir landing page APENAS para rota raiz do nexus.toit.com.br
+// Roteamento por domínio na rota raiz
 app.get('/', (req, res, next) => {
   const host = req.get('host');
   
   console.log(`🌐 [ROOT] Host: ${host} | Path: ${req.path}`);
   
-  // APENAS nexus.toit.com.br na rota raiz serve landing page
+  // NEXUS (clientes) → Landing page comercial
   if (host === 'nexus.toit.com.br') {
     console.log('🎯 Servindo landing page para nexus.toit.com.br/');
     return res.sendFile(path.resolve(import.meta.dirname, '..', 'nexus-quantum-landing.html'));
   }
   
-  // Qualquer outro domínio (supnexus, localhost, etc.) continua para as rotas normais
+  // SUPNEXUS (equipe TOIT) → Login direto do sistema
+  if (host === 'supnexus.toit.com.br') {
+    const clientIndexPath = path.resolve(import.meta.dirname, '..', 'client', 'index.html');
+    console.log('👥 [SUPNEXUS] Redirecionando direto para login da equipe TOIT');
+    
+    if (fs.existsSync(clientIndexPath)) {
+      return res.sendFile(clientIndexPath);
+    } else {
+      console.error(`❌ [SUPNEXUS] Client index.html não encontrado`);
+      return res.status(404).send('<h1>Sistema TOIT temporariamente indisponível</h1><p>Contate o administrador do sistema.</p>');
+    }
+  }
+  
+  // Outros domínios (localhost, etc.) continuam para as rotas normais
   console.log(`✅ Host ${host} continua para rotas normais`);
   next();
 });
