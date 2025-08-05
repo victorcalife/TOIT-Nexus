@@ -40,7 +40,8 @@
       "Bash(touch:*)",
       "Bash(pip install:*)",
       "Bash(python:*)",
-      "Bash(pip uninstall:*)"
+      "Bash(pip uninstall:*)",
+      "Bash(git checkout:*)"
     ],
     "deny": []
   }
