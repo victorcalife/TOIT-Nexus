@@ -48,20 +48,20 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Middleware para servir landing page APENAS para nexus.toit.com.br
-app.use((req, res, next) => {
+// Servir landing page APENAS para rota raiz do nexus.toit.com.br
+app.get('/', (req, res, next) => {
   const host = req.get('host');
   
-  console.log(`🌐 [MIDDLEWARE] Host: ${host} | Path: ${req.path}`);
+  console.log(`🌐 [ROOT] Host: ${host} | Path: ${req.path}`);
   
-  // APENAS nexus.toit.com.br serve landing page, TODOS os outros (incluindo supnexus) passam direto
+  // APENAS nexus.toit.com.br na rota raiz serve landing page
   if (host === 'nexus.toit.com.br') {
-    console.log('🎯 Interceptando APENAS nexus.toit.com.br - servindo landing page');
+    console.log('🎯 Servindo landing page para nexus.toit.com.br/');
     return res.sendFile(path.resolve(import.meta.dirname, '..', 'nexus-quantum-landing.html'));
   }
   
-  // Qualquer outro domínio (supnexus, localhost, etc.) continua normal
-  console.log(`✅ Host ${host} passa direto - não interceptado`);
+  // Qualquer outro domínio (supnexus, localhost, etc.) continua para as rotas normais
+  console.log(`✅ Host ${host} continua para rotas normais`);
   next();
 });
 
