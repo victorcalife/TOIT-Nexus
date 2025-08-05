@@ -491,7 +491,7 @@ export function AdaptiveInsights({ tenantId, userRole }: AdaptiveInsightsProps) 
                           {kpi.adaptiveRules.recalculateFrequency && 
                            <li>• Recálculo: {kpi.adaptiveRules.recalculateFrequency}</li>}
                           {kpi.adaptiveRules.alertIfDeviationOver && 
-                           <li>• Alerta se desvio > {kpi.adaptiveRules.alertIfDeviationOver}%</li>}
+                           <li>• Alerta se desvio &gt; {kpi.adaptiveRules.alertIfDeviationOver}%</li>}
                         </ul>
                       </div>
                     )}

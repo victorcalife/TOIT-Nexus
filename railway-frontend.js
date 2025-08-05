@@ -17,17 +17,23 @@ app.get('/', (req, res) => {
   if (realHost === 'supnexus.toit.com.br') {
     console.log(`👥 [SUPNEXUS] Servindo React app para equipe TOIT`);
     
-    const clientIndexPath = path.join(__dirname, 'client', 'index.html');
+    // Tentar servir do diretório dist/ (produção) primeiro
+    const distIndexPath = path.join(__dirname, 'client', 'dist', 'index.html');
+    const devIndexPath = path.join(__dirname, 'client', 'index.html');
     
-    if (fs.existsSync(clientIndexPath)) {
-      console.log(`✅ [SUPNEXUS] Servindo React app: ${clientIndexPath}`);
-      return res.sendFile(clientIndexPath);
+    if (fs.existsSync(distIndexPath)) {
+      console.log(`✅ [SUPNEXUS] Servindo React app buildado: ${distIndexPath}`);
+      return res.sendFile(distIndexPath);
+    } else if (fs.existsSync(devIndexPath)) {
+      console.log(`⚠️ [SUPNEXUS] Servindo React app dev: ${devIndexPath}`);
+      return res.sendFile(devIndexPath);
     } else {
-      console.error(`❌ [SUPNEXUS] Client index.html não encontrado: ${clientIndexPath}`);
+      console.error(`❌ [SUPNEXUS] React app não encontrado em dist/ nem client/`);
       return res.status(404).send(`
         <h1>Sistema TOIT Indisponível</h1>
         <p>Portal da equipe TOIT temporariamente indisponível</p>
-        <p>Contate o administrador do sistema</p>
+        <p>React app não foi buildado corretamente</p>
+        <p>Execute: npm run build</p>
       `);
     }
   }
@@ -49,7 +55,10 @@ app.get('/', (req, res) => {
   }
 });
 
-// SERVIR ASSETS ESTÁTICOS DO REACT (ANTES DE REDIRECIONAR)
+// SERVIR ASSETS ESTÁTICOS DO REACT BUILDADO (PRODUÇÃO)
+app.use(express.static(path.join(__dirname, 'client', 'dist')));
+
+// FALLBACK PARA DEV (se dist/ não existir)
 app.use('/src', express.static(path.join(__dirname, 'client', 'src')));
 app.use('/public', express.static(path.join(__dirname, 'client', 'public')));
 app.use('/assets', express.static(path.join(__dirname, 'client', 'assets')));
@@ -74,12 +83,17 @@ app.get('*', (req, res) => {
   // Se é supnexus, serve o React app para qualquer rota (SPA)
   if (realHost === 'supnexus.toit.com.br') {
     console.log(`🎯 [SUPNEXUS SPA] Fallback para React Router: ${req.originalUrl}`);
-    const clientIndexPath = path.join(__dirname, 'client', 'index.html');
     
-    if (fs.existsSync(clientIndexPath)) {
-      return res.sendFile(clientIndexPath);
+    // Tentar servir do diretório dist/ (produção) primeiro
+    const distIndexPath = path.join(__dirname, 'client', 'dist', 'index.html');
+    const devIndexPath = path.join(__dirname, 'client', 'index.html');
+    
+    if (fs.existsSync(distIndexPath)) {
+      return res.sendFile(distIndexPath);
+    } else if (fs.existsSync(devIndexPath)) {
+      return res.sendFile(devIndexPath);
     } else {
-      return res.status(404).send('React app não encontrado');
+      return res.status(404).send('React app não encontrado - execute npm run build');
     }
   }
   
