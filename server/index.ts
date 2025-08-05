@@ -218,17 +218,31 @@ app.use((req, res, next) => {
   // Roteamento por domínio APENAS na rota raiz (sem extensões)
   app.get('/', (req, res, next) => {
     const host = req.get('host');
+    const xForwardedHost = req.get('x-forwarded-host');
+    const xOriginalHost = req.get('x-original-host');
     
-    console.log(`🌐 [ROOT] Host: ${host} | Path: ${req.path}`);
+    console.log(`🌐 [ROOT] Host: ${host} | X-Forwarded-Host: ${xForwardedHost} | X-Original-Host: ${xOriginalHost}`);
+    console.log(`🌐 [ROOT] Headers relacionados a host:`, {
+      host: req.get('host'),
+      'x-forwarded-host': req.get('x-forwarded-host'),
+      'x-original-host': req.get('x-original-host'),
+      'x-forwarded-for': req.get('x-forwarded-for'),
+      referer: req.get('referer'),
+      origin: req.get('origin')
+    });
+    
+    // Usar x-forwarded-host se disponível (Railway Edge pode usar isso)
+    const realHost = xForwardedHost || host;
+    console.log(`🎯 [ROUTING] Host final para roteamento: ${realHost}`);
     
     // NEXUS (clientes) → Landing page comercial
-    if (host === 'nexus.toit.com.br') {
+    if (realHost === 'nexus.toit.com.br') {
       console.log('🎯 Servindo landing page para nexus.toit.com.br/');
       return res.sendFile(path.resolve(import.meta.dirname, '..', 'nexus-quantum-landing.html'));
     }
     
     // SUPNEXUS (equipe TOIT) → Login direto do sistema
-    if (host === 'supnexus.toit.com.br') {
+    if (realHost === 'supnexus.toit.com.br') {
       const clientIndexPath = path.resolve(import.meta.dirname, '..', 'client', 'index.html');
       console.log('👥 [SUPNEXUS] Redirecionando direto para login da equipe TOIT');
       
