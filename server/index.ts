@@ -14,6 +14,9 @@ import { revolutionaryAdaptiveEngine } from "./revolutionaryAdaptiveEngine";
 
 const app = express();
 
+// CONFIGURAÇÕES PARA RAILWAY
+app.set('trust proxy', true);
+
 // DEBUG E LOGGING DETALHADO
 app.use((req, res, next) => {
   console.log(`🔍 [DEBUG] ${req.method} ${req.url} | Host: ${req.get('host')} | User-Agent: ${req.get('user-agent')?.substring(0, 50)}...`);
@@ -113,7 +116,48 @@ app.use((req, res, next) => {
 
   // ROTAS ESPECÍFICAS APÓS registerRoutes para evitar conflitos
   
-  // Roteamento por domínio na rota raiz
+  // Middleware para excluir assets estáticos do roteamento por domínio
+  app.use((req, res, next) => {
+    // Assets estáticos devem passar direto - NÃO interceptar
+    const staticAssets = /\.(png|jpg|jpeg|gif|ico|svg|css|js|woff|woff2|ttf|eot|map|json)$/i;
+    
+    if (staticAssets.test(req.path)) {
+      console.log(`📁 [STATIC] Asset ${req.path} - passando direto (sem interceptação)`);
+      return next();
+    }
+    
+    // Continuar para roteamento normal
+    next();
+  });
+
+  // Rotas específicas para assets estáticos (antes do roteamento por domínio)
+  app.get('/favicon.svg', (req, res) => {
+    const faviconPath = path.resolve(import.meta.dirname, '..', 'toit-nexus-logo.svg');
+    console.log(`🎯 [FAVICON] Servindo favicon.svg do arquivo: ${faviconPath}`);
+    
+    if (fs.existsSync(faviconPath)) {
+      res.setHeader('Content-Type', 'image/svg+xml');
+      res.setHeader('Cache-Control', 'public, max-age=86400'); // Cache 1 dia
+      res.sendFile(faviconPath);
+    } else {
+      console.error(`❌ [FAVICON] Arquivo não encontrado: ${faviconPath}`);
+      res.status(404).send('Favicon not found');
+    }
+  });
+
+  app.get('/favicon.png', (req, res) => {
+    // Redirecionar .png para .svg para evitar loops
+    console.log(`🔄 [FAVICON] Redirecionando favicon.png → favicon.svg`);
+    res.redirect(301, '/favicon.svg');
+  });
+
+  app.get('/favicon.ico', (req, res) => {
+    // Redirecionar .ico para .svg para evitar loops
+    console.log(`🔄 [FAVICON] Redirecionando favicon.ico → favicon.svg`);
+    res.redirect(301, '/favicon.svg');
+  });
+
+  // Roteamento por domínio APENAS na rota raiz (sem extensões)
   app.get('/', (req, res, next) => {
     const host = req.get('host');
     
