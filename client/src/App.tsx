@@ -6,7 +6,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAuth } from "@/hooks/useAuth";
 import { Sidebar } from "@/components/sidebar";
 import { useQuery } from "@tanstack/react-query";
-import { detectLoginType, redirectToCorrectLogin } from "@/lib/domainUtils";
 import { Suspense, lazy } from "react";
 
 // Componente de loading
@@ -18,7 +17,6 @@ const LoadingSpinner = () => (
 
 // Lazy loading das páginas principais
 const NotFound = lazy(() => import("@/pages/not-found"));
-const Landing = lazy(() => import("@/pages/landing"));
 const Login = lazy(() => import("@/pages/login"));
 const SupportLogin = lazy(() => import("@/pages/support-login"));
 const VerifyAccount = lazy(() => import("@/pages/verify-account"));
@@ -27,9 +25,6 @@ const VerifyPhone = lazy(() => import("@/pages/verify-phone"));
 const SupportDashboard = lazy(() => import("@/pages/support-dashboard"));
 const Dashboard = lazy(() => import("@/pages/dashboard"));
 const Home = lazy(() => import("@/pages/home"));
-const WorkingApp = lazy(() => import("@/pages/working-app"));
-const CompleteToitSystem = lazy(() => import("@/pages/complete-toit-system"));
-const ToitNexusComplete = lazy(() => import("@/components/toit-nexus-complete"));
 const Clients = lazy(() => import("@/pages/clients"));
 const Categories = lazy(() => import("@/pages/categories"));
 const Workflows = lazy(() => import("@/pages/workflows"));
@@ -455,8 +450,6 @@ function Router() {
       }} />
       
       <Route path="/calendar-callback" component={CalendarCallback} />
-
-      <Route component={NotFound} />
 
       {/* Catch-all 404 route */}
       <Route component={NotFound} />
