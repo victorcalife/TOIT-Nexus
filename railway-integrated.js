@@ -64,15 +64,33 @@ async function initializeBackend() {
     // Importar o sistema backend completo (se possível via require dinâmico)
     // Como temos TypeScript, vamos implementar APIs essenciais em JavaScript simples
     
+    // DEBUG ROUTE - CONFIRMAR SE SERVIDOR INTEGRADO ESTÁ ATIVO
+    app.get('/api/debug-integrated', (req, res) => {
+      console.log('🐛 DEBUG: Servidor integrado FUNCIONANDO!');
+      res.json({
+        success: true,
+        message: 'SERVIDOR INTEGRADO ESTÁ ATIVO!',
+        timestamp: new Date().toISOString(),
+        service: 'TOIT NEXUS Integrated Server',
+        version: '2.0-DEBUG',
+        environment: process.env.NODE_ENV || 'development',
+        host: req.get('host'),
+        originalUrl: req.originalUrl,
+        method: req.method
+      });
+    });
+
     // HEALTH CHECK API
     app.get('/api/health', (req, res) => {
-      console.log('💚 Health check requisitado');
+      console.log('💚 Health check requisitado via servidor integrado');
       res.json({
         status: 'ok',
         timestamp: new Date().toISOString(),
-        service: 'TOIT NEXUS Integrated Server',
-        version: '1.0.0',
-        environment: process.env.NODE_ENV || 'development'
+        service: 'TOIT NEXUS Integrated Server - WORKING',
+        version: '2.0.0',
+        environment: process.env.NODE_ENV || 'development',
+        integrated: true,
+        host: req.get('host')
       });
     });
 
