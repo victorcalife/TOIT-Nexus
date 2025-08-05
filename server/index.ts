@@ -211,6 +211,12 @@ app.use((req, res, next) => {
       next();
     });
     
+    // ROTA DE TESTE ULTRA SIMPLES PARA DIAGNÓSTICO
+    app.get('/simple-test', (req, res) => {
+      console.log('🧪 [SIMPLE-TEST] Rota ultra simples chamada');
+      res.send('<h1>TESTE SIMPLES FUNCIONANDO</h1><p>Esta é uma resposta HTML simples</p>');
+    });
+    
     // ROTA ESPECÍFICA PARA EQUIPE TOIT - BYPASS COMPLETO DE MIDDLEWARES
     app.get('/team', (req, res) => {
       console.log('👥 [TEAM] ======= ROTA TEAM CHAMADA =======');
