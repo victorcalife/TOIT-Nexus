@@ -165,6 +165,19 @@ app.use((req, res, next) => {
     }
   });
 
+  // ROTA DE TESTE SIMPLES PARA VERIFICAR REDIRECTS
+  app.get('/test-simple', (req, res) => {
+    console.log('🔬 [TEST] Rota de teste simples chamada');
+    res.json({ 
+      status: 'OK', 
+      message: 'Sistema funcionando', 
+      timestamp: new Date().toISOString(),
+      host: req.get('host'),
+      url: req.url,
+      method: req.method
+    });
+  });
+
   // Railway usa a variável PORT automaticamente
   const port = process.env.PORT || 3000;
   
