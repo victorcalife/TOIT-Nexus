@@ -49,11 +49,42 @@ app.get('/', (req, res) => {
   }
 });
 
+// SERVIR ASSETS ESTÁTICOS DO REACT (ANTES DE REDIRECIONAR)
+app.use('/src', express.static(path.join(__dirname, 'client', 'src')));
+app.use('/public', express.static(path.join(__dirname, 'client', 'public')));
+app.use('/assets', express.static(path.join(__dirname, 'client', 'assets')));
+app.use('/node_modules', express.static(path.join(__dirname, 'client', 'node_modules')));
 
-// Para outras rotas, redirecionar para o backend  
-app.use('*', (req, res) => {
-  console.log(`🔄 Redirecionando ${req.originalUrl} para backend`);
+// SERVIR ASSETS GERAIS (favicon, etc)
+app.use('/favicon.svg', express.static(path.join(__dirname, 'client', 'public', 'favicon.svg')));
+app.use('/favicon.ico', express.static(path.join(__dirname, 'client', 'public', 'favicon.ico')));
+
+// Para rotas de API, redirecionar para o backend  
+app.use('/api/*', (req, res) => {
+  console.log(`🔄 Redirecionando API ${req.originalUrl} para backend`);
   res.redirect(`https://toit-nexus-backend-main.up.railway.app${req.originalUrl}`);
+});
+
+// SPA FALLBACK para React Router (supnexus apenas)
+app.get('*', (req, res) => {
+  const host = req.get('host');
+  const xForwardedHost = req.get('x-forwarded-host');
+  const realHost = xForwardedHost || host;
+  
+  // Se é supnexus, serve o React app para qualquer rota (SPA)
+  if (realHost === 'supnexus.toit.com.br') {
+    console.log(`🎯 [SUPNEXUS SPA] Fallback para React Router: ${req.originalUrl}`);
+    const clientIndexPath = path.join(__dirname, 'client', 'index.html');
+    
+    if (fs.existsSync(clientIndexPath)) {
+      return res.sendFile(clientIndexPath);
+    } else {
+      return res.status(404).send('React app não encontrado');
+    }
+  }
+  
+  // Para outros hosts, 404
+  res.status(404).send('Página não encontrada');
 });
 
 app.listen(port, () => {
