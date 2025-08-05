@@ -14,6 +14,13 @@ import { revolutionaryAdaptiveEngine } from "./revolutionaryAdaptiveEngine";
 
 const app = express();
 
+// DEBUG E LOGGING DETALHADO
+app.use((req, res, next) => {
+  console.log(`🔍 [DEBUG] ${req.method} ${req.url} | Host: ${req.get('host')} | User-Agent: ${req.get('user-agent')?.substring(0, 50)}...`);
+  console.log(`🔍 [DEBUG] Headers: ${JSON.stringify(req.headers, null, 2).substring(0, 200)}...`);
+  next();
+});
+
 // CORS middleware para permitir requisições de nexus.toit.com.br
 app.use((req, res, next) => {
   const origin = req.get('origin');
