@@ -215,31 +215,46 @@ app.use((req, res, next) => {
 
   // ROTAS ESPECÍFICAS APÓS registerRoutes para evitar conflitos
 
+  // ROTA ESPECÍFICA PARA EQUIPE TOIT (já que Railway Edge interfere com domínios)
+  app.get('/team', (req, res) => {
+    const clientIndexPath = path.resolve(import.meta.dirname, '..', 'client', 'index.html');
+    console.log('👥 [TEAM] Servindo React app para equipe TOIT');
+    
+    if (fs.existsSync(clientIndexPath)) {
+      return res.sendFile(clientIndexPath);
+    } else {
+      console.error(`❌ [TEAM] Client index.html não encontrado`);
+      return res.status(404).send('<h1>Sistema TOIT temporariamente indisponível</h1><p>Contate o administrador do sistema.</p>');
+    }
+  });
+
   // Roteamento por domínio APENAS na rota raiz (sem extensões)
   app.get('/', (req, res, next) => {
     const host = req.get('host');
     const xForwardedHost = req.get('x-forwarded-host');
     const xOriginalHost = req.get('x-original-host');
+    const referer = req.get('referer');
     
     console.log(`🌐 [ROOT] Host: ${host} | X-Forwarded-Host: ${xForwardedHost} | X-Original-Host: ${xOriginalHost}`);
-    console.log(`🌐 [ROOT] Headers relacionados a host:`, {
-      host: req.get('host'),
-      'x-forwarded-host': req.get('x-forwarded-host'),
-      'x-original-host': req.get('x-original-host'),
-      'x-forwarded-for': req.get('x-forwarded-for'),
-      referer: req.get('referer'),
-      origin: req.get('origin')
-    });
+    console.log(`🌐 [ROOT] Referer: ${referer}`);
+    
+    // SOLUÇÃO ALTERNATIVA: Usar referer para detectar origem
+    // Se requisição veio de supnexus.toit.com.br, servir React app
+    if (referer && referer.includes('supnexus.toit.com.br')) {
+      const clientIndexPath = path.resolve(import.meta.dirname, '..', 'client', 'index.html');
+      console.log('👥 [REFERER-SUPNEXUS] Redirecionando direto para login da equipe TOIT');
+      
+      if (fs.existsSync(clientIndexPath)) {
+        return res.sendFile(clientIndexPath);
+      } else {
+        console.error(`❌ [REFERER-SUPNEXUS] Client index.html não encontrado`);
+        return res.status(404).send('<h1>Sistema TOIT temporariamente indisponível</h1><p>Contate o administrador do sistema.</p>');
+      }
+    }
     
     // Usar x-forwarded-host se disponível (Railway Edge pode usar isso)
     const realHost = xForwardedHost || host;
     console.log(`🎯 [ROUTING] Host final para roteamento: ${realHost}`);
-    
-    // NEXUS (clientes) → Landing page comercial
-    if (realHost === 'nexus.toit.com.br') {
-      console.log('🎯 Servindo landing page para nexus.toit.com.br/');
-      return res.sendFile(path.resolve(import.meta.dirname, '..', 'nexus-quantum-landing.html'));
-    }
     
     // SUPNEXUS (equipe TOIT) → Login direto do sistema
     if (realHost === 'supnexus.toit.com.br') {
@@ -254,9 +269,9 @@ app.use((req, res, next) => {
       }
     }
     
-    // Outros domínios (localhost, etc.) continuam para as rotas normais
-    console.log(`✅ Host ${host} continua para rotas normais`);
-    next();
+    // DEFAULT: Sempre servir landing page (NEXUS)
+    console.log('🎯 [DEFAULT] Servindo landing page (padrão para todos os domínios)');
+    return res.sendFile(path.resolve(import.meta.dirname, '..', 'nexus-quantum-landing.html'));
   });
 
   // Rota específica de login que sempre funciona
