@@ -491,6 +491,6 @@ app.listen(port, () => {
   console.log('   💚 /api/health → Health Check');
   console.log('   🔐 /api/auth/login → Sistema de Login');
   console.log('');
-  console.log('🎯 STATUS: SISTEMA INTEGRADO 100% OPERACIONAL');
+  console.log('🎯 STATUS: SISTEMA INTEGRADO 100% OPERACIONAL - V2.0');
   console.log('=' .repeat(80));
 });
