@@ -49,65 +49,6 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Roteamento por domínio na rota raiz
-app.get('/', (req, res, next) => {
-  const host = req.get('host');
-  
-  console.log(`🌐 [ROOT] Host: ${host} | Path: ${req.path}`);
-  
-  // NEXUS (clientes) → Landing page comercial
-  if (host === 'nexus.toit.com.br') {
-    console.log('🎯 Servindo landing page para nexus.toit.com.br/');
-    return res.sendFile(path.resolve(import.meta.dirname, '..', 'nexus-quantum-landing.html'));
-  }
-  
-  // SUPNEXUS (equipe TOIT) → Login direto do sistema
-  if (host === 'supnexus.toit.com.br') {
-    const clientIndexPath = path.resolve(import.meta.dirname, '..', 'client', 'index.html');
-    console.log('👥 [SUPNEXUS] Redirecionando direto para login da equipe TOIT');
-    
-    if (fs.existsSync(clientIndexPath)) {
-      return res.sendFile(clientIndexPath);
-    } else {
-      console.error(`❌ [SUPNEXUS] Client index.html não encontrado`);
-      return res.status(404).send('<h1>Sistema TOIT temporariamente indisponível</h1><p>Contate o administrador do sistema.</p>');
-    }
-  }
-  
-  // Outros domínios (localhost, etc.) continuam para as rotas normais
-  console.log(`✅ Host ${host} continua para rotas normais`);
-  next();
-});
-
-// Rota específica de login que sempre funciona
-app.get('/login', (req, res) => {
-  const host = req.get('host');
-  const clientIndexPath = path.resolve(import.meta.dirname, '..', 'client', 'index.html');
-  
-  console.log(`🔐 [LOGIN] Host: ${host} | Servindo client React app`);
-  
-  if (fs.existsSync(clientIndexPath)) {
-    res.sendFile(clientIndexPath);
-  } else {
-    console.error(`❌ [LOGIN] Client index.html não encontrado`);
-    res.status(404).send('<h1>Sistema de login temporariamente indisponível</h1><p>Contate o suporte técnico.</p>');
-  }
-});
-
-// Rota específica para equipe TOIT
-app.get('/support-login', (req, res) => {
-  const clientIndexPath = path.resolve(import.meta.dirname, '..', 'client', 'index.html');
-  
-  console.log(`👥 [SUPPORT] Servindo login da equipe TOIT`);
-  
-  if (fs.existsSync(clientIndexPath)) {
-    res.sendFile(clientIndexPath);
-  } else {
-    console.error(`❌ [SUPPORT] Client index.html não encontrado`);
-    res.status(404).send('<h1>Sistema de suporte temporariamente indisponível</h1><p>Contate o administrador.</p>');
-  }
-});
-
 // Configure session
 app.use(session({
   secret: process.env.SESSION_SECRET || 'development-secret-key-toit-nexus-2025',
@@ -162,6 +103,67 @@ app.use((req, res, next) => {
     // await createProductConfigurations();
     
     const server = await registerRoutes(app);
+
+  // ROTAS ESPECÍFICAS APÓS registerRoutes para evitar conflitos
+  
+  // Roteamento por domínio na rota raiz
+  app.get('/', (req, res, next) => {
+    const host = req.get('host');
+    
+    console.log(`🌐 [ROOT] Host: ${host} | Path: ${req.path}`);
+    
+    // NEXUS (clientes) → Landing page comercial
+    if (host === 'nexus.toit.com.br') {
+      console.log('🎯 Servindo landing page para nexus.toit.com.br/');
+      return res.sendFile(path.resolve(import.meta.dirname, '..', 'nexus-quantum-landing.html'));
+    }
+    
+    // SUPNEXUS (equipe TOIT) → Login direto do sistema
+    if (host === 'supnexus.toit.com.br') {
+      const clientIndexPath = path.resolve(import.meta.dirname, '..', 'client', 'index.html');
+      console.log('👥 [SUPNEXUS] Redirecionando direto para login da equipe TOIT');
+      
+      if (fs.existsSync(clientIndexPath)) {
+        return res.sendFile(clientIndexPath);
+      } else {
+        console.error(`❌ [SUPNEXUS] Client index.html não encontrado`);
+        return res.status(404).send('<h1>Sistema TOIT temporariamente indisponível</h1><p>Contate o administrador do sistema.</p>');
+      }
+    }
+    
+    // Outros domínios (localhost, etc.) continuam para as rotas normais
+    console.log(`✅ Host ${host} continua para rotas normais`);
+    next();
+  });
+
+  // Rota específica de login que sempre funciona
+  app.get('/login', (req, res) => {
+    const host = req.get('host');
+    const clientIndexPath = path.resolve(import.meta.dirname, '..', 'client', 'index.html');
+    
+    console.log(`🔐 [LOGIN] Host: ${host} | Servindo client React app`);
+    
+    if (fs.existsSync(clientIndexPath)) {
+      res.sendFile(clientIndexPath);
+    } else {
+      console.error(`❌ [LOGIN] Client index.html não encontrado`);
+      res.status(404).send('<h1>Sistema de login temporariamente indisponível</h1><p>Contate o suporte técnico.</p>');
+    }
+  });
+
+  // Rota específica para equipe TOIT
+  app.get('/support-login', (req, res) => {
+    const clientIndexPath = path.resolve(import.meta.dirname, '..', 'client', 'index.html');
+    
+    console.log(`👥 [SUPPORT] Servindo login da equipe TOIT`);
+    
+    if (fs.existsSync(clientIndexPath)) {
+      res.sendFile(clientIndexPath);
+    } else {
+      console.error(`❌ [SUPPORT] Client index.html não encontrado`);
+      res.status(404).send('<h1>Sistema de suporte temporariamente indisponível</h1><p>Contate o administrador.</p>');
+    }
+  });
 
   // Railway usa a variável PORT automaticamente
   const port = process.env.PORT || 3000;
