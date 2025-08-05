@@ -301,6 +301,30 @@ app.use((req, res, next) => {
     });
   });
 
+  // ROTA DE DIAGNÓSTICO ESPECÍFICA PARA VERIFICAR ROTEAMENTO POR DOMÍNIO
+  app.get('/debug-domain', (req, res) => {
+    const host = req.get('host');
+    const xForwardedHost = req.get('x-forwarded-host');
+    const xOriginalHost = req.get('x-original-host');
+    const realHost = xForwardedHost || host;
+    
+    console.log('🔍 [DEBUG-DOMAIN] Diagnóstico de roteamento por domínio');
+    
+    res.json({
+      message: 'Debug Domain Routing',
+      host: host,
+      xForwardedHost: xForwardedHost,
+      xOriginalHost: xOriginalHost,
+      realHost: realHost,
+      shouldServeReactApp: realHost === 'supnexus.toit.com.br',
+      shouldServeLandingPage: realHost === 'nexus.toit.com.br',
+      allHeaders: req.headers,
+      url: req.url,
+      originalUrl: req.originalUrl,
+      timestamp: new Date().toISOString()
+    });
+  });
+
   // Railway usa a variável PORT automaticamente
   const port = process.env.PORT || 3000;
   
