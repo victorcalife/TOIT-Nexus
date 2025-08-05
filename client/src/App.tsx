@@ -4,7 +4,7 @@ import { queryClient } from './lib/queryClient';
 import { AppRouter } from '@/components/routing/AppRouter';
 import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from './components/theme-provider';
-import { BrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { DomainRouter } from './components/routing/DomainRouter';
 
 /**
@@ -31,12 +31,25 @@ function AppContent() {
   );
 }
 
+// Configuração do roteador com as flags futuras
+const router = createBrowserRouter(
+  [
+    {
+      path: "/*",
+      element: <AppContent />,
+    },
+  ],
+  {
+    future: {
+      v7_relativeSplatPath: true,
+    },
+  }
+);
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <AppContent />
-      </BrowserRouter>
+      <RouterProvider router={router} />
     </QueryClientProvider>
   );
 }

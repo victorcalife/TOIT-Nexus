@@ -1,30 +1,27 @@
-import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import toitNexusLogo from "@/assets/toit-nexus-logo.svg";
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { 
-  ChartLine, 
+  LogOut, 
+  Settings, 
   LayoutDashboard, 
   Users, 
+  FileText, 
+  Calendar, 
+  Search, 
+  Link as LinkIcon, 
+  CheckSquare, 
+  ClipboardList,
   Tag,
-  Workflow, 
-  BarChart3, 
-  Database, 
-  FileText,
-  UserCheck, 
+  Workflow,
   Shield,
   TestTube,
-  Settings, 
-  LogOut,
-  Search,
-  Link as LinkIcon,
-  CheckSquare,
-  ClipboardList,
   Package,
-  Calendar
-} from "lucide-react";
+  Database
+} from 'lucide-react';
+
+import toitNexusLogo from '@/assets/toit-nexus-logo.svg?url';
 
 const navigation = [
   { name: 'Dashboard', href: '/', icon: LayoutDashboard },
@@ -37,7 +34,7 @@ const navigation = [
   { name: 'Workflows', href: '/workflows', icon: Workflow },
   { name: 'Integrações', href: '/integrations', icon: Database },
   { name: 'Relatórios', href: '/reports', icon: FileText },
-  { name: 'Usuários', href: '/users', icon: UserCheck },
+  { name: 'Usuários', href: '/users', icon: Users },
   { name: 'Controle de Acesso', href: '/access-control', icon: Shield },
   { name: 'Testes', href: '/connectivity', icon: TestTube },
   { name: 'Módulos', href: '/module-management', icon: Package },
@@ -45,9 +42,20 @@ const navigation = [
   { name: 'Configurações', href: '/settings', icon: Settings },
 ];
 
-export function Sidebar() {
-  const [location] = useLocation();
+interface SidebarProps {
+  currentPath: string;
+  onNavigate: (path: string) => void;
+  onLogout: () => void;
+  isAdmin?: boolean;
+}
+
+export function Sidebar({ currentPath, onNavigate, onLogout, isAdmin = false }: SidebarProps) {
   const { user } = useAuth();
+
+  // Filtra a navegação com base no tipo de usuário
+  const filteredNavigation = isAdmin 
+    ? navigation 
+    : navigation.filter(item => !['/users', '/access-control', '/module-management'].includes(item.href));
 
   const getUserInitials = (user: any) => {
     if (user?.firstName && user?.lastName) {
@@ -86,30 +94,35 @@ export function Sidebar() {
           <img 
             src={toitNexusLogo} 
             alt="TOIT Nexus" 
-            className="h-10 w-auto"
+            className="h-10 w-auto cursor-pointer"
+            onClick={() => onNavigate('/')}
           />
         </div>
       </div>
 
       {/* Navigation */}
       <nav className="flex-1 px-4 py-6 space-y-1">
-        {navigation.map((item) => {
-          const isActive = location === item.href || 
-            (item.href !== '/' && location.startsWith(item.href));
+        {filteredNavigation.map((item) => {
+          const isActive = currentPath === item.href || 
+            (item.href !== '/' && currentPath.startsWith(item.href));
           
           return (
-            <Link key={item.name} href={item.href} className={cn(
-              'group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors',
-              isActive
-                ? 'bg-primary-50 text-primary-700'
-                : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
-            )}>
+            <button
+              key={item.name}
+              onClick={() => onNavigate(item.href)}
+              className={cn(
+                'w-full text-left group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors',
+                isActive
+                  ? 'bg-primary-50 text-primary-700'
+                  : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+              )}
+            >
               <item.icon className={cn(
                 'mr-3 h-5 w-5 flex-shrink-0',
                 isActive ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500'
               )} />
               {item.name}
-            </Link>
+            </button>
           );
         })}
       </nav>
@@ -118,7 +131,7 @@ export function Sidebar() {
       <div className="px-4 pb-4 border-t border-gray-200 pt-4">
         <div className="flex items-center space-x-3">
           <Avatar className="w-8 h-8">
-            <AvatarImage src={user?.profile_image_url || undefined} alt="User avatar" />
+            <AvatarImage src={user?.profileImageUrl || undefined} alt="User avatar" />
             <AvatarFallback className="bg-primary-100 text-primary-700 text-xs">
               {getUserInitials(user)}
             </AvatarFallback>
@@ -134,7 +147,7 @@ export function Sidebar() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => window.location.href = '/api/logout'}
+            onClick={onLogout}
             className="text-gray-400 hover:text-gray-600 p-1"
           >
             <LogOut className="w-4 h-4" />

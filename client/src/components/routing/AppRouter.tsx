@@ -1,9 +1,9 @@
 import React, { Suspense, useEffect } from 'react';
-import { Switch, Route, useLocation, Redirect } from 'wouter';
+import { Routes, Route, useLocation, Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { publicRoutes, adminRoutes, clientRoutes, ROUTES, hasPermission } from '@/config/routes';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
-import { Sidebar } from '@/components/sidebar';
+import { SidebarWrapper } from './SidebarWrapper';
 import { Toaster } from '@/components/ui/toaster';
 
 // Layouts
@@ -16,7 +16,7 @@ const DefaultLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
 const ClientLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <div className="flex h-screen bg-gray-50">
-    <Sidebar />
+    <SidebarWrapper />
     <main className="flex-1 overflow-hidden">
       <Toaster />
       {children}
@@ -26,7 +26,7 @@ const ClientLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 
 const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <div className="flex h-screen bg-gray-100">
-    <Sidebar isAdmin />
+    <SidebarWrapper isAdmin={true} />
     <main className="flex-1 overflow-auto p-6">
       <Toaster />
       {children}
@@ -52,7 +52,7 @@ const ProtectedRoute: React.FC<{
   [key: string]: any;
 }> = ({ component: Component, roles = [], requiresTenant = false, layout = 'default', ...rest }) => {
   const { isAuthenticated, user, isLoading } = useAuth();
-  const [location] = useLocation();
+  const location = useLocation();
 
   // Se ainda está carregando, mostra um spinner
   if (isLoading) {
@@ -61,7 +61,7 @@ const ProtectedRoute: React.FC<{
 
   // Se não está autenticado, redireciona para o login
   if (!isAuthenticated) {
-    return <Redirect to={`/login?redirect=${encodeURIComponent(location)}`} />;
+    return <Navigate to={`/login?redirect=${encodeURIComponent(location.pathname + location.search)}`} replace />;
   }
 
   // Verifica se o usuário tem permissão para acessar a rota
@@ -79,7 +79,7 @@ const ProtectedRoute: React.FC<{
 
   // Verifica se a rota requer um tenant selecionado
   if (requiresTenant && !user?.tenant) {
-    return <Redirect to={ROUTES.SELECT_TENANT} />;
+    return <Navigate to={ROUTES.SELECT_TENANT} replace />;
   }
 
   // Renderiza o componente com o layout apropriado
@@ -102,8 +102,8 @@ const ProtectedRoute: React.FC<{
 // Componente de rota pública
 const PublicRoute: React.FC<{ component: React.ComponentType<any> }> = ({ component: Component }) => {
   const { isAuthenticated, isLoading } = useAuth();
-  const [location] = useLocation();
-  const searchParams = new URLSearchParams(window.location.search);
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
   const redirectTo = searchParams.get('redirect') || '/';
 
   // Se ainda está carregando, mostra um spinner
@@ -112,8 +112,8 @@ const PublicRoute: React.FC<{ component: React.ComponentType<any> }> = ({ compon
   }
 
   // Se está autenticado, redireciona para a página inicial ou para a URL de redirecionamento
-  if (isAuthenticated && location === '/login') {
-    return <Redirect to={redirectTo} />;
+  if (isAuthenticated && location.pathname === '/login') {
+    return <Navigate to={redirectTo} replace />;
   }
 
   return <Component />;
@@ -121,58 +121,65 @@ const PublicRoute: React.FC<{ component: React.ComponentType<any> }> = ({ compon
 
 // Componente principal de roteamento
 export const AppRouter: React.FC = () => {
+  const { isAuthenticated, isLoading } = useAuth();
   const location = useLocation();
-  const { checkAuth } = useAuth();
+  const navigate = useNavigate();
 
-  // Verifica a autenticação ao carregar o componente
+  // Efeito para lidar com autenticação e redirecionamentos
   useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
+    // Se não estiver carregando e não estiver autenticado, redireciona para login
+    if (!isLoading && !isAuthenticated && location.pathname !== '/login') {
+      navigate(`/login?redirect=${encodeURIComponent(location.pathname + location.search)}`);
+    }
+  }, [isLoading, isAuthenticated, location, navigate]);
 
   // Rota de fallback para páginas não encontradas
   const NotFound = React.lazy(() => import('@/pages/not-found'));
 
+  // Função auxiliar para criar rotas protegidas
+  const createProtectedRoute = (route: any, index: number) => (
+    <Route
+      key={`protected-${index}`}
+      path={route.path}
+      element={
+        <ProtectedRoute
+          component={route.component}
+          roles={route.roles}
+          requiresTenant={route.requiresTenant}
+          layout={route.layout}
+        />
+      }
+    />
+  );
+
   return (
     <Suspense fallback={<LoadingSpinner />}>
-      <Switch>
+      <Routes>
         {/* Rotas Públicas */}
         {publicRoutes.map((route, index) => (
-          <Route key={`public-${index}`} path={route.path}>
-            <PublicRoute component={route.component} />
-          </Route>
+          <Route
+            key={`public-${index}`}
+            path={route.path}
+            element={<PublicRoute component={route.component} />}
+          />
         ))}
 
         {/* Rotas Administrativas */}
-        {adminRoutes.map((route, index) => (
-          <Route key={`admin-${index}`} path={route.path}>
-            <ProtectedRoute
-              component={route.component}
-              roles={route.roles}
-              requiresTenant={route.requiresTenant}
-              layout={route.layout}
-            />
-          </Route>
-        ))}
+        {adminRoutes.map((route, index) => createProtectedRoute(route, index))}
 
         {/* Rotas do Cliente */}
-        {clientRoutes.map((route, index) => (
-          <Route key={`client-${index}`} path={route.path}>
-            <ProtectedRoute
-              component={route.component}
-              roles={route.roles}
-              requiresTenant={route.requiresTenant}
-              layout={route.layout}
-            />
-          </Route>
-        ))}
+        {clientRoutes.map((route, index) => createProtectedRoute(route, index))}
 
         {/* Rota 404 */}
-        <Route path="*">
-          <DefaultLayout>
-            <NotFound />
-          </DefaultLayout>
-        </Route>
-      </Switch>
+        <Route
+          path="*"
+          element={
+            <DefaultLayout>
+              <NotFound />
+            </DefaultLayout>
+          }
+        />
+      </Routes>
     </Suspense>
   );
 };

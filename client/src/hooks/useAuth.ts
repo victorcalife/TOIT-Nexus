@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 
-interface User {
+export interface User {
   id: string;
   cpf: string;
   email?: string;
   firstName?: string;
   lastName?: string;
+  profileImageUrl?: string;
   role: 'super_admin' | 'toit_admin' | 'tenant_admin' | 'manager' | 'employee';
   tenantId?: string;
   isActive: boolean;
