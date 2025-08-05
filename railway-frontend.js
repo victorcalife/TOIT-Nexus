@@ -5,8 +5,8 @@ const fs = require('fs');
 const app = express();
 const port = process.env.PORT || 5000;
 
-// Middleware para servir APENAS nexus-quantum-landing.html para QUALQUER requisição
-app.use('*', (req, res) => {
+// Servir landing page apenas para rota raiz
+app.get('/', (req, res) => {
   console.log(`🎯 Railway Frontend - Serving landing page for: ${req.originalUrl}`);
   
   const landingPath = path.join(__dirname, 'nexus-quantum-landing.html');
@@ -21,6 +21,18 @@ app.use('*', (req, res) => {
       <p>Arquivos: ${fs.readdirSync(__dirname).join(', ')}</p>
     `);
   }
+});
+
+// Redirecionar /login para o backend
+app.get('/login', (req, res) => {
+  console.log(`🔐 Redirecionando /login para backend`);
+  res.redirect('https://toit-nexus-backend-main.up.railway.app/login');
+});
+
+// Para outras rotas, redirecionar para o backend
+app.use('*', (req, res) => {
+  console.log(`🔄 Redirecionando ${req.originalUrl} para backend`);
+  res.redirect(`https://toit-nexus-backend-main.up.railway.app${req.originalUrl}`);
 });
 
 app.listen(port, () => {
