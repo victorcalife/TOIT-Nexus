@@ -43,24 +43,24 @@
 
     <style>
         :root {
-            /* Quantum Color Palette */
-            --quantum-primary: #6366f1;
-            --quantum-secondary: #8b5cf6;
+            /* TOIT Brand Color Palette - Azul TOIT */
+            --quantum-primary: #1e3a8a;
+            --quantum-secondary: #3b82f6;
             --quantum-accent: #06b6d4;
             --quantum-success: #10b981;
             --quantum-warning: #f59e0b;
             --quantum-error: #ef4444;
 
             /* Revolutionary Variables para compatibilidade */
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #141420;
-            --bg-card: #1e1e2e;
-            --text-primary: #ffffff;
-            --text-secondary: #b0b0b8;
+            --bg-primary: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 25%, #f1f5f9 50%, #ffffff 75%, #f8fafc 100%);
+            --bg-secondary: #f1f5f9;
+            --bg-card: rgba(255, 255, 255, 0.8);
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
             --text-muted: #808088;
             --toit-cyan: #00d4ff;
             --toit-blue: #0099ff;
-            --toit-purple: #6a0dad;
+            --toit-blue: #1e3a8a;
             --toit-green: #10b981;
             --gradient-epic: linear-gradient(135deg, #00d4ff 0%, #6a0dad 50%, #0099ff 100%);
             --gradient-card: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
@@ -70,11 +70,11 @@
             --hover-lift: -8px;
             --glow-intensity: 0 20px 60px rgba(0, 212, 255, 0.3);
 
-            /* Gradients */
-            --quantum-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --quantum-gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --quantum-gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            --quantum-neural: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            /* TOIT Brand Gradients */
+            --quantum-gradient: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            --quantum-gradient-2: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+            --quantum-gradient-3: linear-gradient(135deg, #1e3a8a 0%, #06b6d4 100%);
+            --quantum-neural: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #06b6d4 100%);
 
             /* Dark Mode */
             --bg-primary: #0f0f23;
@@ -86,12 +86,12 @@
 
             /* Animations */
             --animation-speed: 0.3s;
-            --quantum-glow: 0 0 20px rgba(99, 102, 241, 0.3);
+            --quantum-glow: 0 0 20px rgba(30, 58, 138, 0.4);
 
             /* REVOLUTIONARY VARIABLES - Para containers de preço */
             --toit-cyan: #00d4ff;
             --toit-blue: #0099ff;
-            --toit-purple: #6a0dad;
+            --toit-blue: #1e3a8a;
             --toit-green: #10b981;
             --gradient-epic: linear-gradient(135deg, #00d4ff 0%, #6a0dad 50%, #0099ff 100%);
             --gradient-card: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
@@ -244,7 +244,7 @@
 
         .nav-link:hover {
             color: var(--text-primary);
-            background: rgba(99, 102, 241, 0.1);
+            background: rgba(30, 58, 138, 0.1);
         }
 
         .nav-link.active {
@@ -353,7 +353,7 @@
             position: relative;
             padding: 80px 2rem 2rem;
             /* Reduced top padding for compact header */
-            background: radial-gradient(ellipse at center top, rgba(99, 102, 241, 0.1) 0%, transparent 50%);
+            background: radial-gradient(ellipse at center top, rgba(30, 58, 138, 0.1) 0%, transparent 50%);
         }
 
         .hero-container {
@@ -471,7 +471,7 @@
 
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 10px 30px rgba(30, 58, 138, 0.4);
         }
 
         .btn-secondary {
@@ -492,7 +492,7 @@
 
         .btn-secondary:hover {
             border-color: var(--quantum-primary);
-            background: rgba(99, 102, 241, 0.1);
+            background: rgba(30, 58, 138, 0.1);
         }
 
         /* Discover More Section */
@@ -511,7 +511,7 @@
 
         .discover-btn {
             background: transparent;
-            border: 2px solid rgba(99, 102, 241, 0.3);
+            border: 2px solid rgba(30, 58, 138, 0.3);
             color: var(--text-primary);
             padding: 1rem 2rem;
             border-radius: 50px;
@@ -528,9 +528,9 @@
 
         .discover-btn:hover {
             border-color: var(--quantum-primary);
-            background: rgba(99, 102, 241, 0.1);
+            background: rgba(30, 58, 138, 0.1);
             transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.2);
+            box-shadow: 0 10px 30px rgba(30, 58, 138, 0.2);
         }
 
         .discover-arrow {
@@ -584,7 +584,7 @@
         .quantum-circuit:hover {
             transform: rotateX(5deg) rotateY(5deg) translateZ(20px);
             box-shadow:
-                0 20px 50px rgba(99, 102, 241, 0.2),
+                0 20px 50px rgba(30, 58, 138, 0.2),
                 0 15px 35px rgba(0, 0, 0, 0.4),
                 inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
@@ -597,7 +597,7 @@
             right: 0;
             bottom: 0;
             background: linear-gradient(135deg,
-                    rgba(99, 102, 241, 0.1) 0%,
+                    rgba(30, 58, 138, 0.1) 0%,
                     transparent 30%,
                     transparent 70%,
                     rgba(139, 92, 246, 0.1) 100%);
@@ -698,11 +698,11 @@
 
             0%,
             100% {
-                box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
+                box-shadow: 0 0 10px rgba(30, 58, 138, 0.3);
             }
 
             50% {
-                box-shadow: 0 0 20px rgba(99, 102, 241, 0.8);
+                box-shadow: 0 0 20px rgba(30, 58, 138, 0.8);
             }
         }
 
@@ -724,7 +724,7 @@
         }
 
         .metric-card {
-            background: rgba(99, 102, 241, 0.1);
+            background: rgba(30, 58, 138, 0.1);
             border-radius: 8px;
             padding: 0.7rem;
             text-align: center;
@@ -936,9 +936,9 @@
         }
 
         .conquista-badge.inovacao {
-            background: rgba(139, 92, 246, 0.2);
-            color: #8b5cf6;
-            border: 1px solid rgba(139, 92, 246, 0.3);
+            background: rgba(30, 58, 138, 0.2);
+            color: #1e3a8a;
+            border: 1px solid rgba(30, 58, 138, 0.3);
         }
 
         .conquista-text {
@@ -1209,7 +1209,7 @@
             transform: translateY(-25px) translateX(15px) rotateY(-8deg) rotateX(3deg) scale(1.05);
             box-shadow:
                 0 40px 80px rgba(0, 0, 0, 0.3),
-                0 0 60px rgba(99, 102, 241, 0.4),
+                0 0 60px rgba(30, 58, 138, 0.4),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
@@ -1222,7 +1222,7 @@
             transform: translateY(-25px) translateX(-15px) rotateY(8deg) rotateX(3deg) scale(1.05);
             box-shadow:
                 0 40px 80px rgba(0, 0, 0, 0.3),
-                0 0 60px rgba(99, 102, 241, 0.4),
+                0 0 60px rgba(30, 58, 138, 0.4),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
@@ -1233,11 +1233,11 @@
 
         @keyframes quantum-glow {
             0% {
-                box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+                box-shadow: 0 4px 15px rgba(30, 58, 138, 0.3);
             }
 
             100% {
-                box-shadow: 0 4px 20px rgba(99, 102, 241, 0.6);
+                box-shadow: 0 4px 20px rgba(30, 58, 138, 0.6);
             }
         }
 
@@ -1250,7 +1250,7 @@
             right: 0;
             bottom: 0;
             background:
-                radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 20% 30%, rgba(30, 58, 138, 0.1) 0%, transparent 50%),
                 radial-gradient(circle at 80% 70%, rgba(139, 69, 255, 0.1) 0%, transparent 50%),
                 radial-gradient(circle at 40% 80%, rgba(34, 197, 94, 0.1) 0%, transparent 50%);
             pointer-events: none;
@@ -1283,7 +1283,7 @@
             border-radius: 15px;
             font-size: 0.75rem;
             font-weight: 700;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 4px 15px rgba(30, 58, 138, 0.3);
             z-index: 5;
         }
 
@@ -1399,7 +1399,7 @@
         .section-divider {
             width: 100%;
             height: 1px;
-            background: linear-gradient(90deg, transparent 0%, rgba(99, 102, 241, 0.3) 20%, rgba(99, 102, 241, 0.6) 50%, rgba(99, 102, 241, 0.3) 80%, transparent 100%);
+            background: linear-gradient(90deg, transparent 0%, rgba(30, 58, 138, 0.3) 20%, rgba(30, 58, 138, 0.6) 50%, rgba(30, 58, 138, 0.3) 80%, transparent 100%);
             margin: 1rem 0;
             position: relative;
         }
@@ -1547,7 +1547,7 @@
         .netflix-card:hover {
             transform: scale(1.05) translateY(-10px);
             z-index: 100;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(30, 58, 138, 0.3);
             border-color: var(--quantum-primary);
         }
 
@@ -1641,13 +1641,13 @@
         }
 
         .card-tag {
-            background: rgba(99, 102, 241, 0.2);
+            background: rgba(30, 58, 138, 0.2);
             color: var(--quantum-primary);
             padding: 0.3rem 0.7rem;
             border-radius: 12px;
             font-size: 0.75rem;
             font-weight: 500;
-            border: 1px solid rgba(99, 102, 241, 0.3);
+            border: 1px solid rgba(30, 58, 138, 0.3);
         }
 
         /* Metric Badges */
@@ -1918,7 +1918,7 @@
         }
 
         .advantage-metric {
-            background: rgba(99, 102, 241, 0.1);
+            background: rgba(30, 58, 138, 0.1);
             border-radius: 8px;
             padding: 1rem;
             margin-top: 1rem;
@@ -2070,15 +2070,15 @@
         .case-metric {
             text-align: center;
             padding: 0.75rem;
-            background: rgba(99, 102, 241, 0.1);
+            background: rgba(30, 58, 138, 0.1);
             border-radius: 8px;
-            border: 1px solid rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(30, 58, 138, 0.2);
             transition: all 0.3s ease;
         }
 
         .case-metric:hover {
             background: rgba(99, 102, 241, 0.15);
-            border-color: rgba(99, 102, 241, 0.3);
+            border-color: rgba(30, 58, 138, 0.3);
         }
 
         .case-metric-value {
@@ -2102,7 +2102,7 @@
             transform: translateY(-50%);
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, rgba(30, 64, 175, 0.8) 0%, rgba(6, 182, 212, 0.6) 70%, rgba(139, 92, 246, 0.3) 100%);
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.8) 0%, rgba(6, 182, 212, 0.6) 70%, rgba(59, 130, 246, 0.3) 100%);
             border: none;
             border-radius: 50%;
             color: var(--text-primary);
@@ -2118,7 +2118,7 @@
         }
 
         .cases-carousel-nav:hover {
-            background: linear-gradient(135deg, rgba(30, 64, 175, 0.9) 0%, rgba(6, 182, 212, 0.8) 60%, rgba(139, 92, 246, 0.5) 100%);
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.9) 0%, rgba(6, 182, 212, 0.8) 60%, rgba(59, 130, 246, 0.5) 100%);
             transform: translateY(-50%) scale(1.1);
             box-shadow: 0 10px 25px rgba(6, 182, 212, 0.4);
             border-color: rgba(6, 182, 212, 0.3);
@@ -2637,7 +2637,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: #0101649f;
             z-index: 10000;
             backdrop-filter: blur(10px);
         }
@@ -2761,7 +2761,7 @@
         .form-input:focus {
             outline: none;
             border-color: var(--quantum-primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
         }
 
         .form-textarea {
@@ -2784,7 +2784,7 @@
 
         .form-submit:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 10px 20px rgba(30, 58, 138, 0.3);
         }
 
         .form-submit:disabled {
@@ -3044,7 +3044,7 @@
             .quantum-circuit:hover {
                 transform: translateY(-45px) scale(0.95) rotateX(3deg) rotateY(3deg) translateZ(15px) !important;
                 box-shadow:
-                    0 18px 40px rgba(99, 102, 241, 0.2),
+                    0 18px 40px rgba(30, 58, 138, 0.2),
                     0 15px 30px rgba(0, 0, 0, 0.4),
                     inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
             }
@@ -3268,12 +3268,12 @@
                     <defs>
                         <linearGradient id="brandGradient" x1="0%" y1="0%" x2="100%" y2="0%">
                             <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
-                            <stop offset="50%" style="stop-color:#581c87;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#1e3a8a;stop-opacity:1" />
                             <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
                         </linearGradient>
                         <linearGradient id="brand1Gradient" x1="0%" y1="0%" x2="100%" y2="0%">
                             <stop offset="0%" style="stop-color:#001366ff;stop-opacity:1" />
-                            <stop offset="50%" style="stop-color:#581c87;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#1e3a8a;stop-opacity:1" />
                             <stop offset="100%" style="stop-color:#1e3a8a;stop-opacity:1" />
                         </linearGradient>
                     </defs>
@@ -4056,11 +4056,11 @@
                         <linearGradient id="brandGradientFooter1" x1="0%" y1="0%" x2="100%" y2="0%">
                             <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
                             <stop offset="50%" style="stop-color:#06b6d4;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
                         </linearGradient>
                         <linearGradient id="brandGradientFooter2" x1="0%" y1="0%" x2="100%" y2="0%">
                             <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
-                            <stop offset="50%" style="stop-color:#581c87;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#1e3a8a;stop-opacity:1" />
                             <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
                         </linearGradient>
                     </defs>
@@ -4366,7 +4366,7 @@
                     left: 50%;
                     width: 20px;
                     height: 20px;
-                    background: radial-gradient(circle, rgba(99, 102, 241, 0.4) 0%, transparent 70%);
+                    background: radial-gradient(circle, rgba(30, 58, 138, 0.4) 0%, transparent 70%);
                     border-radius: 50%;
                     transform: translate(-50%, -50%) scale(0);
                     animation: expansion-ripple 0.8s ease-out forwards;
@@ -4597,7 +4597,7 @@
                 appearance: {
                     theme: 'night',
                     variables: {
-                        colorPrimary: '#6366f1',
+                        colorPrimary: '#1e3a8a',
                         colorBackground: '#1a1a3a',
                         colorText: '#ffffff',
                         colorDanger: '#df1b41',
@@ -4669,7 +4669,7 @@
             if ( plan )
             {
                 planInfo.innerHTML = `
-                    <div style="background: rgba(99, 102, 241, 0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; text-align: center;">
+                    <div style="background: rgba(30, 58, 138, 0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; text-align: center;">
                         <h3 style="margin: 0 0 0.5rem 0; color: var(--quantum-primary);">${ plan.name }</h3>
                         <div style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem;">${ plan.price }</div>
                         <div style="color: var(--text-secondary); font-size: 0.875rem;">${ plan.description }</div>
