@@ -294,7 +294,9 @@ app.use((req, res, next) => {
   if (app.get("env") === "development") {
     await setupVite(app, server);
   } else {
-    serveStatic(app);
+    console.log('🚀 [PRODUCTION] Serving static files via specific routes only');
+    // Não usar serveStatic que tem catch-all conflitante
+    // Rotas específicas já configuradas acima (/login, /support-login, /)
   }
 
   // ALWAYS serve the app on the port specified in the environment variable PORT
