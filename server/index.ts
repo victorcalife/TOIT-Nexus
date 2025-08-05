@@ -130,15 +130,33 @@ app.use((req, res, next) => {
     });
 
     app.get('/favicon.png', (req, res) => {
-      // Redirecionar .png para .svg para evitar loops
-      console.log(`🔄 [FAVICON] Redirecionando favicon.png → favicon.svg`);
-      res.redirect(301, '/favicon.svg');
+      // Servir diretamente o arquivo SVG (sem redirecionamento para evitar loops)
+      const faviconPath = path.resolve(import.meta.dirname, '..', 'toit-nexus-logo.svg');
+      console.log(`🔄 [FAVICON] Servindo favicon.png como SVG do arquivo: ${faviconPath}`);
+      
+      if (fs.existsSync(faviconPath)) {
+        res.setHeader('Content-Type', 'image/svg+xml');
+        res.setHeader('Cache-Control', 'public, max-age=86400'); // Cache 1 dia
+        res.sendFile(faviconPath);
+      } else {
+        console.error(`❌ [FAVICON] Arquivo não encontrado: ${faviconPath}`);
+        res.status(404).send('Favicon not found');
+      }
     });
 
     app.get('/favicon.ico', (req, res) => {
-      // Redirecionar .ico para .svg para evitar loops
-      console.log(`🔄 [FAVICON] Redirecionando favicon.ico → favicon.svg`);
-      res.redirect(301, '/favicon.svg');
+      // Servir diretamente o arquivo SVG (sem redirecionamento para evitar loops)
+      const faviconPath = path.resolve(import.meta.dirname, '..', 'toit-nexus-logo.svg');
+      console.log(`🔄 [FAVICON] Servindo favicon.ico como SVG do arquivo: ${faviconPath}`);
+      
+      if (fs.existsSync(faviconPath)) {
+        res.setHeader('Content-Type', 'image/svg+xml');
+        res.setHeader('Cache-Control', 'public, max-age=86400'); // Cache 1 dia
+        res.sendFile(faviconPath);
+      } else {
+        console.error(`❌ [FAVICON] Arquivo não encontrado: ${faviconPath}`);
+        res.status(404).send('Favicon not found');
+      }
     });
 
     // Middleware para excluir assets estáticos do roteamento por domínio

@@ -24,15 +24,15 @@ const testUrls = [
   },
   {
     url: 'https://toit-nexus-backend-main.up.railway.app/favicon.png',
-    description: 'Favicon PNG (deve redirecionar para SVG)',
-    expectStatus: 301,
-    expectLocation: '/favicon.svg'
+    description: 'Favicon PNG (deve servir arquivo SVG diretamente)',
+    expectStatus: 200,
+    expectContentType: 'image/svg+xml'
   },
   {
     url: 'https://toit-nexus-backend-main.up.railway.app/favicon.ico',
-    description: 'Favicon ICO (deve redirecionar para SVG)',
-    expectStatus: 301,
-    expectLocation: '/favicon.svg'
+    description: 'Favicon ICO (deve servir arquivo SVG diretamente)',
+    expectStatus: 200,
+    expectContentType: 'image/svg+xml'
   },
   {
     url: 'https://nexus.toit.com.br/',
