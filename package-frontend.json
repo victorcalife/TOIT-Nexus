@@ -1,0 +1,13 @@
+{
+  "name": "toit-nexus-frontend",
+  "version": "1.0.0",
+  "description": "Frontend estático do TOIT NEXUS para nexus.toit.com.br",
+  "main": "railway-frontend.js",
+  "scripts": {
+    "start": "node railway-frontend.js",
+    "build": "echo 'Frontend estático - build não necessário'"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
