@@ -48,21 +48,20 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Middleware para servir landing page estática apenas para nexus.toit.com.br (não supnexus)
+// Middleware para servir landing page APENAS para nexus.toit.com.br
 app.use((req, res, next) => {
   const host = req.get('host');
-  const isExactNexusDomain = host === 'nexus.toit.com.br';
-  const isSupNexusDomain = host?.includes('supnexus.toit.com.br');
   
-  console.log(`🌐 [MIDDLEWARE] Host: ${host} | Path: ${req.path} | isNexus: ${isExactNexusDomain} | isSupNexus: ${isSupNexusDomain}`);
+  console.log(`🌐 [MIDDLEWARE] Host: ${host} | Path: ${req.path}`);
   
-  // Apenas para nexus.toit.com.br exato, NÃO para supnexus.toit.com.br
-  if (isExactNexusDomain && !isSupNexusDomain) {
-    console.log('🎯 Interceptando nexus.toit.com.br - servindo landing page');
+  // APENAS nexus.toit.com.br serve landing page, TODOS os outros (incluindo supnexus) passam direto
+  if (host === 'nexus.toit.com.br') {
+    console.log('🎯 Interceptando APENAS nexus.toit.com.br - servindo landing page');
     return res.sendFile(path.resolve(import.meta.dirname, '..', 'nexus-quantum-landing.html'));
   }
   
-  // supnexus.toit.com.br continua normal para equipe TOIT
+  // Qualquer outro domínio (supnexus, localhost, etc.) continua normal
+  console.log(`✅ Host ${host} passa direto - não interceptado`);
   next();
 });
 
