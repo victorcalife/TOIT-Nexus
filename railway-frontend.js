@@ -23,10 +23,10 @@ app.get('/', (req, res) => {
   }
 });
 
-// Redirecionar /login para o backend
+// Redirecionar /login para o sistema TOIT NEXUS
 app.get('/login', (req, res) => {
-  console.log(`🔐 Redirecionando /login para backend`);
-  res.redirect('https://toit-nexus-backend-main.up.railway.app/login');
+  console.log(`🔐 Redirecionando /login para sistema TOIT NEXUS`);
+  res.redirect('https://toit-nexus-backend-main.up.railway.app/');
 });
 
 // Para outras rotas, redirecionar para o backend
