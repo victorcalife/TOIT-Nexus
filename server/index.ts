@@ -211,14 +211,28 @@ app.use((req, res, next) => {
       next();
     });
     
-    // ROTA ESPECÍFICA PARA EQUIPE TOIT - REGISTRAR ANTES DE registerRoutes()
+    // ROTA ESPECÍFICA PARA EQUIPE TOIT - BYPASS COMPLETO DE MIDDLEWARES
     app.get('/team', (req, res) => {
+      console.log('👥 [TEAM] ======= ROTA TEAM CHAMADA =======');
+      console.log(`👥 [TEAM] Method: ${req.method}, URL: ${req.url}, OriginalUrl: ${req.originalUrl}`);
+      console.log(`👥 [TEAM] Host: ${req.get('host')}, User-Agent: ${req.get('user-agent')?.substring(0, 50)}`);
+      
       const clientIndexPath = path.resolve(import.meta.dirname, '..', 'client', 'index.html');
-      console.log('👥 [TEAM] Servindo React app para equipe TOIT');
+      console.log(`👥 [TEAM] Tentando servir: ${clientIndexPath}`);
       
       if (fs.existsSync(clientIndexPath)) {
-        console.log(`✅ [TEAM] Servindo arquivo: ${clientIndexPath}`);
-        return res.sendFile(clientIndexPath);
+        console.log(`✅ [TEAM] Arquivo existe, enviando...`);
+        
+        // Bypass completo - usar res.send em vez de res.sendFile
+        try {
+          const fileContent = require('fs').readFileSync(clientIndexPath, 'utf8');
+          console.log(`✅ [TEAM] Arquivo lido, ${fileContent.length} bytes`);
+          res.set('Content-Type', 'text/html');
+          return res.send(fileContent);
+        } catch (error) {
+          console.error(`❌ [TEAM] Erro ao ler arquivo:`, error);
+          return res.status(500).send('<h1>Erro interno do servidor</h1>');
+        }
       } else {
         console.error(`❌ [TEAM] Client index.html não encontrado: ${clientIndexPath}`);
         return res.status(404).send('<h1>Sistema TOIT temporariamente indisponível</h1><p>Contate o administrador do sistema.</p>');
