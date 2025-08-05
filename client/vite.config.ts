@@ -24,8 +24,24 @@ export default defineConfig({
       }
     }
   },
+  // Configuração do servidor para desenvolvimento
   server: {
-    port: 5173,
-    host: true
+    // Prioriza a porta do Railway, depois PORT e usa 5173 como fallback
+    port: process.env.RAILWAY_TCP_APPLICATION_PORT || process.env.PORT 
+      ? parseInt(process.env.RAILWAY_TCP_APPLICATION_PORT || process.env.PORT || '5173')
+      : 5173,
+    // Habilita o acesso de qualquer endereço IP
+    host: '0.0.0.0',
+    // Habilita CORS para desenvolvimento
+    cors: true,
+    // Configura o proxy para a API
+    proxy: process.env.NODE_ENV === 'development' ? {
+      // No desenvolvimento, redireciona as requisições para a API
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        secure: false,
+      },
+    } : undefined,
   }
 })

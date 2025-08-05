@@ -43,7 +43,8 @@
       "Bash(pip uninstall:*)",
       "Bash(git checkout:*)",
       "Bash(timeout:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "WebFetch(domain:toit-nexus-backend-main.up.railway.app)"
     ],
     "deny": []
   }

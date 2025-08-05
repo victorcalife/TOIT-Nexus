@@ -1,0 +1,52 @@
+import { useLocation, Redirect } from 'wouter';
+
+// Domínios configurados para o roteamento
+const DOMAINS = {
+  /** Domínio principal da aplicação */
+  NEXUS: 'nexus.toit.com.br',
+  /** Domínio para a área administrativa */
+  SUPPORT: 'supnexus.toit.com.br',
+} as const;
+
+interface DomainRouterProps {
+  children: React.ReactNode;
+}
+
+/**
+ * Componente para gerenciar o roteamento baseado em domínio
+ * 
+ * - Redireciona automaticamente para /support-login ao acessar o domínio de suporte na raiz
+ * - Permite o acesso normal ao domínio principal (nexus.toit.com.br)
+ * - Funciona corretamente em ambiente de desenvolvimento (localhost/127.0.0.1)
+ */
+export const DomainRouter: React.FC<DomainRouterProps> = ({ children }) => {
+  const [location] = useLocation();
+  
+  // Verifica se está rodando no navegador
+  const isBrowser = typeof window !== 'undefined';
+  
+  // Em SSR ou durante a renderização no servidor, apenas renderiza os filhos
+  if (!isBrowser) {
+    return <>{children}</>;
+  }
+  
+  const currentDomain = window.location.hostname;
+  // Verifica se o domínio atual é o de suporte
+  const isSupportDomain = currentDomain === DOMAINS.SUPPORT;
+  
+  // Em desenvolvimento, permitir acesso a partir de localhost
+  if (process.env.NODE_ENV === 'development' && 
+      (currentDomain === 'localhost' || currentDomain === '127.0.0.1')) {
+    return <>{children}</>;
+  }
+  
+  // Se for o domínio de suporte e estiver na raiz, redireciona para o login de suporte
+  if (isSupportDomain && location === '/') {
+    return <Redirect to="/support-login" />;
+  }
+  
+  // Para todas as outras situações, renderiza os filhos normalmente
+  return <>{children}</>;
+};
+
+export default DomainRouter;

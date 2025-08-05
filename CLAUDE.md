@@ -1,5 +1,60 @@
 # 🧠 CLAUDE MEMORY - TOIT NEXUS ENTERPRISE PLATFORM
 
+## 🔄 ÚLTIMAS ATUALIZAÇÕES (2025-01-28)
+
+### 🔄 Reestruturação do Roteamento Frontend
+
+#### 📂 Estrutura de Arquivos de Roteamento:
+```
+src/
+├── components/
+│   └── routing/
+│       ├── AppRouter.tsx       # Componente principal de roteamento
+│       ├── publicRoutes.tsx    # Rotas públicas (login, cadastro, etc.)
+│       ├── adminRoutes.tsx     # Rotas administrativas (TOIT)
+│       └── clientRoutes.tsx    # Rotas do cliente (usuários comuns)
+└── config/
+    └── routes/
+        ├── index.ts           # Exportação centralizada de rotas
+        └── types.ts           # Tipos e interfaces para rotas
+```
+
+#### 🔧 Melhorias Implementadas:
+
+1. **Separação de Responsabilidades**
+   - Rotas públicas, administrativas e de cliente agora estão em arquivos separados
+   - Lógica de autenticação e autorização centralizada no `AppRouter`
+   - Suporte a lazy loading para melhor performance
+
+2. **Segurança**
+   - Verificação de autenticação em todas as rotas protegidas
+   - Redirecionamento automático para login quando necessário
+   - Controle de acesso baseado em roles (super_admin, admin, manager, employee)
+
+3. **Performance**
+   - Lazy loading de componentes de rota
+   - Suspense para fallback de carregamento
+   - Otimização de re-renderizações
+
+4. **Manutenibilidade**
+   - Código mais limpo e organizado
+   - Documentação detalhada em cada arquivo
+   - Tipagem forte com TypeScript
+
+5. **Novo Componente ThemeProvider**
+   - Suporte a temas claro/escuro
+   - Configuração personalizável
+   - Integração com `next-themes`
+
+#### 📝 Próximos Passos:
+- [ ] Testes de integração para garantir o funcionamento de todas as rotas
+- [ ] Documentação detalhada da API de rotas
+- [ ] Adição de métricas de performance
+- [ ] Otimização adicional do bundle size
+
+---
+
+
 **_ESTE ARQUIVO CONTÉM INFORMAÇÕES FUNCIONAIS SOBRE O PRODUTO FINAL E O QUE DEVE SER DISPONIBILIZADO A CADA PERSONA E INSTRUÇÕES DE COMO VOCE OBRIGATORIA DEVE AGIR E COMO IREMOS INTERAGIR PARA GARANTIR UMA MEMÓRIA CONTÍNUA PARA O SUCESSO DOS NOSSOS PROJETOS_**
 
 **_O QUE CADA PERSONA FAZ_**:

@@ -2,10 +2,10 @@
   "name": "toit-nexus-frontend",
   "version": "1.0.0",
   "description": "TOIT NEXUS - Sistema Enterprise Completo",
-  "main": "railway-integrated.js",
+  "main": "railway-frontend.js",
   "scripts": {
-    "start": "node railway-integrated.js",
-    "start:frontend": "node railway-frontend.js",
+    "start": "node railway-frontend.js",
+    "start:old": "node railway-frontend.js.OLD",
     "build": "cd client && npm install && npm run build && cd ..",
     "client:install": "cd client && npm install",
     "client:build": "cd client && npm run build",
