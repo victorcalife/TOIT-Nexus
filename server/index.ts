@@ -141,51 +141,64 @@ app.use((req, res, next) => {
       });
     });
 
-    // ROTAS ESPECÍFICAS PARA ASSETS ESTÁTICOS - ANTES DE TUDO
-    // Resolver favicon ANTES de qualquer middleware para evitar loops
+    // ROTAS ESPECÍFICAS PARA ASSETS ESTÁTICOS - SOLUÇÃO DEFINITIVA
+    // SVG inline para contornar interceptação do Railway Edge
     
+    const toitNexusSVG = `<svg viewBox="0 0 400 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Definições -->
+  <defs>
+    <!-- Gradiente principal -->
+    <linearGradient id="brandGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#581c87;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+    </linearGradient>
+      <!-- Gradiente principal -->
+    <linearGradient id="brand1Gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#001366ff;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#581c87;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e3a8a;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Ícone do logo aumentado 30% e reposicionado -->
+  
+  <!-- Texto principal -->
+  <g transform="translate(105,50)">
+    <!-- TOIT -->
+    <text x="-35" y="15" font-family="Arial Black, sans-serif" font-size="45" font-weight="700" fill="url(#brand1Gradient)">
+      TOIT
+    </text>
+    
+    <!-- NEXUS -->
+    <text x="75" y="15" font-family="Arial, sans-serif" font-size="45" font-weight="300" fill="url(#brandGradient)">
+      NEXUS
+    </text>
+  </g>
+</svg>`;
+
     app.get('/favicon.svg', (req, res) => {
-      const faviconPath = path.resolve(import.meta.dirname, '..', 'toit-nexus-logo.svg');
-      console.log(`🎯 [FAVICON] Servindo favicon.svg do arquivo: ${faviconPath}`);
-      
-      if (fs.existsSync(faviconPath)) {
-        res.setHeader('Content-Type', 'image/svg+xml');
-        res.setHeader('Cache-Control', 'public, max-age=86400'); // Cache 1 dia
-        res.sendFile(faviconPath);
-      } else {
-        console.error(`❌ [FAVICON] Arquivo não encontrado: ${faviconPath}`);
-        res.status(404).send('Favicon not found');
-      }
+      console.log(`🎯 [FAVICON] Servindo favicon.svg inline (contornando Railway Edge)`);
+      res.setHeader('Content-Type', 'image/svg+xml');
+      res.setHeader('Cache-Control', 'public, max-age=86400');
+      res.setHeader('X-Content-Source', 'inline-svg');
+      res.send(toitNexusSVG);
     });
 
     app.get('/favicon.png', (req, res) => {
-      // Servir diretamente o arquivo SVG (sem redirecionamento para evitar loops)
-      const faviconPath = path.resolve(import.meta.dirname, '..', 'toit-nexus-logo.svg');
-      console.log(`🔄 [FAVICON] Servindo favicon.png como SVG do arquivo: ${faviconPath}`);
-      
-      if (fs.existsSync(faviconPath)) {
-        res.setHeader('Content-Type', 'image/svg+xml');
-        res.setHeader('Cache-Control', 'public, max-age=86400'); // Cache 1 dia
-        res.sendFile(faviconPath);
-      } else {
-        console.error(`❌ [FAVICON] Arquivo não encontrado: ${faviconPath}`);
-        res.status(404).send('Favicon not found');
-      }
+      console.log(`🔄 [FAVICON] Servindo favicon.png como SVG inline (contornando Railway Edge)`);
+      res.setHeader('Content-Type', 'image/svg+xml');
+      res.setHeader('Cache-Control', 'public, max-age=86400');
+      res.setHeader('X-Content-Source', 'inline-svg');
+      res.send(toitNexusSVG);
     });
 
     app.get('/favicon.ico', (req, res) => {
-      // Servir diretamente o arquivo SVG (sem redirecionamento para evitar loops)
-      const faviconPath = path.resolve(import.meta.dirname, '..', 'toit-nexus-logo.svg');
-      console.log(`🔄 [FAVICON] Servindo favicon.ico como SVG do arquivo: ${faviconPath}`);
-      
-      if (fs.existsSync(faviconPath)) {
-        res.setHeader('Content-Type', 'image/svg+xml');
-        res.setHeader('Cache-Control', 'public, max-age=86400'); // Cache 1 dia
-        res.sendFile(faviconPath);
-      } else {
-        console.error(`❌ [FAVICON] Arquivo não encontrado: ${faviconPath}`);
-        res.status(404).send('Favicon not found');
-      }
+      console.log(`🔄 [FAVICON] Servindo favicon.ico como SVG inline (contornando Railway Edge)`);
+      res.setHeader('Content-Type', 'image/svg+xml');
+      res.setHeader('Cache-Control', 'public, max-age=86400');
+      res.setHeader('X-Content-Source', 'inline-svg');
+      res.send(toitNexusSVG);
     });
 
     // Middleware para excluir assets estáticos do roteamento por domínio
