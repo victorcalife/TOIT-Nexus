@@ -68,18 +68,29 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: Express) {
-  const distPath = path.resolve(import.meta.dirname, "public");
+  const clientPath = path.resolve(import.meta.dirname, "..", "client");
+  const clientIndexPath = path.resolve(clientPath, "index.html");
 
-  if (!fs.existsSync(distPath)) {
-    throw new Error(
-      `Could not find the build directory: ${distPath}, make sure to build the client first`,
-    );
+  console.log(`📁 [STATIC] Client path: ${clientPath}`);
+  console.log(`📄 [STATIC] Index path: ${clientIndexPath}`);
+
+  if (!fs.existsSync(clientIndexPath)) {
+    console.error(`❌ [STATIC] Client index.html não encontrado: ${clientIndexPath}`);
+    // Fallback - servir apenas landing page
+    app.use("*", (req, res) => {
+      const landingPath = path.resolve(import.meta.dirname, '..', 'nexus-quantum-landing.html');
+      console.log(`🔄 [FALLBACK] Servindo landing page: ${landingPath}`);
+      res.sendFile(landingPath);
+    });
+    return;
   }
 
-  app.use(express.static(distPath));
+  // Servir arquivos estáticos do client
+  app.use(express.static(clientPath));
 
-  // fall through to index.html if the file doesn't exist
-  app.use("*", (_req, res) => {
-    res.sendFile(path.resolve(distPath, "index.html"));
+  // Servir client React app para todas as rotas não-API
+  app.use("*", (req, res) => {
+    console.log(`📱 [REACT] Servindo React app para: ${req.originalUrl}`);
+    res.sendFile(clientIndexPath);
   });
 }

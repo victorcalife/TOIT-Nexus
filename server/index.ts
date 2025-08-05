@@ -1,6 +1,7 @@
 import express, { type Request, Response, NextFunction } from "express";
 import session from "express-session";
 import path from "path";
+import fs from "fs";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { startNotificationCron } from "./notificationService";
@@ -63,6 +64,35 @@ app.get('/', (req, res, next) => {
   // Qualquer outro domínio (supnexus, localhost, etc.) continua para as rotas normais
   console.log(`✅ Host ${host} continua para rotas normais`);
   next();
+});
+
+// Rota específica de login que sempre funciona
+app.get('/login', (req, res) => {
+  const host = req.get('host');
+  const clientIndexPath = path.resolve(import.meta.dirname, '..', 'client', 'index.html');
+  
+  console.log(`🔐 [LOGIN] Host: ${host} | Servindo client React app`);
+  
+  if (fs.existsSync(clientIndexPath)) {
+    res.sendFile(clientIndexPath);
+  } else {
+    console.error(`❌ [LOGIN] Client index.html não encontrado`);
+    res.status(404).send('<h1>Sistema de login temporariamente indisponível</h1><p>Contate o suporte técnico.</p>');
+  }
+});
+
+// Rota específica para equipe TOIT
+app.get('/support-login', (req, res) => {
+  const clientIndexPath = path.resolve(import.meta.dirname, '..', 'client', 'index.html');
+  
+  console.log(`👥 [SUPPORT] Servindo login da equipe TOIT`);
+  
+  if (fs.existsSync(clientIndexPath)) {
+    res.sendFile(clientIndexPath);
+  } else {
+    console.error(`❌ [SUPPORT] Client index.html não encontrado`);
+    res.status(404).send('<h1>Sistema de suporte temporariamente indisponível</h1><p>Contate o administrador.</p>');
+  }
 });
 
 // Configure session
