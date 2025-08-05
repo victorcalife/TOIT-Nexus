@@ -177,28 +177,24 @@ app.use((req, res, next) => {
   </g>
 </svg>`;
 
-    app.get('/favicon.svg', (req, res) => {
-      console.log(`🎯 [FAVICON] Servindo favicon.svg inline (contornando Railway Edge)`);
+    // MIDDLEWARE UNIVERSAL PARA FAVICON - Intercepta TODOS os métodos e rotas
+    app.use(['favicon.svg', 'favicon.png', 'favicon.ico'].map(path => `/${path}`), (req, res) => {
+      console.log(`🎯 [FAVICON] Middleware universal interceptou: ${req.path}`);
       res.setHeader('Content-Type', 'image/svg+xml');
       res.setHeader('Cache-Control', 'public, max-age=86400');
-      res.setHeader('X-Content-Source', 'inline-svg');
+      res.setHeader('X-Content-Source', 'universal-middleware');
       res.send(toitNexusSVG);
     });
 
-    app.get('/favicon.png', (req, res) => {
-      console.log(`🔄 [FAVICON] Servindo favicon.png como SVG inline (contornando Railway Edge)`);
-      res.setHeader('Content-Type', 'image/svg+xml');
-      res.setHeader('Cache-Control', 'public, max-age=86400');
-      res.setHeader('X-Content-Source', 'inline-svg');
-      res.send(toitNexusSVG);
-    });
-
-    app.get('/favicon.ico', (req, res) => {
-      console.log(`🔄 [FAVICON] Servindo favicon.ico como SVG inline (contornando Railway Edge)`);
-      res.setHeader('Content-Type', 'image/svg+xml');
-      res.setHeader('Cache-Control', 'public, max-age=86400');
-      res.setHeader('X-Content-Source', 'inline-svg');
-      res.send(toitNexusSVG);
+    // Também definir rotas explícitas como fallback
+    ['/favicon.svg', '/favicon.png', '/favicon.ico'].forEach(route => {
+      app.all(route, (req, res) => {
+        console.log(`🎯 [FAVICON] Rota explícita interceptou: ${req.path} via ${req.method}`);
+        res.setHeader('Content-Type', 'image/svg+xml');
+        res.setHeader('Cache-Control', 'public, max-age=86400');
+        res.setHeader('X-Content-Source', 'explicit-route');
+        res.send(toitNexusSVG);
+      });
     });
 
     // Middleware para excluir assets estáticos do roteamento por domínio
