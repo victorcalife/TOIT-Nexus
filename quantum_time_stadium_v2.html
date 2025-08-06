@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOITNEXUS - Revolução Quântica com TQL</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00ffff;
+            --secondary: #0080ff;
+            --success: #00ff88;
+            --danger: #ff4444;
+            --warning: #ffaa00;
+            --dark: #0a0f1c;
+            --darker: #000511;
+            --light: rgba(255, 255, 255, 0.9);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Partículas de fundo */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            from {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            to {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* Container Principal */
+        .main-container {
+            width: 90%;
+            max-width: 900px;
+            height: 90vh;
+            max-height: 600px;
+            background: rgba(10, 15, 28, 0.95);
+            border-radius: 20px;
+            position: relative;
+            z-index: 10;
+            box-shadow: 
+                0 0 100px rgba(0, 255, 255, 0.2),
+                inset 0 0 50px rgba(0, 128, 255, 0.1);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            overflow: hidden;
+        }
+
+        /* Grid de fundo */
+        .grid-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 30s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Navegação */
+        .navigation {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot.active {
+            background: var(--primary);
+            transform: scale(1.5);
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        /* Telas */
+        .screen {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+        }
+
+        .screen.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .screen.prev {
+            transform: translateX(-100%);
+        }
+
+        /* Scrollbar customizada */
+        .screen::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .screen::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        .screen::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 255, 0.3);
+            border-radius: 4px;
+        }
+
+        /* Logo */
+        .logo {
+            font-size: 2.5em;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Títulos */
+        h2 {
+            font-size: 1.8em;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            color: var(--secondary);
+            margin: 15px 0;
+        }
+
+        /* Cards */
+        .card {
+            background: rgba(0, 40, 80, 0.3);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 10px 0;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2);
+            border-color: var(--primary);
+        }
+
+        /* Comparação SQL vs TQL */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            padding: 15px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85em;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .code-block.bad {
+            border-color: var(--danger);
+            background: rgba(255, 68, 68, 0.05);
+        }
+
+        .code-block.good {
+            border-color: var(--success);
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .code-block pre {
+            margin: 0;
+            color: #e0e0e0;
+            line-height: 1.5;
+        }
+
+        .code-block .comment {
+            color: #666;
+        }
+
+        /* Botões */
+        .btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+            font-size: 1em;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Game Container */
+        .game-area {
+            width: 100%;
+            height: 400px;
+            background: rgba(0, 20, 40, 0.5);
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .game-stats {
+            display: flex;
+            gap: 30px;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-label {
+            font-size: 0.8em;
+            opacity: 0.7;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        /* Barras de progresso */
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Estratégias */
+        .strategies {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .strategy-card {
+            background: rgba(0, 40, 80, 0.4);
+            border: 2px solid rgba(0, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .strategy-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary);
+        }
+
+        .strategy-card.active {
+            background: rgba(0, 255, 255, 0.1);
+            border-color: var(--success);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .strategy-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .strategy-name {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .strategy-cost {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        /* Animação de processamento */
+        @keyframes processing {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .processing {
+            animation: processing 1s ease-in-out infinite;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .main-container {
+                width: 95%;
+                height: 95vh;
+            }
+
+            .screen {
+                padding: 20px;
+            }
+
+            .logo {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .strategies {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Partículas de fundo -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Container Principal -->
+    <div class="main-container">
+        <div class="grid-background"></div>
+
+        <!-- Tela 1: Introdução -->
+        <div class="screen active" id="screen1">
+            <div class="logo">TOITNEXUS</div>
+            <h2>A Revolução da Computação Quântica + TQL</h2>
+            
+            <div class="card">
+                <h3 style="text-align: center; color: var(--success);">
+                    🚀 Primeira Aplicação Comercial Quântica
+                </h3>
+                <p style="text-align: center; margin: 15px 0; line-height: 1.6;">
+                    Combinamos o poder da <strong>computação quântica</strong> com a simplicidade da 
+                    <strong>TQL (TOIT Query Language)</strong> - uma linguagem 100% em português 
+                    para análise de dados massivos.
+                </p>
+                <p style="text-align: center; font-size: 0.9em; opacity: 0.8;">
+                    💡 Descubra como economizar até 99.99% em custos computacionais!
+                </p>
+            </div>
+
+            <button class="btn" onclick="nextScreen()">
+                Começar Jornada →
+            </button>
+        </div>
+
+        <!-- Tela 2: O que é TQL -->
+        <div class="screen" id="screen2">
+            <h2>TQL: Linguagem de Consulta em Português</h2>
+            
+            <div class="comparison-grid">
+                <div class="code-block bad">
+                    <h4 style="color: var(--danger); margin-bottom: 10px;">❌ SQL Tradicional</h4>
+                    <pre>SELECT SUM(sales.value) as total,
+       AVG(sales.value) as average,
+       COUNT(*) as quantity
+FROM sales
+WHERE date >= '2025-01-01'
+  AND date <= '2025-01-31'
+GROUP BY product_id
+ORDER BY total DESC
+LIMIT 10;
+<span class="comment">-- Complexo e em inglês</span></pre>
+                </div>
+
+                <div class="code-block good">
+                    <h4 style="color: var(--success); margin-bottom: 10px;">✅ TQL em Português</h4>
+                    <pre>vendas_mes = SOMAR valor DE vendas 
+    ONDE data = MES(0);
+
+ticket_medio = MEDIA valor DE vendas 
+    ONDE data = MES(0);
+
+MAX(10) produtos POR vendas;
+
+<span class="comment"># Simples e intuitivo!</span></pre>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🎯 Vantagens da TQL:</h3>
+                <ul style="line-height: 1.8; margin-left: 20px;">
+                    <li>📝 <strong>100% em português</strong> - sem barreira de idioma</li>
+                    <li>⚡ <strong>10x mais simples</strong> que SQL</li>
+                    <li>🔄 <strong>Variáveis intuitivas</strong> para cálculos complexos</li>
+                    <li>📊 <strong>Dashboards automáticos</strong> com uma linha</li>
+                    <li>🚀 <strong>Otimizada para quantum</strong> quando necessário</li>
+                </ul>
+            </div>
+
+            <button class="btn" onclick="nextScreen()">
+                Ver Exemplos Práticos →
+            </button>
+        </div>
+
+        <!-- Tela 3: Exemplos TQL -->
+        <div class="screen" id="screen3">
+            <h2>TQL na Prática: Casos Reais</h2>
+
+            <div class="card">
+                <h3>💼 Dashboard de RH em 5 linhas:</h3>
+                <div class="code-block" style="margin: 10px 0;">
+                    <pre>funcionarios = CONTAR funcionarios ONDE status = "ativo";
+salario_medio = MEDIA salario DE funcionarios;
+turnover = demissoes / funcionarios * 100;
+
+DASHBOARD "RH":
+    KPI funcionarios TITULO "Total Funcionários";
+    KPI salario_medio TITULO "Salário Médio", MOEDA R$;
+    KPI turnover TITULO "Turnover", FORMATO %;</pre>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>📈 Análise de Vendas Temporal:</h3>
+                <div class="code-block" style="margin: 10px 0;">
+                    <pre># Comparativo mensal automático
+vendas_atual = SOMAR valor DE vendas ONDE data = MES(0);
+vendas_anterior = SOMAR valor DE vendas ONDE data = MES(-1);
+crescimento = (vendas_atual - vendas_anterior) / vendas_anterior * 100;
+
+# Top produtos do mês
+MAX(5) produtos POR vendas ONDE data = MES(0);</pre>
+                </div>
+            </div>
+
+            <button class="btn" onclick="nextScreen()">
+                Entender Volumetria →
+            </button>
+        </div>
+
+        <!-- Tela 4: Quando usar Quantum -->
+        <div class="screen" id="screen4">
+            <h2>Quando a TQL Ativa o Modo Quântico?</h2>
+
+            <div class="strategies">
+                <div class="strategy-card">
+                    <div class="strategy-icon">📊</div>
+                    <div class="strategy-name">Pequeno Volume</div>
+                    <div class="strategy-cost">&lt; 1GB</div>
+                    <p style="margin-top: 10px; font-size: 0.9em;">
+                        TQL processa localmente<br>
+                        <strong style="color: var(--success);">Custo: R$ 0</strong>
+                    </p>
+                </div>
+
+                <div class="strategy-card">
+                    <div class="strategy-icon">☁️</div>
+                    <div class="strategy-name">Médio Volume</div>
+                    <div class="strategy-cost">1GB - 1TB</div>
+                    <p style="margin-top: 10px; font-size: 0.9em;">
+                        TQL usa cloud computing<br>
+                        <strong style="color: var(--warning);">Custo: R$ 0.10/GB</strong>
+                    </p>
+                </div>
+
+                <div class="strategy-card active">
+                    <div class="strategy-icon">⚛️</div>
+                    <div class="strategy-name">Big Data</div>
+                    <div class="strategy-cost">&gt; 1TB</div>
+                    <p style="margin-top: 10px; font-size: 0.9em;">
+                        TQL ativa quantum!<br>
+                        <strong style="color: var(--danger);">Custo: R$ 1.60/seg</strong>
+                    </p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>⚠️ Importante sobre Computação Quântica:</h3>
+                <ul style="line-height: 1.8; margin-left: 20px;">
+                    <li>💸 <strong>Custo mínimo:</strong> R$ 1.60 por segundo (mesmo usando 0.001s)</li>
+                    <li>📊 <strong>Só compensa para:</strong> Big Data, ML complexo, otimização NP</li>
+                    <li>⏱️ <strong>99.999% do tempo é overhead</strong> - por isso batch é essencial</li>
+                    <li>🎯 <strong>TQL otimiza automaticamente</strong> quando detecta volume alto</li>
+                </ul>
+            </div>
+
+            <button class="btn" onclick="nextScreen()">
+                Jogar Simulação →
+            </button>
+        </div>
+
+        <!-- Tela 5: Game Interativo -->
+        <div class="screen" id="screen5">
+            <h2>Simulador de Economia Quântica</h2>
+
+            <div class="game-area">
+                <div class="game-header">
+                    <div>
+                        <h3 style="margin: 0;">1.000 Consultas TQL em Big Data (5TB)</h3>
+                        <p style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">
+                            Cada consulta analisa 5TB de dados
+                        </p>
+                    </div>
+                    <div class="game-stats">
+                        <div class="stat">
+                            <span class="stat-label">Tempo</span>
+                            <span class="stat-value" id="timeElapsed">0s</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Custo Total</span>
+                            <span class="stat-value" id="totalCost">R$ 0</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Economia</span>
+                            <span class="stat-value" id="savings" style="color: var(--success);">R$ 0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="flex: 1;">
+                    <h4 style="margin-bottom: 10px;">Escolha sua Estratégia:</h4>
+                    
+                    <div class="strategies">
+                        <div class="strategy-card" id="strat1" onclick="selectStrategy('individual')">
+                            <div class="strategy-icon">🚶</div>
+                            <div class="strategy-name">Individual</div>
+                            <div class="strategy-cost">1 query = 1 segundo</div>
+                            <p style="font-size: 0.8em; margin-top: 5px;">
+                                Custo: R$ 1.600,00
+                            </p>
+                        </div>
+
+                        <div class="strategy-card" id="strat2" onclick="selectStrategy('batch')">
+                            <div class="strategy-icon">📦</div>
+                            <div class="strategy-name">Batch TQL</div>
+                            <div class="strategy-cost">1000 queries = 1 segundo</div>
+                            <p style="font-size: 0.8em; margin-top: 5px;">
+                                Custo: R$ 1,60
+                            </p>
+                        </div>
+
+                        <div class="strategy-card" id="strat3" onclick="selectStrategy('collab')">
+                            <div class="strategy-icon">🤝</div>
+                            <div class="strategy-name">Colaborativo</div>
+                            <div class="strategy-cost">Dividir entre 10 empresas</div>
+                            <p style="font-size: 0.8em; margin-top: 5px;">
+                                Custo: R$ 0,16
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressBar" style="width: 0%">
+                            0%
+                        </div>
+                    </div>
+
+                    <button class="btn" id="processBtn" onclick="startProcessing()">
+                        ▶️ Processar Consultas
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela 6: Resultados -->
+        <div class="screen" id="screen6">
+            <div class="logo">TOITNEXUS</div>
+            <h2>🎉 Parabéns! Você Domina TQL + Quantum!</h2>
+
+            <div class="card">
+                <h3 style="text-align: center; color: var(--success);">📊 Seus Resultados:</h3>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 20px 0;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2em; color: var(--primary);" id="finalTime">0s</div>
+                        <div style="font-size: 0.9em; opacity: 0.7;">Tempo Total</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2em; color: var(--danger);" id="finalCost">R$ 0</div>
+                        <div style="font-size: 0.9em; opacity: 0.7;">Custo Final</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2em; color: var(--success);" id="finalSavings">R$ 0</div>
+                        <div style="font-size: 0.9em; opacity: 0.7;">Economia</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>✅ O que você aprendeu:</h3>
+                <ul style="line-height: 1.8; margin-left: 20px;">
+                    <li>📝 <strong>TQL:</strong> Consultas 100% em português, 10x mais simples</li>
+                    <li>⚡ <strong>Otimização:</strong> TQL detecta volume e ativa quantum quando necessário</li>
+                    <li>💰 <strong>Economia:</strong> Batch processing economiza 99.9%</li>
+                    <li>🤝 <strong>Colaboração:</strong> Dividir custos economiza 99.99%</li>
+                    <li>📊 <strong>Dashboards:</strong> Criar análises complexas em minutos</li>
+                </ul>
+            </div>
+
+            <div style="display: flex; justify-content: center; gap: 20px;">
+                <button class="btn" onclick="shareResults()">
+                    📱 Compartilhar
+                </button>
+                <button class="btn" onclick="restart()">
+                    🔄 Jogar Novamente
+                </button>
+            </div>
+        </div>
+
+        <!-- Navegação -->
+        <div class="navigation">
+            <div class="nav-dot active" onclick="goToScreen(1)"></div>
+            <div class="nav-dot" onclick="goToScreen(2)"></div>
+            <div class="nav-dot" onclick="goToScreen(3)"></div>
+            <div class="nav-dot" onclick="goToScreen(4)"></div>
+            <div class="nav-dot" onclick="goToScreen(5)"></div>
+            <div class="nav-dot" onclick="goToScreen(6)"></div>
+        </div>
+    </div>
+
+    <script>
+        // Estado da aplicação
+        let currentScreen = 1;
+        let gameState = {
+            strategy: null,
+            processing: false,
+            timeElapsed: 0,
+            totalCost: 0,
+            savings: 0,
+            progress: 0,
+            timer: null
+        };
+
+        // Criar partículas de fundo
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Navegação entre telas
+        function nextScreen() {
+            if (currentScreen < 6) {
+                goToScreen(currentScreen + 1);
+            }
+        }
+
+        function goToScreen(screenNumber) {
+            // Remove active de todas as telas
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active', 'prev');
+            });
+            
+            // Adiciona prev à tela atual se estiver indo para frente
+            if (screenNumber > currentScreen) {
+                document.getElementById(`screen${currentScreen}`).classList.add('prev');
+            }
+            
+            // Ativa nova tela
+            document.getElementById(`screen${screenNumber}`).classList.add('active');
+            
+            // Atualiza navegação
+            document.querySelectorAll('.nav-dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === screenNumber - 1);
+            });
+            
+            currentScreen = screenNumber;
+        }
+
+        // Seleção de estratégia
+        function selectStrategy(strategy) {
+            gameState.strategy = strategy;
+            
+            // Remove active de todas
+            document.querySelectorAll('.strategy-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // Adiciona active na selecionada
+            if (strategy === 'individual') {
+                document.getElementById('strat1').classList.add('active');
+            } else if (strategy === 'batch') {
+                document.getElementById('strat2').classList.add('active');
+            } else if (strategy === 'collab') {
+                document.getElementById('strat3').classList.add('active');
+            }
+        }
+
+        // Processamento do jogo
+        function startProcessing() {
+            if (!gameState.strategy) {
+                alert('Selecione uma estratégia primeiro!');
+                return;
+            }
+            
+            if (gameState.processing) return;
+            
+            gameState.processing = true;
+            gameState.timeElapsed = 0;
+            gameState.progress = 0;
+            
+            const btn = document.getElementById('processBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Processando...';
+            
+            // Configurar velocidade baseada na estratégia
+            let duration = 1000; // 1 segundo base
+            let finalCost = 0;
+            
+            if (gameState.strategy === 'individual') {
+                duration = 10000; // 10 segundos para simular 1000 operações
+                finalCost = 1600.00;
+            } else if (gameState.strategy === 'batch') {
+                duration = 1000; // 1 segundo
+                finalCost = 1.60;
+            } else if (gameState.strategy === 'collab') {
+                duration = 1000; // 1 segundo
+                finalCost = 0.16;
+            }
+            
+            const individualCost = 1600.00;
+            gameState.savings = individualCost - finalCost;
+            
+            // Atualizar interface a cada 100ms
+            const updateInterval = 100;
+            const steps = duration / updateInterval;
+            let currentStep = 0;
+            
+            gameState.timer = setInterval(() => {
+                currentStep++;
+                gameState.progress = (currentStep / steps) * 100;
+                gameState.timeElapsed = (currentStep * updateInterval) / 1000;
+                
+                // Atualizar UI
+                document.getElementById('progressBar').style.width = gameState.progress + '%';
+                document.getElementById('progressBar').textContent = Math.floor(gameState.progress) + '%';
+                document.getElementById('timeElapsed').textContent = gameState.timeElapsed.toFixed(1) + 's';
+                
+                // Custo proporcional para individual, fixo para outros
+                if (gameState.strategy === 'individual') {
+                    gameState.totalCost = (gameState.progress / 100) * finalCost;
+                } else {
+                    gameState.totalCost = finalCost;
+                }
+                
+                document.getElementById('totalCost').textContent = 'R$ ' + gameState.totalCost.toFixed(2);
+                document.getElementById('savings').textContent = 'R$ ' + gameState.savings.toFixed(2);
+                
+                // Finalizar
+                if (currentStep >= steps) {
+                    clearInterval(gameState.timer);
+                    finishProcessing();
+                }
+            }, updateInterval);
+        }
+
+        // Finalizar processamento
+        function finishProcessing() {
+            gameState.processing = false;
+            
+            // Atualizar tela de resultados
+            document.getElementById('finalTime').textContent = gameState.timeElapsed.toFixed(1) + 's';
+            document.getElementById('finalCost').textContent = 'R$ ' + gameState.totalCost.toFixed(2);
+            document.getElementById('finalSavings').textContent = 'R$ ' + gameState.savings.toFixed(2);
+            
+            // Ir para tela de resultados após 1 segundo
+            setTimeout(() => {
+                goToScreen(6);
+            }, 1000);
+        }
+
+        // Compartilhar resultados
+        function shareResults() {
+            const text = `🚀 Completei o TOITNEXUS TQL Challenge!\n\n` +
+                        `⏱️ Tempo: ${gameState.timeElapsed.toFixed(1)}s\n` +
+                        `💰 Custo: R$ ${gameState.totalCost.toFixed(2)}\n` +
+                        `📈 Economia: R$ ${gameState.savings.toFixed(2)}\n\n` +
+                        `Aprenda TQL - Consultas em português com poder quântico!`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'TOITNEXUS - TQL Challenge',
+                    text: text
+                });
+            } else {
+                navigator.clipboard.writeText(text);
+                alert('Resultado copiado! Cole onde quiser compartilhar.');
+            }
+        }
+
+        // Reiniciar
+        function restart() {
+            gameState = {
+                strategy: null,
+                processing: false,
+                timeElapsed: 0,
+                totalCost: 0,
+                savings: 0,
+                progress: 0,
+                timer: null
+            };
+            
+            document.getElementById('processBtn').disabled = false;
+            document.getElementById('processBtn').textContent = '▶️ Processar Consultas';
+            document.getElementById('progressBar').style.width = '0%';
+            document.getElementById('progressBar').textContent = '0%';
+            
+            goToScreen(1);
+        }
+
+        // Inicializar
+        createParticles();
+    </script>
+</body>
+</html>
