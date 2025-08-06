@@ -1,4 +1,4 @@
-import { useLocation, Redirect } from 'wouter';
+import { useLocation, Navigate } from 'react-router-dom';
 
 // Domínios configurados para o roteamento
 const DOMAINS = {
@@ -42,7 +42,12 @@ export const DomainRouter: React.FC<DomainRouterProps> = ({ children }) => {
   
   // Se for o domínio de suporte e estiver na raiz, redireciona para o login de suporte
   if (isSupportDomain && location === '/') {
-    return <Redirect to="/support-login" />;
+    return <Navigate to="/support-login" replace />;
+  }
+  
+  // Se for o domínio principal e estiver na raiz, permite a renderização normal (a landing page será servida pelo backend)
+  if (currentDomain === DOMAINS.NEXUS && location === '/') {
+    return <>{children}</>;
   }
   
   // Para todas as outras situações, renderiza os filhos normalmente

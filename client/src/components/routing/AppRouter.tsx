@@ -59,8 +59,23 @@ const ProtectedRoute: React.FC<{
     return <LoadingSpinner />;
   }
 
-  // Se não está autenticado, redireciona para o login
-  if (!isAuthenticated) {
+  // Se a rota for a raiz e o usuário estiver autenticado, redireciona para o dashboard apropriado
+  if (location.pathname === '/' && isAuthenticated) {
+    // Se for super_admin ou toit_admin, redireciona para o dashboard de admin
+    if (user?.role === 'super_admin' || user?.role === 'toit_admin') {
+      return <Navigate to={ROUTES.ADMIN_DASHBOARD} replace />;
+    }
+    // Se for cliente, redireciona para o dashboard do cliente
+    return <Navigate to={ROUTES.CLIENT_DASHBOARD} replace />;
+  }
+
+  // Se não está autenticado e a rota não é pública, redireciona para o login
+  if (!isAuthenticated && !publicRoutes.some(route => route.path === location.pathname)) {
+    // Se estiver no domínio de suporte, redireciona para o login de suporte
+    if (window.location.hostname === 'supnexus.toit.com.br') {
+      return <Navigate to={`/support-login?redirect=${encodeURIComponent(location.pathname + location.search)}`} replace />;
+    }
+    // Caso contrário, redireciona para o login normal
     return <Navigate to={`/login?redirect=${encodeURIComponent(location.pathname + location.search)}`} replace />;
   }
 

@@ -29,6 +29,24 @@ app.use(session({
   }
 }));
 
+// Rota para servir a landing page
+app.get('/', (req, res, next) => {
+  const hostname = req.hostname;
+  
+  // Se for o domínio principal, serve a landing page
+  if (hostname === 'nexus.toit.com.br' || hostname === 'localhost') {
+    return res.sendFile(path.join(__dirname, '..', 'nexus-quantum-landing.html'));
+  }
+  
+  // Se for o domínio de suporte, redireciona para o login de suporte
+  if (hostname === 'supnexus.toit.com.br') {
+    return res.redirect('/support-login');
+  }
+  
+  // Para qualquer outro caso, continua com o roteamento normal
+  next();
+});
+
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
