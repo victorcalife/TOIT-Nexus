@@ -112,15 +112,6 @@ app.use((req, res, next) => {
     // Register other routes after
     const server = await registerRoutes(app);
 
-    // Railway usa a variável PORT automaticamente
-    const port = process.env.PORT || 3001;
-  
-    app.listen(port, '0.0.0.0', () => {
-      console.log(`🚀 Server running on port ${port}`);
-      console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
-      console.log(`🌐 Railway Domain: ${process.env.RAILWAY_PUBLIC_DOMAIN || 'localhost'}`);
-    });
-
     app.use((err, _req, res, _next) => {
       const status = err.status || err.statusCode || 500;
       const message = err.message || "Internal Server Error";

@@ -21,7 +21,7 @@ console.log('🔗 Conectando ao PostgreSQL Railway...');
 try {
   // Executar push do schema (cria tabelas)
   console.log('📋 Executando drizzle-kit push...');
-  execSync('npx drizzle-kit push', { stdio: 'inherit' });
+  execSync('npx drizzle-kit push --config=drizzle.config.ts', { stdio: 'inherit' });
   
   console.log('✅ Tabelas criadas com sucesso!');
   console.log('🎉 Banco de dados configurado!');

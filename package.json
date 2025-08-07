@@ -2,6 +2,7 @@
   "name": "toit-nexus-frontend",
   "version": "1.0.0",
   "description": "TOIT NEXUS - Sistema Enterprise Completo",
+  "type": "module",
   "main": "railway-frontend.js",
   "scripts": {
     "start": "node railway-frontend.js",
@@ -9,9 +10,18 @@
     "build": "cd client && npm install && npm run build && cd ..",
     "client:install": "cd client && npm install",
     "client:build": "cd client && npm run build",
-    "client:dev": "cd client && npm run dev"
+    "client:dev": "cd client && npm run dev",
+    "server:build": "cd server && npx tsc",
+    "server:start": "cd server && node dist/index.js",
+    "db:push": "npx drizzle-kit push --config=drizzle.config.ts",
+    "db:setup": "node scripts/setup-database.js",
+    "deploy": "node deploy.js",
+    "railway:start": "npm run server:build && npm run db:setup && node railway-frontend.js"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "drizzle-kit": "^0.25.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.2.2"
   }
 }
