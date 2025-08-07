@@ -1,39 +1,28 @@
-const fs = require('fs');
-const path = require('path');
+import { writeFileSync } from 'fs';
 
-console.log('🚀 TOIT Nexus Diagnostic Script');
-console.log('===============================');
-console.log('Current directory:', __dirname);
-console.log('Process cwd:', process.cwd());
-console.log('');
+// Diagnostic script to check environment and write to file
+const diagnosticInfo = [];
 
-// Check if landing page exists
-const landingPath = path.join(__dirname, 'nexus-quantum-landing.html');
-console.log('Checking landing page:', landingPath);
-console.log('Landing page exists:', fs.existsSync(landingPath));
-console.log('');
+diagnosticInfo.push('=== TOIT Nexus Diagnostic Report ===');
+diagnosticInfo.push(new Date().toISOString());
+diagnosticInfo.push('');
 
-// List files in current directory
-console.log('Files in current directory:');
-const files = fs.readdirSync(__dirname);
-files.forEach(file => {
-  const stats = fs.statSync(path.join(__dirname, file));
-  console.log(`  ${stats.isDirectory() ? '[DIR]' : '[FILE]'} ${file}`);
-});
-console.log('');
+// Check if we're in Railway environment
+diagnosticInfo.push('RAILWAY_PROJECT_ID: ' + (process.env.RAILWAY_PROJECT_ID || 'NOT SET'));
+diagnosticInfo.push('RAILWAY_SERVICE_NAME: ' + (process.env.RAILWAY_SERVICE_NAME || 'NOT SET'));
 
-// Check client/dist directory
-const clientDistPath = path.join(__dirname, 'client', 'dist');
-console.log('Checking client/dist directory:', clientDistPath);
-console.log('client/dist exists:', fs.existsSync(clientDistPath));
-
-if (fs.existsSync(clientDistPath)) {
-  console.log('Files in client/dist:');
-  const clientDistFiles = fs.readdirSync(clientDistPath);
-  clientDistFiles.forEach(file => {
-    console.log(`  - ${file}`);
-  });
+// Check database URL
+diagnosticInfo.push('DATABASE_URL present: ' + !!process.env.DATABASE_URL);
+if (process.env.DATABASE_URL) {
+  diagnosticInfo.push('DATABASE_URL length: ' + process.env.DATABASE_URL.length);
+  diagnosticInfo.push('DATABASE_URL sample: ' + process.env.DATABASE_URL.substring(0, 50) + '...');
 }
-console.log('');
 
-console.log('🎯 Diagnostic completed!');
+// Check other environment variables
+diagnosticInfo.push('NODE_ENV: ' + (process.env.NODE_ENV || 'NOT SET'));
+diagnosticInfo.push('PORT: ' + (process.env.PORT || 'NOT SET'));
+
+// Write to file
+writeFileSync('diagnostic-report.txt', diagnosticInfo.join('\n'));
+
+console.log('Diagnostic report written to diagnostic-report.txt');
