@@ -60,7 +60,8 @@ const ProtectedRoute: React.FC<{
   }
 
   // Se a rota for a raiz e o usuário estiver autenticado, redireciona para o dashboard apropriado
-  if (location.pathname === '/' && isAuthenticated) {
+  // Mas apenas se estiver no domínio correto (não no domínio de suporte)
+  if (location.pathname === '/' && isAuthenticated && window.location.hostname !== 'supnexus.toit.com.br') {
     // Se for super_admin ou toit_admin, redireciona para o dashboard de admin
     if (user?.role === 'super_admin' || user?.role === 'toit_admin') {
       return <Navigate to={ROUTES.ADMIN_DASHBOARD} replace />;
@@ -143,8 +144,18 @@ export const AppRouter: React.FC = () => {
   // Efeito para lidar com autenticação e redirecionamentos
   useEffect(() => {
     // Se não estiver carregando e não estiver autenticado, redireciona para login
-    if (!isLoading && !isAuthenticated && location.pathname !== '/login') {
-      navigate(`/login?redirect=${encodeURIComponent(location.pathname + location.search)}`);
+    // Mas apenas se não estiver no domínio principal (nexus.toit.com.br)
+    const currentDomain = window.location.hostname;
+    const isMainDomain = currentDomain === 'nexus.toit.com.br' || currentDomain === 'localhost' || currentDomain === '127.0.0.1';
+    
+    if (!isLoading && !isAuthenticated && location.pathname !== '/login' && !isMainDomain) {
+      // Se estiver no domínio de suporte, redireciona para o login de suporte
+      if (currentDomain === 'supnexus.toit.com.br') {
+        navigate(`/support-login?redirect=${encodeURIComponent(location.pathname + location.search)}`);
+      } else {
+        // Para outros domínios, redireciona para o login normal
+        navigate(`/login?redirect=${encodeURIComponent(location.pathname + location.search)}`);
+      }
     }
   }, [isLoading, isAuthenticated, location, navigate]);
 

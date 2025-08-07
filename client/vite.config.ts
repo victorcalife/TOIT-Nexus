@@ -40,7 +40,7 @@ export default defineConfig({
     proxy: process.env.NODE_ENV === 'development' ? {
       // No desenvolvimento, redireciona as requisições para a API
       '/api': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:8080',
         changeOrigin: true,
         secure: false,
       },

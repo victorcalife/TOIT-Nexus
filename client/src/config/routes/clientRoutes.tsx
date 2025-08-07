@@ -22,6 +22,7 @@ const CalendarCallback = lazy(() => import('@/pages/calendar-callback'));
 const QuantumMLCommercial = lazy(() => import('@/pages/quantum-ml-commercial'));
 const SelectTenant = lazy(() => import('@/pages/select-tenant'));
 const TenantSelection = lazy(() => import('@/pages/tenant-selection'));
+const Landing = lazy(() => import('@/pages/landing'));
 
 // Tipos de layout disponíveis
 export type LayoutType = 'default' | 'client' | 'admin' | 'minimal';
@@ -38,6 +39,15 @@ export interface RouteConfig {
 
 // Rotas do cliente - acessíveis por usuários autenticados
 export const clientRoutes: RouteConfig[] = [
+  // Landing page route for main domain
+  {
+    path: '/',
+    component: Landing,
+    exact: true,
+    layout: 'default',
+    requiresTenant: false,
+  },
+
   // Rotas de seleção de tenant
   {
     path: '/select-tenant',

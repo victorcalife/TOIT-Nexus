@@ -1,3 +1,4 @@
+import React from 'react';
 import { useLocation, Navigate } from 'react-router-dom';
 
 // Domínios configurados para o roteamento
@@ -8,7 +9,8 @@ const DOMAINS = {
   SUPPORT: 'supnexus.toit.com.br',
 } as const;
 
-interface DomainRouterProps {
+interface DomainRouterProps
+{
   children: React.ReactNode;
 }
 
@@ -19,37 +21,39 @@ interface DomainRouterProps {
  * - Permite o acesso normal ao domínio principal (nexus.toit.com.br)
  * - Funciona corretamente em ambiente de desenvolvimento (localhost/127.0.0.1)
  */
-export const DomainRouter: React.FC<DomainRouterProps> = ({ children }) => {
-  const [location] = useLocation();
-  
+export const DomainRouter: React.FC<DomainRouterProps> = ( { children } ) =>
+{
+  const location = useLocation();
+
   // Verifica se está rodando no navegador
   const isBrowser = typeof window !== 'undefined';
-  
+
   // Em SSR ou durante a renderização no servidor, apenas renderiza os filhos
-  if (!isBrowser) {
+  if ( !isBrowser )
+  {
     return <>{children}</>;
   }
-  
+
   const currentDomain = window.location.hostname;
   // Verifica se o domínio atual é o de suporte
   const isSupportDomain = currentDomain === DOMAINS.SUPPORT;
-  
-  // Em desenvolvimento, permitir acesso a partir de localhost
-  if (process.env.NODE_ENV === 'development' && 
-      (currentDomain === 'localhost' || currentDomain === '127.0.0.1')) {
-    return <>{children}</>;
-  }
-  
+  // Verifica se o domínio atual é o principal
+  const isMainDomain = currentDomain === DOMAINS.NEXUS || 
+    (process.env['NODE_ENV'] === 'development' && 
+     (currentDomain === 'localhost' || currentDomain === '127.0.0.1'));
+
   // Se for o domínio de suporte e estiver na raiz, redireciona para o login de suporte
-  if (isSupportDomain && location === '/') {
+  if ( isSupportDomain && location.pathname === '/' )
+  {
     return <Navigate to="/support-login" replace />;
   }
-  
+
   // Se for o domínio principal e estiver na raiz, permite a renderização normal (a landing page será servida pelo backend)
-  if (currentDomain === DOMAINS.NEXUS && location === '/') {
+  if ( isMainDomain && location.pathname === '/' )
+  {
     return <>{children}</>;
   }
-  
+
   // Para todas as outras situações, renderiza os filhos normalmente
   return <>{children}</>;
 };

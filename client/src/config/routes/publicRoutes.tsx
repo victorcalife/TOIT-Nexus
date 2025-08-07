@@ -42,11 +42,6 @@ export const publicRoutes = [
     exact: true,
   },
   {
-    path: '/',
-    component: Login, // Rota raiz redireciona para login
-    exact: true,
-  },
-  {
     path: '*',
     component: NotFound, // Rota 404
   },

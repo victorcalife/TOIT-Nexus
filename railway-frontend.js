@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8080;
 
 // CONFIGURAÇÕES PARA RAILWAY
 app.set('trust proxy', true);
@@ -20,6 +20,7 @@ app.use((req, res, next) => {
   const allowedOrigins = [
     'https://nexus.toit.com.br',
     'https://supnexus.toit.com.br',
+    'https://api.toit.com.br',
     'http://localhost:5173',
     'http://localhost:3000',
     'http://localhost:5000'
@@ -403,6 +404,17 @@ app.get('/', (req, res) => {
   
   console.log(`🌐 Frontend Root - Host: ${realHost} | Path: ${req.originalUrl}`);
   
+  // API (backend services) → Return API info
+  if (realHost === 'api.toit.com.br') {
+    console.log(`📡 [API] Servindo informações da API para: ${realHost}`);
+    return res.json({
+      service: 'TOIT Nexus API',
+      status: 'operational',
+      version: '2.0.0',
+      message: 'API server is running. Use /api/* endpoints for services.'
+    });
+  }
+  
   // SUPNEXUS (equipe TOIT) → React app sempre
   if (realHost === 'supnexus.toit.com.br') {
     console.log(`👥 [SUPNEXUS] Servindo React app para equipe TOIT`);
@@ -433,9 +445,9 @@ app.get('/', (req, res) => {
   const landingPath = path.join(__dirname, 'nexus-quantum-landing.html');
   
   if (fs.existsSync(landingPath)) {
-    res.sendFile(landingPath);
+    return res.sendFile(landingPath);
   } else {
-    res.status(404).send(`
+    return res.status(404).send(`
       <h1>Arquivo não encontrado</h1>
       <p>nexus-quantum-landing.html não existe no diretório</p>
       <p>Diretório: ${__dirname}</p>
@@ -461,7 +473,30 @@ app.get('*', (req, res) => {
   const xForwardedHost = req.get('x-forwarded-host');
   const realHost = xForwardedHost || host;
   
-  // Se é API, deve ter sido tratado anteriormente
+  // Se é API domain, serve API endpoints
+  if (realHost === 'api.toit.com.br') {
+    console.log(`📡 [API] Routing API request: ${req.originalUrl}`);
+    
+    // If it's an API endpoint, let it be handled by the API routes
+    if (req.originalUrl.startsWith('/api/')) {
+      return res.status(404).json({
+        success: false,
+        error: 'Endpoint não encontrado',
+        availableEndpoints: ['/api/health', '/api/auth/login', '/api/tenants']
+      });
+    }
+    
+    // Otherwise return API info
+    return res.json({
+      service: 'TOIT Nexus API',
+      status: 'operational',
+      version: '2.0.0',
+      message: 'API server is running. Use /api/* endpoints for services.',
+      host: realHost
+    });
+  }
+  
+  // Se é API path, deve ter sido tratado anteriormente
   if (req.originalUrl.startsWith('/api/')) {
     return res.status(404).json({
       success: false,
@@ -486,14 +521,22 @@ app.get('*', (req, res) => {
     }
   }
   
-  // Para outros hosts, 404
-  res.status(404).send('Página não encontrada');
+  // Para outros hosts, serve a landing page como fallback
+  console.log(`👉 [FALLBACK] Servindo landing page para host desconhecido: ${realHost}`);
+  
+  const landingPath = path.join(__dirname, 'nexus-quantum-landing.html');
+  
+  if (fs.existsSync(landingPath)) {
+    return res.sendFile(landingPath);
+  } else {
+    return res.status(404).send('Landing page não encontrada');
+  }
 });
 
-app.listen(port, () => {
-  console.log('=' .repeat(80));
+app.listen(port, '0.0.0.0', () => {
+  console.log('='.repeat(80));
   console.log('🚀 TOIT NEXUS INTEGRATED SERVER - INICIADO COM SUCESSO');
-  console.log('=' .repeat(80));
+  console.log('='.repeat(80));
   console.log(`🌐 Servidor rodando na porta: ${port}`);
   console.log(`📁 Diretório raiz: ${__dirname}`);
   console.log(`🔧 Modo: ${process.env.NODE_ENV || 'development'}`);
@@ -510,5 +553,5 @@ app.listen(port, () => {
   console.log('   🔐 /api/auth/login → Sistema de Login');
   console.log('');
   console.log('🎯 STATUS: SISTEMA INTEGRADO 100% OPERACIONAL - V2.0');
-  console.log('=' .repeat(80));
+  console.log('='.repeat(80));
 });
