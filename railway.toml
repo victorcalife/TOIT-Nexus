@@ -12,7 +12,7 @@
   outputDirectory = "client/dist"
   
   # Comando para iniciar o servidor
-  startCommand = "node server/dist/index.js"
+  startCommand = "node railway-frontend.js"
 
 # Configuração do banco de dados PostgreSQL
 [database]
