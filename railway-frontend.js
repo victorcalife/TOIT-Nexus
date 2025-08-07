@@ -396,6 +396,55 @@ initializeBackend();
 
 console.log('🌐 Configurando frontend proxy...');
 
+// SERVIR ASSETS ESTÁTICOS DO REACT BUILDADO (apenas para supnexus.toit.com.br)
+app.use((req, res, next) => {
+  const host = req.get('host');
+  const xForwardedHost = req.get('x-forwarded-host');
+  const realHost = xForwardedHost || host;
+  
+  // Serve static files only for supnexus domain
+  if (realHost === 'supnexus.toit.com.br') {
+    console.log(`📁 [STATIC] Servindo assets para: ${realHost}`);
+    express.static(path.join(__dirname, 'client', 'dist'))(req, res, next);
+  } else {
+    next();
+  }
+});
+
+// FALLBACK PARA DEV (se dist/ não existir - apenas para supnexus)
+app.use((req, res, next) => {
+  const host = req.get('host');
+  const xForwardedHost = req.get('x-forwarded-host');
+  const realHost = xForwardedHost || host;
+  
+  // Serve dev assets only for supnexus domain
+  if (realHost === 'supnexus.toit.com.br') {
+    express.static(path.join(__dirname, 'client', 'src'))(req, res, next);
+    express.static(path.join(__dirname, 'client', 'public'))(req, res, next);
+    express.static(path.join(__dirname, 'client', 'assets'))(req, res, next);
+  } else {
+    next();
+  }
+});
+
+// SERVIR ASSETS GERAIS (apenas para nexus.toit.com.br)
+app.use((req, res, next) => {
+  const host = req.get('host');
+  const xForwardedHost = req.get('x-forwarded-host');
+  const realHost = xForwardedHost || host;
+  
+  // Serve general assets only for nexus domain
+  if (realHost === 'nexus.toit.com.br') {
+    express.static(path.join(__dirname, 'client', 'public'))(req, res, next);
+  } else {
+    next();
+  }
+});
+
+// SERVIR FAVICON PARA TODOS OS DOMÍNIOS
+app.use('/favicon.svg', express.static(path.join(__dirname, 'client', 'public', 'favicon.svg')));
+app.use('/favicon.ico', express.static(path.join(__dirname, 'client', 'public', 'favicon.ico')));
+
 // ROTEAMENTO POR DOMÍNIO NA ROTA RAIZ
 app.get('/', (req, res) => {
   const host = req.get('host');
@@ -454,18 +503,6 @@ app.get('/', (req, res) => {
     `);
   }
 });
-
-// SERVIR ASSETS ESTÁTICOS DO REACT BUILDADO
-app.use(express.static(path.join(__dirname, 'client', 'dist')));
-
-// FALLBACK PARA DEV (se dist/ não existir)
-app.use('/src', express.static(path.join(__dirname, 'client', 'src')));
-app.use('/public', express.static(path.join(__dirname, 'client', 'public')));
-app.use('/assets', express.static(path.join(__dirname, 'client', 'assets')));
-
-// SERVIR ASSETS GERAIS
-app.use('/favicon.svg', express.static(path.join(__dirname, 'client', 'public', 'favicon.svg')));
-app.use('/favicon.ico', express.static(path.join(__dirname, 'client', 'public', 'favicon.ico')));
 
 // SPA FALLBACK para React Router (supnexus apenas)
 app.get('*', (req, res) => {
