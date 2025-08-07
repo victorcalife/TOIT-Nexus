@@ -1,11 +1,4 @@
-const express = require('express');
-const app = express();
-const port = 8080;
-
-app.get('/', (req, res) => {
-  res.send('Hello TOIT Nexus!');
-});
-
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
+console.log('=== Simple Test ===');
+console.log('Current directory:', process.cwd());
+console.log('Environment variables available:', Object.keys(process.env).length);
+console.log('Test completed successfully');
