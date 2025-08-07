@@ -16,7 +16,8 @@
     "db:push": "npx drizzle-kit push --config=drizzle.config.ts",
     "db:setup": "node scripts/setup-database.js",
     "deploy": "node deploy.js",
-    "railway:start": "npm run server:build && npm run db:setup && node railway-frontend.js"
+    "railway:start": "npm run server:build && npm run db:setup && node railway-frontend.js",
+    "test:start": "node test-deployment.js"
   },
   "dependencies": {
     "express": "^4.18.2",
