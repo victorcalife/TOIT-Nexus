@@ -1,10 +1,6 @@
-import { Pool, neonConfig } from '@neondatabase/serverless';
-import { drizzle } from 'drizzle-orm/neon-serverless';
-import ws from "ws";
+import { Pool } from 'pg';
+import { drizzle } from 'drizzle-orm/node-postgres';
 import * as schema from "../shared/schema.js";
-
-// Configure para Neon (compatível com Railway PostgreSQL)
-neonConfig.webSocketConstructor = ws;
 
 // DATABASE_URL definida no Railway Dashboard como variável de ambiente
 const DATABASE_URL = process.env.DATABASE_URL;
