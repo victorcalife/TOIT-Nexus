@@ -3,14 +3,15 @@ import react from '@vitejs/plugin-react'
 import path from "path"
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig( {
   plugins: [
     react(),
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": path.resolve( __dirname, "./src" ),
     },
+    extensions: [ '.ts', '.tsx', '.js', '.jsx', '.json' ],
   },
   build: {
     outDir: 'dist',
@@ -18,10 +19,10 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['react', 'react-dom'],
-          ui: ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-toast'],
-          charts: ['chart.js', 'react-chartjs-2', 'recharts'],
-          query: ['@tanstack/react-query']
+          vendor: [ 'react', 'react-dom' ],
+          ui: [ '@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-toast' ],
+          charts: [ 'chart.js', 'react-chartjs-2', 'recharts' ],
+          query: [ '@tanstack/react-query' ]
         }
       }
     }
@@ -29,8 +30,8 @@ export default defineConfig({
   // Configuração do servidor para desenvolvimento
   server: {
     // Prioriza a porta do Railway, depois PORT e usa 5173 como fallback
-    port: process.env.RAILWAY_TCP_APPLICATION_PORT || process.env.PORT 
-      ? parseInt(process.env.RAILWAY_TCP_APPLICATION_PORT || process.env.PORT || '5173')
+    port: process.env.RAILWAY_TCP_APPLICATION_PORT || process.env.PORT
+      ? parseInt( process.env.RAILWAY_TCP_APPLICATION_PORT || process.env.PORT || '5173' )
       : 5173,
     // Habilita o acesso de qualquer endereço IP
     host: '0.0.0.0',
@@ -46,4 +47,4 @@ export default defineConfig({
       },
     } : undefined,
   }
-})
+} )
