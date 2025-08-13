@@ -149,29 +149,9 @@ export const AppRouter: React.FC = () =>
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Efeito para lidar com autenticação e redirecionamentos
-  useEffect( () =>
-  {
-    // Se não estiver carregando e não estiver autenticado, redireciona para login
-    const currentDomain = window.location.hostname.toLowerCase();
-    const isMainDomain = currentDomain === 'nexus.toit.com.br' || currentDomain === 'localhost' || currentDomain === '127.0.0.1';
-    const isSupportDomain = currentDomain === 'supnexus.toit.com.br';
-
-    // Só redireciona se não estiver autenticado e não estiver já na página de login correta
-    if ( !isLoading && !isAuthenticated )
-    {
-      // Se estiver no domínio de suporte e não estiver no support-login
-      if ( isSupportDomain && location.pathname !== '/support-login' )
-      {
-        navigate( `/support-login?redirect=${ encodeURIComponent( location.pathname + location.search ) }` );
-      }
-      // Se estiver no domínio principal e não estiver no login de cliente
-      else if ( isMainDomain && location.pathname !== '/login' && location.pathname !== '/' )
-      {
-        navigate( `/login?redirect=${ encodeURIComponent( location.pathname + location.search ) }` );
-      }
-    }
-  }, [ isLoading, isAuthenticated, location, navigate ] );
+  // REMOVIDO: useEffect problemático que causava redirecionamentos automáticos
+  // O roteamento agora é controlado apenas pelas rotas definidas
+  // Sem redirecionamentos automáticos que interferem na navegação
 
   // Rota de fallback para páginas não encontradas
   const NotFound = React.lazy( () => import( '@/pages/not-found' ) );

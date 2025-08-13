@@ -838,6 +838,47 @@ app.get( '/login', ( req, res ) =>
   ` );
 } );
 
+// ====================================================================
+// ROTA RAIZ ESPECÍFICA - DEVE VIR ANTES DO SPA FALLBACK
+// ====================================================================
+
+// ROTA RAIZ PARA NEXUS - SEMPRE LANDING PAGE HTML
+app.get( '/', ( req, res ) =>
+{
+  const host = req.get( 'host' );
+  const xForwardedHost = req.get( 'x-forwarded-host' );
+  const realHost = xForwardedHost || host;
+
+  console.log( `🎯 [RAIZ-ESPECÍFICA] Rota raiz acessada - Host: ${ realHost }` );
+
+  // Para nexus.toit.com.br, SEMPRE servir landing page HTML
+  if ( realHost === 'nexus.toit.com.br' || realHost === 'localhost:8080' || realHost === '127.0.0.1:8080' )
+  {
+    const landingPath = path.join( __dirname, 'nexus-quantum-landing.html' );
+
+    if ( fs.existsSync( landingPath ) )
+    {
+      console.log( `✅ [NEXUS-RAIZ] Servindo landing page HTML: ${ landingPath }` );
+      res.setHeader( 'Content-Type', 'text/html; charset=utf-8' );
+      return res.sendFile( landingPath );
+    } else
+    {
+      console.error( `❌ [NEXUS-RAIZ] Landing page não encontrada: ${ landingPath }` );
+      return res.status( 404 ).send( `<h1>Landing Page Não Encontrada</h1>` );
+    }
+  }
+
+  // Para supnexus.toit.com.br na raiz, redirecionar para support-login
+  if ( realHost === 'supnexus.toit.com.br' )
+  {
+    console.log( `🔄 [SUPNEXUS-RAIZ] Redirecionando para support-login` );
+    return res.redirect( '/support-login' );
+  }
+
+  // Outros domínios
+  return res.status( 403 ).send( `<h1>Domínio Não Autorizado</h1>` );
+} );
+
 // SPA FALLBACK para React Router (supnexus apenas)
 app.get( '*', ( req, res ) =>
 {
