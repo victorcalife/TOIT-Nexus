@@ -260,7 +260,7 @@ export function LandingPage()
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Carregando planos...</p>
+          <p className="mt-4 text-slate-700">Carregando planos...</p>
         </div>
       </div>
     );
@@ -278,7 +278,7 @@ export function LandingPage()
               </div>
               <div>
                 <h1 className="text-xl font-bold text-gray-900">TOIT NEXUS</h1>
-                <p className="text-xs text-gray-500">The One in Tech</p>
+                <p className="text-xs text-slate-600">The One in Tech</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -305,7 +305,7 @@ export function LandingPage()
               A Plataforma de <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Business Intelligence</span><br />
               em Português que você precisa
             </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            <p className="text-xl text-slate-700 mb-8 max-w-3xl mx-auto">
               Conecte seus dados, crie workflows inteligentes e tome decisões baseadas em insights reais.
               Tudo em português, sem complicação.
             </p>
@@ -325,15 +325,15 @@ export function LandingPage()
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
             <div className="text-center">
               <div className="text-3xl font-bold text-blue-600 mb-2">99.9%</div>
-              <div className="text-gray-600">Uptime Garantido</div>
+              <div className="text-slate-700">Uptime Garantido</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-purple-600 mb-2">10x</div>
-              <div className="text-gray-600">Mais Rápido que SQL</div>
+              <div className="text-slate-700">Mais Rápido que SQL</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-green-600 mb-2">100%</div>
-              <div className="text-gray-600">em Português</div>
+              <div className="text-slate-700">em Português</div>
             </div>
           </div>
         </div>
@@ -346,7 +346,7 @@ export function LandingPage()
             <h2 className="text-4xl font-bold text-gray-900 mb-6">
               Funcionalidades que fazem a diferença
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-slate-700 max-w-3xl mx-auto">
               Tudo que você precisa para transformar dados em resultados, em uma única plataforma.
             </p>
           </div>
@@ -434,7 +434,7 @@ export function LandingPage()
             <h2 className="text-4xl font-bold text-gray-900 mb-6">
               Planos que crescem com seu negócio
             </h2>
-            <p className="text-xl text-gray-600 mb-8">
+            <p className="text-xl text-slate-700 mb-8">
               Comece grátis por 7 dias. Sem compromisso, sem cartão de crédito.
             </p>
 

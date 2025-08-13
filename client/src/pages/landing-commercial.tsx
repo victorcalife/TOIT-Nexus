@@ -477,7 +477,7 @@ export default function LandingCommercial()
               <img src={workflowLogo} alt="TOIT Nexus" className="h-10 w-auto" />
               <div>
                 <h1 className="text-xl font-bold text-gray-900">TOIT Nexus</h1>
-                <p className="text-sm text-gray-600">Plataforma Empresarial Inteligente</p>
+                <p className="text-sm text-slate-700">Plataforma Empresarial Inteligente</p>
               </div>
             </div>
             <Button variant="outline" onClick={() => window.location.href = '/login'}>
@@ -634,7 +634,7 @@ export default function LandingCommercial()
             <p className="text-2xl text-gray-700 mb-4">
               <strong>Quantum Computing para TODOS!</strong> Desde pessoas físicas até empresas.
             </p>
-            <p className="text-lg text-gray-600 mb-8">
+            <p className="text-lg text-slate-700 mb-8">
               💡 <strong>Demo personalizada GRATUITA</strong> - Veja o quantum funcionando na SUA realidade!
             </p>
 
@@ -644,11 +644,11 @@ export default function LandingCommercial()
               <div className="grid md:grid-cols-3 gap-4 text-center">
                 <div>
                   <div className="text-3xl font-bold text-green-600">8.2x</div>
-                  <div className="text-sm text-gray-600">Velocidade vs clássico</div>
+                  <div className="text-sm text-slate-700">Velocidade vs clássico</div>
                 </div>
                 <div>
                   <div className="text-3xl font-bold text-blue-600">73%</div>
-                  <div className="text-sm text-gray-600">Redução de tempo</div>
+                  <div className="text-sm text-slate-700">Redução de tempo</div>
                 </div>
                 <div>
                   <div className="text-3xl font-bold text-purple-600">R$ 15.7K</div>

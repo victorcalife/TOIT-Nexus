@@ -29,6 +29,7 @@ import { moduleRoutes } from "./moduleRoutes";
 import { adaptiveEngine } from "./adaptiveEngine";
 import accessProfileRoutes from "./accessProfileRoutes";
 import stripeCheckoutRoutes from "./stripeCheckoutRoutes";
+import webhookRoutes from "./webhookRoutes";
 import emailTestRoutes from "./emailTestRoutes";
 import trialAdminRoutes from "./trialAdminRoutes";
 import salesMetricsRoutes from "./salesMetricsRoutes";
@@ -2223,6 +2224,9 @@ export async function registerRoutes( app: Express ): Promise<Server>
 
   // Register Stripe Checkout integrado routes
   app.use( '/api/stripe', stripeCheckoutRoutes );
+
+  // Register Stripe Webhook routes
+  app.use( '/api/webhooks', webhookRoutes );
 
   // Email Test routes - Para testes durante desenvolvimento
   app.use( '/api/email-test', emailTestRoutes );

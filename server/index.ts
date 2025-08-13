@@ -61,6 +61,9 @@ app.use( ( req, res, next ) =>
   next();
 } );
 
+// Raw body middleware for Stripe webhooks (must be before express.json())
+app.use( '/api/webhooks/stripe', express.raw( { type: 'application/json' } ) );
+
 app.use( express.json() );
 app.use( express.urlencoded( { extended: false } ) );
 

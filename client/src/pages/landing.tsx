@@ -263,7 +263,7 @@ export default function Landing()
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Carregando planos...</p>
+          <p className="mt-4 text-slate-700">Carregando planos...</p>
         </div>
       </div>
     );
@@ -281,7 +281,7 @@ export default function Landing()
               </div>
               <div>
                 <h1 className="text-xl font-bold text-gray-900">TOIT NEXUS</h1>
-                <p className="text-xs text-gray-500">The One in Tech</p>
+                <p className="text-xs text-slate-600">The One in Tech</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -307,7 +307,7 @@ export default function Landing()
               <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> IA em Português</span>
             </h1>
 
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            <p className="text-xl text-slate-700 mb-8 max-w-3xl mx-auto">
               Conecte dados, crie workflows, gere relatórios e gerencie equipes com a primeira
               plataforma de automação 100% brasileira. Sem código, sem complicação.
             </p>
@@ -359,7 +359,7 @@ export default function Landing()
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
               Tudo que sua empresa precisa em uma plataforma
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-slate-700 max-w-3xl mx-auto">
               Elimine planilhas, conecte sistemas e automatize processos com ferramentas intuitivas
             </p>
           </div>
@@ -373,11 +373,11 @@ export default function Landing()
                 </div>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600 mb-4">
+                <p className="text-slate-700 mb-4">
                   Bancos de dados, APIs, planilhas Excel/CSV, Google Sheets.
                   Centralize informações sem downloads.
                 </p>
-                <ul className="space-y-2 text-sm text-gray-500">
+                <ul className="space-y-2 text-sm text-slate-600">
                   <li className="flex items-center"><Check className="w-4 h-4 mr-2 text-green-500" />PostgreSQL, MySQL, SQL Server</li>
                   <li className="flex items-center"><Check className="w-4 h-4 mr-2 text-green-500" />APIs REST e GraphQL</li>
                   <li className="flex items-center"><Check className="w-4 h-4 mr-2 text-green-500" />Upload Excel, CSV</li>
@@ -393,11 +393,11 @@ export default function Landing()
                 </div>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600 mb-4">
+                <p className="text-slate-700 mb-4">
                   Crie automações complexas sem programar.
                   Envie emails, processe dados, gere relatórios.
                 </p>
-                <ul className="space-y-2 text-sm text-gray-500">
+                <ul className="space-y-2 text-sm text-slate-600">
                   <li className="flex items-center"><Check className="w-4 h-4 mr-2 text-green-500" />Drag & Drop visual</li>
                   <li className="flex items-center"><Check className="w-4 h-4 mr-2 text-green-500" />Condições inteligentes</li>
                   <li className="flex items-center"><Check className="w-4 h-4 mr-2 text-green-500" />Triggers automáticos</li>
@@ -413,11 +413,11 @@ export default function Landing()
                 </div>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600 mb-4">
+                <p className="text-slate-700 mb-4">
                   Dashboards dinâmicos, KPIs em tempo real,
                   gráficos interativos e exportação automática.
                 </p>
-                <ul className="space-y-2 text-sm text-gray-500">
+                <ul className="space-y-2 text-sm text-slate-600">
                   <li className="flex items-center"><Check className="w-4 h-4 mr-2 text-green-500" />12 tipos de gráficos</li>
                   <li className="flex items-center"><Check className="w-4 h-4 mr-2 text-green-500" />Filtros dinâmicos</li>
                   <li className="flex items-center"><Check className="w-4 h-4 mr-2 text-green-500" />Export PDF/Excel</li>
@@ -438,11 +438,11 @@ export default function Landing()
                 </div>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600 mb-4">
+                <p className="text-slate-700 mb-4">
                   Primeira plataforma brasileira com algoritmos de ML Quântico simulados.
                   Otimizações significativas em processamento e análise de dados.
                 </p>
-                <ul className="space-y-2 text-sm text-gray-500">
+                <ul className="space-y-2 text-sm text-slate-600">
                   <li className="flex items-center"><Check className="w-4 h-4 mr-2 text-green-500" />5 algoritmos simulados</li>
                   <li className="flex items-center"><Check className="w-4 h-4 mr-2 text-green-500" />10-100x otimização</li>
                   <li className="flex items-center"><Check className="w-4 h-4 mr-2 text-green-500" />Implementação avançada</li>
@@ -467,11 +467,11 @@ export default function Landing()
                 </div>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600 mb-4">
+                <p className="text-slate-700 mb-4">
                   Departamentos, permissões granulares,
                   controle de acesso e auditoria completa.
                 </p>
-                <ul className="space-y-2 text-sm text-gray-500">
+                <ul className="space-y-2 text-sm text-slate-600">
                   <li className="flex items-center"><Check className="w-4 h-4 mr-2 text-green-500" />Roles personalizados</li>
                   <li className="flex items-center"><Check className="w-4 h-4 mr-2 text-green-500" />Multi-departamental</li>
                   <li className="flex items-center"><Check className="w-4 h-4 mr-2 text-green-500" />Log de atividades</li>
@@ -487,11 +487,11 @@ export default function Landing()
                 </div>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600 mb-4">
+                <p className="text-slate-700 mb-4">
                   Google Calendar, Outlook, Gmail, WhatsApp.
                   Centralize comunicação e agenda.
                 </p>
-                <ul className="space-y-2 text-sm text-gray-500">
+                <ul className="space-y-2 text-sm text-slate-600">
                   <li className="flex items-center"><Check className="w-4 h-4 mr-2 text-green-500" />Calendários sincronizados</li>
                   <li className="flex items-center"><Check className="w-4 h-4 mr-2 text-green-500" />Email marketing</li>
                   <li className="flex items-center"><Check className="w-4 h-4 mr-2 text-green-500" />Webhooks personalizados</li>
@@ -507,11 +507,11 @@ export default function Landing()
                 </div>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600 mb-4">
+                <p className="text-slate-700 mb-4">
                   Consultas em linguagem natural, análise preditiva
                   e recomendações inteligentes.
                 </p>
-                <ul className="space-y-2 text-sm text-gray-500">
+                <ul className="space-y-2 text-sm text-slate-600">
                   <li className="flex items-center"><Check className="w-4 h-4 mr-2 text-green-500" />TQL - Query em português</li>
                   <li className="flex items-center"><Check className="w-4 h-4 mr-2 text-green-500" />Análise preditiva</li>
                   <li className="flex items-center"><Check className="w-4 h-4 mr-2 text-green-500" />Insights automáticos</li>
@@ -529,13 +529,13 @@ export default function Landing()
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
               Planos que crescem com sua empresa
             </h2>
-            <p className="text-xl text-gray-600 mb-8">
+            <p className="text-xl text-slate-700 mb-8">
               Comece grátis por 7 dias. Cancele quando quiser.
             </p>
 
             {/* Billing Toggle */}
             <div className="flex items-center justify-center space-x-4 mb-12">
-              <span className={`${ billingCycle === 'monthly' ? 'text-gray-900' : 'text-gray-500' }`}>
+              <span className={`${ billingCycle === 'monthly' ? 'text-gray-900' : 'text-slate-600' }`}>
                 Mensal
               </span>
               <button
@@ -548,7 +548,7 @@ export default function Landing()
                     }`}
                 />
               </button>
-              <span className={`${ billingCycle === 'yearly' ? 'text-gray-900' : 'text-gray-500' }`}>
+              <span className={`${ billingCycle === 'yearly' ? 'text-gray-900' : 'text-slate-600' }`}>
                 Anual
               </span>
               {billingCycle === 'yearly' && (
@@ -559,7 +559,7 @@ export default function Landing()
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
             {profiles.map( ( profile ) =>
             {
               const price = billingCycle === 'monthly' ? profile.price_monthly : profile.price_yearly;
@@ -586,7 +586,7 @@ export default function Landing()
                     <div className="mt-4">
                       <div className="text-4xl font-bold text-gray-900">
                         {formatCurrency( price )}
-                        <span className="text-lg font-normal text-gray-500">
+                        <span className="text-lg font-normal text-slate-600">
                           /{billingCycle === 'monthly' ? 'mês' : 'ano'}
                         </span>
                       </div>
@@ -619,7 +619,7 @@ export default function Landing()
                         </div>
                       ) )}
                       {profile.available_modules.length > 6 && (
-                        <div className="text-sm text-gray-500">
+                        <div className="text-sm text-slate-600">
                           +{profile.available_modules.length - 6} módulos adicionais
                         </div>
                       )}
@@ -643,9 +643,9 @@ export default function Landing()
                 <div className="mt-4">
                   <div className="text-3xl font-bold text-gray-900">
                     A partir de {formatCurrency( 29 )}
-                    <span className="text-lg font-normal text-gray-500">/usuário/mês</span>
+                    <span className="text-lg font-normal text-slate-600">/usuário/mês</span>
                   </div>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-slate-600">
                     Mínimo de 5 usuários
                   </p>
                 </div>
@@ -810,7 +810,7 @@ export default function Landing()
             </div>
 
             <div className="mb-6">
-              <p className="text-gray-600 mb-4">
+              <p className="text-slate-700 mb-4">
                 Plano selecionado: <strong>{profiles.find( p => p.slug === selectedPlan )?.name}</strong>
               </p>
               <p className="text-2xl font-bold text-blue-600">
@@ -818,7 +818,7 @@ export default function Landing()
                   profiles.find( p => p.slug === selectedPlan )?.price_monthly || 0 :
                   profiles.find( p => p.slug === selectedPlan )?.price_yearly || 0
                 )}
-                <span className="text-lg font-normal text-gray-500">
+                <span className="text-lg font-normal text-slate-600">
                   /{billingCycle === 'monthly' ? 'mês' : 'ano'}
                 </span>
               </p>
@@ -856,7 +856,7 @@ export default function Landing()
             </div>
 
             <div className="mt-6 pt-6 border-t">
-              <p className="text-sm text-gray-600 mb-4">
+              <p className="text-sm text-slate-700 mb-4">
                 Teste grátis por 7 dias. Após o período, sua assinatura será renovada automaticamente.
                 Cancele quando quiser.
               </p>
@@ -912,7 +912,7 @@ function EnterpriseContactForm( {
         </div>
 
         <div className="mb-6">
-          <p className="text-gray-600">
+          <p className="text-slate-700">
             Preencha o formulário e nossa equipe entrará em contato para apresentar
             uma proposta personalizada para sua empresa.
           </p>
@@ -982,7 +982,7 @@ function EnterpriseContactForm( {
         </div>
 
         <div className="mt-6 pt-6 border-t">
-          <p className="text-sm text-gray-600 mb-4">
+          <p className="text-sm text-slate-700 mb-4">
             Nossa equipe entrará em contato em até 24 horas para apresentar uma proposta personalizada.
           </p>
           <Button
