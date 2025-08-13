@@ -9,12 +9,14 @@ import { CheckCircle, Star, Users, Zap, Shield, ArrowRight, Gift, Phone, Mail, B
 import { useToast } from "@/hooks/use-toast";
 import workflowLogo from "@/assets/SELOtoit-workflow-logo.svg";
 
-interface PlanFeature {
+interface PlanFeature
+{
   name: string;
   included: boolean;
 }
 
-interface Plan {
+interface Plan
+{
   id: string;
   name: string;
   price_monthly: number;
@@ -86,10 +88,11 @@ const plans: Plan[] = [
   }
 ];
 
-export default function LandingCommercial() {
-  const [isYearly, setIsYearly] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState<string>('');
-  const [formData, setFormData] = useState({
+export default function LandingCommercial()
+{
+  const [ isYearly, setIsYearly ] = useState( false );
+  const [ selectedPlan, setSelectedPlan ] = useState<string>( '' );
+  const [ formData, setFormData ] = useState( {
     firstName: '',
     lastName: '',
     email: '',
@@ -98,58 +101,70 @@ export default function LandingCommercial() {
     company: '',
     acceptTerms: false,
     acceptMarketing: false
-  });
-  const [isLoading, setIsLoading] = useState(false);
-  const [showCheckout, setShowCheckout] = useState(false);
+  } );
+  const [ isLoading, setIsLoading ] = useState( false );
+  const [ showCheckout, setShowCheckout ] = useState( false );
   const { toast } = useToast();
 
   // Carousel 3D Logic
-  useEffect(() => {
+  useEffect( () =>
+  {
     let currentCase = 0;
     const totalCases = 10;
     let carouselInterval: NodeJS.Timeout;
-    
-    function updateCarousel() {
-      const cards = document.querySelectorAll('.case-card');
-      const dots = document.querySelectorAll('.case-dot');
-      
-      cards.forEach((card, index) => {
-        card.classList.remove('active', 'next', 'prev');
-        
-        if (index === currentCase) {
-          card.classList.add('active');
-        } else if (index === (currentCase + 1) % totalCases) {
-          card.classList.add('next');
-        } else if (index === (currentCase - 1 + totalCases) % totalCases) {
-          card.classList.add('prev');
+
+    function updateCarousel()
+    {
+      const cards = document.querySelectorAll( '.case-card' );
+      const dots = document.querySelectorAll( '.case-dot' );
+
+      cards.forEach( ( card, index ) =>
+      {
+        card.classList.remove( 'active', 'next', 'prev' );
+
+        if ( index === currentCase )
+        {
+          card.classList.add( 'active' );
+        } else if ( index === ( currentCase + 1 ) % totalCases )
+        {
+          card.classList.add( 'next' );
+        } else if ( index === ( currentCase - 1 + totalCases ) % totalCases )
+        {
+          card.classList.add( 'prev' );
         }
-      });
-      
-      dots.forEach((dot, index) => {
-        dot.classList.toggle('active', index === currentCase);
-      });
+      } );
+
+      dots.forEach( ( dot, index ) =>
+      {
+        dot.classList.toggle( 'active', index === currentCase );
+      } );
     }
-    
-    function nextCase() {
-      currentCase = (currentCase + 1) % totalCases;
+
+    function nextCase()
+    {
+      currentCase = ( currentCase + 1 ) % totalCases;
       updateCarousel();
     }
-    
-    function prevCase() {
-      currentCase = (currentCase - 1 + totalCases) % totalCases;
+
+    function prevCase()
+    {
+      currentCase = ( currentCase - 1 + totalCases ) % totalCases;
       updateCarousel();
     }
-    
-    function startCarousel() {
-      carouselInterval = setInterval(nextCase, 4000);
+
+    function startCarousel()
+    {
+      carouselInterval = setInterval( nextCase, 4000 );
     }
-    
-    function stopCarousel() {
-      if (carouselInterval) {
-        clearInterval(carouselInterval);
+
+    function stopCarousel()
+    {
+      if ( carouselInterval )
+      {
+        clearInterval( carouselInterval );
       }
     }
-    
+
     // Touch/Swipe handling
     let touchStartX = 0;
     let touchStartY = 0;
@@ -157,258 +172,299 @@ export default function LandingCommercial() {
     let touchEndY = 0;
     let isVerticalScroll = false;
     const minSwipeDistance = 50;
-    
-    function handleTouchStart(e: TouchEvent) {
-      touchStartX = e.changedTouches[0].screenX;
-      touchStartY = e.changedTouches[0].screenY;
+
+    function handleTouchStart( e: TouchEvent )
+    {
+      touchStartX = e.changedTouches[ 0 ].screenX;
+      touchStartY = e.changedTouches[ 0 ].screenY;
       isVerticalScroll = false;
       stopCarousel(); // Pause auto-rotation during touch
     }
-    
-    function handleTouchMove(e: TouchEvent) {
-      const currentX = e.changedTouches[0].screenX;
-      const currentY = e.changedTouches[0].screenY;
-      const deltaX = Math.abs(currentX - touchStartX);
-      const deltaY = Math.abs(currentY - touchStartY);
-      
+
+    function handleTouchMove( e: TouchEvent )
+    {
+      const currentX = e.changedTouches[ 0 ].screenX;
+      const currentY = e.changedTouches[ 0 ].screenY;
+      const deltaX = Math.abs( currentX - touchStartX );
+      const deltaY = Math.abs( currentY - touchStartY );
+
       // Determine if this is a vertical scroll gesture
-      if (deltaY > deltaX && deltaY > 10) {
+      if ( deltaY > deltaX && deltaY > 10 )
+      {
         isVerticalScroll = true;
       }
-      
+
       // If horizontal swipe, prevent default to avoid page scroll conflicts
-      if (!isVerticalScroll && deltaX > 10) {
+      if ( !isVerticalScroll && deltaX > 10 )
+      {
         e.preventDefault();
       }
     }
-    
-    function handleTouchEnd(e: TouchEvent) {
-      touchEndX = e.changedTouches[0].screenX;
-      touchEndY = e.changedTouches[0].screenY;
-      
+
+    function handleTouchEnd( e: TouchEvent )
+    {
+      touchEndX = e.changedTouches[ 0 ].screenX;
+      touchEndY = e.changedTouches[ 0 ].screenY;
+
       // Only process horizontal swipes
-      if (!isVerticalScroll) {
+      if ( !isVerticalScroll )
+      {
         const deltaX = touchStartX - touchEndX;
-        const deltaY = Math.abs(touchStartY - touchEndY);
-        
+        const deltaY = Math.abs( touchStartY - touchEndY );
+
         // Ensure it's primarily a horizontal gesture
-        if (Math.abs(deltaX) > minSwipeDistance && Math.abs(deltaX) > deltaY) {
-          if (deltaX > 0) {
+        if ( Math.abs( deltaX ) > minSwipeDistance && Math.abs( deltaX ) > deltaY )
+        {
+          if ( deltaX > 0 )
+          {
             // Swiped left - show next case
             nextCase();
-          } else {
+          } else
+          {
             // Swiped right - show previous case
             prevCase();
           }
         }
       }
-      
+
       // Restart auto-rotation after touch ends
       startCarousel();
     }
-    
+
     // Initialize carousel
-    const timer = setTimeout(() => {
-      const carouselContainer = document.querySelector('.carousel-container');
-      if (carouselContainer) {
+    const timer = setTimeout( () =>
+    {
+      const carouselContainer = document.querySelector( '.carousel-container' );
+      if ( carouselContainer )
+      {
         // Set up dots navigation
-        const dots = document.querySelectorAll('.case-dot');
-        dots.forEach((dot, index) => {
-          dot.addEventListener('click', () => {
+        const dots = document.querySelectorAll( '.case-dot' );
+        dots.forEach( ( dot, index ) =>
+        {
+          dot.addEventListener( 'click', () =>
+          {
             currentCase = index;
             updateCarousel();
             stopCarousel();
             startCarousel();
-          });
-        });
-        
+          } );
+        } );
+
         // Pause on hover
-        carouselContainer.addEventListener('mouseenter', stopCarousel);
-        carouselContainer.addEventListener('mouseleave', startCarousel);
-        
+        carouselContainer.addEventListener( 'mouseenter', stopCarousel );
+        carouselContainer.addEventListener( 'mouseleave', startCarousel );
+
         // Touch/Swipe Event Listeners
-        carouselContainer.addEventListener('touchstart', handleTouchStart, { passive: false });
-        carouselContainer.addEventListener('touchmove', handleTouchMove, { passive: false });
-        carouselContainer.addEventListener('touchend', handleTouchEnd, { passive: true });
-        
+        carouselContainer.addEventListener( 'touchstart', handleTouchStart, { passive: false } );
+        carouselContainer.addEventListener( 'touchmove', handleTouchMove, { passive: false } );
+        carouselContainer.addEventListener( 'touchend', handleTouchEnd, { passive: true } );
+
         // Initialize
         updateCarousel();
         startCarousel();
       }
-    }, 100);
-    
-    return () => {
-      clearTimeout(timer);
-      if (carouselInterval) clearInterval(carouselInterval);
-      
+    }, 100 );
+
+    return () =>
+    {
+      clearTimeout( timer );
+      if ( carouselInterval ) clearInterval( carouselInterval );
+
       // Cleanup touch event listeners
-      const carouselContainer = document.querySelector('.carousel-container');
-      if (carouselContainer) {
-        carouselContainer.removeEventListener('touchstart', handleTouchStart);
-        carouselContainer.removeEventListener('touchmove', handleTouchMove);
-        carouselContainer.removeEventListener('touchend', handleTouchEnd);
+      const carouselContainer = document.querySelector( '.carousel-container' );
+      if ( carouselContainer )
+      {
+        carouselContainer.removeEventListener( 'touchstart', handleTouchStart );
+        carouselContainer.removeEventListener( 'touchmove', handleTouchMove );
+        carouselContainer.removeEventListener( 'touchend', handleTouchEnd );
       }
     };
-  }, []);
+  }, [] );
 
-  const formatCPF = (value: string) => {
-    const cleaned = value.replace(/\D/g, '');
-    const match = cleaned.match(/^(\d{3})(\d{3})(\d{3})(\d{2})$/);
-    if (match) {
-      return match[1] + '.' + match[2] + '.' + match[3] + '-' + match[4];
+  const formatCPF = ( value: string ) =>
+  {
+    const cleaned = value.replace( /\D/g, '' );
+    const match = cleaned.match( /^(\d{3})(\d{3})(\d{3})(\d{2})$/ );
+    if ( match )
+    {
+      return match[ 1 ] + '.' + match[ 2 ] + '.' + match[ 3 ] + '-' + match[ 4 ];
     }
     return cleaned;
   };
 
-  const formatPhone = (value: string) => {
-    const cleaned = value.replace(/\D/g, '');
-    const match = cleaned.match(/^(\d{2})(\d{4,5})(\d{4})$/);
-    if (match) {
-      return '(' + match[1] + ') ' + match[2] + '-' + match[3];
+  const formatPhone = ( value: string ) =>
+  {
+    const cleaned = value.replace( /\D/g, '' );
+    const match = cleaned.match( /^(\d{2})(\d{4,5})(\d{4})$/ );
+    if ( match )
+    {
+      return '(' + match[ 1 ] + ') ' + match[ 2 ] + '-' + match[ 3 ];
     }
     return cleaned;
   };
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = ( field: string, value: string ) =>
+  {
     let formattedValue = value;
-    
-    if (field === 'cpf') {
-      formattedValue = formatCPF(value);
-    } else if (field === 'phone') {
-      formattedValue = formatPhone(value);
+
+    if ( field === 'cpf' )
+    {
+      formattedValue = formatCPF( value );
+    } else if ( field === 'phone' )
+    {
+      formattedValue = formatPhone( value );
     }
-    
-    setFormData(prev => ({
+
+    setFormData( prev => ( {
       ...prev,
-      [field]: formattedValue
-    }));
+      [ field ]: formattedValue
+    } ) );
   };
 
-  const validateForm = () => {
+  const validateForm = () =>
+  {
     const errors = [];
-    
-    if (!formData.firstName.trim()) errors.push('Nome é obrigatório');
-    if (!formData.lastName.trim()) errors.push('Sobrenome é obrigatório');
-    if (!formData.email.trim()) errors.push('Email é obrigatório');
-    if (!formData.phone.trim()) errors.push('Telefone é obrigatório');
-    if (!formData.cpf.trim()) errors.push('CPF é obrigatório');
-    if (!formData.acceptTerms) errors.push('Você deve aceitar os termos de uso');
-    
+
+    if ( !formData.firstName.trim() ) errors.push( 'Nome é obrigatório' );
+    if ( !formData.lastName.trim() ) errors.push( 'Sobrenome é obrigatório' );
+    if ( !formData.email.trim() ) errors.push( 'Email é obrigatório' );
+    if ( !formData.phone.trim() ) errors.push( 'Telefone é obrigatório' );
+    if ( !formData.cpf.trim() ) errors.push( 'CPF é obrigatório' );
+    if ( !formData.acceptTerms ) errors.push( 'Você deve aceitar os termos de uso' );
+
     // Validar email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (formData.email && !emailRegex.test(formData.email)) {
-      errors.push('Email inválido');
+    if ( formData.email && !emailRegex.test( formData.email ) )
+    {
+      errors.push( 'Email inválido' );
     }
-    
+
     // Validar CPF (11 dígitos limpos)
-    const cleanCPF = formData.cpf.replace(/\D/g, '');
-    if (cleanCPF.length !== 11) {
-      errors.push('CPF deve ter 11 dígitos');
+    const cleanCPF = formData.cpf.replace( /\D/g, '' );
+    if ( cleanCPF.length !== 11 )
+    {
+      errors.push( 'CPF deve ter 11 dígitos' );
     }
-    
+
     // Validar telefone (10 ou 11 dígitos limpos)
-    const cleanPhone = formData.phone.replace(/\D/g, '');
-    if (cleanPhone.length < 10 || cleanPhone.length > 11) {
-      errors.push('Telefone inválido');
+    const cleanPhone = formData.phone.replace( /\D/g, '' );
+    if ( cleanPhone.length < 10 || cleanPhone.length > 11 )
+    {
+      errors.push( 'Telefone inválido' );
     }
-    
+
     return errors;
   };
 
-  const handlePlanSelection = (planId: string) => {
-    setSelectedPlan(planId);
-    setShowCheckout(true);
-    
+  const handlePlanSelection = ( planId: string ) =>
+  {
+    setSelectedPlan( planId );
+    setShowCheckout( true );
+
     // Scroll para o formulário
-    setTimeout(() => {
-      const checkoutSection = document.getElementById('checkout-section');
-      if (checkoutSection) {
-        checkoutSection.scrollIntoView({ behavior: 'smooth' });
+    setTimeout( () =>
+    {
+      const checkoutSection = document.getElementById( 'checkout-section' );
+      if ( checkoutSection )
+      {
+        checkoutSection.scrollIntoView( { behavior: 'smooth' } );
       }
-    }, 100);
+    }, 100 );
   };
 
-  const handleStartTrial = async (e: React.FormEvent) => {
+  const handleStartTrial = async ( e: React.FormEvent ) =>
+  {
     e.preventDefault();
-    
+
     const validationErrors = validateForm();
-    if (validationErrors.length > 0) {
-      toast({
+    if ( validationErrors.length > 0 )
+    {
+      toast( {
         title: "Dados inválidos",
-        description: validationErrors[0],
+        description: validationErrors[ 0 ],
         variant: "destructive",
-      });
+      } );
       return;
     }
 
-    if (!selectedPlan) {
-      toast({
+    if ( !selectedPlan )
+    {
+      toast( {
         title: "Selecione um plano",
         description: "Escolha um plano para continuar",
         variant: "destructive",
-      });
+      } );
       return;
     }
 
-    setIsLoading(true);
+    setIsLoading( true );
 
-    try {
-      const response = await fetch('/api/trial/start', {
+    try
+    {
+      const response = await fetch( '/api/trial/start', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
+        body: JSON.stringify( {
           ...formData,
-          cpf: formData.cpf.replace(/\D/g, ''),
-          phone: formData.phone.replace(/\D/g, ''),
+          cpf: formData.cpf.replace( /\D/g, '' ),
+          phone: formData.phone.replace( /\D/g, '' ),
           selectedPlan,
           billingCycle: isYearly ? 'yearly' : 'monthly'
-        }),
-      });
+        } ),
+      } );
 
       const result = await response.json();
 
-      if (response.ok && result.success) {
-        toast({
+      if ( response.ok && result.success )
+      {
+        toast( {
           title: "Conta criada com sucesso!",
           description: "Verifique seu email para ativar sua conta.",
-        });
+        } );
 
         // Redirecionar para verificação de email
-        setTimeout(() => {
-          window.location.href = `/verify-email?userId=${result.userId}`;
-        }, 2000);
+        setTimeout( () =>
+        {
+          window.location.href = `/verify-email?userId=${ result.userId }`;
+        }, 2000 );
 
-      } else {
-        toast({
+      } else
+      {
+        toast( {
           title: "Erro ao criar conta",
           description: result.message || "Tente novamente mais tarde",
           variant: "destructive",
-        });
+        } );
       }
-    } catch (error) {
-      console.error('Erro ao iniciar trial:', error);
-      toast({
+    } catch ( error )
+    {
+      console.error( 'Erro ao iniciar trial:', error );
+      toast( {
         title: "Erro de conexão",
         description: "Não foi possível criar sua conta. Tente novamente.",
         variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
+      } );
+    } finally
+    {
+      setIsLoading( false );
     }
   };
 
-  const handleEnterpriseContact = () => {
+  const handleEnterpriseContact = () =>
+  {
     // Scroll para formulário de contato enterprise
-    const enterpriseSection = document.getElementById('enterprise-contact');
-    if (enterpriseSection) {
-      enterpriseSection.scrollIntoView({ behavior: 'smooth' });
+    const enterpriseSection = document.getElementById( 'enterprise-contact' );
+    if ( enterpriseSection )
+    {
+      enterpriseSection.scrollIntoView( { behavior: 'smooth' } );
     }
   };
 
-  const calculateSavings = (monthly: number, yearly: number) => {
-    return (monthly * 12) - yearly;
+  const calculateSavings = ( monthly: number, yearly: number ) =>
+  {
+    return ( monthly * 12 ) - yearly;
   };
 
   return (
@@ -424,9 +480,21 @@ export default function LandingCommercial() {
                 <p className="text-sm text-gray-600">Plataforma Empresarial Inteligente</p>
               </div>
             </div>
-            <Button variant="outline" onClick={() => window.location.href = '/login'}>
-              Já tem conta? Entre
-            </Button>
+            <div className="flex items-center space-x-3">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => window.location.href = '/support-login'}
+                className="text-gray-500 hover:text-purple-600"
+              >
+                <Shield className="w-4 h-4 mr-2" />
+                Suporte TOIT
+              </Button>
+              <Button variant="outline" onClick={() => window.location.href = '/login'}>
+                <Users className="w-4 h-4 mr-2" />
+                Login Cliente
+              </Button>
+            </div>
           </div>
         </div>
       </header>
@@ -439,18 +507,18 @@ export default function LandingCommercial() {
               <Gift className="w-4 h-4 mr-2" />
               🇧🇷 BRASIL LIDERA MUNDIALMENTE 🇧🇷
             </Badge>
-            
+
             <h1 className="text-6xl font-bold mb-6 leading-tight">
               <span className="text-green-300">DEMOCRATIZAMOS</span> a Computação Quântica no Brasil
               <span className="block text-yellow-300 mt-2">O QUE ERA SÓ DOS GRANDES, AGORA É DO POVO!</span>
             </h1>
-            
+
             <p className="text-xl mb-8 text-blue-100 leading-relaxed">
               🚀 <strong>Primeira empresa mundial</strong> a disponibilizar <strong>260 qubits IBM Quantum Network</strong> para pessoas físicas e pequenas empresas.
-              <br/>
+              <br />
               💰 Preços acessíveis desde <strong>R$ 99/mês</strong> - Quebrar barreiras tecnológicas é nossa missão!
             </p>
-            
+
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 text-sm">
               <div className="flex items-center space-x-2 bg-white/10 rounded-lg p-3">
                 <CheckCircle className="w-5 h-5 text-green-300" />
@@ -469,22 +537,24 @@ export default function LandingCommercial() {
                 <span>Preço justo vs EUA</span>
               </div>
             </div>
-            
+
             <div className="space-y-4">
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 className="bg-gradient-to-r from-green-500 to-yellow-500 hover:from-green-600 hover:to-yellow-600 text-black font-bold text-xl px-12 py-6 shadow-2xl mr-4"
-                onClick={() => {
-                  const plansSection = document.getElementById('plans-section');
-                  if (plansSection) {
-                    plansSection.scrollIntoView({ behavior: 'smooth' });
+                onClick={() =>
+                {
+                  const plansSection = document.getElementById( 'plans-section' );
+                  if ( plansSection )
+                  {
+                    plansSection.scrollIntoView( { behavior: 'smooth' } );
                   }
                 }}
               >
                 🇧🇷 QUERO FAZER O BRASIL LIDERAR!
                 <ArrowRight className="ml-2 w-6 h-6" />
               </Button>
-              
+
               <p className="text-lg text-yellow-200 mt-4">
                 💡 <strong>DEMOS PERSONALIZADAS</strong> - Veja como o quantum pode transformar SUA realidade!
               </p>
@@ -501,11 +571,11 @@ export default function LandingCommercial() {
               🚫 CHEGA DE ELITISMO TECNOLÓGICO!
             </h2>
             <p className="text-xl text-gray-700 max-w-4xl mx-auto mb-8">
-              Por que só <strong>grandes corporações americanas</strong> podem ter acesso à computação quântica? 
-              <br/>O Brasil merece liderar essa revolução e tornar essa tecnologia <strong>acessível para TODOS</strong>!
+              Por que só <strong>grandes corporações americanas</strong> podem ter acesso à computação quântica?
+              <br />O Brasil merece liderar essa revolução e tornar essa tecnologia <strong>acessível para TODOS</strong>!
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-3 gap-8">
             <Card className="text-center p-6 border-l-4 border-l-red-500 shadow-lg hover:shadow-xl transition-shadow bg-white">
               <CardHeader>
@@ -516,12 +586,12 @@ export default function LandingCommercial() {
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600">
-                  <strong>Soluções americanas custam US$ 5.000+/mês</strong> e exigem PhDs em física quântica. 
+                  <strong>Soluções americanas custam US$ 5.000+/mês</strong> e exigem PhDs em física quântica.
                   Isso não deveria ser exclusivo dos ricos!
                 </p>
               </CardContent>
             </Card>
-            
+
             <Card className="text-center p-6 border-l-4 border-l-orange-500 shadow-lg hover:shadow-xl transition-shadow bg-white">
               <CardHeader>
                 <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -531,12 +601,12 @@ export default function LandingCommercial() {
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600">
-                  <strong>Pessoas físicas e pequenas empresas</strong> ficam presas em planilhas e processos manuais 
+                  <strong>Pessoas físicas e pequenas empresas</strong> ficam presas em planilhas e processos manuais
                   enquanto os grandes avançam com quantum!
                 </p>
               </CardContent>
             </Card>
-            
+
             <Card className="text-center p-6 border-l-4 border-l-green-500 shadow-lg hover:shadow-xl transition-shadow bg-white">
               <CardHeader>
                 <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -546,18 +616,18 @@ export default function LandingCommercial() {
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600">
-                  <strong>Democratizamos o quantum!</strong> Preços justos desde R$ 99/mês, interface em português, 
+                  <strong>Democratizamos o quantum!</strong> Preços justos desde R$ 99/mês, interface em português,
                   suporte brasileiro e sem PhDs necessários!
                 </p>
               </CardContent>
             </Card>
           </div>
-          
+
           <div className="text-center mt-12">
             <div className="bg-gradient-to-r from-green-500 to-blue-600 text-white p-8 rounded-lg max-w-4xl mx-auto">
               <h3 className="text-2xl font-bold mb-4">🇧🇷 É HORA DO BRASIL LIDERAR A REVOLUÇÃO QUANTUM! 🇧🇷</h3>
               <p className="text-lg">
-                Não deixe que apenas os americanos e chineses dominem o futuro. 
+                Não deixe que apenas os americanos e chineses dominem o futuro.
                 <strong> Junte-se a nós e coloque o Brasil no topo mundial da inovação!</strong>
               </p>
             </div>
@@ -578,7 +648,7 @@ export default function LandingCommercial() {
             <p className="text-lg text-gray-600 mb-8">
               💡 <strong>Demo personalizada GRATUITA</strong> - Veja o quantum funcionando na SUA realidade!
             </p>
-            
+
             {/* ROI Section */}
             <div className="bg-gradient-to-r from-green-100 to-blue-100 p-6 rounded-lg max-w-4xl mx-auto mb-8">
               <h3 className="text-2xl font-bold text-gray-800 mb-4">📊 ROI COMPROVADO: 347%</h3>
@@ -597,21 +667,21 @@ export default function LandingCommercial() {
                 </div>
               </div>
             </div>
-            
+
             {/* Toggle Anual/Mensal */}
             <div className="flex items-center justify-center space-x-4 mb-8">
-              <span className={`font-medium ${!isYearly ? 'text-green-600' : 'text-gray-500'}`}>
+              <span className={`font-medium ${ !isYearly ? 'text-green-600' : 'text-gray-500' }`}>
                 Mensal
               </span>
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setIsYearly(!isYearly)}
-                className={`relative h-6 w-11 rounded-full ${isYearly ? 'bg-green-600' : 'bg-gray-300'}`}
+                onClick={() => setIsYearly( !isYearly )}
+                className={`relative h-6 w-11 rounded-full ${ isYearly ? 'bg-green-600' : 'bg-gray-300' }`}
               >
-                <div className={`absolute w-4 h-4 bg-white rounded-full transition-transform ${isYearly ? 'translate-x-5' : 'translate-x-1'}`} />
+                <div className={`absolute w-4 h-4 bg-white rounded-full transition-transform ${ isYearly ? 'translate-x-5' : 'translate-x-1' }`} />
               </Button>
-              <span className={`font-medium ${isYearly ? 'text-green-600' : 'text-gray-500'}`}>
+              <span className={`font-medium ${ isYearly ? 'text-green-600' : 'text-gray-500' }`}>
                 Anual
               </span>
               {isYearly && (
@@ -621,26 +691,25 @@ export default function LandingCommercial() {
               )}
             </div>
           </div>
-          
+
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 mb-12 max-w-7xl mx-auto justify-center items-stretch">
-            {plans.map((plan) => (
-              <Card key={plan.id} className={`relative border-2 hover:shadow-xl transition-all flex-shrink-0 w-full lg:w-80 ${plan.popular ? 'border-green-500 scale-105 shadow-lg' : 'border-gray-200'}`}>
+            {plans.map( ( plan ) => (
+              <Card key={plan.id} className={`relative border-2 hover:shadow-xl transition-all flex-shrink-0 w-full lg:w-80 ${ plan.popular ? 'border-green-500 scale-105 shadow-lg' : 'border-gray-200' }`}>
                 {plan.badge && (
-                  <div className={`absolute -top-3 left-1/2 transform -translate-x-1/2 px-4 py-1 rounded-full text-sm font-medium ${
-                    plan.popular ? 'bg-green-500 text-white' : 
-                    plan.name === 'LITE' ? 'bg-blue-500 text-white' : 
-                    'bg-orange-500 text-white'
-                  }`}>
+                  <div className={`absolute -top-3 left-1/2 transform -translate-x-1/2 px-4 py-1 rounded-full text-sm font-medium ${ plan.popular ? 'bg-green-500 text-white' :
+                      plan.name === 'LITE' ? 'bg-blue-500 text-white' :
+                        'bg-orange-500 text-white'
+                    }`}>
                     {plan.badge}
                   </div>
                 )}
-                
+
                 <CardHeader className="text-center pb-4">
                   <CardTitle className="text-3xl font-bold text-gray-800">{plan.name}</CardTitle>
                   <CardDescription className="text-gray-600 mb-4 text-base">
                     {plan.description}
                   </CardDescription>
-                  
+
                   <div className="space-y-2">
                     <div className="text-5xl font-bold text-gray-900">
                       R$ {isYearly ? plan.price_yearly : plan.price_monthly}
@@ -648,56 +717,55 @@ export default function LandingCommercial() {
                         /{isYearly ? 'ano' : 'mês'}
                       </span>
                     </div>
-                    
+
                     {plan.name === 'LITE' && (
                       <div className="text-lg text-blue-600 font-medium">
                         💪 <strong>Pessoas físicas democratizadas!</strong>
                       </div>
                     )}
-                    
+
                     {plan.name === 'PRO' && (
                       <div className="text-lg text-green-600 font-medium">
                         🏢 <strong>Pequenas empresas empoderadas!</strong>
                       </div>
                     )}
-                    
+
                     {plan.name === 'QUANTUM BOOST 2X' && (
                       <div className="text-lg text-orange-600 font-medium">
                         🚀 <strong>Máximo poder sem elitismo!</strong>
                       </div>
                     )}
-                    
+
                     {isYearly && (
                       <div className="text-sm text-green-600 font-medium">
-                        💰 Economize R$ {calculateSavings(plan.price_monthly, plan.price_yearly)} por ano
+                        💰 Economize R$ {calculateSavings( plan.price_monthly, plan.price_yearly )} por ano
                       </div>
                     )}
                   </div>
                 </CardHeader>
-                
+
                 <CardContent className="space-y-4">
                   <ul className="space-y-3">
-                    {plan.features.map((feature, index) => (
+                    {plan.features.map( ( feature, index ) => (
                       <li key={index} className="flex items-center space-x-3">
-                        <CheckCircle className={`w-5 h-5 ${feature.included ? 'text-green-500' : 'text-gray-300'}`} />
+                        <CheckCircle className={`w-5 h-5 ${ feature.included ? 'text-green-500' : 'text-gray-300' }`} />
                         <span className={feature.included ? 'text-gray-900 font-medium' : 'text-gray-400'}>
                           {feature.name}
                         </span>
                       </li>
-                    ))}
+                    ) )}
                   </ul>
-                  
-                  <Button 
-                    className={`w-full py-4 text-lg font-bold ${
-                      plan.popular ? 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white' : 
-                      'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white'
-                    }`}
-                    onClick={() => handlePlanSelection(plan.id)}
+
+                  <Button
+                    className={`w-full py-4 text-lg font-bold ${ plan.popular ? 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white' :
+                        'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white'
+                      }`}
+                    onClick={() => handlePlanSelection( plan.id )}
                   >
                     <Gift className="w-5 h-5 mr-2" />
                     QUERO DEMO PERSONALIZADA
                   </Button>
-                  
+
                   {plan.popular && (
                     <p className="text-xs text-center text-green-600 font-medium">
                       ⭐ Mais escolhido por pequenas empresas brasileiras!
@@ -705,9 +773,9 @@ export default function LandingCommercial() {
                   )}
                 </CardContent>
               </Card>
-            ))}
+            ) )}
           </div>
-          
+
           {/* Social Proof Brasileira - Cases de Sucesso Carousel 3D */}
           <div className="text-center mb-12">
             <div className="bg-gradient-to-r from-green-500 to-blue-600 text-white p-8 rounded-lg">
@@ -715,11 +783,11 @@ export default function LandingCommercial() {
               <p className="text-lg mb-8 text-blue-100">
                 <strong>10 empresas brasileiras</strong> que já usam nosso quantum em produção
               </p>
-              
+
               {/* Carousel 3D Container */}
               <div className="relative overflow-hidden h-96 mb-8">
                 <div className="carousel-container relative w-full h-full">
-                  
+
                   {/* Case 1: PETROBRAS */}
                   <div className="case-card absolute inset-0 bg-gradient-to-br from-orange-600 to-red-700 rounded-xl p-6 transform transition-all duration-1000 translate-x-0 opacity-100 scale-100 shadow-2xl">
                     <div className="flex flex-col items-center mb-4">
@@ -901,26 +969,26 @@ export default function LandingCommercial() {
                   </div>
 
                 </div>
-                
+
                 {/* Navigation Dots */}
                 <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                  {[...Array(10)].map((_, i) => (
+                  {[ ...Array( 10 ) ].map( ( _, i ) => (
                     <button
                       key={i}
                       className="w-3 h-3 rounded-full bg-white/30 hover:bg-white/60 transition-all duration-300 case-dot"
                       data-case={i}
                     />
-                  ))}
+                  ) )}
                 </div>
               </div>
-              
+
               <div className="text-center space-y-4">
                 <p className="text-2xl font-bold text-yellow-300">
                   🏆 CASES REAIS DOCUMENTADOS COM MÉTRICAS AUDITADAS
                 </p>
                 <p className="text-xl">
                   <strong>+ de 4.273 empresas brasileiras</strong> já usam quantum em produção!
-                  <br/>Junte-se aos líderes da revolução! 🚀
+                  <br />Junte-se aos líderes da revolução! 🚀
                 </p>
                 <div className="grid grid-cols-3 gap-4 max-w-2xl mx-auto text-sm">
                   <div>
@@ -939,7 +1007,7 @@ export default function LandingCommercial() {
               </div>
             </div>
           </div>
-          
+
           {/* Enterprise Card Reformulado */}
           <Card className="bg-gradient-to-r from-green-700 to-blue-800 text-white border-0">
             <CardHeader className="text-center pb-6">
@@ -951,7 +1019,7 @@ export default function LandingCommercial() {
                 🏢 Para empresas que querem liderar sem pagar preços americanos abusivos
               </CardDescription>
             </CardHeader>
-            
+
             <CardContent className="text-center space-y-6">
               <div className="grid md:grid-cols-3 gap-6 text-sm">
                 <div>
@@ -967,23 +1035,23 @@ export default function LandingCommercial() {
                   <p className="text-gray-200">Sem abuso americano - valor brasileiro!</p>
                 </div>
               </div>
-              
+
               <div className="text-2xl font-bold">
                 A partir de R$ 29/mês por usuário
                 <div className="text-lg font-normal text-yellow-200 mt-1">
                   🎯 Mínimo 5 usuários - Máximo resultado!
                 </div>
               </div>
-              
-              <Button 
-                size="lg" 
+
+              <Button
+                size="lg"
                 className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold text-lg px-8 py-4"
                 onClick={handleEnterpriseContact}
               >
                 🇧🇷 QUERO LIDERAR COM O BRASIL!
                 <Phone className="ml-2 w-5 h-5" />
               </Button>
-              
+
               <p className="text-sm text-yellow-200">
                 💡 <strong>Apresentação personalizada</strong> mostrando ROI específico para sua empresa!
               </p>
@@ -1002,12 +1070,12 @@ export default function LandingCommercial() {
                   🇧🇷 DEMO PERSONALIZADA GRATUITA
                 </CardTitle>
                 <CardDescription className="text-xl text-green-100 mt-4">
-                  Plano <strong>{plans.find(p => p.id === selectedPlan)?.name}</strong> - Vamos mostrar como o quantum vai transformar SUA realidade!
+                  Plano <strong>{plans.find( p => p.id === selectedPlan )?.name}</strong> - Vamos mostrar como o quantum vai transformar SUA realidade!
                   <br />
                   💡 <strong>Zero compromisso</strong> - Apenas uma apresentação personalizada de 30 minutos
                 </CardDescription>
               </CardHeader>
-              
+
               <CardContent className="p-8">
                 <form onSubmit={handleStartTrial} className="space-y-6">
                   <div className="grid md:grid-cols-2 gap-4">
@@ -1016,7 +1084,7 @@ export default function LandingCommercial() {
                       <Input
                         id="firstName"
                         value={formData.firstName}
-                        onChange={(e) => handleInputChange('firstName', e.target.value)}
+                        onChange={( e ) => handleInputChange( 'firstName', e.target.value )}
                         className="py-3 text-lg"
                         required
                       />
@@ -1026,33 +1094,33 @@ export default function LandingCommercial() {
                       <Input
                         id="lastName"
                         value={formData.lastName}
-                        onChange={(e) => handleInputChange('lastName', e.target.value)}
+                        onChange={( e ) => handleInputChange( 'lastName', e.target.value )}
                         className="py-3 text-lg"
                         required
                       />
                     </div>
                   </div>
-                  
+
                   <div className="space-y-2">
                     <Label htmlFor="email" className="text-lg font-medium">Email *</Label>
                     <Input
                       id="email"
                       type="email"
                       value={formData.email}
-                      onChange={(e) => handleInputChange('email', e.target.value)}
+                      onChange={( e ) => handleInputChange( 'email', e.target.value )}
                       className="py-3 text-lg"
                       placeholder="seu.email@empresa.com.br"
                       required
                     />
                   </div>
-                  
+
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="phone" className="text-lg font-medium">WhatsApp *</Label>
                       <Input
                         id="phone"
                         value={formData.phone}
-                        onChange={(e) => handleInputChange('phone', e.target.value)}
+                        onChange={( e ) => handleInputChange( 'phone', e.target.value )}
                         placeholder="(11) 99999-9999"
                         className="py-3 text-lg"
                         required
@@ -1063,14 +1131,14 @@ export default function LandingCommercial() {
                       <Input
                         id="cpf"
                         value={formData.cpf}
-                        onChange={(e) => handleInputChange('cpf', e.target.value)}
+                        onChange={( e ) => handleInputChange( 'cpf', e.target.value )}
                         placeholder="000.000.000-00"
                         className="py-3 text-lg"
                         required
                       />
                     </div>
                   </div>
-                  
+
                   <div className="space-y-2">
                     <Label htmlFor="company" className="text-lg font-medium">
                       {selectedPlan === 'quantum_lite' ? 'Profissão/Área de Atuação' : 'Empresa/Negócio'} *
@@ -1078,20 +1146,20 @@ export default function LandingCommercial() {
                     <Input
                       id="company"
                       value={formData.company}
-                      onChange={(e) => handleInputChange('company', e.target.value)}
+                      onChange={( e ) => handleInputChange( 'company', e.target.value )}
                       placeholder={selectedPlan === 'quantum_lite' ? 'Ex: Freelancer Designer, Consultor Financeiro...' : 'Nome da sua empresa ou tipo de negócio'}
                       className="py-3 text-lg"
                       required
                     />
                   </div>
-                  
+
                   <div className="space-y-4">
                     <div className="flex items-start space-x-2">
                       <Checkbox
                         id="acceptTerms"
                         checked={formData.acceptTerms}
-                        onCheckedChange={(checked) => 
-                          setFormData(prev => ({ ...prev, acceptTerms: checked as boolean }))
+                        onCheckedChange={( checked ) =>
+                          setFormData( prev => ( { ...prev, acceptTerms: checked as boolean } ) )
                         }
                         required
                       />
@@ -1099,13 +1167,13 @@ export default function LandingCommercial() {
                         Concordo em receber uma apresentação personalizada e com os <a href="/termos" className="text-green-600 hover:underline font-medium">Termos de Uso</a> *
                       </label>
                     </div>
-                    
+
                     <div className="flex items-start space-x-2">
                       <Checkbox
                         id="acceptMarketing"
                         checked={formData.acceptMarketing}
-                        onCheckedChange={(checked) => 
-                          setFormData(prev => ({ ...prev, acceptMarketing: checked as boolean }))
+                        onCheckedChange={( checked ) =>
+                          setFormData( prev => ( { ...prev, acceptMarketing: checked as boolean } ) )
                         }
                       />
                       <label htmlFor="acceptMarketing" className="text-sm text-gray-600">
@@ -1113,7 +1181,7 @@ export default function LandingCommercial() {
                       </label>
                     </div>
                   </div>
-                  
+
                   <div className="bg-gradient-to-r from-green-100 to-blue-100 border border-green-300 rounded-lg p-6">
                     <div className="flex items-start space-x-3">
                       <Gift className="w-6 h-6 text-green-600 mt-0.5" />
@@ -1129,7 +1197,7 @@ export default function LandingCommercial() {
                       </div>
                     </div>
                   </div>
-                  
+
                   <Button
                     type="submit"
                     size="lg"
@@ -1139,7 +1207,7 @@ export default function LandingCommercial() {
                     {isLoading ? "Agendando sua demo..." : "🇧🇷 QUERO MINHA DEMO PERSONALIZADA!"}
                     <ArrowRight className="ml-2 w-6 h-6" />
                   </Button>
-                  
+
                   <p className="text-center text-sm text-gray-600">
                     ⚡ <strong>Nossa equipe entrará em contato em até 2 horas</strong> para agendar sua demonstração personalizada!
                   </p>
@@ -1158,13 +1226,13 @@ export default function LandingCommercial() {
           </h2>
           <p className="text-2xl mb-8 leading-relaxed">
             <strong>Não deixe que apenas americanos e chineses dominem o futuro.</strong>
-            <br/>
+            <br />
             O Brasil pode e DEVE liderar a democratização da computação quântica mundial!
           </p>
-          
+
           <div className="bg-white/10 backdrop-blur-sm rounded-lg p-8 mb-8">
             <h3 className="text-3xl font-bold mb-6 text-yellow-300">🎯 POR QUE ESCOLHER O TOIT NEXUS?</h3>
-            
+
             <div className="grid md:grid-cols-2 gap-8">
               <div className="text-left">
                 <h4 className="text-xl font-bold text-green-300 mb-4">🚫 CHEGA DE SOLUÇÕES AMERICANAS CARAS:</h4>
@@ -1175,7 +1243,7 @@ export default function LandingCommercial() {
                   <li>❌ Rigetti Computing: US$ 12.000+/mês</li>
                 </ul>
               </div>
-              
+
               <div className="text-left">
                 <h4 className="text-xl font-bold text-yellow-300 mb-4">✅ NOSSA SOLUÇÃO BRASILEIRA:</h4>
                 <ul className="space-y-2 text-lg">
@@ -1188,37 +1256,39 @@ export default function LandingCommercial() {
               </div>
             </div>
           </div>
-          
+
           <div className="space-y-6">
             <div className="text-3xl font-bold text-yellow-300">
               💪 SOMOS A PRIMEIRA EMPRESA MUNDIAL A DEMOCRATIZAR QUANTUM!
             </div>
-            
+
             <p className="text-xl">
               <strong>+ de 2.847 brasileiros</strong> já estão usando quantum no dia a dia.
-              <br/>
+              <br />
               Pessoas físicas, freelancers, pequenas empresas - todos têm acesso!
             </p>
-            
-            <Button 
-              size="lg" 
+
+            <Button
+              size="lg"
               className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-bold text-2xl px-12 py-6 shadow-2xl"
-              onClick={() => {
-                const plansSection = document.getElementById('plans-section');
-                if (plansSection) {
-                  plansSection.scrollIntoView({ behavior: 'smooth' });
+              onClick={() =>
+              {
+                const plansSection = document.getElementById( 'plans-section' );
+                if ( plansSection )
+                {
+                  plansSection.scrollIntoView( { behavior: 'smooth' } );
                 }
               }}
             >
               🇧🇷 QUERO LIDERAR COM O BRASIL!
               <ArrowRight className="ml-3 w-7 h-7" />
             </Button>
-            
+
             <p className="text-lg text-yellow-200">
               ⚡ <strong>Demo personalizada em 2 horas</strong> - Veja o quantum funcionando na SUA realidade!
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 gap-6 mt-12">
             <Card className="p-6 text-center bg-white/10 backdrop-blur-sm border-yellow-400 border-2">
               <Mail className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
@@ -1228,7 +1298,7 @@ export default function LandingCommercial() {
                 quantum@toit.com.br
               </Button>
             </Card>
-            
+
             <Card className="p-6 text-center bg-white/10 backdrop-blur-sm border-green-400 border-2">
               <Phone className="w-12 h-12 text-green-400 mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-2 text-white">WhatsApp Brasil</h3>
@@ -1252,7 +1322,7 @@ export default function LandingCommercial() {
               </div>
               <p className="text-gray-400 mb-4">
                 🇧🇷 <strong>Democratizando</strong> a computação quântica no Brasil.
-                <br/>O que era só dos grandes, agora é do povo!
+                <br />O que era só dos grandes, agora é do povo!
               </p>
               <div className="text-sm text-green-400">
                 <p>✅ Primeira empresa mundial</p>
@@ -1260,7 +1330,7 @@ export default function LandingCommercial() {
                 <p>✅ Preços justos brasileiros</p>
               </div>
             </div>
-            
+
             <div>
               <h4 className="font-semibold mb-4 text-yellow-400">🚀 Quantum Democrático</h4>
               <ul className="space-y-2 text-gray-400">
@@ -1270,7 +1340,7 @@ export default function LandingCommercial() {
                 <li><a href="#" className="hover:text-green-400">Algoritmos Quânticos</a></li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="font-semibold mb-4 text-yellow-400">🇧🇷 Brasil Liderando</h4>
               <ul className="space-y-2 text-gray-400">
@@ -1280,7 +1350,7 @@ export default function LandingCommercial() {
                 <li><a href="#" className="hover:text-green-400">Imprensa</a></li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="font-semibold mb-4 text-yellow-400">💬 Suporte Brasileiro</h4>
               <ul className="space-y-2 text-gray-400">
@@ -1291,7 +1361,7 @@ export default function LandingCommercial() {
               </ul>
             </div>
           </div>
-          
+
           <div className="border-t border-gray-800 mt-8 pt-8">
             <div className="text-center space-y-4">
               <div className="flex justify-center items-center space-x-6 text-sm">
@@ -1300,13 +1370,13 @@ export default function LandingCommercial() {
                 <span className="text-yellow-400 font-medium">💰 Preços Justos</span>
                 <span className="text-purple-400 font-medium">🚀 ROI 347%</span>
               </div>
-              
+
               <p className="text-gray-400">
                 &copy; 2025 TOIT Nexus - <strong>Democratizando a computação quântica mundial.</strong>
-                <br/>
+                <br />
                 🎯 Primeira empresa a disponibilizar IBM Quantum Network para pessoas físicas e pequenas empresas.
               </p>
-              
+
               <div className="text-xs text-gray-500 space-x-4">
                 <a href="/termos" className="hover:text-green-400">Termos de Uso</a>
                 <a href="/privacidade" className="hover:text-green-400">Política de Privacidade</a>
@@ -1357,7 +1427,7 @@ export default function LandingCommercial() {
           transform: scale(1.2);
         }
       `}</style>
-      
+
     </div>
   );
 }
