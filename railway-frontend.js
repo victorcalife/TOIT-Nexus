@@ -651,6 +651,99 @@ app.get( '/', ( req, res ) =>
   }
 } );
 
+// ROTA ESPECÍFICA PARA LOGIN (nexus.toit.com.br/login)
+app.get( '/login', ( req, res ) =>
+{
+  const host = req.get( 'host' );
+  const xForwardedHost = req.get( 'x-forwarded-host' );
+  const realHost = xForwardedHost || host;
+
+  console.log( `🔐 [LOGIN] Rota de login acessada - Host: ${ realHost }` );
+
+  // Para nexus.toit.com.br, servir o React app
+  if ( realHost === 'nexus.toit.com.br' || realHost === 'localhost:8080' || realHost === '127.0.0.1:8080' )
+  {
+    console.log( `🔐 [LOGIN] Servindo React app para login de cliente` );
+
+    const distIndexPath = path.join( __dirname, 'client', 'dist', 'index.html' );
+    const devIndexPath = path.join( __dirname, 'client', 'index.html' );
+
+    if ( fs.existsSync( distIndexPath ) )
+    {
+      console.log( `✅ [LOGIN] Servindo React app buildado: ${ distIndexPath }` );
+      return res.sendFile( distIndexPath );
+    } else if ( fs.existsSync( devIndexPath ) )
+    {
+      console.log( `⚠️ [LOGIN] Servindo React app dev: ${ devIndexPath }` );
+      return res.sendFile( devIndexPath );
+    } else
+    {
+      console.error( `❌ [LOGIN] React app não encontrado` );
+      return res.status( 404 ).send( `
+        <h1>Sistema de Login Temporariamente Indisponível</h1>
+        <p>O sistema de login está sendo configurado. Tente novamente em alguns minutos.</p>
+        <p><a href="/">← Voltar para página inicial</a></p>
+      ` );
+    }
+  }
+
+  // Para outros domínios, redirecionar ou mostrar erro
+  console.log( `❌ [LOGIN] Domínio não autorizado para login: ${ realHost }` );
+  return res.status( 403 ).send( `
+    <h1>Acesso Negado</h1>
+    <p>Este domínio não está autorizado para acessar o sistema de login.</p>
+    <p>Use: <a href="https://nexus.toit.com.br/login">nexus.toit.com.br/login</a></p>
+  ` );
+} );
+
+// ROTAS ESPECÍFICAS PARA REACT APP (nexus.toit.com.br)
+const reactRoutes = [ '/dashboard', '/support-login', '/admin', '/settings', '/tasks', '/workflows', '/reports', '/clients', '/users', '/integrations', '/quantum-ml', '/verify-email', '/verify-phone', '/verify-card', '/verify-account', '/trial-signup', '/checkout', '/setup' ];
+
+reactRoutes.forEach( route =>
+{
+  app.get( route, ( req, res ) =>
+  {
+    const host = req.get( 'host' );
+    const xForwardedHost = req.get( 'x-forwarded-host' );
+    const realHost = xForwardedHost || host;
+
+    console.log( `⚛️ [REACT-ROUTE] ${ route } acessada - Host: ${ realHost }` );
+
+    // Para nexus.toit.com.br ou supnexus.toit.com.br, servir o React app
+    if ( realHost === 'nexus.toit.com.br' || realHost === 'supnexus.toit.com.br' || realHost === 'localhost:8080' || realHost === '127.0.0.1:8080' )
+    {
+      const distIndexPath = path.join( __dirname, 'client', 'dist', 'index.html' );
+      const devIndexPath = path.join( __dirname, 'client', 'index.html' );
+
+      if ( fs.existsSync( distIndexPath ) )
+      {
+        console.log( `✅ [REACT-ROUTE] Servindo React app buildado para ${ route }` );
+        return res.sendFile( distIndexPath );
+      } else if ( fs.existsSync( devIndexPath ) )
+      {
+        console.log( `⚠️ [REACT-ROUTE] Servindo React app dev para ${ route }` );
+        return res.sendFile( devIndexPath );
+      } else
+      {
+        console.error( `❌ [REACT-ROUTE] React app não encontrado para ${ route }` );
+        return res.status( 404 ).send( `
+          <h1>Página Temporariamente Indisponível</h1>
+          <p>A página ${ route } está sendo configurada. Tente novamente em alguns minutos.</p>
+          <p><a href="/">← Voltar para página inicial</a></p>
+        ` );
+      }
+    }
+
+    // Para outros domínios, redirecionar
+    console.log( `❌ [REACT-ROUTE] Domínio não autorizado para ${ route }: ${ realHost }` );
+    return res.status( 403 ).send( `
+      <h1>Acesso Negado</h1>
+      <p>Este domínio não está autorizado para acessar ${ route }.</p>
+      <p>Use: <a href="https://nexus.toit.com.br${ route }">nexus.toit.com.br${ route }</a></p>
+    ` );
+  } );
+} );
+
 // SPA FALLBACK para React Router (supnexus apenas)
 app.get( '*', ( req, res ) =>
 {
