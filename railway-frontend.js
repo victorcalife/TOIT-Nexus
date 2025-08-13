@@ -596,6 +596,13 @@ app.use( ( req, res, next ) =>
   const xForwardedHost = req.get( 'x-forwarded-host' );
   const realHost = xForwardedHost || host;
 
+  // NÃO servir assets para rota raiz (/) - deve servir landing page HTML
+  if ( req.path === '/' )
+  {
+    console.log( `🎯 [NEXUS-ASSETS] Pulando assets para rota raiz - será servida landing page` );
+    return next();
+  }
+
   // Serve general assets for nexus domain (incluindo assets do React build)
   if ( realHost === 'nexus.toit.com.br' || realHost === 'localhost:8080' || realHost === '127.0.0.1:8080' )
   {
