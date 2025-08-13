@@ -19,12 +19,17 @@ app.use( ( req, res, next ) =>
   next();
 } );
 
+// Middleware para parsing JSON
+app.use( express.json() );
+app.use( express.urlencoded( { extended: true } ) );
+
 // CORS middleware para permitir requisições
 app.use( ( req, res, next ) =>
 {
   const origin = req.get( 'origin' );
   const allowedOrigins = [
     'https://nexus.toit.com.br',
+    'https://supnexus.toit.com.br',
     'https://api.toit.com.br',
     'http://localhost:5173',
     'http://localhost:3000',
@@ -149,6 +154,93 @@ async function initializeBackend()
           message: 'CPF ou senha incorretos'
         } );
       }
+    } );
+
+    // SIMPLE LOGIN API - Para suporte
+    app.post( '/api/simple-login', ( req, res ) =>
+    {
+      console.log( '🔐 [SIMPLE-LOGIN] Tentativa de login de suporte:', req.body );
+
+      const { cpf, password, loginType } = req.body;
+
+      if ( !cpf || !password )
+      {
+        return res.status( 400 ).json( {
+          success: false,
+          message: 'CPF e senha são obrigatórios'
+        } );
+      }
+
+      // Mock de usuários de suporte para teste
+      const supportUsers = [
+        {
+          id: 'support_1',
+          cpf: '12345678901',
+          password: 'admin123',
+          firstName: 'Admin',
+          lastName: 'TOIT',
+          email: 'admin@toit.com.br',
+          role: 'super_admin'
+        },
+        {
+          id: 'support_2',
+          cpf: '98765432100',
+          password: 'suporte123',
+          firstName: 'Suporte',
+          lastName: 'TOIT',
+          email: 'suporte@toit.com.br',
+          role: 'toit_admin'
+        }
+      ];
+
+      const user = supportUsers.find( u => u.cpf === cpf.replace( /\D/g, '' ) );
+
+      if ( !user || user.password !== password )
+      {
+        return res.status( 401 ).json( {
+          success: false,
+          message: 'Credenciais inválidas'
+        } );
+      }
+
+      // Verificar se é login de suporte
+      if ( loginType === 'support' && ![ 'super_admin', 'toit_admin' ].includes( user.role ) )
+      {
+        return res.status( 403 ).json( {
+          success: false,
+          message: 'Acesso negado - Apenas equipe TOIT'
+        } );
+      }
+
+      res.json( {
+        success: true,
+        message: 'Login realizado com sucesso',
+        user: {
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          role: user.role
+        }
+      } );
+    } );
+
+    // USER API - Para verificar usuário logado
+    app.get( '/api/user', ( req, res ) =>
+    {
+      console.log( '👤 [USER] Verificação de usuário logado' );
+
+      // Mock de usuário logado para teste
+      res.json( {
+        success: true,
+        user: {
+          id: 'support_1',
+          firstName: 'Admin',
+          lastName: 'TOIT',
+          email: 'admin@toit.com.br',
+          role: 'super_admin'
+        }
+      } );
     } );
 
     // TENANTS API
