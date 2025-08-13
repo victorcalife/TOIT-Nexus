@@ -55,9 +55,9 @@
             --bg-primary: #0a0a0f;
             --bg-secondary: #141420;
             --bg-card: #1e1e2e;
-            --text-primary: #ffffff;
-            --text-secondary: #b0b0b8;
-            --text-muted: #808088;
+            --text-primary: #040862;
+            --text-secondary: #1d1d63;
+            --text-muted: #39448a;
             --toit-cyan: #00d4ff;
             --toit-blue: #0099ff;
             --toit-purple: #6a0dad;
@@ -72,16 +72,16 @@
 
             /* Gradients */
             --quantum-gradient: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-            --quantum-gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --quantum-gradient-2: linear-gradient(135deg, #3c0242 0%, #f5576c 100%);
             --quantum-gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            --quantum-neural: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            --quantum-neural: linear-gradient(135deg, #667eea 0%, #29034f 50%, #f093fb 100%);
 
             /* Light Mode - Background Gelo mantendo animações */
             --bg-primary: #f8fafc;
             --bg-secondary: #e2e8f0;
             --bg-card: #ffffff;
             --text-primary: #1e3a8a;
-            --text-secondary: #64748b;
+            --text-secondary: #00116e;
             --border-color: rgba(30, 58, 138, 0.2);
 
             /* Animations */
@@ -374,7 +374,7 @@
             font-weight: 900;
             line-height: 1.1;
             margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, #ffffff 0%, #a0a0c0 100%);
+            background: linear-gradient(135deg, #002547 0%, #1f1f61 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -397,7 +397,7 @@
             height: 3px;
             background: var(--quantum-gradient);
             opacity: 0.3;
-            animation: quantum-underline 2s ease-in-out infinite;
+            animation: quantum-underline 3s ease-in-out infinite;
         }
 
         @keyframes quantum-underline {
@@ -5033,7 +5033,7 @@
                     {
                         company: 'Magazine Luiza',
                         title: 'Otimização Logística Quântica',
-                        description: 'Algoritmos QAOA otimizando rotas de distribuição em tempo real, considerando 15.000+ pontos de entrega simultâneos com redução de 47% nos custos operacionais.',
+                        description: 'Logística',
                         metrics: [
                             { value: '47%', label: '↓ Custos Logística' },
                             { value: '23min', label: '↓ Tempo Entrega' },
@@ -5044,7 +5044,7 @@
                     {
                         company: 'Ambev',
                         title: 'Rotas de Distribuição Quântica',
-                        description: 'Sistema VQE revolucionário otimizando malha logística nacional com 8.000+ caminhões, reduzindo consumo de combustível em 38% através de cálculos quânticos paralelos.',
+                        description: 'Logística',
                         metrics: [
                             { value: '38%', label: '↓ Combustível' },
                             { value: '8k+', label: 'Veículos Conectados' },
@@ -5055,7 +5055,7 @@
                     {
                         company: 'Itaú Unibanco',
                         title: 'Detecção de Fraudes Tempo Real',
-                        description: 'Machine Learning quântico analisando 50M+ transações/dia com precisão de 94%, eliminando fraudes em milissegundos usando superposição quântica para análise paralela.',
+                        description: 'Cybersecurity',
                         metrics: [
                             { value: '94%', label: 'Precisão Detecção' },
                             { value: '50M+', label: 'Transações/dia' },
@@ -5066,7 +5066,7 @@
                     {
                         company: 'Embraer',
                         title: 'Simulação Aerodinâmica Quântica',
-                        description: 'Computação quântica revolucionando simulação CFD de aeronaves, reduzindo tempo de design em 52% com análise simultânea de milhares de configurações aerodinâmicas.',
+                        description: 'Engenharia',
                         metrics: [
                             { value: '52%', label: '↓ Tempo Design' },
                             { value: '847x', label: 'Aceleração CFD' },
@@ -5077,7 +5077,7 @@
                     {
                         company: 'Petrobras',
                         title: 'Otimização de Refinaria Quântica',
-                        description: 'Algoritmos de otimização quântica maximizando eficiência de refinarias com análise de 2.000+ variáveis simultâneas, aumentando produtividade em 31%.',
+                        description: 'Análise molecular',
                         metrics: [
                             { value: '31%', label: '↑ Eficiência' },
                             { value: '2k+', label: 'Variáveis' },
@@ -5088,7 +5088,7 @@
                     {
                         company: 'Vale',
                         title: 'Mineração Inteligente Quântica',
-                        description: 'Sistema quântico otimiza extração mineral analisando geologias complexas em tempo real, aumentando produção em 43% com menor impacto ambiental.',
+                        description: 'Análise geológica',
                         metrics: [
                             { value: '43%', label: '↑ Produção' },
                             { value: '29%', label: '↓ Impacto Ambiental' },
@@ -5099,7 +5099,7 @@
                     {
                         company: 'JBS',
                         title: 'Supply Chain Quântica',
-                        description: 'Otimização quântica da cadeia de suprimentos integrando 5.000+ fornecedores globais, reduzindo desperdício em 35% e melhorando rastreabilidade.',
+                        description: 'Supply chain',
                         metrics: [
                             { value: '35%', label: '↓ Desperdício' },
                             { value: '5k+', label: 'Fornecedores' },
@@ -5110,7 +5110,7 @@
                     {
                         company: 'Bradesco',
                         title: 'Portfolio Quântico Inteligente',
-                        description: 'IA Quântica gerencia portfolios analisando milhões de cenários de mercado simultaneamente, superando benchmarks tradicionais em 89% dos casos.',
+                        description: 'Gestão de portfólio',
                         metrics: [
                             { value: '89%', label: 'Taxa Sucesso' },
                             { value: '16.7%', label: 'Retorno Médio' },
@@ -5121,7 +5121,7 @@
                     {
                         company: 'Natura',
                         title: 'P&D Cosmético Quântico',
-                        description: 'Simulação molecular quântica acelera desenvolvimento de cosméticos sustentáveis, reduzindo tempo de formulação em 67% com ingredientes naturais otimizados.',
+                        description: 'Análise molecular.',
                         metrics: [
                             { value: '67%', label: '↓ Tempo P&D' },
                             { value: '94%', label: 'Ingredientes Naturais' },
@@ -5130,20 +5130,9 @@
                         ]
                     },
                     {
-                        company: 'Fintech Líder',
-                        title: 'Análise de Risco Quântica',
-                        description: 'Implementação de algoritmos quânticos para análise de padrões de risco em portfólios complexos, processando milhões de cenários simultâneos com precisão revolucionária.',
-                        metrics: [
-                            { value: '89%', label: '↓ Falsos Positivos' },
-                            { value: '12.7s', label: 'Tempo de Análise' },
-                            { value: 'R$12M', label: 'Economia Anual' },
-                            { value: '99.97%', label: 'Precisão' }
-                        ]
-                    },
-                    {
-                        company: 'E-commerce Unicórnio',
+                        company: 'E-commerce ML',
                         title: 'Recomendações Quânticas',
-                        description: 'Sistema de recomendação usando Quantum Neural Networks que analisa comportamento em múltiplas dimensões, aumentando conversão em 156% vs algoritmos clássicos.',
+                        description: 'Análise comportamentl',
                         metrics: [
                             { value: '156%', label: '↑ Conversão' },
                             { value: '47%', label: '↑ Ticket Médio' },
@@ -5152,9 +5141,9 @@
                         ]
                     },
                     {
-                        company: 'Smart Grid Nacional',
+                        company: 'Smart Grid',
                         title: 'Distribuição Energética Quântica',
-                        description: 'Otimização quântica de distribuição elétrica para 12 milhões de consumidores, balanceando oferta/demanda em tempo real com eficiência sem precedentes.',
+                        description: 'Distribuição de energia',
                         metrics: [
                             { value: '23%', label: '↓ Desperdício' },
                             { value: '99.8%', label: 'Uptime' },
@@ -5164,9 +5153,9 @@
                     },
                     // 6 Novos Cases de Sucesso Criados
                     {
-                        company: 'Banco Nacional',
+                        company: 'Deutch Bank',
                         title: 'Detecção de Fraudes Quântica',
-                        description: 'Sistema quântico detecta padrões fraudulentos em tempo real usando superposição de estados, alcançando 99.7% de precisão e reduzindo perdas financeiras drasticamente.',
+                        description: 'Cybersecurity',
                         metrics: [
                             { value: '99.7%', label: 'Precisão' },
                             { value: '2.1ms', label: 'Tempo Detecção' },
@@ -5175,9 +5164,9 @@
                         ]
                     },
                     {
-                        company: 'E-commerce Gigante',
+                        company: 'Ali',
                         title: 'Otimização de Logística',
-                        description: 'Algoritmo quantum otimiza rotas de entrega em tempo real considerando tráfego, clima e demanda, economizando R$ 2.8M mensais em combustível e operação.',
+                        description: 'Logística',
                         metrics: [
                             { value: 'R$ 2.8M', label: 'Economia Mensal' },
                             { value: '47%', label: '↓ Tempo Entrega' },
@@ -5188,7 +5177,7 @@
                     {
                         company: 'Pharma Research',
                         title: 'Descoberta de Medicamentos',
-                        description: 'Quantum ML acelera descoberta de fármacos simulando interações moleculares em paralelo, reduzindo tempo de pesquisa de anos para meses com 3x mais eficiência.',
+                        description: 'Pesquisa Farmacêutica',
                         metrics: [
                             { value: '3x', label: 'Mais Rápido' },
                             { value: '89%', label: '↓ Tempo Pesquisa' },
@@ -5199,7 +5188,7 @@
                     {
                         company: 'Energy Corp',
                         title: 'Grid Inteligente Quântico',
-                        description: 'Sistema quântico otimiza distribuição de energia para 12M consumidores, balanceando oferta/demanda em tempo real e reduzindo perdas em 40%.',
+                        description: 'Consumo energético',
                         metrics: [
                             { value: '40%', label: '↓ Perdas Energia' },
                             { value: '12M', label: 'Consumidores' },
@@ -5208,20 +5197,20 @@
                         ]
                     },
                     {
-                        company: 'AgTech Startup',
-                        title: 'Previsão de Safras Quântica',
-                        description: 'IA Quântica analisa clima, solo, pragas e mercado simultaneamente para otimizar plantio e colheita com 95% de precisão em 2.3M hectares.',
+                        company: 'Microsoft',
+                        title: 'Previsões Quânticas',
+                        description: 'Predição de Demanda',
                         metrics: [
                             { value: '95%', label: 'Precisão Previsão' },
                             { value: '67%', label: '↑ Produtividade' },
-                            { value: '2.3M', label: 'Hectares' },
+                            { value: '2.3M', label: 'Linhas de Código' },
                             { value: 'R$ 156M', label: 'Valor Adicional' }
                         ]
                     },
                     {
                         company: 'Fintech Security',
                         title: 'Criptografia Quântica',
-                        description: 'Sistema de criptografia quântica inquebrável protege transações financeiras com chaves distribuídas quanticamente, zero quebras de segurança registradas.',
+                        description: 'Transações Financeiras',
                         metrics: [
                             { value: '0', label: 'Quebras Segurança' },
                             { value: '256bit', label: 'Quantum Keys' },
