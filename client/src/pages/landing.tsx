@@ -4,32 +4,32 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import
-  {
-    Check,
-    Star,
-    Crown,
-    Shield,
-    Zap,
-    ArrowRight,
-    DollarSign,
-    Users,
-    Building2,
-    Phone,
-    Mail,
-    Globe,
-    BarChart3,
-    Database,
-    Workflow,
-    Calendar,
-    FileText,
-    Target,
-    TrendingUp,
-    Clock,
-    Award,
-    X,
-    Atom,
-    Brain
-  } from 'lucide-react';
+{
+  Check,
+  Star,
+  Crown,
+  Shield,
+  Zap,
+  ArrowRight,
+  DollarSign,
+  Users,
+  Building2,
+  Phone,
+  Mail,
+  Globe,
+  BarChart3,
+  Database,
+  Workflow,
+  Calendar,
+  FileText,
+  Target,
+  TrendingUp,
+  Clock,
+  Award,
+  X,
+  Atom,
+  Brain
+} from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface AccessProfile
@@ -285,18 +285,9 @@ export default function Landing()
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => window.location.href = '/support-login'}
-                className="text-gray-500 hover:text-purple-600"
-              >
-                <Shield className="w-4 h-4 mr-2" />
-                Suporte TOIT
-              </Button>
               <Button variant="outline" onClick={() => window.location.href = '/login'}>
                 <Users className="w-4 h-4 mr-2" />
-                Login Cliente
+                Fazer Login
               </Button>
             </div>
           </div>

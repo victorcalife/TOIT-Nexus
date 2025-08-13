@@ -4,29 +4,29 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import
-  {
-    Check,
-    Star,
-    Crown,
-    Shield,
-    Zap,
-    ArrowRight,
-    DollarSign,
-    Users,
-    Building2,
-    Phone,
-    Mail,
-    Globe,
-    BarChart3,
-    Database,
-    Workflow,
-    Calendar,
-    FileText,
-    Target,
-    TrendingUp,
-    Clock,
-    Award
-  } from 'lucide-react';
+{
+  Check,
+  Star,
+  Crown,
+  Shield,
+  Zap,
+  ArrowRight,
+  DollarSign,
+  Users,
+  Building2,
+  Phone,
+  Mail,
+  Globe,
+  BarChart3,
+  Database,
+  Workflow,
+  Calendar,
+  FileText,
+  Target,
+  TrendingUp,
+  Clock,
+  Award
+} from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface AccessProfile
@@ -285,18 +285,9 @@ export function LandingPage()
               <Button variant="ghost" size="sm">Sobre</Button>
               <Button variant="ghost" size="sm">Recursos</Button>
               <Button variant="ghost" size="sm">Contato</Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => window.location.href = '/support-login'}
-                className="text-gray-500 hover:text-purple-600"
-              >
-                <Shield className="w-4 h-4 mr-2" />
-                Suporte TOIT
-              </Button>
               <Button variant="outline" size="sm" onClick={() => window.location.href = '/login'}>
                 <Users className="w-4 h-4 mr-2" />
-                Login Cliente
+                Fazer Login
               </Button>
             </div>
           </div>
@@ -485,8 +476,8 @@ export function LandingPage()
                 <Card
                   key={profile.slug}
                   className={`relative border-2 transition-all duration-200 hover:shadow-xl ${ isPopular
-                      ? 'border-purple-500 shadow-lg ring-2 ring-purple-200'
-                      : 'border-gray-200 hover:border-blue-300'
+                    ? 'border-purple-500 shadow-lg ring-2 ring-purple-200'
+                    : 'border-gray-200 hover:border-blue-300'
                     }`}
                 >
                   {isPopular && (
@@ -542,8 +533,8 @@ export function LandingPage()
 
                     <Button
                       className={`w-full ${ isPopular
-                          ? 'bg-purple-600 hover:bg-purple-700 text-white'
-                          : 'bg-blue-600 hover:bg-blue-700 text-white'
+                        ? 'bg-purple-600 hover:bg-purple-700 text-white'
+                        : 'bg-blue-600 hover:bg-blue-700 text-white'
                         }`}
                       onClick={() => handleSelectPlan( profile.slug )}
                     >

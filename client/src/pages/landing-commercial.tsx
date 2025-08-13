@@ -480,21 +480,10 @@ export default function LandingCommercial()
                 <p className="text-sm text-gray-600">Plataforma Empresarial Inteligente</p>
               </div>
             </div>
-            <div className="flex items-center space-x-3">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => window.location.href = '/support-login'}
-                className="text-gray-500 hover:text-purple-600"
-              >
-                <Shield className="w-4 h-4 mr-2" />
-                Suporte TOIT
-              </Button>
-              <Button variant="outline" onClick={() => window.location.href = '/login'}>
-                <Users className="w-4 h-4 mr-2" />
-                Login Cliente
-              </Button>
-            </div>
+            <Button variant="outline" onClick={() => window.location.href = '/login'}>
+              <Users className="w-4 h-4 mr-2" />
+              Fazer Login
+            </Button>
           </div>
         </div>
       </header>
@@ -697,8 +686,8 @@ export default function LandingCommercial()
               <Card key={plan.id} className={`relative border-2 hover:shadow-xl transition-all flex-shrink-0 w-full lg:w-80 ${ plan.popular ? 'border-green-500 scale-105 shadow-lg' : 'border-gray-200' }`}>
                 {plan.badge && (
                   <div className={`absolute -top-3 left-1/2 transform -translate-x-1/2 px-4 py-1 rounded-full text-sm font-medium ${ plan.popular ? 'bg-green-500 text-white' :
-                      plan.name === 'LITE' ? 'bg-blue-500 text-white' :
-                        'bg-orange-500 text-white'
+                    plan.name === 'LITE' ? 'bg-blue-500 text-white' :
+                      'bg-orange-500 text-white'
                     }`}>
                     {plan.badge}
                   </div>
@@ -758,7 +747,7 @@ export default function LandingCommercial()
 
                   <Button
                     className={`w-full py-4 text-lg font-bold ${ plan.popular ? 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white' :
-                        'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white'
+                      'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white'
                       }`}
                     onClick={() => handlePlanSelection( plan.id )}
                   >
