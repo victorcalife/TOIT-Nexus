@@ -196,7 +196,7 @@ app.use( ( req, res, next ) =>
 </svg>`;
 
     // MIDDLEWARE UNIVERSAL PARA FAVICON - Intercepta TODOS os métodos e rotas
-    app.use( [ 'favicon.svg', 'favicon.png', 'favicon.ico' ].map( path => `/${ path }` ), ( req, res ) =>
+    app.use( [ 'favicon.svg', 'favicon.png', '' ].map( path => `/${ path }` ), ( req, res ) =>
     {
       console.log( `🎯 [FAVICON] Middleware universal interceptou: ${ req.path }` );
       res.setHeader( 'Content-Type', 'image/svg+xml' );
@@ -206,7 +206,7 @@ app.use( ( req, res, next ) =>
     } );
 
     // Também definir rotas explícitas como fallback
-    [ '/favicon.svg', '/favicon.png', '/favicon.ico' ].forEach( route =>
+    [ '/favicon.svg', '/favicon.png', '/' ].forEach( route =>
     {
       app.all( route, ( req, res ) =>
       {
