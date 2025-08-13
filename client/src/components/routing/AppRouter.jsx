@@ -10,7 +10,7 @@ import { Toaster } from '@/components/ui/toaster';
 const DefaultLayout) => (
   <div className="min-h-screen bg-gray-50">
     <Toaster />
-    {children}
+    { children }
   </div>
 );
 
@@ -19,17 +19,17 @@ const ClientLayout) => (
     <SidebarWrapper />
     <main className="flex-1 overflow-hidden">
       <Toaster />
-      {children}
+      { children }
     </main>
   </div>
 );
 
 const AdminLayout) => (
   <div className="flex h-screen bg-gray-100">
-    <SidebarWrapper isAdmin={true} />
+    <SidebarWrapper isAdmin={ true } />
     <main className="flex-1 overflow-auto p-6">
       <Toaster />
-      {children}
+      { children }
     </main>
   </div>
 );
@@ -38,7 +38,7 @@ const MinimalLayout) => (
   <div className="min-h-screen bg-gray-50">
     <Toaster />
     <div className="container mx-auto p-4">
-      {children}
+      { children }
     </div>
   </div>
 );
@@ -49,33 +49,40 @@ const ProtectedRoute, roles = [], requiresTenant = false, layout = 'default', ..
   const location = useLocation();
 
   // Se ainda está carregando, mostra um spinner
-  if (isLoading) {
+  if ( isLoading )
+  {
     return <LoadingSpinner />;
   }
 
   // Se a rota for a raiz e o usuário estiver autenticado, redireciona para o dashboard apropriado
   // Mas apenas se estiver no domínio correto (não no domínio de suporte)
-  if (location.pathname === '/' && isAuthenticated && window.location.hostname !== 'supnexus.toit.com.br') {
+  if ( location.pathname === '/' && isAuthenticated && window.location.hostname !== 'supnexus.toit.com.br' )
+  {
     // Se for super_admin ou toit_admin, redireciona para o dashboard de admin
-    if (user?.role === 'super_admin' || user?.role === 'toit_admin') {
-      return <Navigate to={ROUTES.ADMIN_DASHBOARD} replace />;
+    if ( user?.role === 'super_admin' || user?.role === 'toit_admin' )
+    {
+      return <Navigate to={ ROUTES.ADMIN_DASHBOARD } replace />;
     }
     // Se for cliente, redireciona para o dashboard do cliente
-    return <Navigate to={ROUTES.CLIENT_DASHBOARD} replace />;
+    return <Navigate to={ ROUTES.CLIENT_DASHBOARD } replace />;
   }
 
   // Se não está autenticado e a rota não é pública, redireciona para o login
-  if (!isAuthenticated && !publicRoutes.some(route => route.path === location.pathname)) {
+  if ( !isAuthenticated && !publicRoutes.some( route => route.path === location.pathname ) )
+  {
     // Se estiver no domínio de suporte, redireciona para o login de suporte
-    if (window.location.hostname === 'supnexus.toit.com.br') {
-      return <Navigate to={`/support-login?redirect=${encodeURIComponent(location.pathname + location.search)}`} replace />;
+    const hostname = window.location.hostname.toLowerCase();
+    if ( hostname === 'supnexus.toit.com.br' )
+    {
+      return <Navigate to={ `/support-login?redirect=${ encodeURIComponent( location.pathname + location.search ) }` } replace />;
     }
-    // Caso contrário, redireciona para o login normal
-    return <Navigate to={`/login?redirect=${encodeURIComponent(location.pathname + location.search)}`} replace />;
+    // Para todos os outros domínios (nexus.toit.com.br, localhost, etc), redireciona para o login de cliente
+    return <Navigate to={ `/login?redirect=${ encodeURIComponent( location.pathname + location.search ) }` } replace />;
   }
 
   // Verifica se o usuário tem permissão para acessar a rota
-  if (!hasPermission(user?.role, roles)) {
+  if ( !hasPermission( user?.role, roles ) )
+  {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -134,12 +141,14 @@ export const AppRouter) => {
     const currentDomain = window.location.hostname;
     const isMainDomain = currentDomain === 'nexus.toit.com.br' || currentDomain === 'localhost' || currentDomain === '127.0.0.1';
     
-    if (!isLoading && !isAuthenticated && location.pathname !== '/login' && !isMainDomain) {
-      // Se estiver no domínio de suporte, redireciona para o login de suporte
-      if (currentDomain === 'supnexus.toit.com.br') {
+    // Só redireciona se não estiver autenticado e não estiver já na página de login correta
+    if (!isLoading && !isAuthenticated) {
+      // Se estiver no domínio de suporte e não estiver no support-login
+      if (currentDomain === 'supnexus.toit.com.br' && location.pathname !== '/support-login') {
         navigate(`/support-login?redirect=${encodeURIComponent(location.pathname + location.search)}`);
-      } else {
-        // Para outros domínios, redireciona para o login normal
+      }
+      // Se estiver no domínio principal e não estiver no login de cliente
+      else if (isMainDomain && location.pathname !== '/login' && location.pathname !== '/') {
         navigate(`/login?redirect=${encodeURIComponent(location.pathname + location.search)}`);
       }
     }
@@ -191,9 +200,9 @@ export const AppRouter) => {
             </DefaultLayout>
           }
         />
-      </Routes>
-    </Suspense>
-  );
-};
+        </Routes>
+      </Suspense>
+    );
+  };
 
-export default AppRouter;
+  export default AppRouter;

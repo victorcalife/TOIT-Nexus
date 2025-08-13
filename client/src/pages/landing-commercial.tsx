@@ -774,41 +774,41 @@ export default function LandingCommercial()
               </p>
 
               {/* Carousel 3D Container */}
-              <div className="relative overflow-hidden h-96 mb-8">
+              <div className="relative overflow-hidden h-80 mb-8">
                 <div className="carousel-container relative w-full h-full">
 
                   {/* Case 1: PETROBRAS */}
-                  <div className="case-card absolute inset-0 bg-gradient-to-br from-orange-600 to-red-700 rounded-xl p-6 transform transition-all duration-1000 translate-x-0 opacity-100 scale-100 shadow-2xl">
-                    <div className="flex flex-col items-center mb-4">
-                      <div className="text-3xl font-bold mb-2">🛢️ PETROBRAS</div>
-                      <div className="bg-white/20 px-3 py-1 rounded-full text-sm font-medium">ENERGIA</div>
+                  <div className="case-card absolute inset-0 bg-gradient-to-br from-orange-600 to-red-700 rounded-xl p-4 transform transition-all duration-1000 translate-x-0 opacity-100 scale-100 shadow-2xl">
+                    <div className="flex flex-col items-center mb-2">
+                      <div className="text-2xl font-bold mb-1">🛢️ PETROBRAS</div>
+                      <div className="bg-white/20 px-2 py-1 rounded-full text-xs font-medium">ENERGIA</div>
                     </div>
-                    <div className="text-lg font-semibold mb-2">Otimização de Refino Quântico</div>
-                    <div className="text-5xl font-bold text-yellow-300 mb-2">63%</div>
-                    <div className="text-lg mb-3">redução no tempo de refino</div>
-                    <div className="text-sm opacity-90 mb-4">
+                    <div className="text-base font-semibold mb-1">Otimização de Refino Quântico</div>
+                    <div className="text-4xl font-bold text-yellow-300 mb-1">63%</div>
+                    <div className="text-sm mb-2">redução no tempo de refino</div>
+                    <div className="text-xs opacity-90 mb-2 leading-tight">
                       VQE para simulação de catalisadores moleculares • Economia R$ 2.4M/mês
                     </div>
-                    <div className="bg-white/20 rounded-lg p-3">
-                      <div className="text-2xl font-bold text-yellow-300">ROI: 420%</div>
+                    <div className="bg-white/20 rounded-lg p-2">
+                      <div className="text-lg font-bold text-yellow-300">ROI: 420%</div>
                       <div className="text-xs">em 8 meses de implementação</div>
                     </div>
                   </div>
 
                   {/* Case 2: VALE */}
-                  <div className="case-card absolute inset-0 bg-gradient-to-br from-gray-700 to-yellow-600 rounded-xl p-6 transform transition-all duration-1000 translate-x-full opacity-0 scale-75 shadow-xl">
-                    <div className="flex flex-col items-center mb-4">
-                      <div className="text-3xl font-bold mb-2">⛏️ VALE</div>
-                      <div className="bg-white/20 px-3 py-1 rounded-full text-sm font-medium">MINERAÇÃO</div>
+                  <div className="case-card absolute inset-0 bg-gradient-to-br from-gray-700 to-yellow-600 rounded-xl p-4 transform transition-all duration-1000 translate-x-full opacity-0 scale-75 shadow-xl">
+                    <div className="flex flex-col items-center mb-2">
+                      <div className="text-2xl font-bold mb-1">⛏️ VALE</div>
+                      <div className="bg-white/20 px-2 py-1 rounded-full text-xs font-medium">MINERAÇÃO</div>
                     </div>
-                    <div className="text-lg font-semibold mb-2">Exploração Mineral Inteligente</div>
-                    <div className="text-5xl font-bold text-yellow-300 mb-2">89%</div>
-                    <div className="text-lg mb-3">precisão em jazidas</div>
-                    <div className="text-sm opacity-90 mb-4">
+                    <div className="text-base font-semibold mb-1">Exploração Mineral Inteligente</div>
+                    <div className="text-4xl font-bold text-yellow-300 mb-1">89%</div>
+                    <div className="text-sm mb-2">precisão em jazidas</div>
+                    <div className="text-xs opacity-90 mb-2 leading-tight">
                       Grover's Algorithm para análise geológica • 45% menos perfurações
                     </div>
-                    <div className="bg-white/20 rounded-lg p-3">
-                      <div className="text-2xl font-bold text-yellow-300">R$ 18.7M</div>
+                    <div className="bg-white/20 rounded-lg p-2">
+                      <div className="text-lg font-bold text-yellow-300">R$ 18.7M</div>
                       <div className="text-xs">economizados em exploração</div>
                     </div>
                   </div>

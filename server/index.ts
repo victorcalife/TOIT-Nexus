@@ -3,7 +3,6 @@ import session from "express-session";
 import path from "path";
 import fs from "fs";
 import { registerRoutes } from "./routes";
-import { setupVite, serveStatic, log } from "./vite";
 import { startNotificationCron } from "./notificationService";
 import { cronJobService } from "./cronJobs";
 import { initializeTrialCronJob } from "./trialManager";
@@ -108,7 +107,7 @@ app.use( ( req, res, next ) =>
         logLine = logLine.slice( 0, 79 ) + "…";
       }
 
-      log( logLine );
+      console.log( logLine );
     }
   } );
 
@@ -235,6 +234,7 @@ app.use( ( req, res, next ) =>
       next();
     } );
 
+    // ROTA DE TESTE ULTRA SIMPLES PARA DIAGNÓSTICO
     // ROTA DE TESTE ULTRA SIMPLES PARA DIAGNÓSTICO
     app.get( '/simple-test', ( req, res ) =>
     {
