@@ -276,7 +276,7 @@ MOSTRAR funcionarios ONDE departamento = "TI" E salario > 5000;
 MOSTRAR funcionarios ONDE departamento = "TI" OU departamento = "RH";
 
 # Múltiplas condições
-MOSTRAR vendas ONDE valor > 1000 E data EM MES(0) E cliente = "Empresa ABC";
+MOSTRAR vendas ONDE valor > 1000 E data = MES(0) E cliente = "Empresa ABC";
 ```
 
 ### Operadores de Texto:
@@ -285,10 +285,10 @@ MOSTRAR vendas ONDE valor > 1000 E data EM MES(0) E cliente = "Empresa ABC";
 MOSTRAR clientes ONDE nome TEM "Silva";
 
 # Não contém
-MOSTRAR produtos ONDE nome NTEM "Descontinuado";
+MOSTRAR produtos ONDE status SEM "Descontinuado";
 
 # Lista de valores
-MOSTRAR funcionarios ONDE departamento EM ("TI", "RH", "Financeiro");
+MOSTRAR funcionarios ONDE departamento = ("TI", "RH", "Financeiro");
 ```
 
 ---
@@ -302,8 +302,8 @@ Você pode criar variáveis para cálculos complexos:
 ### Exemplo Básico:
 ```tql
 # Definir variáveis
-receita_mes = SOMAR faturamento DE vendas ONDE data EM MES(0);
-custo_mes = SOMAR despesas DE gastos ONDE data EM MES(0);
+receita_mes = SOMAR faturamento DE vendas ONDE data = MES(0);
+custo_mes = SOMAR despesas DE gastos ONDE data = MES(0);
 
 # Usar variáveis em cálculos
 lucro_mes = receita_mes - custo_mes;
@@ -366,8 +366,8 @@ DASHBOARD "Nome do Dashboard":
 ### Exemplo Completo - Dashboard Vendas:
 ```tql
 # Definir variáveis primeiro
-vendas_mes = SOMAR valor DE vendas ONDE data EM MES(0);
-vendas_mes_anterior = SOMAR valor DE vendas ONDE data EM MES(-1);
+vendas_mes = SOMAR valor DE vendas ONDE data = MES(0);
+vendas_mes_anterior = SOMAR valor DE vendas ONDE data = MES(-1);
 crescimento = (vendas_mes - vendas_mes_anterior) / vendas_mes_anterior * 100;
 meta_mes = 100000;
 
@@ -513,8 +513,8 @@ GRAFICO linha DE vendas
 # Variáveis de RH
 total_funcionarios = CONTAR funcionarios ONDE status = "ativo";
 salario_medio = MEDIA salario DE funcionarios ONDE status = "ativo";
-admissoes_mes = CONTAR funcionarios ONDE admissao EM MES(0);
-demissoes_mes = CONTAR funcionarios ONDE demissao EM MES(0);
+admissoes_mes = CONTAR funcionarios ONDE admissao = MES(0);
+demissoes_mes = CONTAR funcionarios ONDE demissao = MES(0);
 turnover = demissoes_mes / total_funcionarios * 100;
 
 DASHBOARD "Recursos Humanos":
@@ -560,14 +560,14 @@ DASHBOARD "Financeiro - Trimestral":
 ### Dashboard Comercial:
 ```tql
 # Métricas de vendas
-vendas_ano = SOMAR valor DE vendas ONDE data EM ANO(0);
+vendas_ano = SOMAR valor DE vendas ONDE data = ANO(0);
 meta_ano = 1200000;
 percentual_meta = vendas_ano / meta_ano * 100;
-ticket_medio = MEDIA valor DE vendas ONDE data EM ANO(0);
-numero_vendas = CONTAR vendas ONDE data EM ANO(0);
+ticket_medio = MEDIA valor DE vendas ONDE data = ANO(0);
+numero_vendas = CONTAR vendas ONDE data = ANO(0);
 
 # Performance de vendedores
-melhor_vendedor = TOP 1 vendedores POR comissao DE vendas ONDE data EM MES(0);
+melhor_vendedor = TOP 1 vendedores POR comissao DE vendas ONDE data = MES(0);
 
 DASHBOARD "Comercial - Anual":
     KPI vendas_ano TITULO "Vendas do Ano", MOEDA R$;
@@ -589,15 +589,15 @@ DASHBOARD "Comercial - Anual":
 tickets_abertos = CONTAR tickets DE suporte ONDE status = "aberto";
 tickets_andamento = CONTAR tickets DE suporte ONDE status = "em andamento";
 tickets_resolvidos_mes = CONTAR tickets DE suporte 
-    ONDE status = "resolvido" E resolucao EM MES(0);
+    ONDE status = "resolvido" E resolucao = MES(0);
 
 # SLA e performance
-sla_compliance = MEDIA sla_ok DE tickets ONDE resolucao EM MES(0) * 100;
+sla_compliance = MEDIA sla_ok DE tickets ONDE resolucao = MES(0) * 100;
 tempo_medio_resolucao = MEDIA tempo_resolucao DE tickets 
-    ONDE resolucao EM MES(0);
+    ONDE resolucao = MES(0);
 
 # Satisfação
-satisfacao_media = MEDIA nota_satisfacao DE pesquisas ONDE data EM MES(0);
+satisfacao_media = MEDIA nota_satisfacao DE pesquisas ONDE data = MES(0);
 
 DASHBOARD "Suporte Técnico":
     KPI tickets_abertos TITULO "Tickets Abertos", 
@@ -640,7 +640,7 @@ DASHBOARD "Suporte Técnico":
 | `>=` | Maior igual | `vendas >= 1000` |
 | `<=` | Menor igual | `preco <= 100` |
 | `TEM` | Contém | `nome TEM "Silva"` |
-| `NTEM` | Não contém | `titulo NTEM "Urgente"` |
+| `NTEM` | Não contém | `titulo SEM "Urgente"` |
 | `E` | AND lógico | `depto = "TI" E salario > 5000` |
 | `OU` | OR lógico | `status = "ativo" OU status = "pendente"` |
 

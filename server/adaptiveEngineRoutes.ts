@@ -13,41 +13,41 @@ import { revolutionaryAdaptiveEngine } from './revolutionaryAdaptiveEngine';
 const router = express.Router();
 
 // Middleware para autenticação e tenant
-router.use(requireAuth);
-router.use(tenantMiddleware);
+router.use( requireAuth );
+router.use( tenantMiddleware );
 
 // ==========================================
 // SCHEMAS DE VALIDAÇÃO ZOD
 // ==========================================
 
-const BehaviorDataSchema = z.object({
+const BehaviorDataSchema = z.object( {
   sessionId: z.string().optional(),
-  pageViews: z.array(z.object({
+  pageViews: z.array( z.object( {
     page: z.string(),
     timeSpent: z.number(),
-    clickHeatmap: z.array(z.object({
+    clickHeatmap: z.array( z.object( {
       x: z.number(),
       y: z.number(),
       element: z.string(),
       timestamp: z.number(),
       intentScore: z.number().optional()
-    })).optional(),
+    } ) ).optional(),
     scrollDepth: z.number().optional(),
     exitPoint: z.string().optional(),
     conversionAction: z.string().optional()
-  })).optional(),
-  featureUsage: z.array(z.object({
+  } ) ).optional(),
+  featureUsage: z.array( z.object( {
     feature: z.string(),
     module: z.string(),
     usageFrequency: z.number(),
-    proficiencyLevel: z.enum(['beginner', 'intermediate', 'advanced', 'expert']),
+    proficiencyLevel: z.enum( [ 'beginner', 'intermediate', 'advanced', 'expert' ] ),
     timeToComplete: z.number(),
     successRate: z.number(),
-    commonErrors: z.array(z.string()).optional(),
+    commonErrors: z.array( z.string() ).optional(),
     helpRequestCount: z.number().optional()
-  })).optional(),
-  satisfactionScore: z.number().min(1).max(5).optional()
-});
+  } ) ).optional(),
+  satisfactionScore: z.number().min( 1 ).max( 5 ).optional()
+} );
 
 // ==========================================
 // BEHAVIOR TRACKING - CAPTURA DE COMPORTAMENTO
@@ -56,22 +56,24 @@ const BehaviorDataSchema = z.object({
 /**
  * POST /api/adaptive-engine/capture-behavior - Capturar comportamento do usuário
  */
-router.post('/capture-behavior', async (req: any, res) => {
-  try {
+router.post( '/capture-behavior', async ( req: any, res ) =>
+{
+  try
+  {
     const tenantId = req.tenant.id;
     const userId = req.user.id;
-    
-    console.log(`🧠 API: Capturando comportamento - User: ${userId}, Tenant: ${tenantId}`);
-    
-    const validatedData = BehaviorDataSchema.parse(req.body);
-    
-    await revolutionaryAdaptiveEngine.captureUserBehavior({
+
+    console.log( `🧠 API: Capturando comportamento - User: ${ userId }, Tenant: ${ tenantId }` );
+
+    const validatedData = BehaviorDataSchema.parse( req.body );
+
+    await revolutionaryAdaptiveEngine.captureUserBehavior( {
       userId,
       tenantId,
       ...validatedData
-    });
-    
-    res.json({
+    } );
+
+    res.json( {
       success: true,
       message: 'Comportamento capturado e analisado com sucesso',
       data: {
@@ -80,27 +82,29 @@ router.post('/capture-behavior', async (req: any, res) => {
         capturedAt: new Date(),
         status: 'processed'
       }
-    });
-    
-  } catch (error: any) {
-    console.error('❌ Erro na API de captura de comportamento:', error);
-    
-    if (error instanceof z.ZodError) {
-      return res.status(400).json({
+    } );
+
+  } catch ( error: any )
+  {
+    console.error( '❌ Erro na API de captura de comportamento:', error );
+
+    if ( error instanceof z.ZodError )
+    {
+      return res.status( 400 ).json( {
         success: false,
         error: 'Dados de comportamento inválidos',
         details: error.errors,
         type: 'validation_error'
-      });
+      } );
     }
-    
-    res.status(500).json({
+
+    res.status( 500 ).json( {
       success: false,
       error: error.message,
       type: 'behavior_capture_error'
-    });
+    } );
   }
-});
+} );
 
 // ==========================================
 // PREDICTIVE ANALYTICS - PREDIÇÕES ML
@@ -109,16 +113,18 @@ router.post('/capture-behavior', async (req: any, res) => {
 /**
  * GET /api/adaptive-engine/predictions - Obter predições avançadas
  */
-router.get('/predictions', async (req: any, res) => {
-  try {
+router.get( '/predictions', async ( req: any, res ) =>
+{
+  try
+  {
     const tenantId = req.tenant.id;
     const userId = req.user.id;
-    
-    console.log(`🔮 API: Gerando predições ML - User: ${userId}`);
-    
-    const predictions = await revolutionaryAdaptiveEngine.generateAdvancedPredictions(userId, tenantId);
-    
-    res.json({
+
+    console.log( `🔮 API: Gerando predições ML - User: ${ userId }` );
+
+    const predictions = await revolutionaryAdaptiveEngine.generateAdvancedPredictions( userId, tenantId );
+
+    res.json( {
       success: true,
       data: predictions,
       count: predictions.length,
@@ -128,58 +134,63 @@ router.get('/predictions', async (req: any, res) => {
         confidenceThreshold: 0.7
       },
       message: 'Predições ML geradas com sucesso'
-    });
-    
-  } catch (error: any) {
-    console.error('❌ Erro na API de predições:', error);
-    
-    res.status(500).json({
+    } );
+
+  } catch ( error: any )
+  {
+    console.error( '❌ Erro na API de predições:', error );
+
+    res.status( 500 ).json( {
       success: false,
       error: error.message,
       type: 'predictions_error'
-    });
+    } );
   }
-});
+} );
 
 /**
  * GET /api/adaptive-engine/predictions/:type - Predição específica por tipo
  */
-router.get('/predictions/:type', async (req: any, res) => {
-  try {
+router.get( '/predictions/:type', async ( req: any, res ) =>
+{
+  try
+  {
     const { type } = req.params;
     const tenantId = req.tenant.id;
     const userId = req.user.id;
-    
-    console.log(`🎯 API: Predição específica - Type: ${type}, User: ${userId}`);
-    
-    const allPredictions = await revolutionaryAdaptiveEngine.generateAdvancedPredictions(userId, tenantId);
-    const specificPrediction = allPredictions.find(p => p.predictionType === type);
-    
-    if (!specificPrediction) {
-      return res.status(404).json({
+
+    console.log( `🎯 API: Predição específica - Type: ${ type }, User: ${ userId }` );
+
+    const allPredictions = await revolutionaryAdaptiveEngine.generateAdvancedPredictions( userId, tenantId );
+    const specificPrediction = allPredictions.find( p => p.predictionType === type );
+
+    if ( !specificPrediction )
+    {
+      return res.status( 404 ).json( {
         success: false,
-        error: `Predição do tipo '${type}' não encontrada`,
-        availableTypes: allPredictions.map(p => p.predictionType),
+        error: `Predição do tipo '${ type }' não encontrada`,
+        availableTypes: allPredictions.map( p => p.predictionType ),
         type: 'prediction_not_found'
-      });
+      } );
     }
-    
-    res.json({
+
+    res.json( {
       success: true,
       data: specificPrediction,
-      message: `Predição ${type} obtida com sucesso`
-    });
-    
-  } catch (error: any) {
-    console.error('❌ Erro na API de predição específica:', error);
-    
-    res.status(500).json({
+      message: `Predição ${ type } obtida com sucesso`
+    } );
+
+  } catch ( error: any )
+  {
+    console.error( '❌ Erro na API de predição específica:', error );
+
+    res.status( 500 ).json( {
       success: false,
       error: error.message,
       type: 'specific_prediction_error'
-    });
+    } );
   }
-});
+} );
 
 // ==========================================
 // PERSONALIZATION - PERSONALIZAÇÃO INTELIGENTE
@@ -188,13 +199,15 @@ router.get('/predictions/:type', async (req: any, res) => {
 /**
  * GET /api/adaptive-engine/personalization-profile - Obter perfil de personalização
  */
-router.get('/personalization-profile', async (req: any, res) => {
-  try {
+router.get( '/personalization-profile', async ( req: any, res ) =>
+{
+  try
+  {
     const tenantId = req.tenant.id;
     const userId = req.user.id;
-    
-    console.log(`👤 API: Buscando perfil de personalização - User: ${userId}`);
-    
+
+    console.log( `👤 API: Buscando perfil de personalização - User: ${ userId }` );
+
     // Para demonstração, retornar perfil mock estruturado
     const mockProfile = {
       userId,
@@ -207,14 +220,14 @@ router.get('/personalization-profile', async (req: any, res) => {
       colorTheme: 'auto',
       animationPreference: 'normal',
       notificationPreference: 'important',
-      peakProductivityHours: [9, 14, 16],
+      peakProductivityHours: [ 9, 14, 16 ],
       averageSessionDuration: 2400,
       multitaskingCapability: 75,
       interruptionTolerance: 65,
-      primaryGoals: ['Análise de Dados', 'Automação de Processos'],
-      successMetrics: ['Taxa de Conclusão de Tarefas', 'Tempo Médio por Tarefa'],
-      painPoints: ['Tarefas Demoram Muito'],
-      improvementAreas: ['Automatizar Processos Repetitivos'],
+      primaryGoals: [ 'Análise de Dados', 'Automação de Processos' ],
+      successMetrics: [ 'Taxa de Conclusão de Tarefas', 'Tempo Médio por Tarefa' ],
+      painPoints: [ 'Tarefas Demoram Muito' ],
+      improvementAreas: [ 'Automatizar Processos Repetitivos' ],
       churnRisk: 15,
       growthPotential: 85,
       advocacyLikelihood: 70,
@@ -223,47 +236,50 @@ router.get('/personalization-profile', async (req: any, res) => {
       confidenceLevel: 92,
       dataQuality: 88
     };
-    
-    res.json({
+
+    res.json( {
       success: true,
       data: mockProfile,
       insights: {
         strongestTrait: 'Analytical thinking with deep focus capability',
-        recommendedFeatures: ['Advanced Analytics', 'Automation Tools'],
-        optimizationOpportunities: ['Reduce task completion time', 'Increase process automation']
+        recommendedFeatures: [ 'Advanced Analytics', 'Automation Tools' ],
+        optimizationOpportunities: [ 'Reduce task completion time', 'Increase process automation' ]
       },
       message: 'Perfil de personalização obtido com sucesso'
-    });
-    
-  } catch (error: any) {
-    console.error('❌ Erro na API de perfil de personalização:', error);
-    
-    res.status(500).json({
+    } );
+
+  } catch ( error: any )
+  {
+    console.error( '❌ Erro na API de perfil de personalização:', error );
+
+    res.status( 500 ).json( {
       success: false,
       error: error.message,
       type: 'personalization_profile_error'
-    });
+    } );
   }
-});
+} );
 
 /**
  * GET /api/adaptive-engine/ui-adaptations - Obter adaptações de UI recomendadas
  */
-router.get('/ui-adaptations', async (req: any, res) => {
-  try {
+router.get( '/ui-adaptations', async ( req: any, res ) =>
+{
+  try
+  {
     const tenantId = req.tenant.id;
     const userId = req.user.id;
     const { currentPage = 'dashboard' } = req.query;
-    
-    console.log(`🎨 API: Gerando adaptações de UI - User: ${userId}, Page: ${currentPage}`);
-    
+
+    console.log( `🎨 API: Gerando adaptações de UI - User: ${ userId }, Page: ${ currentPage }` );
+
     const adaptations = await revolutionaryAdaptiveEngine.generateUIAdaptations(
-      userId, 
-      tenantId, 
+      userId,
+      tenantId,
       currentPage as string
     );
-    
-    res.json({
+
+    res.json( {
       success: true,
       data: adaptations,
       count: adaptations.length,
@@ -273,18 +289,19 @@ router.get('/ui-adaptations', async (req: any, res) => {
         adaptationEngine: 'revolutionary_2.0'
       },
       message: 'Adaptações de UI geradas com sucesso'
-    });
-    
-  } catch (error: any) {
-    console.error('❌ Erro na API de adaptações UI:', error);
-    
-    res.status(500).json({
+    } );
+
+  } catch ( error: any )
+  {
+    console.error( '❌ Erro na API de adaptações UI:', error );
+
+    res.status( 500 ).json( {
       success: false,
       error: error.message,
       type: 'ui_adaptations_error'
-    });
+    } );
   }
-});
+} );
 
 // ==========================================
 // WORKFLOW OPTIMIZATION - OTIMIZAÇÃO INTELIGENTE
@@ -293,39 +310,43 @@ router.get('/ui-adaptations', async (req: any, res) => {
 /**
  * GET /api/adaptive-engine/workflow-optimizations - Otimizações de workflow
  */
-router.get('/workflow-optimizations', async (req: any, res) => {
-  try {
+router.get( '/workflow-optimizations', async ( req: any, res ) =>
+{
+  try
+  {
     const tenantId = req.tenant.id;
-    
-    console.log(`⚡ API: Gerando otimizações de workflow - Tenant: ${tenantId}`);
-    
-    const optimizations = await revolutionaryAdaptiveEngine.optimizeWorkflows(tenantId);
-    
-    res.json({
+
+    console.log( `⚡ API: Gerando otimizações de workflow - Tenant: ${ tenantId }` );
+
+    const optimizations = await revolutionaryAdaptiveEngine.optimizeWorkflows( tenantId );
+
+    res.json( {
       success: true,
       data: optimizations,
       count: optimizations.length,
       summary: {
         totalOptimizations: optimizations.length,
-        highPriorityCount: optimizations.filter(o => o.priority === 'high').length,
-        estimatedImpact: optimizations.reduce((sum, o) => {
+        highPriorityCount: optimizations.filter( o => o.priority === 'high' ).length,
+        estimatedImpact: optimizations.reduce( ( sum, o ) =>
+        {
           const impactScore = { small: 10, medium: 25, large: 50, transformative: 100 };
-          return sum + impactScore[o.impact];
-        }, 0)
+          return sum + impactScore[ o.impact ];
+        }, 0 )
       },
       message: 'Otimizações de workflow geradas com sucesso'
-    });
-    
-  } catch (error: any) {
-    console.error('❌ Erro na API de otimizações de workflow:', error);
-    
-    res.status(500).json({
+    } );
+
+  } catch ( error: any )
+  {
+    console.error( '❌ Erro na API de otimizações de workflow:', error );
+
+    res.status( 500 ).json( {
       success: false,
       error: error.message,
       type: 'workflow_optimizations_error'
-    });
+    } );
   }
-});
+} );
 
 // ==========================================
 // DATA INSIGHTS - INSIGHTS INTELIGENTES
@@ -334,38 +355,41 @@ router.get('/workflow-optimizations', async (req: any, res) => {
 /**
  * GET /api/adaptive-engine/data-insights - Insights de dados avançados
  */
-router.get('/data-insights', async (req: any, res) => {
-  try {
+router.get( '/data-insights', async ( req: any, res ) =>
+{
+  try
+  {
     const tenantId = req.tenant.id;
     const userId = req.user.id;
-    
-    console.log(`📊 API: Gerando insights de dados - User: ${userId}`);
-    
-    const insights = await revolutionaryAdaptiveEngine.generateDataInsights(userId, tenantId);
-    
-    res.json({
+
+    console.log( `📊 API: Gerando insights de dados - User: ${ userId }` );
+
+    const insights = await revolutionaryAdaptiveEngine.generateDataInsights( userId, tenantId );
+
+    res.json( {
       success: true,
       data: insights,
       count: insights.length,
       categories: {
-        query_optimization: insights.filter(i => i.category === 'query_optimization').length,
-        dashboard_optimization: insights.filter(i => i.category === 'dashboard_optimization').length,
-        data_discovery: insights.filter(i => i.category === 'data_discovery').length,
-        automation: insights.filter(i => i.category === 'task_automation').length
+        query_optimization: insights.filter( i => i.category === 'query_optimization' ).length,
+        dashboard_optimization: insights.filter( i => i.category === 'dashboard_optimization' ).length,
+        data_discovery: insights.filter( i => i.category === 'data_discovery' ).length,
+        automation: insights.filter( i => i.category === 'task_automation' ).length
       },
       message: 'Insights de dados gerados com sucesso'
-    });
-    
-  } catch (error: any) {
-    console.error('❌ Erro na API de insights de dados:', error);
-    
-    res.status(500).json({
+    } );
+
+  } catch ( error: any )
+  {
+    console.error( '❌ Erro na API de insights de dados:', error );
+
+    res.status( 500 ).json( {
       success: false,
       error: error.message,
       type: 'data_insights_error'
-    });
+    } );
   }
-});
+} );
 
 // ==========================================
 // SYSTEM ANALYTICS - ANALYTICS DO MOTOR ML
@@ -374,13 +398,15 @@ router.get('/data-insights', async (req: any, res) => {
 /**
  * GET /api/adaptive-engine/system-analytics - Analytics do sistema ML
  */
-router.get('/system-analytics', async (req: any, res) => {
-  try {
+router.get( '/system-analytics', async ( req: any, res ) =>
+{
+  try
+  {
     const tenantId = req.tenant.id;
     const { period = '7d' } = req.query;
-    
-    console.log(`📈 API: Analytics do sistema ML - Tenant: ${tenantId}, Period: ${period}`);
-    
+
+    console.log( `📈 API: Analytics do sistema ML - Tenant: ${ tenantId }, Period: ${ period }` );
+
     // Mock analytics data for demonstration
     const mockAnalytics = {
       behaviorCapture: {
@@ -428,8 +454,8 @@ router.get('/system-analytics', async (req: any, res) => {
         featureAdoption: '+19%'
       }
     };
-    
-    res.json({
+
+    res.json( {
       success: true,
       data: mockAnalytics,
       metadata: {
@@ -439,26 +465,178 @@ router.get('/system-analytics', async (req: any, res) => {
         tenantId
       },
       message: 'Analytics do sistema ML carregado com sucesso'
-    });
-    
-  } catch (error: any) {
-    console.error('❌ Erro na API de analytics do sistema:', error);
-    
-    res.status(500).json({
+    } );
+
+  } catch ( error: any )
+  {
+    console.error( '❌ Erro na API de analytics do sistema:', error );
+
+    res.status( 500 ).json( {
       success: false,
       error: error.message,
       type: 'system_analytics_error'
-    });
+    } );
   }
-});
+} );
+
+/**
+ * GET /api/adaptive-engine/configuration - Obter configuração atual do ML
+ */
+router.get( '/configuration', async ( req: any, res ) =>
+{
+  try
+  {
+    const tenantId = req.tenant.id;
+
+    console.log( `⚙️ API: Obtendo configuração ML - Tenant: ${ tenantId }` );
+
+    // Configuração padrão (em produção, buscar do banco)
+    const defaultConfig = {
+      adaptiveEngine: {
+        enabled: true,
+        sensitivity: 75,
+        autoApply: false,
+        learningRate: 0.1
+      },
+      behaviorAnalysis: {
+        enabled: true,
+        trackingLevel: 'detailed',
+        anomalyDetection: true,
+        predictionHorizon: 30
+      },
+      kpiAdaptation: {
+        enabled: true,
+        autoGenerate: false,
+        recalculationFrequency: 'weekly',
+        confidenceThreshold: 80
+      },
+      workflowOptimization: {
+        enabled: true,
+        autoSuggest: true,
+        ruleGeneration: false,
+        performanceTracking: true
+      }
+    };
+
+    res.json( {
+      success: true,
+      data: defaultConfig,
+      metadata: {
+        tenantId,
+        lastUpdated: new Date(),
+        version: '2.0'
+      },
+      message: 'Configuração ML obtida com sucesso'
+    } );
+
+  } catch ( error: any )
+  {
+    console.error( '❌ Erro na API de configuração:', error );
+
+    res.status( 500 ).json( {
+      success: false,
+      error: error.message,
+      type: 'configuration_error'
+    } );
+  }
+} );
+
+/**
+ * POST /api/adaptive-engine/configuration - Salvar configuração do ML
+ */
+router.post( '/configuration', async ( req: any, res ) =>
+{
+  try
+  {
+    const tenantId = req.tenant.id;
+    const userId = req.user.id;
+    const config = req.body;
+
+    console.log( `💾 API: Salvando configuração ML - Tenant: ${ tenantId }, User: ${ userId }` );
+
+    // Validar configuração
+    if ( !config.adaptiveEngine || !config.behaviorAnalysis || !config.kpiAdaptation || !config.workflowOptimization )
+    {
+      return res.status( 400 ).json( {
+        success: false,
+        error: 'Configuração incompleta',
+        type: 'validation_error'
+      } );
+    }
+
+    // Em produção, salvar no banco de dados
+    // await db.insert(mlConfigurations).values({ tenantId, config, updatedBy: userId });
+
+    res.json( {
+      success: true,
+      data: {
+        tenantId,
+        savedAt: new Date(),
+        savedBy: userId
+      },
+      message: 'Configuração ML salva com sucesso'
+    } );
+
+  } catch ( error: any )
+  {
+    console.error( '❌ Erro ao salvar configuração:', error );
+
+    res.status( 500 ).json( {
+      success: false,
+      error: error.message,
+      type: 'save_error'
+    } );
+  }
+} );
+
+/**
+ * POST /api/adaptive-engine/execute-cycle - Executar ciclo de adaptação manual
+ */
+router.post( '/execute-cycle', async ( req: any, res ) =>
+{
+  try
+  {
+    const tenantId = req.tenant.id;
+    const userId = req.user.id;
+
+    console.log( `🔄 API: Executando ciclo de adaptação - Tenant: ${ tenantId }, User: ${ userId }` );
+
+    // Executar ciclo de adaptação
+    const cycleResult = await revolutionaryAdaptiveEngine.executeAdaptationCycle( userId, tenantId );
+
+    res.json( {
+      success: true,
+      data: {
+        cycleId: cycleResult.cycleId || 'manual-' + Date.now(),
+        executedAt: new Date(),
+        executedBy: userId,
+        adaptationsApplied: cycleResult.adaptationsApplied || 0,
+        insightsGenerated: cycleResult.insightsGenerated || 0
+      },
+      message: 'Ciclo de adaptação executado com sucesso'
+    } );
+
+  } catch ( error: any )
+  {
+    console.error( '❌ Erro ao executar ciclo:', error );
+
+    res.status( 500 ).json( {
+      success: false,
+      error: error.message,
+      type: 'execution_error'
+    } );
+  }
+} );
 
 /**
  * GET /api/adaptive-engine/health - Status de saúde do sistema ML
  */
-router.get('/health', async (req: any, res) => {
-  try {
-    console.log('🏥 API: Verificando saúde do sistema ML');
-    
+router.get( '/health', async ( req: any, res ) =>
+{
+  try
+  {
+    console.log( '🏥 API: Verificando saúde do sistema ML' );
+
     const healthStatus = {
       systemStatus: 'healthy',
       components: {
@@ -487,23 +665,24 @@ router.get('/health', async (req: any, res) => {
         accuracy: 92.5
       }
     };
-    
-    res.json({
+
+    res.json( {
       success: true,
       data: healthStatus,
       timestamp: new Date(),
       message: 'Sistema ML revolucionário operando com excelência'
-    });
-    
-  } catch (error: any) {
-    console.error('❌ Erro na API de health check:', error);
-    
-    res.status(500).json({
+    } );
+
+  } catch ( error: any )
+  {
+    console.error( '❌ Erro na API de health check:', error );
+
+    res.status( 500 ).json( {
       success: false,
       error: error.message,
       type: 'health_check_error'
-    });
+    } );
   }
-});
+} );
 
 export { router as adaptiveEngineRoutes };

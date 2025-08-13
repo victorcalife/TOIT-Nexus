@@ -2,25 +2,35 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "commonjs",
+    "moduleResolution": "node",
     "lib": [
-      "ES2020",
-      "DOM",
-      "DOM.Iterable"
+      "ES2020"
     ],
     "allowJs": true,
+    "checkJs": false,
+    "resolveJsonModule": true,
+    "types": [
+      "node"
+    ],
     "outDir": "./dist",
     "rootDir": "./",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
+    "noImplicitAny": true,
+    "incremental": true,
+    "tsBuildInfoFile": "./dist/.tsbuildinfo",
+    "sourceMap": true
   },
   "include": [
     "**/*.ts",
+    "**/*.tsx",
     "**/*.js"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "dist",
+    "../vite.config.js"
   ]
 }

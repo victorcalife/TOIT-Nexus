@@ -40,7 +40,6 @@
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
-    "noUnusedPrivateClassMembers": true,
     /* Configurações de resolução de módulo */
     "baseUrl": ".",
     "paths": {

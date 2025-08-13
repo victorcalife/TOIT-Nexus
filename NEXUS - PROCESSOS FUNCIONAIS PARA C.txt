@@ -1,4 +1,19 @@
-NEXUS - PROCESSOS FUNCIONAIS PARA CADA PERSONA QUE DEVEM SER FEITOS VIA UI (frontend)
+NEXUS SISTEMA WORKFLOW PROFISSIONAL ALGORÍTMOS QUANTICOS + MACHINE LEARNING + NO-CODE- PROCESSOS FUNCIONAIS PARA CADA PERSONA QUE DEVEM SER FEITOS VIA UI (frontend)
+
+-Interfaces e Conexões
+  - E-mail (SMTP/POP3/IMAP)
+  - Calendário (Criar, Conectar Outlook, Google, Yahoo, etc..)
+  - Banco de Dados (URL ou nome/host/porta/user/pass)
+  - Upload de arquivo Excel
+
+-Funcionalidades:
+  - Workflow Completo (todas as condições, triggers, regras e opções possíveis). Pode ser criado gerando task, ou trigger para usuários do mesmo workspace. Todos os componentes do projeto podem ser utilizados e integrados ao Workflow
+  - Relatórios com TQL Query Builder - Linguagem Quântica + Helper em tempo real
+  - Relatórios com NO-CODE
+  - Dashboards Profissionais com preview e personalização (mais de 15 opçoes de gráficos e indicadores)
+  - Task Management com rastreamento completo de tempos e kpis + indicadores para os gerentes e líderes de equipes
+  - Machine Learning Quântica com prediçoes, adaptativa e incremental. predições inteligentes com regras pré definidas de aprendizagem e gatilhos
+  - Execuções Automáticas e Autônomas
 
 Persona 1: EQUIPE TOIT (Empresa desenvolvedora e proprietária do sistema Nexus)
 
@@ -7,13 +22,14 @@ Persona 1: EQUIPE TOIT (Empresa desenvolvedora e proprietária do sistema Nexus)
 - Criar Empresas e ambientes de trabalho únicos e particulares para cada empresa
 - Gestão completa de usuários
 - Gestão completa de dados
-- Gestão completa de dados e kpis de sistema
+- BI completa de dados, performance, utilização, usuarios etc... indicadores e kpis de sistema
 - Acesso, permissão e autorização full em todas as ferramentas/funcionalidades do sistema
 - Configurar, criar, editar e excluir modelos do produto (ex: usuário ou empresa do perfil basic possuem X, Y e Z funcionalidades ativas) e isso ficar definido no sistema.
 - Configurar e comercializar diferentes modelos na landingpage, utilizando stripe com possibilidade do usuário utilizar grátis por 7 dias após criar conta com Nome, Sobrenome, CPF, e-mail (verificar), telefone (verificar), inclusão de cartão de crédito (verificar se está ativo). Sistema precisa fazer gestão automática deste serviço informando que após os 7 dias a assinatura é renovada automaticamente e usuário pode cancelar quando quiser. Em todos os planos, existirão opção de pagamento mensal ou anual. Caso usuário cancele assinatura antes do prazo de 7 dias do teste grátis, sistema deve automaticamente, ao término do prazo dos 7 dias de teste, desativar o acesso e bloquear utilização do sistema direcionado usuário para página de gestão de conta e pagamento.
 - Após verificação de e-mail, telefone e cartão de crédito ativo, sistema deve automaticamente habilitar a conta do usuário e prover acesso ao sistema de acordo com o modelo escolhido ao realizar cadastro. 
 - Modelo empresa e grandes corporações, terão opção para solicitar contato com equipe comercial por meio de preenchimento de formulário com:Nome, Sobrenome, Nome da Empresa, CNPJ, Quantidade de Funcionários, Setor de Atividade, E-mail e telefone para contato (nesse modelo, sem necessidade de verificação pois não é criação de conta).
 - Disponbilizar, ajustra e configurar feature adaptativa de machine learning conforme documento C:\Users\victo\Desktop\Dodumentos Pessoais\Victor\TOIT\SISTEMAS\TOIT-Nexus\ADAPTIVE_FEATURES.md
+- Utilizar o sistema como as Personas 2 e 3 
 
 
 

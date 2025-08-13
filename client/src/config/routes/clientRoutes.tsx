@@ -1,34 +1,41 @@
 import { lazy } from 'react';
 
 // Lazy loading das páginas do cliente
-const ClientDashboard = lazy(() => import('@/pages/client-dashboard'));
-const Dashboard = lazy(() => import('@/pages/dashboard'));
-const Clients = lazy(() => import('@/pages/clients'));
-const Categories = lazy(() => import('@/pages/categories'));
-const Workflows = lazy(() => import('@/pages/workflows'));
-const Integrations = lazy(() => import('@/pages/integrations'));
-const Reports = lazy(() => import('@/pages/reports'));
-const Users = lazy(() => import('@/pages/users'));
-const Connectivity = lazy(() => import('@/pages/connectivity'));
-const Settings = lazy(() => import('@/pages/settings'));
-const AccessControl = lazy(() => import('@/pages/access-control'));
-const QueryBuilderPage = lazy(() => import('@/pages/query-builder'));
-const DataConnectionsPage = lazy(() => import('@/pages/data-connections'));
-const TaskManagement = lazy(() => import('@/pages/task-management'));
-const MyTasks = lazy(() => import('@/pages/my-tasks'));
-const ModuleManagement = lazy(() => import('@/pages/module-management'));
-const CalendarIntegrations = lazy(() => import('@/pages/calendar-integrations'));
-const CalendarCallback = lazy(() => import('@/pages/calendar-callback'));
-const QuantumMLCommercial = lazy(() => import('@/pages/quantum-ml-commercial'));
-const SelectTenant = lazy(() => import('@/pages/select-tenant'));
-const TenantSelection = lazy(() => import('@/pages/tenant-selection'));
-const Landing = lazy(() => import('@/pages/landing'));
+const ClientDashboard = lazy( () => import( '@/pages/client-dashboard' ) );
+const Dashboard = lazy( () => import( '@/pages/dashboard' ) );
+const Clients = lazy( () => import( '@/pages/clients' ) );
+const Categories = lazy( () => import( '@/pages/categories' ) );
+const Workflows = lazy( () => import( '@/pages/workflows' ) );
+const Integrations = lazy( () => import( '@/pages/integrations' ) );
+const Reports = lazy( () => import( '@/pages/reports' ) );
+const Users = lazy( () => import( '@/pages/users' ) );
+const Connectivity = lazy( () => import( '@/pages/connectivity' ) );
+const Settings = lazy( () => import( '@/pages/settings' ) );
+const AccessControl = lazy( () => import( '@/pages/access-control' ) );
+const QueryBuilderPage = lazy( () => import( '@/pages/query-builder' ) );
+const DataConnectionsPage = lazy( () => import( '@/pages/data-connections' ) );
+const TaskManagement = lazy( () => import( '@/pages/task-management' ) );
+const MyTasks = lazy( () => import( '@/pages/my-tasks' ) );
+const ModuleManagement = lazy( () => import( '@/pages/module-management' ) );
+const CalendarIntegrations = lazy( () => import( '@/pages/calendar-integrations' ) );
+const CalendarCallback = lazy( () => import( '@/pages/calendar-callback' ) );
+const QuantumMLCommercial = lazy( () => import( '@/pages/quantum-ml-commercial' ) );
+const MLConfiguration = lazy( () => import( '@/pages/ml-configuration' ) );
+const EmailTriggers = lazy( () => import( '@/pages/email-triggers' ) );
+const FileUpload = lazy( () => import( '@/pages/file-upload' ) );
+const AdvancedTaskManagement = lazy( () => import( '@/pages/advanced-task-management' ) );
+const DepartmentManagement = lazy( () => import( '@/pages/department-management' ) );
+const UserDataPermissions = lazy( () => import( '@/pages/user-data-permissions' ) );
+const SelectTenant = lazy( () => import( '@/pages/select-tenant' ) );
+const TenantSelection = lazy( () => import( '@/pages/tenant-selection' ) );
+const Landing = lazy( () => import( '@/pages/landing' ) );
 
 // Tipos de layout disponíveis
 export type LayoutType = 'default' | 'client' | 'admin' | 'minimal';
 
 // Interface para as rotas
-export interface RouteConfig {
+export interface RouteConfig
+{
   path: string;
   component: React.ComponentType<any>;
   exact?: boolean;
@@ -113,7 +120,7 @@ export const clientRoutes: RouteConfig[] = [
     exact: true,
     layout: 'client',
     requiresTenant: true,
-    roles: ['admin', 'super_admin'],
+    roles: [ 'admin', 'super_admin' ],
   },
   {
     path: '/connectivity',
@@ -135,7 +142,7 @@ export const clientRoutes: RouteConfig[] = [
     exact: true,
     layout: 'client',
     requiresTenant: true,
-    roles: ['admin', 'super_admin'],
+    roles: [ 'admin', 'super_admin' ],
   },
   {
     path: '/query-builder',
@@ -171,7 +178,7 @@ export const clientRoutes: RouteConfig[] = [
     exact: true,
     layout: 'client',
     requiresTenant: true,
-    roles: ['admin', 'super_admin'],
+    roles: [ 'admin', 'super_admin' ],
   },
   {
     path: '/calendar-integrations',
@@ -190,6 +197,48 @@ export const clientRoutes: RouteConfig[] = [
   {
     path: '/quantum-ml-commercial',
     component: QuantumMLCommercial,
+    exact: true,
+    layout: 'client',
+    requiresTenant: true,
+  },
+  {
+    path: '/ml-configuration',
+    component: MLConfiguration,
+    exact: true,
+    layout: 'client',
+    requiresTenant: true,
+  },
+  {
+    path: '/email-triggers',
+    component: EmailTriggers,
+    exact: true,
+    layout: 'client',
+    requiresTenant: true,
+  },
+  {
+    path: '/file-upload',
+    component: FileUpload,
+    exact: true,
+    layout: 'client',
+    requiresTenant: true,
+  },
+  {
+    path: '/advanced-task-management',
+    component: AdvancedTaskManagement,
+    exact: true,
+    layout: 'client',
+    requiresTenant: true,
+  },
+  {
+    path: '/department-management',
+    component: DepartmentManagement,
+    exact: true,
+    layout: 'client',
+    requiresTenant: true,
+  },
+  {
+    path: '/user-data-permissions',
+    component: UserDataPermissions,
     exact: true,
     layout: 'client',
     requiresTenant: true,
