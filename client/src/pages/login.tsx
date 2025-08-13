@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -9,101 +9,131 @@ import { StandardHeader } from "@/components/standard-header";
 import { formatCpf, cleanCpf, validateCpf } from "@/lib/utils";
 import workflowLogo from "@/assets/SELOtoit-workflow-logo.svg";
 
-export default function Login() {
-  const [cpf, setCpf] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+export default function Login()
+{
+  const [ cpf, setCpf ] = useState( "" );
+  const [ password, setPassword ] = useState( "" );
+  const [ showPassword, setShowPassword ] = useState( false );
+  const [ isLoading, setIsLoading ] = useState( false );
+  const [ redirectUrl, setRedirectUrl ] = useState<string | null>( null );
   const { toast } = useToast();
 
-  const handleCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formatted = formatCpf(e.target.value);
-    setCpf(formatted);
+  // Verificar parâmetro de redirecionamento na URL
+  useEffect( () =>
+  {
+    const urlParams = new URLSearchParams( window.location.search );
+    const redirect = urlParams.get( 'redirect' );
+    if ( redirect )
+    {
+      setRedirectUrl( decodeURIComponent( redirect ) );
+      console.log( '🔄 Redirecionamento detectado:', decodeURIComponent( redirect ) );
+    }
+  }, [] );
+
+  const handleCpfChange = ( e: React.ChangeEvent<HTMLInputElement> ) =>
+  {
+    const formatted = formatCpf( e.target.value );
+    setCpf( formatted );
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async ( e: React.FormEvent ) =>
+  {
     e.preventDefault();
-    
-    if (!cpf || !password) {
-      toast({
+
+    if ( !cpf || !password )
+    {
+      toast( {
         title: "Erro",
         description: "Por favor, preencha todos os campos.",
         variant: "destructive",
-      });
+      } );
       return;
     }
 
     // Valida CPF antes de enviar
-    if (!validateCpf(cpf)) {
-      toast({
+    if ( !validateCpf( cpf ) )
+    {
+      toast( {
         title: "CPF Inválido",
         description: "Por favor, digite um CPF válido.",
         variant: "destructive",
-      });
+      } );
       return;
     }
 
-    setIsLoading(true);
+    setIsLoading( true );
 
-    try {
-      const response = await fetch('/api/login', {
+    try
+    {
+      const response = await fetch( '/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          cpf: cleanCpf(cpf), // Remove formatting for API
+        body: JSON.stringify( {
+          cpf: cleanCpf( cpf ), // Remove formatting for API
           password,
-        }),
-      });
+        } ),
+      } );
 
-      if (response.ok) {
+      if ( response.ok )
+      {
         const userData = await response.json();
-        toast({
+        toast( {
           title: "Login realizado com sucesso!",
-          description: `Bem-vindo, ${userData.firstName}!`,
-        });
-        
-        // Redirect based on user role
-        if (userData.role === 'super_admin') {
+          description: `Bem-vindo, ${ userData.firstName }!`,
+        } );
+
+        // Redirect based on redirect parameter or user role
+        if ( redirectUrl )
+        {
+          console.log( '🔄 Redirecionando para URL solicitada:', redirectUrl );
+          window.location.href = redirectUrl;
+        } else if ( userData.role === 'super_admin' )
+        {
           window.location.href = '/admin/dashboard';
-        } else if (userData.tenantId) {
+        } else if ( userData.tenantId )
+        {
           window.location.href = '/dashboard';
-        } else {
+        } else
+        {
           window.location.href = '/select-tenant';
         }
-      } else {
+      } else
+      {
         const errorData = await response.json();
-        toast({
+        toast( {
           title: "Erro no login",
           description: errorData.message || "CPF ou senha incorretos.",
           variant: "destructive",
-        });
+        } );
       }
-    } catch (error) {
-      console.error('Login error:', error);
-      toast({
+    } catch ( error )
+    {
+      console.error( 'Login error:', error );
+      toast( {
         title: "Erro de conexão",
         description: "Não foi possível conectar ao servidor. Tente novamente.",
         variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
+      } );
+    } finally
+    {
+      setIsLoading( false );
     }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <StandardHeader showLoginButton={false} />
-      
+
       <div className="flex items-center justify-center px-4 pt-20">
         <div className="w-full max-w-md">
           {/* Logo no container de login */}
           <div className="text-center mb-8">
             <div className="flex justify-center mb-4">
-              <img 
-                src={workflowLogo} 
-                alt="TOIT Workflow" 
+              <img
+                src={workflowLogo}
+                alt="TOIT Workflow"
                 className="h-20 w-auto opacity-90"
               />
             </div>
@@ -136,7 +166,7 @@ export default function Login() {
                     required
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="password">Senha</Label>
                   <div className="relative">
@@ -145,7 +175,7 @@ export default function Login() {
                       type={showPassword ? "text" : "password"}
                       placeholder="Digite sua senha"
                       value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      onChange={( e ) => setPassword( e.target.value )}
                       className="text-lg pr-12"
                       required
                     />
@@ -154,7 +184,7 @@ export default function Login() {
                       variant="ghost"
                       size="sm"
                       className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                      onClick={() => setShowPassword(!showPassword)}
+                      onClick={() => setShowPassword( !showPassword )}
                     >
                       {showPassword ? (
                         <EyeOff className="h-4 w-4 text-gray-400" />
@@ -177,7 +207,7 @@ export default function Login() {
               <div className="mt-6 text-center">
                 <p className="text-sm text-gray-600">
                   Não tem uma conta?{" "}
-                  <button 
+                  <button
                     className="text-primary-500 hover:text-primary-600 font-medium"
                     onClick={() => window.location.href = '/'}
                   >
