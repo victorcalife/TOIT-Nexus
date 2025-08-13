@@ -35,8 +35,7 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"
         rel="stylesheet">
 
-    <!-- Stripe -->
-    <script src="https://js.stripe.com/v3/"></script>
+    <!-- Stripe removido - será carregado apenas no checkout -->
 
     <!-- Chart.js for Quantum Visualizations -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -4259,7 +4258,7 @@
             initializeQuantumBackground();
             initializeScrollAnimations();
             initializeLiveMetrics();
-            initializeStripe();
+            // initializeStripe(); // Removido - será inicializado apenas no checkout
             initializeProcessStepExpansion();
         } );
 
@@ -4596,6 +4595,33 @@
 
         function initializeStripe()
         {
+            // Só inicializar Stripe se estiver na página de checkout
+            if ( !document.getElementById( 'stripe-card-element' ) )
+            {
+                console.log( '🔒 Stripe não inicializado - elemento não encontrado' );
+                return;
+            }
+
+            // Carregar Stripe dinamicamente apenas quando necessário
+            if ( typeof Stripe === 'undefined' )
+            {
+                console.log( '🔒 Carregando Stripe dinamicamente...' );
+                const script = document.createElement( 'script' );
+                script.src = 'https://js.stripe.com/v3/';
+                script.onload = () =>
+                {
+                    console.log( '✅ Stripe carregado com sucesso' );
+                    initializeStripeElements();
+                };
+                document.head.appendChild( script );
+                return;
+            }
+
+            initializeStripeElements();
+        }
+
+        function initializeStripeElements()
+        {
             // Initialize Stripe (replace with your publishable key)
             stripe = Stripe( 'pk_test_your_stripe_publishable_key_here' );
 
@@ -4628,6 +4654,13 @@
             {
                 modal.classList.add( 'active' );
                 document.body.style.overflow = 'hidden';
+
+                // Inicializar Stripe apenas quando abrir modal de checkout
+                if ( modalId === 'subscriptionModal' )
+                {
+                    console.log( '💳 Inicializando Stripe para checkout...' );
+                    initializeStripe();
+                }
 
                 if ( modalId === 'subscriptionModal' && planType )
                 {
