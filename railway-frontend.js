@@ -752,6 +752,33 @@ app.get( '/login', ( req, res ) =>
   ` );
 } );
 
+// ROTA PARA SERVIR LANDING PAGE HTML ESTÁTICA
+app.get( '/nexus-quantum-landing.html', ( req, res ) =>
+{
+  const host = req.get( 'host' );
+  const xForwardedHost = req.get( 'x-forwarded-host' );
+  const realHost = xForwardedHost || host;
+
+  console.log( `🎨 [LANDING-HTML] Landing page HTML solicitada - Host: ${ realHost }` );
+
+  const landingPath = path.join( __dirname, 'nexus-quantum-landing.html' );
+
+  if ( fs.existsSync( landingPath ) )
+  {
+    console.log( `✅ [LANDING-HTML] Servindo landing page HTML: ${ landingPath }` );
+    res.setHeader( 'Content-Type', 'text/html; charset=utf-8' );
+    return res.sendFile( landingPath );
+  } else
+  {
+    console.error( `❌ [LANDING-HTML] Landing page não encontrada: ${ landingPath }` );
+    return res.status( 404 ).send( `
+      <h1>Landing Page Não Encontrada</h1>
+      <p>O arquivo nexus-quantum-landing.html não foi encontrado.</p>
+      <p><a href="/login">← Ir para Login</a></p>
+    ` );
+  }
+} );
+
 // ROTAS ESPECÍFICAS PARA REACT APP (nexus.toit.com.br)
 const reactRoutes = [ '/dashboard', '/support-login', '/admin', '/settings', '/tasks', '/workflows', '/reports', '/clients', '/users', '/integrations', '/quantum-ml', '/verify-email', '/verify-phone', '/verify-card', '/verify-account', '/trial-signup', '/checkout', '/setup' ];
 

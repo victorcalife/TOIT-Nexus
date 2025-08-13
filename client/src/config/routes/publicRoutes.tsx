@@ -1,6 +1,7 @@
 import { lazy } from 'react';
 
 // Lazy loading das páginas públicas
+const PublicLanding = lazy( () => import( '@/pages/public-landing' ) );
 const Login = lazy( () => import( '@/pages/login' ) );
 const SupportLogin = lazy( () => import( '@/pages/support-login' ) );
 const VerifyAccount = lazy( () => import( '@/pages/verify-account' ) );
@@ -14,6 +15,11 @@ const SystemSetup = lazy( () => import( '@/pages/system-setup' ) );
 
 // Rotas públicas acessíveis sem autenticação
 export const publicRoutes = [
+  {
+    path: '/',
+    component: PublicLanding,
+    exact: true,
+  },
   {
     path: '/login',
     component: Login,

@@ -9,42 +9,53 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { Building2, Users, Settings, Crown, Search } from "lucide-react";
 
-export default function TenantSelection() {
-  const [searchTerm, setSearchTerm] = useState("");
+export default function TenantSelection()
+{
+  const [ searchTerm, setSearchTerm ] = useState( "" );
   const { toast } = useToast();
 
-  const { data: tenants, isLoading } = useQuery({
-    queryKey: ['/api/admin/tenants'],
+  const { data: tenantsResponse, isLoading } = useQuery( {
+    queryKey: [ '/api/admin/tenants' ],
     retry: false,
-  });
+  } );
 
-  const selectTenantMutation = useMutation({
-    mutationFn: async (tenantId: string) => {
-      await apiRequest('POST', '/api/auth/select-tenant', { tenantId });
+  // Garantir que tenants seja sempre um array
+  const tenants = Array.isArray( tenantsResponse?.data ) ? tenantsResponse.data :
+    Array.isArray( tenantsResponse ) ? tenantsResponse : [];
+
+  const selectTenantMutation = useMutation( {
+    mutationFn: async ( tenantId: string ) =>
+    {
+      await apiRequest( 'POST', '/api/auth/select-tenant', { tenantId } );
     },
-    onSuccess: () => {
+    onSuccess: () =>
+    {
       window.location.href = '/';
     },
-    onError: () => {
-      toast({
+    onError: () =>
+    {
+      toast( {
         title: "Erro",
         description: "Falha ao selecionar empresa.",
         variant: "destructive",
-      });
+      } );
     },
-  });
+  } );
 
-  const loginAsToitAdmin = () => {
+  const loginAsToitAdmin = () =>
+  {
     window.location.href = '/admin';
   };
 
-  const filteredTenants = (tenants || []).filter((tenant: any) =>
-    tenant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    tenant.slug.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredTenants = tenants.filter( ( tenant: any ) =>
+    tenant.name.toLowerCase().includes( searchTerm.toLowerCase() ) ||
+    tenant.slug.toLowerCase().includes( searchTerm.toLowerCase() )
   );
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
+  const getStatusColor = ( status: string ) =>
+  {
+    switch ( status )
+    {
       case 'active':
         return 'bg-green-100 text-green-800';
       case 'inactive':
@@ -56,8 +67,10 @@ export default function TenantSelection() {
     }
   };
 
-  const getStatusLabel = (status: string) => {
-    switch (status) {
+  const getStatusLabel = ( status: string ) =>
+  {
+    switch ( status )
+    {
       case 'active':
         return 'Ativo';
       case 'inactive':
@@ -95,7 +108,7 @@ export default function TenantSelection() {
                 </p>
               </div>
             </div>
-            <Button 
+            <Button
               onClick={loginAsToitAdmin}
               className="bg-purple-600 hover:bg-purple-700"
             >
@@ -120,14 +133,14 @@ export default function TenantSelection() {
                 placeholder="Buscar empresa..."
                 className="pl-10"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={( e ) => setSearchTerm( e.target.value )}
               />
             </div>
           </div>
 
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[...Array(6)].map((_, i) => (
+              {[ ...Array( 6 ) ].map( ( _, i ) => (
                 <Card key={i}>
                   <CardContent className="p-6">
                     <Skeleton className="h-6 w-32 mb-2" />
@@ -138,18 +151,18 @@ export default function TenantSelection() {
                     </div>
                   </CardContent>
                 </Card>
-              ))}
+              ) )}
             </div>
           ) : filteredTenants.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredTenants.map((tenant: any) => (
+              {filteredTenants.map( ( tenant: any ) => (
                 <Card key={tenant.id} className="hover:shadow-lg transition-shadow cursor-pointer">
                   <CardHeader className="pb-4">
                     <div className="flex items-start justify-between">
                       <div className="flex items-center space-x-3">
                         {tenant.logo ? (
-                          <img 
-                            src={tenant.logo} 
+                          <img
+                            src={tenant.logo}
                             alt={tenant.name}
                             className="w-12 h-12 rounded-lg object-cover"
                           />
@@ -163,8 +176,8 @@ export default function TenantSelection() {
                           <p className="text-sm text-gray-500">@{tenant.slug}</p>
                         </div>
                       </div>
-                      <Badge className={getStatusColor(tenant.status)}>
-                        {getStatusLabel(tenant.status)}
+                      <Badge className={getStatusColor( tenant.status )}>
+                        {getStatusLabel( tenant.status )}
                       </Badge>
                     </div>
                   </CardHeader>
@@ -174,18 +187,18 @@ export default function TenantSelection() {
                         <span className="text-sm text-gray-500">Plano:</span>
                         <Badge variant="outline">{tenant.subscriptionPlan}</Badge>
                       </div>
-                      
+
                       {tenant.domain && (
                         <div className="flex items-center justify-between">
                           <span className="text-sm text-gray-500">Domínio:</span>
                           <span className="text-sm font-medium">{tenant.domain}</span>
                         </div>
                       )}
-                      
+
                       <div className="pt-3 border-t">
-                        <Button 
+                        <Button
                           className="w-full"
-                          onClick={() => selectTenantMutation.mutate(tenant.id)}
+                          onClick={() => selectTenantMutation.mutate( tenant.id )}
                           disabled={selectTenantMutation.isPending || tenant.status !== 'active'}
                         >
                           {selectTenantMutation.isPending ? (
@@ -203,7 +216,7 @@ export default function TenantSelection() {
                     </div>
                   </CardContent>
                 </Card>
-              ))}
+              ) )}
             </div>
           ) : (
             <div className="text-center py-12">

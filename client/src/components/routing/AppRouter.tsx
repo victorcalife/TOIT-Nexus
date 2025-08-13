@@ -61,20 +61,13 @@ const ProtectedRoute: React.FC<{
       return <LoadingSpinner />;
     }
 
-    // Se a rota for a raiz e o usuário estiver autenticado, redireciona para o dashboard apropriado
-    // Mas apenas se estiver no domínio correto (não no domínio de suporte)
-    if ( location.pathname === '/' && isAuthenticated && window.location.hostname !== 'supnexus.toit.com.br' )
-    {
-      // Se for super_admin ou toit_admin, redireciona para o dashboard de admin
-      if ( user?.role === 'super_admin' || user?.role === 'toit_admin' )
-      {
-        return <Navigate to={ROUTES.ADMIN_DASHBOARD} replace />;
-      }
-      // Se for cliente, redireciona para o dashboard do cliente
-      return <Navigate to={ROUTES.CLIENT_DASHBOARD} replace />;
-    }
+    // REMOVIDO: Redirecionamento automático da rota raiz
+    // A rota raiz (/) agora serve a landing page pública
+    // Usuários autenticados podem acessar a landing page normalmente
+    // O redirecionamento acontece apenas via botões/links na interface
 
     // Se não está autenticado e a rota não é pública, redireciona para o login
+    // EXCETO para a rota raiz (/) que deve servir a landing page pública
     if ( !isAuthenticated && !publicRoutes.some( route => route.path === location.pathname ) )
     {
       // Se estiver no domínio de suporte, redireciona para o login de suporte
