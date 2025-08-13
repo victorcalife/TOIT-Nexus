@@ -120,7 +120,24 @@ async function initializeBackend()
       const { cpf, password } = req.body;
 
       // Validação básica para teste
-      if ( cpf === '00000000000' && password === 'admin123' )
+      if ( cpf === '33656299803' && password === '241286' )
+      {
+        res.json( {
+          success: true,
+          user: {
+            id: 'admin_full',
+            firstName: 'Admin',
+            lastName: 'Full',
+            name: 'Admin Full',
+            role: 'super_admin',
+            cpf: '33656299803',
+            email: 'admin@toit.com.br',
+            tenantId: null
+          },
+          token: 'mock-jwt-token-' + Date.now(),
+          message: 'Login realizado com sucesso'
+        } );
+      } else if ( cpf === '00000000000' && password === 'admin123' )
       {
         res.json( {
           success: true,
@@ -174,12 +191,21 @@ async function initializeBackend()
       // Mock de usuários de suporte para teste
       const supportUsers = [
         {
+          id: 'admin_full',
+          cpf: '33656299803',
+          password: '241286',
+          firstName: 'Admin',
+          lastName: 'Full',
+          email: 'admin@toit.com.br',
+          role: 'super_admin'
+        },
+        {
           id: 'support_1',
           cpf: '12345678901',
           password: 'admin123',
           firstName: 'Admin',
           lastName: 'TOIT',
-          email: 'admin@toit.com.br',
+          email: 'admin2@toit.com.br',
           role: 'super_admin'
         },
         {
@@ -570,10 +596,40 @@ app.use( ( req, res, next ) =>
   const xForwardedHost = req.get( 'x-forwarded-host' );
   const realHost = xForwardedHost || host;
 
-  // Serve general assets only for nexus domain
-  if ( realHost === 'nexus.toit.com.br' )
+  // Serve general assets for nexus domain (incluindo assets do React build)
+  if ( realHost === 'nexus.toit.com.br' || realHost === 'localhost:8080' || realHost === '127.0.0.1:8080' )
   {
-    express.static( path.join( __dirname, 'client', 'public' ) )( req, res, next );
+    // Servir assets do build primeiro (prioridade)
+    const distPath = path.join( __dirname, 'client', 'dist' );
+    const publicPath = path.join( __dirname, 'client', 'public' );
+
+    if ( fs.existsSync( distPath ) )
+    {
+      console.log( `📁 [NEXUS-ASSETS] Servindo assets buildados: ${ distPath }` );
+      express.static( distPath, {
+        setHeaders: ( res, filePath ) =>
+        {
+          // Configurar MIME types corretos para módulos JS
+          if ( filePath.endsWith( '.js' ) )
+          {
+            res.setHeader( 'Content-Type', 'application/javascript' );
+          } else if ( filePath.endsWith( '.mjs' ) )
+          {
+            res.setHeader( 'Content-Type', 'application/javascript' );
+          } else if ( filePath.endsWith( '.css' ) )
+          {
+            res.setHeader( 'Content-Type', 'text/css' );
+          }
+        }
+      } )( req, res, next );
+    } else if ( fs.existsSync( publicPath ) )
+    {
+      console.log( `📁 [NEXUS-ASSETS] Servindo assets públicos: ${ publicPath }` );
+      express.static( publicPath )( req, res, next );
+    } else
+    {
+      next();
+    }
   } else
   {
     next();
