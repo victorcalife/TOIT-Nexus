@@ -8,6 +8,7 @@ const VerifyEmail = lazy( () => import( '@/pages/verify-email' ) );
 const VerifyPhone = lazy( () => import( '@/pages/verify-phone' ) );
 const VerifyCard = lazy( () => import( '@/pages/verify-card' ) );
 const TrialSignup = lazy( () => import( '@/pages/trial-signup' ) );
+const Checkout = lazy( () => import( '@/pages/checkout' ) );
 const NotFound = lazy( () => import( '@/pages/not-found' ) );
 const SystemSetup = lazy( () => import( '@/pages/system-setup' ) );
 
@@ -46,6 +47,11 @@ export const publicRoutes = [
   {
     path: '/trial-signup',
     component: TrialSignup,
+    exact: true,
+  },
+  {
+    path: '/checkout',
+    component: Checkout,
     exact: true,
   },
   {
