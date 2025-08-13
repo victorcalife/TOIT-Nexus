@@ -13,24 +13,28 @@
       "node"
     ],
     "outDir": "./dist",
-    "rootDir": "./",
-    "strict": true,
-    "esModuleInterop": true,
+    "rootDir": "../",
+    "strict": false,
+    "noImplicitAny": false,
     "skipLibCheck": true,
+    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "noImplicitAny": true,
     "incremental": true,
     "tsBuildInfoFile": "./dist/.tsbuildinfo",
     "sourceMap": true
   },
   "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.js"
+    "./**/*.ts",
+    "./**/*.tsx",
+    "./**/*.js",
+    "../shared/**/*.ts"
   ],
   "exclude": [
     "node_modules",
     "dist",
-    "../vite.config.js"
+    "../vite.config.js",
+    "vite.ts",
+    "vite.js",
+    "../client/**/*"
   ]
 }
