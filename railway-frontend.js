@@ -106,10 +106,10 @@ async function initializeBackend()
     {
       console.log( '💚 Health check requisitado via servidor integrado' );
       res.json( {
-        status: 'ok',
+        status: 'operational',
         timestamp: new Date().toISOString(),
         service: 'TOIT NEXUS Integrated Server - WORKING',
-        version: '2.0.0',
+        version: '3.0.0',
         environment: process.env.NODE_ENV || 'development',
         integrated: true,
         host: req.get( 'host' ),
@@ -690,72 +690,8 @@ app.use( ( req, res, next ) =>
 app.use( '/favicon.svg', express.static( path.join( __dirname, 'client', 'public', 'favicon.svg' ) ) );
 app.use( '/favicon.ico', express.static( path.join( __dirname, 'client', 'public', 'favicon.ico' ) ) );
 
-// ROTEAMENTO POR DOMÍNIO NA ROTA RAIZ
-app.get( '/', ( req, res ) =>
-{
-  const host = req.get( 'host' );
-  const xForwardedHost = req.get( 'x-forwarded-host' );
-  const realHost = xForwardedHost || host;
-
-  console.log( `🌐 Frontend Root - Host: ${ realHost } | Path: ${ req.originalUrl }` );
-
-  // API (backend services) → Return API info
-  if ( realHost === 'api.toit.com.br' )
-  {
-    console.log( `📡 [API] Servindo informações da API para: ${ realHost }` );
-    return res.json( {
-      service: 'TOIT Nexus API',
-      status: 'operational',
-      version: '2.0.0',
-      message: 'API server is running. Use /api/* endpoints for services.'
-    } );
-  }
-
-  // SUPNEXUS (equipe TOIT) → React app sempre
-  if ( realHost === 'supnexus.toit.com.br' )
-  {
-    console.log( `👥 [SUPNEXUS] Servindo React app para equipe TOIT` );
-
-    const distIndexPath = path.join( __dirname, 'client', 'dist', 'index.html' );
-    const devIndexPath = path.join( __dirname, 'client', 'index.html' );
-
-    if ( fs.existsSync( distIndexPath ) )
-    {
-      console.log( `✅ [SUPNEXUS] Servindo React app buildado: ${ distIndexPath }` );
-      return res.sendFile( distIndexPath );
-    } else if ( fs.existsSync( devIndexPath ) )
-    {
-      console.log( `⚠️ [SUPNEXUS] Servindo React app dev: ${ devIndexPath }` );
-      return res.sendFile( devIndexPath );
-    } else
-    {
-      console.error( `❌ [SUPNEXUS] React app não encontrado` );
-      return res.status( 404 ).send( `
-        <h1>Sistema TOIT Indisponível</h1>
-        <p>Portal da equipe TOIT temporariamente indisponível</p>
-        <p>React app não foi buildado corretamente</p>
-        <p>Execute: npm run build</p>
-      `);
-    }
-  }
-
-  // NEXUS (clientes) → Landing page sempre  
-  console.log( `🎯 [NEXUS] Servindo landing page para: ${ realHost }` );
-
-  const landingPath = path.join( __dirname, 'nexus-quantum-landing.html' );
-
-  if ( fs.existsSync( landingPath ) )
-  {
-    return res.sendFile( landingPath );
-  } else
-  {
-    return res.status( 404 ).send( `
-      <h1>Arquivo não encontrado</h1>
-      <p>nexus-quantum-landing.html não existe no diretório</p>
-      <p>Diretório: ${ __dirname }</p>
-    `);
-  }
-} );
+// PRIMEIRA ROTA RAIZ REMOVIDA - DUPLICADA
+// Mantendo apenas a rota raiz específica mais abaixo
 
 // ROTA PARA SERVIR LANDING PAGE HTML ESTÁTICA
 app.get( '/nexus-quantum-landing.html', ( req, res ) =>
@@ -997,6 +933,22 @@ app.get( '*', ( req, res ) =>
     return res.status( 404 ).send( 'Landing page não encontrada' );
   }
 } );
+
+// ====================================================================
+// SISTEMA DE CHAT EM TEMPO REAL
+// ====================================================================
+
+// Configurar rotas de chat
+try
+{
+  const chatRoutes = await import( './server/chatRoutes.js' );
+  app.use( '/api/chat', chatRoutes.default || chatRoutes );
+  console.log( '💬 Sistema de chat configurado com sucesso!' );
+} catch ( error )
+{
+  console.error( '❌ Erro ao configurar sistema de chat:', error );
+  console.log( '⚠️  Servidor continuará sem funcionalidades de chat' );
+}
 
 // ====================================================================
 // CONFIGURAÇÃO DO SISTEMA QUANTUM ML
