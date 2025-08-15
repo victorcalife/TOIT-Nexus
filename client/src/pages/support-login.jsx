@@ -25,9 +25,9 @@ export default function SupportLogin() {
     
     if (!cpf || !password) {
       toast({
-        title,
-        description, preencha todos os campos.",
-        variant,
+        title: "Erro",
+        description: "Por favor, preencha todos os campos.",
+        variant: "destructive",
       });
       return;
     }
@@ -35,9 +35,9 @@ export default function SupportLogin() {
     // Valida CPF antes de enviar
     if (!validateCpf(cpf)) {
       toast({
-        title,
-        description, digite um CPF válido.",
-        variant,
+        title: "Erro",
+        description: "Por favor, digite um CPF válido.",
+        variant: "destructive",
       });
       return;
     }
@@ -45,65 +45,42 @@ export default function SupportLogin() {
     setIsLoading(true);
 
     try {
-      // Detectar URL base para API
-      const hostname = window.location.hostname;
-      let apiBase = '';
-      
-      if (hostname.includes('supnexus.toit.com.br') || hostname.startsWith('supnexus')) {
-        // Para supnexus, usar mesma base mas com endpoint correto
-        apiBase = window.location.origin;
-      } else {
-        // Para outros domínios
-        apiBase = window.location.origin;
-      }
-      
-      const response = await fetch(`${apiBase}/api/simple-login`, {
-        method,
-        headers,
+      const response = await fetch('/api/simple-login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        body), // Remove formatting for API
+        body: JSON.stringify({
+          cpf: cleanCpf(cpf),
           password,
-          loginType),
+          loginType: 'support'
+        }),
       });
 
       if (response.ok) {
         const userData = await response.json();
         
-        // Verificar se o usuário tem permissão de suporte
-        if (userData.role !== 'super_admin' && userData.role !== 'toit_admin') {
-          toast({
-            title,
-            description,
-            variant,
-          });
-          return;
-        }
-
         toast({
-          title,
-          description, ${userData.firstName}!`,
+          title: "Sucesso",
+          description: `Bem-vindo, ${userData.user?.firstName || 'Usuário'}!`,
         });
         
         // Redirecionar para área administrativa
-        if (userData.role === 'super_admin') {
-          window.location.href = '/admin/dashboard';
-        } else {
-          window.location.href = '/support/dashboard';
-        }
+        window.location.href = '/dashboard';
       } else {
         const errorData = await response.json();
         toast({
-          title,
-          description,
-          variant,
+          title: "Erro de Login",
+          description: errorData.message || "Credenciais inválidas",
+          variant: "destructive",
         });
       }
     } catch (error) {
-      console.error('Login error, error);
+      console.error('Login error:', error);
       toast({
-        title,
-        description,
-        variant,
+        title: "Erro",
+        description: "Erro de conexão. Tente novamente.",
+        variant: "destructive",
       });
     } finally {
       setIsLoading(false);
@@ -125,7 +102,8 @@ export default function SupportLogin() {
             </div>
             <Button 
               variant="ghost" 
-              className="text-purple-300 hover) => window.location.href = '/login'}
+              className="text-purple-300 hover:text-white"
+              onClick={() => window.location.href = '/login'}
             >
               Login Cliente
             </Button>
@@ -177,12 +155,57 @@ export default function SupportLogin() {
                     value={cpf}
                     onChange={handleCpfChange}
                     maxLength={14}
-                    className="text-lg bg-white/10 border-purple-300/30 text-white placeholder) => setPassword(e.target.value)}
-                      className="text-lg pr-12 bg-white/10 border-purple-300/30 text-white placeholder) => setShowPassword(!showPassword)}
+                    className="text-lg bg-white/10 border-purple-300/30 text-white placeholder:text-purple-300/50"
+                    required
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="password" className="text-purple-100">Senha</Label>
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Digite sua senha"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="text-lg pr-12 bg-white/10 border-purple-300/30 text-white placeholder:text-purple-300/50"
+                      required
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-white/10"
+                      onClick={() => setShowPassword(!showPassword)}
                     >
                       {showPassword ? (
-                        <EyeOff className="h-4 w-4" />
-                      ) {/* Rodapé informativo */}
+                        <EyeOff className="h-4 w-4 text-purple-300" />
+                      ) : (
+                        <Eye className="h-4 w-4 text-purple-300" />
+                      )}
+                    </Button>
+                  </div>
+                </div>
+
+                <Button
+                  type="submit"
+                  className="w-full bg-purple-600 hover:bg-purple-700 text-white"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Entrando..." : "Acessar Portal"}
+                </Button>
+
+                <div className="text-center mt-4">
+                  <p className="text-purple-300/70 text-sm">
+                    Acesso restrito à equipe TOIT
+                  </p>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+
+          {/* Rodapé informativo */}
           <div className="mt-8 text-center">
             <p className="text-purple-300/70 text-sm">
               Problemas de acesso? Entre em contato com o administrador do sistema

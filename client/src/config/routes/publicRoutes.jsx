@@ -14,47 +14,63 @@ const SystemSetup = lazy( () => import( '@/pages/system-setup' ) );
 // Rotas públicas acessíveis sem autenticação
 export const publicRoutes = [
   {
-    path,
-    component,
-    exact,
+    path: '/login',
+    component: Login,
+    exact: true,
   },
   {
-    path,
-    component,
-    exact,
+    path: '/support-login',
+    component: SupportLogin,
+    exact: true,
   },
   {
-    path,
-    component,
-    exact,
+    path: '/verify-account',
+    component: VerifyAccount,
+    exact: true,
   },
   {
-    path,
-    component,
-    exact,
+    path: '/verify-email',
+    component: VerifyEmail,
+    exact: true,
   },
   {
-    path,
-    component,
-    exact,
+    path: '/verify-phone',
+    component: VerifyPhone,
+    exact: true,
   },
   {
-    path,
-    component,
-    exact,
+    path: '/verify-card',
+    component: VerifyCard,
+    exact: true,
   },
   {
-    path,
-    component,
-    exact,
+    path: '/trial-signup',
+    component: TrialSignup,
+    exact: true,
   },
   {
-    path,
-    component,
-    exact,
+    path: '/system-setup',
+    component: SystemSetup,
+    exact: true,
   },
   {
-    path,
-    component, // Rota 404
+    path: '/404',
+    component: NotFound, // Rota 404
   },
 ];
+
+// Constantes de rotas para facilitar o uso
+export const ROUTES = {
+  LOGIN: '/login',
+  SUPPORT_LOGIN: '/support-login',
+  VERIFY_ACCOUNT: '/verify-account',
+  VERIFY_EMAIL: '/verify-email',
+  VERIFY_PHONE: '/verify-phone',
+  VERIFY_CARD: '/verify-card',
+  TRIAL_SIGNUP: '/trial-signup',
+  SYSTEM_SETUP: '/system-setup',
+  NOT_FOUND: '/404',
+  CLIENT_DASHBOARD: '/dashboard',
+  ADMIN_DASHBOARD: '/admin/dashboard',
+  SELECT_TENANT: '/select-tenant',
+};
