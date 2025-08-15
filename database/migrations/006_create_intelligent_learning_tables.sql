@@ -6,7 +6,7 @@
 -- Tabela principal para dados de aprendizado inteligente
 CREATE TABLE IF NOT EXISTS intelligent_learning_data (
     id SERIAL PRIMARY KEY,
-    tenant_id INTEGER NOT NULL,
+    tenant_id VARCHAR(255) NOT NULL,
     behavior_patterns JSONB NOT NULL DEFAULT '{}',
     intelligence_metrics JSONB NOT NULL DEFAULT '{}',
     temporal_knowledge JSONB NOT NULL DEFAULT '{}',
@@ -16,17 +16,14 @@ CREATE TABLE IF NOT EXISTS intelligent_learning_data (
     success_rate DECIMAL(5,4) DEFAULT 0.5000,
     learning_velocity DECIMAL(5,4) DEFAULT 0.0000,
     last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    
-    CONSTRAINT fk_intelligent_learning_tenant 
-        FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Tabela para histórico de interações do usuário
 CREATE TABLE IF NOT EXISTS user_interaction_history (
     id SERIAL PRIMARY KEY,
-    tenant_id INTEGER NOT NULL,
-    user_id INTEGER,
+    tenant_id VARCHAR(255) NOT NULL,
+    user_id VARCHAR(255),
     interaction_type VARCHAR(50) NOT NULL,
     interaction_data JSONB NOT NULL,
     features_extracted JSONB,
@@ -35,16 +32,13 @@ CREATE TABLE IF NOT EXISTS user_interaction_history (
     complexity_score DECIMAL(5,4) DEFAULT 0.0000,
     quantum_processed BOOLEAN DEFAULT false,
     learning_applied BOOLEAN DEFAULT false,
-    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    
-    CONSTRAINT fk_interaction_tenant 
-        FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Tabela para padrões de comportamento descobertos
 CREATE TABLE IF NOT EXISTS behavior_patterns (
     id SERIAL PRIMARY KEY,
-    tenant_id INTEGER NOT NULL,
+    tenant_id VARCHAR(255) NOT NULL,
     pattern_type VARCHAR(50) NOT NULL,
     pattern_name VARCHAR(100) NOT NULL,
     pattern_data JSONB NOT NULL,
@@ -53,16 +47,13 @@ CREATE TABLE IF NOT EXISTS behavior_patterns (
     first_detected TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_seen TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     quantum_derived BOOLEAN DEFAULT false,
-    active BOOLEAN DEFAULT true,
-    
-    CONSTRAINT fk_patterns_tenant 
-        FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE
+    active BOOLEAN DEFAULT true
 );
 
 -- Tabela para conhecimento temporal
 CREATE TABLE IF NOT EXISTS temporal_knowledge (
     id SERIAL PRIMARY KEY,
-    tenant_id INTEGER NOT NULL,
+    tenant_id VARCHAR(255) NOT NULL,
     time_period VARCHAR(20) NOT NULL, -- 'short', 'medium', 'long'
     period_key BIGINT NOT NULL,
     knowledge_data JSONB NOT NULL,
@@ -70,16 +61,13 @@ CREATE TABLE IF NOT EXISTS temporal_knowledge (
     prediction_accuracy DECIMAL(5,4) DEFAULT 0.0000,
     quantum_enhanced BOOLEAN DEFAULT false,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    
-    CONSTRAINT fk_temporal_tenant 
-        FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Tabela para modelos de aprendizado por domínio
 CREATE TABLE IF NOT EXISTS domain_learning_models (
     id SERIAL PRIMARY KEY,
-    tenant_id INTEGER NOT NULL,
+    tenant_id VARCHAR(255) NOT NULL,
     domain_name VARCHAR(50) NOT NULL,
     model_data JSONB NOT NULL,
     model_version VARCHAR(10) NOT NULL DEFAULT '1.0.0',
@@ -88,17 +76,15 @@ CREATE TABLE IF NOT EXISTS domain_learning_models (
     training_samples INTEGER DEFAULT 0,
     quantum_optimized BOOLEAN DEFAULT false,
     active BOOLEAN DEFAULT true,
-    
-    CONSTRAINT fk_domain_models_tenant 
-        FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE,
-    CONSTRAINT unique_tenant_domain 
+
+    CONSTRAINT unique_tenant_domain
         UNIQUE (tenant_id, domain_name)
 );
 
 -- Tabela para correlações quânticas descobertas
 CREATE TABLE IF NOT EXISTS quantum_correlations (
     id SERIAL PRIMARY KEY,
-    tenant_id INTEGER NOT NULL,
+    tenant_id VARCHAR(255) NOT NULL,
     correlation_type VARCHAR(50) NOT NULL,
     entities JSONB NOT NULL, -- Entidades correlacionadas
     correlation_strength DECIMAL(5,4) NOT NULL,
@@ -107,16 +93,13 @@ CREATE TABLE IF NOT EXISTS quantum_correlations (
     discovery_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_verified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     verification_count INTEGER DEFAULT 1,
-    active BOOLEAN DEFAULT true,
-    
-    CONSTRAINT fk_correlations_tenant 
-        FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE
+    active BOOLEAN DEFAULT true
 );
 
 -- Tabela para predições inteligentes
 CREATE TABLE IF NOT EXISTS intelligent_predictions (
     id SERIAL PRIMARY KEY,
-    tenant_id INTEGER NOT NULL,
+    tenant_id VARCHAR(255) NOT NULL,
     prediction_type VARCHAR(50) NOT NULL,
     prediction_data JSONB NOT NULL,
     confidence_score DECIMAL(5,4) NOT NULL,
@@ -127,16 +110,13 @@ CREATE TABLE IF NOT EXISTS intelligent_predictions (
     target_date TIMESTAMP,
     verified BOOLEAN,
     verification_date TIMESTAMP,
-    accuracy_score DECIMAL(5,4),
-    
-    CONSTRAINT fk_predictions_tenant 
-        FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE
+    accuracy_score DECIMAL(5,4)
 );
 
 -- Tabela para evolução da inteligência
 CREATE TABLE IF NOT EXISTS intelligence_evolution (
     id SERIAL PRIMARY KEY,
-    tenant_id INTEGER NOT NULL,
+    tenant_id VARCHAR(255) NOT NULL,
     measurement_date DATE NOT NULL,
     accuracy DECIMAL(5,4) NOT NULL,
     adaptability DECIMAL(5,4) NOT NULL,
@@ -147,17 +127,15 @@ CREATE TABLE IF NOT EXISTS intelligence_evolution (
     interactions_processed INTEGER DEFAULT 0,
     patterns_discovered INTEGER DEFAULT 0,
     quantum_operations INTEGER DEFAULT 0,
-    
-    CONSTRAINT fk_evolution_tenant 
-        FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE,
-    CONSTRAINT unique_tenant_date 
+
+    CONSTRAINT unique_tenant_date
         UNIQUE (tenant_id, measurement_date)
 );
 
 -- Tabela para adaptações do sistema
 CREATE TABLE IF NOT EXISTS system_adaptations (
     id SERIAL PRIMARY KEY,
-    tenant_id INTEGER NOT NULL,
+    tenant_id VARCHAR(255) NOT NULL,
     adaptation_type VARCHAR(50) NOT NULL,
     domain VARCHAR(50) NOT NULL,
     adaptation_data JSONB NOT NULL,
@@ -166,10 +144,7 @@ CREATE TABLE IF NOT EXISTS system_adaptations (
     quantum_enhanced BOOLEAN DEFAULT false,
     applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     effectiveness DECIMAL(5,4),
-    measured_at TIMESTAMP,
-    
-    CONSTRAINT fk_adaptations_tenant 
-        FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE
+    measured_at TIMESTAMP
 );
 
 -- =====================================================
@@ -287,9 +262,8 @@ CREATE TRIGGER trigger_calculate_intelligence
 
 -- View para dashboard de inteligência
 CREATE OR REPLACE VIEW intelligence_dashboard AS
-SELECT 
-    t.id as tenant_id,
-    t.name as tenant_name,
+SELECT
+    ild.tenant_id,
     ild.total_interactions,
     ild.success_rate,
     ild.learning_velocity,
@@ -299,12 +273,11 @@ SELECT
     ie.learning_speed,
     ie.quantum_efficiency,
     ie.overall_intelligence,
-    (SELECT COUNT(*) FROM behavior_patterns bp WHERE bp.tenant_id = t.id AND bp.active = true) as active_patterns,
-    (SELECT COUNT(*) FROM quantum_correlations qc WHERE qc.tenant_id = t.id AND qc.active = true) as quantum_correlations_count,
-    (SELECT COUNT(*) FROM intelligent_predictions ip WHERE ip.tenant_id = t.id AND ip.created_at > CURRENT_DATE - INTERVAL '7 days') as recent_predictions
-FROM tenants t
-LEFT JOIN intelligent_learning_data ild ON t.id = ild.tenant_id
-LEFT JOIN intelligence_evolution ie ON t.id = ie.tenant_id AND ie.measurement_date = CURRENT_DATE;
+    (SELECT COUNT(*) FROM behavior_patterns bp WHERE bp.tenant_id = ild.tenant_id AND bp.active = true) as active_patterns,
+    (SELECT COUNT(*) FROM quantum_correlations qc WHERE qc.tenant_id = ild.tenant_id AND qc.active = true) as quantum_correlations_count,
+    (SELECT COUNT(*) FROM intelligent_predictions ip WHERE ip.tenant_id = ild.tenant_id AND ip.created_at > CURRENT_DATE - INTERVAL '7 days') as recent_predictions
+FROM intelligent_learning_data ild
+LEFT JOIN intelligence_evolution ie ON ild.tenant_id = ie.tenant_id AND ie.measurement_date = CURRENT_DATE;
 
 -- View para análise de padrões
 CREATE OR REPLACE VIEW pattern_analysis AS

@@ -4,7 +4,7 @@
  * 100% JavaScript - SEM TYPESCRIPT
  */
 
-const ML_CONFIG = require( '../../config/ml-config' );
+import ML_CONFIG from '../../config/ml-config.js';
 
 class QuantumInsightsService
 {

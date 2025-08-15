@@ -3,19 +3,17 @@
  * Engine de execução para TQL com inteligência quântica e aprendizado
  */
 
-const TQLParser = require( './TQLParser' );
-const QuantumTQLProcessor = require( '../quantum/QuantumTQLProcessor' );
-const AdvancedQuantumEngine = require( '../quantum/AdvancedQuantumEngine' );
-const IntelligentLearningSystem = require( '../ml/IntelligentLearningSystem' );
-const { Pool } = require( 'pg' );
-const { performance } = require( 'perf_hooks' );
+import TQLParser from './TQLParser.js';
+import AdvancedQuantumEngine from '../quantum/AdvancedQuantumEngine.js';
+import IntelligentLearningSystem from '../ml/IntelligentLearningSystem.js';
+import { Pool } from 'pg';
+import { performance } from 'perf_hooks';
 
 class TQLEngine
 {
   constructor( databaseConfig )
   {
     this.parser = new TQLParser();
-    this.quantumProcessor = new QuantumTQLProcessor();
     this.advancedQuantumEngine = new AdvancedQuantumEngine();
     this.learningSystem = new IntelligentLearningSystem();
     this.pool = new Pool( databaseConfig );
@@ -836,4 +834,4 @@ class TQLEngine
   }
 }
 
-module.exports = TQLEngine;
+export default TQLEngine;

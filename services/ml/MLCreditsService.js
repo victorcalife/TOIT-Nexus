@@ -4,8 +4,8 @@
  * 100% JavaScript - SEM TYPESCRIPT
  */
 
-const { Pool } = require( 'pg' );
-const ML_CONFIG = require( '../../config/ml-config' );
+import { Pool } from 'pg';
+import ML_CONFIG from '../../config/ml-config.js';
 
 class MLCreditsService
 {

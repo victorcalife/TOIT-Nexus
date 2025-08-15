@@ -11,17 +11,17 @@
 INSERT INTO subscription_plans (
     name,
     display_name,
-    max_scheduled_workflows,
+    max_workflows,
     ml_credits_per_month,
     auto_predictions_per_day,
     features,
     is_active
-) VALUES 
+) VALUES
 -- PLANO STANDARD
 (
     'standard',
     'NEXUS Standard',
-    5,  -- 5 workflows agendados
+    2,  -- 3 workflows agendados
     0,  -- Sem créditos manuais
     3,  -- 3 predições automáticas por dia
     '[
@@ -38,9 +38,9 @@ INSERT INTO subscription_plans (
 (
     'quantum_plus',
     'NEXUS Quantum Plus',
-    15, -- 15 workflows agendados
-    5,  -- 5 créditos ML manuais por mês
-    6,  -- 6 predições automáticas por dia
+    5, -- 5 workflows agendados
+    3,  -- 3 créditos ML manuais por mês
+    5,  -- 5 predições automáticas por dia
     '[
         "workflows_advanced",
         "dashboards_advanced",
@@ -58,8 +58,8 @@ INSERT INTO subscription_plans (
 (
     'quantum_premium', 
     'NEXUS Quantum Premium',
-    30, -- 30 workflows agendados
-    15, -- 15 créditos ML manuais por mês
+    12, -- 12 workflows agendados
+    12, -- 12 créditos ML manuais por mês
     12, -- 12 predições automáticas por dia
     '[
         "workflows_premium",

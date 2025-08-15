@@ -10,8 +10,8 @@
  * - Personalização automática por tenant
  */
 
-const AdvancedQuantumEngine = require( '../quantum/AdvancedQuantumEngine' );
-const { performance } = require( 'perf_hooks' );
+import AdvancedQuantumEngine from '../quantum/AdvancedQuantumEngine.js';
+import { performance } from 'perf_hooks';
 
 class IntelligentLearningSystem
 {
@@ -593,4 +593,4 @@ class PredictiveLearningModel
   }
 }
 
-module.exports = IntelligentLearningSystem;
+export default IntelligentLearningSystem;

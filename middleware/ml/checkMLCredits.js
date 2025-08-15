@@ -4,8 +4,8 @@
  * 100% JavaScript - SEM TYPESCRIPT
  */
 
-const MLCreditsService = require( '../../services/ml/MLCreditsService' );
-const ML_CONFIG = require( '../../config/ml-config' );
+import MLCreditsService from '../../services/ml/MLCreditsService.js';
+import ML_CONFIG from '../../config/ml-config.js';
 
 /**
  * Middleware para verificar créditos ML

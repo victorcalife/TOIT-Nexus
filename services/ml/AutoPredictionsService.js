@@ -4,11 +4,11 @@
  * 100% JavaScript - SEM TYPESCRIPT
  */
 
-const { Pool } = require( 'pg' );
-const cron = require( 'node-cron' );
-const QuantumInsightsService = require( './QuantumInsightsService' );
-const MLCreditsService = require( './MLCreditsService' );
-const ML_CONFIG = require( '../../config/ml-config' );
+import { Pool } from 'pg';
+import cron from 'node-cron';
+import QuantumInsightsService from './QuantumInsightsService.js';
+import MLCreditsService from './MLCreditsService.js';
+import ML_CONFIG from '../../config/ml-config.js';
 
 class AutoPredictionsService
 {

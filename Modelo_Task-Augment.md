@@ -1,0 +1,35 @@
+[ ] NAME:Current Task List DESCRIPTION:Root task for conversation 5fc53f5d-26ac-4e3d-bfa1-9d0f6587f143
+-[x] NAME:T1 - Sistema de Trial 7 dias Completo DESCRIPTION:Implementar sistema automático completo de trial com verificação email/telefone, APIs de verificação, schema para trials, integração com email/SMS/Stripe e automação para desativar contas expiradas
+-[x] NAME:T2 - Verificação Automática Tripla (Email + Telefone) DESCRIPTION:Sistema de verificação obrigatória com telas step-by-step, APIs /verify-email e /verify-phone, campos verified_email/verified_phone, integração SendGrid + Twilio
+-[x] NAME:T3 - Feature Adaptativa ML DESCRIPTION:Sistema ML conforme ADAPTIVE_FEATURES.md com interface para configurar ML, algoritmos adaptativos implementados, schema para ML data e integração Python ML engine
+-[x] NAME:T4 - Integração Real Calendários (Google/Apple/Outlook) DESCRIPTION:Sync real com calendários externos: interface OAuth, APIs Google/Apple/Outlook, tokens OAuth, OAuth 2.0 flows completos, sync bidirecional de eventos
+-[x] NAME:T5 - Sistema Email com Gatilhos Automáticos DESCRIPTION:Email triggers em workflows: interface configurar triggers, email parsing, trigger detection, email rules, conexões IMAP/POP3, workflow trigger execution engine
+-[x] NAME:T6 - Upload/Processamento Arquivos (.xls/.xlsx/.csv) DESCRIPTION:Sistema completo de processamento files: upload interface com preview, file parsing (Excel, CSV), metadata storage, integração ExcelJS/CSV parser, progress bars
+-[x] NAME:T7 - Sistema Tarefas Avançado (Múltiplas Opções) DESCRIPTION:Tarefas com tipos de resposta dinâmicos: form builder para diferentes tipos, dynamic form processing, schema flexível, form validation engine, conditional logic
+-[x] NAME:T8 - Workflows com Lógica Condicional DESCRIPTION:Workflows onde dependendo da resposta o fluxo segue diferentes formas: visual workflow builder com condições, execution engine com branches, workflow states, rule engine
+-[x] NAME:T9 - Sistema Departamental com Isolamento Real DESCRIPTION:Isolamento real de dados por departamento (Compras ≠ Vendas): interface gestão departamentos, middleware isolamento, row-level security, permission engine granular
+-[x] NAME:T10 - Configuração Base Dados por Usuário DESCRIPTION:Admin define dados que cada usuário vê: interface configurar data permissions, dynamic data filtering, user data permissions schema, query filtering middleware
+-[x] NAME:SETUP: Configuração Base do Sistema ML DESCRIPTION:Configurar estrutura base para implementação do sistema Quantum ML, garantindo compatibilidade total com JavaScript (sem TypeScript)
+-[x] NAME:DATABASE: Criar Migrations para Tabelas ML DESCRIPTION:Criar todas as tabelas necessárias: subscription_plans, ml_credits, ml_usage_history, auto_predictions com scripts SQL puros
+-[x] NAME:DATABASE: Seeders para Planos Padrão DESCRIPTION:Criar dados iniciais para os 3 planos (Standard, Quantum Plus, Quantum Premium) com limites e configurações
+-[x] NAME:BACKEND: MLCreditsService (JavaScript) DESCRIPTION:Implementar serviço para gerenciar créditos ML: verificar, consumir, resetar mensalmente - tudo em JavaScript puro
+-[x] NAME:BACKEND: Middleware checkMLCredits DESCRIPTION:Criar middleware para verificar créditos antes de executar operações ML, com validações e logs
+-[x] NAME:BACKEND: QuantumInsightsService DESCRIPTION:Implementar serviço principal para processamento de insights ML: predições, otimizações, detecção de anomalias
+-[x] NAME:BACKEND: Rotas API Quantum ML DESCRIPTION:Criar todas as rotas: /api/ml-credits, /api/quantum/insight, /api/quantum/predict, /api/auto-predictions
+-[x] NAME:BACKEND: AutoPredictionsService DESCRIPTION:Implementar sistema de predições automáticas com scheduler para execução em background
+-[x] NAME:BACKEND: Integração no railway-frontend.js DESCRIPTION:Integrar todos os novos serviços e rotas no servidor principal, garantindo compatibilidade
+-[x] NAME:FRONTEND: Hook useMLCredits (JavaScript) DESCRIPTION:Criar hook React para gerenciar estado dos créditos ML em toda aplicação
+-[x] NAME:FRONTEND: Componente QuantumInsightButton DESCRIPTION:Criar botão principal para executar insights ML com validação de créditos e feedback visual
+-[x] NAME:FRONTEND: Componente MLCreditsWidget DESCRIPTION:Widget para mostrar créditos disponíveis, usados e data de reset no dashboard
+-[x] NAME:FRONTEND: Página Quantum ML Dashboard DESCRIPTION:Página principal para gerenciar ML: histórico de uso, configurar predições automáticas, ver insights
+-[x] NAME:FRONTEND: Integração em Workflows DESCRIPTION:Adicionar botões Quantum Insight nos workflows existentes com contexto apropriado
+-[x] NAME:FRONTEND: Integração em Dashboards DESCRIPTION:Adicionar widgets preditivos e botões ML nos dashboards existentes
+-[x] NAME:FRONTEND: Integração em Reports DESCRIPTION:Adicionar funcionalidades ML no sistema de relatórios para insights automáticos
+-[x] NAME:FRONTEND: Página de Configuração de Planos DESCRIPTION:Interface para visualizar e gerenciar planos de assinatura com limites ML
+-[x] NAME:SISTEMA: Scheduler para Predições Automáticas DESCRIPTION:Implementar sistema de agendamento para executar predições automáticas conforme configuração do plano
+-[x] NAME:SISTEMA: Reset Mensal de Créditos DESCRIPTION:Implementar job automático para resetar créditos ML mensalmente para todos os tenants
+-[x] NAME:VALIDAÇÃO: Testes de Integração DESCRIPTION:Testar todo fluxo: consumo de créditos, execução de insights, predições automáticas, reset mensal
+-[x] NAME:VALIDAÇÃO: Testes de Interface DESCRIPTION:Testar todos os componentes React, navegação, feedback visual e experiência do usuário
+-[x] NAME:DOCUMENTAÇÃO: Guia de Uso ML DESCRIPTION:Criar documentação para usuários sobre como usar as funcionalidades Quantum ML
+-[x] NAME:DEPLOY: Preparação para Produção DESCRIPTION:Verificar todas as configurações, variáveis de ambiente e preparar deploy das funcionalidades ML
+-[x] NAME:Melhoria Quantica e Incrementação de usabilidade de prediçoes quanticas ativa no sistema para todos os componente (Workflow, Relatorios, Queries, Dashboads, Tasks, KPIs e Indicadores). Tonar o sistema extremamente inteligente. Implementar e utilizar matemática e física quantica em todos os algorítimos da TQL. Seguir regras e cálculos da pasta QLIB (C:\Users\victo\Desktop\Dodumentos Pessoais\Victor\TOIT\SISTEMAS\TOIT-Nexus\qlib) DESCRIPTION:Implementar melhoria robusta na ML, com incrementação de dados e inteligência da ML.  Criar tabela que guarda informaçoes cruciais para o crescimente da inteligência artificial de forma que ela cresça com dados e tempo de uso dos usuários. Criar algo realmente magnífico e de muita qualidade. Melhorar 50x a robustez e usabilidade do que temos atualmente no sistema.

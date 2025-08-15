@@ -11,7 +11,7 @@
  * - Pauli Correlation Encoding
  */
 
-const { performance } = require( 'perf_hooks' );
+import { performance } from 'perf_hooks';
 
 class AdvancedQuantumEngine
 {
@@ -529,4 +529,4 @@ class AmplitudeAmplification
   }
 }
 
-module.exports = AdvancedQuantumEngine;
+export default AdvancedQuantumEngine;

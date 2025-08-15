@@ -440,4 +440,4 @@ const QUANTUM_CONFIG = {
   }
 };
 
-module.exports = QUANTUM_CONFIG;
+export default QUANTUM_CONFIG;
