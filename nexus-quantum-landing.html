@@ -578,6 +578,8 @@
             box-shadow:
                 0 10px 30px rgba(0, 0, 0, 0.3),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            min-height: 450px;
+            height: 450px;
         }
 
         .quantum-circuit:hover {
@@ -2475,15 +2477,17 @@
 
         /* Container "Unidades Quânticas Ativas" - posicionado 45px acima + sombra 3D sutil */
         .quantum-circuit {
-            transform: translateX(10px) translateY(-25px) scale(0.82) !important;
+            transform: translateX(10px) translateY(-25px) scale(0.95) !important;
             box-shadow:
                 0 15px 35px rgba(0, 0, 0, 0.4),
                 0 8px 20px rgba(99, 102, 241, 0.15),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+            min-height: 450px !important;
+            height: 450px !important;
         }
 
         .quantum-circuit:hover {
-            transform: translateY(-10px) scale(0.88) rotateX(5deg) rotateY(5deg) translateZ(20px) !important;
+            transform: translateY(-10px) scale(0.98) rotateX(5deg) rotateY(5deg) translateZ(20px) !important;
             box-shadow:
                 0 25px 60px rgba(99, 102, 241, 0.25),
                 0 20px 45px rgba(0, 0, 0, 0.5),
@@ -3040,6 +3044,8 @@
                     0 12px 25px rgba(0, 0, 0, 0.3),
                     0 6px 15px rgba(99, 102, 241, 0.12),
                     inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+                min-height: 400px !important;
+                height: 400px !important;
             }
 
             .quantum-circuit:hover {
@@ -3104,6 +3110,8 @@
 
             .quantum-circuit {
                 padding: 1rem;
+                min-height: 350px !important;
+                height: 350px !important;
             }
 
             .quantum-metrics {
@@ -3334,69 +3342,8 @@
                 <!-- Discover More CTA -->
 
             </div>
-            <div class="quantum-circuit">
-                <div class="circuit-header">
-                    <h2 class="circuit-title">Unidades Quânticas Ativas</h2>
-                    <p class="circuit-subtitle">Processamento em tempo real</p>
-                </div>
-
-                <div class="quantum-qubits">
-                    <div class="qubit-line">
-                        <div class="qubit-label">|q₀⟩</div>
-                        <div class="qubit-wire"></div>
-                        <div class="quantum-gate">H</div>
-                        <div class="qubit-wire"></div>
-                        <div class="quantum-gate">CNOT</div>
-                        <div class="qubit-wire"></div>
-                        <div class="qubit-state">|+⟩ ⊗ |0⟩</div>
-                    </div>
-                    <div class="qubit-line">
-                        <div class="qubit-label">|q₁⟩</div>
-                        <div class="qubit-wire"></div>
-                        <div class="quantum-gate">I</div>
-                        <div class="qubit-wire"></div>
-                        <div class="quantum-gate">CNOT</div>
-                        <div class="qubit-wire"></div>
-                        <div class="qubit-state">|0⟩ ⊗ |+⟩</div>
-                    </div>
-                    <div class="qubit-line">
-                        <div class="qubit-label">|q₂⟩</div>
-                        <div class="qubit-wire"></div>
-                        <div class="quantum-gate">X</div>
-                        <div class="qubit-wire"></div>
-                        <div class="quantum-gate">T</div>
-                        <div class="qubit-wire"></div>
-                        <div class="qubit-state">e^(iπ/4)|1⟩</div>
-                    </div>
-                    <div class="qubit-line">
-                        <div class="qubit-label">|q₃⟩</div>
-                        <div class="qubit-wire"></div>
-                        <div class="quantum-gate">Y</div>
-                        <div class="qubit-wire"></div>
-                        <div class="quantum-gate">S</div>
-                        <div class="qubit-wire"></div>
-                        <div class="qubit-state">i|0⟩</div>
-                    </div>
-                </div>
-
-                <div class="quantum-metrics">
-                    <div class="metric-card">
-                        <div class="metric-value" id="quantumFidelity">99.95%</div>
-                        <div class="metric-label">Disponibilidade</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-value" id="quantumVolume">128</div>
-                        <div class="metric-label">Volume Quântico</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-value" id="activeOperations">12</div>
-                        <div class="metric-label">Operações Ativas</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-value" id="quantumAdvantage">847x</div>
-                        <div class="metric-label">Vantagem Atual</div>
-                    </div>
-                </div>
+            <div class="quantum-circuit" id="quantum-game-container">
+                <!-- Quantum Game Widget será inserido aqui via JavaScript -->
             </div>
         </div>
     </section>
@@ -5699,6 +5646,690 @@
 
             // Update active nav on load
             updateActiveNavLink();
+        } );
+
+        // =========================================================================
+        // QUANTUM GAME WIDGET - Integração do joguinho explicativo
+        // =========================================================================
+
+        class QuantumGameWidget
+        {
+            constructor( containerId )
+            {
+                this.container = document.getElementById( containerId );
+                this.currentScreen = 1;
+                this.gameState = {
+                    strategy: null,
+                    processing: false,
+                    timeElapsed: 0,
+                    totalCost: 0,
+                    savings: 0,
+                    progress: 0,
+                    timer: null
+                };
+                this.init();
+            }
+
+            init()
+            {
+                this.createParticles();
+                this.render();
+                this.bindEvents();
+            }
+
+            createParticles()
+            {
+                const particlesContainer = document.createElement( 'div' );
+                particlesContainer.className = 'quantum-particles';
+                particlesContainer.style.cssText = `
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    pointer-events: none;
+                    z-index: 1;
+                `;
+
+                for ( let i = 0; i < 15; i++ )
+                {
+                    const particle = document.createElement( 'div' );
+                    particle.className = 'quantum-particle';
+                    particle.style.cssText = `
+                        position: absolute;
+                        width: 1px;
+                        height: 1px;
+                        background: #00ffff;
+                        border-radius: 50%;
+                        opacity: 0.3;
+                        left: ${ Math.random() * 100 }%;
+                        animation: quantumFloat ${ 8 + Math.random() * 5 }s infinite linear;
+                        animation-delay: ${ Math.random() * 10 }s;
+                    `;
+                    particlesContainer.appendChild( particle );
+                }
+
+                this.container.appendChild( particlesContainer );
+            }
+
+            render()
+            {
+                this.container.innerHTML = `
+                    <style>
+                        .quantum-game-container {
+                            width: 100%;
+                            height: 100%;
+                            min-height: 400px;
+                            background: rgba(10, 15, 28, 0.95);
+                            border-radius: 15px;
+                            position: relative;
+                            overflow: hidden;
+                            border: 1px solid rgba(0, 255, 255, 0.2);
+                            box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
+                        }
+
+                        @keyframes quantumFloat {
+                            from {
+                                transform: translateY(100%) translateX(0);
+                                opacity: 0;
+                            }
+                            10% {
+                                opacity: 0.3;
+                            }
+                            90% {
+                                opacity: 0.3;
+                            }
+                            to {
+                                transform: translateY(-100%) translateX(50px);
+                                opacity: 0;
+                            }
+                        }
+
+                        .game-screen {
+                            position: absolute;
+                            width: 100%;
+                            height: 100%;
+                            padding: 12px;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            opacity: 0;
+                            transform: translateX(100%);
+                            transition: all 0.4s ease;
+                            overflow-y: auto;
+                            z-index: 10;
+                        }
+
+                        .game-screen.active {
+                            opacity: 1;
+                            transform: translateX(0);
+                        }
+
+                        .game-screen::-webkit-scrollbar {
+                            width: 3px;
+                        }
+
+                        .game-screen::-webkit-scrollbar-track {
+                            background: rgba(255, 255, 255, 0.05);
+                        }
+
+                        .game-screen::-webkit-scrollbar-thumb {
+                            background: rgba(0, 255, 255, 0.3);
+                            border-radius: 2px;
+                        }
+
+                        .game-logo {
+                            font-size: 1.2em;
+                            font-weight: 900;
+                            background: linear-gradient(135deg, #00ffff, #0080ff);
+                            -webkit-background-clip: text;
+                            -webkit-text-fill-color: transparent;
+                            text-align: center;
+                            margin-bottom: 8px;
+                        }
+
+                        .game-title {
+                            font-size: 0.9em;
+                            color: #00ffff;
+                            text-align: center;
+                            margin-bottom: 8px;
+                        }
+
+                        .game-card {
+                            background: rgba(0, 40, 80, 0.3);
+                            border: 1px solid rgba(0, 255, 255, 0.2);
+                            border-radius: 6px;
+                            padding: 10px;
+                            margin: 6px 0;
+                            width: 100%;
+                            font-size: 0.75em;
+                            line-height: 1.3;
+                        }
+
+                        .game-btn {
+                            padding: 6px 16px;
+                            background: linear-gradient(135deg, #0080ff, #00ffff);
+                            border: none;
+                            border-radius: 12px;
+                            color: white;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                            margin: 6px;
+                            font-size: 0.8em;
+                        }
+
+                        .game-btn:hover {
+                            transform: translateY(-1px);
+                            box-shadow: 0 3px 10px rgba(0, 255, 255, 0.4);
+                        }
+
+                        .strategies {
+                            display: grid;
+                            grid-template-columns: repeat(3, 1fr);
+                            gap: 6px;
+                            margin: 8px 0;
+                            width: 100%;
+                        }
+
+                        .strategy-card {
+                            background: rgba(0, 40, 80, 0.4);
+                            border: 2px solid rgba(0, 255, 255, 0.2);
+                            border-radius: 6px;
+                            padding: 6px;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                            text-align: center;
+                            font-size: 0.7em;
+                        }
+
+                        .strategy-card:hover {
+                            transform: translateY(-1px);
+                            border-color: #00ffff;
+                        }
+
+                        .strategy-card.active {
+                            background: rgba(0, 255, 255, 0.1);
+                            border-color: #00ff88;
+                            box-shadow: 0 0 8px rgba(0, 255, 136, 0.3);
+                        }
+
+                        .strategy-icon {
+                            font-size: 1.2em;
+                            margin-bottom: 4px;
+                        }
+
+                        .strategy-name {
+                            font-weight: bold;
+                            color: #00ffff;
+                            margin-bottom: 2px;
+                        }
+
+                        .strategy-cost {
+                            font-size: 0.7em;
+                            opacity: 0.8;
+                        }
+
+                        .game-area {
+                            width: 100%;
+                            background: rgba(0, 20, 40, 0.5);
+                            border: 2px solid rgba(0, 255, 255, 0.3);
+                            border-radius: 8px;
+                            padding: 8px;
+                            position: relative;
+                            display: flex;
+                            flex-direction: column;
+                        }
+
+                        .game-header {
+                            display: flex;
+                            justify-content: space-between;
+                            margin-bottom: 8px;
+                            padding-bottom: 6px;
+                            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+                            font-size: 0.7em;
+                        }
+
+                        .game-stats {
+                            display: flex;
+                            gap: 10px;
+                        }
+
+                        .stat {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                        }
+
+                        .stat-label {
+                            font-size: 0.6em;
+                            opacity: 0.7;
+                            margin-bottom: 2px;
+                        }
+
+                        .stat-value {
+                            font-size: 0.8em;
+                            font-weight: bold;
+                            color: #00ffff;
+                        }
+
+                        .progress-bar {
+                            width: 100%;
+                            height: 16px;
+                            background: rgba(0, 0, 0, 0.5);
+                            border-radius: 8px;
+                            overflow: hidden;
+                            position: relative;
+                            margin: 6px 0;
+                        }
+
+                        .progress-fill {
+                            height: 100%;
+                            background: linear-gradient(90deg, #0080ff, #00ffff);
+                            transition: width 0.5s ease;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            color: white;
+                            font-weight: bold;
+                            font-size: 0.7em;
+                        }
+
+                        .navigation {
+                            position: absolute;
+                            bottom: 6px;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            display: flex;
+                            gap: 4px;
+                            z-index: 100;
+                        }
+
+                        .nav-dot {
+                            width: 5px;
+                            height: 5px;
+                            border-radius: 50%;
+                            background: rgba(255, 255, 255, 0.2);
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                        }
+
+                        .nav-dot.active {
+                            background: #00ffff;
+                            transform: scale(1.2);
+                            box-shadow: 0 0 4px #00ffff;
+                        }
+
+                        @media (max-width: 768px) {
+                            .strategies {
+                                grid-template-columns: 1fr;
+                            }
+
+                            .game-stats {
+                                flex-direction: column;
+                                gap: 6px;
+                            }
+                        }
+                    </style>
+
+                    ${ this.createParticlesHTML() }
+
+                    <!-- Tela 1: Introdução -->
+                    <div class="game-screen ${ this.currentScreen === 1 ? 'active' : '' }">
+                        <div class="game-logo">TOITNEXUS</div>
+                        <h2 class="game-title">Revolução Quântica + TQL</h2>
+
+                        <div class="game-card">
+                            <h3 style="text-align: center; color: #00ff88; margin: 0 0 6px 0;">
+                                🚀 Primeira Aplicação Comercial Quântica
+                            </h3>
+                            <p style="text-align: center; margin: 6px 0; font-size: 0.7em;">
+                                Combinamos o poder da <strong>computação quântica</strong> com a simplicidade da
+                                <strong> TQL (TOIT Query Language)</strong> - uma linguagem 100% em português.
+                            </p>
+                            <p style="text-align: center; font-size: 0.65em; opacity: 0.8;">
+                                💡 Descubra como economizar até 99.99% em custos computacionais!
+                            </p>
+                        </div>
+
+                        <button class="game-btn" onclick="quantumGame.nextScreen()">
+                            Começar Jornada →
+                        </button>
+                    </div>
+
+                    <!-- Tela 2: O que é TQL -->
+                    <div class="game-screen ${ this.currentScreen === 2 ? 'active' : '' }">
+                        <h2 class="game-title">TQL: Linguagem em Português</h2>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 0;">
+                            <div style="background: rgba(255, 68, 68, 0.05); border: 1px solid #ff4444; border-radius: 4px; padding: 6px;">
+                                <h4 style="color: #ff4444; margin: 0 0 4px 0; font-size: 0.7em;">❌ SQL Tradicional</h4>
+                                <pre style="margin: 0; font-size: 0.55em; font-family: monospace;">SELECT SUM(sales.value)
+FROM sales
+WHERE date >= '2025-01-01'
+GROUP BY product_id
+-- Complexo e em inglês</pre>
+                            </div>
+
+                            <div style="background: rgba(0, 255, 136, 0.05); border: 1px solid #00ff88; border-radius: 4px; padding: 6px;">
+                                <h4 style="color: #00ff88; margin: 0 0 4px 0; font-size: 0.7em;">✅ TQL em Português</h4>
+                                <pre style="margin: 0; font-size: 0.55em; font-family: monospace;">vendas_mes = SOMAR valor
+    DE vendas ONDE data = MES(0);
+
+MAX(10) produtos POR vendas;
+
+# Simples e intuitivo!</pre>
+                            </div>
+                        </div>
+
+                        <div class="game-card">
+                            <h3 style="margin: 0 0 6px 0;">🎯 Vantagens da TQL:</h3>
+                            <ul style="line-height: 1.3; margin-left: 12px; font-size: 0.7em;">
+                                <li>📝 <strong>100% em português</strong></li>
+                                <li>⚡ <strong>10x mais simples</strong> que SQL</li>
+                                <li>🚀 <strong>Otimizada para quantum</strong></li>
+                            </ul>
+                        </div>
+
+                        <button class="game-btn" onclick="quantumGame.nextScreen()">
+                            Ver Quando Usar Quantum →
+                        </button>
+                    </div>
+
+                    <!-- Tela 3: Quando usar Quantum -->
+                    <div class="game-screen ${ this.currentScreen === 3 ? 'active' : '' }">
+                        <h2 class="game-title">Quando TQL Ativa Modo Quântico?</h2>
+
+                        <div class="strategies">
+                            <div class="strategy-card">
+                                <div class="strategy-icon">📊</div>
+                                <div class="strategy-name">Pequeno</div>
+                                <div class="strategy-cost">&lt; 1GB</div>
+                                <p style="margin: 4px 0 0 0; font-size: 0.6em;">
+                                    Local<br/>
+                                    <strong style="color: #00ff88;">R$ 0</strong>
+                                </p>
+                            </div>
+
+                            <div class="strategy-card">
+                                <div class="strategy-icon">☁️</div>
+                                <div class="strategy-name">Médio</div>
+                                <div class="strategy-cost">1GB-1TB</div>
+                                <p style="margin: 4px 0 0 0; font-size: 0.6em;">
+                                    Cloud<br/>
+                                    <strong style="color: #ffaa00;">R$ 0.10/GB</strong>
+                                </p>
+                            </div>
+
+                            <div class="strategy-card active">
+                                <div class="strategy-icon">⚛️</div>
+                                <div class="strategy-name">Big Data</div>
+                                <div class="strategy-cost">&gt; 1TB</div>
+                                <p style="margin: 4px 0 0 0; font-size: 0.6em;">
+                                    Quantum!<br/>
+                                    <strong style="color: #ff4444;">R$ 1.60/seg</strong>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="game-card">
+                            <h3 style="margin: 0 0 6px 0;">⚠️ Importante sobre Quantum:</h3>
+                            <ul style="line-height: 1.3; margin-left: 12px; font-size: 0.65em;">
+                                <li>💸 <strong>Custo mínimo:</strong> R$ 1.60/segundo</li>
+                                <li>📊 <strong>Só compensa:</strong> Big Data, ML complexo</li>
+                                <li>🎯 <strong>TQL otimiza automaticamente</strong></li>
+                            </ul>
+                        </div>
+
+                        <button class="game-btn" onclick="quantumGame.nextScreen()">
+                            Jogar Simulação →
+                        </button>
+                    </div>
+
+                    <!-- Tela 4: Game Interativo -->
+                    <div class="game-screen ${ this.currentScreen === 4 ? 'active' : '' }">
+                        <h2 class="game-title">Simulador de Economia Quântica</h2>
+
+                        <div class="game-area">
+                            <div class="game-header">
+                                <div>
+                                    <h3 style="margin: 0; font-size: 0.8em;">1.000 Consultas TQL (5TB)</h3>
+                                    <p style="font-size: 0.6em; opacity: 0.7; margin: 1px 0 0 0;">
+                                        Cada consulta analisa 5TB
+                                    </p>
+                                </div>
+                                <div class="game-stats">
+                                    <div class="stat">
+                                        <span class="stat-label">Tempo</span>
+                                        <span class="stat-value">${ this.gameState.timeElapsed.toFixed( 1 ) }s</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-label">Custo</span>
+                                        <span class="stat-value">R$ ${ this.gameState.totalCost.toFixed( 2 ) }</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-label">Economia</span>
+                                        <span class="stat-value" style="color: #00ff88;">R$ ${ this.gameState.savings.toFixed( 2 ) }</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="flex: 1;">
+                                <h4 style="margin: 0 0 6px 0; font-size: 0.8em;">Escolha sua Estratégia:</h4>
+
+                                <div class="strategies">
+                                    <div class="strategy-card ${ this.gameState.strategy === 'individual' ? 'active' : '' }" onclick="quantumGame.selectStrategy('individual')">
+                                        <div class="strategy-icon">🚶</div>
+                                        <div class="strategy-name">Individual</div>
+                                        <div class="strategy-cost">1 query = 1 seg</div>
+                                        <p style="font-size: 0.6em; margin: 2px 0 0 0;">
+                                            R$ 1.600,00
+                                        </p>
+                                    </div>
+
+                                    <div class="strategy-card ${ this.gameState.strategy === 'batch' ? 'active' : '' }" onclick="quantumGame.selectStrategy('batch')">
+                                        <div class="strategy-icon">📦</div>
+                                        <div class="strategy-name">Batch TQL</div>
+                                        <div class="strategy-cost">1000 = 1 seg</div>
+                                        <p style="font-size: 0.6em; margin: 2px 0 0 0;">
+                                            R$ 1,60
+                                        </p>
+                                    </div>
+
+                                    <div class="strategy-card ${ this.gameState.strategy === 'collab' ? 'active' : '' }" onclick="quantumGame.selectStrategy('collab')">
+                                        <div class="strategy-icon">🤝</div>
+                                        <div class="strategy-name">Colaborativo</div>
+                                        <div class="strategy-cost">10 empresas</div>
+                                        <p style="font-size: 0.6em; margin: 2px 0 0 0;">
+                                            R$ 0,16
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${ this.gameState.progress }%;">
+                                        ${ Math.floor( this.gameState.progress ) }%
+                                    </div>
+                                </div>
+
+                                <button class="game-btn" onclick="quantumGame.startProcessing()" ${ this.gameState.processing ? 'disabled' : '' }>
+                                    ${ this.gameState.processing ? '⏳ Processando...' : '▶️ Processar Consultas' }
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tela 5: Resultados -->
+                    <div class="game-screen ${ this.currentScreen === 5 ? 'active' : '' }">
+                        <div class="game-logo">TOITNEXUS</div>
+                        <h2 class="game-title">🎉 Você Domina TQL + Quantum!</h2>
+
+                        <div class="game-card">
+                            <h3 style="text-align: center; color: #00ff88; margin: 0 0 8px 0;">📊 Seus Resultados:</h3>
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 8px 0;">
+                                <div style="text-align: center;">
+                                    <div style="font-size: 1.2em; color: #00ffff;">${ this.gameState.timeElapsed.toFixed( 1 ) }s</div>
+                                    <div style="font-size: 0.6em; opacity: 0.7;">Tempo Total</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 1.2em; color: #ff4444;">R$ ${ this.gameState.totalCost.toFixed( 2 ) }</div>
+                                    <div style="font-size: 0.6em; opacity: 0.7;">Custo Final</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 1.2em; color: #00ff88;">R$ ${ this.gameState.savings.toFixed( 2 ) }</div>
+                                    <div style="font-size: 0.6em; opacity: 0.7;">Economia</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="game-card">
+                            <h3 style="margin: 0 0 6px 0;">✅ O que você aprendeu:</h3>
+                            <ul style="line-height: 1.3; margin-left: 12px; font-size: 0.65em;">
+                                <li>📝 <strong>TQL:</strong> Consultas 100% em português</li>
+                                <li>⚡ <strong>Otimização:</strong> TQL detecta volume automaticamente</li>
+                                <li>💰 <strong>Economia:</strong> Batch economiza 99.9%</li>
+                                <li>🤝 <strong>Colaboração:</strong> Dividir custos economiza 99.99%</li>
+                            </ul>
+                        </div>
+
+                        <div style="display: flex; justify-content: center; gap: 8px;">
+                            <button class="game-btn" onclick="quantumGame.restart()">
+                                🔄 Jogar Novamente
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Navegação -->
+                    <div class="navigation">
+                        ${ [ 1, 2, 3, 4, 5 ].map( num => `
+                            <div class="nav-dot ${ this.currentScreen === num ? 'active' : '' }" onclick="quantumGame.goToScreen(${ num })"></div>
+                        `).join( '' ) }
+                    </div>
+                `;
+            }
+
+            createParticlesHTML()
+            {
+                return `<div class="quantum-particles" style="position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 1;"></div>`;
+            }
+
+            nextScreen()
+            {
+                if ( this.currentScreen < 5 )
+                {
+                    this.currentScreen++;
+                    this.render();
+                }
+            }
+
+            goToScreen( screenNumber )
+            {
+                this.currentScreen = screenNumber;
+                this.render();
+            }
+
+            selectStrategy( strategy )
+            {
+                this.gameState.strategy = strategy;
+                this.render();
+            }
+
+            startProcessing()
+            {
+                if ( !this.gameState.strategy )
+                {
+                    alert( 'Selecione uma estratégia primeiro!' );
+                    return;
+                }
+
+                if ( this.gameState.processing ) return;
+
+                this.gameState.processing = true;
+                this.gameState.timeElapsed = 0;
+                this.gameState.progress = 0;
+
+                let duration = 1000;
+                let finalCost = 0;
+
+                if ( this.gameState.strategy === 'individual' )
+                {
+                    duration = 5000;
+                    finalCost = 1600.00;
+                } else if ( this.gameState.strategy === 'batch' )
+                {
+                    duration = 1000;
+                    finalCost = 1.60;
+                } else if ( this.gameState.strategy === 'collab' )
+                {
+                    duration = 1000;
+                    finalCost = 0.16;
+                }
+
+                const individualCost = 1600.00;
+                const savings = individualCost - finalCost;
+
+                const updateInterval = 100;
+                const steps = duration / updateInterval;
+                let currentStep = 0;
+
+                const timer = setInterval( () =>
+                {
+                    currentStep++;
+                    const progress = ( currentStep / steps ) * 100;
+                    const timeElapsed = ( currentStep * updateInterval ) / 1000;
+
+                    let totalCost = finalCost;
+                    if ( this.gameState.strategy === 'individual' )
+                    {
+                        totalCost = ( progress / 100 ) * finalCost;
+                    }
+
+                    this.gameState.progress = progress;
+                    this.gameState.timeElapsed = timeElapsed;
+                    this.gameState.totalCost = totalCost;
+                    this.gameState.savings = savings;
+
+                    this.render();
+
+                    if ( currentStep >= steps )
+                    {
+                        clearInterval( timer );
+                        this.gameState.processing = false;
+                        setTimeout( () =>
+                        {
+                            this.currentScreen = 5;
+                            this.render();
+                        }, 1000 );
+                    }
+                }, updateInterval );
+            }
+
+            restart()
+            {
+                this.gameState = {
+                    strategy: null,
+                    processing: false,
+                    timeElapsed: 0,
+                    totalCost: 0,
+                    savings: 0,
+                    progress: 0,
+                    timer: null
+                };
+                this.currentScreen = 1;
+                this.render();
+            }
+        }
+
+        // Inicializar o jogo quando a página carregar
+        document.addEventListener( 'DOMContentLoaded', function ()
+        {
+            // Aguardar um pouco para garantir que o container existe
+            setTimeout( () =>
+            {
+                const gameContainer = document.getElementById( 'quantum-game-container' );
+                if ( gameContainer )
+                {
+                    window.quantumGame = new QuantumGameWidget( 'quantum-game-container' );
+                }
+            }, 500 );
         } );
     </script>
 </body>

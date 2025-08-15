@@ -3,9 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ChartLine, Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { StandardHeader } from "@/components/standard-header";
 import { formatCpf, cleanCpf, validateCpf } from "@/lib/utils";
 import workflowLogo from "@/assets/SELOtoit-workflow-logo.svg";
 
@@ -106,13 +105,21 @@ export default function Login()
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      <StandardHeader showLoginButton={ false } />
+    <div className="min-h-screen bg-gray-100">
+      {/* Header simples */ }
+      <div className="absolute top-4 left-4">
+        <button
+          onClick={ () => window.location.href = '/' }
+          className="text-gray-800 hover:text-black text-sm font-bold bg-white px-3 py-1 rounded shadow"
+        >
+          ← Voltar para início
+        </button>
+      </div>
 
-      <div className="flex items-center justify-center px-4 pt-20">
+      <div className="flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
           {/* Logo no container de login */ }
-          <div className="text-center mb-8">
+          <div className="text-center mb-8 bg-white p-6 rounded-lg shadow-lg">
             <div className="flex justify-center mb-4">
               <img
                 src={ workflowLogo }
@@ -120,24 +127,29 @@ export default function Login()
                 className="h-20 w-auto opacity-90"
               />
             </div>
-            <p className="text-gray-600 mt-2">
+            <h1 className="text-2xl font-bold text-black mb-2">
+              TOIT Nexus
+            </h1>
+            <p className="text-gray-800 mt-2 font-medium">
               Faça login em sua conta
             </p>
           </div>
 
-          <Card className="border-0 shadow-xl">
-            <CardHeader className="space-y-1">
-              <CardTitle className="text-2xl font-semibold text-center">
+          <Card className="border-2 border-black shadow-2xl bg-white">
+            <CardHeader className="space-y-1 pb-6 bg-blue-50 rounded-t-lg border-b-2 border-gray-300">
+              <CardTitle className="text-2xl font-bold text-center text-black">
                 Entrar na Plataforma
               </CardTitle>
-              <CardDescription className="text-center">
+              <CardDescription className="text-center text-black font-bold">
                 Digite seu CPF e senha para acessar a plataforma TOIT Nexus
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <form onSubmit={ handleSubmit } className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="cpf">CPF</Label>
+            <CardContent className="pt-6 bg-white">
+              <form onSubmit={ handleSubmit } className="space-y-6">
+                <div className="space-y-3">
+                  <Label htmlFor="cpf" className="text-lg font-bold text-black block">
+                    CPF *
+                  </Label>
                   <Input
                     id="cpf"
                     type="text"
@@ -145,13 +157,15 @@ export default function Login()
                     value={ cpf }
                     onChange={ handleCpfChange }
                     maxLength={ 14 }
-                    className="text-lg"
+                    className="text-xl h-14 border-4 border-black focus:border-blue-600 focus:ring-4 focus:ring-blue-200 text-black placeholder:text-gray-600 bg-gray-50 font-bold"
                     required
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="password">Senha</Label>
+                <div className="space-y-3">
+                  <Label htmlFor="password" className="text-lg font-bold text-black block">
+                    Senha *
+                  </Label>
                   <div className="relative">
                     <Input
                       id="password"
@@ -159,20 +173,20 @@ export default function Login()
                       placeholder="Digite sua senha"
                       value={ password }
                       onChange={ ( e ) => setPassword( e.target.value ) }
-                      className="text-lg pr-12"
+                      className="text-xl h-14 pr-16 border-4 border-black focus:border-blue-600 focus:ring-4 focus:ring-blue-200 text-black placeholder:text-gray-600 bg-gray-50 font-bold"
                       required
                     />
                     <Button
                       type="button"
                       variant="ghost"
                       size="sm"
-                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-gray-100"
+                      className="absolute right-0 top-0 h-full px-4 py-2 hover:bg-gray-300 text-black hover:text-blue-600 border-l-4 border-black bg-gray-200"
                       onClick={ () => setShowPassword( !showPassword ) }
                     >
                       { showPassword ? (
-                        <EyeOff className="h-4 w-4 text-gray-400" />
+                        <EyeOff className="h-6 w-6" />
                       ) : (
-                        <Eye className="h-4 w-4 text-gray-400" />
+                        <Eye className="h-6 w-6" />
                       ) }
                     </Button>
                   </div>
@@ -180,27 +194,50 @@ export default function Login()
 
                 <Button
                   type="submit"
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                  className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg shadow-md hover:shadow-lg transition-all duration-200"
                   disabled={ isLoading }
                 >
-                  { isLoading ? "Entrando..." : "Entrar" }
+                  { isLoading ? (
+                    <div className="flex items-center space-x-2">
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                      <span>Entrando...</span>
+                    </div>
+                  ) : (
+                    "Entrar"
+                  ) }
                 </Button>
 
-                <div className="text-center mt-4">
+                <div className="text-center mt-6">
                   <p className="text-sm text-gray-600">
                     Não tem uma conta?{ " " }
                     <button
                       type="button"
-                      className="text-blue-600 hover:text-blue-800 font-medium"
+                      className="text-blue-600 hover:text-blue-800 font-medium underline-offset-4 hover:underline transition-colors"
                       onClick={ () => window.location.href = '/' }
                     >
                       Entre em contato
                     </button>
                   </p>
                 </div>
+
+                <div className="text-center mt-4">
+                  <p className="text-xs text-gray-500">
+                    Ao fazer login, você concorda com nossos{ " " }
+                    <a href="#" className="text-blue-600 hover:text-blue-800 underline-offset-4 hover:underline">
+                      Termos de Uso
+                    </a>
+                  </p>
+                </div>
               </form>
             </CardContent>
           </Card>
+
+          {/* Rodapé informativo */ }
+          <div className="text-center mt-8">
+            <p className="text-sm text-gray-500">
+              © 2025 TOIT Nexus. Todos os direitos reservados.
+            </p>
+          </div>
         </div>
       </div>
     </div>

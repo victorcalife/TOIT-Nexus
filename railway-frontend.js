@@ -299,7 +299,22 @@ async function initializeBackend()
     {
       console.log( '👤 [USER] Verificação de usuário logado' );
 
-      // Mock de usuário logado para teste
+      // Verificar se há sessão ativa
+      const authHeader = req.headers.authorization;
+      const sessionCookie = req.cookies?.session;
+
+      // Se não há autenticação, retornar 401
+      if ( !authHeader && !sessionCookie )
+      {
+        console.log( '❌ [USER] Usuário não autenticado' );
+        return res.status( 401 ).json( {
+          success: false,
+          message: 'Não autenticado'
+        } );
+      }
+
+      // Mock de usuário logado apenas se autenticado
+      console.log( '✅ [USER] Usuário autenticado encontrado' );
       res.json( {
         success: true,
         user: {
