@@ -4,15 +4,17 @@
  * 100% JavaScript - SEM TYPESCRIPT
  */
 
-const { Pool } = require('pg');
-const ML_CONFIG = require('../../config/ml-config');
+const { Pool } = require( 'pg' );
+const ML_CONFIG = require( '../../config/ml-config' );
 
-class MLCreditsService {
-  constructor() {
-    this.pool = new Pool({
+class MLCreditsService
+{
+  constructor()
+  {
+    this.pool = new Pool( {
       connectionString: process.env.DATABASE_URL,
       ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
-    });
+    } );
   }
 
   /**
@@ -20,9 +22,11 @@ class MLCreditsService {
    * @param {string} tenantId - ID do tenant
    * @returns {Object} Informações dos créditos
    */
-  async checkCredits(tenantId) {
-    try {
-      const result = await this.pool.query(`
+  async checkCredits( tenantId )
+  {
+    try
+    {
+      const result = await this.pool.query( `
         SELECT 
           mc.credits_total,
           mc.credits_used,
@@ -35,9 +39,10 @@ class MLCreditsService {
         FROM ml_credits mc
         JOIN subscription_plans sp ON mc.subscription_plan_id = sp.id
         WHERE mc.tenant_id = $1 AND mc.is_active = true
-      `, [tenantId]);
+      `, [ tenantId ] );
 
-      if (result.rows.length === 0) {
+      if ( result.rows.length === 0 )
+      {
         // Tenant não tem créditos configurados
         return {
           credits_total: 0,
@@ -49,15 +54,16 @@ class MLCreditsService {
         };
       }
 
-      const credits = result.rows[0];
-      
+      const credits = result.rows[ 0 ];
+
       // Verificar se precisa de reset automático
-      if (new Date(credits.reset_date) <= new Date()) {
-        console.log(`🔄 [ML-CREDITS] Reset automático necessário para tenant: ${tenantId}`);
-        await this.resetMonthlyCredits(tenantId);
-        
+      if ( new Date( credits.reset_date ) <= new Date() )
+      {
+        console.log( `🔄 [ML-CREDITS] Reset automático necessário para tenant: ${ tenantId }` );
+        await this.resetMonthlyCredits( tenantId );
+
         // Buscar dados atualizados
-        return await this.checkCredits(tenantId);
+        return await this.checkCredits( tenantId );
       }
 
       return {
@@ -72,9 +78,10 @@ class MLCreditsService {
         needs_setup: false
       };
 
-    } catch (error) {
-      console.error('❌ [ML-CREDITS] Erro ao verificar créditos:', error);
-      throw new Error('Erro ao verificar créditos ML');
+    } catch ( error )
+    {
+      console.error( '❌ [ML-CREDITS] Erro ao verificar créditos:', error );
+      throw new Error( 'Erro ao verificar créditos ML' );
     }
   }
 
@@ -87,46 +94,50 @@ class MLCreditsService {
    * @param {Object} metadata - Dados adicionais (opcional)
    * @returns {boolean} Sucesso na operação
    */
-  async consumeCredits(tenantId, amount = 1, context = 'manual', userId = null, metadata = {}) {
+  async consumeCredits( tenantId, amount = 1, context = 'manual', userId = null, metadata = {} )
+  {
     const client = await this.pool.connect();
-    
-    try {
-      await client.query('BEGIN');
+
+    try
+    {
+      await client.query( 'BEGIN' );
 
       // Verificar créditos disponíveis com lock
-      const creditsResult = await client.query(`
+      const creditsResult = await client.query( `
         SELECT credits_available, credits_used, credits_total
         FROM ml_credits 
         WHERE tenant_id = $1 AND is_active = true
         FOR UPDATE
-      `, [tenantId]);
+      `, [ tenantId ] );
 
-      if (creditsResult.rows.length === 0) {
-        throw new Error('Tenant não possui configuração de créditos ML');
+      if ( creditsResult.rows.length === 0 )
+      {
+        throw new Error( 'Tenant não possui configuração de créditos ML' );
       }
 
-      const currentCredits = creditsResult.rows[0];
+      const currentCredits = creditsResult.rows[ 0 ];
 
-      if (currentCredits.credits_available < amount) {
-        await client.query('ROLLBACK');
-        console.log(`❌ [ML-CREDITS] Créditos insuficientes - Tenant: ${tenantId}, Disponível: ${currentCredits.credits_available}, Necessário: ${amount}`);
+      if ( currentCredits.credits_available < amount )
+      {
+        await client.query( 'ROLLBACK' );
+        console.log( `❌ [ML-CREDITS] Créditos insuficientes - Tenant: ${ tenantId }, Disponível: ${ currentCredits.credits_available }, Necessário: ${ amount }` );
         return false;
       }
 
       // Consumir créditos
-      const updateResult = await client.query(`
+      const updateResult = await client.query( `
         UPDATE ml_credits 
         SET 
           credits_used = credits_used + $1,
           updated_at = NOW()
         WHERE tenant_id = $2 AND is_active = true
         RETURNING credits_available, credits_used
-      `, [amount, tenantId]);
+      `, [ amount, tenantId ] );
 
-      const updatedCredits = updateResult.rows[0];
+      const updatedCredits = updateResult.rows[ 0 ];
 
       // Registrar uso no histórico
-      await this.logUsage(client, {
+      await this.logUsage( client, {
         tenantId,
         userId,
         usageType: 'manual_insight',
@@ -139,11 +150,11 @@ class MLCreditsService {
         success: true,
         ipAddress: metadata.ipAddress || null,
         userAgent: metadata.userAgent || null
-      });
+      } );
 
-      await client.query('COMMIT');
+      await client.query( 'COMMIT' );
 
-      console.log(`✅ [ML-CREDITS] Créditos consumidos - Tenant: ${tenantId}, Consumido: ${amount}, Restante: ${updatedCredits.credits_available}`);
+      console.log( `✅ [ML-CREDITS] Créditos consumidos - Tenant: ${ tenantId }, Consumido: ${ amount }, Restante: ${ updatedCredits.credits_available }` );
 
       return {
         success: true,
@@ -152,11 +163,13 @@ class MLCreditsService {
         creditsUsed: updatedCredits.credits_used
       };
 
-    } catch (error) {
-      await client.query('ROLLBACK');
-      console.error('❌ [ML-CREDITS] Erro ao consumir créditos:', error);
+    } catch ( error )
+    {
+      await client.query( 'ROLLBACK' );
+      console.error( '❌ [ML-CREDITS] Erro ao consumir créditos:', error );
       throw error;
-    } finally {
+    } finally
+    {
       client.release();
     }
   }
@@ -166,8 +179,9 @@ class MLCreditsService {
    * @param {Object} client - Cliente de banco de dados
    * @param {Object} usageData - Dados do uso
    */
-  async logUsage(client, usageData) {
-    await client.query(`
+  async logUsage( client, usageData )
+  {
+    await client.query( `
       INSERT INTO ml_usage_history (
         tenant_id,
         user_id,
@@ -190,14 +204,14 @@ class MLCreditsService {
       usageData.insightType,
       usageData.context,
       usageData.creditsConsumed,
-      usageData.inputData ? JSON.stringify(usageData.inputData) : null,
-      usageData.resultData ? JSON.stringify(usageData.resultData) : null,
+      usageData.inputData ? JSON.stringify( usageData.inputData ) : null,
+      usageData.resultData ? JSON.stringify( usageData.resultData ) : null,
       usageData.processingTimeMs,
       usageData.success,
       usageData.errorMessage || null,
       usageData.ipAddress,
       usageData.userAgent
-    ]);
+    ] );
   }
 
   /**
@@ -205,9 +219,11 @@ class MLCreditsService {
    * @param {string} tenantId - ID do tenant
    * @returns {Object} Resultado do reset
    */
-  async resetMonthlyCredits(tenantId) {
-    try {
-      const result = await this.pool.query(`
+  async resetMonthlyCredits( tenantId )
+  {
+    try
+    {
+      const result = await this.pool.query( `
         UPDATE ml_credits 
         SET 
           credits_used = 0,
@@ -216,15 +232,16 @@ class MLCreditsService {
           updated_at = NOW()
         WHERE tenant_id = $1 AND is_active = true
         RETURNING credits_total, reset_date
-      `, [tenantId]);
+      `, [ tenantId ] );
 
-      if (result.rows.length === 0) {
-        throw new Error('Tenant não encontrado para reset de créditos');
+      if ( result.rows.length === 0 )
+      {
+        throw new Error( 'Tenant não encontrado para reset de créditos' );
       }
 
-      const resetData = result.rows[0];
+      const resetData = result.rows[ 0 ];
 
-      console.log(`🔄 [ML-CREDITS] Reset realizado - Tenant: ${tenantId}, Créditos: ${resetData.credits_total}, Próximo reset: ${resetData.reset_date}`);
+      console.log( `🔄 [ML-CREDITS] Reset realizado - Tenant: ${ tenantId }, Créditos: ${ resetData.credits_total }, Próximo reset: ${ resetData.reset_date }` );
 
       return {
         success: true,
@@ -232,8 +249,9 @@ class MLCreditsService {
         nextResetDate: resetData.reset_date
       };
 
-    } catch (error) {
-      console.error('❌ [ML-CREDITS] Erro no reset mensal:', error);
+    } catch ( error )
+    {
+      console.error( '❌ [ML-CREDITS] Erro no reset mensal:', error );
       throw error;
     }
   }
@@ -244,23 +262,26 @@ class MLCreditsService {
    * @param {string} planName - Nome do plano
    * @returns {Object} Configuração criada
    */
-  async setupCreditsForTenant(tenantId, planName) {
-    try {
+  async setupCreditsForTenant( tenantId, planName )
+  {
+    try
+    {
       // Buscar plano
-      const planResult = await this.pool.query(`
+      const planResult = await this.pool.query( `
         SELECT id, ml_credits_per_month, display_name
         FROM subscription_plans 
         WHERE name = $1 AND is_active = true
-      `, [planName]);
+      `, [ planName ] );
 
-      if (planResult.rows.length === 0) {
-        throw new Error(`Plano não encontrado: ${planName}`);
+      if ( planResult.rows.length === 0 )
+      {
+        throw new Error( `Plano não encontrado: ${ planName }` );
       }
 
-      const plan = planResult.rows[0];
+      const plan = planResult.rows[ 0 ];
 
       // Criar ou atualizar configuração de créditos
-      const result = await this.pool.query(`
+      const result = await this.pool.query( `
         INSERT INTO ml_credits (
           tenant_id,
           subscription_plan_id,
@@ -278,11 +299,11 @@ class MLCreditsService {
           last_reset_date = CURRENT_DATE,
           updated_at = NOW()
         RETURNING *
-      `, [tenantId, plan.id, plan.ml_credits_per_month]);
+      `, [ tenantId, plan.id, plan.ml_credits_per_month ] );
 
-      const credits = result.rows[0];
+      const credits = result.rows[ 0 ];
 
-      console.log(`🎯 [ML-CREDITS] Configuração criada - Tenant: ${tenantId}, Plano: ${plan.display_name}, Créditos: ${plan.ml_credits_per_month}`);
+      console.log( `🎯 [ML-CREDITS] Configuração criada - Tenant: ${ tenantId }, Plano: ${ plan.display_name }, Créditos: ${ plan.ml_credits_per_month }` );
 
       return {
         success: true,
@@ -294,8 +315,9 @@ class MLCreditsService {
         resetDate: credits.reset_date
       };
 
-    } catch (error) {
-      console.error('❌ [ML-CREDITS] Erro ao configurar créditos:', error);
+    } catch ( error )
+    {
+      console.error( '❌ [ML-CREDITS] Erro ao configurar créditos:', error );
       throw error;
     }
   }
@@ -306,8 +328,10 @@ class MLCreditsService {
    * @param {Object} options - Opções de filtro
    * @returns {Array} Histórico de uso
    */
-  async getUsageHistory(tenantId, options = {}) {
-    try {
+  async getUsageHistory( tenantId, options = {} )
+  {
+    try
+    {
       const {
         limit = 50,
         offset = 0,
@@ -330,42 +354,47 @@ class MLCreditsService {
         WHERE tenant_id = $1
       `;
 
-      const params = [tenantId];
+      const params = [ tenantId ];
       let paramIndex = 2;
 
-      if (startDate) {
-        query += ` AND created_at >= $${paramIndex}`;
-        params.push(startDate);
+      if ( startDate )
+      {
+        query += ` AND created_at >= $${ paramIndex }`;
+        params.push( startDate );
         paramIndex++;
       }
 
-      if (endDate) {
-        query += ` AND created_at <= $${paramIndex}`;
-        params.push(endDate);
+      if ( endDate )
+      {
+        query += ` AND created_at <= $${ paramIndex }`;
+        params.push( endDate );
         paramIndex++;
       }
 
-      if (usageType) {
-        query += ` AND usage_type = $${paramIndex}`;
-        params.push(usageType);
+      if ( usageType )
+      {
+        query += ` AND usage_type = $${ paramIndex }`;
+        params.push( usageType );
         paramIndex++;
       }
 
-      if (context) {
-        query += ` AND context = $${paramIndex}`;
-        params.push(context);
+      if ( context )
+      {
+        query += ` AND context = $${ paramIndex }`;
+        params.push( context );
         paramIndex++;
       }
 
-      query += ` ORDER BY created_at DESC LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`;
-      params.push(limit, offset);
+      query += ` ORDER BY created_at DESC LIMIT $${ paramIndex } OFFSET $${ paramIndex + 1 }`;
+      params.push( limit, offset );
 
-      const result = await this.pool.query(query, params);
+      const result = await this.pool.query( query, params );
 
       return result.rows;
 
-    } catch (error) {
-      console.error('❌ [ML-CREDITS] Erro ao buscar histórico:', error);
+    } catch ( error )
+    {
+      console.error( '❌ [ML-CREDITS] Erro ao buscar histórico:', error );
       throw error;
     }
   }
@@ -376,10 +405,13 @@ class MLCreditsService {
    * @param {string} period - Período (month, week, day)
    * @returns {Object} Estatísticas
    */
-  async getUsageStats(tenantId, period = 'month') {
-    try {
+  async getUsageStats( tenantId, period = 'month' )
+  {
+    try
+    {
       let dateFilter;
-      switch (period) {
+      switch ( period )
+      {
         case 'day':
           dateFilter = "created_at >= CURRENT_DATE";
           break;
@@ -392,7 +424,7 @@ class MLCreditsService {
           break;
       }
 
-      const result = await this.pool.query(`
+      const result = await this.pool.query( `
         SELECT 
           COUNT(*) as total_uses,
           SUM(credits_consumed) as total_credits,
@@ -402,15 +434,16 @@ class MLCreditsService {
           usage_type,
           context
         FROM ml_usage_history
-        WHERE tenant_id = $1 AND ${dateFilter}
+        WHERE tenant_id = $1 AND ${ dateFilter }
         GROUP BY usage_type, context
         ORDER BY total_credits DESC
-      `, [tenantId]);
+      `, [ tenantId ] );
 
       return result.rows;
 
-    } catch (error) {
-      console.error('❌ [ML-CREDITS] Erro ao buscar estatísticas:', error);
+    } catch ( error )
+    {
+      console.error( '❌ [ML-CREDITS] Erro ao buscar estatísticas:', error );
       throw error;
     }
   }
@@ -418,9 +451,10 @@ class MLCreditsService {
   /**
    * Fechar conexões do pool
    */
-  async close() {
+  async close()
+  {
     await this.pool.end();
   }
 }
 
-module.exports = new MLCreditsService();
+export default new MLCreditsService();

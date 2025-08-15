@@ -4,17 +4,19 @@
  * 100% JavaScript - SEM TYPESCRIPT
  */
 
-const { Pool } = require('pg');
-const fs = require('fs').promises;
-const path = require('path');
-const QUANTUM_CONFIG = require('../../config/quantum-config');
+import { Pool } from 'pg';
+import fs from 'fs/promises';
+import path from 'path';
+import QUANTUM_CONFIG from '../../config/quantum-config.js';
 
-class StorageManagementService {
-  constructor() {
-    this.pool = new Pool({
+class StorageManagementService
+{
+  constructor()
+  {
+    this.pool = new Pool( {
       connectionString: process.env.DATABASE_URL,
       ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
-    });
+    } );
   }
 
   /**
@@ -22,35 +24,39 @@ class StorageManagementService {
    * @param {string} tenantId - ID do tenant
    * @returns {Object} Informações de uso de storage
    */
-  async checkTenantStorage(tenantId) {
-    try {
-      console.log(`📊 [STORAGE] Verificando storage do tenant: ${tenantId}`);
+  async checkTenantStorage( tenantId )
+  {
+    try
+    {
+      console.log( `📊 [STORAGE] Verificando storage do tenant: ${ tenantId }` );
 
       // Buscar plano do tenant
-      const planResult = await this.pool.query(`
+      const planResult = await this.pool.query( `
         SELECT sp.name as plan_name, sp.storage_limits
         FROM tenant_subscriptions ts
         JOIN subscription_plans sp ON ts.plan_id = sp.id
         WHERE ts.tenant_id = $1 AND ts.is_active = true
-      `, [tenantId]);
+      `, [ tenantId ] );
 
-      if (planResult.rows.length === 0) {
-        throw new Error(`Plano não encontrado para tenant: ${tenantId}`);
+      if ( planResult.rows.length === 0 )
+      {
+        throw new Error( `Plano não encontrado para tenant: ${ tenantId }` );
       }
 
-      const planName = planResult.rows[0].plan_name;
-      const planConfig = QUANTUM_CONFIG.PLANS[planName.toUpperCase()];
+      const planName = planResult.rows[ 0 ].plan_name;
+      const planConfig = QUANTUM_CONFIG.PLANS[ planName.toUpperCase() ];
 
-      if (!planConfig) {
-        throw new Error(`Configuração de plano não encontrada: ${planName}`);
+      if ( !planConfig )
+      {
+        throw new Error( `Configuração de plano não encontrada: ${ planName }` );
       }
 
       // Calcular uso atual por categoria
-      const usage = await this.calculateStorageUsage(tenantId);
+      const usage = await this.calculateStorageUsage( tenantId );
 
       // Comparar com limites do plano
       const limits = planConfig.storage;
-      const analysis = this.analyzeStorageUsage(usage, limits);
+      const analysis = this.analyzeStorageUsage( usage, limits );
 
       return {
         tenantId,
@@ -61,8 +67,9 @@ class StorageManagementService {
         timestamp: new Date().toISOString()
       };
 
-    } catch (error) {
-      console.error(`❌ [STORAGE] Erro ao verificar storage:`, error);
+    } catch ( error )
+    {
+      console.error( `❌ [STORAGE] Erro ao verificar storage:`, error );
       throw error;
     }
   }
@@ -72,7 +79,8 @@ class StorageManagementService {
    * @param {string} tenantId - ID do tenant
    * @returns {Object} Uso por categoria
    */
-  async calculateStorageUsage(tenantId) {
+  async calculateStorageUsage( tenantId )
+  {
     const usage = {
       total: 0,
       uploads: 0,
@@ -84,17 +92,18 @@ class StorageManagementService {
       chat: 0
     };
 
-    try {
+    try
+    {
       // 1. UPLOADS - Arquivos enviados
-      const uploadsResult = await this.pool.query(`
+      const uploadsResult = await this.pool.query( `
         SELECT COALESCE(SUM(file_size), 0) as total_size
         FROM file_uploads 
         WHERE tenant_id = $1
-      `, [tenantId]);
-      usage.uploads = parseInt(uploadsResult.rows[0].total_size) || 0;
+      `, [ tenantId ] );
+      usage.uploads = parseInt( uploadsResult.rows[ 0 ].total_size ) || 0;
 
       // 2. DATABASE - Dados de queries, relatórios, workflows
-      const dbResult = await this.pool.query(`
+      const dbResult = await this.pool.query( `
         SELECT 
           COALESCE(SUM(pg_column_size(query_result)), 0) as query_data,
           COALESCE(SUM(pg_column_size(report_data)), 0) as report_data,
@@ -106,65 +115,67 @@ class StorageManagementService {
           UNION ALL
           SELECT workflow_data FROM workflow_executions WHERE tenant_id = $1
         ) as combined_data
-      `, [tenantId]);
-      
-      if (dbResult.rows.length > 0) {
-        const dbData = dbResult.rows[0];
-        usage.database = (parseInt(dbData.query_data) || 0) + 
-                        (parseInt(dbData.report_data) || 0) + 
-                        (parseInt(dbData.workflow_data) || 0);
+      `, [ tenantId ] );
+
+      if ( dbResult.rows.length > 0 )
+      {
+        const dbData = dbResult.rows[ 0 ];
+        usage.database = ( parseInt( dbData.query_data ) || 0 ) +
+          ( parseInt( dbData.report_data ) || 0 ) +
+          ( parseInt( dbData.workflow_data ) || 0 );
       }
 
       // 3. CACHE - Cache ML e sistema
-      const cacheResult = await this.pool.query(`
+      const cacheResult = await this.pool.query( `
         SELECT COALESCE(SUM(pg_column_size(cache_data)), 0) as total_cache
         FROM system_cache 
         WHERE tenant_id = $1
-      `, [tenantId]);
-      usage.cache = parseInt(cacheResult.rows[0].total_cache) || 0;
+      `, [ tenantId ] );
+      usage.cache = parseInt( cacheResult.rows[ 0 ].total_cache ) || 0;
 
       // 4. LOGS - Logs de sistema e auditoria
-      const logsResult = await this.pool.query(`
+      const logsResult = await this.pool.query( `
         SELECT COALESCE(SUM(pg_column_size(log_data)), 0) as total_logs
         FROM system_logs 
         WHERE tenant_id = $1
-      `, [tenantId]);
-      usage.logs = parseInt(logsResult.rows[0].total_logs) || 0;
+      `, [ tenantId ] );
+      usage.logs = parseInt( logsResult.rows[ 0 ].total_logs ) || 0;
 
       // 5. EMAILS - Emails enviados
-      const emailsResult = await this.pool.query(`
+      const emailsResult = await this.pool.query( `
         SELECT COALESCE(SUM(pg_column_size(email_content) + pg_column_size(attachments)), 0) as total_emails
         FROM email_history 
         WHERE tenant_id = $1
-      `, [tenantId]);
-      usage.emails = parseInt(emailsResult.rows[0].total_emails) || 0;
+      `, [ tenantId ] );
+      usage.emails = parseInt( emailsResult.rows[ 0 ].total_emails ) || 0;
 
       // 6. CALENDAR - Eventos e agendamentos
-      const calendarResult = await this.pool.query(`
+      const calendarResult = await this.pool.query( `
         SELECT COALESCE(SUM(pg_column_size(event_data)), 0) as total_calendar
         FROM calendar_events 
         WHERE tenant_id = $1
-      `, [tenantId]);
-      usage.calendar = parseInt(calendarResult.rows[0].total_calendar) || 0;
+      `, [ tenantId ] );
+      usage.calendar = parseInt( calendarResult.rows[ 0 ].total_calendar ) || 0;
 
       // 7. CHAT - Mensagens e histórico
-      const chatResult = await this.pool.query(`
+      const chatResult = await this.pool.query( `
         SELECT COALESCE(SUM(pg_column_size(message_content) + pg_column_size(attachments)), 0) as total_chat
         FROM chat_messages 
         WHERE tenant_id = $1
-      `, [tenantId]);
-      usage.chat = parseInt(chatResult.rows[0].total_chat) || 0;
+      `, [ tenantId ] );
+      usage.chat = parseInt( chatResult.rows[ 0 ].total_chat ) || 0;
 
       // Calcular total
-      usage.total = usage.uploads + usage.database + usage.cache + 
-                   usage.logs + usage.emails + usage.calendar + usage.chat;
+      usage.total = usage.uploads + usage.database + usage.cache +
+        usage.logs + usage.emails + usage.calendar + usage.chat;
 
-      console.log(`📊 [STORAGE] Uso calculado para ${tenantId}: ${this.formatBytes(usage.total)}`);
+      console.log( `📊 [STORAGE] Uso calculado para ${ tenantId }: ${ this.formatBytes( usage.total ) }` );
 
       return usage;
 
-    } catch (error) {
-      console.error(`❌ [STORAGE] Erro ao calcular uso:`, error);
+    } catch ( error )
+    {
+      console.error( `❌ [STORAGE] Erro ao calcular uso:`, error );
       // Retornar uso zerado em caso de erro
       return usage;
     }
@@ -176,7 +187,8 @@ class StorageManagementService {
    * @param {Object} limits - Limites do plano
    * @returns {Object} Análise detalhada
    */
-  analyzeStorageUsage(usage, limits) {
+  analyzeStorageUsage( usage, limits )
+  {
     const analysis = {
       status: 'ok',
       warnings: [],
@@ -186,50 +198,62 @@ class StorageManagementService {
     };
 
     // Calcular percentuais por categoria
-    Object.keys(usage).forEach(category => {
-      if (category === 'total') {
-        analysis.percentages[category] = limits.total > 0 ? 
-          Math.round((usage.total / limits.total) * 100) : 0;
-      } else if (limits[category]) {
-        analysis.percentages[category] = limits[category] > 0 ? 
-          Math.round((usage[category] / limits[category]) * 100) : 0;
+    Object.keys( usage ).forEach( category =>
+    {
+      if ( category === 'total' )
+      {
+        analysis.percentages[ category ] = limits.total > 0 ?
+          Math.round( ( usage.total / limits.total ) * 100 ) : 0;
+      } else if ( limits[ category ] )
+      {
+        analysis.percentages[ category ] = limits[ category ] > 0 ?
+          Math.round( ( usage[ category ] / limits[ category ] ) * 100 ) : 0;
       }
-    });
+    } );
 
     // Verificar status geral
     const totalPercentage = analysis.percentages.total;
-    
-    if (totalPercentage >= 95) {
+
+    if ( totalPercentage >= 95 )
+    {
       analysis.status = 'critical';
-      analysis.critical.push('Storage quase esgotado (95%+)');
-    } else if (totalPercentage >= 80) {
+      analysis.critical.push( 'Storage quase esgotado (95%+)' );
+    } else if ( totalPercentage >= 80 )
+    {
       analysis.status = 'warning';
-      analysis.warnings.push('Storage em nível alto (80%+)');
+      analysis.warnings.push( 'Storage em nível alto (80%+)' );
     }
 
     // Verificar categorias específicas
-    Object.keys(analysis.percentages).forEach(category => {
-      const percentage = analysis.percentages[category];
-      
-      if (percentage >= 90 && category !== 'total') {
-        analysis.warnings.push(`${category} em nível crítico (${percentage}%)`);
-      } else if (percentage >= 75 && category !== 'total') {
-        analysis.warnings.push(`${category} em nível alto (${percentage}%)`);
+    Object.keys( analysis.percentages ).forEach( category =>
+    {
+      const percentage = analysis.percentages[ category ];
+
+      if ( percentage >= 90 && category !== 'total' )
+      {
+        analysis.warnings.push( `${ category } em nível crítico (${ percentage }%)` );
+      } else if ( percentage >= 75 && category !== 'total' )
+      {
+        analysis.warnings.push( `${ category } em nível alto (${ percentage }%)` );
       }
-    });
+    } );
 
     // Gerar recomendações
-    if (analysis.percentages.uploads > 70) {
-      analysis.recommendations.push('Considere limpar arquivos antigos de upload');
+    if ( analysis.percentages.uploads > 70 )
+    {
+      analysis.recommendations.push( 'Considere limpar arquivos antigos de upload' );
     }
-    if (analysis.percentages.logs > 60) {
-      analysis.recommendations.push('Execute limpeza de logs antigos');
+    if ( analysis.percentages.logs > 60 )
+    {
+      analysis.recommendations.push( 'Execute limpeza de logs antigos' );
     }
-    if (analysis.percentages.cache > 50) {
-      analysis.recommendations.push('Limpe o cache do sistema');
+    if ( analysis.percentages.cache > 50 )
+    {
+      analysis.recommendations.push( 'Limpe o cache do sistema' );
     }
-    if (totalPercentage > 80) {
-      analysis.recommendations.push('Considere fazer upgrade do plano');
+    if ( totalPercentage > 80 )
+    {
+      analysis.recommendations.push( 'Considere fazer upgrade do plano' );
     }
 
     return analysis;
@@ -242,21 +266,23 @@ class StorageManagementService {
    * @param {string} category - Categoria de storage
    * @returns {Object} Resultado da verificação
    */
-  async canUseStorage(tenantId, additionalBytes, category = 'uploads') {
-    try {
-      const storageInfo = await this.checkTenantStorage(tenantId);
-      const currentUsage = storageInfo.usage[category] || 0;
-      const limit = storageInfo.limits[category] || 0;
+  async canUseStorage( tenantId, additionalBytes, category = 'uploads' )
+  {
+    try
+    {
+      const storageInfo = await this.checkTenantStorage( tenantId );
+      const currentUsage = storageInfo.usage[ category ] || 0;
+      const limit = storageInfo.limits[ category ] || 0;
       const totalLimit = storageInfo.limits.total || 0;
       const totalUsage = storageInfo.usage.total || 0;
 
-      const canUseCategory = (currentUsage + additionalBytes) <= limit;
-      const canUseTotal = (totalUsage + additionalBytes) <= totalLimit;
+      const canUseCategory = ( currentUsage + additionalBytes ) <= limit;
+      const canUseTotal = ( totalUsage + additionalBytes ) <= totalLimit;
 
       return {
         allowed: canUseCategory && canUseTotal,
-        reason: !canUseCategory ? `Limite da categoria ${category} excedido` :
-                !canUseTotal ? 'Limite total de storage excedido' : 'OK',
+        reason: !canUseCategory ? `Limite da categoria ${ category } excedido` :
+          !canUseTotal ? 'Limite total de storage excedido' : 'OK',
         currentUsage: {
           category: currentUsage,
           total: totalUsage
@@ -271,8 +297,9 @@ class StorageManagementService {
         }
       };
 
-    } catch (error) {
-      console.error(`❌ [STORAGE] Erro ao verificar disponibilidade:`, error);
+    } catch ( error )
+    {
+      console.error( `❌ [STORAGE] Erro ao verificar disponibilidade:`, error );
       return {
         allowed: false,
         reason: 'Erro ao verificar storage',
@@ -288,9 +315,11 @@ class StorageManagementService {
    * @param {string} category - Categoria
    * @param {string} description - Descrição do uso
    */
-  async recordStorageUsage(tenantId, bytes, category, description) {
-    try {
-      await this.pool.query(`
+  async recordStorageUsage( tenantId, bytes, category, description )
+  {
+    try
+    {
+      await this.pool.query( `
         INSERT INTO storage_usage_log (
           tenant_id,
           category,
@@ -298,12 +327,13 @@ class StorageManagementService {
           description,
           created_at
         ) VALUES ($1, $2, $3, $4, NOW())
-      `, [tenantId, category, bytes, description]);
+      `, [ tenantId, category, bytes, description ] );
 
-      console.log(`📝 [STORAGE] Uso registrado: ${tenantId} - ${category} - ${this.formatBytes(bytes)}`);
+      console.log( `📝 [STORAGE] Uso registrado: ${ tenantId } - ${ category } - ${ this.formatBytes( bytes ) }` );
 
-    } catch (error) {
-      console.error(`❌ [STORAGE] Erro ao registrar uso:`, error);
+    } catch ( error )
+    {
+      console.error( `❌ [STORAGE] Erro ao registrar uso:`, error );
     }
   }
 
@@ -312,9 +342,11 @@ class StorageManagementService {
    * @param {string} tenantId - ID do tenant
    * @returns {Object} Resultado da limpeza
    */
-  async performCleanup(tenantId) {
-    try {
-      console.log(`🧹 [STORAGE] Iniciando limpeza para tenant: ${tenantId}`);
+  async performCleanup( tenantId )
+  {
+    try
+    {
+      console.log( `🧹 [STORAGE] Iniciando limpeza para tenant: ${ tenantId }` );
 
       const cleanupResults = {
         logsDeleted: 0,
@@ -324,45 +356,46 @@ class StorageManagementService {
       };
 
       // 1. Limpar logs antigos (> 30 dias)
-      const logsResult = await this.pool.query(`
+      const logsResult = await this.pool.query( `
         DELETE FROM system_logs 
         WHERE tenant_id = $1 
         AND created_at < NOW() - INTERVAL '30 days'
         RETURNING pg_column_size(log_data) as size
-      `, [tenantId]);
+      `, [ tenantId ] );
 
       cleanupResults.logsDeleted = logsResult.rows.length;
-      cleanupResults.totalBytesFreed += logsResult.rows.reduce((sum, row) => sum + (row.size || 0), 0);
+      cleanupResults.totalBytesFreed += logsResult.rows.reduce( ( sum, row ) => sum + ( row.size || 0 ), 0 );
 
       // 2. Limpar cache antigo (> 24 horas)
-      const cacheResult = await this.pool.query(`
+      const cacheResult = await this.pool.query( `
         DELETE FROM system_cache 
         WHERE tenant_id = $1 
         AND created_at < NOW() - INTERVAL '24 hours'
         RETURNING pg_column_size(cache_data) as size
-      `, [tenantId]);
+      `, [ tenantId ] );
 
       cleanupResults.cacheCleared = cacheResult.rows.length;
-      cleanupResults.totalBytesFreed += cacheResult.rows.reduce((sum, row) => sum + (row.size || 0), 0);
+      cleanupResults.totalBytesFreed += cacheResult.rows.reduce( ( sum, row ) => sum + ( row.size || 0 ), 0 );
 
       // 3. Limpar arquivos temporários antigos (> 7 dias)
-      const filesResult = await this.pool.query(`
+      const filesResult = await this.pool.query( `
         DELETE FROM file_uploads 
         WHERE tenant_id = $1 
         AND is_temporary = true 
         AND created_at < NOW() - INTERVAL '7 days'
         RETURNING file_size
-      `, [tenantId]);
+      `, [ tenantId ] );
 
       cleanupResults.oldFilesDeleted = filesResult.rows.length;
-      cleanupResults.totalBytesFreed += filesResult.rows.reduce((sum, row) => sum + (row.file_size || 0), 0);
+      cleanupResults.totalBytesFreed += filesResult.rows.reduce( ( sum, row ) => sum + ( row.file_size || 0 ), 0 );
 
-      console.log(`✅ [STORAGE] Limpeza concluída: ${this.formatBytes(cleanupResults.totalBytesFreed)} liberados`);
+      console.log( `✅ [STORAGE] Limpeza concluída: ${ this.formatBytes( cleanupResults.totalBytesFreed ) } liberados` );
 
       return cleanupResults;
 
-    } catch (error) {
-      console.error(`❌ [STORAGE] Erro na limpeza:`, error);
+    } catch ( error )
+    {
+      console.error( `❌ [STORAGE] Erro na limpeza:`, error );
       throw error;
     }
   }
@@ -372,14 +405,15 @@ class StorageManagementService {
    * @param {number} bytes - Bytes
    * @returns {string} Formato legível
    */
-  formatBytes(bytes) {
-    if (bytes === 0) return '0 Bytes';
-    
+  formatBytes( bytes )
+  {
+    if ( bytes === 0 ) return '0 Bytes';
+
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    const sizes = [ 'Bytes', 'KB', 'MB', 'GB', 'TB' ];
+    const i = Math.floor( Math.log( bytes ) / Math.log( k ) );
+
+    return parseFloat( ( bytes / Math.pow( k, i ) ).toFixed( 2 ) ) + ' ' + sizes[ i ];
   }
 
   /**
@@ -387,12 +421,14 @@ class StorageManagementService {
    * @param {string} tenantId - ID do tenant
    * @returns {Object} Relatório detalhado
    */
-  async getStorageReport(tenantId) {
-    try {
-      const storageInfo = await this.checkTenantStorage(tenantId);
-      
+  async getStorageReport( tenantId )
+  {
+    try
+    {
+      const storageInfo = await this.checkTenantStorage( tenantId );
+
       // Buscar histórico de uso
-      const historyResult = await this.pool.query(`
+      const historyResult = await this.pool.query( `
         SELECT 
           category,
           SUM(bytes_used) as total_bytes,
@@ -403,16 +439,17 @@ class StorageManagementService {
         AND created_at >= NOW() - INTERVAL '30 days'
         GROUP BY category, DATE(created_at)
         ORDER BY date DESC
-      `, [tenantId]);
+      `, [ tenantId ] );
 
       return {
         ...storageInfo,
         history: historyResult.rows,
-        recommendations: this.generateStorageRecommendations(storageInfo)
+        recommendations: this.generateStorageRecommendations( storageInfo )
       };
 
-    } catch (error) {
-      console.error(`❌ [STORAGE] Erro ao gerar relatório:`, error);
+    } catch ( error )
+    {
+      console.error( `❌ [STORAGE] Erro ao gerar relatório:`, error );
       throw error;
     }
   }
@@ -422,35 +459,39 @@ class StorageManagementService {
    * @param {Object} storageInfo - Informações de storage
    * @returns {Array} Lista de recomendações
    */
-  generateStorageRecommendations(storageInfo) {
+  generateStorageRecommendations( storageInfo )
+  {
     const recommendations = [];
     const { analysis, usage, limits } = storageInfo;
 
-    if (analysis.percentages.total > 80) {
-      recommendations.push({
+    if ( analysis.percentages.total > 80 )
+    {
+      recommendations.push( {
         type: 'upgrade',
         priority: 'high',
         title: 'Considere fazer upgrade do plano',
         description: 'Seu storage está quase no limite. Um plano superior ofereceria mais espaço.'
-      });
+      } );
     }
 
-    if (analysis.percentages.uploads > 70) {
-      recommendations.push({
+    if ( analysis.percentages.uploads > 70 )
+    {
+      recommendations.push( {
         type: 'cleanup',
         priority: 'medium',
         title: 'Limpe arquivos antigos',
         description: 'Remova uploads desnecessários para liberar espaço.'
-      });
+      } );
     }
 
-    if (analysis.percentages.logs > 60) {
-      recommendations.push({
+    if ( analysis.percentages.logs > 60 )
+    {
+      recommendations.push( {
         type: 'maintenance',
         priority: 'low',
         title: 'Execute limpeza de logs',
         description: 'Logs antigos podem ser removidos automaticamente.'
-      });
+      } );
     }
 
     return recommendations;
@@ -459,10 +500,11 @@ class StorageManagementService {
   /**
    * Fechar conexões
    */
-  async close() {
+  async close()
+  {
     await this.pool.end();
-    console.log('🔌 [STORAGE] Conexões fechadas');
+    console.log( '🔌 [STORAGE] Conexões fechadas' );
   }
 }
 
-module.exports = new StorageManagementService();
+export default new StorageManagementService();

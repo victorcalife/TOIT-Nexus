@@ -571,4 +571,4 @@ class QuantumInsightsService
   }
 }
 
-module.exports = new QuantumInsightsService();
+export default new QuantumInsightsService();

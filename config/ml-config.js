@@ -162,4 +162,4 @@ const ML_CONFIG = {
   }
 };
 
-module.exports = ML_CONFIG;
+export default ML_CONFIG;

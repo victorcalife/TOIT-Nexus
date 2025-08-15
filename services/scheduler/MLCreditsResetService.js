@@ -4,17 +4,19 @@
  * 100% JavaScript - SEM TYPESCRIPT
  */
 
-const cron = require('node-cron');
-const { Pool } = require('pg');
-const MLCreditsService = require('../ml/MLCreditsService');
+import cron from 'node-cron';
+import { Pool } from 'pg';
+import MLCreditsService from '../ml/MLCreditsService.js';
 
-class MLCreditsResetService {
-  constructor() {
-    this.pool = new Pool({
+class MLCreditsResetService
+{
+  constructor()
+  {
+    this.pool = new Pool( {
       connectionString: process.env.DATABASE_URL,
       ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
-    });
-    
+    } );
+
     this.resetJob = null;
     this.isRunning = false;
     this.stats = {
@@ -29,29 +31,33 @@ class MLCreditsResetService {
   /**
    * Inicializar o serviço de reset
    */
-  async initialize() {
-    if (this.isRunning) {
-      console.log('⚠️ [ML-CREDITS-RESET] Serviço já está rodando');
+  async initialize()
+  {
+    if ( this.isRunning )
+    {
+      console.log( '⚠️ [ML-CREDITS-RESET] Serviço já está rodando' );
       return;
     }
 
-    console.log('🚀 [ML-CREDITS-RESET] Inicializando serviço de reset...');
+    console.log( '🚀 [ML-CREDITS-RESET] Inicializando serviço de reset...' );
 
-    try {
+    try
+    {
       // Verificar conexão com banco
-      await this.pool.query('SELECT 1');
-      
+      await this.pool.query( 'SELECT 1' );
+
       // Configurar job de reset mensal
       await this.setupResetJob();
-      
+
       // Verificar se há resets pendentes
       await this.checkPendingResets();
-      
-      this.isRunning = true;
-      console.log('✅ [ML-CREDITS-RESET] Serviço inicializado com sucesso');
 
-    } catch (error) {
-      console.error('❌ [ML-CREDITS-RESET] Erro ao inicializar serviço:', error);
+      this.isRunning = true;
+      console.log( '✅ [ML-CREDITS-RESET] Serviço inicializado com sucesso' );
+
+    } catch ( error )
+    {
+      console.error( '❌ [ML-CREDITS-RESET] Erro ao inicializar serviço:', error );
       throw error;
     }
   }
@@ -59,24 +65,27 @@ class MLCreditsResetService {
   /**
    * Configurar job de reset mensal
    */
-  async setupResetJob() {
+  async setupResetJob()
+  {
     // Executar todo dia 1º do mês às 00:01
-    this.resetJob = cron.schedule('1 0 1 * *', async () => {
+    this.resetJob = cron.schedule( '1 0 1 * *', async () =>
+    {
       await this.performMonthlyReset();
     }, {
       scheduled: false,
       name: 'monthly-credits-reset',
       timezone: 'America/Sao_Paulo'
-    });
+    } );
 
     // Também executar diariamente para verificar resets pendentes
-    this.dailyCheckJob = cron.schedule('0 1 * * *', async () => {
+    this.dailyCheckJob = cron.schedule( '0 1 * * *', async () =>
+    {
       await this.checkPendingResets();
     }, {
       scheduled: false,
       name: 'daily-reset-check',
       timezone: 'America/Sao_Paulo'
-    });
+    } );
 
     this.resetJob.start();
     this.dailyCheckJob.start();
@@ -85,27 +94,30 @@ class MLCreditsResetService {
     const nextReset = this.calculateNextResetDate();
     this.stats.nextScheduledReset = nextReset;
 
-    console.log(`✅ [ML-CREDITS-RESET] Job configurado - Próximo reset: ${nextReset}`);
+    console.log( `✅ [ML-CREDITS-RESET] Job configurado - Próximo reset: ${ nextReset }` );
   }
 
   /**
    * Calcular próxima data de reset
    */
-  calculateNextResetDate() {
+  calculateNextResetDate()
+  {
     const now = new Date();
-    const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1, 0, 1, 0);
+    const nextMonth = new Date( now.getFullYear(), now.getMonth() + 1, 1, 0, 1, 0 );
     return nextMonth.toISOString();
   }
 
   /**
    * Verificar resets pendentes
    */
-  async checkPendingResets() {
-    try {
-      console.log('🔍 [ML-CREDITS-RESET] Verificando resets pendentes...');
+  async checkPendingResets()
+  {
+    try
+    {
+      console.log( '🔍 [ML-CREDITS-RESET] Verificando resets pendentes...' );
 
       // Buscar tenants que precisam de reset
-      const result = await this.pool.query(`
+      const result = await this.pool.query( `
         SELECT 
           tenant_id,
           reset_date,
@@ -119,32 +131,38 @@ class MLCreditsResetService {
 
       const pendingResets = result.rows;
 
-      if (pendingResets.length > 0) {
-        console.log(`📋 [ML-CREDITS-RESET] ${pendingResets.length} resets pendentes encontrados`);
-        
-        for (const tenant of pendingResets) {
-          await this.resetTenantCredits(tenant.tenant_id);
+      if ( pendingResets.length > 0 )
+      {
+        console.log( `📋 [ML-CREDITS-RESET] ${ pendingResets.length } resets pendentes encontrados` );
+
+        for ( const tenant of pendingResets )
+        {
+          await this.resetTenantCredits( tenant.tenant_id );
         }
-      } else {
-        console.log('✅ [ML-CREDITS-RESET] Nenhum reset pendente');
+      } else
+      {
+        console.log( '✅ [ML-CREDITS-RESET] Nenhum reset pendente' );
       }
 
-    } catch (error) {
-      console.error('❌ [ML-CREDITS-RESET] Erro ao verificar resets pendentes:', error);
+    } catch ( error )
+    {
+      console.error( '❌ [ML-CREDITS-RESET] Erro ao verificar resets pendentes:', error );
     }
   }
 
   /**
    * Executar reset mensal completo
    */
-  async performMonthlyReset() {
+  async performMonthlyReset()
+  {
     const startTime = Date.now();
-    
-    try {
-      console.log('🔄 [ML-CREDITS-RESET] Iniciando reset mensal de créditos...');
+
+    try
+    {
+      console.log( '🔄 [ML-CREDITS-RESET] Iniciando reset mensal de créditos...' );
 
       // Buscar todos os tenants ativos
-      const result = await this.pool.query(`
+      const result = await this.pool.query( `
         SELECT DISTINCT tenant_id 
         FROM ml_credits 
         WHERE is_active = true
@@ -154,15 +172,18 @@ class MLCreditsResetService {
       let successCount = 0;
       let failCount = 0;
 
-      console.log(`📊 [ML-CREDITS-RESET] Processando ${tenants.length} tenants...`);
+      console.log( `📊 [ML-CREDITS-RESET] Processando ${ tenants.length } tenants...` );
 
       // Processar cada tenant
-      for (const tenant of tenants) {
-        try {
-          await this.resetTenantCredits(tenant.tenant_id);
+      for ( const tenant of tenants )
+      {
+        try
+        {
+          await this.resetTenantCredits( tenant.tenant_id );
           successCount++;
-        } catch (error) {
-          console.error(`❌ [ML-CREDITS-RESET] Erro no reset do tenant ${tenant.tenant_id}:`, error);
+        } catch ( error )
+        {
+          console.error( `❌ [ML-CREDITS-RESET] Erro no reset do tenant ${ tenant.tenant_id }:`, error );
           failCount++;
         }
       }
@@ -177,45 +198,51 @@ class MLCreditsResetService {
       this.stats.nextScheduledReset = this.calculateNextResetDate();
 
       // Log de resultado
-      console.log(`✅ [ML-CREDITS-RESET] Reset mensal concluído em ${duration}ms`);
-      console.log(`📊 [ML-CREDITS-RESET] Sucessos: ${successCount}, Falhas: ${failCount}`);
+      console.log( `✅ [ML-CREDITS-RESET] Reset mensal concluído em ${ duration }ms` );
+      console.log( `📊 [ML-CREDITS-RESET] Sucessos: ${ successCount }, Falhas: ${ failCount }` );
 
       // Registrar no banco para auditoria
-      await this.logResetEvent('monthly_reset', {
+      await this.logResetEvent( 'monthly_reset', {
         totalTenants: tenants.length,
         successCount,
         failCount,
         duration
-      });
+      } );
 
-    } catch (error) {
-      console.error('❌ [ML-CREDITS-RESET] Erro no reset mensal:', error);
-      
-      await this.logResetEvent('monthly_reset_error', {
+    } catch ( error )
+    {
+      console.error( '❌ [ML-CREDITS-RESET] Erro no reset mensal:', error );
+
+      await this.logResetEvent( 'monthly_reset_error', {
         error: error.message,
         timestamp: new Date().toISOString()
-      });
+      } );
     }
   }
 
   /**
    * Resetar créditos de um tenant específico
    */
-  async resetTenantCredits(tenantId) {
-    try {
-      console.log(`🔄 [ML-CREDITS-RESET] Resetando créditos do tenant: ${tenantId}`);
+  async resetTenantCredits( tenantId )
+  {
+    try
+    {
+      console.log( `🔄 [ML-CREDITS-RESET] Resetando créditos do tenant: ${ tenantId }` );
 
-      const result = await MLCreditsService.resetMonthlyCredits(tenantId);
+      const result = await MLCreditsService.resetMonthlyCredits( tenantId );
 
-      if (result.success) {
-        console.log(`✅ [ML-CREDITS-RESET] Reset concluído - Tenant: ${tenantId}, Créditos: ${result.creditsTotal}`);
+      if ( result.success )
+      {
+        console.log( `✅ [ML-CREDITS-RESET] Reset concluído - Tenant: ${ tenantId }, Créditos: ${ result.creditsTotal }` );
         return result;
-      } else {
-        throw new Error('Reset falhou no MLCreditsService');
+      } else
+      {
+        throw new Error( 'Reset falhou no MLCreditsService' );
       }
 
-    } catch (error) {
-      console.error(`❌ [ML-CREDITS-RESET] Erro no reset do tenant ${tenantId}:`, error);
+    } catch ( error )
+    {
+      console.error( `❌ [ML-CREDITS-RESET] Erro no reset do tenant ${ tenantId }:`, error );
       throw error;
     }
   }
@@ -223,9 +250,11 @@ class MLCreditsResetService {
   /**
    * Registrar evento de reset para auditoria
    */
-  async logResetEvent(eventType, data) {
-    try {
-      await this.pool.query(`
+  async logResetEvent( eventType, data )
+  {
+    try
+    {
+      await this.pool.query( `
         INSERT INTO ml_usage_history (
           tenant_id,
           usage_type,
@@ -245,34 +274,38 @@ class MLCreditsResetService {
         )
       `, [
         eventType,
-        eventType.includes('error') ? false : true,
-        JSON.stringify(data)
-      ]);
+        eventType.includes( 'error' ) ? false : true,
+        JSON.stringify( data )
+      ] );
 
-    } catch (error) {
-      console.error('❌ [ML-CREDITS-RESET] Erro ao registrar evento:', error);
+    } catch ( error )
+    {
+      console.error( '❌ [ML-CREDITS-RESET] Erro ao registrar evento:', error );
     }
   }
 
   /**
    * Forçar reset de um tenant específico
    */
-  async forceResetTenant(tenantId) {
-    try {
-      console.log(`🔧 [ML-CREDITS-RESET] Reset forçado para tenant: ${tenantId}`);
+  async forceResetTenant( tenantId )
+  {
+    try
+    {
+      console.log( `🔧 [ML-CREDITS-RESET] Reset forçado para tenant: ${ tenantId }` );
 
-      const result = await this.resetTenantCredits(tenantId);
+      const result = await this.resetTenantCredits( tenantId );
 
-      await this.logResetEvent('forced_reset', {
+      await this.logResetEvent( 'forced_reset', {
         tenantId,
         timestamp: new Date().toISOString(),
         result
-      });
+      } );
 
       return result;
 
-    } catch (error) {
-      console.error(`❌ [ML-CREDITS-RESET] Erro no reset forçado:`, error);
+    } catch ( error )
+    {
+      console.error( `❌ [ML-CREDITS-RESET] Erro no reset forçado:`, error );
       throw error;
     }
   }
@@ -280,10 +313,13 @@ class MLCreditsResetService {
   /**
    * Obter relatório de resets
    */
-  async getResetReport(period = 'month') {
-    try {
+  async getResetReport( period = 'month' )
+  {
+    try
+    {
       let dateFilter;
-      switch (period) {
+      switch ( period )
+      {
         case 'week':
           dateFilter = "created_at >= NOW() - INTERVAL '7 days'";
           break;
@@ -297,7 +333,7 @@ class MLCreditsResetService {
           dateFilter = "created_at >= NOW() - INTERVAL '30 days'";
       }
 
-      const result = await this.pool.query(`
+      const result = await this.pool.query( `
         SELECT 
           context,
           success,
@@ -305,7 +341,7 @@ class MLCreditsResetService {
           created_at
         FROM ml_usage_history
         WHERE usage_type = 'credits_reset'
-        AND ${dateFilter}
+        AND ${ dateFilter }
         ORDER BY created_at DESC
       `);
 
@@ -314,13 +350,14 @@ class MLCreditsResetService {
         events: result.rows,
         summary: {
           totalEvents: result.rows.length,
-          successfulEvents: result.rows.filter(r => r.success).length,
-          failedEvents: result.rows.filter(r => !r.success).length
+          successfulEvents: result.rows.filter( r => r.success ).length,
+          failedEvents: result.rows.filter( r => !r.success ).length
         }
       };
 
-    } catch (error) {
-      console.error('❌ [ML-CREDITS-RESET] Erro ao gerar relatório:', error);
+    } catch ( error )
+    {
+      console.error( '❌ [ML-CREDITS-RESET] Erro ao gerar relatório:', error );
       throw error;
     }
   }
@@ -328,9 +365,11 @@ class MLCreditsResetService {
   /**
    * Obter próximas datas de reset por tenant
    */
-  async getUpcomingResets() {
-    try {
-      const result = await this.pool.query(`
+  async getUpcomingResets()
+  {
+    try
+    {
+      const result = await this.pool.query( `
         SELECT 
           mc.tenant_id,
           mc.reset_date,
@@ -343,17 +382,18 @@ class MLCreditsResetService {
         ORDER BY mc.reset_date ASC
       `);
 
-      return result.rows.map(row => ({
+      return result.rows.map( row => ( {
         tenantId: row.tenant_id,
         planName: row.plan_name,
         nextReset: row.reset_date,
         lastReset: row.last_reset_date,
         creditsTotal: row.credits_total,
-        daysUntilReset: Math.ceil((new Date(row.reset_date) - new Date()) / (1000 * 60 * 60 * 24))
-      }));
+        daysUntilReset: Math.ceil( ( new Date( row.reset_date ) - new Date() ) / ( 1000 * 60 * 60 * 24 ) )
+      } ) );
 
-    } catch (error) {
-      console.error('❌ [ML-CREDITS-RESET] Erro ao buscar próximos resets:', error);
+    } catch ( error )
+    {
+      console.error( '❌ [ML-CREDITS-RESET] Erro ao buscar próximos resets:', error );
       throw error;
     }
   }
@@ -361,7 +401,8 @@ class MLCreditsResetService {
   /**
    * Obter estatísticas do serviço
    */
-  getStats() {
+  getStats()
+  {
     return {
       ...this.stats,
       isRunning: this.isRunning,
@@ -374,31 +415,35 @@ class MLCreditsResetService {
   /**
    * Parar o serviço
    */
-  async stop() {
-    console.log('🛑 [ML-CREDITS-RESET] Parando serviço de reset...');
+  async stop()
+  {
+    console.log( '🛑 [ML-CREDITS-RESET] Parando serviço de reset...' );
 
-    if (this.resetJob) {
+    if ( this.resetJob )
+    {
       this.resetJob.stop();
       this.resetJob = null;
     }
 
-    if (this.dailyCheckJob) {
+    if ( this.dailyCheckJob )
+    {
       this.dailyCheckJob.stop();
       this.dailyCheckJob = null;
     }
 
     this.isRunning = false;
-    console.log('✅ [ML-CREDITS-RESET] Serviço parado com sucesso');
+    console.log( '✅ [ML-CREDITS-RESET] Serviço parado com sucesso' );
   }
 
   /**
    * Fechar conexões
    */
-  async close() {
+  async close()
+  {
     await this.stop();
     await this.pool.end();
-    console.log('🔌 [ML-CREDITS-RESET] Conexões fechadas');
+    console.log( '🔌 [ML-CREDITS-RESET] Conexões fechadas' );
   }
 }
 
-module.exports = new MLCreditsResetService();
+export default new MLCreditsResetService();
