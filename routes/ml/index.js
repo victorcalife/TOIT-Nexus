@@ -4,6 +4,9 @@
  * 100% JavaScript - SEM TYPESCRIPT
  */
 
+import { createRequire } from 'module';
+const require = createRequire( import.meta.url );
+
 // Importar rotas usando CommonJS
 const quantumRoutes = require( './quantumRoutes.js' );
 const autoPredictionsRoutes = require( './autoPredictionsRoutes.js' );
@@ -21,7 +24,7 @@ const StorageManagementService = require( '../../services/storage/StorageManagem
  * Configurar rotas ML no app Express
  * @param {Object} app - Instância do Express
  */
-function setupMLRoutes( app )
+export function setupMLRoutes( app )
 {
   console.log( '🔧 [ML-ROUTES] Configurando rotas ML...' );
 
@@ -58,7 +61,7 @@ function setupMLRoutes( app )
 /**
  * Inicializar serviços ML
  */
-async function initializeMLServices()
+export async function initializeMLServices()
 {
   console.log( '🚀 [ML-SERVICES] Inicializando serviços ML...' );
 
@@ -93,7 +96,7 @@ async function initializeMLServices()
 /**
  * Parar serviços ML
  */
-async function stopMLServices()
+export async function stopMLServices()
 {
   console.log( '🛑 [ML-SERVICES] Parando serviços ML...' );
 
@@ -113,7 +116,7 @@ async function stopMLServices()
 /**
  * Obter estatísticas dos serviços ML
  */
-function getMLStats()
+export function getMLStats()
 {
   return {
     autoPredictions: AutoPredictionsService.getStats(),
@@ -123,7 +126,7 @@ function getMLStats()
   };
 }
 
-module.exports = {
+export default {
   setupMLRoutes,
   initializeMLServices,
   stopMLServices,
