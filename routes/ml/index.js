@@ -4,29 +4,63 @@
  * 100% JavaScript - SEM TYPESCRIPT
  */
 
-import { createRequire } from 'module';
-const require = createRequire( import.meta.url );
+// Importar rotas usando dynamic imports (compatível com ES modules)
+let quantumRoutes, autoPredictionsRoutes, slotsRoutes, storageRoutes;
+let AutoPredictionsService, MLSchedulerService, MLCreditsResetService, MLSlotsService, StorageManagementService;
 
-// Importar rotas usando CommonJS
-const quantumRoutes = require( './quantumRoutes.js' );
-const autoPredictionsRoutes = require( './autoPredictionsRoutes.js' );
-const slotsRoutes = require( './slotsRoutes.js' );
-const storageRoutes = require( '../storage/storageRoutes.js' );
+// Função para carregar módulos dinamicamente
+async function loadModules()
+{
+  try
+  {
+    // Carregar rotas
+    const quantumModule = await import( './quantumRoutes.js' );
+    quantumRoutes = quantumModule.default;
 
-// Importar serviços
-const AutoPredictionsService = require( '../../services/ml/AutoPredictionsService.js' );
-const MLSchedulerService = require( '../../services/scheduler/MLSchedulerService.js' );
-const MLCreditsResetService = require( '../../services/scheduler/MLCreditsResetService.js' );
-const MLSlotsService = require( '../../services/ml/MLSlotsService.js' );
-const StorageManagementService = require( '../../services/storage/StorageManagementService.js' );
+    const autoPredictionsModule = await import( './autoPredictionsRoutes.js' );
+    autoPredictionsRoutes = autoPredictionsModule.default;
+
+    const slotsModule = await import( './slotsRoutes.js' );
+    slotsRoutes = slotsModule.default;
+
+    const storageModule = await import( '../storage/storageRoutes.js' );
+    storageRoutes = storageModule.default;
+
+    // Carregar serviços
+    const autoPredService = await import( '../../services/ml/AutoPredictionsService.js' );
+    AutoPredictionsService = autoPredService.default;
+
+    const mlSchedulerService = await import( '../../services/scheduler/MLSchedulerService.js' );
+    MLSchedulerService = mlSchedulerService.default;
+
+    const mlCreditsResetService = await import( '../../services/scheduler/MLCreditsResetService.js' );
+    MLCreditsResetService = mlCreditsResetService.default;
+
+    const mlSlotsService = await import( '../../services/ml/MLSlotsService.js' );
+    MLSlotsService = mlSlotsService.default;
+
+    const storageManagementService = await import( '../../services/storage/StorageManagementService.js' );
+    StorageManagementService = storageManagementService.default;
+
+    console.log( '✅ [ML-MODULES] Todos os módulos ML carregados com sucesso' );
+
+  } catch ( error )
+  {
+    console.error( '❌ [ML-MODULES] Erro ao carregar módulos ML:', error );
+    throw error;
+  }
+}
 
 /**
  * Configurar rotas ML no app Express
  * @param {Object} app - Instância do Express
  */
-export function setupMLRoutes( app )
+export async function setupMLRoutes( app )
 {
   console.log( '🔧 [ML-ROUTES] Configurando rotas ML...' );
+
+  // Carregar módulos primeiro
+  await loadModules();
 
   // Middleware para extrair tenant ID das requisições
   app.use( '/api', ( req, res, next ) =>
@@ -67,6 +101,12 @@ export async function initializeMLServices()
 
   try
   {
+    // Carregar módulos se ainda não foram carregados
+    if ( !AutoPredictionsService )
+    {
+      await loadModules();
+    }
+
     // Inicializar scheduler de predições automáticas
     await AutoPredictionsService.initialize();
 
