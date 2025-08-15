@@ -1,0 +1,339 @@
+/* QUANTUM DASHBOARD STYLES - TOIT NEXUS */
+
+.quantum-dashboard {
+  padding: 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  color: #fff;
+}
+
+.quantum-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 16px 0;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.quantum-header h1 {
+  color: #fff;
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.quantum-header h1 .anticon {
+  margin-right: 12px;
+  color: #40a9ff;
+  animation: quantum-pulse 2s infinite;
+}
+
+@keyframes quantum-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.quantum-controls {
+  display: flex;
+  gap: 12px;
+}
+
+.quantum-dashboard-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+}
+
+.quantum-dashboard-loading p {
+  margin-top: 16px;
+  font-size: 18px;
+  color: #fff;
+}
+
+.quantum-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.quantum-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.quantum-card .ant-card-head {
+  background: linear-gradient(90deg, #40a9ff, #1890ff);
+  border-radius: 12px 12px 0 0;
+  border-bottom: none;
+}
+
+.quantum-card .ant-card-head-title {
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.quantum-status-details {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.quantum-status-details p {
+  margin: 8px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.quantum-network-info {
+  margin-top: 16px;
+}
+
+.quantum-algorithms {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.algorithm-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: rgba(64, 169, 255, 0.1);
+  border-radius: 6px;
+  border-left: 3px solid #40a9ff;
+}
+
+.algorithm-description {
+  font-size: 12px;
+  color: #666;
+  font-style: italic;
+}
+
+.performance-details {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.performance-details p {
+  margin: 4px 0;
+  color: #666;
+  font-size: 13px;
+}
+
+.timeline-time {
+  font-size: 12px;
+  color: #999;
+  margin: 0;
+}
+
+.quantum-tabs {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 16px;
+  backdrop-filter: blur(10px);
+}
+
+.quantum-tabs .ant-tabs-tab {
+  color: #666;
+  font-weight: 500;
+}
+
+.quantum-tabs .ant-tabs-tab-active {
+  color: #1890ff;
+}
+
+.quantum-tabs .ant-tabs-ink-bar {
+  background: linear-gradient(90deg, #40a9ff, #1890ff);
+  height: 3px;
+}
+
+.quantum-algorithms-detail {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.quantum-algorithms-detail .ant-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  border: 1px solid rgba(64, 169, 255, 0.2);
+}
+
+.quantum-algorithms-detail .ant-card-head {
+  background: linear-gradient(90deg, rgba(64, 169, 255, 0.1), rgba(24, 144, 255, 0.1));
+  border-radius: 8px 8px 0 0;
+}
+
+.quantum-log {
+  background: #001529;
+  color: #40a9ff;
+  padding: 16px;
+  border-radius: 6px;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.quantum-log p {
+  margin: 4px 0;
+  opacity: 0.9;
+}
+
+.quantum-log p:hover {
+  opacity: 1;
+  background: rgba(64, 169, 255, 0.1);
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+/* Animações quânticas */
+@keyframes quantum-glow {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(64, 169, 255, 0.3);
+  }
+  50% { 
+    box-shadow: 0 0 30px rgba(64, 169, 255, 0.6);
+  }
+}
+
+.quantum-card.active {
+  animation: quantum-glow 3s infinite;
+}
+
+/* Efeitos de partículas quânticas */
+.quantum-dashboard::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(120, 200, 255, 0.3) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .quantum-dashboard {
+    padding: 16px;
+  }
+  
+  .quantum-header {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+  
+  .quantum-header h1 {
+    font-size: 24px;
+  }
+  
+  .quantum-algorithms-detail {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .quantum-dashboard {
+    padding: 12px;
+  }
+  
+  .quantum-header h1 {
+    font-size: 20px;
+  }
+  
+  .quantum-card {
+    margin-bottom: 16px;
+  }
+}
+
+/* Estados de loading quântico */
+.quantum-loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.quantum-loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(64, 169, 255, 0.4),
+    transparent
+  );
+  animation: quantum-shimmer 2s infinite;
+}
+
+@keyframes quantum-shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Indicadores de status quântico */
+.quantum-status-indicator {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.quantum-status-indicator.coherent {
+  background: #52c41a;
+  box-shadow: 0 0 6px #52c41a;
+  animation: quantum-pulse 1.5s infinite;
+}
+
+.quantum-status-indicator.decoherent {
+  background: #ff4d4f;
+  box-shadow: 0 0 6px #ff4d4f;
+}
+
+.quantum-status-indicator.entangled {
+  background: #1890ff;
+  box-shadow: 0 0 6px #1890ff;
+  animation: quantum-entangle 2s infinite;
+}
+
+@keyframes quantum-entangle {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.2); }
+  50% { transform: scale(0.8); }
+  75% { transform: scale(1.1); }
+}
+
+/* Tooltips quânticos */
+.quantum-tooltip {
+  background: rgba(0, 21, 41, 0.9);
+  color: #40a9ff;
+  border: 1px solid #40a9ff;
+  border-radius: 6px;
+  backdrop-filter: blur(10px);
+}
+
+.quantum-tooltip .ant-tooltip-arrow::before {
+  background: rgba(0, 21, 41, 0.9);
+  border: 1px solid #40a9ff;
+}

@@ -1,0 +1,698 @@
+/* NO-CODE BUILDER STYLES - TOIT NEXUS */
+
+/* ===== COMMON STYLES ===== */
+.nocode-builder {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.builder-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background: rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid #e8e8e8;
+  backdrop-filter: blur(10px);
+}
+
+.builder-title h2 {
+  color: #1890ff;
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.builder-subtitle {
+  color: #666;
+  font-size: 14px;
+  margin-left: 8px;
+}
+
+.builder-content {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.builder-sidebar {
+  width: 300px;
+  background: rgba(255, 255, 255, 0.9);
+  border-right: 1px solid #e8e8e8;
+  overflow-y: auto;
+}
+
+.builder-canvas {
+  flex: 1;
+  background: #fafafa;
+  overflow: auto;
+  position: relative;
+}
+
+/* ===== WORKFLOW BUILDER STYLES ===== */
+.workflow-builder .tool-panel {
+  margin: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tool-categories {
+  padding: 8px;
+}
+
+.tool-category h4 {
+  color: #1890ff;
+  margin: 16px 0 8px 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.tool-button {
+  margin-bottom: 8px;
+  border-radius: 6px;
+  border: 1px solid #d9d9d9;
+  transition: all 0.3s ease;
+}
+
+.tool-button:hover {
+  border-color: #1890ff;
+  color: #1890ff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(24, 144, 255, 0.2);
+}
+
+.quantum-button {
+  background: linear-gradient(45deg, #722ed1, #eb2f96);
+  border: none;
+  color: white;
+}
+
+.quantum-button:hover {
+  background: linear-gradient(45deg, #531dab, #c41d7f);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(114, 46, 209, 0.3);
+}
+
+.reactflow-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+/* ===== DASHBOARD BUILDER STYLES ===== */
+.dashboard-builder .widget-panel {
+  margin: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.widget-categories {
+  padding: 8px;
+}
+
+.widget-category {
+  margin-bottom: 16px;
+}
+
+.widget-button {
+  margin-bottom: 8px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.widget-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.widget-subtypes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+  padding-left: 8px;
+}
+
+.quantum-widgets {
+  padding: 16px;
+  text-align: center;
+}
+
+.quantum-widget-button {
+  background: linear-gradient(45deg, #722ed1, #eb2f96);
+  border: none;
+  color: white;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  height: 40px;
+}
+
+.quantum-widget-button:hover {
+  background: linear-gradient(45deg, #531dab, #c41d7f);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(114, 46, 209, 0.4);
+}
+
+.quantum-description {
+  color: #666;
+  font-size: 12px;
+  margin-top: 8px;
+  line-height: 1.4;
+}
+
+.dashboard-widget {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e8e8e8;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.dashboard-widget:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #1890ff;
+}
+
+.widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: #fafafa;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.widget-title {
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
+}
+
+.widget-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.widget-content {
+  padding: 16px;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.widget-placeholder {
+  text-align: center;
+  color: #999;
+}
+
+.widget-placeholder .anticon {
+  font-size: 32px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.chart-placeholder {
+  color: #1890ff;
+}
+
+.table-placeholder {
+  color: #52c41a;
+}
+
+.metric-placeholder {
+  color: #faad14;
+}
+
+.metric-value {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+}
+
+.metric-label {
+  font-size: 12px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.quantum-placeholder {
+  color: #722ed1;
+}
+
+.quantum-status {
+  font-size: 12px;
+  color: #722ed1;
+  margin-top: 8px;
+  font-style: italic;
+}
+
+/* ===== FORM BUILDER STYLES ===== */
+.form-builder .field-panel {
+  margin: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.field-types {
+  padding: 8px;
+}
+
+.field-button {
+  margin-bottom: 8px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.field-button:hover {
+  border-color: #1890ff;
+  color: #1890ff;
+  transform: translateY(-1px);
+}
+
+.quantum-fields {
+  padding: 16px;
+  text-align: center;
+}
+
+.quantum-field-button {
+  background: linear-gradient(45deg, #722ed1, #eb2f96);
+  border: none;
+  color: white;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  height: 40px;
+}
+
+.quantum-field-button:hover {
+  background: linear-gradient(45deg, #531dab, #c41d7f);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(114, 46, 209, 0.4);
+}
+
+.form-fields-container {
+  padding: 24px;
+  min-height: 500px;
+}
+
+.empty-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  color: #999;
+}
+
+.form-field {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e8e8e8;
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+}
+
+.form-field:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-color: #1890ff;
+}
+
+.form-field.dragging {
+  transform: rotate(5deg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.field-header {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  background: #fafafa;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.drag-handle {
+  cursor: grab;
+  color: #999;
+  margin-right: 8px;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.field-label {
+  flex: 1;
+  font-weight: 500;
+  color: #333;
+}
+
+.field-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.field-content {
+  padding: 16px;
+}
+
+.quantum-field-preview {
+  position: relative;
+}
+
+.quantum-indicator {
+  position: absolute;
+  top: -8px;
+  right: 0;
+  font-size: 10px;
+  color: #722ed1;
+  background: rgba(114, 46, 209, 0.1);
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+/* ===== REPORT BUILDER STYLES ===== */
+.report-builder .element-panel {
+  margin: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.element-categories {
+  padding: 8px;
+}
+
+.element-category {
+  margin-bottom: 16px;
+}
+
+.element-category h4 {
+  color: #1890ff;
+  margin: 16px 0 8px 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.element-button {
+  margin-bottom: 8px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.element-button:hover {
+  border-color: #1890ff;
+  color: #1890ff;
+  transform: translateY(-1px);
+}
+
+.quantum-elements {
+  padding: 16px;
+  text-align: center;
+}
+
+.quantum-element-button {
+  background: linear-gradient(45deg, #722ed1, #eb2f96);
+  border: none;
+  color: white;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  height: 40px;
+}
+
+.quantum-element-button:hover {
+  background: linear-gradient(45deg, #531dab, #c41d7f);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(114, 46, 209, 0.4);
+}
+
+.quantum-features {
+  margin-top: 12px;
+}
+
+.report-elements-container {
+  padding: 24px;
+  min-height: 500px;
+}
+
+.empty-report {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  color: #999;
+}
+
+.report-element {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e8e8e8;
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+}
+
+.report-element:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-color: #1890ff;
+}
+
+.report-element.dragging {
+  transform: rotate(2deg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.element-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: #fafafa;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.element-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.element-title {
+  font-weight: 500;
+  color: #333;
+}
+
+.element-content {
+  padding: 16px;
+}
+
+.preview-title {
+  color: #333;
+  margin: 0;
+  font-size: 24px;
+}
+
+.preview-subtitle {
+  color: #666;
+  margin: 0;
+  font-size: 18px;
+}
+
+.preview-paragraph {
+  color: #333;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.chart-preview {
+  text-align: center;
+  color: #1890ff;
+  padding: 20px;
+}
+
+.metric-preview {
+  text-align: center;
+}
+
+.metric-preview .metric-value {
+  font-size: 32px;
+  font-weight: 600;
+  color: #1890ff;
+}
+
+.metric-preview .metric-label {
+  color: #666;
+  margin-top: 8px;
+}
+
+.quantum-preview {
+  text-align: center;
+  padding: 20px;
+}
+
+.quantum-preview h4 {
+  color: #722ed1;
+  margin: 8px 0;
+}
+
+.quantum-insights {
+  margin-top: 12px;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 1200px) {
+  .builder-sidebar {
+    width: 250px;
+  }
+}
+
+@media (max-width: 768px) {
+  .builder-header {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 16px;
+  }
+  
+  .builder-content {
+    flex-direction: column;
+  }
+  
+  .builder-sidebar {
+    width: 100%;
+    height: 200px;
+    border-right: none;
+    border-bottom: 1px solid #e8e8e8;
+  }
+  
+  .builder-canvas {
+    height: calc(100vh - 300px);
+  }
+}
+
+@media (max-width: 480px) {
+  .builder-header h2 {
+    font-size: 20px;
+  }
+  
+  .form-fields-container,
+  .report-elements-container {
+    padding: 16px;
+  }
+  
+  .widget-content {
+    padding: 12px;
+    min-height: 80px;
+  }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes quantum-pulse {
+  0%, 100% { 
+    box-shadow: 0 0 0 0 rgba(114, 46, 209, 0.4);
+  }
+  50% { 
+    box-shadow: 0 0 0 10px rgba(114, 46, 209, 0);
+  }
+}
+
+.quantum-button,
+.quantum-widget-button,
+.quantum-field-button,
+.quantum-element-button {
+  animation: quantum-pulse 2s infinite;
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-field,
+.report-element,
+.dashboard-widget {
+  animation: slide-in 0.3s ease-out;
+}
+
+/* ===== DRAG AND DROP STYLES ===== */
+.react-grid-item.react-grid-placeholder {
+  background: rgba(24, 144, 255, 0.2) !important;
+  border: 2px dashed #1890ff !important;
+  border-radius: 8px !important;
+}
+
+.react-grid-item.cssTransforms {
+  transition: all 200ms ease;
+}
+
+.react-grid-item.resizing {
+  opacity: 0.6;
+  z-index: 3;
+}
+
+.react-grid-item > .react-resizable-handle {
+  background: #1890ff;
+  opacity: 0.3;
+}
+
+.react-grid-item > .react-resizable-handle:hover {
+  opacity: 0.8;
+}
+
+/* ===== DRAWER STYLES ===== */
+.ant-drawer-content {
+  background: #fafafa;
+}
+
+.ant-drawer-header {
+  background: linear-gradient(90deg, #1890ff, #40a9ff);
+  border-bottom: none;
+}
+
+.ant-drawer-title {
+  color: white !important;
+}
+
+.ant-drawer-close {
+  color: white !important;
+}
+
+/* ===== MODAL STYLES ===== */
+.ant-modal-header {
+  background: linear-gradient(90deg, #1890ff, #40a9ff);
+  border-bottom: none;
+}
+
+.ant-modal-title {
+  color: white !important;
+}
+
+.ant-modal-close {
+  color: white !important;
+}
+
+/* ===== PREVIEW STYLES ===== */
+.report-preview {
+  padding: 24px;
+  background: white;
+  border-radius: 8px;
+}
+
+.preview-element {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.preview-element:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}

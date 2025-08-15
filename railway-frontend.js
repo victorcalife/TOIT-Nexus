@@ -3,6 +3,9 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 
+// Importar sistema ML
+import { setupMLRoutes, initializeMLServices, stopMLServices } from './routes/ml/index.js';
+
 const __filename = fileURLToPath( import.meta.url );
 const __dirname = path.dirname( __filename );
 
@@ -109,8 +112,48 @@ async function initializeBackend()
         version: '2.0.0',
         environment: process.env.NODE_ENV || 'development',
         integrated: true,
-        host: req.get( 'host' )
+        host: req.get( 'host' ),
+        quantumML: mlServices ? 'active' : 'inactive'
       } );
+    } );
+
+    // QUANTUM ML STATUS API
+    app.get( '/api/quantum-ml/status', ( req, res ) =>
+    {
+      console.log( '🧠 [ML-STATUS] Status do sistema Quantum ML requisitado' );
+
+      if ( !mlServices )
+      {
+        return res.status( 503 ).json( {
+          success: false,
+          status: 'inactive',
+          message: 'Sistema Quantum ML não inicializado',
+          timestamp: new Date().toISOString()
+        } );
+      }
+
+      try
+      {
+        const { getMLStats } = require( './routes/ml/index.js' );
+        const stats = getMLStats();
+
+        res.json( {
+          success: true,
+          status: 'active',
+          message: 'Sistema Quantum ML operacional',
+          stats,
+          timestamp: new Date().toISOString()
+        } );
+      } catch ( error )
+      {
+        res.status( 500 ).json( {
+          success: false,
+          status: 'error',
+          message: 'Erro ao obter estatísticas ML',
+          error: error.message,
+          timestamp: new Date().toISOString()
+        } );
+      }
     } );
 
     // AUTH API BÁSICA (simulada temporariamente)
@@ -955,12 +998,34 @@ app.get( '*', ( req, res ) =>
   }
 } );
 
-app.listen( port, '0.0.0.0', () =>
+// ====================================================================
+// CONFIGURAÇÃO DO SISTEMA QUANTUM ML
+// ====================================================================
+
+// Configurar rotas ML
+setupMLRoutes( app );
+
+// Variável para armazenar serviços ML
+let mlServices = null;
+
+app.listen( port, '0.0.0.0', async () =>
 {
   console.log( '='.repeat( 80 ) );
   console.log( '🚀 TOIT NEXUS INTEGRATED SERVER - INICIADO COM SUCESSO' );
   console.log( '='.repeat( 80 ) );
   console.log( `🌐 Servidor rodando na porta: ${ port }` );
+
+  // Inicializar serviços ML após o servidor estar rodando
+  try
+  {
+    console.log( '🧠 Inicializando sistema Quantum ML...' );
+    mlServices = await initializeMLServices();
+    console.log( '✅ Sistema Quantum ML inicializado com sucesso!' );
+  } catch ( error )
+  {
+    console.error( '❌ Erro ao inicializar sistema Quantum ML:', error );
+    console.error( '⚠️  Servidor continuará sem funcionalidades ML' );
+  }
   console.log( `📁 Diretório raiz: ${ __dirname }` );
   console.log( `🔧 Modo: ${ process.env.NODE_ENV || 'development' }` );
   console.log( '' );
@@ -977,4 +1042,36 @@ app.listen( port, '0.0.0.0', () =>
   console.log( '' );
   console.log( '🎯 STATUS: SISTEMA INTEGRADO 100% OPERACIONAL - V2.0' );
   console.log( '='.repeat( 80 ) );
+} );
+
+// ====================================================================
+// GRACEFUL SHUTDOWN - PARAR SERVIÇOS ML
+// ====================================================================
+
+process.on( 'SIGTERM', async () =>
+{
+  console.log( '🛑 [SHUTDOWN] SIGTERM recebido, parando serviços...' );
+  await stopMLServices();
+  process.exit( 0 );
+} );
+
+process.on( 'SIGINT', async () =>
+{
+  console.log( '🛑 [SHUTDOWN] SIGINT recebido, parando serviços...' );
+  await stopMLServices();
+  process.exit( 0 );
+} );
+
+process.on( 'uncaughtException', async ( error ) =>
+{
+  console.error( '❌ [SHUTDOWN] Erro não capturado:', error );
+  await stopMLServices();
+  process.exit( 1 );
+} );
+
+process.on( 'unhandledRejection', async ( reason, promise ) =>
+{
+  console.error( '❌ [SHUTDOWN] Promise rejeitada não tratada:', reason );
+  await stopMLServices();
+  process.exit( 1 );
 } );
