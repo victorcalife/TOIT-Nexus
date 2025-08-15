@@ -1,11 +1,8 @@
 /**
- * WRAPPER ES MODULE PARA ROTAS ML
+ * ROTAS ML - SISTEMA QUANTUM
  * Integração das rotas ML com o servidor principal
  * 100% JavaScript - SEM TYPESCRIPT
  */
-
-import { createRequire } from 'module';
-const require = createRequire( import.meta.url );
 
 // Importar rotas usando CommonJS
 const quantumRoutes = require( './quantumRoutes.js' );
@@ -24,7 +21,7 @@ const StorageManagementService = require( '../../services/storage/StorageManagem
  * Configurar rotas ML no app Express
  * @param {Object} app - Instância do Express
  */
-export function setupMLRoutes( app )
+function setupMLRoutes( app )
 {
   console.log( '🔧 [ML-ROUTES] Configurando rotas ML...' );
 
@@ -61,7 +58,7 @@ export function setupMLRoutes( app )
 /**
  * Inicializar serviços ML
  */
-export async function initializeMLServices()
+async function initializeMLServices()
 {
   console.log( '🚀 [ML-SERVICES] Inicializando serviços ML...' );
 
@@ -96,7 +93,7 @@ export async function initializeMLServices()
 /**
  * Parar serviços ML
  */
-export async function stopMLServices()
+async function stopMLServices()
 {
   console.log( '🛑 [ML-SERVICES] Parando serviços ML...' );
 
@@ -116,7 +113,7 @@ export async function stopMLServices()
 /**
  * Obter estatísticas dos serviços ML
  */
-export function getMLStats()
+function getMLStats()
 {
   return {
     autoPredictions: AutoPredictionsService.getStats(),
@@ -126,7 +123,7 @@ export function getMLStats()
   };
 }
 
-export default {
+module.exports = {
   setupMLRoutes,
   initializeMLServices,
   stopMLServices,

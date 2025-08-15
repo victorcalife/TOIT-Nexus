@@ -4,26 +4,25 @@
  * 100% JavaScript - SEM TYPESCRIPT
  */
 
-import express from 'express';
+const express = require( 'express' );
 const router = express.Router();
 
 // Importar serviços
-import MLCreditsService from '../../services/ml/MLCreditsService.js';
-import QuantumInsightsService from '../../services/ml/QuantumInsightsService.js';
+const MLCreditsService = require( '../../services/ml/MLCreditsService.js' );
+const QuantumInsightsService = require( '../../services/ml/QuantumInsightsService.js' );
 
 // Importar middlewares
-import
-{
+const {
   checkMLCredits,
   checkForManualInsight,
   checkForAdvancedInsight,
   checkForViewOnly,
   checkPlanLimits,
   consumeCreditsAfterSuccess
-} from '../../middleware/ml/checkMLCredits.js';
+} = require( '../../middleware/ml/checkMLCredits.js' );
 
 // Importar configurações
-import ML_CONFIG from '../../config/ml-config.js';
+const ML_CONFIG = require( '../../config/ml-config.js' );
 
 // ====================================================================
 // ROTAS DE CRÉDITOS ML
@@ -375,4 +374,4 @@ router.post( '/quantum/optimize',
   }
 );
 
-export default router;
+module.exports = router;
