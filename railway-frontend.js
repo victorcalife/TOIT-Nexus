@@ -156,49 +156,7 @@ async function initializeBackend()
       }
     } );
 
-    // SUPER ADMIN INITIALIZATION API
-    app.post( '/api/init-super-admin', async ( req, res ) =>
-    {
-      try
-      {
-        console.log( '🚀 [INIT-SUPER-ADMIN] Iniciando configuração...' );
 
-        // Simular criação de super admin (sem banco por enquanto)
-        const superAdminData = {
-          cpf: '00000000000',
-          email: 'admin@toit.com.br',
-          password: 'admin123',
-          firstName: 'Super',
-          lastName: 'Admin',
-          role: 'super_admin',
-          tenantId: 'toit-admin-tenant',
-          isActive: true,
-          emailVerified: true
-        };
-
-        console.log( '✅ [INIT-SUPER-ADMIN] Super admin configurado (simulação)!' );
-
-        res.json( {
-          success: true,
-          message: 'Super admin configurado com sucesso!',
-          credentials: {
-            email: 'admin@toit.com.br',
-            cpf: '000.000.000-00',
-            password: 'admin123'
-          },
-          note: 'Use essas credenciais para fazer login como super admin'
-        } );
-
-      } catch ( error )
-      {
-        console.error( '❌ [INIT-SUPER-ADMIN] Erro:', error );
-        res.status( 500 ).json( {
-          success: false,
-          error: 'Erro ao configurar super admin',
-          details: error.message
-        } );
-      }
-    } );
 
     // AUTH API BÁSICA (simulada temporariamente)
     app.post( '/api/auth/login', ( req, res ) =>
@@ -206,36 +164,26 @@ async function initializeBackend()
       console.log( '🔐 Login attempt:', req.body );
       const { cpf, password } = req.body;
 
-      // Validação básica para teste
+      // Validação para Victor (Super Admin)
       if ( cpf === '33656299803' && password === '241286' )
       {
         res.json( {
           success: true,
           user: {
-            id: 'admin_full',
-            firstName: 'Admin',
-            lastName: 'Full',
-            name: 'Admin Full',
+            id: 'victor_super_admin',
+            firstName: 'Victor',
+            lastName: 'Calife',
+            name: 'Victor Calife',
             role: 'super_admin',
             cpf: '33656299803',
-            email: 'admin@toit.com.br',
-            tenantId: null
+            email: 'victor@toit.com.br',
+            tenantId: null, // Super admin não tem tenant específico
+            isSuperAdmin: true,
+            hasGlobalAccess: true
           },
-          token: 'mock-jwt-token-' + Date.now(),
-          message: 'Login realizado com sucesso'
-        } );
-      } else if ( cpf === '00000000000' && password === 'admin123' )
-      {
-        res.json( {
-          success: true,
-          user: {
-            id: 'user_1',
-            name: 'Super Admin TOIT',
-            role: 'super_admin',
-            cpf: '00000000000'
-          },
-          token: 'mock-jwt-token-' + Date.now(),
-          message: 'Login realizado com sucesso'
+          token: 'super-admin-jwt-token-' + Date.now(),
+          message: 'Login de Super Admin realizado com sucesso!',
+          redirectUrl: '/dashboard' // Super admin vai direto para dashboard
         } );
       } else if ( cpf === '11111111111' && password === 'admin123' )
       {
