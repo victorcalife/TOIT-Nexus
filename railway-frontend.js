@@ -156,6 +156,50 @@ async function initializeBackend()
       }
     } );
 
+    // SUPER ADMIN INITIALIZATION API
+    app.post( '/api/init-super-admin', async ( req, res ) =>
+    {
+      try
+      {
+        console.log( '🚀 [INIT-SUPER-ADMIN] Iniciando configuração...' );
+
+        // Simular criação de super admin (sem banco por enquanto)
+        const superAdminData = {
+          cpf: '00000000000',
+          email: 'admin@toit.com.br',
+          password: 'admin123',
+          firstName: 'Super',
+          lastName: 'Admin',
+          role: 'super_admin',
+          tenantId: 'toit-admin-tenant',
+          isActive: true,
+          emailVerified: true
+        };
+
+        console.log( '✅ [INIT-SUPER-ADMIN] Super admin configurado (simulação)!' );
+
+        res.json( {
+          success: true,
+          message: 'Super admin configurado com sucesso!',
+          credentials: {
+            email: 'admin@toit.com.br',
+            cpf: '000.000.000-00',
+            password: 'admin123'
+          },
+          note: 'Use essas credenciais para fazer login como super admin'
+        } );
+
+      } catch ( error )
+      {
+        console.error( '❌ [INIT-SUPER-ADMIN] Erro:', error );
+        res.status( 500 ).json( {
+          success: false,
+          error: 'Erro ao configurar super admin',
+          details: error.message
+        } );
+      }
+    } );
+
     // AUTH API BÁSICA (simulada temporariamente)
     app.post( '/api/auth/login', ( req, res ) =>
     {
