@@ -76,9 +76,9 @@
             --quantum-neural: linear-gradient(135deg, #667eea 0%, #29034f 50%, #f093fb 100%);
 
             /* Light Mode - Background Gelo mantendo animações */
-            --bg-primary: #f8fafc;
-            --bg-secondary: #e2e8f0;
-            --bg-card: #ffffff;
+            --bg-primary: #25384979;
+            --bg-secondary: #2c2f32b4;
+            --bg-card: #343333c8;
             --text-primary: #1e3a8a;
             --text-secondary: #00116e;
             --border-color: rgba(30, 58, 138, 0.2);
@@ -568,18 +568,18 @@
         .quantum-circuit {
             background: var(--bg-card);
             border-radius: 16px;
-            padding: 2rem;
+            padding: 1rem;
             border: 1px solid var(--border-color);
             position: relative;
-            overflow: hidden;
+            overflow: visible;
             transform-style: preserve-3d;
             perspective: 1000px;
             transition: all 0.4s ease;
             box-shadow:
                 0 10px 30px rgba(0, 0, 0, 0.3),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            min-height: 450px;
-            height: 450px;
+            min-height: 600px;
+            height: 600px;
         }
 
         .quantum-circuit:hover {
@@ -1547,7 +1547,7 @@
         .netflix-card:hover {
             transform: scale(1.05) translateY(-10px);
             z-index: 100;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.321), 0 0 30px rgba(39, 41, 169, 0.381);
             border-color: var(--quantum-primary);
         }
 
@@ -2477,13 +2477,14 @@
 
         /* Container "Unidades Quânticas Ativas" - posicionado 45px acima + sombra 3D sutil */
         .quantum-circuit {
-            transform: translateX(10px) translateY(-25px) scale(0.95) !important;
+            transform: translateX(10px) translateY(-25px) scale(1.0) !important;
             box-shadow:
                 0 15px 35px rgba(0, 0, 0, 0.4),
                 0 8px 20px rgba(99, 102, 241, 0.15),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-            min-height: 450px !important;
-            height: 450px !important;
+            min-height: 600px !important;
+            height: 600px !important;
+            overflow: visible !important;
         }
 
         .quantum-circuit:hover {
@@ -3038,14 +3039,15 @@
             }
 
             .quantum-circuit {
-                padding: 1.5rem;
-                transform: translateY(-45px) scale(0.95) !important;
+                padding: 1rem;
+                transform: translateY(-45px) scale(1.0) !important;
                 box-shadow:
                     0 12px 25px rgba(0, 0, 0, 0.3),
                     0 6px 15px rgba(99, 102, 241, 0.12),
                     inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-                min-height: 400px !important;
-                height: 400px !important;
+                min-height: 500px !important;
+                height: 500px !important;
+                overflow: visible !important;
             }
 
             .quantum-circuit:hover {
@@ -3109,9 +3111,10 @@
             }
 
             .quantum-circuit {
-                padding: 1rem;
-                min-height: 350px !important;
-                height: 350px !important;
+                padding: 0.8rem;
+                min-height: 450px !important;
+                height: 450px !important;
+                overflow: visible !important;
             }
 
             .quantum-metrics {
@@ -3434,9 +3437,7 @@
     <section class="nexus-flow" id="nexus-flow">
         <div class="flow-container">
             <div class="flow-header fade-in">
-                <h2 class="c">Como o <span
-                        style="background: linear-gradient(135deg, #06b6d4 20%, #1d0155 50%, #16166c 100%); -webkit-background-clip: text; -webkit-text-fill-color: #102436; background-clip: text; font-size:58px ; font-weight: 600;">NEXUS</span>
-                    Funciona</h2>
+                <h2 class="c">Fácil, rápido e intuitivo</h2>
             </div>
 
             <div class="process-flow">
@@ -3546,10 +3547,9 @@
             <!-- Quantum ML Netflix Carousel -->
             <div class="quantum-ml-carousel fade-in" style="transform: translateY(-48px);">
                 <div class="carousel-header">
-                    <h3 class="carousel-title">🧠 Machine Learning Quântico Integrado</h3>
+                    <h3 class="carousel-title">🧠 Benefícios e Funcionalidades</h3>
                     <p class="carousel-subtitle">
-                        Descubra como o processamento quântico revoluciona workflows empresariais com vantagens
-                        exponenciais
+                        Descubra como uma inteligência quântica pode revolucionar o seu dia-a-dia
                     </p>
                 </div>
 
@@ -3568,7 +3568,7 @@
                             <div class="card-image">⚡</div>
                             <div class="card-overlay">
                                 <h4 class="card-title">Conexão Inteligente</h4>
-                                <p class="card-description">ML detecta automaticamente padrões de dados e sugere as
+                                <p class="card-description">ML detecta automaticamente padrões e sugere as
                                     melhores conexões</p>
                                 <div class="card-tags">
                                     <span class="card-tag">Pattern Recognition</span>
@@ -3590,17 +3590,16 @@
                             <div class="card-image">🔮</div>
                             <div class="card-overlay">
                                 <h4 class="card-title">Processamento Preditivo</h4>
-                                <p class="card-description">65.536 cenários paralelos processados simultaneamente via
-                                    quantum</p>
+                                <p class="card-description">+60K de cenários processados em paralelo</p>
                                 <div class="card-tags">
                                     <span class="card-tag">Quantum Parallel</span>
-                                    <span class="card-tag">TQL Optimize</span>
+                                    <span class="card-tag">TOIT Query Language (TQL) 100% Quântica</span>
                                 </div>
                             </div>
                             <div class="expanded-content">
                                 <ul class="feature-list">
-                                    <li>Processamento massivo paralelo quântico</li>
-                                    <li>Otimização automática de queries TQL</li>
+                                    <li>Processamento massivo e velocidade quântica</li>
+                                    <li>Otimização automática de queries via TQL</li>
                                     <li>Predição de performance em tempo real</li>
                                     <li>Algoritmos VQE adaptativos</li>
                                 </ul>
@@ -3612,8 +3611,8 @@
                             <div class="card-image">📈</div>
                             <div class="card-overlay">
                                 <h4 class="card-title">Insights Automáticos</h4>
-                                <p class="card-description">Relatórios se autocompletam com predições ML e identificação
-                                    de tendências</p>
+                                <p class="card-description">Relatórios e dashboards se autocompletam conforme Machine
+                                    Learning aprende com você</p>
                                 <div class="card-tags">
                                     <span class="card-tag">Auto-Reports</span>
                                     <span class="card-tag">Trend Analysis</span>
@@ -3623,7 +3622,8 @@
                                 <ul class="feature-list">
                                     <li>Geração automática de insights</li>
                                     <li>Predições com 94.7% de precisão</li>
-                                    <li>Identificação de tendências emergentes</li>
+                                    <li>Identificação de tendências emergentes (extremamente útil no mercado financeiro)
+                                    </li>
                                     <li>Alertas preditivos personalizados</li>
                                 </ul>
                             </div>
@@ -5715,15 +5715,37 @@
                 this.container.innerHTML = `
                     <style>
                         .quantum-game-container {
-                            width: 100%;
-                            height: 100%;
-                            min-height: 400px;
+                            width: 59%;
+                            height: 59%;
                             background: rgba(10, 15, 28, 0.95);
-                            border-radius: 15px;
+                            border-radius: 13px;
+                            border: 2px solid rgba(0, 255, 255, 0.4);
+                            box-shadow: 0 0 27px rgba(0, 255, 255, 0.2);
                             position: relative;
                             overflow: hidden;
-                            border: 1px solid rgba(0, 255, 255, 0.2);
-                            box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            margin: 20.5% auto;
+                            transform: scale(1.11);
+                        }
+
+                        .quantum-particles {
+                            position: absolute;
+                            width: 100%;
+                            height: 100%;
+                            pointer-events: none;
+                            z-index: 1;
+                        }
+
+                        .quantum-particle {
+                            position: absolute;
+                            width: 1px;
+                            height: 1px;
+                            background: #00ffff;
+                            border-radius: 50%;
+                            opacity: 0.3;
+                            animation: quantumFloat 15s infinite linear;
                         }
 
                         @keyframes quantumFloat {
@@ -5744,23 +5766,23 @@
                         }
 
                         .game-screen {
-                            position: absolute;
+                            display: none;
+                            padding: 40px;
+                            text-align: center;
                             width: 100%;
                             height: 100%;
-                            padding: 12px;
-                            display: flex;
+                            position: absolute;
+                            top: 0;
+                            left: 0;
                             flex-direction: column;
                             align-items: center;
-                            opacity: 0;
-                            transform: translateX(100%);
-                            transition: all 0.4s ease;
-                            overflow-y: auto;
-                            z-index: 10;
+                            justify-content: center;
+                            gap: 20px;
+                            box-sizing: border-box;
                         }
 
                         .game-screen.active {
-                            opacity: 1;
-                            transform: translateX(0);
+                            display: flex !important;
                         }
 
                         .game-screen::-webkit-scrollbar {
@@ -5776,69 +5798,96 @@
                             border-radius: 2px;
                         }
 
-                        .game-logo {
-                            font-size: 1.2em;
-                            font-weight: 900;
-                            background: linear-gradient(135deg, #00ffff, #0080ff);
-                            -webkit-background-clip: text;
-                            -webkit-text-fill-color: transparent;
-                            text-align: center;
-                            margin-bottom: 8px;
-                        }
-
                         .game-title {
-                            font-size: 0.9em;
-                            color: #00ffff;
+                            font-size: 1.8em;
+                            color: #ffffff;
                             text-align: center;
-                            margin-bottom: 8px;
+                            margin: 0;
+                            font-weight: 900;
+                            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
                         }
 
                         .game-card {
-                            background: rgba(0, 40, 80, 0.3);
-                            border: 1px solid rgba(0, 255, 255, 0.2);
-                            border-radius: 6px;
-                            padding: 10px;
-                            margin: 6px 0;
-                            width: 100%;
-                            font-size: 0.75em;
-                            line-height: 1.3;
+                            background: rgba(0, 40, 80, 0.6);
+                            border: 2px solid rgba(0, 255, 255, 0.4);
+                            border-radius: 11px;
+                            padding: 18px;
+                            margin: 0;
+                            width: auto;
+                            max-width: 450px;
+                            font-size: 0.9em;
+                            line-height: 1.4;
+                            box-shadow: 0 7px 22px rgba(0, 255, 255, 0.15);
+                            text-align: center;
+                            color: #ffffff;
+                            font-weight: bold;
                         }
 
                         .game-btn {
-                            padding: 6px 16px;
+                            padding: 12px 25px;
                             background: linear-gradient(135deg, #0080ff, #00ffff);
                             border: none;
-                            border-radius: 12px;
+                            border-radius: 20px;
                             color: white;
-                            font-weight: 600;
+                            font-weight: 700;
                             cursor: pointer;
                             transition: all 0.3s ease;
-                            margin: 6px;
-                            font-size: 0.8em;
+                            margin: 0;
+                            font-size: 1em;
+                            box-shadow: 0 5px 18px rgba(0, 128, 255, 0.4);
                         }
 
                         .game-btn:hover {
-                            transform: translateY(-1px);
-                            box-shadow: 0 3px 10px rgba(0, 255, 255, 0.4);
+                            transform: translateY(-3px);
+                            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.6);
+                        }
+
+                        .comparison-grid {
+                            display: grid;
+                            grid-template-columns: 1fr 1fr;
+                            gap: 16px;
+                            width: 100%;
+                            margin: 20px 0;
+                        }
+
+                        .code-block {
+                            background: rgba(0, 0, 0, 0.7);
+                            border-radius: 8px;
+                            padding: 16px;
+                            font-family: monospace;
+                            font-size: 0.9em;
+                            border: 2px solid rgba(255, 255, 255, 0.2);
+                            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+                        }
+
+                        .code-block.bad {
+                            border-color: #ff4444;
+                            background: rgba(255, 68, 68, 0.05);
+                        }
+
+                        .code-block.good {
+                            border-color: #00ff88;
+                            background: rgba(0, 255, 136, 0.05);
                         }
 
                         .strategies {
                             display: grid;
                             grid-template-columns: repeat(3, 1fr);
-                            gap: 6px;
-                            margin: 8px 0;
+                            gap: 14px;
+                            margin: 18px 0;
                             width: 100%;
                         }
 
                         .strategy-card {
-                            background: rgba(0, 40, 80, 0.4);
-                            border: 2px solid rgba(0, 255, 255, 0.2);
-                            border-radius: 6px;
-                            padding: 6px;
+                            background: rgba(0, 40, 80, 0.7);
+                            border: 2px solid rgba(0, 255, 255, 0.4);
+                            border-radius: 11px;
+                            padding: 18px 11px;
                             cursor: pointer;
                             transition: all 0.3s ease;
                             text-align: center;
-                            font-size: 0.7em;
+                            font-size: 0.9em;
+                            box-shadow: 0 5px 18px rgba(0, 255, 255, 0.1);
                         }
 
                         .strategy-card:hover {
@@ -5853,72 +5902,87 @@
                         }
 
                         .strategy-icon {
-                            font-size: 1.2em;
-                            margin-bottom: 4px;
+                            font-size: 2.25em;
+                            margin-bottom: 7px;
                         }
 
                         .strategy-name {
                             font-weight: bold;
-                            color: #00ffff;
-                            margin-bottom: 2px;
+                            color: #ffffff;
+                            margin-bottom: 5px;
+                            font-size: 0.99em;
                         }
 
                         .strategy-cost {
-                            font-size: 0.7em;
-                            opacity: 0.8;
+                            font-size: 0.81em;
+                            color: #ffffff;
+                            font-weight: bold;
                         }
 
                         .game-area {
-                            width: 100%;
-                            background: rgba(0, 20, 40, 0.5);
-                            border: 2px solid rgba(0, 255, 255, 0.3);
-                            border-radius: 8px;
-                            padding: 8px;
+                            width: calc(90% + 30px);
+                            max-width: calc(90% + 30px);
+                            background: rgba(0, 20, 40, 0.8);
+                            border: 2px solid rgba(0, 255, 255, 0.5);
+                            border-radius: 13px;
+                            padding: 10px;
                             position: relative;
                             display: flex;
                             flex-direction: column;
+                            min-height: 235px;
+                            box-shadow: 0 7px 22px rgba(0, 255, 255, 0.15);
+                            text-align: center;
+                            margin: 0 auto 5px auto;
+                            justify-content: center;
                         }
 
                         .game-header {
                             display: flex;
-                            justify-content: space-between;
-                            margin-bottom: 8px;
-                            padding-bottom: 6px;
-                            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
-                            font-size: 0.7em;
+                            justify-content: center;
+                            align-items: center;
+                            margin-bottom: 20px;
+                            padding-bottom: 16px;
+                            border-bottom: 2px solid rgba(0, 255, 255, 0.4);
+                            font-size: 1em;
+                            text-align: center;
                         }
 
                         .game-stats {
                             display: flex;
-                            gap: 10px;
+                            gap: 20px;
+                            justify-content: center;
                         }
 
                         .stat {
                             display: flex;
                             flex-direction: column;
                             align-items: center;
+                            min-width: 70px;
+                            justify-content: center;
                         }
 
                         .stat-label {
-                            font-size: 0.6em;
-                            opacity: 0.7;
-                            margin-bottom: 2px;
+                            font-size: 0.9em;
+                            margin-bottom: 6px;
+                            color: #ffffff;
+                            font-weight: bold;
                         }
 
                         .stat-value {
-                            font-size: 0.8em;
+                            font-size: 1.2em;
                             font-weight: bold;
-                            color: #00ffff;
+                            color: #ffffff;
                         }
 
                         .progress-bar {
                             width: 100%;
-                            height: 16px;
-                            background: rgba(0, 0, 0, 0.5);
-                            border-radius: 8px;
+                            height: 32px;
+                            background: rgba(0, 0, 0, 0.8);
+                            border: 2px solid rgba(0, 255, 255, 0.3);
+                            border-radius: 16px;
                             overflow: hidden;
                             position: relative;
-                            margin: 6px 0;
+                            margin: 10px 0;
                         }
 
                         .progress-fill {
@@ -5930,62 +5994,101 @@
                             justify-content: center;
                             color: white;
                             font-weight: bold;
-                            font-size: 0.7em;
+                            font-size: 1em;
+                            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
                         }
 
                         .navigation {
                             position: absolute;
-                            bottom: 6px;
+                            bottom: 20px;
                             left: 50%;
                             transform: translateX(-50%);
+                            justify-content: center;
                             display: flex;
-                            gap: 4px;
+                            gap: 12px;
                             z-index: 100;
+                            background: rgba(0, 0, 0, 0.8);
+                            padding: 10px 20px;
+                            border-radius: 25px;
+                            border: 2px solid rgba(0, 255, 255, 0.4);
+                            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
                         }
 
                         .nav-dot {
-                            width: 5px;
-                            height: 5px;
+                            width: 10px;
+                            height: 10px;
                             border-radius: 50%;
-                            background: rgba(255, 255, 255, 0.2);
+                            background: rgba(255, 255, 255, 0.4);
                             cursor: pointer;
                             transition: all 0.3s ease;
                         }
 
                         .nav-dot.active {
                             background: #00ffff;
-                            transform: scale(1.2);
-                            box-shadow: 0 0 4px #00ffff;
+                            transform: scale(1.4);
+                            box-shadow: 0 0 10px #00ffff;
                         }
 
                         @media (max-width: 768px) {
+                            .comparison-grid {
+                                grid-template-columns: 1fr;
+                                gap: 12px;
+                                justify-content: center;
+                            }
+
                             .strategies {
                                 grid-template-columns: 1fr;
+                                gap: 12px;
+                                justify-content: center;
                             }
 
                             .game-stats {
-                                flex-direction: column;
-                                gap: 6px;
+                                flex-direction: row;
+                                gap: 10px;
+                                justify-content: center;
+                            }
+
+                            .game-logo {
+                                font-size: 2em;
+                                justify-content: center;
+                            }
+
+                            .game-title {
+                                font-size: 1.3em;
+                                text-align: center;
+                                margin: 0 auto;
+                                max-width: 90%;
+                                margin-bottom: 40px;
+                                justify-content: center;
+                            }
+
+                            .game-card {
+                                font-size: 1em;
+                                padding: 10px;
+                            }
+
+                            .strategy-card {
+                                padding: 10px;
                             }
                         }
                     </style>
 
-                    ${ this.createParticlesHTML() }
+                    <!-- Partículas de fundo -->
+                    <div class="quantum-particles"></div>
 
                     <!-- Tela 1: Introdução -->
-                    <div class="game-screen ${ this.currentScreen === 1 ? 'active' : '' }">
-                        <div class="game-logo">TOITNEXUS</div>
-                        <h2 class="game-title">Revolução Quântica + TQL</h2>
+                    <div style="justify-content: center;" class="game-screen ${ this.currentScreen === 1 ? 'active' : '' }">
+                        <h2 class="game-title">Entenda a realidade</h2>
 
                         <div class="game-card">
-                            <h3 style="text-align: center; color: #00ff88; margin: 0 0 6px 0;">
+                            <h3 style="color: #ffffff; margin: 0; font-size: 1.2em; font-weight: bold;">
                                 🚀 Primeira Aplicação Comercial Quântica
                             </h3>
-                            <p style="text-align: center; margin: 6px 0; font-size: 0.7em;">
-                                Combinamos o poder da <strong>computação quântica</strong> com a simplicidade da
-                                <strong> TQL (TOIT Query Language)</strong> - uma linguagem 100% em português.
+                            <p style="margin: 0; font-size: 1em; line-height: 1.5; color: #ffffff; font-weight: bold;">
+                                Combinamos o poder da <strong style="color: #00ffff;">computação quântica</strong> com a simplicidade da
+                                <strong style="color: #00ff88;"> TQL (TOIT Query Language)</strong> - uma linguagem 100% em português.
                             </p>
-                            <p style="text-align: center; font-size: 0.65em; opacity: 0.8;">
+                            <p style="font-size: 1.05em; color: #ffffff; font-weight: bold; margin: 0;">
                                 💡 Descubra como economizar até 99.99% em custos computacionais!
                             </p>
                         </div>
@@ -5996,22 +6099,22 @@
                     </div>
 
                     <!-- Tela 2: O que é TQL -->
-                    <div class="game-screen ${ this.currentScreen === 2 ? 'active' : '' }">
+                    <div class="game-screen ${ this.currentScreen === 2 ? 'active' : '' }" style="transform: translateY(-15px);">
                         <h2 class="game-title">TQL: Linguagem em Português</h2>
 
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 0;">
-                            <div style="background: rgba(255, 68, 68, 0.05); border: 1px solid #ff4444; border-radius: 4px; padding: 6px;">
-                                <h4 style="color: #ff4444; margin: 0 0 4px 0; font-size: 0.7em;">❌ SQL Tradicional</h4>
-                                <pre style="margin: 0; font-size: 0.55em; font-family: monospace;">SELECT SUM(sales.value)
+                        <div class="comparison-grid">
+                            <div class="code-block bad">
+                                <h4 style="color: #ff6666; margin: 0 0 8px 0; font-size: 1em;">❌ SQL Tradicional</h4>
+                                <pre style="margin: 0; font-size: 0.8em; color: #ffcccc;">SELECT SUM(sales.value)
 FROM sales
 WHERE date >= '2025-01-01'
 GROUP BY product_id
 -- Complexo e em inglês</pre>
                             </div>
 
-                            <div style="background: rgba(0, 255, 136, 0.05); border: 1px solid #00ff88; border-radius: 4px; padding: 6px;">
-                                <h4 style="color: #00ff88; margin: 0 0 4px 0; font-size: 0.7em;">✅ TQL em Português</h4>
-                                <pre style="margin: 0; font-size: 0.55em; font-family: monospace;">vendas_mes = SOMAR valor
+                            <div class="code-block good">
+                                <h4 style="color: #66ffaa; margin: 0 0 8px 0; font-size: 1em;">✅ TQL em Português</h4>
+                                <pre style="margin: 0; font-size: 0.8em; color: #ccffdd;">vendas_mes = SOMAR valor
     DE vendas ONDE data = MES(0);
 
 MAX(10) produtos POR vendas;
@@ -6021,11 +6124,11 @@ MAX(10) produtos POR vendas;
                         </div>
 
                         <div class="game-card">
-                            <h3 style="margin: 0 0 6px 0;">🎯 Vantagens da TQL:</h3>
-                            <ul style="line-height: 1.3; margin-left: 12px; font-size: 0.7em;">
-                                <li>📝 <strong>100% em português</strong></li>
-                                <li>⚡ <strong>10x mais simples</strong> que SQL</li>
-                                <li>🚀 <strong>Otimizada para quantum</strong></li>
+                            <h3 style="margin: 0 0 12px 0; font-size: 1.2em; color: #ffffff; font-weight: bold;">🎯 Vantagens da TQL:</h3>
+                            <ul style="line-height: 1.5; margin-left: 20px; font-size: 1em; color: #ffffff; font-weight: bold;">
+                                <li>📝 <strong style="color: #ffffff;">100% em português</strong></li>
+                                <li>⚡ <strong style="color: #ffffff;">10x mais simples</strong> que SQL</li>
+                                <li>🚀 <strong style="color: #ffffff;">Otimizada para quantum</strong></li>
                             </ul>
                         </div>
 
@@ -6035,7 +6138,7 @@ MAX(10) produtos POR vendas;
                     </div>
 
                     <!-- Tela 3: Quando usar Quantum -->
-                    <div class="game-screen ${ this.currentScreen === 3 ? 'active' : '' }">
+                    <div class="game-screen ${ this.currentScreen === 3 ? 'active' : '' }" style="transform: translateY(-20px);">
                         <h2 class="game-title">Quando TQL Ativa Modo Quântico?</h2>
 
                         <div class="strategies">
@@ -6043,9 +6146,9 @@ MAX(10) produtos POR vendas;
                                 <div class="strategy-icon">📊</div>
                                 <div class="strategy-name">Pequeno</div>
                                 <div class="strategy-cost">&lt; 1GB</div>
-                                <p style="margin: 4px 0 0 0; font-size: 0.6em;">
+                                <p style="margin: 8px 0 0 0; font-size: 0.9em; color: #ffffff; font-weight: bold;">
                                     Local<br/>
-                                    <strong style="color: #00ff88;">R$ 0</strong>
+                                    <strong style="color: #ffffff;">R$ 0</strong>
                                 </p>
                             </div>
 
@@ -6053,9 +6156,9 @@ MAX(10) produtos POR vendas;
                                 <div class="strategy-icon">☁️</div>
                                 <div class="strategy-name">Médio</div>
                                 <div class="strategy-cost">1GB-1TB</div>
-                                <p style="margin: 4px 0 0 0; font-size: 0.6em;">
+                                <p style="margin: 8px 0 0 0; font-size: 0.9em; color: #ffffff; font-weight: bold;">
                                     Cloud<br/>
-                                    <strong style="color: #ffaa00;">R$ 0.10/GB</strong>
+                                    <strong style="color: #ffffff;">R$ 0.10/GB</strong>
                                 </p>
                             </div>
 
@@ -6063,19 +6166,19 @@ MAX(10) produtos POR vendas;
                                 <div class="strategy-icon">⚛️</div>
                                 <div class="strategy-name">Big Data</div>
                                 <div class="strategy-cost">&gt; 1TB</div>
-                                <p style="margin: 4px 0 0 0; font-size: 0.6em;">
+                                <p style="margin: 8px 0 0 0; font-size: 0.9em; color: #ffffff; font-weight: bold;">
                                     Quantum!<br/>
-                                    <strong style="color: #ff4444;">R$ 1.60/seg</strong>
+                                    <strong style="color: #ffffff;">R$ 1.60/seg</strong>
                                 </p>
                             </div>
                         </div>
 
                         <div class="game-card">
-                            <h3 style="margin: 0 0 6px 0;">⚠️ Importante sobre Quantum:</h3>
-                            <ul style="line-height: 1.3; margin-left: 12px; font-size: 0.65em;">
-                                <li>💸 <strong>Custo mínimo:</strong> R$ 1.60/segundo</li>
-                                <li>📊 <strong>Só compensa:</strong> Big Data, ML complexo</li>
-                                <li>🎯 <strong>TQL otimiza automaticamente</strong></li>
+                            <h3 style="margin: 0 0 12px 0; font-size: 1.2em; color: #ffffff; font-weight: bold;">⚠️ Importante sobre Quantum:</h3>
+                            <ul style="line-height: 1.5; margin-left: 20px; font-size: 1em; color: #ffffff; font-weight: bold;">
+                                <li>💸 <strong style="color: #ffffff;">Custo mínimo:</strong> R$ 1.60/segundo</li>
+                                <li>📊 <strong style="color: #ffffff;">Só compensa:</strong> Big Data, ML complexo</li>
+                                <li>🎯 <strong style="color: #ffffff;">TQL otimiza automaticamente</strong></li>
                             </ul>
                         </div>
 
@@ -6085,14 +6188,14 @@ MAX(10) produtos POR vendas;
                     </div>
 
                     <!-- Tela 4: Game Interativo -->
-                    <div class="game-screen ${ this.currentScreen === 4 ? 'active' : '' }">
-                        <h2 class="game-title">Simulador de Economia Quântica</h2>
+                    <div class="game-screen ${ this.currentScreen === 4 ? 'active' : '' }" style="transform: translateY(-20px);">
+                        <h2 class="game-title" style="font-size: 1.53em;">Simulador de Economia Quântica</h2>
 
-                        <div class="game-area">
+                        <div class="game-area" style="transform: scale(0.85);">
                             <div class="game-header">
                                 <div>
-                                    <h3 style="margin: 0; font-size: 0.8em;">1.000 Consultas TQL (5TB)</h3>
-                                    <p style="font-size: 0.6em; opacity: 0.7; margin: 1px 0 0 0;">
+                                    <h3 style="margin: 0; font-size: 1.1em; color: #ffffff; font-weight: bold;">1.000 Consultas TQL (5TB)</h3>
+                                    <p style="font-size: 0.9em; margin: 4px 0 0 0; color: #ffffff; font-weight: bold;">
                                         Cada consulta analisa 5TB
                                     </p>
                                 </div>
@@ -6113,14 +6216,14 @@ MAX(10) produtos POR vendas;
                             </div>
 
                             <div style="flex: 1;">
-                                <h4 style="margin: 0 0 6px 0; font-size: 0.8em;">Escolha sua Estratégia:</h4>
+                                <h4 style="margin: 0 0 16px 0; font-size: 1.2em; text-align: center; color: #ffffff; font-weight: bold;">Escolha sua Estratégia:</h4>
 
                                 <div class="strategies">
                                     <div class="strategy-card ${ this.gameState.strategy === 'individual' ? 'active' : '' }" onclick="quantumGame.selectStrategy('individual')">
                                         <div class="strategy-icon">🚶</div>
                                         <div class="strategy-name">Individual</div>
                                         <div class="strategy-cost">1 query = 1 seg</div>
-                                        <p style="font-size: 0.6em; margin: 2px 0 0 0;">
+                                        <p style="font-size: 0.9em; margin: 8px 0 0 0; color: #ffffff; font-weight: bold;">
                                             R$ 1.600,00
                                         </p>
                                     </div>
@@ -6129,7 +6232,7 @@ MAX(10) produtos POR vendas;
                                         <div class="strategy-icon">📦</div>
                                         <div class="strategy-name">Batch TQL</div>
                                         <div class="strategy-cost">1000 = 1 seg</div>
-                                        <p style="font-size: 0.6em; margin: 2px 0 0 0;">
+                                        <p style="font-size: 0.9em; margin: 8px 0 0 0; color: #ffffff; font-weight: bold;">
                                             R$ 1,60
                                         </p>
                                     </div>
@@ -6138,7 +6241,7 @@ MAX(10) produtos POR vendas;
                                         <div class="strategy-icon">🤝</div>
                                         <div class="strategy-name">Colaborativo</div>
                                         <div class="strategy-cost">10 empresas</div>
-                                        <p style="font-size: 0.6em; margin: 2px 0 0 0;">
+                                        <p style="font-size: 0.9em; margin: 8px 0 0 0; color: #ffffff; font-weight: bold;">
                                             R$ 0,16
                                         </p>
                                     </div>
@@ -6158,35 +6261,34 @@ MAX(10) produtos POR vendas;
                     </div>
 
                     <!-- Tela 5: Resultados -->
-                    <div class="game-screen ${ this.currentScreen === 5 ? 'active' : '' }">
-                        <div class="game-logo">TOITNEXUS</div>
+                    <div class="game-screen ${ this.currentScreen === 5 ? 'active' : '' }" style="transform: translateY(-15px);">
                         <h2 class="game-title">🎉 Você Domina TQL + Quantum!</h2>
 
                         <div class="game-card">
-                            <h3 style="text-align: center; color: #00ff88; margin: 0 0 8px 0;">📊 Seus Resultados:</h3>
-                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 8px 0;">
+                            <h3 style="text-align: center; color: #ffffff; margin: 0 0 16px 0; font-size: 1.3em; font-weight: bold;">📊 Seus Resultados:</h3>
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 16px 0;">
                                 <div style="text-align: center;">
-                                    <div style="font-size: 1.2em; color: #00ffff;">${ this.gameState.timeElapsed.toFixed( 1 ) }s</div>
-                                    <div style="font-size: 0.6em; opacity: 0.7;">Tempo Total</div>
+                                    <div style="font-size: 1.8em; color: #ffffff; font-weight: bold;">${ this.gameState.timeElapsed.toFixed( 1 ) }s</div>
+                                    <div style="font-size: 0.9em; color: #ffffff; font-weight: bold;">Tempo Total</div>
                                 </div>
                                 <div style="text-align: center;">
-                                    <div style="font-size: 1.2em; color: #ff4444;">R$ ${ this.gameState.totalCost.toFixed( 2 ) }</div>
-                                    <div style="font-size: 0.6em; opacity: 0.7;">Custo Final</div>
+                                    <div style="font-size: 1.8em; color: #ffffff; font-weight: bold;">R$ ${ this.gameState.totalCost.toFixed( 2 ) }</div>
+                                    <div style="font-size: 0.9em; color: #ffffff; font-weight: bold;">Custo Final</div>
                                 </div>
                                 <div style="text-align: center;">
-                                    <div style="font-size: 1.2em; color: #00ff88;">R$ ${ this.gameState.savings.toFixed( 2 ) }</div>
-                                    <div style="font-size: 0.6em; opacity: 0.7;">Economia</div>
+                                    <div style="font-size: 1.8em; color: #ffffff; font-weight: bold;">R$ ${ this.gameState.savings.toFixed( 2 ) }</div>
+                                    <div style="font-size: 0.9em; color: #ffffff; font-weight: bold;">Economia</div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="game-card">
-                            <h3 style="margin: 0 0 6px 0;">✅ O que você aprendeu:</h3>
-                            <ul style="line-height: 1.3; margin-left: 12px; font-size: 0.65em;">
-                                <li>📝 <strong>TQL:</strong> Consultas 100% em português</li>
-                                <li>⚡ <strong>Otimização:</strong> TQL detecta volume automaticamente</li>
-                                <li>💰 <strong>Economia:</strong> Batch economiza 99.9%</li>
-                                <li>🤝 <strong>Colaboração:</strong> Dividir custos economiza 99.99%</li>
+                            <h3 style="margin: 0 0 12px 0; font-size: 1.2em; color: #ffffff; font-weight: bold;">✅ O que você aprendeu:</h3>
+                            <ul style="line-height: 1.5; margin-left: 20px; font-size: 1em; color: #ffffff; font-weight: bold;">
+                                <li>📝 <strong style="color: #ffffff;">TQL:</strong> Consultas 100% em português</li>
+                                <li>⚡ <strong style="color: #ffffff;">Otimização:</strong> TQL detecta volume automaticamente</li>
+                                <li>💰 <strong style="color: #ffffff;">Economia:</strong> Batch economiza 99.9%</li>
+                                <li>🤝 <strong style="color: #ffffff;">Colaboração:</strong> Dividir custos economiza 99.99%</li>
                             </ul>
                         </div>
 
@@ -6200,7 +6302,8 @@ MAX(10) produtos POR vendas;
                     <!-- Navegação -->
                     <div class="navigation">
                         ${ [ 1, 2, 3, 4, 5 ].map( num => `
-                            <div class="nav-dot ${ this.currentScreen === num ? 'active' : '' }" onclick="quantumGame.goToScreen(${ num })"></div>
+                            <div class="nav-dot ${ this.currentScreen === num ? 'active' : '' }" onclick="quantumGame.goToScreen(${ num })">
+                            </div>
                         `).join( '' ) }
                     </div>
                 `;
@@ -6208,7 +6311,13 @@ MAX(10) produtos POR vendas;
 
             createParticlesHTML()
             {
-                return `<div class="quantum-particles" style="position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 1;"></div>`;
+                return '<div class="quantum-particles"></div>';
+            }
+
+            bindEvents()
+            {
+                // Eventos já são vinculados via onclick no HTML
+                // Esta função existe para manter a estrutura
             }
 
             nextScreen()
@@ -6318,18 +6427,14 @@ MAX(10) produtos POR vendas;
             }
         }
 
-        // Inicializar o jogo quando a página carregar
+        // Inicializar o widget quando a página carregar
         document.addEventListener( 'DOMContentLoaded', function ()
         {
-            // Aguardar um pouco para garantir que o container existe
-            setTimeout( () =>
+            const gameContainer = document.getElementById( 'quantum-game-container' );
+            if ( gameContainer )
             {
-                const gameContainer = document.getElementById( 'quantum-game-container' );
-                if ( gameContainer )
-                {
-                    window.quantumGame = new QuantumGameWidget( 'quantum-game-container' );
-                }
-            }, 500 );
+                window.quantumGame = new QuantumGameWidget( 'quantum-game-container' );
+            }
         } );
     </script>
 </body>
