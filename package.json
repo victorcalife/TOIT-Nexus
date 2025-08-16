@@ -18,7 +18,10 @@
     "db:setup": "node scripts/setup-database.js",
     "deploy": "node deploy.js",
     "railway:start": "npm run server:build && npm run db:setup && node railway-frontend.js",
-    "test:start": "node test-deployment.js"
+    "test:start": "node test-deployment.js",
+    "server:dev": "cd server && npm run dev",
+    "server:test": "cd server && npm run test:all",
+    "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\""
   },
   "dependencies": {
     "@sendgrid/mail": "^8.1.0",
