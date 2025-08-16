@@ -1,0 +1,156 @@
+# TOIT NEXUS - QUANTUM COMPUTING DEPENDENCIES
+# Dependências Python para integração quântica real
+
+# IBM Quantum Computing
+qiskit>=1.0.0
+qiskit-ibm-runtime>=0.20.0
+qiskit-ibm-provider>=0.10.0
+qiskit-algorithms>=0.3.0
+qiskit-machine-learning>=0.7.0
+qiskit-optimization>=0.6.0
+qiskit-finance>=0.4.0
+qiskit-nature>=0.7.0
+
+# Quantum Circuit Cutting and Advanced Features
+qiskit-addon-cutting>=0.5.0
+qiskit-addon-sqd>=0.7.0
+qiskit-addon-obp>=0.1.0
+
+# Scientific Computing
+numpy>=1.24.0
+scipy>=1.10.0
+matplotlib>=3.7.0
+pandas>=2.0.0
+scikit-learn>=1.3.0
+
+# Machine Learning Quantum
+pennylane>=0.35.0
+pennylane-qiskit>=0.35.0
+tensorflow-quantum>=0.7.3
+cirq>=1.3.0
+
+# Optimization and Analytics
+cvxpy>=1.4.0
+networkx>=3.1.0
+sympy>=1.12.0
+
+# Jupyter and Notebooks (for qlib integration)
+jupyter>=1.0.0
+ipykernel>=6.25.0
+nbformat>=5.9.0
+nbconvert>=7.7.0
+
+# Performance and Utilities
+numba>=0.58.0
+joblib>=1.3.0
+tqdm>=4.66.0
+psutil>=5.9.0
+
+# Quantum Visualization
+qiskit-textbook>=0.1.0
+pylatexenc>=2.10
+
+# Development and Testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+black>=23.7.0
+flake8>=6.0.0
+
+# API Integration
+requests>=2.31.0
+aiohttp>=3.8.0
+websockets>=11.0.0
+
+# Database Integration for Quantum Results
+sqlalchemy>=2.0.0
+psycopg2-binary>=2.9.0
+redis>=4.6.0
+
+# Quantum Error Correction and Noise Models
+qiskit-aer>=0.13.0
+qiskit-terra>=0.25.0
+
+# Advanced Quantum Algorithms
+qiskit-aqua>=0.9.5
+qiskit-ignis>=0.7.1
+
+# Quantum Chemistry and Physics
+pyscf>=2.3.0
+openfermion>=1.6.0
+
+# Quantum Networking and Communication
+qiskit-cold-atom>=0.2.0
+
+# Performance Monitoring
+memory-profiler>=0.61.0
+line-profiler>=4.1.0
+
+# Quantum Cloud Services
+amazon-braket-sdk>=1.73.0
+azure-quantum>=0.28.0
+google-cirq>=1.3.0
+
+# Additional Scientific Libraries
+h5py>=3.9.0
+pillow>=10.0.0
+seaborn>=0.12.0
+
+# Quantum Simulation Acceleration
+cupy-cuda12x>=12.2.0  # CUDA acceleration (optional)
+jax>=0.4.0
+jaxlib>=0.4.0
+
+# Quantum Machine Learning Extensions
+torch>=2.0.0
+torchvision>=0.15.0
+transformers>=4.30.0
+
+# Quantum Cryptography
+cryptography>=41.0.0
+pycryptodome>=3.18.0
+
+# Quantum Benchmarking
+qiskit-experiments>=0.5.0
+quantum-benchmarks>=0.1.0
+
+# Development Tools
+pre-commit>=3.3.0
+mypy>=1.5.0
+sphinx>=7.1.0
+
+# Quantum Error Mitigation
+mitiq>=0.31.0
+qiskit-addon-utils>=0.1.0
+
+# High Performance Computing
+mpi4py>=3.1.0
+dask>=2023.7.0
+
+# Quantum Advantage Verification
+qiskit-addon-cutting>=0.5.0
+qiskit-addon-sqd>=0.7.0
+
+# Real-time Quantum Processing
+asyncio>=3.4.3
+uvloop>=0.17.0
+
+# Quantum Data Analysis
+qiskit-addon-obp>=0.1.0
+quantum-info>=1.3.0
+
+# Production Deployment
+gunicorn>=21.2.0
+uvicorn>=0.23.0
+fastapi>=0.100.0
+
+# Monitoring and Logging
+prometheus-client>=0.17.0
+structlog>=23.1.0
+
+# Configuration Management
+pydantic>=2.1.0
+python-dotenv>=1.0.0
+
+# Quantum Networking
+qiskit-addon-cutting>=0.5.0
+quantum-network>=0.2.0

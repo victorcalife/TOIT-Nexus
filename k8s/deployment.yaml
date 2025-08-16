@@ -1,0 +1,443 @@
+# KUBERNETES DEPLOYMENT - TOIT NEXUS
+# Configuração completa para deploy em Kubernetes
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: toit-nexus
+  labels:
+    name: toit-nexus
+
+---
+# ConfigMap for Environment Variables
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: toit-nexus-config
+  namespace: toit-nexus
+data:
+  NODE_ENV: "production"
+  REACT_APP_API_URL: "https://api.toit-nexus.com"
+  REACT_APP_WS_URL: "wss://api.toit-nexus.com"
+  DATABASE_URL: "postgresql://postgres:password@postgres-service:5432/toit_nexus"
+  REDIS_URL: "redis://redis-service:6379"
+  MONGODB_URL: "mongodb://mongo-service:27017/toit_nexus"
+
+---
+# Secret for Sensitive Data
+apiVersion: v1
+kind: Secret
+metadata:
+  name: toit-nexus-secrets
+  namespace: toit-nexus
+type: Opaque
+data:
+  JWT_SECRET: "your-jwt-secret-base64"
+  ENCRYPTION_KEY: "your-encryption-key-base64"
+  POSTGRES_PASSWORD: "your-postgres-password-base64"
+  REDIS_PASSWORD: "your-redis-password-base64"
+  MONGO_PASSWORD: "your-mongo-password-base64"
+
+---
+# Frontend Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  namespace: toit-nexus
+  labels:
+    app: frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: toit-nexus/frontend:latest
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - configMapRef:
+            name: toit-nexus-config
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+
+---
+# Backend Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: toit-nexus
+  labels:
+    app: backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: toit-nexus/backend:latest
+        ports:
+        - containerPort: 5000
+        envFrom:
+        - configMapRef:
+            name: toit-nexus-config
+        - secretRef:
+            name: toit-nexus-secrets
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+
+---
+# PostgreSQL Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+  namespace: toit-nexus
+  labels:
+    app: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15-alpine
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: "toit_nexus"
+        - name: POSTGRES_USER
+          value: "postgres"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: toit-nexus-secrets
+              key: POSTGRES_PASSWORD
+        volumeMounts:
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql/data
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+      volumes:
+      - name: postgres-storage
+        persistentVolumeClaim:
+          claimName: postgres-pvc
+
+---
+# Redis Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+  namespace: toit-nexus
+  labels:
+    app: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:7-alpine
+        ports:
+        - containerPort: 6379
+        command: ["redis-server", "--appendonly", "yes"]
+        volumeMounts:
+        - name: redis-storage
+          mountPath: /data
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+      volumes:
+      - name: redis-storage
+        persistentVolumeClaim:
+          claimName: redis-pvc
+
+---
+# MongoDB Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-deployment
+  namespace: toit-nexus
+  labels:
+    app: mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+      - name: mongo
+        image: mongo:6
+        ports:
+        - containerPort: 27017
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          value: "admin"
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: toit-nexus-secrets
+              key: MONGO_PASSWORD
+        - name: MONGO_INITDB_DATABASE
+          value: "toit_nexus"
+        volumeMounts:
+        - name: mongo-storage
+          mountPath: /data/db
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+      volumes:
+      - name: mongo-storage
+        persistentVolumeClaim:
+          claimName: mongo-pvc
+
+---
+# Services
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+  namespace: toit-nexus
+spec:
+  selector:
+    app: frontend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: toit-nexus
+spec:
+  selector:
+    app: backend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5000
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  namespace: toit-nexus
+spec:
+  selector:
+    app: postgres
+  ports:
+  - protocol: TCP
+    port: 5432
+    targetPort: 5432
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-service
+  namespace: toit-nexus
+spec:
+  selector:
+    app: redis
+  ports:
+  - protocol: TCP
+    port: 6379
+    targetPort: 6379
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-service
+  namespace: toit-nexus
+spec:
+  selector:
+    app: mongo
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+  type: ClusterIP
+
+---
+# Persistent Volume Claims
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+  namespace: toit-nexus
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: fast-ssd
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-pvc
+  namespace: toit-nexus
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: fast-ssd
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo-pvc
+  namespace: toit-nexus
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: fast-ssd
+
+---
+# Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: toit-nexus-ingress
+  namespace: toit-nexus
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  tls:
+  - hosts:
+    - toit-nexus.com
+    - www.toit-nexus.com
+    - api.toit-nexus.com
+    secretName: toit-nexus-tls
+  rules:
+  - host: toit-nexus.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend-service
+            port:
+              number: 80
+  - host: www.toit-nexus.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend-service
+            port:
+              number: 80
+  - host: api.toit-nexus.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: backend-service
+            port:
+              number: 80

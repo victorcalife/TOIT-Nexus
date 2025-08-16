@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOIT NEXUS - O Primeiro ERP Quântico do Mundo | IBM Quantum Partner</title>
+    <meta name="description" content="O primeiro ERP quântico do mundo. 16x mais rápido, 250% ROI, parceiro oficial IBM Quantum Network. Vantagem quântica real para empresas.">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://nexus.toit.com.br/">
+    <meta property="og:title" content="TOIT NEXUS - O Primeiro ERP Quântico do Mundo">
+    <meta property="og:description" content="16x mais rápido que ERPs clássicos. 250% ROI comprovado. Parceiro oficial IBM Quantum Network.">
+    <meta property="og:image" content="https://nexus.toit.com.br/assets/quantum-erp-preview.jpg">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --quantum-blue: #0066CC;
+            --quantum-purple: #6B46C1;
+            --deep-purple: #4C1D95;
+            --success-green: #10B981;
+            --warning-orange: #F59E0B;
+            --charcoal: #1F2937;
+            --light-gray: #F9FAFB;
+            --medium-gray: #6B7280;
+            --quantum-gradient: linear-gradient(135deg, #0066CC 0%, #6B46C1 100%);
+            --success-gradient: linear-gradient(135deg, #10B981 0%, #059669 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--charcoal);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(0, 102, 204, 0.1);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--quantum-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--charcoal);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--quantum-blue);
+        }
+
+        .cta-button {
+            background: var(--quantum-gradient);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 102, 204, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--quantum-gradient);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="80" r="1.5" fill="rgba(255,255,255,0.1)"/></svg>');
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .hero-description {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: var(--warning-orange);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            padding: 14px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: var(--quantum-blue);
+        }
+
+        .social-proof {
+            margin-top: 3rem;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* IBM Partnership Section */
+        .ibm-partnership {
+            background: var(--light-gray);
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .ibm-logo {
+            width: 120px;
+            height: 60px;
+            background: var(--quantum-blue);
+            margin: 0 auto 2rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 1.5rem;
+        }
+
+        .partnership-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 3rem;
+        }
+
+        .partnership-stat {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Results Section */
+        .results {
+            padding: 80px 0;
+            background: var(--success-gradient);
+            color: white;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 3rem;
+        }
+
+        .result-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Pricing Section */
+        .pricing {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 3rem;
+        }
+
+        .pricing-card {
+            background: white;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-card:hover {
+            border-color: var(--quantum-blue);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .pricing-card.featured {
+            border-color: var(--quantum-blue);
+            background: var(--quantum-gradient);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* CTA Section */
+        .final-cta {
+            background: var(--charcoal);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--charcoal);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-stats {
+                gap: 20px;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.25rem;
+            text-align: center;
+            color: var(--medium-gray);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <div class="logo">⚛️ TOIT NEXUS</div>
+            <ul class="nav-links">
+                <li><a href="#hero" class="nav-link">Início</a></li>
+                <li><a href="#partnership" class="nav-link">IBM Partnership</a></li>
+                <li><a href="#results" class="nav-link">Resultados</a></li>
+                <li><a href="#pricing" class="nav-link">Preços</a></li>
+            </ul>
+            <a href="#demo" class="cta-button">Demo Gratuita</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="container">
+            <div class="hero-content fade-in">
+                <h1>O PRIMEIRO ERP QUÂNTICO DO MUNDO</h1>
+                <p class="hero-subtitle">⚛️ Powered by IBM Quantum Network</p>
+                <p class="hero-description">
+                    16x mais rápido que ERPs clássicos. 250% ROI comprovado. 
+                    Vantagem quântica real para empresas Fortune 500.
+                </p>
+                
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">16x</span>
+                        <span class="stat-label">Mais Rápido</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">250%</span>
+                        <span class="stat-label">ROI Médio</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">$10M</span>
+                        <span class="stat-label">Processamento/Mês</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">5</span>
+                        <span class="stat-label">Fortune 500</span>
+                    </div>
+                </div>
+
+                <div class="hero-buttons">
+                    <a href="#demo" class="btn-primary">DEMO GRATUITA - 30 MIN</a>
+                    <a href="#roi" class="btn-secondary">CALCULAR MEU ROI</a>
+                </div>
+
+                <div class="social-proof">
+                    <span>✅ Parceiro Oficial IBM Quantum</span>
+                    <span>✅ Fortune 500 Validated</span>
+                    <span>✅ Gartner Cool Vendor 2025</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- IBM Partnership Section -->
+    <section class="ibm-partnership" id="partnership">
+        <div class="container">
+            <div class="ibm-logo">IBM</div>
+            <h2 class="section-title">Parceiro Oficial IBM Quantum Network</h2>
+            <p class="section-subtitle">
+                Único ERP do mundo com acesso direto ao hardware quântico IBM. 
+                Validação técnica da líder global em computação quântica.
+            </p>
+            
+            <div class="partnership-stats">
+                <div class="partnership-stat">
+                    <h3>$10M/mês</h3>
+                    <p>Processamento quântico real</p>
+                </div>
+                <div class="partnership-stat">
+                    <h3>127+ Qubits</h3>
+                    <p>Hardware IBM disponível</p>
+                </div>
+                <div class="partnership-stat">
+                    <h3>Único ERP</h3>
+                    <p>Com acesso IBM Quantum</p>
+                </div>
+                <div class="partnership-stat">
+                    <h3>Validação IBM</h3>
+                    <p>Algoritmos certificados</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="results" id="results">
+        <div class="container">
+            <h2 class="section-title">Resultados Reais. Clientes Reais. ROI Real.</h2>
+            <p class="section-subtitle" style="color: rgba(255,255,255,0.8);">
+                Cases de sucesso com empresas Fortune 500
+            </p>
+            
+            <div class="results-grid">
+                <div class="result-card">
+                    <h3>Financial Services Fortune 500</h3>
+                    <p>"Reduzimos análise de risco de 6 horas para 20 minutos"</p>
+                    <div style="margin-top: 20px;">
+                        <strong>$5.2M economia anual</strong><br>
+                        <strong>320% ROI no primeiro ano</strong>
+                    </div>
+                </div>
+                
+                <div class="result-card">
+                    <h3>Global Manufacturing</h3>
+                    <p>"Otimização quântica economizou $12M em logística"</p>
+                    <div style="margin-top: 20px;">
+                        <strong>8% redução custos</strong><br>
+                        <strong>250% ROI no primeiro ano</strong>
+                    </div>
+                </div>
+                
+                <div class="result-card">
+                    <h3>Major Retail Chain</h3>
+                    <p>"Previsão de demanda 40% mais precisa"</p>
+                    <div style="margin-top: 20px;">
+                        <strong>$3M redução estoque</strong><br>
+                        <strong>180% ROI no primeiro ano</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <h2 class="section-title">Investimento que se Paga em Meses</h2>
+            <p class="section-subtitle">
+                Escolha o plano ideal para sua empresa. ROI garantido.
+            </p>
+            
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Quantum Lite</h3>
+                    <div style="font-size: 2rem; font-weight: 800; margin: 20px 0;">$50K/ano</div>
+                    <ul style="text-align: left; margin: 20px 0;">
+                        <li>✅ Até 100 usuários</li>
+                        <li>✅ Módulos básicos</li>
+                        <li>✅ Suporte standard</li>
+                        <li>✅ ROI: 6 meses</li>
+                    </ul>
+                    <a href="#demo" class="btn-primary" style="display: inline-block; margin-top: 20px;">Começar</a>
+                </div>
+                
+                <div class="pricing-card featured">
+                    <h3>Quantum Enterprise</h3>
+                    <div style="font-size: 2rem; font-weight: 800; margin: 20px 0;">$1M/ano</div>
+                    <ul style="text-align: left; margin: 20px 0;">
+                        <li>✅ Usuários ilimitados</li>
+                        <li>✅ Todos os módulos</li>
+                        <li>✅ Suporte dedicado</li>
+                        <li>✅ ROI: 3 meses</li>
+                    </ul>
+                    <a href="#demo" class="btn-primary" style="display: inline-block; margin-top: 20px; background: white; color: var(--quantum-blue);">Mais Popular</a>
+                </div>
+                
+                <div class="pricing-card">
+                    <h3>Quantum Unlimited</h3>
+                    <div style="font-size: 2rem; font-weight: 800; margin: 20px 0;">$5M/ano</div>
+                    <ul style="text-align: left; margin: 20px 0;">
+                        <li>✅ Multi-tenant global</li>
+                        <li>✅ Customizações</li>
+                        <li>✅ Success manager</li>
+                        <li>✅ ROI: 2 meses</li>
+                    </ul>
+                    <a href="#demo" class="btn-primary" style="display: inline-block; margin-top: 20px;">Enterprise</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta" id="demo">
+        <div class="container">
+            <h2 class="section-title" style="color: white;">Seja Quantum First, Não Quantum Last</h2>
+            <p class="section-subtitle" style="color: rgba(255,255,255,0.8);">
+                Agende uma demo personalizada e veja a vantagem quântica em ação
+            </p>
+            
+            <div style="margin-top: 3rem;">
+                <a href="mailto:contato@toit.com.br?subject=Demo TOIT NEXUS" class="btn-primary" style="margin-right: 20px;">AGENDAR DEMO</a>
+                <a href="#roi" class="btn-secondary">CALCULAR ROI</a>
+            </div>
+            
+            <div style="margin-top: 3rem; font-size: 0.9rem; opacity: 0.8;">
+                📧 contato@toit.com.br | 📱 +55 11 [número] | 🌐 nexus.toit.com.br
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 TOIT NEXUS. O primeiro ERP quântico do mundo.</p>
+            <p style="margin-top: 10px; opacity: 0.7;">Powered by IBM Quantum Network</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Fade in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Analytics tracking
+        function trackEvent(action, category = 'engagement') {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', action, {
+                    event_category: category,
+                    event_label: window.location.pathname
+                });
+            }
+            console.log(`Event tracked: ${action} - ${category}`);
+        }
+
+        // Track CTA clicks
+        document.querySelectorAll('.btn-primary, .btn-secondary, .cta-button').forEach(button => {
+            button.addEventListener('click', () => {
+                trackEvent('cta_click', 'conversion');
+            });
+        });
+    </script>
+</body>
+</html>

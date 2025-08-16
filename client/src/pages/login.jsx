@@ -3,10 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Lock, User, Sparkles, Shield } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { formatCpf, cleanCpf, validateCpf } from "@/lib/utils";
-import workflowLogo from "@/assets/SELOtoit-workflow-logo.svg";
+import nexusLogo from "@/assets/toit-nexus-logo.svg";
 
 export default function Login()
 {
@@ -105,50 +105,65 @@ export default function Login()
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Header simples */ }
-      <div className="absolute top-4 left-4">
-        <button
-          onClick={ () => window.location.href = '/' }
-          className="text-gray-800 hover:text-black text-sm font-bold bg-white px-3 py-1 rounded shadow"
-        >
-          ← Voltar para início
-        </button>
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Background com gradiente profissional */ }
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
+        <div className="absolute inset-0 opacity-20" style={ {
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+        } }></div>
       </div>
 
-      <div className="flex items-center justify-center px-4 py-12">
-        <div className="w-full max-w-md">
-          {/* Logo no container de login */ }
-          <div className="text-center mb-8 bg-white p-6 rounded-lg shadow-lg">
-            <div className="flex justify-center mb-4">
+      {/* Header com logo profissional */ }
+      <div className="absolute top-0 left-0 right-0 z-10">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4 bg-white/10 backdrop-blur-md rounded-xl px-6 py-3 border border-white/20">
               <img
-                src={ workflowLogo }
-                alt="TOIT Workflow"
-                className="h-20 w-auto opacity-90"
+                src={ nexusLogo }
+                alt="TOIT Nexus"
+                className="h-10 w-auto"
               />
+              <div>
+                <h1 className="text-white font-bold text-xl">TOIT Nexus</h1>
+                <p className="text-blue-200 text-sm">Portal do Cliente</p>
+              </div>
             </div>
-            <h1 className="text-2xl font-bold text-black mb-2">
-              TOIT Nexus
-            </h1>
-            <p className="text-gray-800 mt-2 font-medium">
-              Faça login em sua conta
-            </p>
+            <Button
+              variant="ghost"
+              className="text-blue-200 hover:text-white hover:bg-blue-800/50"
+              onClick={ () => window.location.href = '/' }
+            >
+              ← Voltar para início
+            </Button>
           </div>
+        </div>
+      </div>
 
-          <Card className="border-2 border-black shadow-2xl bg-white">
-            <CardHeader className="space-y-1 pb-6 bg-blue-50 rounded-t-lg border-b-2 border-gray-300">
-              <CardTitle className="text-2xl font-bold text-center text-black">
-                Entrar na Plataforma
-              </CardTitle>
-              <CardDescription className="text-center text-black font-bold">
-                Digite seu CPF e senha para acessar a plataforma TOIT Nexus
-              </CardDescription>
+      <div className="flex items-center justify-center min-h-screen px-4 pt-24">
+        <div className="w-full max-w-md">
+
+          <Card className="bg-white/95 backdrop-blur-md border border-white/20 shadow-2xl">
+            <CardHeader className="space-y-4 pb-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-t-lg border-b border-blue-200">
+              <div className="flex items-center justify-center space-x-3">
+                <div className="p-2 bg-blue-600 rounded-lg">
+                  <Lock className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <CardTitle className="text-2xl font-bold text-slate-800">
+                    Acesso Seguro
+                  </CardTitle>
+                  <CardDescription className="text-slate-600 font-medium">
+                    Entre com suas credenciais
+                  </CardDescription>
+                </div>
+              </div>
             </CardHeader>
-            <CardContent className="pt-6 bg-white">
+            <CardContent className="pt-6 bg-white/95">
               <form onSubmit={ handleSubmit } className="space-y-6">
                 <div className="space-y-3">
-                  <Label htmlFor="cpf" className="text-lg font-bold text-black block">
-                    CPF *
+                  <Label htmlFor="cpf" className="text-lg font-semibold text-slate-700 flex items-center space-x-2">
+                    <User className="h-5 w-5 text-blue-600" />
+                    <span>CPF *</span>
                   </Label>
                   <Input
                     id="cpf"
@@ -163,8 +178,9 @@ export default function Login()
                 </div>
 
                 <div className="space-y-3">
-                  <Label htmlFor="password" className="text-lg font-bold text-black block">
-                    Senha *
+                  <Label htmlFor="password" className="text-lg font-semibold text-slate-700 flex items-center space-x-2">
+                    <Lock className="h-5 w-5 text-blue-600" />
+                    <span>Senha *</span>
                   </Label>
                   <div className="relative">
                     <Input
@@ -194,30 +210,40 @@ export default function Login()
 
                 <Button
                   type="submit"
-                  className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg shadow-md hover:shadow-lg transition-all duration-200"
+                  className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 hover:from-blue-700 hover:via-purple-700 hover:to-blue-700 text-white rounded-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                   disabled={ isLoading }
                 >
-                  { isLoading ? (
-                    <div className="flex items-center space-x-2">
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                      <span>Entrando...</span>
-                    </div>
-                  ) : (
-                    "Entrar"
-                  ) }
+                  <div className="flex items-center justify-center space-x-2">
+                    { isLoading ? (
+                      <>
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                        <span>Autenticando...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Shield className="h-5 w-5" />
+                        <span>Acessar Portal</span>
+                        <Sparkles className="h-5 w-5" />
+                      </>
+                    ) }
+                  </div>
                 </Button>
 
-                <div className="text-center mt-6">
-                  <p className="text-sm text-gray-600">
+                <div className="text-center mt-6 p-4 bg-slate-50 rounded-lg border border-slate-200">
+                  <p className="text-sm text-slate-600">
                     Não tem uma conta?{ " " }
                     <button
                       type="button"
-                      className="text-blue-600 hover:text-blue-800 font-medium underline-offset-4 hover:underline transition-colors"
+                      className="text-blue-600 hover:text-blue-800 font-semibold underline-offset-4 hover:underline transition-colors duration-200"
                       onClick={ () => window.location.href = '/' }
                     >
                       Entre em contato
                     </button>
                   </p>
+                  <div className="flex items-center justify-center space-x-2 mt-2 text-xs text-slate-500">
+                    <Shield className="h-3 w-3" />
+                    <span>Conexão segura e criptografada</span>
+                  </div>
                 </div>
 
                 <div className="text-center mt-4">
@@ -233,9 +259,12 @@ export default function Login()
           </Card>
 
           {/* Rodapé informativo */ }
-          <div className="text-center mt-8">
-            <p className="text-sm text-gray-500">
+          <div className="text-center mt-8 p-4 bg-white/10 backdrop-blur-md rounded-lg border border-white/20">
+            <p className="text-sm text-blue-200">
               © 2025 TOIT Nexus. Todos os direitos reservados.
+            </p>
+            <p className="text-xs text-blue-300 mt-1">
+              Plataforma de gestão empresarial inteligente
             </p>
           </div>
         </div>

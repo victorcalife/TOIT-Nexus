@@ -1,0 +1,43 @@
+{
+  "timestamp": "2025-08-16T10:53:45.870587",
+  "demos": {
+    "portfolio_optimization": {
+      "classical_time": 0.10120582580566406,
+      "quantum_time": 0.05048036575317383,
+      "speedup": 2.0048552401643605,
+      "classical_sharpe": 0.8555153718414196,
+      "quantum_sharpe": 0.1492251910136939,
+      "advantage": false
+    },
+    "supply_chain": {
+      "classical_time": 0.10026144981384277,
+      "quantum_time": 0.1307659149169922,
+      "speedup": 0.7667246459254073,
+      "classical_distance": 3168,
+      "quantum_distance": 3009.6,
+      "improvement_percent": 5.000000000000003
+    },
+    "machine_learning": {
+      "classical_time": 0.20027875900268555,
+      "quantum_time": 0.10056495666503906,
+      "speedup": 1.9915362731152204,
+      "classical_accuracy": 0.8506154519266659,
+      "quantum_accuracy": 0.8570295496189148,
+      "accuracy_improvement": 0.006414097692248877
+    },
+    "database_search": {
+      "database_size": 1000,
+      "classical_steps": 500,
+      "quantum_steps": 31,
+      "speedup": 16.129032258064516,
+      "time_speedup": 0.0379746835443038
+    }
+  },
+  "performance_comparison": {},
+  "summary": {
+    "total_demos": 4,
+    "successful_demos": 4,
+    "success_rate": 100.0,
+    "quantum_advantage_proven": true
+  }
+}

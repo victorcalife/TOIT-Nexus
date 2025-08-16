@@ -12,7 +12,10 @@
     "test:performance": "node test-performance.js",
     "test:edge-cases": "node test-edge-cases.js",
     "test:all": "npm run test && npm run test:performance && npm run test:edge-cases",
-    "clean": "node cleanup-empty-directories.cjs"
+    "clean": "node cleanup-empty-directories.cjs",
+    "quantum:activate": "chmod +x ../activate-quantum-system.sh && ../activate-quantum-system.sh",
+    "quantum:status": "python3 ../quantum_status.py",
+    "quantum:test": "node ../test_quantum_apis.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
