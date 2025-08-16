@@ -5,13 +5,19 @@
 ### **INFORMAÇÕES BÁSICAS**
 
 #### **Company Name:** TOIT
+
 #### **Tagline:** "Pioneiros da Revolução Quântica Empresarial"
+
 #### **Industry:** Computer Software
+
 #### **Company Size:** 11-50 employees
+
 #### **Founded:** 2022
+
 #### **Headquarters:** São Paulo, Brazil
 
 #### **About Section:**
+
 ```
 🌌 TOIT - Pioneiros da Revolução Quântica Empresarial
 
@@ -43,11 +49,12 @@ CAPTAÇÃO:
 #QuantumComputing #ERP #Innovation #IBM #Enterprise #Startup #Investment
 
 📧 investors@toit.com.br
-🌐 www.toit.com.br
+🌐 home.toit.com.br
 🎯 nexus.toit.com.br
 ```
 
 #### **Specialties:**
+
 - Computação Quântica Empresarial
 - ERP Quântico
 - IBM Quantum Partnership
@@ -62,6 +69,7 @@ CAPTAÇÃO:
 ## 📸 **ASSETS VISUAIS**
 
 ### **LOGO DA EMPRESA**
+
 ```
 Formato: PNG transparente, 300x300px
 Design: "TOIT" em fonte Montserrat Bold
@@ -70,6 +78,7 @@ Símbolo: Átomo quântico (⚛️) integrado
 ```
 
 ### **COVER IMAGE**
+
 ```
 Dimensões: 1536x768px
 Conteúdo: 
@@ -80,6 +89,7 @@ Conteúdo:
 ```
 
 ### **HERO VIDEO** (30 segundos)
+
 ```
 Script:
 0-5s: "O que se você pudesse fazer seu ERP 16x mais rápido?"
@@ -96,24 +106,28 @@ CTA: "Agende sua demo → nexus.toit.com.br"
 ### **PILARES DE CONTEÚDO**
 
 #### **1. THOUGHT LEADERSHIP (40%)**
+
 - Artigos sobre futuro da computação empresarial
 - Insights sobre vantagem quântica
 - Análises de mercado ERP
 - Visão de liderança tecnológica
 
 #### **2. PRODUCT SHOWCASE (30%)**
+
 - Demos do TOIT NEXUS
 - Cases de sucesso
 - Comparações performance
 - Features e benefícios
 
 #### **3. COMPANY CULTURE (20%)**
+
 - Behind the scenes
 - Team highlights
 - Conquistas e marcos
 - Eventos e participações
 
 #### **4. INDUSTRY NEWS (10%)**
+
 - Comentários sobre quantum computing
 - Análises de concorrência
 - Tendências de mercado
@@ -126,6 +140,7 @@ CTA: "Agende sua demo → nexus.toit.com.br"
 ### **SEMANA 1: LANÇAMENTO**
 
 #### **Segunda-feira - ANNOUNCEMENT**
+
 ```
 🌌 BREAKING: Apresentamos a TOIT - Pioneiros da Revolução Quântica Empresarial
 
@@ -153,6 +168,7 @@ Seja parte da revolução quântica empresarial.
 ```
 
 #### **Quarta-feira - PRODUCT DEMO**
+
 ```
 ⚡ DEMO: Veja a vantagem quântica em ação
 
@@ -176,6 +192,7 @@ nexus.toit.com.br
 ```
 
 #### **Sexta-feira - TEAM SPOTLIGHT**
+
 ```
 👥 CONHEÇA NOSSO TIME DE CLASSE MUNDIAL
 
@@ -208,6 +225,7 @@ careers@toit.com.br
 ### **SEMANA 2: CREDIBILIDADE**
 
 #### **Segunda-feira - IBM PARTNERSHIP**
+
 ```
 🤝 PARCERIA OFICIAL: TOIT x IBM QUANTUM NETWORK
 
@@ -235,6 +253,7 @@ Esta parceria nos coloca 2+ anos à frente da concorrência.
 ```
 
 #### **Quarta-feira - CASE STUDY**
+
 ```
 💰 CASE STUDY: Como uma Fortune 500 economizou $5.2M
 
@@ -266,6 +285,7 @@ Demo personalizada: sales@toit.com.br
 ```
 
 #### **Sexta-feira - THOUGHT LEADERSHIP**
+
 ```
 🧠 ARTIGO: Por que 2025 é o Ano da Computação Quântica Empresarial
 
@@ -309,13 +329,16 @@ Artigo completo: blog.toit.com.br
 ### **CAMPANHA 1: AWARENESS - "PRIMEIRO ERP QUÂNTICO"**
 
 #### **Objetivo:** Brand awareness para C-level
-#### **Audiência:** 
+
+#### **Audiência:**
+
 - CEOs, CTOs, CFOs
 - Empresas 1000+ funcionários
 - Setores: Finance, Manufacturing, Retail
 - Localização: Brasil, EUA, Europa
 
 #### **Ad Copy:**
+
 ```
 🌌 O primeiro ERP quântico do mundo está aqui
 
@@ -336,17 +359,21 @@ Seja Quantum First, não Quantum Last.
 ```
 
 #### **Budget:** $5,000/mês
+
 #### **KPI:** 500,000 impressions, 2% CTR, 100 demo requests
 
 ### **CAMPANHA 2: CONVERSION - "ROI COMPROVADO"**
 
 #### **Objetivo:** Lead generation para vendas
+
 #### **Audiência:**
+
 - Retargeting website visitors
 - Lookalike Fortune 500 decision makers
 - Interest: ERP, Business Intelligence, IBM
 
 #### **Ad Copy:**
+
 ```
 💰 ROI de 250% no primeiro ano com ERP quântico
 
@@ -366,18 +393,22 @@ Calcule sua economia:
 ```
 
 #### **Budget:** $8,000/mês
+
 #### **KPI:** 200 qualified leads, 5% conversion, 20 sales meetings
 
 ### **CAMPANHA 3: RECRUITMENT - "QUANTUM TALENT"**
 
 #### **Objetivo:** Atrair talentos quânticos
+
 #### **Audiência:**
+
 - Quantum computing professionals
 - Ex-IBM, Google, Microsoft employees
 - PhDs Physics, Computer Science
 - Localização: Global
 
 #### **Ad Copy:**
+
 ```
 🚀 Trabalhe no primeiro ERP quântico do mundo
 
@@ -399,6 +430,7 @@ careers@toit.com.br
 ```
 
 #### **Budget:** $3,000/mês
+
 #### **KPI:** 50 qualified applications, 10 interviews, 2 hires
 
 ---
@@ -406,18 +438,21 @@ careers@toit.com.br
 ## 📊 **MÉTRICAS E KPIs**
 
 ### **ORGANIC METRICS**
+
 - **Followers:** 10,000 em 6 meses
 - **Engagement Rate:** 5%+ (vs 2% industry)
 - **Post Reach:** 50,000+ per post
 - **Profile Views:** 5,000/mês
 
 ### **PAID METRICS**
+
 - **Impressions:** 1M+/mês
 - **CTR:** 2%+ (vs 0.9% industry)
 - **Cost per Lead:** <$50
 - **Lead Quality Score:** 8/10
 
 ### **BUSINESS METRICS**
+
 - **Demo Requests:** 100/mês
 - **Qualified Leads:** 50/mês
 - **Sales Meetings:** 20/mês
@@ -428,24 +463,28 @@ careers@toit.com.br
 ## 🎯 **CRONOGRAMA DE EXECUÇÃO**
 
 ### **SEMANA 1: SETUP**
+
 - [ ] Criar company page
 - [ ] Upload assets visuais
 - [ ] Configurar admin access
 - [ ] Preparar primeiro batch de posts
 
 ### **SEMANA 2: SOFT LAUNCH**
+
 - [ ] Publicar announcement post
 - [ ] Convidar team para seguir
 - [ ] Ativar campanhas (budget baixo)
 - [ ] Monitorar engagement
 
 ### **SEMANA 3: FULL LAUNCH**
+
 - [ ] Aumentar frequência de posts
 - [ ] Escalar campanhas pagas
 - [ ] Iniciar outreach direto
 - [ ] Engajar com prospects
 
 ### **SEMANA 4: OTIMIZAÇÃO**
+
 - [ ] Analisar performance
 - [ ] A/B test ad copies
 - [ ] Refinar targeting
@@ -456,18 +495,21 @@ careers@toit.com.br
 ## 🚀 **PRÓXIMOS PASSOS IMEDIATOS**
 
 ### **HOJE:**
+
 1. ✅ Criar LinkedIn Company Page
 2. ✅ Upload logo e cover image
 3. ✅ Escrever About section
 4. ✅ Configurar specialties
 
 ### **ESTA SEMANA:**
+
 1. 🎯 Criar primeiro batch de posts
 2. 🎯 Configurar LinkedIn Ads account
 3. 🎯 Preparar assets visuais
 4. 🎯 Definir posting schedule
 
 ### **PRÓXIMO MÊS:**
+
 1. 🚀 Executar estratégia completa
 2. 🚀 Monitorar e otimizar
 3. 🚀 Escalar campanhas vencedoras

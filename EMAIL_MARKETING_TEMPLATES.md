@@ -5,21 +5,25 @@
 ### **SEGMENTAÇÃO DE AUDIÊNCIA**
 
 #### **SEGMENT 1: C-LEVEL EXECUTIVES**
+
 - CEOs, CTOs, CFOs de empresas 1000+ funcionários
 - Foco: ROI, vantagem competitiva, transformação digital
 - Tom: Executivo, estratégico, orientado a resultados
 
 #### **SEGMENT 2: TECHNICAL DECISION MAKERS**
+
 - CTOs, Diretores de TI, Arquitetos de Sistemas
 - Foco: Performance, tecnologia, integração
 - Tom: Técnico, detalhado, baseado em evidências
 
 #### **SEGMENT 3: INVESTORS**
+
 - VCs, Angels, Family Offices, Strategic Investors
 - Foco: Oportunidade, returns, tração, team
 - Tom: Financeiro, ambicioso, data-driven
 
 #### **SEGMENT 4: PARTNERS**
+
 - System Integrators, Consultores, Resellers
 - Foco: Oportunidade de negócio, diferenciação
 - Tom: Colaborativo, win-win, orientado a parceria
@@ -117,7 +121,7 @@
     <div class="footer">
         <p>✅ Parceiro IBM Quantum | ✅ Fortune 500 Validated | ✅ 250% ROI Médio</p>
         <p>TOIT NEXUS - nexus.toit.com.br | contato@toit.com.br</p>
-        <p>São Paulo, Brasil | +55 11 [número]</p>
+        <p>TOIT HOME - home.toit.com.br | São Paulo, Brasil | +55 11 [número]</p>
     </div>
 </body>
 </html>
@@ -364,6 +368,7 @@ def quantum_portfolio_optimization(returns, risks):
 ### **DRIP CAMPAIGN: NEW LEADS**
 
 #### **Day 0: Welcome Email**
+
 ```
 Subject: Bem-vindo à revolução quântica empresarial
 Content: Introdução TOIT, recursos disponíveis, próximos passos
@@ -371,6 +376,7 @@ CTA: Agendar demo
 ```
 
 #### **Day 3: Educational Content**
+
 ```
 Subject: Como funciona um ERP quântico? [Guia Completo]
 Content: Whitepaper técnico, explicação algoritmos
@@ -378,6 +384,7 @@ CTA: Download whitepaper
 ```
 
 #### **Day 7: Social Proof**
+
 ```
 Subject: Por que Fortune 500 escolheram TOIT NEXUS
 Content: Case studies, testimonials, métricas
@@ -385,6 +392,7 @@ CTA: Ver mais cases
 ```
 
 #### **Day 14: Demo Invitation**
+
 ```
 Subject: Veja a vantagem quântica em ação [Demo Personalizada]
 Content: Convite demo, agenda flexível
@@ -392,6 +400,7 @@ CTA: Agendar demo
 ```
 
 #### **Day 21: Urgency**
+
 ```
 Subject: Últimas vagas Q1 2025 - Vantagem quântica
 Content: Scarcity, FOMO, competitive advantage
@@ -401,6 +410,7 @@ CTA: Reservar vaga
 ### **DRIP CAMPAIGN: POST-DEMO**
 
 #### **Day 0: Thank You + Resources**
+
 ```
 Subject: Obrigado pela demo - Recursos adicionais
 Content: Recap demo, materiais técnicos, próximos passos
@@ -408,6 +418,7 @@ CTA: Agendar follow-up
 ```
 
 #### **Day 3: ROI Calculator**
+
 ```
 Subject: Calcule sua economia com TOIT NEXUS
 Content: ROI calculator personalizado, benchmarks
@@ -415,6 +426,7 @@ CTA: Usar calculator
 ```
 
 #### **Day 7: Technical Deep Dive**
+
 ```
 Subject: Documentação técnica e APIs
 Content: Technical specs, integration guide
@@ -422,6 +434,7 @@ CTA: Acessar documentação
 ```
 
 #### **Day 14: Proposal**
+
 ```
 Subject: Proposta personalizada para [EMPRESA]
 Content: Custom proposal, pricing, timeline
@@ -433,18 +446,21 @@ CTA: Agendar negociação
 ## 📊 **MÉTRICAS E OTIMIZAÇÃO**
 
 ### **KPIs PRINCIPAIS**
+
 - **Open Rate:** 25%+ (vs 18% industry)
 - **Click Rate:** 3%+ (vs 2.3% industry)  
 - **Reply Rate:** 5%+ (vs 1% industry)
 - **Demo Conversion:** 15%+ (vs 5% industry)
 
 ### **A/B TESTS**
+
 - **Subject Lines:** Quantum vs Performance vs ROI
 - **CTAs:** Demo vs Calculator vs Whitepaper
 - **Send Times:** Morning vs Afternoon vs Evening
 - **Personalization:** Company vs Role vs Industry
 
 ### **SEGMENTATION PERFORMANCE**
+
 - **C-Level:** Higher open rates, lower volume
 - **Technical:** Higher engagement, longer emails
 - **Investors:** Higher reply rates, meeting conversion
