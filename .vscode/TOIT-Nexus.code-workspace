@@ -17,6 +17,11 @@
 		"todo-tree.highlights.useColourScheme": true,
 		"todo-tree.tree.flat": true,
 		"todo-tree.tree.groupedByTag": true,
-		"todo-tree.tree.showCountsInTree": true
+		"todo-tree.tree.showCountsInTree": true,
+		"[typescriptreact]": {
+			"editor.codeActionsOnSave": {
+				"source.organizeImports": "never"
+			}
+		}
 	}
 }
