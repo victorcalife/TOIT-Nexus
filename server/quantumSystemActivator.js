@@ -3,15 +3,17 @@
  * Ativador e verificador do sistema quântico TOIT NEXUS
  */
 
-import { spawn, exec } from 'child_process';
-import { promisify } from 'util';
-import fs from 'fs/promises';
-import path from 'path';
+const { spawn, exec } = require( 'child_process' );
+const { promisify } = require( 'util' );
+const fs = require( 'fs/promises' );
+const path = require( 'path' );
 
-const execAsync = promisify(exec);
+const execAsync = promisify( exec );
 
-class QuantumSystemActivator {
-  constructor() {
+class QuantumSystemActivator
+{
+  constructor()
+  {
     this.status = {
       initialized: false,
       pythonDependencies: false,
@@ -24,28 +26,31 @@ class QuantumSystemActivator {
   /**
    * VERIFICAR STATUS COMPLETO DO SISTEMA QUÂNTICO
    */
-  async checkQuantumSystemStatus() {
-    console.log('⚛️ [QUANTUM-ACTIVATOR] Verificando status do sistema quântico...');
+  async checkQuantumSystemStatus()
+  {
+    console.log( '⚛️ [QUANTUM-ACTIVATOR] Verificando status do sistema quântico...' );
 
-    try {
+    try
+    {
       // 1. Verificar Python e dependências
       await this.checkPythonDependencies();
-      
+
       // 2. Verificar conexão IBM
       await this.checkIBMConnection();
-      
+
       // 3. Verificar módulos quânticos
       await this.checkQuantumModules();
-      
+
       // 4. Atualizar status
       this.status.lastCheck = new Date().toISOString();
       this.status.initialized = true;
 
-      console.log('✅ [QUANTUM-ACTIVATOR] Sistema quântico verificado com sucesso');
+      console.log( '✅ [QUANTUM-ACTIVATOR] Sistema quântico verificado com sucesso' );
       return this.status;
 
-    } catch (error) {
-      console.error('❌ [QUANTUM-ACTIVATOR] Erro na verificação:', error);
+    } catch ( error )
+    {
+      console.error( '❌ [QUANTUM-ACTIVATOR] Erro na verificação:', error );
       throw error;
     }
   }
@@ -53,40 +58,49 @@ class QuantumSystemActivator {
   /**
    * VERIFICAR DEPENDÊNCIAS PYTHON
    */
-  async checkPythonDependencies() {
-    try {
-      console.log('🐍 [QUANTUM-ACTIVATOR] Verificando dependências Python...');
+  async checkPythonDependencies()
+  {
+    try
+    {
+      console.log( '🐍 [QUANTUM-ACTIVATOR] Verificando dependências Python...' );
 
       // Verificar se Python está disponível
-      try {
-        await execAsync('python3 --version');
-        console.log('✅ Python 3 disponível');
-      } catch (error) {
-        throw new Error('Python 3 não está instalado ou não está no PATH');
+      try
+      {
+        await execAsync( 'python3 --version' );
+        console.log( '✅ Python 3 disponível' );
+      } catch ( error )
+      {
+        throw new Error( 'Python 3 não está instalado ou não está no PATH' );
       }
 
       // Verificar Qiskit
-      try {
-        const { stdout } = await execAsync('python3 -c "import qiskit; print(qiskit.__version__)"');
-        console.log(`✅ Qiskit ${stdout.trim()} instalado`);
-      } catch (error) {
-        console.log('⚠️ Qiskit não instalado - instalando...');
+      try
+      {
+        const { stdout } = await execAsync( 'python3 -c "import qiskit; print(qiskit.__version__)"' );
+        console.log( `✅ Qiskit ${ stdout.trim() } instalado` );
+      } catch ( error )
+      {
+        console.log( '⚠️ Qiskit não instalado - instalando...' );
         await this.installPythonDependencies();
       }
 
       // Verificar IBM Runtime
-      try {
-        await execAsync('python3 -c "from qiskit_ibm_runtime import QiskitRuntimeService"');
-        console.log('✅ IBM Runtime disponível');
-      } catch (error) {
-        console.log('⚠️ IBM Runtime não disponível - instalando...');
+      try
+      {
+        await execAsync( 'python3 -c "from qiskit_ibm_runtime import QiskitRuntimeService"' );
+        console.log( '✅ IBM Runtime disponível' );
+      } catch ( error )
+      {
+        console.log( '⚠️ IBM Runtime não disponível - instalando...' );
         await this.installPythonDependencies();
       }
 
       this.status.pythonDependencies = true;
 
-    } catch (error) {
-      console.error('❌ Erro nas dependências Python:', error);
+    } catch ( error )
+    {
+      console.error( '❌ Erro nas dependências Python:', error );
       this.status.pythonDependencies = false;
       throw error;
     }
@@ -95,25 +109,29 @@ class QuantumSystemActivator {
   /**
    * INSTALAR DEPENDÊNCIAS PYTHON
    */
-  async installPythonDependencies() {
-    console.log('📦 [QUANTUM-ACTIVATOR] Instalando dependências Python...');
+  async installPythonDependencies()
+  {
+    console.log( '📦 [QUANTUM-ACTIVATOR] Instalando dependências Python...' );
 
-    try {
+    try
+    {
       // Verificar se requirements.txt existe
-      const requirementsPath = path.join(process.cwd(), 'requirements.txt');
-      await fs.access(requirementsPath);
+      const requirementsPath = path.join( process.cwd(), 'requirements.txt' );
+      await fs.access( requirementsPath );
 
       // Instalar dependências
-      const { stdout, stderr } = await execAsync('pip3 install -r requirements.txt');
-      
-      if (stderr && !stderr.includes('WARNING')) {
-        throw new Error(`Erro na instalação: ${stderr}`);
+      const { stdout, stderr } = await execAsync( 'pip3 install -r requirements.txt' );
+
+      if ( stderr && !stderr.includes( 'WARNING' ) )
+      {
+        throw new Error( `Erro na instalação: ${ stderr }` );
       }
 
-      console.log('✅ Dependências Python instaladas com sucesso');
+      console.log( '✅ Dependências Python instaladas com sucesso' );
 
-    } catch (error) {
-      console.error('❌ Erro na instalação das dependências:', error);
+    } catch ( error )
+    {
+      console.error( '❌ Erro na instalação das dependências:', error );
       throw error;
     }
   }
@@ -121,14 +139,17 @@ class QuantumSystemActivator {
   /**
    * VERIFICAR CONEXÃO IBM QUANTUM
    */
-  async checkIBMConnection() {
-    try {
-      console.log('🔗 [QUANTUM-ACTIVATOR] Verificando conexão IBM Quantum...');
+  async checkIBMConnection()
+  {
+    try
+    {
+      console.log( '🔗 [QUANTUM-ACTIVATOR] Verificando conexão IBM Quantum...' );
 
       // Verificar se IBM_SECRET está configurada
       const ibmSecret = process.env.IBM_SECRET;
-      if (!ibmSecret) {
-        console.log('⚠️ IBM_SECRET não configurada - modo simulação');
+      if ( !ibmSecret )
+      {
+        console.log( '⚠️ IBM_SECRET não configurada - modo simulação' );
         this.status.ibmConnection = false;
         return;
       }
@@ -139,26 +160,29 @@ import os
 from qiskit_ibm_runtime import QiskitRuntimeService
 
 try:
-    service = QiskitRuntimeService(token="${ibmSecret}")
+    service = QiskitRuntimeService(token="${ ibmSecret }")
     backends = service.backends()
     print(f"SUCCESS:{len(backends)}")
 except Exception as e:
     print(f"ERROR:{str(e)}")
 `;
 
-      const { stdout } = await execAsync(`python3 -c "${testScript}"`);
-      
-      if (stdout.startsWith('SUCCESS:')) {
-        const backendCount = stdout.split(':')[1].trim();
-        console.log(`✅ Conexão IBM Quantum estabelecida - ${backendCount} backends disponíveis`);
+      const { stdout } = await execAsync( `python3 -c "${ testScript }"` );
+
+      if ( stdout.startsWith( 'SUCCESS:' ) )
+      {
+        const backendCount = stdout.split( ':' )[ 1 ].trim();
+        console.log( `✅ Conexão IBM Quantum estabelecida - ${ backendCount } backends disponíveis` );
         this.status.ibmConnection = true;
-      } else {
-        console.log(`⚠️ Erro na conexão IBM: ${stdout}`);
+      } else
+      {
+        console.log( `⚠️ Erro na conexão IBM: ${ stdout }` );
         this.status.ibmConnection = false;
       }
 
-    } catch (error) {
-      console.error('❌ Erro na verificação IBM:', error);
+    } catch ( error )
+    {
+      console.error( '❌ Erro na verificação IBM:', error );
       this.status.ibmConnection = false;
     }
   }
@@ -166,9 +190,11 @@ except Exception as e:
   /**
    * VERIFICAR MÓDULOS QUÂNTICOS
    */
-  async checkQuantumModules() {
-    try {
-      console.log('🧩 [QUANTUM-ACTIVATOR] Verificando módulos quânticos...');
+  async checkQuantumModules()
+  {
+    try
+    {
+      console.log( '🧩 [QUANTUM-ACTIVATOR] Verificando módulos quânticos...' );
 
       // Verificar se os arquivos de módulos existem
       const quantumModules = [
@@ -179,37 +205,45 @@ except Exception as e:
       ];
 
       let modulesFound = 0;
-      for (const module of quantumModules) {
-        try {
-          const modulePath = path.join(process.cwd(), 'server', module);
-          await fs.access(modulePath);
+      for ( const module of quantumModules )
+      {
+        try
+        {
+          const modulePath = path.join( process.cwd(), 'server', module );
+          await fs.access( modulePath );
           modulesFound++;
-          console.log(`✅ Módulo ${module} encontrado`);
-        } catch (error) {
-          console.log(`⚠️ Módulo ${module} não encontrado`);
+          console.log( `✅ Módulo ${ module } encontrado` );
+        } catch ( error )
+        {
+          console.log( `⚠️ Módulo ${ module } não encontrado` );
         }
       }
 
       // Verificar diretório qlib
-      try {
-        const qlibPath = path.join(process.cwd(), 'qlib');
-        await fs.access(qlibPath);
-        console.log('✅ Diretório qlib encontrado');
+      try
+      {
+        const qlibPath = path.join( process.cwd(), 'qlib' );
+        await fs.access( qlibPath );
+        console.log( '✅ Diretório qlib encontrado' );
         modulesFound++;
-      } catch (error) {
-        console.log('⚠️ Diretório qlib não encontrado');
+      } catch ( error )
+      {
+        console.log( '⚠️ Diretório qlib não encontrado' );
       }
 
       this.status.quantumModules = modulesFound >= 3;
 
-      if (this.status.quantumModules) {
-        console.log('✅ Módulos quânticos verificados');
-      } else {
-        console.log('⚠️ Alguns módulos quânticos estão faltando');
+      if ( this.status.quantumModules )
+      {
+        console.log( '✅ Módulos quânticos verificados' );
+      } else
+      {
+        console.log( '⚠️ Alguns módulos quânticos estão faltando' );
       }
 
-    } catch (error) {
-      console.error('❌ Erro na verificação dos módulos:', error);
+    } catch ( error )
+    {
+      console.error( '❌ Erro na verificação dos módulos:', error );
       this.status.quantumModules = false;
     }
   }
@@ -217,10 +251,12 @@ except Exception as e:
   /**
    * ATIVAR SISTEMA QUÂNTICO COMPLETO
    */
-  async activateQuantumSystem() {
-    console.log('🚀 [QUANTUM-ACTIVATOR] Ativando sistema quântico completo...');
+  async activateQuantumSystem()
+  {
+    console.log( '🚀 [QUANTUM-ACTIVATOR] Ativando sistema quântico completo...' );
 
-    try {
+    try
+    {
       // 1. Verificar status atual
       await this.checkQuantumSystemStatus();
 
@@ -233,11 +269,12 @@ except Exception as e:
       // 4. Configurar monitoramento
       await this.setupQuantumMonitoring();
 
-      console.log('🎉 [QUANTUM-ACTIVATOR] Sistema quântico ativado com sucesso!');
+      console.log( '🎉 [QUANTUM-ACTIVATOR] Sistema quântico ativado com sucesso!' );
       return this.getActivationSummary();
 
-    } catch (error) {
-      console.error('❌ [QUANTUM-ACTIVATOR] Falha na ativação:', error);
+    } catch ( error )
+    {
+      console.error( '❌ [QUANTUM-ACTIVATOR] Falha na ativação:', error );
       throw error;
     }
   }
@@ -245,7 +282,8 @@ except Exception as e:
   /**
    * CRIAR DIRETÓRIOS NECESSÁRIOS
    */
-  async createQuantumDirectories() {
+  async createQuantumDirectories()
+  {
     const directories = [
       'qlib/notebooks',
       'qlib/data',
@@ -255,12 +293,15 @@ except Exception as e:
       'quantum_temp'
     ];
 
-    for (const dir of directories) {
-      try {
-        await fs.mkdir(path.join(process.cwd(), dir), { recursive: true });
-        console.log(`✅ Diretório ${dir} criado`);
-      } catch (error) {
-        console.log(`⚠️ Erro ao criar ${dir}:`, error.message);
+    for ( const dir of directories )
+    {
+      try
+      {
+        await fs.mkdir( path.join( process.cwd(), dir ), { recursive: true } );
+        console.log( `✅ Diretório ${ dir } criado` );
+      } catch ( error )
+      {
+        console.log( `⚠️ Erro ao criar ${ dir }:`, error.message );
       }
     }
   }
@@ -268,7 +309,8 @@ except Exception as e:
   /**
    * INICIALIZAR CACHE QUÂNTICO
    */
-  async initializeQuantumCache() {
+  async initializeQuantumCache()
+  {
     const cacheConfig = {
       version: '1.0.0',
       initialized: new Date().toISOString(),
@@ -279,19 +321,22 @@ except Exception as e:
       }
     };
 
-    try {
-      const cachePath = path.join(process.cwd(), 'quantum_cache', 'config.json');
-      await fs.writeFile(cachePath, JSON.stringify(cacheConfig, null, 2));
-      console.log('✅ Cache quântico inicializado');
-    } catch (error) {
-      console.log('⚠️ Erro ao inicializar cache:', error.message);
+    try
+    {
+      const cachePath = path.join( process.cwd(), 'quantum_cache', 'config.json' );
+      await fs.writeFile( cachePath, JSON.stringify( cacheConfig, null, 2 ) );
+      console.log( '✅ Cache quântico inicializado' );
+    } catch ( error )
+    {
+      console.log( '⚠️ Erro ao inicializar cache:', error.message );
     }
   }
 
   /**
    * CONFIGURAR MONITORAMENTO
    */
-  async setupQuantumMonitoring() {
+  async setupQuantumMonitoring()
+  {
     const monitoringConfig = {
       enabled: true,
       metrics: {
@@ -307,19 +352,22 @@ except Exception as e:
       }
     };
 
-    try {
-      const monitoringPath = path.join(process.cwd(), 'quantum_logs', 'monitoring.json');
-      await fs.writeFile(monitoringPath, JSON.stringify(monitoringConfig, null, 2));
-      console.log('✅ Monitoramento quântico configurado');
-    } catch (error) {
-      console.log('⚠️ Erro ao configurar monitoramento:', error.message);
+    try
+    {
+      const monitoringPath = path.join( process.cwd(), 'quantum_logs', 'monitoring.json' );
+      await fs.writeFile( monitoringPath, JSON.stringify( monitoringConfig, null, 2 ) );
+      console.log( '✅ Monitoramento quântico configurado' );
+    } catch ( error )
+    {
+      console.log( '⚠️ Erro ao configurar monitoramento:', error.message );
     }
   }
 
   /**
    * OBTER RESUMO DA ATIVAÇÃO
    */
-  getActivationSummary() {
+  getActivationSummary()
+  {
     return {
       status: 'activated',
       timestamp: new Date().toISOString(),
@@ -346,7 +394,8 @@ except Exception as e:
   /**
    * OBTER STATUS ATUAL
    */
-  getStatus() {
+  getStatus()
+  {
     return {
       ...this.status,
       summary: this.status.initialized ? 'Sistema quântico ativo' : 'Sistema quântico não inicializado'
@@ -358,10 +407,12 @@ except Exception as e:
 const quantumActivator = new QuantumSystemActivator();
 
 // Auto-ativação na inicialização
-if (process.env.NODE_ENV !== 'test') {
-  quantumActivator.activateQuantumSystem().catch(error => {
-    console.error('❌ Falha na auto-ativação do sistema quântico:', error);
-  });
+if ( process.env.NODE_ENV !== 'test' )
+{
+  quantumActivator.activateQuantumSystem().catch( error =>
+  {
+    console.error( '❌ Falha na auto-ativação do sistema quântico:', error );
+  } );
 }
 
-export { QuantumSystemActivator, quantumActivator };
+module.exports = { QuantumSystemActivator, quantumActivator };

@@ -1,12 +1,12 @@
-import 'dotenv/config';
-import express from "express";
-import session from "express-session";
-import path from "path";
-import { registerRoutes } from "./routes.js";
-import { setupVite, serveStatic, log } from "./vite.js";
-import paymentRoutes from "./paymentRoutes.js";
-import webhookRoutes from "./webhookRoutes.js";
-import { quantumActivator } from "./quantumSystemActivator.js";
+require( 'dotenv/config' );
+const express = require( "express" );
+const session = require( "express-session" );
+const path = require( "path" );
+const { setupRoutes } = require( "./routes-unified.js" );
+const { setupVite, serveStatic, log } = require( "./vite.js" );
+const paymentRoutes = require( "./paymentRoutes.js" );
+const webhookRoutes = require( "./webhookRoutes.js" );
+const { quantumActivator } = require( "./quantumSystemActivator.js" );
 
 const app = express();
 
@@ -116,8 +116,12 @@ app.use( ( req, res, next ) =>
     await initializeAuth();
 
     // Register authentication routes FIRST (highest priority)
-    const authRoutes = await import( './authRoutes.js' );
-    app.use( '/api/auth', authRoutes.default );
+    const authRoutes = require( './routes/auth.js' );
+    app.use( '/api/auth', authRoutes );
+
+    // Register tenant user routes
+    const tenantUserRoutes = require( './tenantUserRoutes' );
+    app.use( '/api/users', tenantUserRoutes );
 
     // Quantum System Status Endpoint
     app.get( '/api/quantum/status', async ( req, res ) =>
@@ -177,8 +181,12 @@ app.use( ( req, res, next ) =>
     app.use( '/api/payment', paymentRoutes );
     app.use( '/api/webhooks', webhookRoutes );
 
+    // Register MILA AI Assistant routes
+    const milaRoutes = await import( './milaRoutes.js' );
+    app.use( '/api/mila', milaRoutes.default );
+
     // Register other routes after
-    const server = await registerRoutes( app );
+    const server = await setupRoutes( app );
 
     app.use( ( err, _req, res, _next ) =>
     {
@@ -322,6 +330,15 @@ app.use( ( req, res, next ) =>
     {
       serveStatic( app );
     }
+
+    // Inicializar WebSocket Service
+    const WebSocketService = require( './websocketService' );
+    const wsService = new WebSocketService( server );
+
+    // Disponibilizar WebSocket service globalmente
+    app.set( 'wsService', wsService );
+
+    console.log( '🔌 WebSocket Service inicializado' );
 
   } catch ( error )
   {

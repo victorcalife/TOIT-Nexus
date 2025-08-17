@@ -17,7 +17,8 @@ const bcrypt = require( 'bcrypt' );
 const jwt = require( 'jsonwebtoken' );
 const passport = require( 'passport' );
 const LocalStrategy = require( 'passport-local' ).Strategy;
-const { db } = require( './dist/db' );
+const DatabaseService = require( './services/DatabaseService' );
+const db = new DatabaseService();
 const { users, tenants, permissions, userPermissions, rolePermissions } = require( './dist/shared/schema' );
 const { eq, and, or, isNull } = require( 'drizzle-orm' );
 

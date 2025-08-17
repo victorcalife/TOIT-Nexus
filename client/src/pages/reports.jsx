@@ -7,44 +7,53 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
-import { 
-  Plus, 
-  Search, 
-  FileText, 
-  Edit, 
-  Trash2, 
-  Play,
-  Download,
-  Calendar,
-  Mail,
-  Settings,
-  BarChart3
-} from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+
+// Importar sistema quântico integrado
+import quantumSystemCore from '@/core/QuantumSystemCore';
+import milaOmnipresence from '@/core/MilaOmnipresence';
+import universalWorkflowEngine from '@/core/UniversalWorkflowEngine';
+import
+  {
+    Plus,
+    Search,
+    FileText,
+    Edit,
+    Trash2,
+    Play,
+    Download,
+    Calendar,
+    Mail,
+    Settings,
+    BarChart3
+  } from "lucide-react";
+import
+  {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+  } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import
+  {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+  } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-export default function Reports() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  const [editingReport, setEditingReport] = useState<any>(null);
-  const [newReport, setNewReport] = useState({
+export default function Reports()
+{
+  const [ searchTerm, setSearchTerm ] = useState( "" );
+  const [ isCreateDialogOpen, setIsCreateDialogOpen ] = useState( false );
+  const [ editingReport, setEditingReport ] = useState < any > ( null );
+  const [ newReport, setNewReport ] = useState( {
     name,
     description,
     type,
@@ -52,10 +61,10 @@ export default function Reports() {
     frequency,
     isActive,
     filters,
-      riskProfiles,
-      dateRange,
-      minInvestment,
-      maxInvestment,
+    riskProfiles,
+    dateRange,
+    minInvestment,
+    maxInvestment,
     fields,
     deliveryMethod,
     recipients,
@@ -71,35 +80,37 @@ export default function Reports() {
     retry,
   });
 
-  const createReportMutation = useMutation({
+  const createReportMutation = useMutation( {
     mutationFn) => {
-      const processedData = {
-        ...reportData,
-        filters,
-          minInvestment) {
-      queryClient.invalidateQueries({ queryKey);
-      setIsCreateDialogOpen(false);
+    const processedData = {
+      ...reportData,
+      filters,
+      minInvestment) {
+        queryClient.invalidateQueries( {
+          queryKey);
+          setIsCreateDialogOpen(false );
       resetForm();
-      toast({
-        title,
-        description,
-      });
-    },
-    onError) => {
-      toast({
+      toast( {
+            title,
+            description,
+          } );
+        },
+          onError ) => {
+      toast( {
         title,
         description,
         variant,
-      });
+      } );
     },
   });
 
-  const updateReportMutation = useMutation({
-    mutationFn, data }: { id, data) => {
-      const processedData = {
-        ...data,
-        filters,
-          minInvestment) {id}`, processedData);
+  const updateReportMutation = useMutation( {
+    mutationFn, data
+  }: { id, data) => {
+    const processedData = {
+      ...data,
+      filters,
+      minInvestment) { id }`, processedData);
     },
     onSuccess) => {
       queryClient.invalidateQueries({ queryKey);
@@ -121,7 +132,7 @@ export default function Reports() {
 
   const deleteReportMutation = useMutation({
     mutationFn) => {
-      await apiRequest('DELETE', `/api/reports/${reportId}`);
+      await apiRequest('DELETE', `/ api / reports / ${ reportId } `);
     },
     onSuccess) => {
       queryClient.invalidateQueries({ queryKey);
@@ -141,156 +152,173 @@ export default function Reports() {
 
   const generateReportMutation = useMutation({
     mutationFn) => {
-      const response = await apiRequest('POST', `/api/reports/${reportId}/generate`);
-      return response;
-    },
+      const response = await apiRequest('POST', `/ api / reports / ${ reportId }/generate`);
+    return response;
+  },
     onSuccess) => {
-      toast({
-        title,
-        description,
-      });
-    },
+    toast( {
+      title,
+      description,
+    } );
+  },
     onError) => {
-      toast({
-        title,
-        description,
-        variant,
-      });
-    },
-  });
-
-  const resetForm = () => {
-    setNewReport({
-      name,
+    toast( {
+      title,
       description,
-      type,
-      schedule,
-      frequency,
-      isActive,
-      filters,
-        riskProfiles,
-        dateRange,
-        minInvestment,
-        maxInvestment,
-      fields,
-      deliveryMethod,
-      recipients,
-      template);
+      variant,
+    } );
+  },
+});
+
+const resetForm = () =>
+{
+  setNewReport( {
+    name,
+    description,
+    type,
+    schedule,
+    frequency,
+    isActive,
+    filters,
+    riskProfiles,
+    dateRange,
+    minInvestment,
+    maxInvestment,
+    fields,
+    deliveryMethod,
+    recipients,
+    template);
+};
+
+const handleEdit = ( report ) =>
+{
+  setNewReport( {
+    name,
+    description,
+    type,
+    schedule,
+    frequency,
+    isActive,
+    filters,
+    riskProfiles,
+    dateRange,
+    minInvestment) || "",
+    maxInvestment) || ""
+},
+  fields,
+  deliveryMethod,
+  recipients,
+  template);
+setEditingReport( report );
   };
 
-  const handleEdit = (report) => {
-    setNewReport({
-      name,
+const handleSubmit = () =>
+{
+  if ( !newReport.name.trim() )
+  {
+    toast( {
+      title,
       description,
-      type,
-      schedule,
-      frequency,
-      isActive,
-      filters,
-        riskProfiles,
-        dateRange,
-        minInvestment) || "",
-        maxInvestment) || ""
-      },
-      fields,
-      deliveryMethod,
-      recipients,
-      template);
-    setEditingReport(report);
-  };
+      variant,
+    } );
+    return;
+  }
 
-  const handleSubmit = () => {
-    if (!newReport.name.trim()) {
-      toast({
-        title,
-        description,
-        variant,
-      });
-      return;
-    }
+  if ( editingReport )
+  {
+    updateReportMutation.mutate( { id, data);
+  } else
+  {
+    createReportMutation.mutate( newReport );
+  }
+};
 
-    if (editingReport) {
-      updateReportMutation.mutate({ id, data);
-    } else {
-      createReportMutation.mutate(newReport);
-    }
-  };
-
-  const handleCategoryToggle = (categoryId) => {
-    setNewReport(prev => ({
+const handleCategoryToggle = ( categoryId ) =>
+{
+  setNewReport( prev => ( {
+    ...prev,
+    filters,
+    categories)
+    ? prev.filters.categories.filter( c => c !== categoryId ) {
+    setNewReport( prev => ( {
       ...prev,
       filters,
-        categories)
-          ? prev.filters.categories.filter(c => c !== categoryId) {
-    setNewReport(prev => ({
+      riskProfiles)
+          ?prev.filters.riskProfiles.filter( p => p !== profile ) {
+  setNewReport( prev => ( {
+    ...prev,
+    fields)
+    ? prev.fields.filter( f => f !== field ) {
+      if( email && !newReport.recipients.includes( email ) ) {
+    setNewReport( prev => ( {
       ...prev,
-      filters,
-        riskProfiles)
-          ? prev.filters.riskProfiles.filter(p => p !== profile) {
-    setNewReport(prev => ({
-      ...prev,
-      fields)
-        ? prev.fields.filter(f => f !== field) {
-    if (email && !newReport.recipients.includes(email)) {
-      setNewReport(prev => ({
-        ...prev,
-        recipients, email]
-      }));
-    }
-  };
+      recipients, email]
+    } ) );
+  }
+};
 
-  const handleRecipientRemove = (email) => {
-    setNewReport(prev => ({
-      ...prev,
-      recipients)
+const handleRecipientRemove = ( email ) =>
+{
+  setNewReport( prev => ( {
+    ...prev,
+    recipients)
     }));
   };
 
-  const filteredReports = (reports || []).filter((report) =>
-    report.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    report.description?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+const filteredReports = ( reports || [] ).filter( ( report ) =>
+  report.name.toLowerCase().includes( searchTerm.toLowerCase() ) ||
+  report.description?.toLowerCase().includes( searchTerm.toLowerCase() )
+);
 
-  const getTypeLabel = (type) => {
-    switch (type) {
-      case 'client_summary':
-        return 'Resumo de Clientes';
-      case 'portfolio_performance':
-        return 'Performance de Portfólio';
-      case 'activity_report':
-        return 'Relatório de Atividades';
-      case 'risk_analysis':
-        return 'Análise de Risco';
-      case 'workflow_metrics':
-        return 'Métricas de Workflows';
-      default) => {
-    switch (schedule) {
-      case 'manual':
-        return 'Manual';
-      case 'daily':
-        return 'Diário';
-      case 'weekly':
-        return 'Semanal';
-      case 'monthly':
-        return 'Mensal';
-      case 'quarterly':
-        return 'Trimestral';
-      default, label,
-    { id, label,
-    { id, label,
-    { id, label,
-    { id, label,
-    { id, label,
-    { id, label,
-    { id, label,
-    { id, label,
-    { id, label) => {
-            setIsCreateDialogOpen(open);
-            if (!open) {
-              setEditingReport(null);
-              resetForm();
-            }
-          }}>
+const getTypeLabel = ( type ) =>
+{
+  switch ( type )
+  {
+    case 'client_summary':
+      return 'Resumo de Clientes';
+    case 'portfolio_performance':
+      return 'Performance de Portfólio';
+    case 'activity_report':
+      return 'Relatório de Atividades';
+    case 'risk_analysis':
+      return 'Análise de Risco';
+    case 'workflow_metrics':
+      return 'Métricas de Workflows';
+    default) => {
+  switch ( schedule )
+  {
+    case 'manual':
+      return 'Manual';
+    case 'daily':
+      return 'Diário';
+    case 'weekly':
+      return 'Semanal';
+    case 'monthly':
+      return 'Mensal';
+    case 'quarterly':
+      return 'Trimestral';
+    default, label,
+      { id, label,
+    {
+        id, label,
+        { id, label,
+    {
+          id, label,
+          { id, label,
+    {
+            id, label,
+            { id, label,
+    {
+              id, label,
+              { id, label) => {
+                setIsCreateDialogOpen( open );
+                if ( !open )
+                {
+                  setEditingReport( null );
+                  resetForm();
+                }
+              }
+            }>
             <DialogTrigger asChild>
               <Button onClick={() => setIsCreateDialogOpen(true)}>
                 <Plus className="w-4 h-4 mr-2" />
@@ -559,97 +587,101 @@ export default function Reports() {
                 </Button>
               </div>
             </DialogContent>
-          </Dialog>
-        </div>
-      </header>
+          </Dialog >
+        </div >
+      </header >
 
-      {/* Search */}
-      <div className="px-6 py-4 bg-gray-50 border-b">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-          <Input
-            placeholder="Buscar relatórios..."
-            className="pl-10"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-      </div>
+              {/* Search */ }
+              < div className = "px-6 py-4 bg-gray-50 border-b" >
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <Input
+                    placeholder="Buscar relatórios..."
+                    className="pl-10"
+                    value={ searchTerm }
+                    onChange={ ( e ) => setSearchTerm( e.target.value ) }
+                  />
+                </div>
+      </div >
 
-      {/* Reports List */}
-      <main className="flex-1 overflow-y-auto p-6">
-        {reportsLoading ? (
-          <div className="grid grid-cols-1 md)].map((_, i) => (
-              <Card key={i}>
-                <CardContent className="p-6">
-                  <Skeleton className="h-6 w-32 mb-2" />
-                  <Skeleton className="h-4 w-full mb-4" />
-                  <div className="space-y-2">
-                    <Skeleton className="h-4 w-24" />
-                    <Skeleton className="h-4 w-20" />
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        ) {report.id} className="hover)}</Badge>
-                          {!report.isActive && (
-                            <Badge variant="secondary">Inativo</Badge>
-                          )}
+              {/* Reports List */ }
+              < main className = "flex-1 overflow-y-auto p-6" >
+              {
+                reportsLoading?(
+          <div className = "grid grid-cols-1 md)].map((_, i) => (
+                    < Card key = { i } >
+                      <CardContent className="p-6">
+                        <Skeleton className="h-6 w-32 mb-2" />
+                        <Skeleton className="h-4 w-full mb-4" />
+                        <div className="space-y-2">
+                          <Skeleton className="h-4 w-24" />
+                          <Skeleton className="h-4 w-20" />
                         </div>
-                      </div>
-                    </div>
-                    <div className="flex space-x-1">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => generateReportMutation.mutate(report.id)}
-                        disabled={generateReportMutation.isPending}
-                      >
-                        <Play className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleEdit(report)}
-                      >
-                        <Edit className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => deleteReportMutation.mutate(report.id)}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 text-sm mb-4">
-                    {report.description || 'Sem descrição'}
-                  </p>
-                  
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-500">Agendamento)}</Badge>
-                    </div>
-                    
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-500">Entrega)}
-                    
+                      </CardContent>
+              </Card>
+            ))
+          }
+          </div >
+        ) { report.id } className = "hover)}</Badge>
+          {
+            !report.isActive && (
+              <Badge variant="secondary">Inativo</Badge>
+            )
+          }
+                        </div >
+                      </div >
+                    </div >
+            <div className="flex space-x-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={ () => generateReportMutation.mutate( report.id ) }
+                disabled={ generateReportMutation.isPending }
+              >
+                <Play className="w-4 h-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={ () => handleEdit( report ) }
+              >
+                <Edit className="w-4 h-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={ () => deleteReportMutation.mutate( report.id ) }
+              >
+                <Trash2 className="w-4 h-4" />
+              </Button>
+            </div>
+                  </div >
+                </CardHeader >
+            <CardContent>
+              <p className="text-gray-600 text-sm mb-4">
+                { report.description || 'Sem descrição' }
+              </p>
+
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-500">Agendamento)}</Badge>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-500">Entrega)}
+
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-gray-500">Campos))}
-          </div>
-        ) {searchTerm ? 'Nenhum relatório corresponde aos critérios de busca.' : 'Crie seu primeiro template de relatório.'}
-            </p>
-            <Button onClick={() => setIsCreateDialogOpen(true)}>
-              <Plus className="w-4 h-4 mr-2" />
-              Novo Relatório
-            </Button>
-          </div>
+                    </div>
+                    ) { searchTerm ? 'Nenhum relatório corresponde aos critérios de busca.' : 'Crie seu primeiro template de relatório.' }
+                  </p>
+                  <Button onClick={ () => setIsCreateDialogOpen( true ) }>
+                    <Plus className="w-4 h-4 mr-2" />
+                    Novo Relatório
+                  </Button>
+                </div>
         )}
-      </main>
-    </div>
+              </main>
+            </div>
   );
-}
+        }

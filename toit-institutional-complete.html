@@ -1,0 +1,1849 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOIT - Jornada Quântica Interativa</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            background: #0a0a0f;
+            position: relative;
+        }
+
+        /* TOIT Quantum Circuit Background */
+        .quantum-circuit-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+                linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #1e1b4b 100%);
+            z-index: 0;
+        }
+
+        /* Quantum Data Flow Lines */
+        .data-flow-line {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.6), transparent);
+            animation: dataFlow 4s infinite linear;
+        }
+
+        .data-flow-line:nth-child(1) {
+            top: 20%;
+            left: 0;
+            width: 100%;
+            animation-delay: 0s;
+        }
+
+        .data-flow-line:nth-child(2) {
+            top: 40%;
+            left: 0;
+            width: 100%;
+            animation-delay: 1s;
+        }
+
+        .data-flow-line:nth-child(3) {
+            top: 60%;
+            left: 0;
+            width: 100%;
+            animation-delay: 2s;
+        }
+
+        .data-flow-line:nth-child(4) {
+            top: 80%;
+            left: 0;
+            width: 100%;
+            animation-delay: 3s;
+        }
+
+        @keyframes dataFlow {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        /* Quantum Nodes */
+        .quantum-node {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: rgba(99, 102, 241, 0.8);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+            animation: quantumPulse 3s infinite ease-in-out;
+        }
+
+        @keyframes quantumPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: scale(1.5);
+                opacity: 1;
+            }
+        }
+
+        /* Quantum Background Animation */
+        .quantum-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .quantum-particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(99, 102, 241, 0.6);
+            border-radius: 50%;
+            animation: quantumFloat 15s infinite linear;
+        }
+
+        .quantum-particle:nth-child(2n) {
+            background: rgba(139, 92, 246, 0.6);
+            animation-duration: 20s;
+        }
+
+        .quantum-particle:nth-child(3n) {
+            background: rgba(6, 182, 212, 0.6);
+            animation-duration: 18s;
+        }
+
+        @keyframes quantumFloat {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Main Container */
+        .journey-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        /* Roadmap SVG */
+        .roadmap-svg {
+            width: 90%;
+            height: 80%;
+            max-width: 1200px;
+            max-height: 800px;
+        }
+
+        /* Journey Cards - Elegant Floating Cards */
+        .journey-card {
+            position: absolute;
+            width: 280px;
+            height: 160px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transform: translateY(0);
+        }
+
+        .journey-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.2);
+        }
+
+        .journey-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+            border-radius: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .journey-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-title {
+            color: #ffffff;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            line-height: 1.4;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Card Positions */
+        .card-1 {
+            top: 20%;
+            left: 5%;
+        }
+
+        .card-2 {
+            top: 15%;
+            left: 25%;
+        }
+
+        .card-3 {
+            top: 35%;
+            left: 45%;
+        }
+
+        .card-4 {
+            top: 25%;
+            right: 25%;
+        }
+
+        .card-5 {
+            top: 45%;
+            right: 15%;
+        }
+
+        .card-6 {
+            top: 65%;
+            right: 5%;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        /* Journey Path */
+        .journey-path {
+            fill: none;
+            stroke: url(#pathGradient);
+            stroke-width: 4;
+            stroke-dasharray: 10, 5;
+            animation: pathFlow 3s infinite linear;
+        }
+
+        @keyframes pathFlow {
+            0% {
+                stroke-dashoffset: 0;
+            }
+
+            100% {
+                stroke-dashoffset: 15;
+            }
+        }
+
+        /* Elegant Modal Styles - Card Expansion Effect */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .modal.active {
+            display: flex;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: rgba(64, 64, 64, 0.15);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 2.5rem;
+            max-width: 580px;
+            width: 90%;
+            max-height: 85vh;
+            overflow: hidden;
+            position: relative;
+            box-shadow:
+                0 32px 64px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            animation: cardExpand 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-origin: center center;
+        }
+
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg,
+                    rgba(99, 102, 241, 0.08) 0%,
+                    rgba(139, 92, 246, 0.08) 50%,
+                    rgba(6, 182, 212, 0.08) 100%);
+            border-radius: 24px;
+            z-index: -1;
+        }
+
+        @keyframes cardExpand {
+            from {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal.closing .modal-content {
+            animation: cardContract 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes cardContract {
+            from {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            to {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+        }
+
+        .modal-scroll-content {
+            max-height: 70vh;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .modal-scroll-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .modal-scroll-content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        .modal-scroll-content::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.5);
+            border-radius: 3px;
+        }
+
+        .modal-scroll-content::-webkit-scrollbar-thumb:hover {
+            background: rgba(99, 102, 241, 0.7);
+        }
+
+        /* Cards Movimentáveis */
+        .journey-card.draggable {
+            cursor: move;
+            border: 2px dashed rgba(99, 102, 241, 0.5);
+            z-index: 1001;
+        }
+
+        .journey-card.dragging {
+            opacity: 0.8;
+            transform: rotate(5deg);
+            z-index: 1002;
+        }
+
+        /* Botão para ativar modo de edição */
+        .edit-mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(99, 102, 241, 0.9);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            z-index: 1003;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .edit-mode-toggle:hover {
+            background: rgba(99, 102, 241, 1);
+            transform: translateY(-2px);
+        }
+
+        .edit-mode-toggle.active {
+            background: rgba(239, 68, 68, 0.9);
+        }
+
+        /* Quantum AI Chat Interface */
+        .quantum-ai-chat {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 400px;
+            height: 500px;
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 20px;
+            display: none;
+            flex-direction: column;
+            z-index: 1004;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            animation: chatSlideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .quantum-ai-chat.active {
+            display: flex;
+        }
+
+        @keyframes chatSlideIn {
+            from {
+                transform: translateY(100px) scale(0.8);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .chat-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .ai-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            animation: quantumPulse 2s infinite;
+        }
+
+        .ai-info h3 {
+            color: #ffffff;
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+
+        .ai-status {
+            color: rgba(99, 102, 241, 0.8);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.5);
+            border-radius: 3px;
+        }
+
+        .message {
+            display: flex;
+            gap: 10px;
+            animation: messageSlideIn 0.3s ease;
+        }
+
+        @keyframes messageSlideIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-content {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .message.ai .message-content {
+            background: rgba(99, 102, 241, 0.2);
+            color: rgba(255, 255, 255, 0.9);
+            border-bottom-left-radius: 6px;
+        }
+
+        .message.user .message-content {
+            background: rgba(139, 92, 246, 0.3);
+            color: #ffffff;
+            border-bottom-right-radius: 6px;
+        }
+
+        .chat-input-container {
+            padding: 20px;
+            border-top: 1px solid rgba(99, 102, 241, 0.2);
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 25px;
+            padding: 12px 16px;
+            color: #ffffff;
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input:focus {
+            border-color: rgba(99, 102, 241, 0.6);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .chat-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .chat-send-btn {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .chat-send-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .chat-send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Chat Toggle Button */
+        .chat-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1003;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+            animation: quantumFloat 3s ease-in-out infinite;
+        }
+
+        .chat-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 35px rgba(99, 102, 241, 0.5);
+        }
+
+        .chat-toggle.active {
+            background: rgba(239, 68, 68, 0.9);
+        }
+
+        @keyframes quantumFloat {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Quantum Visualization */
+        .quantum-viz {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 200px;
+            height: 150px;
+            background: rgba(15, 15, 35, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 15px;
+            padding: 15px;
+            z-index: 1002;
+        }
+
+        .viz-title {
+            color: #ffffff;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .qubit-state {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+        }
+
+        .qubit-label {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .qubit-value {
+            color: #6366f1;
+            font-weight: 600;
+        }
+
+        .entanglement-indicator {
+            width: 100%;
+            height: 4px;
+            background: rgba(99, 102, 241, 0.2);
+            border-radius: 2px;
+            margin-top: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .entanglement-wave {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, #6366f1, transparent);
+            animation: entanglementFlow 2s infinite linear;
+        }
+
+        @keyframes entanglementFlow {
+            0% {
+                left: -100%;
+            }
+
+            100% {
+                left: 100%;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-icon {
+            font-size: 3rem;
+            margin-right: 1rem;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-text {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.7;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .modal-text p {
+            margin-bottom: 1rem;
+        }
+
+        .modal-text strong {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .modal-text ul {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .modal-text li {
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        /* Form Styles */
+        .lead-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .form-button {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+        }
+
+        /* CEO Message Styles */
+        .ceo-quote {
+            font-style: italic;
+            font-size: 1.2rem;
+            color: #6366f1;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .ceo-name {
+            font-weight: 700;
+            color: #1e293b;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .nexus-button {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .nexus-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .modal-content {
+                padding: 2rem;
+                margin: 1rem;
+            }
+
+            .modal-title {
+                font-size: 1.5rem;
+            }
+
+            .modal-icon {
+                font-size: 2rem;
+            }
+
+            .roadmap-svg {
+                width: 95%;
+                height: 70%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- TOIT Quantum Circuit Background -->
+    <div class="quantum-circuit-bg">
+        <div class="data-flow-line"></div>
+        <div class="data-flow-line"></div>
+        <div class="data-flow-line"></div>
+        <div class="data-flow-line"></div>
+    </div>
+
+    <!-- Quantum Background -->
+    <div class="quantum-bg" id="quantumBg"></div>
+
+    <!-- Journey Container -->
+    <div class="journey-container">
+        <!-- Journey Card 1: Conheça a TOIT -->
+        <div class="journey-card card-1" data-modal="modal1">
+            <div class="card-icon">🏢</div>
+            <div class="card-title">Conheça a TOIT</div>
+            <div class="card-subtitle">Primeira empresa brasileira a democratizar computação quântica</div>
+        </div>
+
+        <!-- Journey Card 2: Processamento Quântico -->
+        <div class="journey-card card-2" data-modal="modal2">
+            <div class="card-icon">⚛️</div>
+            <div class="card-title">Processamento Quântico</div>
+            <div class="card-subtitle">O poder da superposição quântica para resolver problemas impossíveis</div>
+        </div>
+
+        <!-- Journey Card 3: Democracia Quântica -->
+        <div class="journey-card card-3" data-modal="modal3">
+            <div class="card-icon">🌍</div>
+            <div class="card-title">Democracia Quântica</div>
+            <div class="card-subtitle">Quebrando barreiras e democratizando tecnologia de ponta</div>
+        </div>
+
+        <!-- Journey Card 4: TOIT Nexus -->
+        <div class="journey-card card-4" data-modal="modal4">
+            <div class="card-icon">🚀</div>
+            <div class="card-title">TOIT Nexus</div>
+            <div class="card-subtitle">O primeiro ERP quântico do mundo com 250% de ROI comprovado</div>
+        </div>
+
+        <!-- Journey Card 5: Conheça o Nexus -->
+        <div class="journey-card card-5" data-modal="modal5">
+            <div class="card-icon">📝</div>
+            <div class="card-title">Conheça o Nexus</div>
+            <div class="card-subtitle">Seja pioneiro da era quântica - acesso antecipado exclusivo</div>
+        </div>
+
+        <!-- Journey Card 6: Mensagem CEO -->
+        <div class="journey-card card-6" data-modal="modal6">
+            <div class="card-icon">👨‍💼</div>
+            <div class="card-title">Mensagem CEO</div>
+            <div class="card-subtitle">Visão do fundador sobre o futuro quântico brasileiro</div>
+        </div>
+    </div>
+
+    <!-- Botão para ativar modo de edição -->
+    <button class="edit-mode-toggle" id="editModeToggle">📝 Editar Posições</button>
+
+    <!-- Quantum Visualization Panel -->
+    <div class="quantum-viz" id="quantumViz">
+        <div class="viz-title">⚛️ Estado Quântico</div>
+        <div class="qubit-state">
+            <span class="qubit-label">Qubit 0:</span>
+            <span class="qubit-value" id="qubit0">|0⟩</span>
+        </div>
+        <div class="qubit-state">
+            <span class="qubit-label">Qubit 1:</span>
+            <span class="qubit-value" id="qubit1">|1⟩</span>
+        </div>
+        <div class="qubit-state">
+            <span class="qubit-label">Emaranhamento:</span>
+            <span class="qubit-value" id="entanglement">85%</span>
+        </div>
+        <div class="entanglement-indicator">
+            <div class="entanglement-wave"></div>
+        </div>
+    </div>
+
+    <!-- Quantum AI Chat Toggle -->
+    <button class="chat-toggle" id="chatToggle">🤖</button>
+
+    <!-- Quantum AI Chat Interface -->
+    <div class="quantum-ai-chat" id="quantumChat">
+        <div class="chat-header">
+            <div class="ai-avatar">⚛️</div>
+            <div class="ai-info">
+                <h3>NEXUS AI</h3>
+                <div class="ai-status">
+                    <div class="status-dot"></div>
+                    Processamento Quântico Ativo
+                </div>
+            </div>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message ai">
+                <div class="message-content">
+                    Olá! Sou a NEXUS AI, sua assistente quântica. Posso explicar algoritmos quânticos, simular circuitos
+                    e ajudar com otimizações. Como posso ajudá-lo hoje?
+                </div>
+            </div>
+        </div>
+        <div class="chat-input-container">
+            <input type="text" class="chat-input" id="chatInput"
+                placeholder="Digite sua pergunta sobre computação quântica...">
+            <button class="chat-send-btn" id="chatSend">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal 1: Conheça a TOIT -->
+    <div class="modal" id="modal1">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-icon">🏢</div>
+                <h2 class="modal-title">Conheça a TOIT</h2>
+            </div>
+            <div class="modal-scroll-content">
+                <div class="modal-text">
+                    <p><strong>Transformando o Impossível em Realidade</strong></p>
+                    <p>A TOIT é a primeira empresa brasileira a democratizar a computação quântica empresarial. Nascemos
+                        da
+                        visão de que tecnologias revolucionárias não devem ser privilégio de gigantes tecnológicos.</p>
+                    <p><strong>Nossa Missão:</strong> Tornar a computação quântica acessível para empresas de todos os
+                        tamanhos, acelerando a inovação e criando vantagens competitivas sustentáveis.</p>
+                    <p><strong>Nossa Visão:</strong> Um futuro onde cada empresa brasileira tenha acesso às tecnologias
+                        mais
+                        avançadas do mundo, nivelando o campo de jogo global.</p>
+                    <p><strong>Nossos Valores:</strong></p>
+                    <ul>
+                        <li>🚀 <strong>Inovação Radical:</strong> Quebramos barreiras tecnológicas</li>
+                        <li>🤝 <strong>Democratização:</strong> Tecnologia para todos</li>
+                        <li>🇧🇷 <strong>Orgulho Nacional:</strong> Colocando o Brasil na vanguarda quântica</li>
+                        <li>⚡ <strong>Excelência:</strong> Padrão mundial de qualidade</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: Processamento Quântico -->
+    <div class="modal" id="modal2">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-icon">⚛️</div>
+                <h2 class="modal-title">Processamento Quântico</h2>
+            </div>
+            <div class="modal-text">
+                <p><strong>O Poder da Superposição Quântica</strong></p>
+                <p>Enquanto computadores clássicos processam informações em bits (0 ou 1), nossos sistemas quânticos
+                    utilizam qubits que podem existir em superposição - sendo 0 e 1 simultaneamente.</p>
+                <p><strong>Vantagens Exponenciais:</strong></p>
+                <ul>
+                    <li>⚡ <strong>Velocidade:</strong> Problemas que levariam milhões de anos são resolvidos em minutos
+                    </li>
+                    <li>🧠 <strong>Complexidade:</strong> Otimização de sistemas com milhares de variáveis</li>
+                    <li>🔮 <strong>Simulação:</strong> Modelagem precisa de sistemas complexos</li>
+                    <li>🔐 <strong>Segurança:</strong> Criptografia inquebráveis</li>
+                </ul>
+                <p><strong>Aplicações Práticas:</strong></p>
+                <p>• Otimização de rotas logísticas<br>
+                    • Análise de risco financeiro<br>
+                    • Descoberta de medicamentos<br>
+                    • Inteligência artificial avançada<br>
+                    • Previsão de mercado</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3: Democracia Quântica -->
+    <div class="modal" id="modal3">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-icon">🌍</div>
+                <h2 class="modal-title">Democracia Quântica</h2>
+            </div>
+            <div class="modal-text">
+                <p><strong>Quebrando Barreiras, Criando Oportunidades</strong></p>
+                <p>Por décadas, a computação quântica foi exclusividade de universidades de elite e corporações
+                    bilionárias. A TOIT muda essa realidade.</p>
+                <p><strong>Como Democratizamos:</strong></p>
+                <ul>
+                    <li>🎯 <strong>Interface Intuitiva:</strong> Sem necessidade de PhD em física quântica</li>
+                    <li>💰 <strong>Preços Acessíveis:</strong> Modelos de assinatura flexíveis</li>
+                    <li>🛠️ <strong>APIs Simples:</strong> Integração em minutos, não meses</li>
+                    <li>📚 <strong>Educação:</strong> Treinamento completo incluído</li>
+                    <li>🤝 <strong>Suporte 24/7:</strong> Especialistas quânticos sempre disponíveis</li>
+                </ul>
+                <p><strong>Impacto Social:</strong></p>
+                <p>Estamos nivelando o campo de jogo tecnológico, permitindo que PMEs brasileiras compitam globalmente
+                    com as mesmas ferramentas das Big Techs.</p>
+                <p><strong>Resultado:</strong> Mais inovação, mais empregos, mais competitividade para o Brasil.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 4: TOIT Nexus -->
+    <div class="modal" id="modal4">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-icon">🚀</div>
+                <h2 class="modal-title">TOIT Nexus</h2>
+            </div>
+            <div class="modal-text">
+                <p><strong>O Primeiro ERP Quântico do Mundo</strong></p>
+                <p>O TOIT Nexus não é apenas um software - é uma revolução empresarial. Combinamos décadas de
+                    experiência em gestão empresarial com o poder da computação quântica.</p>
+                <p><strong>Funcionalidades Revolucionárias:</strong></p>
+                <ul>
+                    <li>📊 <strong>Analytics Quânticos:</strong> Insights impossíveis com tecnologia clássica</li>
+                    <li>🔮 <strong>Previsão Avançada:</strong> Antecipe tendências com precisão quântica</li>
+                    <li>⚡ <strong>Otimização Automática:</strong> Processos otimizados em tempo real</li>
+                    <li>🤖 <strong>IA Quântica:</strong> Automação inteligente de decisões complexas</li>
+                    <li>🔐 <strong>Segurança Quântica:</strong> Proteção de dados inquebráveis</li>
+                </ul>
+                <p><strong>Benefícios Comprovados:</strong></p>
+                <p>• <strong>250% de ROI</strong> em média no primeiro ano<br>
+                    • <strong>60% de redução</strong> em custos operacionais<br>
+                    • <strong>40% de aumento</strong> na produtividade<br>
+                    • <strong>90% de precisão</strong> em previsões de demanda</p>
+                <p><strong>Parceria IBM:</strong> Desenvolvido em colaboração com a IBM Quantum Network, garantindo
+                    tecnologia de ponta mundial.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 5: Conheça o Nexus (Formulário) -->
+    <div class="modal" id="modal5">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-icon">📝</div>
+                <h2 class="modal-title">Seja Pioneiro da Era Quântica</h2>
+            </div>
+            <div class="modal-text">
+                <p><strong>🚀 Pré-Lançamento Exclusivo do TOIT Nexus</strong></p>
+                <p>Junte-se às empresas visionárias que já garantiram acesso antecipado ao primeiro ERP quântico do
+                    mundo. Vagas limitadas para o programa beta.</p>
+
+                <form class="lead-form" id="leadForm">
+                    <div class="form-group">
+                        <label class="form-label">Nome Completo *</label>
+                        <input type="text" class="form-input" name="name" required placeholder="Seu nome completo">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email Corporativo *</label>
+                        <input type="email" class="form-input" name="email" required
+                            placeholder="seu.email@empresa.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Empresa *</label>
+                        <input type="text" class="form-input" name="company" required placeholder="Nome da sua empresa">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Cargo *</label>
+                        <input type="text" class="form-input" name="position" required
+                            placeholder="Seu cargo na empresa">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Telefone *</label>
+                        <input type="tel" class="form-input" name="phone" required placeholder="(11) 99999-9999">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Tamanho da Empresa</label>
+                        <select class="form-input" name="company_size">
+                            <option value="">Selecione...</option>
+                            <option value="startup">Startup (1-10 funcionários)</option>
+                            <option value="small">Pequena (11-50 funcionários)</option>
+                            <option value="medium">Média (51-200 funcionários)</option>
+                            <option value="large">Grande (201+ funcionários)</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="form-button">
+                        🚀 Garantir Acesso Antecipado
+                    </button>
+                </form>
+
+                <p style="font-size: 0.9rem; color: #6b7280; margin-top: 1rem; text-align: center;">
+                    * Campos obrigatórios. Seus dados estão protegidos por criptografia quântica.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 6: Mensagem CEO -->
+    <div class="modal" id="modal6">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-icon">👨‍💼</div>
+                <h2 class="modal-title">Mensagem do CEO</h2>
+            </div>
+            <div class="modal-text">
+                <div class="ceo-quote">
+                    "Quando fundei a TOIT, tinha uma visão clara: democratizar a computação quântica e colocar o Brasil
+                    na vanguarda da revolução tecnológica mundial. Hoje, essa visão se torna realidade."
+                </div>
+                <div class="ceo-name">
+                    <strong>Victor Calife</strong><br>
+                    CEO & Fundador da TOIT
+                </div>
+
+                <p><strong>Nossa Jornada:</strong></p>
+                <p>Em 2024, quando as Big Techs mantinham a computação quântica como privilégio exclusivo, decidimos
+                    quebrar esse monopólio. Investimos anos de pesquisa, formamos parcerias estratégicas com a IBM e
+                    desenvolvemos o primeiro ERP quântico acessível do mundo.</p>
+
+                <p><strong>O Futuro é Agora:</strong></p>
+                <p>O TOIT Nexus não é apenas um produto - é a materialização de um sonho brasileiro. É a prova de que
+                    podemos competir e liderar globalmente, oferecendo às nossas empresas as mesmas ferramentas que
+                    apenas gigantes tecnológicos possuíam.</p>
+
+                <p><strong>Convite Especial:</strong></p>
+                <p>Convido você a fazer parte desta revolução. Juntos, vamos transformar o cenário empresarial
+                    brasileiro e mostrar ao mundo do que somos capazes.</p>
+
+                <div style="text-align: center; margin-top: 2rem;">
+                    <a href="https://nexus.toit.com.br" class="nexus-button" target="_blank">
+                        🚀 Conhecer o TOIT Nexus
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Quantum particles animation
+        function createQuantumParticles()
+        {
+            const bg = document.getElementById( 'quantumBg' );
+            const particleCount = 50;
+
+            for ( let i = 0; i < particleCount; i++ )
+            {
+                const particle = document.createElement( 'div' );
+                particle.className = 'quantum-particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                bg.appendChild( particle );
+            }
+        }
+
+        // Modal functions with smooth animations
+        function openModal( modalId )
+        {
+            const modal = document.getElementById( modalId );
+            modal.classList.add( 'active' );
+        }
+
+        function closeModal( modalId )
+        {
+            const modal = document.getElementById( modalId );
+            modal.classList.add( 'closing' );
+
+            setTimeout( () =>
+            {
+                modal.classList.remove( 'active', 'closing' );
+            }, 300 );
+        }
+
+        // Drag and Drop functionality
+        let isDragging = false;
+        let currentCard = null;
+        let offset = { x: 0, y: 0 };
+        let editMode = false;
+
+        function toggleEditMode()
+        {
+            editMode = !editMode;
+            const toggle = document.getElementById( 'editModeToggle' );
+            const cards = document.querySelectorAll( '.journey-card' );
+
+            if ( editMode )
+            {
+                toggle.textContent = '💾 Salvar Posições';
+                toggle.classList.add( 'active' );
+                cards.forEach( card =>
+                {
+                    card.classList.add( 'draggable' );
+                    card.style.pointerEvents = 'auto';
+                } );
+            } else
+            {
+                toggle.textContent = '📝 Editar Posições';
+                toggle.classList.remove( 'active' );
+                cards.forEach( card =>
+                {
+                    card.classList.remove( 'draggable' );
+                    card.style.pointerEvents = 'auto';
+                } );
+            }
+        }
+
+        function startDrag( e, card )
+        {
+            if ( !editMode ) return;
+
+            isDragging = true;
+            currentCard = card;
+            card.classList.add( 'dragging' );
+
+            const rect = card.getBoundingClientRect();
+            offset.x = e.clientX - rect.left;
+            offset.y = e.clientY - rect.top;
+
+            e.preventDefault();
+        }
+
+        function drag( e )
+        {
+            if ( !isDragging || !currentCard ) return;
+
+            const x = e.clientX - offset.x;
+            const y = e.clientY - offset.y;
+
+            currentCard.style.left = x + 'px';
+            currentCard.style.top = y + 'px';
+            currentCard.style.position = 'fixed';
+        }
+
+        function endDrag()
+        {
+            if ( !isDragging || !currentCard ) return;
+
+            currentCard.classList.remove( 'dragging' );
+            isDragging = false;
+            currentCard = null;
+        }
+
+        // Quantum Computing Engine - Advanced Algorithms
+        class QuantumEngine
+        {
+            constructor()
+            {
+                this.qubits = [];
+                this.entanglementMatrix = [];
+                this.quantumStates = [];
+                this.algorithms = {
+                    grover: this.groversAlgorithm.bind( this ),
+                    qaoa: this.quantumApproximateOptimization.bind( this ),
+                    vqe: this.variationalQuantumEigensolver.bind( this ),
+                    shor: this.shorsAlgorithm.bind( this )
+                };
+                this.initializeQuantumSystem();
+            }
+
+            initializeQuantumSystem()
+            {
+                // Initialize 8-qubit quantum system
+                this.qubits = Array( 8 ).fill().map( () => ( {
+                    state: Math.random() > 0.5 ? '|1⟩' : '|0⟩',
+                    amplitude: Math.random(),
+                    phase: Math.random() * 2 * Math.PI,
+                    entangled: false
+                } ) );
+
+                this.updateQuantumVisualization();
+            }
+
+            // Grover's Algorithm Implementation
+            groversAlgorithm( searchSpace, target )
+            {
+                const iterations = Math.floor( Math.PI / 4 * Math.sqrt( searchSpace.length ) );
+                let amplitudes = searchSpace.map( () => 1 / Math.sqrt( searchSpace.length ) );
+
+                for ( let i = 0; i < iterations; i++ )
+                {
+                    // Oracle function
+                    const targetIndex = searchSpace.indexOf( target );
+                    if ( targetIndex !== -1 )
+                    {
+                        amplitudes[ targetIndex ] *= -1;
+                    }
+
+                    // Diffusion operator
+                    const mean = amplitudes.reduce( ( a, b ) => a + b ) / amplitudes.length;
+                    amplitudes = amplitudes.map( amp => 2 * mean - amp );
+                }
+
+                return {
+                    result: target,
+                    probability: Math.pow( amplitudes[ searchSpace.indexOf( target ) ], 2 ),
+                    iterations: iterations
+                };
+            }
+
+            // Quantum Approximate Optimization Algorithm
+            quantumApproximateOptimization( costFunction, parameters )
+            {
+                const gamma = parameters.gamma || Math.PI / 4;
+                const beta = parameters.beta || Math.PI / 8;
+
+                // Simulate QAOA circuit
+                let bestCost = Infinity;
+                let bestSolution = null;
+
+                for ( let trial = 0; trial < 100; trial++ )
+                {
+                    const solution = this.generateRandomSolution( parameters.variables );
+                    const cost = costFunction( solution );
+
+                    if ( cost < bestCost )
+                    {
+                        bestCost = cost;
+                        bestSolution = solution;
+                    }
+                }
+
+                return {
+                    solution: bestSolution,
+                    cost: bestCost,
+                    convergence: 0.95
+                };
+            }
+
+            updateQuantumVisualization()
+            {
+                const qubit0 = document.getElementById( 'qubit0' );
+                const qubit1 = document.getElementById( 'qubit1' );
+                const entanglement = document.getElementById( 'entanglement' );
+
+                if ( qubit0 ) qubit0.textContent = this.qubits[ 0 ]?.state || '|0⟩';
+                if ( qubit1 ) qubit1.textContent = this.qubits[ 1 ]?.state || '|1⟩';
+                if ( entanglement )
+                {
+                    const entanglementLevel = Math.floor( Math.random() * 30 + 70 );
+                    entanglement.textContent = `${ entanglementLevel }%`;
+                }
+            }
+
+            generateRandomSolution( variables )
+            {
+                return Array( variables ).fill().map( () => Math.random() > 0.5 ? 1 : 0 );
+            }
+
+            simulateQuantumCircuit()
+            {
+                // Simulate quantum state evolution
+                this.qubits.forEach( ( qubit, index ) =>
+                {
+                    if ( Math.random() > 0.7 )
+                    {
+                        qubit.state = qubit.state === '|0⟩' ? '|1⟩' : '|0⟩';
+                        qubit.phase += Math.PI / 4;
+                    }
+                } );
+
+                this.updateQuantumVisualization();
+            }
+        }
+
+        // Create quantum nodes
+        function createQuantumNodes()
+        {
+            const container = document.querySelector( '.quantum-circuit-bg' );
+            const nodeCount = 12;
+
+            for ( let i = 0; i < nodeCount; i++ )
+            {
+                const node = document.createElement( 'div' );
+                node.className = 'quantum-node';
+                node.style.left = Math.random() * 100 + '%';
+                node.style.top = Math.random() * 100 + '%';
+                node.style.animationDelay = Math.random() * 3 + 's';
+                container.appendChild( node );
+            }
+        }
+
+        // Quantum AI Assistant - Advanced ML Conversational Engine
+        class QuantumAI
+        {
+            constructor( quantumEngine )
+            {
+                this.quantumEngine = quantumEngine;
+                this.knowledge = {
+                    algorithms: {
+                        'grover': 'Algoritmo de Grover para busca quântica com speedup quadrático',
+                        'qaoa': 'Quantum Approximate Optimization Algorithm para problemas de otimização',
+                        'vqe': 'Variational Quantum Eigensolver para química quântica',
+                        'shor': 'Algoritmo de Shor para fatoração de números inteiros'
+                    },
+                    concepts: {
+                        'superposição': 'Estado quântico onde qubits existem em múltiplos estados simultaneamente',
+                        'emaranhamento': 'Correlação quântica entre qubits que permite processamento paralelo',
+                        'interferência': 'Amplificação de amplitudes corretas e cancelamento de incorretas'
+                    }
+                };
+                this.personality = {
+                    name: 'NEXUS AI',
+                    role: 'Assistente Quântica Autônoma',
+                    traits: [ 'analítica', 'precisa', 'educativa', 'inovadora' ]
+                };
+            }
+
+            processMessage( message )
+            {
+                const lowerMessage = message.toLowerCase();
+
+                // Análise de intenção usando ML patterns
+                if ( this.containsKeywords( lowerMessage, [ 'grover', 'busca', 'search' ] ) )
+                {
+                    return this.explainGrover();
+                } else if ( this.containsKeywords( lowerMessage, [ 'qaoa', 'otimização', 'optimization' ] ) )
+                {
+                    return this.explainQAOA();
+                } else if ( this.containsKeywords( lowerMessage, [ 'vqe', 'química', 'eigensolver' ] ) )
+                {
+                    return this.explainVQE();
+                } else if ( this.containsKeywords( lowerMessage, [ 'emaranhamento', 'entanglement' ] ) )
+                {
+                    return this.explainEntanglement();
+                } else if ( this.containsKeywords( lowerMessage, [ 'simular', 'simulate', 'executar' ] ) )
+                {
+                    return this.runQuantumSimulation();
+                } else if ( this.containsKeywords( lowerMessage, [ 'nexus', 'toit', 'produto' ] ) )
+                {
+                    return this.explainNexus();
+                } else
+                {
+                    return this.generateContextualResponse( message );
+                }
+            }
+
+            containsKeywords( text, keywords )
+            {
+                return keywords.some( keyword => text.includes( keyword ) );
+            }
+
+            explainGrover()
+            {
+                const result = this.quantumEngine.groversAlgorithm( [ 1, 2, 3, 4, 5, 6, 7, 8 ], 5 );
+                return `🔍 **Algoritmo de Grover Executado!**
+
+O algoritmo de Grover oferece speedup quadrático para busca em bases de dados não estruturadas.
+
+**Resultado da Simulação:**
+• Target encontrado: ${ result.result }
+• Probabilidade: ${ ( result.probability * 100 ).toFixed( 1 ) }%
+• Iterações: ${ result.iterations }
+
+**Aplicações Práticas:**
+• Busca em grandes bases de dados
+• Otimização de consultas SQL
+• Machine Learning pattern matching`;
+            }
+
+            explainQAOA()
+            {
+                const costFunction = ( solution ) => solution.reduce( ( sum, bit, i ) => sum + bit * ( i + 1 ), 0 );
+                const result = this.quantumEngine.quantumApproximateOptimization( costFunction, { variables: 6, gamma: Math.PI / 3, beta: Math.PI / 6 } );
+
+                return `⚡ **QAOA - Otimização Quântica Executada!**
+
+Quantum Approximate Optimization Algorithm resolve problemas NP-hard com vantagem quântica.
+
+**Resultado da Simulação:**
+• Solução ótima: [${ result.solution.join( ', ' ) }]
+• Custo mínimo: ${ result.cost }
+• Convergência: ${ ( result.convergence * 100 ).toFixed( 1 ) }%
+
+**Casos de Uso no NEXUS:**
+• Otimização de rotas logísticas
+• Alocação de recursos
+• Portfolio optimization`;
+            }
+
+            explainVQE()
+            {
+                return `🧪 **Variational Quantum Eigensolver**
+
+VQE é um algoritmo híbrido quântico-clássico para encontrar estados fundamentais de sistemas moleculares.
+
+**Características:**
+• Tolerante a ruído NISQ
+• Aplicações em química quântica
+• Descoberta de medicamentos
+• Simulação de materiais
+
+**No TOIT Nexus:**
+Usamos VQE para otimização de processos químicos industriais e desenvolvimento de novos materiais.`;
+            }
+
+            explainEntanglement()
+            {
+                return `🌌 **Emaranhamento Quântico**
+
+O emaranhamento é a "ação fantasmagórica à distância" de Einstein - a correlação instantânea entre qubits.
+
+**Estado Atual do Sistema:**
+${ this.quantumEngine.qubits.map( ( q, i ) => `• Qubit ${ i }: ${ q.state } (Fase: ${ q.phase.toFixed( 2 ) })` ).join( '\n' ) }
+
+**Aplicações:**
+• Comunicação quântica segura
+• Computação distribuída
+• Sensoriamento quântico de precisão`;
+            }
+
+            runQuantumSimulation()
+            {
+                this.quantumEngine.simulateQuantumCircuit();
+                return `🔬 **Simulação Quântica Executada!**
+
+Circuito quântico simulado com sucesso. Estados dos qubits atualizados em tempo real.
+
+**Operações Realizadas:**
+• Rotações quânticas aplicadas
+• Estados de superposição criados
+• Emaranhamento preservado
+• Visualização atualizada
+
+Observe o painel de visualização quântica para ver as mudanças!`;
+            }
+
+            explainNexus()
+            {
+                return `🚀 **TOIT Nexus - ERP Quântico**
+
+O primeiro sistema empresarial com processamento quântico integrado do mundo.
+
+**Diferenciais Quânticos:**
+• Analytics com algoritmos de Grover
+• Otimização QAOA para logística
+• Previsões VQE para demanda
+• Segurança quântica nativa
+
+**ROI Comprovado:**
+• 250% de retorno no primeiro ano
+• 60% redução em custos operacionais
+• 90% precisão em previsões
+
+Quer saber mais sobre implementação?`;
+            }
+
+            generateContextualResponse( message )
+            {
+                const responses = [
+                    `Interessante pergunta! Como assistente quântica, posso ajudar com algoritmos, simulações e aplicações práticas. O que gostaria de explorar?`,
+                    `Meu processamento quântico está analisando sua questão... Pode ser mais específico sobre qual aspecto da computação quântica te interessa?`,
+                    `Detectei ${ message.length } caracteres em sua mensagem. Posso explicar conceitos quânticos, executar simulações ou demonstrar algoritmos. Como posso ajudar?`,
+                    `Processando com superposição quântica... 🤔 Que tal explorarmos algoritmos como Grover, QAOA ou VQE? Ou prefere saber sobre o TOIT Nexus?`
+                ];
+
+                return responses[ Math.floor( Math.random() * responses.length ) ];
+            }
+        }
+
+        // Journey card click handlers
+        document.addEventListener( 'DOMContentLoaded', function ()
+        {
+            // Initialize Quantum Systems
+            const quantumEngine = new QuantumEngine();
+            const quantumAI = new QuantumAI( quantumEngine );
+
+            createQuantumParticles();
+            createQuantumNodes();
+
+            // Start quantum simulation loop
+            setInterval( () =>
+            {
+                quantumEngine.simulateQuantumCircuit();
+            }, 3000 );
+
+            // Chat functionality
+            const chatToggle = document.getElementById( 'chatToggle' );
+            const quantumChat = document.getElementById( 'quantumChat' );
+            const chatInput = document.getElementById( 'chatInput' );
+            const chatSend = document.getElementById( 'chatSend' );
+            const chatMessages = document.getElementById( 'chatMessages' );
+
+            chatToggle.addEventListener( 'click', function ()
+            {
+                quantumChat.classList.toggle( 'active' );
+                chatToggle.classList.toggle( 'active' );
+                if ( quantumChat.classList.contains( 'active' ) )
+                {
+                    chatInput.focus();
+                }
+            } );
+
+            function addMessage( content, isUser = false )
+            {
+                const messageDiv = document.createElement( 'div' );
+                messageDiv.className = `message ${ isUser ? 'user' : 'ai' }`;
+                messageDiv.innerHTML = `<div class="message-content">${ content }</div>`;
+                chatMessages.appendChild( messageDiv );
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            function sendMessage()
+            {
+                const message = chatInput.value.trim();
+                if ( !message ) return;
+
+                // Add user message
+                addMessage( message, true );
+                chatInput.value = '';
+
+                // Show typing indicator
+                const typingDiv = document.createElement( 'div' );
+                typingDiv.className = 'message ai typing';
+                typingDiv.innerHTML = '<div class="message-content">⚛️ Processando com algoritmos quânticos...</div>';
+                chatMessages.appendChild( typingDiv );
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                // Simulate AI processing time
+                setTimeout( () =>
+                {
+                    chatMessages.removeChild( typingDiv );
+                    const response = quantumAI.processMessage( message );
+                    addMessage( response );
+                }, 1500 );
+            }
+
+            chatSend.addEventListener( 'click', sendMessage );
+            chatInput.addEventListener( 'keypress', function ( e )
+            {
+                if ( e.key === 'Enter' )
+                {
+                    sendMessage();
+                }
+            } );
+
+            // Edit mode toggle
+            const editToggle = document.getElementById( 'editModeToggle' );
+            editToggle.addEventListener( 'click', toggleEditMode );
+
+            // Add click and drag listeners to journey cards
+            const journeyCards = document.querySelectorAll( '.journey-card' );
+            journeyCards.forEach( card =>
+            {
+                // Click to open modal (only when not in edit mode)
+                card.addEventListener( 'click', function ( e )
+                {
+                    if ( !editMode )
+                    {
+                        const modalId = this.getAttribute( 'data-modal' );
+                        openModal( modalId );
+                    }
+                } );
+
+                // Drag functionality
+                card.addEventListener( 'mousedown', function ( e )
+                {
+                    startDrag( e, this );
+                } );
+            } );
+
+            // Global mouse events for dragging
+            document.addEventListener( 'mousemove', drag );
+            document.addEventListener( 'mouseup', endDrag );
+
+            // Close modal when clicking outside
+            const modals = document.querySelectorAll( '.modal' );
+            modals.forEach( modal =>
+            {
+                modal.addEventListener( 'click', function ( e )
+                {
+                    if ( e.target === this )
+                    {
+                        closeModal( this.id );
+                    }
+                } );
+            } );
+
+            // Form submission
+            const leadForm = document.getElementById( 'leadForm' );
+            if ( leadForm )
+            {
+                leadForm.addEventListener( 'submit', function ( e )
+                {
+                    e.preventDefault();
+
+                    // Get form data
+                    const formData = new FormData( this );
+                    const data = Object.fromEntries( formData );
+
+                    // Simple validation
+                    if ( !data.name || !data.email || !data.company || !data.position || !data.phone )
+                    {
+                        alert( 'Por favor, preencha todos os campos obrigatórios.' );
+                        return;
+                    }
+
+                    // Simulate form submission
+                    const submitButton = this.querySelector( '.form-button' );
+                    const originalText = submitButton.textContent;
+                    submitButton.textContent = '⏳ Enviando...';
+                    submitButton.disabled = true;
+
+                    setTimeout( () =>
+                    {
+                        alert( '🎉 Parabéns! Seu acesso antecipado foi garantido. Nossa equipe entrará em contato em breve.' );
+                        closeModal( 'modal5' );
+                        this.reset();
+                        submitButton.textContent = originalText;
+                        submitButton.disabled = false;
+                    }, 2000 );
+                } );
+            }
+        } );
+
+        // Keyboard navigation
+        document.addEventListener( 'keydown', function ( e )
+        {
+            if ( e.key === 'Escape' )
+            {
+                const activeModal = document.querySelector( '.modal.active' );
+                if ( activeModal )
+                {
+                    closeModal( activeModal.id );
+                }
+            }
+        } );
+    </script>
+</body>
+
+</html>

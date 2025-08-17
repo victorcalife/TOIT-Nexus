@@ -23,6 +23,11 @@
 				"source.organizeImports": "never"
 			}
 		},
-		"workbench.editor.defaultBinaryEditor": "default"
+		"workbench.editor.defaultBinaryEditor": "default",
+		"[javascriptreact]": {
+			"editor.codeActionsOnSave": {
+				"source.organizeImports": "never"
+			}
+		}
 	}
 }

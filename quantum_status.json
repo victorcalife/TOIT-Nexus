@@ -1,0 +1,40 @@
+{
+  "qiskit_available": true,
+  "ibm_connected": true,
+  "algorithms_working": true,
+  "backends": [
+    {
+      "name": "ibm_torino",
+      "qubits": 133
+    },
+    {
+      "name": "ibm_brisbane",
+      "qubits": 127
+    }
+  ],
+  "test_results": {
+    "grover": {
+      "found": true,
+      "probability": 0.03955078125,
+      "iterations": 2,
+      "speedup": 2.0,
+      "algorithm": "Grover Search"
+    },
+    "qft": {
+      "input": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "output": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "fidelity": 0.95,
+      "algorithm": "Quantum Fourier Transform"
+    }
+  }
+}

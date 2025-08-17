@@ -120,8 +120,9 @@
     
     <div class="footer">
         <p>✅ Parceiro IBM Quantum | ✅ Fortune 500 Validated | ✅ 250% ROI Médio</p>
-        <p>TOIT NEXUS - nexus.toit.com.br | contato@toit.com.br</p>
-        <p>TOIT HOME - home.toit.com.br | São Paulo, Brasil | +55 11 [número]</p>
+        <p>TOIT NEXUS - nexus.toit.com.br | business@partner.toit.com.br</p>
+        <p>TOIT EMPRESA - www.toit.com.br | São Paulo, Brasil | +55 11 [número]</p>
+        <p>SUPORTE - toit@suporte.toit.com.br</p>
     </div>
 </body>
 </html>

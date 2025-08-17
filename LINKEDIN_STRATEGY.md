@@ -49,7 +49,7 @@ CAPTAÇÃO:
 #QuantumComputing #ERP #Innovation #IBM #Enterprise #Startup #Investment
 
 📧 investors@toit.com.br
-🌐 home.toit.com.br
+🌐 www.toit.com.br
 🎯 nexus.toit.com.br
 ```
 

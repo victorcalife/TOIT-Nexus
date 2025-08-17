@@ -5,6 +5,7 @@ import { publicRoutes, adminRoutes, clientRoutes, ROUTES, hasPermission } from '
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { SidebarWrapper } from './SidebarWrapper';
 import { Toaster } from '@/components/ui/toaster';
+import MainLayout from '@/components/layout/MainLayout';
 
 // Layouts
 const DefaultLayout) => (
@@ -14,14 +15,10 @@ const DefaultLayout) => (
   </div>
 );
 
-const ClientLayout) => (
-  <div className="flex h-screen bg-gray-50">
-    <SidebarWrapper />
-    <main className="flex-1 overflow-hidden">
-      <Toaster />
-      { children }
-    </main>
-  </div>
+const ClientLayout = ( { children } ) => (
+  <MainLayout>
+    { children }
+  </MainLayout>
 );
 
 const AdminLayout) => (

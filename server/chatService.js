@@ -68,6 +68,7 @@ class ChatService
       };
 
       // Salvar mensagem no banco (simulado)
+      this.storeMessage( conversationId, message );
       console.log( `📨 Mensagem enviada: ${ messageId } por ${ senderId }` );
 
       // Notificar participantes em tempo real
@@ -338,6 +339,105 @@ class ChatService
   getActiveCalls()
   {
     return Array.from( this.voiceCalls.values() );
+  }
+
+  /**
+   * DEFINIR USUÁRIO COMO ONLINE
+   */
+  async setUserOnline( userId, userInfo = {} )
+  {
+    this.activeUsers.set( userId, {
+      ...userInfo,
+      status: 'online',
+      lastSeen: new Date()
+    } );
+
+    console.log( `🟢 Usuário online: ${ userId }` );
+  }
+
+  /**
+   * DEFINIR USUÁRIO COMO OFFLINE
+   */
+  async setUserOffline( userId )
+  {
+    if ( this.activeUsers.has( userId ) )
+    {
+      const user = this.activeUsers.get( userId );
+      user.status = 'offline';
+      user.lastSeen = new Date();
+      this.activeUsers.set( userId, user );
+    }
+
+    console.log( `🔴 Usuário offline: ${ userId }` );
+  }
+
+  /**
+   * VERIFICAR SE USUÁRIO ESTÁ ONLINE
+   */
+  isUserOnline( userId )
+  {
+    const user = this.activeUsers.get( userId );
+    return user && user.status === 'online';
+  }
+
+  /**
+   * BUSCAR MENSAGENS
+   */
+  async searchMessages( conversationId, query, limit = 50 )
+  {
+    // Simulação de busca (em produção seria no banco)
+    const messages = this.getStoredMessages( conversationId );
+
+    const results = messages.filter( message =>
+      message.content.toLowerCase().includes( query.toLowerCase() )
+    ).slice( 0, limit );
+
+    console.log( `🔍 Busca por "${ query }": ${ results.length } resultados` );
+    return results;
+  }
+
+  /**
+   * OBTER HISTÓRICO DE CONVERSA
+   */
+  async getConversationHistory( conversationId, limit = 50, offset = 0 )
+  {
+    // Simulação de histórico (em produção seria no banco)
+    const messages = this.getStoredMessages( conversationId );
+
+    const history = messages
+      .sort( ( a, b ) => new Date( b.timestamp ) - new Date( a.timestamp ) )
+      .slice( offset, offset + limit );
+
+    console.log( `📜 Histórico carregado: ${ history.length } mensagens` );
+    return history;
+  }
+
+  /**
+   * OBTER MENSAGENS ARMAZENADAS (SIMULAÇÃO)
+   */
+  getStoredMessages( conversationId )
+  {
+    // Em produção, isso viria do banco de dados
+    // Por enquanto, simulamos com mensagens em memória
+    if ( !this.chatRooms.has( conversationId ) )
+    {
+      this.chatRooms.set( conversationId, { messages: [] } );
+    }
+
+    return this.chatRooms.get( conversationId ).messages || [];
+  }
+
+  /**
+   * ARMAZENAR MENSAGEM (SIMULAÇÃO)
+   */
+  storeMessage( conversationId, message )
+  {
+    if ( !this.chatRooms.has( conversationId ) )
+    {
+      this.chatRooms.set( conversationId, { messages: [] } );
+    }
+
+    this.chatRooms.get( conversationId ).messages.push( message );
   }
 }
 

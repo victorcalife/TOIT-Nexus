@@ -49,7 +49,13 @@ def test_ibm_connection():
 
         # Testar conexão
         print("TESTING Testando conexao com IBM Quantum Network...")
-        service = QiskitRuntimeService(token=ibm_token)
+
+        # Configurar serviço com channel correto
+        service = QiskitRuntimeService(
+            channel='ibm_quantum',
+            token=ibm_token
+        )
+
         backends = service.backends()
         print(f"OK Conexao IBM Quantum estabelecida - {len(backends)} backends disponiveis")
 

@@ -1,0 +1,279 @@
+{
+  "timestamp": "2025-08-17T11:22:35.193Z",
+  "summary": {
+    "totalRequired": 94,
+    "implemented": 144,
+    "missing": 37,
+    "newlyImplemented": 0,
+    "coverage": 153.2
+  },
+  "missingRoutes": [
+    {
+      "route": "GET /api/health",
+      "description": "Health check geral",
+      "category": "health",
+      "priority": 10
+    },
+    {
+      "route": "GET /api/users",
+      "description": "Listar usuários",
+      "category": "users",
+      "priority": 9
+    },
+    {
+      "route": "POST /api/users",
+      "description": "Criar usuário",
+      "category": "users",
+      "priority": 9
+    },
+    {
+      "route": "GET /api/tenants",
+      "description": "Listar tenants",
+      "category": "tenants",
+      "priority": 9
+    },
+    {
+      "route": "POST /api/tenants",
+      "description": "Criar tenant",
+      "category": "tenants",
+      "priority": 9
+    },
+    {
+      "route": "GET /api/reports",
+      "description": "Listar relatórios",
+      "category": "reports",
+      "priority": 7
+    },
+    {
+      "route": "POST /api/reports",
+      "description": "Criar relatório",
+      "category": "reports",
+      "priority": 7
+    },
+    {
+      "route": "POST /api/reports/:id/execute",
+      "description": "Executar relatório",
+      "category": "reports",
+      "priority": 7
+    },
+    {
+      "route": "POST /api/reports/:id/export",
+      "description": "Exportar relatório",
+      "category": "reports",
+      "priority": 7
+    },
+    {
+      "route": "GET /api/reports/:id/history",
+      "description": "Histórico de execuções",
+      "category": "reports",
+      "priority": 7
+    },
+    {
+      "route": "POST /api/reports/:id/schedule",
+      "description": "Agendar relatório",
+      "category": "reports",
+      "priority": 7
+    },
+    {
+      "route": "GET /api/workflows",
+      "description": "Listar workflows",
+      "category": "workflows",
+      "priority": 7
+    },
+    {
+      "route": "POST /api/workflows",
+      "description": "Criar workflow",
+      "category": "workflows",
+      "priority": 7
+    },
+    {
+      "route": "GET /api/workflows/:id/executions",
+      "description": "Histórico de execuções",
+      "category": "workflows",
+      "priority": 7
+    },
+    {
+      "route": "POST /api/workflows/:id/validate",
+      "description": "Validar workflow",
+      "category": "workflows",
+      "priority": 7
+    },
+    {
+      "route": "POST /api/workflows/:id/duplicate",
+      "description": "Duplicar workflow",
+      "category": "workflows",
+      "priority": 7
+    },
+    {
+      "route": "GET /api/chat/sessions",
+      "description": "Listar sessões de chat",
+      "category": "chat",
+      "priority": 6
+    },
+    {
+      "route": "POST /api/chat/sessions",
+      "description": "Criar sessão de chat",
+      "category": "chat",
+      "priority": 6
+    },
+    {
+      "route": "GET /api/chat/sessions/:id",
+      "description": "Obter sessão específica",
+      "category": "chat",
+      "priority": 6
+    },
+    {
+      "route": "DELETE /api/chat/sessions/:id",
+      "description": "Deletar sessão",
+      "category": "chat",
+      "priority": 6
+    },
+    {
+      "route": "GET /api/chat/sessions/:id/messages",
+      "description": "Obter mensagens",
+      "category": "chat",
+      "priority": 6
+    },
+    {
+      "route": "POST /api/chat/sessions/:id/messages",
+      "description": "Enviar mensagem",
+      "category": "chat",
+      "priority": 6
+    },
+    {
+      "route": "GET /api/permissions",
+      "description": "Listar permissões",
+      "category": "permissions",
+      "priority": 5
+    },
+    {
+      "route": "GET /api/permissions/roles",
+      "description": "Listar roles",
+      "category": "permissions",
+      "priority": 5
+    },
+    {
+      "route": "POST /api/permissions/grant",
+      "description": "Conceder permissão",
+      "category": "permissions",
+      "priority": 5
+    },
+    {
+      "route": "POST /api/permissions/revoke",
+      "description": "Revogar permissão",
+      "category": "permissions",
+      "priority": 5
+    },
+    {
+      "route": "GET /api/dashboard/widgets",
+      "description": "Widgets disponíveis",
+      "category": "dashboard",
+      "priority": 5
+    },
+    {
+      "route": "GET /api/dashboard/data",
+      "description": "Dados do dashboard",
+      "category": "dashboard",
+      "priority": 5
+    },
+    {
+      "route": "POST /api/dashboard/widgets",
+      "description": "Criar widget",
+      "category": "dashboard",
+      "priority": 5
+    },
+    {
+      "route": "PUT /api/dashboard/widgets/:id",
+      "description": "Atualizar widget",
+      "category": "dashboard",
+      "priority": 5
+    },
+    {
+      "route": "DELETE /api/dashboard/widgets/:id",
+      "description": "Deletar widget",
+      "category": "dashboard",
+      "priority": 5
+    },
+    {
+      "route": "GET /api/dashboard/kpis",
+      "description": "KPIs principais",
+      "category": "dashboard",
+      "priority": 5
+    },
+    {
+      "route": "PUT /api/email/templates/:id",
+      "description": "Atualizar template",
+      "category": "email",
+      "priority": 5
+    },
+    {
+      "route": "DELETE /api/email/templates/:id",
+      "description": "Deletar template",
+      "category": "email",
+      "priority": 5
+    },
+    {
+      "route": "GET /api/email/history",
+      "description": "Histórico de emails",
+      "category": "email",
+      "priority": 5
+    },
+    {
+      "route": "GET /api/calendar/availability",
+      "description": "Verificar disponibilidade",
+      "category": "calendar",
+      "priority": 5
+    },
+    {
+      "route": "GET /api/files",
+      "description": "Listar arquivos",
+      "category": "files",
+      "priority": 5
+    }
+  ],
+  "implementedRoutes": [],
+  "testResults": [
+    {
+      "route": "GET /api/health",
+      "success": true,
+      "status": 200,
+      "response": {
+        "success": true,
+        "status": "healthy",
+        "service": "toit-nexus",
+        "version": "1.0.0",
+        "timestamp": "2025-08-17T11:22:34.844Z",
+        "uptime": 0.8630353,
+        "environment": "development",
+        "system": {
+          "platform": "win32",
+          "arch": "x64",
+          "nodeVersion": "v24.3.0",
+          "memory": {
+            "used": 11,
+            "total": 19,
+            "external": 3
+          }
+        }
+      }
+    },
+    {
+      "route": "POST /api/auth/login",
+      "success": true,
+      "status": 404,
+      "response": {}
+    },
+    {
+      "route": "GET /api/users",
+      "success": true,
+      "status": 404,
+      "response": {}
+    },
+    {
+      "route": "GET /api/quantum/status",
+      "success": true,
+      "status": 404,
+      "response": {}
+    }
+  ]
+}
