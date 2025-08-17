@@ -1,27 +1,24 @@
-import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
-import { Slider } from "@/components/ui/slider";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { ScrollArea } from "@/components/ui/scroll-area";
+/**
+ * TQL QUERY BUILDER VISUAL AVANÇADO
+ * Interface drag-drop para construção de queries SQL
+ * 100% JavaScript - SEM TYPESCRIPT
+ */
+
+import React, { useState, useEffect, useRef } from 'react';
+import { useAuth } from '../hooks/useAuth';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import { Button } from '../components/ui/button';
+import { Badge } from '../components/ui/badge';
+import { Input } from '../components/ui/input';
+import { Label } from '../components/ui/label';
+import { Textarea } from '../components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import
-{
-  Plus, Save, Play, Eye, Palette, BarChart3, Table, PieChart, LineChart,
-  Settings, Download, Share, Code, BookOpen, Lightbulb, Calendar,
-  Calculator, TrendingUp, AlertCircle, CheckCircle, Zap
-} from "lucide-react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
-import { useToast } from "@/hooks/use-toast";
-import { UnifiedHeader } from "@/components/unified-header";
+  {
+    Database, Play, Save, Download, Upload, History,
+    Table, Columns, Filter, Link, Plus, Trash2, Copy,
+    Code, Eye, Settings, Search, BookOpen, Zap
+  } from 'lucide-react';
 
 // Chart components
 import
