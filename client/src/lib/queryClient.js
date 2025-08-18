@@ -1,77 +1,91 @@
-import { QueryClient, QueryFunction } from "@tanstack/react-query";
+/**
+ * CONFIGURAÇÃO DO REACT QUERY
+ * Cliente HTTP unificado para comunicação com APIs
+ * 100% JavaScript - SEM TYPESCRIPT
+ */
 
-// Base URL para API - Railway ou local
-const getApiBaseUrl = () =>
-{
-  // Se VITE_API_URL estiver definida (Railway), usar ela
-  if ( import.meta.env.VITE_API_URL )
-  {
-    return import.meta.env.VITE_API_URL.replace( /\/$/, '' ); // Remove trailing slash
+const getApiBaseUrl = () => {
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL.replace(/\/$/, ''); // Remove trailing slash
   }
 
   // Local development
-  if ( import.meta.env.DEV )
-  {
-    return 'http)
+  if (import.meta.env.DEV) {
+    return 'http://localhost:8080';
+  }
   return '';
 };
 
 export const API_BASE_URL = getApiBaseUrl();
 
-async function throwIfResNotOk( res )
-{
-  if ( !res.ok )
-  {
-    const text = ( await res.text() ) || res.statusText;
-    throw new Error( `${ res.status }: ${ text }` );
+/**
+ * Construir URL completa para requisições
+ */
+const buildFullUrl = (url) => {
+  if (url.startsWith('http')) {
+    return url;
   }
-}
 
-// Helper para construir URL completa
-const buildFullUrl = ( url ) =>
-{
-  if ( url.startsWith( 'http' ) ) return url; // URL absoluta
-  if ( url.startsWith( '/' ) ) return `${ API_BASE_URL }${ url }`; // Path relativo
-  return `${ API_BASE_URL }/${ url }`; // Path sem barra
+  const baseUrl = API_BASE_URL;
+  const cleanUrl = url.startsWith('/') ? url : `/${url}`;
+
+  return `${baseUrl}${cleanUrl}`;
 };
 
-export async function apiRequest(
-  method,
-  url,
-  data,
-)
-{
-  const fullUrl = buildFullUrl( url );
+/**
+ * Cliente HTTP personalizado
+ */
+export const httpClient = async (url, method = 'GET', data = null, headers = {}) => {
+  const defaultHeaders = {
+    'Content-Type': 'application/json',
+    ...headers
+  };
 
-  const res = await fetch( fullUrl, {
+  const fullUrl = buildFullUrl(url);
+
+  const res = await fetch(fullUrl, {
     method,
-    headers,
-    body) { on401) =>
-    async ( { queryKey } ) =>
-    {
-      const url = buildFullUrl( queryKey.join( "/" ) as string );
+    headers: defaultHeaders,
+    body: data ? JSON.stringify(data) : null
+  });
 
-      const res = await fetch( url, {
-        credentials,
-      } );
+  if (!res.ok) {
+    throw new Error(`HTTP error! status: ${res.status}`);
+  }
 
-      if ( unauthorizedBehavior === "returnNull" && res.status === 401 )
-      {
-        return null;
-      }
+  return res.json();
+};
 
-      await throwIfResNotOk( res );
-      return await res.json();
-    };
+/**
+ * Query function padrão para React Query
+ */
+const defaultQueryFn = async ({ queryKey }) => {
+  const url = buildFullUrl(queryKey.join('/'));
 
-export const queryClient = new QueryClient( {
-  defaultOptions),
-      refetchInterval,
-      refetchOnWindowFocus,
-      staleTime,
-      retry,
-    },
-    mutations,
-    },
-  },
-} );
+  const res = await fetch(url, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+
+  if (!res.ok) {
+    throw new Error(`HTTP error! status: ${res.status}`);
+  }
+
+  return res.json();
+};
+
+/**
+ * Configuração padrão do React Query
+ */
+export const queryClientConfig = {
+  defaultOptions: {
+    queries: {
+      queryFn: defaultQueryFn,
+      staleTime: 5 * 60 * 1000, // 5 minutos
+      cacheTime: 10 * 60 * 1000, // 10 minutos
+      retry: 1,
+      refetchOnWindowFocus: false
+    }
+  }
+};
