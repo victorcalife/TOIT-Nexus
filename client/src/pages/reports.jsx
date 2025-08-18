@@ -1,58 +1,89 @@
-import { useState } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { apiRequest, queryClient } from "@/lib/queryClient";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useToast } from "@/hooks/use-toast";
+import React, { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Badge } from "../components/ui/badge";
+import { Skeleton } from "../components/ui/skeleton";
+import { useToast } from "../hooks/use-toast";
+import { useAuth } from "../hooks/useAuth";
 
-// Importar sistema quântico integrado
-import quantumSystemCore from '@/core/QuantumSystemCore';
-import milaOmnipresence from '@/core/MilaOmnipresence';
-import universalWorkflowEngine from '@/core/UniversalWorkflowEngine';
+// Importar sistema quântico integrado (comentado para evitar erros)
+// import quantumSystemCore from '@/core/QuantumSystemCore';
+// import milaOmnipresence from '@/core/MilaOmnipresence';
+// import universalWorkflowEngine from '@/core/UniversalWorkflowEngine';
 import
-  {
-    Plus,
-    Search,
-    FileText,
-    Edit,
-    Trash2,
-    Play,
-    Download,
-    Calendar,
-    Mail,
-    Settings,
-    BarChart3
-  } from "lucide-react";
+{
+  Plus,
+  Search,
+  FileText,
+  Edit,
+  Trash2,
+  Play,
+  Download,
+  Calendar,
+  Mail,
+  Settings,
+  BarChart3
+} from "lucide-react";
 import
-  {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-  } from "@/components/ui/dialog";
+{
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import
+{
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../components/ui/select";
+import { Checkbox } from "../components/ui/checkbox";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
+
+// API Request helper
+const apiRequest = async ( method, url, data = null ) =>
+{
+  const options = {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${ localStorage.getItem( 'accessToken' ) }`
+    }
+  };
+
+  if ( data && method !== 'GET' )
   {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-  } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+    options.body = JSON.stringify( data );
+  }
+
+  const response = await fetch( url, options );
+
+  if ( !response.ok )
+  {
+    const error = await response.json();
+    throw new Error( error.error || 'Erro na requisição' );
+  }
+
+  return response.json();
+};
 
 export default function Reports()
 {
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
   const [ searchTerm, setSearchTerm ] = useState( "" );
   const [ isCreateDialogOpen, setIsCreateDialogOpen ] = useState( false );
-  const [ editingReport, setEditingReport ] = useState < any > ( null );
+  const [ editingReport, setEditingReport ] = useState( null );
   const [ newReport, setNewReport ] = useState( {
     name,
     description,
@@ -301,16 +332,16 @@ const getTypeLabel = ( type ) =>
       { id, label,
     {
         id, label,
-        { id, label,
-    {
-          id, label,
           { id, label,
     {
-            id, label,
+          id, label,
             { id, label,
     {
+            id, label,
+              { id, label,
+    {
               id, label,
-              { id, label) => {
+                { id, label) => {
                 setIsCreateDialogOpen( open );
                 if ( !open )
                 {
