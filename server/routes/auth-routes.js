@@ -131,6 +131,13 @@ router.post( '/logout', requireAuth( authSystem ), async ( req, res ) =>
   {
     const token = req.token;
 
+    // Adicionar token à blacklist
+    if ( token )
+    {
+      const { tokenBlacklistService } = require( '../services/TokenBlacklistService' );
+      await tokenBlacklistService.blacklistToken( token, 'logout' );
+    }
+
     // Invalidar sessão no banco
     await authSystem.invalidateSession( token );
 
@@ -138,7 +145,7 @@ router.post( '/logout', requireAuth( authSystem ), async ( req, res ) =>
     res.clearCookie( 'accessToken' );
     res.clearCookie( 'refreshToken' );
 
-    console.log( `🔒 Logout: ${ req.user.email } (ID: ${ req.user.id })` );
+    console.log( `👋 Logout seguro: ${ req.user.email } (ID: ${ req.user.id })` );
 
     res.json( {
       success: true,
@@ -150,7 +157,8 @@ router.post( '/logout', requireAuth( authSystem ), async ( req, res ) =>
     console.error( '❌ Erro no logout:', error.message );
     res.status( 500 ).json( {
       success: false,
-      error: 'Erro interno do servidor'
+      error: 'Erro interno do servidor',
+      code: 'INTERNAL_ERROR'
     } );
   }
 } );
@@ -465,6 +473,81 @@ router.post( '/simple-login', loginLimiter, [
       success: false,
       error: 'Erro interno do servidor',
       message: 'Tente novamente em alguns instantes',
+      code: 'INTERNAL_ERROR'
+    } );
+  }
+} );
+
+/**
+ * POST /api/auth/revoke-all-sessions
+ * Revogar todas as sessões do usuário
+ */
+router.post( '/revoke-all-sessions', requireAuth( authSystem ), async ( req, res ) =>
+{
+  try
+  {
+    const userId = req.user.id;
+    const { tokenBlacklistService } = require( '../services/TokenBlacklistService' );
+
+    // Revogar todas as sessões
+    await tokenBlacklistService.revokeAllUserSessions( userId, 'security_logout' );
+
+    console.log( `🚫 Todas as sessões revogadas: ${ req.user.email }` );
+
+    res.json( {
+      success: true,
+      message: 'Todas as sessões foram revogadas com sucesso'
+    } );
+
+  } catch ( error )
+  {
+    console.error( '❌ Erro ao revogar sessões:', error.message );
+    res.status( 500 ).json( {
+      success: false,
+      error: 'Erro interno do servidor',
+      code: 'INTERNAL_ERROR'
+    } );
+  }
+} );
+
+/**
+ * GET /api/auth/sessions
+ * Listar sessões ativas do usuário
+ */
+router.get( '/sessions', requireAuth( authSystem ), async ( req, res ) =>
+{
+  try
+  {
+    const userId = req.user.id;
+    const { tokenBlacklistService } = require( '../services/TokenBlacklistService' );
+
+    // Obter sessões ativas
+    const activeSessions = tokenBlacklistService.getActiveSessions( userId );
+
+    // Buscar detalhes das sessões no banco
+    const sessions = await db.query( `
+      SELECT
+        id, ip_address, user_agent, device_info,
+        created_at, last_activity
+      FROM active_sessions
+      WHERE user_id = $1 AND expires_at > NOW()
+      ORDER BY last_activity DESC
+    `, [ userId ] );
+
+    res.json( {
+      success: true,
+      data: {
+        total: activeSessions.size,
+        sessions: sessions.rows
+      }
+    } );
+
+  } catch ( error )
+  {
+    console.error( '❌ Erro ao listar sessões:', error.message );
+    res.status( 500 ).json( {
+      success: false,
+      error: 'Erro interno do servidor',
       code: 'INTERNAL_ERROR'
     } );
   }

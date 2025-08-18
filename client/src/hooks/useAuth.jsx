@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback, createContext, useContext } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Navigate } from 'react-router-dom';
+import { tokenService } from '../services/TokenService';
+import { useToast } from './use-toast';
 
 // Context de autenticação
 const AuthContext = createContext( null );
@@ -81,14 +83,14 @@ export function AuthProvider( { children } )
     },
     onSuccess: ( data ) =>
     {
+      // Salvar tokens no TokenService
+      if ( data.data.accessToken && data.data.refreshToken )
+      {
+        tokenService.saveTokensToStorage( data.data.accessToken, data.data.refreshToken );
+      }
+
       // Atualizar cache do usuário
       queryClient.setQueryData( [ 'auth', 'me' ], data.data.user );
-
-      // Salvar no localStorage se "lembrar de mim"
-      if ( data.data.user )
-      {
-        localStorage.setItem( 'user', JSON.stringify( data.data.user ) );
-      }
 
       console.log( '✅ Login realizado com sucesso' );
     },
@@ -102,17 +104,9 @@ export function AuthProvider( { children } )
   const logoutMutation = useMutation( {
     mutationFn: async () =>
     {
-      const response = await fetch( '/api/auth/logout', {
-        method: 'POST',
-        credentials: 'include'
-      } );
-
-      if ( !response.ok )
-      {
-        throw new Error( 'Erro no logout' );
-      }
-
-      return response.json();
+      // Usar TokenService para logout seguro
+      await tokenService.logout();
+      return { success: true };
     },
     onSuccess: () =>
     {
