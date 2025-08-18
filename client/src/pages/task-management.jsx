@@ -1,52 +1,147 @@
 import React, { useState, useEffect } from "react";
-
-// Importar sistema quântico integrado
-import quantumSystemCore from '@/core/QuantumSystemCore';
-import milaOmnipresence from '@/core/MilaOmnipresence';
-import universalWorkflowEngine from '@/core/UniversalWorkflowEngine';
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import
-  {
-    Plus, Users, CheckSquare, Clock, AlertTriangle, Play, Pause,
-    Settings, Calendar, MessageCircle, BarChart3, Target,
-    Timer, Activity, UserCheck, Zap, Filter
-  } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
-import { Slider } from "@/components/ui/slider";
-import { Switch } from "@/components/ui/switch";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { apiRequest } from "@/lib/queryClient";
-import { useToast } from "@/hooks/use-toast";
+{
+  Plus, Users, CheckSquare, Clock, AlertTriangle, Play, Pause,
+  Settings, Calendar, MessageCircle, BarChart3, Target,
+  Timer, Activity, UserCheck, Zap, Filter, Search, Edit, Trash2,
+  Eye, Flag, Square, Kanban, List, TrendingUp, RefreshCw, Download
+} from "lucide-react";
+import { Button } from "../components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../components/ui/dialog";
+import { Input } from "../components/ui/input";
+import { Textarea } from "../components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
+import { Badge } from "../components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
+import { Progress } from "../components/ui/progress";
+import { useToast } from "../hooks/use-toast";
+import { useAuth } from "../hooks/useAuth";
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
-// Advanced Task Management Schemas
-const taskTemplateSchema = z.object( {
-  title).min( 1, "Título é obrigatório" ),
-  description).optional(),
-    category).default ( "general" ),
-      priority).default ( "medium" ),
-        estimatedDuration).optional(),
-          instructions)).min( 1, "Pelo menos uma instrução é necessária" ),
-            assignedTo)).min( 1, "Selecione pelo menos um funcionário" ),
-              tags)).optional(),
-});
+// Task Management Constants
+const TASK_STATUS = {
+  TODO: 'todo',
+  IN_PROGRESS: 'in_progress',
+  REVIEW: 'review',
+  DONE: 'done',
+  CANCELLED: 'cancelled'
+};
+
+const TASK_PRIORITY = {
+  LOW: 'low',
+  NORMAL: 'normal',
+  HIGH: 'high',
+  URGENT: 'urgent'
+};
+
+const KANBAN_COLUMNS = [
+  { id: 'todo', title: 'A Fazer', status: TASK_STATUS.TODO },
+  { id: 'in_progress', title: 'Em Progresso', status: TASK_STATUS.IN_PROGRESS },
+  { id: 'review', title: 'Em Revisão', status: TASK_STATUS.REVIEW },
+  { id: 'done', title: 'Concluído', status: TASK_STATUS.DONE }
+];
 
 function TaskManagement()
 {
-  const [ open, setOpen ] = useState( false );
-  const [ templates, setTemplates ] = useState( [] );
+  const { user } = useAuth();
   const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  const [ activeView, setActiveView ] = useState( 'kanban' );
+  const [ selectedTask, setSelectedTask ] = useState( null );
+  const [ showTaskModal, setShowTaskModal ] = useState( false );
+  const [ searchTerm, setSearchTerm ] = useState( '' );
+  const [ filterStatus, setFilterStatus ] = useState( 'all' );
+  const [ filterPriority, setFilterPriority ] = useState( 'all' );
+
+  // Query para tarefas
+  const { data: tasksData, isLoading } = useQuery( {
+    queryKey: [ 'tasks', searchTerm, filterStatus, filterPriority ],
+    queryFn: async () =>
+    {
+      const params = new URLSearchParams( {
+        ...( searchTerm && { search: searchTerm } ),
+        ...( filterStatus !== 'all' && { status: filterStatus } ),
+        ...( filterPriority !== 'all' && { priority: filterPriority } ),
+        limit: 100
+      } );
+
+      const response = await fetch( `/api/tasks?${ params }`, {
+        headers: {
+          'Authorization': `Bearer ${ localStorage.getItem( 'accessToken' ) }`
+        }
+      } );
+
+      if ( !response.ok )
+      {
+        throw new Error( 'Erro ao carregar tarefas' );
+      }
+
+      return response.json();
+    },
+    enabled: !!user
+  } );
+
+  // Mutation para atualizar status (drag and drop)
+  const updateTaskStatusMutation = useMutation( {
+    mutationFn: async ( { taskId, status } ) =>
+    {
+      const response = await fetch( `/api/tasks/${ taskId }/status`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${ localStorage.getItem( 'accessToken' ) }`
+        },
+        body: JSON.stringify( { status } )
+      } );
+
+      if ( !response.ok )
+      {
+        const error = await response.json();
+        throw new Error( error.error || 'Erro ao atualizar status' );
+      }
+
+      return response.json();
+    },
+    onSuccess: () =>
+    {
+      queryClient.invalidateQueries( [ 'tasks' ] );
+    },
+    onError: ( error ) =>
+    {
+      toast( {
+        title: 'Erro ao atualizar status',
+        description: error.message,
+        variant: 'destructive'
+      } );
+    }
+  } );
+
+  const tasks = tasksData?.data?.tasks || [];
+
+  // Filtrar tarefas
+  const filteredTasks = tasks.filter( task =>
+  {
+    const matchesSearch = task.title.toLowerCase().includes( searchTerm.toLowerCase() );
+    const matchesStatus = filterStatus === 'all' || task.status === filterStatus;
+    const matchesPriority = filterPriority === 'all' || task.priority === filterPriority;
+
+    return matchesSearch && matchesStatus && matchesPriority;
+  } );
+
+  // Drag and drop handler
+  const handleDragEnd = ( result ) =>
+  {
+    if ( !result.destination ) return;
+
+    const { draggableId, destination } = result;
+    const taskId = draggableId;
+    const newStatus = destination.droppableId;
+
+    updateTaskStatusMutation.mutate( { taskId, status: newStatus } );
+  };
 
   const form = useForm < TaskTemplateForm > ( {
     resolver),
