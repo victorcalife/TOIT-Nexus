@@ -6,6 +6,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useAuth } from '../hooks/useAuth';
+import RealTimeDashboard from '../components/dashboard/RealTimeDashboard';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
@@ -203,6 +205,7 @@ export default function Dashboard()
         <Tabs defaultValue="overview" className="space-y-4">
           <TabsList>
             <TabsTrigger value="overview">Visão Geral</TabsTrigger>
+            <TabsTrigger value="realtime">Tempo Real</TabsTrigger>
             <TabsTrigger value="quantum">Sistema Quântico</TabsTrigger>
             <TabsTrigger value="ml">Machine Learning</TabsTrigger>
             <TabsTrigger value="reports">Relatórios</TabsTrigger>
@@ -249,6 +252,10 @@ export default function Dashboard()
                 loading={ isLoading }
               />
             </div>
+          </TabsContent>
+
+          <TabsContent value="realtime" className="space-y-4">
+            <RealTimeDashboard />
           </TabsContent>
 
           <TabsContent value="quantum" className="space-y-4">
