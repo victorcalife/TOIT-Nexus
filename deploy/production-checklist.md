@@ -41,9 +41,9 @@ JWT_SECRET=aSUIOdw&kjdwa!hJAdw@sqondq%&$jSADwkukj5451
 ENCRYPTION_KEY=Asddwuoasdon%@@@!5161QDWkhby
 
 # External Services
-SENDGRID_API_KEY=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
-TWILIO_ACCOUNT_SID=SK2f122c7dc452849bc815abbea1307e31
-TWILIO_AUTH_TOKEN=saGn7NlBPNTmTTcYo4XN5Sd61DScWHke
+SENDGRID_API_KEY=your_sendgrid_key_here
+TWILIO_ACCOUNT_SID=your_twilio_sid_here
+TWILIO_AUTH_TOKEN=your_twilio_token_here
 
 #### **Verificação de Configurações:**
 
