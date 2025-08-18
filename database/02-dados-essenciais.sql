@@ -164,19 +164,19 @@ INSERT INTO user_workspaces (
 -- ====================================================================
 INSERT INTO teams (
     id,
+    tenant_id,
     workspace_id,
     name,
     description,
     settings,
-    is_active,
     created_by
 ) VALUES (
     '550e8400-e29b-41d4-a716-446655440004',
+    '550e8400-e29b-41d4-a716-446655440000',
     '550e8400-e29b-41d4-a716-446655440003',
     'Equipe Core Development',
     'Equipe principal de desenvolvimento do TOIT Nexus',
     '{"meeting_schedule": "daily", "timezone": "America/Sao_Paulo"}',
-    true,
     '550e8400-e29b-41d4-a716-446655440001'
 ) ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
@@ -199,30 +199,35 @@ INSERT INTO user_teams (
     role = EXCLUDED.role;
 
 -- ====================================================================
--- INSERIR DEPARTAMENTO PRINCIPAL
+-- INSERIR PROJETOS INICIAIS
 -- ====================================================================
-INSERT INTO departments (
+INSERT INTO projects (
     id,
     tenant_id,
+    workspace_id,
     name,
     description,
-    parent_id,
-    settings,
-    is_active,
+    color,
+    status,
+    start_date,
+    end_date,
     created_by
 ) VALUES (
     '550e8400-e29b-41d4-a716-446655440005',
     '550e8400-e29b-41d4-a716-446655440000',
-    'Tecnologia e Inovação',
-    'Departamento principal de TI da TOIT',
-    NULL,
-    '{"budget": 1000000, "head": "Victor Calife"}',
-    true,
+    '550e8400-e29b-41d4-a716-446655440003',
+    'TOIT Nexus Core',
+    'Desenvolvimento do sistema principal TOIT Nexus',
+    '#3b82f6',
+    'active',
+    '2024-01-01',
+    '2024-12-31',
     '550e8400-e29b-41d4-a716-446655440001'
 ) ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
     description = EXCLUDED.description,
-    settings = EXCLUDED.settings,
+    color = EXCLUDED.color,
+    status = EXCLUDED.status,
     updated_at = NOW();
 
 -- ====================================================================
@@ -264,17 +269,17 @@ SELECT
     COUNT(*) as registros
 FROM workspaces
 UNION ALL
-SELECT 
+SELECT
     'TEAMS' as tabela,
     COUNT(*) as registros
 FROM teams
 UNION ALL
-SELECT 
-    'DEPARTMENTS' as tabela,
+SELECT
+    'PROJECTS' as tabela,
     COUNT(*) as registros
-FROM departments
+FROM projects
 UNION ALL
-SELECT 
+SELECT
     'NOTIFICATIONS' as tabela,
     COUNT(*) as registros
 FROM notifications;

@@ -475,17 +475,41 @@ router.post( '/:id/execute', authenticateToken, async ( req, res ) =>
       {
         const startTime = Date.now();
 
-        const executionResult = await workflowService.executeWorkflow( {
-          workflow: {
-            ...workflow,
-            nodes: JSON.parse( workflow.nodes ),
-            edges: JSON.parse( workflow.edges ),
-            config: JSON.parse( workflow.config || '{}' )
-          },
-          parameters,
+        // Contexto completo para execução REAL
+        const executionContext = {
           dryRun,
-          executionId
-        } );
+          variables: {
+            ...parameters,
+            // Variáveis do sistema
+            current_user_id: req.user.id,
+            current_user_name: req.user.name,
+            current_user_email: req.user.email,
+            current_tenant_id: req.user.tenant_id,
+            execution_time: new Date().toISOString(),
+            workflow_id: id,
+            workflow_name: workflow.name
+          },
+          userId: req.user.id,
+          user_id: req.user.id,
+          tenantId: req.user.tenant_id,
+          tenant_id: req.user.tenant_id,
+          workflowId: id,
+          executionId,
+          // Contexto adicional para nós profissionais
+          userPermissions: req.user.permissions || [],
+          userRole: req.user.role,
+          results: {},
+          currentNodeId: null
+        };
+
+        console.log( `🚀 Executando workflow REAL com contexto completo` );
+
+        const executionResult = await workflowService.executeWorkflow( {
+          ...workflow,
+          nodes: JSON.parse( workflow.nodes ),
+          edges: JSON.parse( workflow.edges ),
+          config: JSON.parse( workflow.config || '{}' )
+        }, executionContext );
 
         const endTime = Date.now();
         const executionTime = ( endTime - startTime ) / 1000; // segundos

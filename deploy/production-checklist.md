@@ -1,4 +1,5 @@
 # 🚀 CHECKLIST DE PRODUÇÃO - QUANTUM ML
+
 ## Preparação Completa para Deploy em Produção
 
 ### TOIT NEXUS 3.0 - Sistema Quantum ML
@@ -10,10 +11,11 @@
 ### 📋 **1. CONFIGURAÇÕES DE AMBIENTE**
 
 #### **Variáveis de Ambiente Obrigatórias:**
+
 ```bash
 # Database
-DATABASE_URL=postgresql://user:pass@host:5432/toit_nexus
-REDIS_URL=redis://host:6379
+DATABASE_URL=postgresql://postgres:foalaCypsSEvgsygpcDaySNcGiweMsmv@postgres.railway.internal:5432/railway
+REDIS_URL=redis://default:pvVGWueSqtRpotvHZSrATFOptCHvkgtm@redis.railway.internal:6379
 
 # ML System
 ML_CREDITS_ENABLED=true
@@ -35,29 +37,26 @@ MONTHLY_RESET_ENABLED=true
 SCHEDULER_INTERVAL=3600000
 
 # Security
-JWT_SECRET=your-super-secret-key
-ENCRYPTION_KEY=your-encryption-key
+JWT_SECRET=aSUIOdw&kjdwa!hJAdw@sqondq%&$jSADwkukj5451
+ENCRYPTION_KEY=Asddwuoasdon%@@@!5161QDWkhby
 
 # External Services
-SENDGRID_API_KEY=your-sendgrid-key
-TWILIO_ACCOUNT_SID=your-twilio-sid
-TWILIO_AUTH_TOKEN=your-twilio-token
-
-# Monitoring
-LOG_LEVEL=info
-SENTRY_DSN=your-sentry-dsn
-```
+SENDGRID_API_KEY=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
+TWILIO_ACCOUNT_SID=SK2f122c7dc452849bc815abbea1307e31
+TWILIO_AUTH_TOKEN=saGn7NlBPNTmTTcYo4XN5Sd61DScWHke
 
 #### **Verificação de Configurações:**
-- [ ] Todas as variáveis definidas
-- [ ] Conexão com banco testada
-- [ ] Redis funcionando
-- [ ] Chaves de API válidas
-- [ ] SSL/TLS configurado
+
+- [X] Todas as variáveis definidas
+- [X] Conexão com banco testada
+- [X] Redis funcionando
+- [X] Chaves de API válidas
+- [X] SSL/TLS configurado
 
 ### 📊 **2. BANCO DE DADOS**
 
 #### **Migrations Executadas:**
+
 - [ ] `001_create_subscription_plans.sql`
 - [ ] `002_create_ml_credits.sql`
 - [ ] `003_create_ml_usage_history.sql`
@@ -65,11 +64,13 @@ SENTRY_DSN=your-sentry-dsn
 - [ ] `005_create_indexes.sql`
 
 #### **Seeders Executados:**
+
 - [ ] Planos de assinatura padrão
 - [ ] Configurações ML iniciais
 - [ ] Dados de teste removidos
 
 #### **Verificações:**
+
 ```sql
 -- Verificar tabelas criadas
 SELECT table_name FROM information_schema.tables 
@@ -87,12 +88,14 @@ WHERE tablename LIKE '%ml%';
 ### ⚙️ **3. SERVIÇOS BACKEND**
 
 #### **Serviços Implementados:**
+
 - [ ] `MLCreditsService` - Gerenciamento de créditos
 - [ ] `QuantumInsightsService` - Geração de insights
 - [ ] `AutoPredictionsService` - Predições automáticas
 - [ ] `QuantumTQLProcessor` - Otimização quântica
 
 #### **APIs Funcionais:**
+
 - [ ] `GET /api/ml-credits` - Status dos créditos
 - [ ] `POST /api/ml-credits/consume` - Consumir créditos
 - [ ] `POST /api/quantum/insight` - Gerar insights
@@ -101,6 +104,7 @@ WHERE tablename LIKE '%ml%';
 - [ ] `POST /api/auto-predictions` - Criar predição
 
 #### **Middleware Ativo:**
+
 - [ ] `checkMLCredits` - Verificação de créditos
 - [ ] `validateTenant` - Validação de tenant
 - [ ] `rateLimiting` - Limite de requisições
@@ -108,17 +112,20 @@ WHERE tablename LIKE '%ml%';
 ### 🎨 **4. COMPONENTES FRONTEND**
 
 #### **Componentes Implementados:**
+
 - [ ] `QuantumInsightButton` - Botão principal
 - [ ] `MLCreditsWidget` - Widget de créditos
 - [ ] `QuantumMLDashboard` - Dashboard ML
 - [ ] `AutoPredictionsConfig` - Configuração
 
 #### **Hooks Funcionais:**
+
 - [ ] `useMLCredits` - Gerenciamento de créditos
 - [ ] `useQuantumInsights` - Insights
 - [ ] `useAutoPredictions` - Predições
 
 #### **Integração Completa:**
+
 - [ ] Workflows com ML
 - [ ] Dashboards com widgets
 - [ ] Relatórios com insights
@@ -127,12 +134,14 @@ WHERE tablename LIKE '%ml%';
 ### 🔄 **5. SCHEDULERS E JOBS**
 
 #### **Jobs Configurados:**
+
 - [ ] Reset mensal de créditos
 - [ ] Execução de predições automáticas
 - [ ] Limpeza de logs antigos
 - [ ] Backup de dados ML
 
 #### **Cron Jobs:**
+
 ```bash
 # Reset mensal (1º dia do mês às 00:00)
 0 0 1 * * node scripts/reset-monthly-credits.js
@@ -147,18 +156,21 @@ WHERE tablename LIKE '%ml%';
 ### 📈 **6. MONITORAMENTO**
 
 #### **Métricas Implementadas:**
+
 - [ ] Uso de créditos ML
 - [ ] Performance de insights
 - [ ] Taxa de sucesso de predições
 - [ ] Tempo de resposta das APIs
 
 #### **Alertas Configurados:**
+
 - [ ] Créditos baixos
 - [ ] Falhas em predições
 - [ ] Performance degradada
 - [ ] Erros críticos
 
 #### **Logs Estruturados:**
+
 ```javascript
 // Exemplo de log estruturado
 {
@@ -176,6 +188,7 @@ WHERE tablename LIKE '%ml%';
 ### 🔒 **7. SEGURANÇA**
 
 #### **Validações Implementadas:**
+
 - [ ] Autenticação JWT
 - [ ] Autorização por tenant
 - [ ] Rate limiting
@@ -183,6 +196,7 @@ WHERE tablename LIKE '%ml%';
 - [ ] SQL injection protection
 
 #### **Dados Sensíveis:**
+
 - [ ] Chaves de API criptografadas
 - [ ] Dados ML anonimizados
 - [ ] Logs sem informações sensíveis
@@ -191,18 +205,21 @@ WHERE tablename LIKE '%ml%';
 ### 🧪 **8. TESTES**
 
 #### **Testes Unitários:**
+
 - [ ] Serviços ML (>90% cobertura)
 - [ ] Componentes React (>85% cobertura)
 - [ ] Hooks personalizados (100% cobertura)
 - [ ] Utilitários (100% cobertura)
 
 #### **Testes de Integração:**
+
 - [ ] Fluxo completo de créditos
 - [ ] Geração de insights end-to-end
 - [ ] Predições automáticas
 - [ ] APIs com banco de dados
 
 #### **Testes de Performance:**
+
 - [ ] Load testing nas APIs
 - [ ] Stress testing do quantum engine
 - [ ] Memory leak testing
@@ -211,6 +228,7 @@ WHERE tablename LIKE '%ml%';
 ### 📦 **9. DEPLOY**
 
 #### **Build de Produção:**
+
 ```bash
 # Frontend
 npm run build:production
@@ -223,6 +241,7 @@ npm run test:build
 ```
 
 #### **Docker Configuration:**
+
 ```dockerfile
 # Dockerfile otimizado para produção
 FROM node:18-alpine
@@ -236,6 +255,7 @@ CMD ["npm", "start"]
 ```
 
 #### **Health Checks:**
+
 ```javascript
 // Health check endpoint
 app.get('/health', async (req, res) => {
@@ -259,12 +279,14 @@ app.get('/health', async (req, res) => {
 ### 🔄 **10. ROLLBACK PLAN**
 
 #### **Estratégia de Rollback:**
+
 - [ ] Backup do banco antes do deploy
 - [ ] Versioning de APIs
 - [ ] Feature flags para ML
 - [ ] Rollback automático em falhas
 
 #### **Scripts de Rollback:**
+
 ```bash
 # Rollback completo
 ./scripts/rollback.sh v2.9.0
@@ -281,6 +303,7 @@ app.get('/health', async (req, res) => {
 ## 🚀 COMANDOS DE DEPLOY
 
 ### **Deploy Completo:**
+
 ```bash
 # 1. Backup
 ./scripts/backup-production.sh
@@ -296,12 +319,14 @@ npm run test:smoke
 ```
 
 ### **Deploy Apenas ML:**
+
 ```bash
 # Deploy incremental do sistema ML
 ./scripts/deploy-ml-only.sh
 ```
 
 ### **Verificação Pós-Deploy:**
+
 ```bash
 # Verificar saúde do sistema
 curl https://app.toit.com/health
@@ -318,6 +343,7 @@ curl https://app.toit.com/api/quantum/health
 ## ✅ APROVAÇÃO FINAL
 
 ### **Sign-off Checklist:**
+
 - [ ] **Tech Lead**: Código revisado e aprovado
 - [ ] **DevOps**: Infraestrutura preparada
 - [ ] **QA**: Testes passando em staging
@@ -325,6 +351,7 @@ curl https://app.toit.com/api/quantum/health
 - [ ] **Security**: Auditoria de segurança completa
 
 ### **Go-Live Checklist:**
+
 - [ ] Backup de produção realizado
 - [ ] Equipe de suporte notificada
 - [ ] Monitoramento ativo
