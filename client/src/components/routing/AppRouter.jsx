@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect } from 'react';
 import { Routes, Route, useLocation, Navigate, useNavigate } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/hooks/useAuth.jsx';
 import { publicRoutes, adminRoutes, clientRoutes, ROUTES, hasPermission } from '@/config/routes';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { SidebarWrapper } from './SidebarWrapper';

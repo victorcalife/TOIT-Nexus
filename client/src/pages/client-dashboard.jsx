@@ -5,34 +5,35 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { 
-  BarChart3, 
-  Users, 
-  Workflow, 
-  Settings, 
-  Plus, 
-  Activity,
-  TrendingUp,
-  FileText,
-  Calendar,
-  Bell,
-  Lock,
-  Package,
-  Crown,
-  Database,
-  Webhook,
-  Mail,
-  Search,
-  Layout,
-  Zap,
-  Link,
-  Save,
-  CheckSquare,
-  Building2,
-  Shield
-} from 'lucide-react';
+import
+  {
+    BarChart3,
+    Users,
+    Workflow,
+    Settings,
+    Plus,
+    Activity,
+    TrendingUp,
+    FileText,
+    Calendar,
+    Bell,
+    Lock,
+    Package,
+    Crown,
+    Database,
+    Webhook,
+    Mail,
+    Search,
+    Layout,
+    Zap,
+    Link,
+    Save,
+    CheckSquare,
+    Building2,
+    Shield
+  } from 'lucide-react';
 import { StandardHeader } from '@/components/standard-header';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/hooks/useAuth.jsx';
 import { useToast } from '@/hooks/use-toast';
 
 // Import existing functional pages
@@ -45,125 +46,151 @@ import FileUpload from './file-upload';
 import AdvancedTaskManagement from './advanced-task-management';
 import PlanManagement from '@/components/plan-management';
 
-export default function ClientDashboard() {
-  const [selectedTenant, setSelectedTenant] = useState<any>(null);
+export default function ClientDashboard()
+{
+  const [ selectedTenant, setSelectedTenant ] = useState < any > ( null );
   const { user } = useAuth();
   const { toast } = useToast();
 
   // Fetch tenant modules (to determine available functionality)
-  const { data= [], isLoading,
+  const { data = [], isLoading,
   });
 
   // Fetch tenant dashboard data
   const { data, isLoading,
   });
 
-  useEffect(() => {
-    const tenant = localStorage.getItem('selectedTenant');
-    if (tenant) {
-      setSelectedTenant(JSON.parse(tenant));
-    } else {
+  useEffect( () =>
+  {
+    const tenant = localStorage.getItem( 'selectedTenant' );
+    if ( tenant )
+    {
+      setSelectedTenant( JSON.parse( tenant ) );
+    } else
+    {
       // Redirect to tenant selection if no tenant is selected
       window.location.href = '/select-tenant';
     }
-  }, []);
+  }, [] );
 
-  const handleLogout = () => {
-    localStorage.removeItem('selectedTenant');
+  const handleLogout = () =>
+  {
+    localStorage.removeItem( 'selectedTenant' );
     window.location.href = '/api/logout';
   };
 
-  const handleBackToSelection = () => {
-    localStorage.removeItem('selectedTenant');
+  const handleBackToSelection = () =>
+  {
+    localStorage.removeItem( 'selectedTenant' );
     window.location.href = '/select-tenant';
   };
 
   // Check if a module is available and active for this tenant
-  const isModuleActive = (moduleCode) => {
-    return tenantModules.some((module) => 
-      module.moduleCode === moduleCode && 
-      module.isEnabled && 
+  const isModuleActive = ( moduleCode ) =>
+  {
+    return tenantModules.some( ( module ) =>
+      module.moduleCode === moduleCode &&
+      module.isEnabled &&
       module.status === 'active'
     );
   };
 
   // Get user's available tabs based on active modules (FUNCTIONAL TOOLS ONLY)
-  const getAvailableTabs = () => {
-    const functionalTabs = ['workspace'];
-    
+  const getAvailableTabs = () =>
+  {
+    const functionalTabs = [ 'workspace' ];
+
     // FERRAMENTAS FUNCIONAIS baseadas em módulos ativos
-    if (isModuleActive('task_management')) {
-      functionalTabs.push('tasks');
+    if ( isModuleActive( 'task_management' ) )
+    {
+      functionalTabs.push( 'tasks' );
     }
-    
-    if (isModuleActive('advanced_tasks')) {
-      functionalTabs.push('advanced_tasks');
+
+    if ( isModuleActive( 'advanced_tasks' ) )
+    {
+      functionalTabs.push( 'advanced_tasks' );
     }
-    
-    if (isModuleActive('calendar_email')) {
-      functionalTabs.push('calendar');
+
+    if ( isModuleActive( 'calendar_email' ) )
+    {
+      functionalTabs.push( 'calendar' );
     }
-    
-    if (isModuleActive('query_builder')) {
-      functionalTabs.push('queries');
+
+    if ( isModuleActive( 'query_builder' ) )
+    {
+      functionalTabs.push( 'queries' );
     }
-    
-    if (isModuleActive('reports')) {
-      functionalTabs.push('reports');
+
+    if ( isModuleActive( 'reports' ) )
+    {
+      functionalTabs.push( 'reports' );
     }
-    
-    if (isModuleActive('dashboard_builder')) {
-      functionalTabs.push('dashboards');
+
+    if ( isModuleActive( 'dashboard_builder' ) )
+    {
+      functionalTabs.push( 'dashboards' );
     }
-    
-    if (isModuleActive('workflow_builder')) {
-      functionalTabs.push('workflows');
+
+    if ( isModuleActive( 'workflow_builder' ) )
+    {
+      functionalTabs.push( 'workflows' );
     }
-    
-    if (isModuleActive('notifications')) {
-      functionalTabs.push('notifications');
+
+    if ( isModuleActive( 'notifications' ) )
+    {
+      functionalTabs.push( 'notifications' );
     }
-    
-    if (isModuleActive('api_connections')) {
-      functionalTabs.push('api_connections');
+
+    if ( isModuleActive( 'api_connections' ) )
+    {
+      functionalTabs.push( 'api_connections' );
     }
-    
-    if (isModuleActive('database_connections')) {
-      functionalTabs.push('db_connections');
+
+    if ( isModuleActive( 'database_connections' ) )
+    {
+      functionalTabs.push( 'db_connections' );
     }
-    
-    if (isModuleActive('webhooks')) {
-      functionalTabs.push('webhooks');
+
+    if ( isModuleActive( 'webhooks' ) )
+    {
+      functionalTabs.push( 'webhooks' );
     }
-    
-    if (isModuleActive('file_processing')) {
-      functionalTabs.push('files');
+
+    if ( isModuleActive( 'file_processing' ) )
+    {
+      functionalTabs.push( 'files' );
     }
-    
+
     // FUNCIONALIDADES EMPRESARIAIS (Persona 3 - Empresas 5+ funcionários)
-    if (selectedTenant?.userCount > 5 && (user?.role === 'tenant_admin' || user?.role === 'manager')) {
-      if (isModuleActive('user_management')) {
-        functionalTabs.push('team');
+    if ( selectedTenant?.userCount > 5 && ( user?.role === 'tenant_admin' || user?.role === 'manager' ) )
+    {
+      if ( isModuleActive( 'user_management' ) )
+      {
+        functionalTabs.push( 'team' );
       }
-      if (isModuleActive('department_management')) {
-        functionalTabs.push('departments');
+      if ( isModuleActive( 'department_management' ) )
+      {
+        functionalTabs.push( 'departments' );
       }
-      if (isModuleActive('access_control')) {
-        functionalTabs.push('permissions');
+      if ( isModuleActive( 'access_control' ) )
+      {
+        functionalTabs.push( 'permissions' );
       }
     }
-    
+
     // CONFIGURAÇÕES DE CONTA - Sempre disponível para tenant_admin
-    if (user?.role === 'tenant_admin') {
-      functionalTabs.push('account');
+    if ( user?.role === 'tenant_admin' )
+    {
+      functionalTabs.push( 'account' );
     }
-    
+
     return functionalTabs;
   };
 
   const availableTabs = getAvailableTabs();
 
-  if (!selectedTenant || loadingModules || loadingDashboard) {
+  if ( !selectedTenant || loadingModules || loadingDashboard )
+  {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -174,124 +201,132 @@ export default function ClientDashboard() {
     );
   }
 
-  const activeModulesCount = tenantModules.filter((m) => m.isEnabled && m.status === 'active').length;
+  const activeModulesCount = tenantModules.filter( ( m ) => m.isEnabled && m.status === 'active' ).length;
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <StandardHeader 
-        showUserActions={true}
-        user={user}
-        onLogout={handleLogout}
+      <StandardHeader
+        showUserActions={ true }
+        user={ user }
+        onLogout={ handleLogout }
       />
-      
+
       <div className="px-6 py-4">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">
-              {selectedTenant.name}
+              { selectedTenant.name }
             </h1>
             <p className="text-gray-600">
-              {user?.role === 'tenant_admin' && selectedTenant.userCount > 5 
+              { user?.role === 'tenant_admin' && selectedTenant.userCount > 5
                 ? 'Portal Empresarial - Gestão de equipe e dados departamentais'
                 : 'Portal Individual - Suas ferramentas pessoais de produtividade'
               }
             </p>
           </div>
           <div className="flex items-center space-x-3">
-            <Button variant="outline" onClick={handleBackToSelection}>
+            <Button variant="outline" onClick={ handleBackToSelection }>
               Trocar Empresa
             </Button>
             <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
               <Package className="w-3 h-3 mr-1" />
-              {activeModulesCount} módulos ativos
+              { activeModulesCount } módulos ativos
             </Badge>
             <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-              {user?.role === 'tenant_admin' ? 'Administrador' : 
-               user?.role === 'manager' ? 'Gerente' : 'Funcionário'}
+              { user?.role === 'tenant_admin' ? 'Administrador' :
+                user?.role === 'manager' ? 'Gerente' : 'Funcionário' }
             </Badge>
           </div>
         </div>
 
-        {/* Alert about module limitations */}
-        {activeModulesCount === 0 && (
+        {/* Alert about module limitations */ }
+        { activeModulesCount === 0 && (
           <Alert className="mb-6">
             <Lock className="h-4 w-4" />
             <AlertDescription>
               Nenhum módulo está ativo para sua empresa. Entre em contato com a equipe TOIT para ativar funcionalidades.
             </AlertDescription>
           </Alert>
-        )}
+        ) }
 
-        {/* FUNCTIONAL MODULES OVERVIEW - SEM DADOS ADMINISTRATIVOS */}
+        {/* FUNCTIONAL MODULES OVERVIEW - SEM DADOS ADMINISTRATIVOS */ }
         <div className="grid grid-cols-2 md) && (
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Tarefas</CardTitle>
-                <CheckSquare className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">•</div>
-                <p className="text-xs text-muted-foreground">Disponível</p>
-              </CardContent>
-            </Card>
-          )}
-          
-          {isModuleActive('workflow_builder') && (
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Workflows</CardTitle>
-                <Workflow className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">•</div>
-                <p className="text-xs text-muted-foreground">Builder ativo</p>
-              </CardContent>
-            </Card>
-          )}
-          
-          {isModuleActive('query_builder') && (
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Queries</CardTitle>
-                <Search className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">•</div>
-                <p className="text-xs text-muted-foreground">Builder ativo</p>
-              </CardContent>
-            </Card>
-          )}
-          
-          {isModuleActive('dashboard_builder') && (
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Dashboards</CardTitle>
-                <Layout className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">•</div>
-                <p className="text-xs text-muted-foreground">Builder ativo</p>
-              </CardContent>
-            </Card>
-          )}
-        </div>
+        <CardTitle className="text-sm font-medium">Tarefas</CardTitle>
+        <CheckSquare className="h-4 w-4 text-muted-foreground" />
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-bold">•</div>
+        <p className="text-xs text-muted-foreground">Disponível</p>
+      </CardContent>
+    </Card>
+  )
+}
 
-        <Tabs defaultValue="workspace" className="w-full">
-          {/* Primeira linha de tabs (principais) */}
-          <TabsList className="grid w-full" style={{ gridTemplateColumns, 8)}, 1fr)` }}>
-            {availableTabs.includes('workspace') && <TabsTrigger value="workspace">Workspace</TabsTrigger>}
-            {availableTabs.includes('tasks') && <TabsTrigger value="tasks">Tarefas</TabsTrigger>}
-            {availableTabs.includes('advanced_tasks') && <TabsTrigger value="advanced_tasks">T. Avançadas</TabsTrigger>}
-            {availableTabs.includes('calendar') && <TabsTrigger value="calendar">Agenda</TabsTrigger>}
-            {availableTabs.includes('queries') && <TabsTrigger value="queries">Consultas</TabsTrigger>}
-            {availableTabs.includes('reports') && <TabsTrigger value="reports">Relatórios</TabsTrigger>}
-            {availableTabs.includes('dashboards') && <TabsTrigger value="dashboards">Dashboards</TabsTrigger>}
-            {availableTabs.includes('workflows') && <TabsTrigger value="workflows">Workflows</TabsTrigger>}
-          </TabsList>
-          
-          {/* Segunda linha de tabs (adicionais) se necessário */}
-          {availableTabs.length > 8 && (
-            <TabsList className="grid w-full mt-2" style={{ gridTemplateColumns, 8)}, 1fr)` }}>
+{
+  isModuleActive( 'workflow_builder' ) && (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium">Workflows</CardTitle>
+        <Workflow className="h-4 w-4 text-muted-foreground" />
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-bold">•</div>
+        <p className="text-xs text-muted-foreground">Builder ativo</p>
+      </CardContent>
+    </Card>
+  )
+}
+
+{
+  isModuleActive( 'query_builder' ) && (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium">Queries</CardTitle>
+        <Search className="h-4 w-4 text-muted-foreground" />
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-bold">•</div>
+        <p className="text-xs text-muted-foreground">Builder ativo</p>
+      </CardContent>
+    </Card>
+  )
+}
+
+{
+  isModuleActive( 'dashboard_builder' ) && (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium">Dashboards</CardTitle>
+        <Layout className="h-4 w-4 text-muted-foreground" />
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-bold">•</div>
+        <p className="text-xs text-muted-foreground">Builder ativo</p>
+      </CardContent>
+    </Card>
+  )
+}
+        </div >
+
+  <Tabs defaultValue="workspace" className="w-full">
+    {/* Primeira linha de tabs (principais) */ }
+    <TabsList className="grid w-full" style={ { gridTemplateColumns, 8)}, 1fr)` }}>
+    { availableTabs.includes( 'workspace' ) && <TabsTrigger value="workspace">Workspace</TabsTrigger> }
+    { availableTabs.includes( 'tasks' ) && <TabsTrigger value="tasks">Tarefas</TabsTrigger> }
+    { availableTabs.includes( 'advanced_tasks' ) && <TabsTrigger value="advanced_tasks">T. Avançadas</TabsTrigger> }
+    { availableTabs.includes( 'calendar' ) && <TabsTrigger value="calendar">Agenda</TabsTrigger> }
+    { availableTabs.includes( 'queries' ) && <TabsTrigger value="queries">Consultas</TabsTrigger> }
+    { availableTabs.includes( 'reports' ) && <TabsTrigger value="reports">Relatórios</TabsTrigger> }
+    { availableTabs.includes( 'dashboards' ) && <TabsTrigger value="dashboards">Dashboards</TabsTrigger> }
+    { availableTabs.includes( 'workflows' ) && <TabsTrigger value="workflows">Workflows</TabsTrigger> }
+  </TabsList>
+
+{/* Segunda linha de tabs (adicionais) se necessário */ }
+{
+  availableTabs.length > 8 && (
+    <TabsList className="grid w-full mt-2" style={ { gridTemplateColumns, 8) }, 1fr)` }}>
               {availableTabs.includes('notifications') && <TabsTrigger value="notifications">Notificações</TabsTrigger>}
               {availableTabs.includes('api_connections') && <TabsTrigger value="api_connections">APIs</TabsTrigger>}
               {availableTabs.includes('db_connections') && <TabsTrigger value="db_connections">Bancos</TabsTrigger>}
