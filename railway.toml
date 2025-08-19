@@ -1,13 +1,14 @@
 [build]
 builder = "nixpacks"
+buildCommand = "cd client && npm install && npm run build && cd ../server && npm install"
 
 [deploy]
 startCommand = "cd server && npm start"
-healthcheckPath = "/api/health"
+healthcheckPath = "/health"
 healthcheckTimeout = 300
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 3
 
 [env]
 NODE_ENV = "production"
-PORT = "3000"
+PORT = "8080"
