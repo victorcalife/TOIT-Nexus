@@ -3,9 +3,8 @@ export * from './publicRoutes';
 export * from './adminRoutes';
 export * from './clientRoutes';
 
-// Tipos exportados
-export // Função auxiliar para verificar se um usuário tem permissão para acessar uma rota
-export const hasPermission = ( userRole, requiredRoles?)=>
+// Função auxiliar para verificar se um usuário tem permissão para acessar uma rota
+export const hasPermission = ( userRole, requiredRoles = [] ) =>
 {
   // Se não há roles requeridas, qualquer usuário autenticado pode acessar
   if ( !requiredRoles || requiredRoles.length === 0 ) return true;

@@ -8,7 +8,7 @@ import { Toaster } from '@/components/ui/toaster';
 import MainLayout from '@/components/layout/MainLayout';
 
 // Layouts
-const DefaultLayout) => (
+const DefaultLayout = ( { children } ) => (
   <div className="min-h-screen bg-gray-50">
     <Toaster />
     { children }
@@ -21,7 +21,7 @@ const ClientLayout = ( { children } ) => (
   </MainLayout>
 );
 
-const AdminLayout) => (
+const AdminLayout = ( { children } ) => (
   <div className="flex h-screen bg-gray-100">
     <SidebarWrapper isAdmin={ true } />
     <main className="flex-1 overflow-auto p-6">
@@ -31,7 +31,7 @@ const AdminLayout) => (
   </div>
 );
 
-const MinimalLayout) => (
+const MinimalLayout = ( { children } ) => (
   <div className="min-h-screen bg-gray-50">
     <Toaster />
     <div className="container mx-auto p-4">
@@ -41,7 +41,8 @@ const MinimalLayout) => (
 );
 
 // Componente de rota protegida
-const ProtectedRoute, roles = [], requiresTenant = false, layout = 'default', ...rest }) => {
+const ProtectedRoute = ( { children, roles = [], requiresTenant = false, layout = 'default', ...rest } ) =>
+{
   const { isAuthenticated, user, isLoading } = useAuth();
   const location = useLocation();
 
@@ -85,41 +86,49 @@ const ProtectedRoute, roles = [], requiresTenant = false, layout = 'default', ..
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">Acesso Negado</h1>
           <p className="mb-4">Você não tem permissão para acessar esta página.</p>
-          <a href="/" className="text-blue-600 hover);
+          <a href="/" className="text-blue-600 hover:underline">Voltar ao início</a>
+        </div>
+      </div>
+    );
   }
 
   // Verifica se a rota requer um tenant selecionado
-  if (requiresTenant && !user?.tenant) {
-    return <Navigate to={ROUTES.SELECT_TENANT} replace />;
+  if ( requiresTenant && !user?.tenant )
+  {
+    return <Navigate to={ ROUTES.SELECT_TENANT } replace />;
   }
 
   // Renderiza o componente com o layout apropriado
-  const renderWithLayout = (children) => {
-    switch (layout) {
+  const renderWithLayout = ( children ) =>
+  {
+    switch ( layout )
+    {
       case 'client':
-        return <ClientLayout>{children}</ClientLayout>;
+        return <ClientLayout>{ children }</ClientLayout>;
       case 'admin':
-        return <AdminLayout>{children}</AdminLayout>;
+        return <AdminLayout>{ children }</AdminLayout>;
       case 'minimal':
-        return <MinimalLayout>{children}</MinimalLayout>;
+        return <MinimalLayout>{ children }</MinimalLayout>;
       default);
-};
+    };
 
-// Componente de rota pública
-const PublicRoute) => {
+    // Componente de rota pública
+    const PublicRoute) => {
   const { isAuthenticated, isLoading } = useAuth();
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const redirectTo = searchParams.get('redirect') || '/';
+  const searchParams = new URLSearchParams( location.search );
+  const redirectTo = searchParams.get( 'redirect' ) || '/';
 
   // Se ainda está carregando, mostra um spinner
-  if (isLoading) {
+  if ( isLoading )
+  {
     return <LoadingSpinner />;
   }
 
   // Se está autenticado, redireciona para a página inicial ou para a URL de redirecionamento
-  if (isAuthenticated && location.pathname === '/login') {
-    return <Navigate to={redirectTo} replace />;
+  if ( isAuthenticated && location.pathname === '/login' )
+  {
+    return <Navigate to={ redirectTo } replace />;
   }
 
   return <Component />;
@@ -132,63 +141,67 @@ export const AppRouter) => {
   const navigate = useNavigate();
 
   // Efeito para lidar com autenticação e redirecionamentos
-  useEffect(() => {
+  useEffect( () =>
+  {
     // Se não estiver carregando e não estiver autenticado, redireciona para login
     // Mas apenas se não estiver no domínio principal (nexus.toit.com.br)
     const currentDomain = window.location.hostname;
     const isMainDomain = currentDomain === 'nexus.toit.com.br' || currentDomain === 'localhost' || currentDomain === '127.0.0.1';
-    
+
     // Só redireciona se não estiver autenticado e não estiver já na página de login correta
-    if (!isLoading && !isAuthenticated) {
+    if ( !isLoading && !isAuthenticated )
+    {
       // Se estiver no domínio de suporte e não estiver no support-login
-      if (currentDomain === 'supnexus.toit.com.br' && location.pathname !== '/support-login') {
-        navigate(`/support-login?redirect=${encodeURIComponent(location.pathname + location.search)}`);
+      if ( currentDomain === 'supnexus.toit.com.br' && location.pathname !== '/support-login' )
+      {
+        navigate( `/support-login?redirect=${ encodeURIComponent( location.pathname + location.search ) }` );
       }
       // Se estiver no domínio principal e não estiver no login de cliente
-      else if (isMainDomain && location.pathname !== '/login' && location.pathname !== '/') {
-        navigate(`/login?redirect=${encodeURIComponent(location.pathname + location.search)}`);
+      else if ( isMainDomain && location.pathname !== '/login' && location.pathname !== '/' )
+      {
+        navigate( `/login?redirect=${ encodeURIComponent( location.pathname + location.search ) }` );
       }
     }
-  }, [isLoading, isAuthenticated, location, navigate]);
+  }, [ isLoading, isAuthenticated, location, navigate ] );
 
   // Rota de fallback para páginas não encontradas
-  const NotFound = React.lazy(() => import('@/pages/not-found'));
+  const NotFound = React.lazy( () => import( '@/pages/not-found' ) );
 
   // Função auxiliar para criar rotas protegidas
-  const createProtectedRoute = (route, index) => (
+  const createProtectedRoute = ( route, index ) => (
     <Route
-      key={`protected-${index}`}
-      path={route.path}
+      key={ `protected-${ index }` }
+      path={ route.path }
       element={
         <ProtectedRoute
-          component={route.component}
-          roles={route.roles}
-          requiresTenant={route.requiresTenant}
-          layout={route.layout}
+          component={ route.component }
+          roles={ route.roles }
+          requiresTenant={ route.requiresTenant }
+          layout={ route.layout }
         />
       }
     />
   );
 
   return (
-    <Suspense fallback={<LoadingSpinner />}>
+    <Suspense fallback={ <LoadingSpinner /> }>
       <Routes>
-        {/* Rotas Públicas */}
-        {publicRoutes.map((route, index) => (
+        {/* Rotas Públicas */ }
+        { publicRoutes.map( ( route, index ) => (
           <Route
-            key={`public-${index}`}
-            path={route.path}
-            element={<PublicRoute component={route.component} />}
+            key={ `public-${ index }` }
+            path={ route.path }
+            element={ <PublicRoute component={ route.component } /> }
           />
-        ))}
+        ) ) }
 
-        {/* Rotas Administrativas */}
-        {adminRoutes.map((route, index) => createProtectedRoute(route, index))}
+        {/* Rotas Administrativas */ }
+        { adminRoutes.map( ( route, index ) => createProtectedRoute( route, index ) ) }
 
-        {/* Rotas do Cliente */}
-        {clientRoutes.map((route, index) => createProtectedRoute(route, index))}
+        {/* Rotas do Cliente */ }
+        { clientRoutes.map( ( route, index ) => createProtectedRoute( route, index ) ) }
 
-        {/* Rota 404 */}
+        {/* Rota 404 */ }
         <Route
           path="*"
           element={
@@ -197,9 +210,9 @@ export const AppRouter) => {
             </DefaultLayout>
           }
         />
-        </Routes>
-      </Suspense>
-    );
-  };
+      </Routes>
+    </Suspense>
+  );
+};
 
-  export default AppRouter;
+export default AppRouter;
