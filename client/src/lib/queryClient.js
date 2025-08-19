@@ -6,17 +6,20 @@
 
 const getApiBaseUrl = () =>
 {
+  // Sempre usar a API do Railway em produção
   if ( import.meta.env.VITE_API_URL )
   {
     return import.meta.env.VITE_API_URL.replace( /\/$/, '' ); // Remove trailing slash
   }
 
-  // Local development
+  // Para desenvolvimento local, ainda usar Railway
   if ( import.meta.env.DEV )
   {
-    return 'http://localhost:8080';
+    return 'https://api.toit.com.br';
   }
-  return '';
+
+  // Fallback para produção
+  return 'https://api.toit.com.br';
 };
 
 export const API_BASE_URL = getApiBaseUrl();
