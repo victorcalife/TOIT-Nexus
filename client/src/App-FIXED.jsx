@@ -7,10 +7,10 @@ import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from './components/theme-provider';
 
 // Lazy load das páginas
-const Login = React.lazy(() => import('./pages/login'));
-const SupportLogin = React.lazy(() => import('./pages/support-login'));
-const Dashboard = React.lazy(() => import('./pages/dashboard'));
-const NotFound = React.lazy(() => import('./pages/not-found'));
+const Login = React.lazy( () => import( './pages/login' ) );
+const SupportLogin = React.lazy( () => import( './pages/support-login' ) );
+const Dashboard = React.lazy( () => import( './pages/dashboard' ) );
+const NotFound = React.lazy( () => import( './pages/not-found' ) );
 
 // Loading spinner
 const LoadingSpinner = () => (
@@ -20,67 +20,81 @@ const LoadingSpinner = () => (
 );
 
 // Componente de rota baseada em domínio
-function DomainBasedRoute() {
+function DomainBasedRoute()
+{
   const hostname = window.location.hostname.toLowerCase();
   const pathname = window.location.pathname;
-  
-  console.log(`🌐 [DOMAIN-ROUTE] Hostname: ${hostname} | Path: ${pathname}`);
-  
+
+  console.log( `🌐 [DOMAIN-ROUTE] Hostname: ${ hostname } | Path: ${ pathname }` );
+
   // Se é supnexus.toit.com.br, sempre mostrar support-login
-  if (hostname === 'supnexus.toit.com.br') {
-    console.log(`🛡️ [SUPNEXUS] Carregando support-login`);
+  if ( hostname === 'supnexus.toit.com.br' )
+  {
+    console.log( `🛡️ [SUPNEXUS] Carregando support-login` );
     return <SupportLogin />;
   }
-  
+
   // Se é nexus.toit.com.br ou localhost
-  if (hostname === 'nexus.toit.com.br' || hostname === 'localhost' || hostname === '127.0.0.1') {
+  if ( hostname === 'nexus.toit.com.br' || hostname === 'localhost' || hostname === '127.0.0.1' )
+  {
+    // Se está na rota raiz (/), redirecionar para login
+    if ( pathname === '/' )
+    {
+      console.log( `🔐 [NEXUS-ROOT] Redirecionando para login` );
+      return <Navigate to="/login" replace />;
+    }
+
     // Se está na rota /login, mostrar login de cliente
-    if (pathname === '/login') {
-      console.log(`🔐 [NEXUS-LOGIN] Carregando login de cliente`);
+    if ( pathname === '/login' )
+    {
+      console.log( `🔐 [NEXUS-LOGIN] Carregando login de cliente` );
       return <Login />;
     }
-    
+
     // Se está na rota /dashboard, mostrar dashboard
-    if (pathname === '/dashboard') {
-      console.log(`📊 [NEXUS-DASHBOARD] Carregando dashboard`);
+    if ( pathname === '/dashboard' )
+    {
+      console.log( `📊 [NEXUS-DASHBOARD] Carregando dashboard` );
       return <Dashboard />;
     }
-    
+
     // Se está na rota /support-login, mostrar support-login
-    if (pathname === '/support-login') {
-      console.log(`🛡️ [NEXUS-SUPPORT] Carregando support-login`);
+    if ( pathname === '/support-login' )
+    {
+      console.log( `🛡️ [NEXUS-SUPPORT] Carregando support-login` );
       return <SupportLogin />;
     }
   }
-  
-  // Fallback para 404
-  console.log(`❌ [404] Rota não encontrada: ${hostname}${pathname}`);
-  return <NotFound />;
+
+  // Para outros domínios, redirecionar para login também
+  console.log( `🔄 [FALLBACK] Redirecionando para login` );
+  return <Navigate to="/login" replace />;
 }
 
-function App() {
+function App()
+{
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={ queryClient }>
       <ThemeProvider defaultTheme="system" storageKey="toit-nexus-theme">
         <TooltipProvider>
           <Router>
             <Toaster />
-            <Suspense fallback={<LoadingSpinner />}>
+            <Suspense fallback={ <LoadingSpinner /> }>
               <Routes>
-                {/* Rota específica para login */}
-                <Route path="/login" element={<Login />} />
-                
-                {/* Rota específica para support-login */}
-                <Route path="/support-login" element={<SupportLogin />} />
-                
-                {/* Rota específica para dashboard */}
-                <Route path="/dashboard" element={<Dashboard />} />
-                
-                {/* Rota raiz baseada em domínio */}
-                <Route path="/" element={<DomainBasedRoute />} />
-                
-                {/* Fallback para 404 */}
-                <Route path="*" element={<NotFound />} />
+                {/* Rota específica para login */ }
+                <Route path="/login" element={ <Login /> } />
+
+                {/* Rota específica para support-login */ }
+                <Route path="/support-login" element={ <SupportLogin /> } />
+
+                {/* Rota específica para dashboard */ }
+                <Route path="/dashboard" element={ <Dashboard /> } />
+
+                {/* Rota raiz baseada em domínio */ }
+                <Route path="/" element={ <DomainBasedRoute /> } />
+
+                {/* Fallback para 404 */ }
+                <Route path="*" element={ <NotFound /> } />
               </Routes>
             </Suspense>
           </Router>

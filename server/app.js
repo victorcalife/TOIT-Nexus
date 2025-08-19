@@ -241,34 +241,37 @@ class TOITNexusServer
     // Configurar todas as rotas da API
     setupRoutes( this.app );
 
-    // Servir arquivos estáticos em produção
-    if ( this.environment === 'production' )
+    // Servir arquivos estáticos (sempre, não apenas em produção)
+    const clientPath = path.join( __dirname, '../client/dist' );
+
+    console.log( `📁 Servindo arquivos estáticos de: ${ clientPath }` );
+
+    this.app.use( express.static( clientPath, {
+      maxAge: this.environment === 'production' ? '1d' : '0',
+      etag: true,
+      lastModified: true,
+      index: false // Não servir index.html automaticamente
+    } ) );
+
+    // Catch-all para SPA (Single Page Application)
+    this.app.get( '*', ( req, res ) =>
     {
-      const clientPath = path.join( __dirname, '../client/dist' );
-
-      this.app.use( express.static( clientPath, {
-        maxAge: '1d',
-        etag: true,
-        lastModified: true
-      } ) );
-
-      // Catch-all para SPA (Single Page Application)
-      this.app.get( '*', ( req, res ) =>
+      // Não interceptar rotas da API
+      if ( req.path.startsWith( '/api/' ) )
       {
-        // Não interceptar rotas da API
-        if ( req.path.startsWith( '/api/' ) )
-        {
-          return res.status( 404 ).json( {
-            success: false,
-            error: 'Endpoint da API não encontrado',
-            code: 'API_NOT_FOUND',
-            path: req.path
-          } );
-        }
+        return res.status( 404 ).json( {
+          success: false,
+          error: 'Endpoint da API não encontrado',
+          code: 'API_NOT_FOUND',
+          path: req.path
+        } );
+      }
 
-        res.sendFile( path.join( clientPath, 'index.html' ) );
-      } );
-    }
+      // Servir index.html para todas as outras rotas (SPA)
+      const indexPath = path.join( clientPath, 'index.html' );
+      console.log( `📄 Servindo SPA: ${ req.path } -> ${ indexPath }` );
+      res.sendFile( indexPath );
+    } );
 
     console.log( '✅ Rotas configuradas' );
   }
