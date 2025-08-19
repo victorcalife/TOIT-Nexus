@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, createContext, useContext } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Navigate } from 'react-router-dom';
+import { API_CONFIG } from '../config/env';
 
 // Context de autenticação
 const AuthContext = createContext( null );
@@ -26,7 +27,7 @@ export function AuthProvider( { children } )
     {
       try
       {
-        const response = await fetch( '/api/auth/me', {
+        const response = await fetch( `${ API_CONFIG.BASE_URL }${ API_CONFIG.ENDPOINTS.AUTH.ME }`, {
           credentials: 'include',
           headers: {
             'Content-Type': 'application/json'
@@ -61,7 +62,7 @@ export function AuthProvider( { children } )
   const loginMutation = useMutation( {
     mutationFn: async ( { identifier, password, rememberMe = false } ) =>
     {
-      const response = await fetch( '/api/auth/login', {
+      const response = await fetch( `${ API_CONFIG.BASE_URL }${ API_CONFIG.ENDPOINTS.AUTH.LOGIN }`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -102,7 +103,7 @@ export function AuthProvider( { children } )
   const logoutMutation = useMutation( {
     mutationFn: async () =>
     {
-      const response = await fetch( '/api/auth/logout', {
+      const response = await fetch( `${ API_CONFIG.BASE_URL }${ API_CONFIG.ENDPOINTS.AUTH.LOGOUT }`, {
         method: 'POST',
         credentials: 'include'
       } );

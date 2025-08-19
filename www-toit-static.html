@@ -8,6 +8,18 @@
     <meta name="description"
         content="TOIT: Primeira empresa brasileira a criar ERP quântico. Parceiro IBM Quantum. Captação Series A $25M. Invista no futuro da computação empresarial.">
 
+    <!-- Performance and Security -->
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#0066CC">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.toit.com.br/">
@@ -15,6 +27,34 @@
     <meta property="og:description"
         content="Primeira empresa brasileira a criar ERP quântico. Series A $25M. ROI 250%. Parceiro IBM Quantum.">
     <meta property="og:image" content="https://www.toit.com.br/assets/toit-preview.jpg">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "TOIT",
+        "description": "Primeira empresa brasileira a criar ERP quântico. Parceiro IBM Quantum Network.",
+        "url": "https://www.toit.com.br",
+        "logo": "https://www.toit.com.br/assets/toit-logo.png",
+        "foundingDate": "2023",
+        "foundingLocation": {
+            "@type": "Place",
+            "name": "São Paulo, Brasil"
+        },
+        "industry": "Quantum Computing Software",
+        "sameAs": [
+            "https://linkedin.com/company/toit-quantum",
+            "https://twitter.com/toit_quantum"
+        ],
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+55-11-XXXX-XXXX",
+            "contactType": "Business",
+            "email": "business@partner.toit.com.br"
+        }
+    }
+    </script>
 
     <style>
         /* Reset e Base */
@@ -74,6 +114,8 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            color: transparent;
+            /* Fallback for browsers that don't support background-clip */
         }
 
         .nav-links {
@@ -259,6 +301,8 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            color: transparent;
+            /* Fallback for browsers that don't support background-clip */
             display: block;
             margin-bottom: 10px;
         }
@@ -344,6 +388,15 @@
                 display: none;
             }
 
+            .mobile-menu-button {
+                display: block;
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                color: var(--charcoal);
+                cursor: pointer;
+            }
+
             .hero-buttons {
                 flex-direction: column;
                 align-items: center;
@@ -372,26 +425,34 @@
         html {
             scroll-behavior: smooth;
         }
+
+        /* Mobile menu button - hidden by default */
+        .mobile-menu-button {
+            display: none;
+        }
     </style>
 </head>
 
 <body>
     <!-- Header -->
     <header class="header">
-        <nav class="nav container">
-            <div class="logo">TOIT</div>
+        <nav class="nav container" role="navigation" aria-label="Menu principal">
+            <div class="logo" aria-label="TOIT - Logotipo">TOIT</div>
             <ul class="nav-links">
                 <li><a href="#hero" class="nav-link">Início</a></li>
                 <li><a href="#company" class="nav-link">Empresa</a></li>
                 <li><a href="#product" class="nav-link">Produto</a></li>
                 <li><a href="#contact" class="nav-link">Contato</a></li>
             </ul>
+            <button class="mobile-menu-button" onclick="toggleMobileMenu()" aria-label="Abrir menu mobile">
+                ☰
+            </button>
             <a href="#contact" class="cta-button">Falar Conosco</a>
         </nav>
     </header>
 
     <!-- Hero Section -->
-    <section class="hero" id="hero">
+    <section class="hero" id="hero" role="banner">
         <div class="container">
             <div class="hero-content fade-in">
                 <h1>PIONEIROS DA REVOLUÇÃO QUÂNTICA EMPRESARIAL</h1>
@@ -408,9 +469,9 @@
                 </div>
 
                 <div class="hero-buttons">
-                    <a href="mailto:business@partner.toit.com.br?subject=Series A Investment - Pitch Deck"
-                        class="btn-primary">PITCH DECK</a>
-                    <a href="#contact" class="btn-secondary">AGENDAR REUNIÃO</a>
+                    <a href="mailto:business@partner.toit.com.br?subject=Series%20A%20Investment%20-%20Pitch%20Deck"
+                        class="btn-primary" aria-label="Solicitar pitch deck por email">PITCH DECK</a>
+                    <a href="#contact" class="btn-secondary" aria-label="Ir para seção de contato">AGENDAR REUNIÃO</a>
                 </div>
             </div>
         </div>
@@ -487,7 +548,8 @@
                         <li>🏆 <strong>Fortune 500</strong> validated</li>
                     </ul>
                     <div style="margin-top: 2rem;">
-                        <a href="https://nexus.toit.com.br" class="btn-primary" target="_blank">VER PRODUTO</a>
+                        <a href="https://nexus.toit.com.br" class="btn-primary" target="_blank"
+                            rel="noopener noreferrer" aria-label="Abrir TOIT NEXUS em nova aba">VER PRODUTO</a>
                     </div>
                 </div>
             </div>
@@ -538,9 +600,10 @@
             </div>
 
             <div style="text-align: center; margin-top: 3rem;">
-                <a href="mailto:business@partner.toit.com.br?subject=Series A Investment - Pitch Deck Completo"
-                    class="btn-primary">PITCH DECK COMPLETO</a>
-                <a href="#contact" class="btn-secondary" style="margin-left: 20px;">AGENDAR DUE DILIGENCE</a>
+                <a href="mailto:business@partner.toit.com.br?subject=Series%20A%20Investment%20-%20Pitch%20Deck%20Completo"
+                    class="btn-primary" aria-label="Solicitar pitch deck completo por email">PITCH DECK COMPLETO</a>
+                <a href="#contact" class="btn-secondary" style="margin-left: 20px;"
+                    aria-label="Ir para seção de contato para agendar due diligence">AGENDAR DUE DILIGENCE</a>
             </div>
         </div>
     </section>
@@ -653,14 +716,20 @@
         // Analytics tracking (opcional - pode ser removido se não usar GA)
         function trackEvent( action, category = 'engagement' )
         {
-            if ( typeof gtag !== 'undefined' )
+            try
             {
-                gtag( 'event', action, {
-                    event_category: category,
-                    event_label: window.location.pathname
-                } );
+                if ( typeof gtag !== 'undefined' && gtag )
+                {
+                    gtag( 'event', action, {
+                        event_category: category,
+                        event_label: window.location.pathname
+                    } );
+                }
+                console.log( `Event tracked: ${ action } - ${ category }` );
+            } catch ( error )
+            {
+                console.warn( 'Analytics tracking error:', error );
             }
-            console.log( `Event tracked: ${ action } - ${ category }` );
         }
 
         // Track clicks importantes
@@ -690,11 +759,19 @@
             } );
         } );
 
-        // Mobile menu toggle (se necessário no futuro)
+        // Mobile menu toggle
         function toggleMobileMenu()
         {
             const navLinks = document.querySelector( '.nav-links' );
-            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+            const isVisible = navLinks.style.display === 'flex';
+            navLinks.style.display = isVisible ? 'none' : 'flex';
+
+            // Update aria-expanded for accessibility
+            const menuButton = document.querySelector( '.mobile-menu-button' );
+            if ( menuButton )
+            {
+                menuButton.setAttribute( 'aria-expanded', !isVisible );
+            }
         }
     </script>
 </body>

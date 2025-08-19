@@ -457,9 +457,9 @@ class TOITNexusServer
       {
         console.log( '\n🎉 TOIT NEXUS SERVER INICIADO COM SUCESSO!' );
         console.log( '═══════════════════════════════════════════' );
-        console.log( `🌐 URL: http://localhost:${ this.port }` );
-        console.log( `📊 Health: http://api.toit.com.br:${ this.port }/health` );
-        console.log( `🔐 API: http://localhost:${ this.port }` );
+        console.log( `🌐 URL: https://api.toit.com.br:${ this.port }` );
+        console.log( `📊 Health: https://api.toit.com.br:${ this.port }/health` );
+        console.log( `🔐 API: https://api.toit.com.br:${ this.port }` );
         console.log( `📋 Ambiente: ${ this.environment }` );
         console.log( '═══════════════════════════════════════════\n' );
       } );

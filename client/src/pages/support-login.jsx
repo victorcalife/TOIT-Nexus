@@ -7,6 +7,7 @@ import { Shield, Eye, EyeOff, Zap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { formatCpf, cleanCpf, validateCpf } from "@/lib/utils";
 import workflowLogo from "@/assets/SELOtoit-workflow-logo.svg";
+import { API_CONFIG } from "@/config/env";
 
 export default function SupportLogin()
 {
@@ -53,11 +54,12 @@ export default function SupportLogin()
 
     try
     {
-      const response = await fetch( '/api/simple-login', {
+      const response = await fetch( `${ API_CONFIG.BASE_URL }${ API_CONFIG.ENDPOINTS.AUTH.SIMPLE_LOGIN }`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify( {
           cpf: cleanCpf( cpf ),
           password,

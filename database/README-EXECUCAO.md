@@ -93,9 +93,9 @@ O sistema estará pronto para:
 Após executar os SQLs, configure o arquivo `.env` do servidor:
 
 ```env
-DATABASE_URL=postgresql://usuario:senha@host:5432/nome_do_banco
-JWT_SECRET=sua_chave_secreta_super_forte
-NODE_ENV=development
+DATABASE_URL=postgresql://postgres:foalaCypsSEvgsygpcDaySNcGiweMsmv@postgres.railway.internal:5432/railway
+JWT_SECRET=aSUIOdw&kjdwa!hJAdw@sqondq%&$jSADwkukj5455
+NODE_ENV=production
 PORT=8080
 ```
 
@@ -106,7 +106,7 @@ Para testar se tudo funcionou:
 1. Execute os SQLs no TablePlus
 2. Configure o `.env` do servidor
 3. Execute: `cd server && npm run dev`
-4. Acesse: `http://localhost:8080/health`
+4. Acesse: `https://api.toit.com.br/health`
 5. Teste login com dados do Victor
 
 ## 📞 SUPORTE

@@ -16,7 +16,7 @@
     "db:seed": "node scripts/seed.js",
     "db:reset": "node scripts/reset.js",
     "build": "echo 'Server build complete'",
-    "health": "curl -f http://localhost:8080/health || exit 1",
+    "health": "curl -f https://api.toit.com.br/health || exit 1",
     "production": "NODE_ENV=production node server.js",
     "quantum:activate": "chmod +x ../activate-quantum-system.sh && ../activate-quantum-system.sh",
     "quantum:status": "python3 ../quantum_status.py",

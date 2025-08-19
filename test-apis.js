@@ -1,7 +1,7 @@
 // Teste das APIs principais do TOIT NEXUS
 import fetch from 'node-fetch';
 
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'https://api.toit.com.br:8080';
 
 async function testAPI( endpoint, method = 'GET', body = null )
 {
