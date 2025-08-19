@@ -67,7 +67,6 @@ class TOITNexusServer
           ? [
             'https://nexus.toit.com.br',
             'https://supnexus.toit.com.br',
-            'https://admin.toit.com.br',
             'https://api.toit.com.br'
           ]
           : [
@@ -459,8 +458,8 @@ class TOITNexusServer
         console.log( '\n🎉 TOIT NEXUS SERVER INICIADO COM SUCESSO!' );
         console.log( '═══════════════════════════════════════════' );
         console.log( `🌐 URL: http://localhost:${ this.port }` );
-        console.log( `📊 Health: http://localhost:${ this.port }/health` );
-        console.log( `🔐 API: http://localhost:${ this.port }/api` );
+        console.log( `📊 Health: http://api.toit.com.br:${ this.port }/health` );
+        console.log( `🔐 API: http://localhost:${ this.port }` );
         console.log( `📋 Ambiente: ${ this.environment }` );
         console.log( '═══════════════════════════════════════════\n' );
       } );
