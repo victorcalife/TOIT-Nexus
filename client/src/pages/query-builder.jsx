@@ -5,9 +5,7 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../hooks/useAuth';
-import { useToast } from '../hooks/use-toast';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
@@ -159,37 +157,9 @@ const SAMPLE_DATA = [
   { name: 'Jun', vendas: 5500, meta: 5200 }
 ];
 
-// API Request helper
-const apiRequest = async ( url, method = 'GET', data = null ) =>
-{
-  const options = {
-    method,
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${ localStorage.getItem( 'accessToken' ) }`
-    }
-  };
-
-  if ( data && method !== 'GET' )
-  {
-    options.body = JSON.stringify( data );
-  }
-
-  const response = await fetch( url, options );
-
-  if ( !response.ok )
-  {
-    const error = await response.json();
-    throw new Error( error.error || 'Erro na requisição' );
-  }
-
-  return response.json();
-};
-
 // Query Builder Component
 export default function QueryBuilder()
 {
-  const { user } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
 

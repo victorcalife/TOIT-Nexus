@@ -16,7 +16,6 @@ const tenantsRoutes = require( './tenants-routes' );
 const workspacesRoutes = require( './workspaces-routes' );
 const filesRoutes = require( './files-routes' );
 const notificationsRoutes = require( './notifications-routes' );
-const dashboardRoutes = require( './dashboard-routes' );
 
 /**
  * Configurar todas as rotas do sistema
@@ -87,7 +86,6 @@ function setupRoutes( app )
   app.use( '/api/workspaces', workspacesRoutes );
   app.use( '/api/files', filesRoutes );
   app.use( '/api/notifications', notificationsRoutes );
-  app.use( '/api/dashboard', dashboardRoutes );
 
   // Rota de compatibilidade para simple-login (mapeamento direto)
   app.use( '/api', authRoutes );

@@ -1,41 +1,38 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
-import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input';
-import { Badge } from '../components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
-import { ScrollArea } from '../components/ui/scroll-area';
-import { Separator } from '../components/ui/separator';
-import { useToast } from '../hooks/use-toast';
-import { useAuth } from '../hooks/useAuth';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
+import { useToast } from '@/hooks/use-toast';
 import
-{
-  MessageCircle,
-  Phone,
-  Video,
-  MoreVertical,
-  Send,
-  Paperclip,
-  Smile,
-  Search,
-  Users,
-  Settings,
-  Plus,
-  Wifi,
-  WifiOff
-} from 'lucide-react';
+  {
+    MessageCircle,
+    Phone,
+    Video,
+    MoreVertical,
+    Send,
+    Paperclip,
+    Smile,
+    Search,
+    Users,
+    Settings,
+    Plus,
+    Wifi,
+    WifiOff
+  } from 'lucide-react';
 import io from 'socket.io-client';
 
 export default function Chat()
 {
-  const { user } = useAuth();
   const { toast } = useToast();
-  const queryClient = useQueryClient();
-
   const [ socket, setSocket ] = useState( null );
   const [ isConnected, setIsConnected ] = useState( false );
   const [ selectedConversation, setSelectedConversation ] = useState( null );
+  const [ conversations, setConversations ] = useState( [] );
+  const [ messages, setMessages ] = useState( [] );
   const [ newMessage, setNewMessage ] = useState( '' );
   const [ searchTerm, setSearchTerm ] = useState( '' );
   const [ onlineUsers, setOnlineUsers ] = useState( new Set() );
@@ -43,106 +40,15 @@ export default function Chat()
   const [ isTyping, setIsTyping ] = useState( false );
   const messagesEndRef = useRef( null );
   const typingTimeoutRef = useRef( null );
-  const fileInputRef = useRef( null );
-
-  // Query para listar conversas
-  const { data: conversationsData, isLoading: conversationsLoading } = useQuery( {
-    queryKey: [ 'conversations' ],
-    queryFn: async () =>
-    {
-      const response = await fetch( '/api/chat/conversations', {
-        headers: {
-          'Authorization': `Bearer ${ localStorage.getItem( 'accessToken' ) }`
-        }
-      } );
-
-      if ( !response.ok )
-      {
-        throw new Error( 'Erro ao carregar conversas' );
-      }
-
-      return response.json();
-    },
-    enabled: !!user
-  } );
-
-  // Query para mensagens da conversa selecionada
-  const { data: messagesData, isLoading: messagesLoading } = useQuery( {
-    queryKey: [ 'messages', selectedConversation?.id ],
-    queryFn: async () =>
-    {
-      if ( !selectedConversation?.id ) return null;
-
-      const response = await fetch( `/api/chat/conversations/${ selectedConversation.id }/messages`, {
-        headers: {
-          'Authorization': `Bearer ${ localStorage.getItem( 'accessToken' ) }`
-        }
-      } );
-
-      if ( !response.ok )
-      {
-        throw new Error( 'Erro ao carregar mensagens' );
-      }
-
-      return response.json();
-    },
-    enabled: !!selectedConversation?.id
-  } );
-
-  // Mutation para enviar mensagem
-  const sendMessageMutation = useMutation( {
-    mutationFn: async ( { conversationId, content, messageType = 'text', attachments = [] } ) =>
-    {
-      const formData = new FormData();
-      formData.append( 'content', content );
-      formData.append( 'messageType', messageType );
-
-      attachments.forEach( ( file, index ) =>
-      {
-        formData.append( 'attachments', file );
-      } );
-
-      const response = await fetch( `/api/chat/conversations/${ conversationId }/messages`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${ localStorage.getItem( 'accessToken' ) }`
-        },
-        body: formData
-      } );
-
-      if ( !response.ok )
-      {
-        const error = await response.json();
-        throw new Error( error.error || 'Erro ao enviar mensagem' );
-      }
-
-      return response.json();
-    },
-    onSuccess: () =>
-    {
-      setNewMessage( '' );
-      queryClient.invalidateQueries( [ 'messages', selectedConversation?.id ] );
-      queryClient.invalidateQueries( [ 'conversations' ] );
-      scrollToBottom();
-    },
-    onError: ( error ) =>
-    {
-      toast( {
-        title: 'Erro ao enviar mensagem',
-        description: error.message,
-        variant: 'destructive'
-      } );
-    }
-  } );
 
   // Inicializar WebSocket
   useEffect( () =>
   {
-    if ( !user ) return;
+    const token = localStorage.getItem( 'token' );
+    const userId = localStorage.getItem( 'userId' );
+    const tenantId = localStorage.getItem( 'tenantId' );
 
-    const token = localStorage.getItem( 'accessToken' );
-
-    if ( !token )
+    if ( !token || !userId )
     {
       toast( {
         title: "Erro de autenticação",
@@ -163,12 +69,7 @@ export default function Chat()
       setIsConnected( true );
 
       // Autenticar usuário
-      newSocket.emit( 'authenticate', {
-        userId: user.id,
-        userName: user.name,
-        tenantId: user.tenant_id,
-        avatar: user.avatar
-      } );
+      newSocket.emit( 'authenticate', { token, userId, tenantId } );
     } );
 
     newSocket.on( 'disconnect', () =>
@@ -181,7 +82,7 @@ export default function Chat()
     {
       console.log( '✅ Autenticado no chat' );
       setOnlineUsers( new Set( data.onlineUsers.map( u => u.userId ) ) );
-      queryClient.invalidateQueries( [ 'conversations' ] );
+      loadConversations();
     } );
 
     newSocket.on( 'auth_error', ( error ) =>
@@ -196,25 +97,19 @@ export default function Chat()
     // Eventos de mensagens
     newSocket.on( 'new_message', ( message ) =>
     {
-      queryClient.invalidateQueries( [ 'messages', message.conversationId ] );
-      queryClient.invalidateQueries( [ 'conversations' ] );
+      setMessages( prev => [ ...prev, message ] );
 
-      // Notificação se não for do usuário atual
-      if ( message.senderId !== user?.id )
-      {
-        toast( {
-          title: message.senderName || 'Nova mensagem',
-          description: message.content.substring( 0, 100 ),
-        } );
-      }
-
-      scrollToBottom();
+      // Atualizar última mensagem na conversa
+      setConversations( prev => prev.map( conv =>
+        conv.id === message.conversationId
+          ? { ...conv, lastMessage: message.content, timestamp: new Date( message.timestamp ) }
+          : conv
+      ) );
     } );
 
     newSocket.on( 'room_messages', ( data ) =>
     {
-      // As mensagens agora vêm via React Query
-      scrollToBottom();
+      setMessages( data.messages );
     } );
 
     // Eventos de usuários
@@ -358,18 +253,16 @@ export default function Chat()
   // Enviar mensagem
   const handleSendMessage = () =>
   {
-    if ( !newMessage.trim() || !selectedConversation ) return;
+    if ( !newMessage.trim() || !selectedConversation || !socket ) return;
 
-    // Parar de digitar
-    if ( socket )
-    {
-      socket.emit( 'stop_typing', { roomId: selectedConversation.id } );
-    }
-
-    sendMessageMutation.mutate( {
-      conversationId: selectedConversation.id,
-      content: newMessage.trim()
+    socket.emit( 'send_message', {
+      roomId: selectedConversation.id,
+      content: newMessage,
+      type: 'text'
     } );
+
+    setNewMessage( '' );
+    stopTyping();
   };
 
   // Indicador de digitação
@@ -462,13 +355,8 @@ export default function Chat()
     }
   };
 
-  // Obter dados das queries
-  const conversations = conversationsData?.data?.conversations || [];
-  const messages = messagesData?.data?.messages || [];
-
   const filteredConversations = conversations.filter( conv =>
-    conv.name?.toLowerCase().includes( searchTerm.toLowerCase() ) ||
-    conv.participants?.some( p => p.name?.toLowerCase().includes( searchTerm.toLowerCase() ) )
+    conv.name.toLowerCase().includes( searchTerm.toLowerCase() )
   );
 
   return (
@@ -515,8 +403,8 @@ export default function Chat()
               <div
                 key={ conversation.id }
                 className={ `p-3 rounded-lg cursor-pointer transition-colors mb-1 ${ selectedConversation?.id === conversation.id
-                  ? 'bg-primary/10 border border-primary/20'
-                  : 'hover:bg-muted'
+                    ? 'bg-primary/10 border border-primary/20'
+                    : 'hover:bg-muted'
                   }` }
                 onClick={ () => selectConversation( conversation ) }
               >
@@ -628,8 +516,8 @@ export default function Chat()
                       ) }
 
                       <div className={ `rounded-lg p-3 ${ isOwn
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-muted'
+                          ? 'bg-primary text-primary-foreground'
+                          : 'bg-muted'
                         }` }>
                         { !isOwn && (
                           <p className="text-xs font-medium mb-1 opacity-70">
@@ -678,13 +566,9 @@ export default function Chat()
 
               <Button
                 onClick={ handleSendMessage }
-                disabled={ !newMessage.trim() || sendMessageMutation.isLoading }
+                disabled={ !newMessage.trim() || !isConnected }
               >
-                { sendMessageMutation.isLoading ? (
-                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
-                ) : (
-                  <Send className="h-4 w-4" />
-                ) }
+                <Send className="h-4 w-4" />
               </Button>
             </div>
           </div>

@@ -33,7 +33,7 @@ import
     Shield
   } from 'lucide-react';
 import { StandardHeader } from '@/components/standard-header';
-import { useAuth } from '@/hooks/useAuth.jsx';
+import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 
 // Import existing functional pages

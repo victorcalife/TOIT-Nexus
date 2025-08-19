@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Building2, Search, Users, Workflow } from 'lucide-react';
 import { StandardHeader } from '@/components/standard-header';
-import { useAuth } from '@/hooks/useAuth.jsx';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function SelectTenant()
 {

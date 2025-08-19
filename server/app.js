@@ -377,15 +377,6 @@ class TOITNexusServer
     } catch ( error )
     {
       console.error( '❌ Erro na conexão com banco de dados:', error.message );
-
-      // Em desenvolvimento, permitir execução sem banco
-      if ( this.environment === 'development' )
-      {
-        console.warn( '⚠️ Modo desenvolvimento: continuando sem banco de dados' );
-        console.warn( '⚠️ Funcionalidades que dependem do banco podem não funcionar' );
-        return false;
-      }
-
       throw error;
     }
   }

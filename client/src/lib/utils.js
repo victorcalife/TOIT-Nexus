@@ -1,26 +1,28 @@
-import { clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
-
 /**
- * Combina classes CSS usando clsx e tailwind-merge
+ * UTILS - FUNÇÕES UTILITÁRIAS
+ * 100% JavaScript - SEM TYPESCRIPT
  */
+
+import { clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
+
 export function cn( ...inputs )
 {
-  return twMerge( clsx( inputs ) );
+  return twMerge( clsx( inputs ) )
 }
 
 /**
- * Formata um CPF adicionando pontos e hífen
- * @param cpf - String com números do CPF
- * @returns CPF formatado (xxx.xxx.xxx-xx)
+ * Formatar CPF
  */
-export function formatCpf( cpf )
+export function formatCPF( cpf )
 {
-  // Remove caracteres não numéricos
-  const numbers = cpf.replace( /\D/g, '' );
+  if ( !cpf ) return ''
+
+  // Remove tudo que não é dígito
+  const numbers = cpf.replace( /\D/g, '' )
 
   // Limita a 11 dígitos
-  const limitedNumbers = numbers.slice( 0, 11 );
+  const limitedNumbers = numbers.slice( 0, 11 )
 
   // Aplica a formatação
   if ( limitedNumbers.length <= 11 )
@@ -29,74 +31,150 @@ export function formatCpf( cpf )
       .replace( /(\d{3})(\d)/, '$1.$2' )
       .replace( /(\d{3})(\d)/, '$1.$2' )
       .replace( /(\d{3})(\d{1,2})/, '$1-$2' )
-      .replace( /(-\d{2})\d+?$/, '$1' );
+      .replace( /(-\d{2})\d+?$/, '$1' )
   }
 
   return limitedNumbers.slice( 0, 11 )
-    .replace( /(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4' );
+    .replace( /(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4' )
 }
 
 /**
- * Remove a máscara do CPF retornando apenas números  
- * @param cpf - CPF formatado ou não
- * @returns String com apenas os números do CPF
+ * Formatar CNPJ
  */
-export function cleanCpf( cpf )
+export function formatCNPJ( cnpj )
 {
-  return cpf.replace( /\D/g, '' );
+  if ( !cnpj ) return ''
+
+  const numbers = cnpj.replace( /\D/g, '' )
+  const limitedNumbers = numbers.slice( 0, 14 )
+
+  return limitedNumbers
+    .replace( /(\d{2})(\d)/, '$1.$2' )
+    .replace( /(\d{3})(\d)/, '$1.$2' )
+    .replace( /(\d{3})(\d)/, '$1/$2' )
+    .replace( /(\d{4})(\d{1,2})/, '$1-$2' )
+    .replace( /(-\d{2})\d+?$/, '$1' )
 }
 
 /**
- * Valida se o CPF é válido usando o algoritmo oficial
- * @param cpf - CPF com ou sem máscara
- * @returns true se CPF for válido, false caso contrário
+ * Formatar telefone
  */
-export function validateCpf( cpf )
+export function formatPhone( phone )
 {
-  // Remove caracteres não numéricos
-  const numbers = cleanCpf( cpf );
+  if ( !phone ) return ''
 
-  // Verifica se tem 11 dígitos
-  if ( numbers.length !== 11 )
+  const numbers = phone.replace( /\D/g, '' )
+
+  if ( numbers.length <= 10 )
   {
-    return false;
+    return numbers
+      .replace( /(\d{2})(\d)/, '($1) $2' )
+      .replace( /(\d{4})(\d)/, '$1-$2' )
   }
 
-  // Verifica se todos os dígitos são iguais (CPFs inválidos)
-  if ( /^(\d)\1{10}$/.test( numbers ) )
-  {
-    return false;
-  }
+  return numbers
+    .replace( /(\d{2})(\d)/, '($1) $2' )
+    .replace( /(\d{5})(\d)/, '$1-$2' )
+}
 
-  // Validação do primeiro dígito verificador
-  let sum = 0;
+/**
+ * Validar email
+ */
+export function isValidEmail( email )
+{
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return emailRegex.test( email )
+}
+
+/**
+ * Validar CPF
+ */
+export function isValidCPF( cpf )
+{
+  if ( !cpf ) return false
+
+  const numbers = cpf.replace( /\D/g, '' )
+
+  if ( numbers.length !== 11 ) return false
+  if ( /^(\d)\1{10}$/.test( numbers ) ) return false
+
+  let sum = 0
   for ( let i = 0; i < 9; i++ )
   {
-    sum += parseInt( numbers.charAt( i ) ) * ( 10 - i );
+    sum += parseInt( numbers.charAt( i ) ) * ( 10 - i )
   }
 
-  let remainder = sum % 11;
-  let firstDigit = remainder < 2 ? 0 : 11 - remainder;
+  let remainder = ( sum * 10 ) % 11
+  if ( remainder === 10 || remainder === 11 ) remainder = 0
+  if ( remainder !== parseInt( numbers.charAt( 9 ) ) ) return false
 
-  if ( parseInt( numbers.charAt( 9 ) ) !== firstDigit )
-  {
-    return false;
-  }
-
-  // Validação do segundo dígito verificador
-  sum = 0;
+  sum = 0
   for ( let i = 0; i < 10; i++ )
   {
-    sum += parseInt( numbers.charAt( i ) ) * ( 11 - i );
+    sum += parseInt( numbers.charAt( i ) ) * ( 11 - i )
   }
 
-  remainder = sum % 11;
-  let secondDigit = remainder < 2 ? 0 : 11 - remainder;
+  remainder = ( sum * 10 ) % 11
+  if ( remainder === 10 || remainder === 11 ) remainder = 0
+  if ( remainder !== parseInt( numbers.charAt( 10 ) ) ) return false
 
-  if ( parseInt( numbers.charAt( 10 ) ) !== secondDigit )
+  return true
+}
+
+/**
+ * Gerar ID único
+ */
+export function generateId()
+{
+  return Math.random().toString( 36 ).substr( 2, 9 )
+}
+
+/**
+ * Formatar data
+ */
+export function formatDate( date, format = 'dd/MM/yyyy' )
+{
+  if ( !date ) return ''
+
+  const d = new Date( date )
+  const day = String( d.getDate() ).padStart( 2, '0' )
+  const month = String( d.getMonth() + 1 ).padStart( 2, '0' )
+  const year = d.getFullYear()
+
+  return format
+    .replace( 'dd', day )
+    .replace( 'MM', month )
+    .replace( 'yyyy', year )
+}
+
+/**
+ * Debounce function
+ */
+export function debounce( func, wait )
+{
+  let timeout
+  return function executedFunction( ...args )
   {
-    return false;
+    const later = () =>
+    {
+      clearTimeout( timeout )
+      func( ...args )
+    }
+    clearTimeout( timeout )
+    timeout = setTimeout( later, wait )
   }
+}
 
-  return true;
+/**
+ * ALIASES PARA COMPATIBILIDADE
+ */
+export const formatCpf = formatCPF
+export const formatCnpj = formatCNPJ
+export const cleanCpf = ( cpf ) => cpf?.replace( /\D/g, '' ) || ''
+export const cleanCnpj = ( cnpj ) => cnpj?.replace( /\D/g, '' ) || ''
+export const validateCpf = isValidCPF
+export const validateCnpj = ( cnpj ) =>
+{
+  const numbers = cnpj?.replace( /\D/g, '' ) || ''
+  return numbers.length === 14
 }

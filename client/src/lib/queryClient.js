@@ -4,8 +4,6 @@
  * 100% JavaScript - SEM TYPESCRIPT
  */
 
-import { QueryClient } from '@tanstack/react-query';
-
 const getApiBaseUrl = () =>
 {
   if ( import.meta.env.VITE_API_URL )
@@ -104,4 +102,6 @@ export const queryClientConfig = {
 /**
  * Instância do QueryClient
  */
+import { QueryClient } from '@tanstack/react-query';
+
 export const queryClient = new QueryClient( queryClientConfig );

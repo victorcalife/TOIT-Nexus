@@ -5,9 +5,7 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../hooks/useAuth';
-import { useToast } from '../hooks/use-toast';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
@@ -15,23 +13,22 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Textarea } from '../components/ui/textarea';
 import
-{
-  Mail, Send, Reply, ReplyAll, Forward, Archive, Trash2,
-  Star, StarOff, Paperclip, Search, Filter, Plus, Settings,
-  Inbox, Sent, Drafts, Spam, MoreHorizontal, Download,
-  Bold, Italic, Underline, Link, Image, List, AlignLeft,
-  AlignCenter, AlignRight, Code, Quote, Undo, Redo
-} from 'lucide-react';
+  {
+    Mail, Send, Reply, ReplyAll, Forward, Archive, Trash2,
+    Star, StarOff, Paperclip, Search, Filter, Plus, Settings,
+    Inbox, Sent, Drafts, Spam, MoreHorizontal, Download,
+    Bold, Italic, Underline, Link, Image, List, AlignLeft,
+    AlignCenter, AlignRight, Code, Quote, Undo, Redo
+  } from 'lucide-react';
 
 export default function Email()
 {
   const { user, tenant } = useAuth();
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
-
   const [ selectedFolder, setSelectedFolder ] = useState( 'inbox' );
+  const [ emails, setEmails ] = useState( [] );
   const [ selectedEmail, setSelectedEmail ] = useState( null );
   const [ showComposer, setShowComposer ] = useState( false );
+  const [ loading, setLoading ] = useState( true );
   const [ searchQuery, setSearchQuery ] = useState( '' );
   const [ composerData, setComposerData ] = useState( {
     to: '',
@@ -44,115 +41,31 @@ export default function Email()
 
   const editorRef = useRef( null );
 
-  // Query para listar pastas
-  const { data: foldersData } = useQuery( {
-    queryKey: [ 'email-folders' ],
-    queryFn: async () =>
+  useEffect( () =>
+  {
+    loadEmails();
+  }, [ selectedFolder ] );
+
+  const loadEmails = async () =>
+  {
+    try
     {
-      const response = await fetch( '/api/email/folders', {
-        headers: {
-          'Authorization': `Bearer ${ localStorage.getItem( 'accessToken' ) }`
-        }
-      } );
+      setLoading( true );
 
-      if ( !response.ok )
-      {
-        throw new Error( 'Erro ao carregar pastas' );
-      }
+      // Simular carregamento de emails
+      await new Promise( resolve => setTimeout( resolve, 800 ) );
 
-      return response.json();
-    },
-    enabled: !!user
-  } );
+      const mockEmails = generateMockEmails( selectedFolder );
+      setEmails( mockEmails );
 
-  // Query para listar emails
-  const { data: emailsData, isLoading } = useQuery( {
-    queryKey: [ 'emails', selectedFolder, searchQuery ],
-    queryFn: async () =>
+    } catch ( error )
     {
-      const params = new URLSearchParams( {
-        folder: selectedFolder,
-        limit: 50,
-        ...( searchQuery && { search: searchQuery } )
-      } );
-
-      const response = await fetch( `/api/email?${ params }`, {
-        headers: {
-          'Authorization': `Bearer ${ localStorage.getItem( 'accessToken' ) }`
-        }
-      } );
-
-      if ( !response.ok )
-      {
-        throw new Error( 'Erro ao carregar emails' );
-      }
-
-      return response.json();
-    },
-    enabled: !!user
-  } );
-
-  // Mutation para enviar email
-  const sendEmailMutation = useMutation( {
-    mutationFn: async ( emailData ) =>
+      console.error( 'Erro ao carregar emails:', error );
+    } finally
     {
-      const formData = new FormData();
-      Object.keys( emailData ).forEach( key =>
-      {
-        if ( key === 'attachments' )
-        {
-          emailData[ key ].forEach( file =>
-          {
-            formData.append( 'attachments', file );
-          } );
-        } else
-        {
-          formData.append( key, emailData[ key ] );
-        }
-      } );
-
-      const response = await fetch( '/api/email/send', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${ localStorage.getItem( 'accessToken' ) }`
-        },
-        body: formData
-      } );
-
-      if ( !response.ok )
-      {
-        const error = await response.json();
-        throw new Error( error.error || 'Erro ao enviar email' );
-      }
-
-      return response.json();
-    },
-    onSuccess: () =>
-    {
-      toast( {
-        title: 'Email enviado',
-        description: 'Seu email foi enviado com sucesso.'
-      } );
-      setShowComposer( false );
-      setComposerData( {
-        to: '',
-        cc: '',
-        bcc: '',
-        subject: '',
-        body: '',
-        attachments: []
-      } );
-      queryClient.invalidateQueries( [ 'emails' ] );
-    },
-    onError: ( error ) =>
-    {
-      toast( {
-        title: 'Erro ao enviar email',
-        description: error.message,
-        variant: 'destructive'
-      } );
+      setLoading( false );
     }
-  } );
+  };
 
   const generateMockEmails = ( folder ) =>
   {
@@ -272,17 +185,31 @@ export default function Email()
 
   const handleSendEmail = async () =>
   {
-    if ( !composerData.to || !composerData.subject || !composerData.body )
+    try
     {
-      toast( {
-        title: 'Campos obrigatórios',
-        description: 'Preencha destinatário, assunto e corpo do email.',
-        variant: 'destructive'
-      } );
-      return;
-    }
+      // Simular envio de email
+      console.log( 'Enviando email:', composerData );
 
-    sendEmailMutation.mutate( composerData );
+      await new Promise( resolve => setTimeout( resolve, 1000 ) );
+
+      setShowComposer( false );
+      setComposerData( {
+        to: '',
+        cc: '',
+        bcc: '',
+        subject: '',
+        body: '',
+        attachments: []
+      } );
+
+      // Mostrar notificação de sucesso
+      alert( 'Email enviado com sucesso!' );
+
+    } catch ( error )
+    {
+      console.error( 'Erro ao enviar email:', error );
+      alert( 'Erro ao enviar email' );
+    }
   };
 
   const formatEmailDate = ( date ) =>
@@ -596,16 +523,9 @@ export default function Email()
               <Button variant="outline" onClick={ () => setShowComposer( false ) }>
                 Cancelar
               </Button>
-              <Button
-                onClick={ handleSendEmail }
-                disabled={ sendEmailMutation.isLoading }
-              >
-                { sendEmailMutation.isLoading ? (
-                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2" />
-                ) : (
-                  <Send className="h-4 w-4 mr-2" />
-                ) }
-                { sendEmailMutation.isLoading ? 'Enviando...' : 'Enviar' }
+              <Button onClick={ handleSendEmail }>
+                <Send className="h-4 w-4 mr-2" />
+                Enviar
               </Button>
             </div>
           </div>
@@ -614,11 +534,7 @@ export default function Email()
     );
   };
 
-  // Obter dados das queries
-  const folders = foldersData?.data?.folders || [];
-  const emails = emailsData?.data?.emails || [];
-
-  if ( isLoading )
+  if ( loading )
   {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">

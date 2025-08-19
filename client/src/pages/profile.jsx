@@ -5,9 +5,7 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../hooks/useAuth';
-import { useToast } from '../hooks/use-toast';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
@@ -18,21 +16,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Switch } from '../components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import
-{
-  User, Camera, Upload, Save, Edit, Settings, Bell,
-  Shield, Activity, Calendar, Clock, MapPin, Phone,
-  Mail, Globe, Github, Linkedin, Twitter, Eye, EyeOff,
-  Download, Trash2, Star, Award, TrendingUp, BarChart3
-} from 'lucide-react';
+  {
+    User, Camera, Upload, Save, Edit, Settings, Bell,
+    Shield, Activity, Calendar, Clock, MapPin, Phone,
+    Mail, Globe, Github, Linkedin, Twitter, Eye, EyeOff,
+    Download, Trash2, Star, Award, TrendingUp, BarChart3
+  } from 'lucide-react';
 
 export default function Profile()
 {
   const { user, tenant, updateUser } = useAuth();
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
   const [ activeTab, setActiveTab ] = useState( 'profile' );
   const [ loading, setLoading ] = useState( false );
-  const [ avatarUploading, setAvatarUploading ] = useState( false );
   const [ profileData, setProfileData ] = useState( {
     name: user?.name || '',
     email: user?.email || '',
@@ -69,108 +64,6 @@ export default function Profile()
   const [ activityData, setActivityData ] = useState( [] );
   const [ statsData, setStatsData ] = useState( {} );
   const fileInputRef = useRef( null );
-
-  // Query para carregar perfil completo
-  const { data: profileFullData, isLoading: profileLoading } = useQuery( {
-    queryKey: [ 'profile' ],
-    queryFn: async () =>
-    {
-      const response = await fetch( '/api/profile', {
-        headers: {
-          'Authorization': `Bearer ${ localStorage.getItem( 'accessToken' ) }`
-        }
-      } );
-
-      if ( !response.ok )
-      {
-        throw new Error( 'Erro ao carregar perfil' );
-      }
-
-      return response.json();
-    },
-    enabled: !!user
-  } );
-
-  // Mutation para atualizar perfil
-  const updateProfileMutation = useMutation( {
-    mutationFn: async ( data ) =>
-    {
-      const response = await fetch( '/api/profile', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${ localStorage.getItem( 'accessToken' ) }`
-        },
-        body: JSON.stringify( data )
-      } );
-
-      if ( !response.ok )
-      {
-        const error = await response.json();
-        throw new Error( error.error || 'Erro ao atualizar perfil' );
-      }
-
-      return response.json();
-    },
-    onSuccess: () =>
-    {
-      toast( {
-        title: 'Perfil atualizado',
-        description: 'Suas informações foram salvas com sucesso.'
-      } );
-      queryClient.invalidateQueries( [ 'profile' ] );
-    },
-    onError: ( error ) =>
-    {
-      toast( {
-        title: 'Erro ao atualizar perfil',
-        description: error.message,
-        variant: 'destructive'
-      } );
-    }
-  } );
-
-  // Mutation para upload de avatar
-  const uploadAvatarMutation = useMutation( {
-    mutationFn: async ( file ) =>
-    {
-      const formData = new FormData();
-      formData.append( 'avatar', file );
-
-      const response = await fetch( '/api/profile/avatar', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${ localStorage.getItem( 'accessToken' ) }`
-        },
-        body: formData
-      } );
-
-      if ( !response.ok )
-      {
-        const error = await response.json();
-        throw new Error( error.error || 'Erro ao fazer upload do avatar' );
-      }
-
-      return response.json();
-    },
-    onSuccess: ( data ) =>
-    {
-      toast( {
-        title: 'Avatar atualizado',
-        description: 'Sua foto de perfil foi atualizada com sucesso.'
-      } );
-      setProfileData( prev => ( { ...prev, avatar: data.data.avatar_url } ) );
-      queryClient.invalidateQueries( [ 'profile' ] );
-    },
-    onError: ( error ) =>
-    {
-      toast( {
-        title: 'Erro ao atualizar avatar',
-        description: error.message,
-        variant: 'destructive'
-      } );
-    }
-  } );
 
   useEffect( () =>
   {
@@ -259,68 +152,49 @@ export default function Profile()
     {
       if ( file.size > 5 * 1024 * 1024 )
       { // 5MB
-        toast( {
-          title: 'Arquivo muito grande',
-          description: 'O arquivo deve ter no máximo 5MB.',
-          variant: 'destructive'
-        } );
+        alert( 'Arquivo muito grande. Máximo 5MB.' );
         return;
       }
 
-      // Validar tipo de arquivo
-      if ( !file.type.startsWith( 'image/' ) )
-      {
-        toast( {
-          title: 'Tipo de arquivo inválido',
-          description: 'Apenas imagens são permitidas.',
-          variant: 'destructive'
-        } );
-        return;
-      }
-
-      // Preview local imediato
       const reader = new FileReader();
       reader.onload = ( e ) =>
       {
         setProfileData( prev => ( { ...prev, avatar: e.target.result } ) );
       };
       reader.readAsDataURL( file );
-
-      // Upload real para o servidor
-      setAvatarUploading( true );
-      uploadAvatarMutation.mutate( file, {
-        onSettled: () =>
-        {
-          setAvatarUploading( false );
-        }
-      } );
     }
   };
 
   const handleSaveProfile = async () =>
   {
-    setLoading( true );
+    try
+    {
+      setLoading( true );
 
-    const profileUpdateData = {
-      name: profileData.name,
-      phone: profileData.phone,
-      bio: profileData.bio,
-      location: profileData.location,
-      website: profileData.website,
-      github: profileData.github,
-      linkedin: profileData.linkedin,
-      twitter: profileData.twitter,
-      timezone: profileData.timezone,
-      language: profileData.language,
-      theme: profileData.theme
-    };
+      // Simular salvamento
+      await new Promise( resolve => setTimeout( resolve, 1000 ) );
 
-    updateProfileMutation.mutate( profileUpdateData, {
-      onSettled: () =>
+      // Atualizar contexto de autenticação
+      if ( updateUser )
       {
-        setLoading( false );
+        updateUser( {
+          ...user,
+          name: profileData.name,
+          email: profileData.email,
+          avatar: profileData.avatar
+        } );
       }
-    } );
+
+      alert( 'Perfil atualizado com sucesso!' );
+
+    } catch ( error )
+    {
+      console.error( 'Erro ao salvar perfil:', error );
+      alert( 'Erro ao salvar perfil' );
+    } finally
+    {
+      setLoading( false );
+    }
   };
 
   const handleSavePreferences = async () =>
@@ -433,14 +307,9 @@ export default function Profile()
               />
               <button
                 onClick={ () => fileInputRef.current?.click() }
-                disabled={ avatarUploading }
-                className="absolute bottom-0 right-0 bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="absolute bottom-0 right-0 bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700 transition-colors"
               >
-                { avatarUploading ? (
-                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
-                ) : (
-                  <Camera className="h-4 w-4" />
-                ) }
+                <Camera className="h-4 w-4" />
               </button>
               <input
                 ref={ fileInputRef }
@@ -813,141 +682,18 @@ export default function Profile()
           </TabsContent>
 
           <TabsContent value="activity" className="mt-6">
-            <div className="space-y-6">
-              {/* Estatísticas de Atividade */ }
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm font-medium text-gray-600">Total de Logins</p>
-                        <p className="text-3xl font-semibold text-gray-900 mt-2">
-                          { user?.login_count || 0 }
-                        </p>
-                      </div>
-                      <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
-                        <Activity className="w-6 h-6 text-blue-500" />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm font-medium text-gray-600">Último Login</p>
-                        <p className="text-lg font-semibold text-gray-900 mt-2">
-                          { user?.last_login ? new Date( user.last_login ).toLocaleDateString( 'pt-BR' ) : 'Nunca' }
-                        </p>
-                      </div>
-                      <div className="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
-                        <Clock className="w-6 h-6 text-green-500" />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm font-medium text-gray-600">Conta Criada</p>
-                        <p className="text-lg font-semibold text-gray-900 mt-2">
-                          { user?.created_at ? new Date( user.created_at ).toLocaleDateString( 'pt-BR' ) : '-' }
-                        </p>
-                      </div>
-                      <div className="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center">
-                        <Calendar className="w-6 h-6 text-purple-500" />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm font-medium text-gray-600">Status</p>
-                        <p className="text-lg font-semibold text-gray-900 mt-2">
-                          { user?.is_active ? 'Ativo' : 'Inativo' }
-                        </p>
-                      </div>
-                      <div className="w-12 h-12 bg-orange-50 rounded-lg flex items-center justify-center">
-                        <BarChart3 className="w-6 h-6 text-orange-500" />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-
-              {/* Atividade Recente */ }
-              <Card>
-                <CardHeader>
-                  <CardTitle>Atividade Recente</CardTitle>
-                  <CardDescription>
-                    Histórico das suas últimas ações no sistema
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    { activityData.length === 0 ? (
-                      <div className="text-center py-8 text-gray-500">
-                        <Activity className="w-12 h-12 mx-auto mb-4 text-gray-400" />
-                        <p>Nenhuma atividade recente registrada</p>
-                      </div>
-                    ) : (
-                      activityData.map( ( activity, index ) => (
-                        <div key={ index } className="flex items-center space-x-4 p-4 border rounded-lg">
-                          <div className="w-8 h-8 bg-blue-50 rounded-full flex items-center justify-center">
-                            <Activity className="w-4 h-4 text-blue-500" />
-                          </div>
-
-                          <div className="flex-1">
-                            <div className="font-medium">{ activity.action }</div>
-                            <div className="text-sm text-gray-600">{ activity.description }</div>
-                          </div>
-
-                          <div className="text-sm text-gray-500">
-                            { formatDate( activity.timestamp ) }
-                          </div>
-                        </div>
-                      ) )
-                    ) }
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Informações da Conta */ }
-              <Card>
-                <CardHeader>
-                  <CardTitle>Informações da Conta</CardTitle>
-                  <CardDescription>
-                    Detalhes técnicos da sua conta
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <Label>ID do Usuário</Label>
-                      <p className="text-sm text-gray-600 font-mono">{ user?.id }</p>
-                    </div>
-                    <div>
-                      <Label>Tenant</Label>
-                      <p className="text-sm text-gray-600">{ tenant?.name || 'N/A' }</p>
-                    </div>
-                    <div>
-                      <Label>Role</Label>
-                      <Badge variant="outline">{ user?.role }</Badge>
-                    </div>
-                    <div>
-                      <Label>Workspace Padrão</Label>
-                      <p className="text-sm text-gray-600">{ user?.default_workspace || 'N/A' }</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+            {/* Conteúdo da aba de atividade será implementado */ }
+            <Card>
+              <CardHeader>
+                <CardTitle>Atividade Recente</CardTitle>
+                <CardDescription>
+                  Histórico das suas atividades no sistema
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">Histórico de atividades em desenvolvimento...</p>
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </div>

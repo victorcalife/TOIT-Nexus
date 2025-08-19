@@ -5,9 +5,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../hooks/useAuth';
-import { useToast } from '../hooks/use-toast';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
@@ -16,20 +14,19 @@ import { Label } from '../components/ui/label';
 import { Textarea } from '../components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import
-{
-  Database, Plus, Settings, TestTube, Trash2, Edit,
-  CheckCircle2, XCircle, AlertCircle, Eye, EyeOff,
-  Server, Wifi, WifiOff, Copy, Download, Upload
-} from 'lucide-react';
+  {
+    Database, Plus, Settings, TestTube, Trash2, Edit,
+    CheckCircle2, XCircle, AlertCircle, Eye, EyeOff,
+    Server, Wifi, WifiOff, Copy, Download, Upload
+  } from 'lucide-react';
 
 export default function DatabaseConnections()
 {
   const { user, tenant } = useAuth();
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
-
+  const [ connections, setConnections ] = useState( [] );
   const [ showConnectionModal, setShowConnectionModal ] = useState( false );
   const [ selectedConnection, setSelectedConnection ] = useState( null );
+  const [ loading, setLoading ] = useState( true );
   const [ testingConnection, setTestingConnection ] = useState( null );
   const [ showPassword, setShowPassword ] = useState( {} );
   const [ connectionForm, setConnectionForm ] = useState( {
@@ -45,63 +42,31 @@ export default function DatabaseConnections()
     tags: []
   } );
 
-  // Query para listar conexões
-  const { data: connectionsData, isLoading } = useQuery( {
-    queryKey: [ 'database-connections' ],
-    queryFn: async () =>
+  useEffect( () =>
+  {
+    loadConnections();
+  }, [] );
+
+  const loadConnections = async () =>
+  {
+    try
     {
-      const response = await fetch( '/api/database-connections', {
-        headers: {
-          'Authorization': `Bearer ${ localStorage.getItem( 'accessToken' ) }`
-        }
-      } );
+      setLoading( true );
 
-      if ( !response.ok )
-      {
-        throw new Error( 'Erro ao carregar conexões' );
-      }
+      // Simular carregamento de conexões
+      await new Promise( resolve => setTimeout( resolve, 800 ) );
 
-      return response.json();
-    },
-    enabled: !!user
-  } );
+      const mockConnections = generateMockConnections();
+      setConnections( mockConnections );
 
-  // Mutation para testar conexão
-  const testConnectionMutation = useMutation( {
-    mutationFn: async ( connectionId ) =>
+    } catch ( error )
     {
-      const response = await fetch( `/api/database-connections/${ connectionId }/test`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${ localStorage.getItem( 'accessToken' ) }`
-        }
-      } );
-
-      if ( !response.ok )
-      {
-        const error = await response.json();
-        throw new Error( error.error || 'Erro ao testar conexão' );
-      }
-
-      return response.json();
-    },
-    onSuccess: () =>
+      console.error( 'Erro ao carregar conexões:', error );
+    } finally
     {
-      toast( {
-        title: 'Conexão testada',
-        description: 'Conexão estabelecida com sucesso!'
-      } );
-      queryClient.invalidateQueries( [ 'database-connections' ] );
-    },
-    onError: ( error ) =>
-    {
-      toast( {
-        title: 'Erro na conexão',
-        description: error.message,
-        variant: 'destructive'
-      } );
+      setLoading( false );
     }
-  } );
+  };
 
   const generateMockConnections = () =>
   {
@@ -224,13 +189,37 @@ export default function DatabaseConnections()
 
   const handleTestConnection = async ( connectionId ) =>
   {
-    setTestingConnection( connectionId );
-    testConnectionMutation.mutate( connectionId, {
-      onSettled: () =>
-      {
-        setTestingConnection( null );
-      }
-    } );
+    try
+    {
+      setTestingConnection( connectionId );
+
+      // Simular teste de conexão
+      await new Promise( resolve => setTimeout( resolve, 2000 ) );
+
+      // Atualizar status da conexão
+      setConnections( prev => prev.map( conn =>
+        conn.id === connectionId
+          ? { ...conn, status: 'connected', lastTested: new Date() }
+          : conn
+      ) );
+
+      alert( 'Conexão testada com sucesso!' );
+
+    } catch ( error )
+    {
+      console.error( 'Erro ao testar conexão:', error );
+
+      setConnections( prev => prev.map( conn =>
+        conn.id === connectionId
+          ? { ...conn, status: 'error', lastTested: new Date() }
+          : conn
+      ) );
+
+      alert( 'Erro ao testar conexão' );
+    } finally
+    {
+      setTestingConnection( null );
+    }
   };
 
   const handleSaveConnection = async () =>
@@ -487,10 +476,7 @@ export default function DatabaseConnections()
     );
   };
 
-  // Obter dados das queries
-  const connections = connectionsData?.data?.connections || [];
-
-  if ( isLoading )
+  if ( loading )
   {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">

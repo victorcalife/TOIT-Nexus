@@ -1,94 +1,65 @@
-import React, { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
-import { Button } from "../components/ui/button";
-import { Badge } from "../components/ui/badge";
-import { Skeleton } from "../components/ui/skeleton";
-import { useToast } from "../hooks/use-toast";
-import { useAuth } from "../hooks/useAuth";
+import { useState } from "react";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { apiRequest, queryClient } from "@/lib/queryClient";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useToast } from "@/hooks/use-toast";
 import
-{
-  Plus,
-  Play,
-  Pause,
-  Edit,
-  Trash2,
-  Activity,
-  Clock,
-  CheckCircle,
-  AlertCircle,
-  Workflow,
-  Zap,
-  Eye,
-  Copy,
-  Settings,
-  RefreshCw,
-  ArrowRight
-} from "lucide-react";
-import
-{
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../components/ui/dialog";
-import { Label } from "../components/ui/label";
-import { Input } from "../components/ui/input";
-import { Textarea } from "../components/ui/textarea";
-import
-{
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
-import VisualWorkflowBuilder from "../components/visual-workflow-builder";
-
-// API Request helper
-const apiRequest = async ( method, url, data = null ) =>
-{
-  const options = {
-    method,
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${ localStorage.getItem( 'accessToken' ) }`
-    }
-  };
-
-  if ( data && method !== 'GET' )
   {
-    options.body = JSON.stringify( data );
-  }
-
-  const response = await fetch( url, options );
-
-  if ( !response.ok )
+    Plus,
+    Play,
+    Pause,
+    Edit,
+    Trash2,
+    Activity,
+    Clock,
+    CheckCircle,
+    AlertCircle,
+    Workflow,
+    Zap,
+    Eye,
+    Copy,
+    Settings,
+    RefreshCw,
+    ArrowRight
+  } from "lucide-react";
+import
   {
-    const error = await response.json();
-    throw new Error( error.error || 'Erro na requisição' );
-  }
-
-  return response.json();
-};
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+  } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import
+  {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+  } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import VisualWorkflowBuilder from "@/components/visual-workflow-builder";
 
 export default function Workflows()
 {
-  const { user } = useAuth();
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
-
   const [ activeTab, setActiveTab ] = useState( 'list' );
-  const [ selectedWorkflowId, setSelectedWorkflowId ] = useState( null );
+  const [ selectedWorkflowId, setSelectedWorkflowId ] = useState < string | null > ( null );
   const [ isCreateDialogOpen, setIsCreateDialogOpen ] = useState( false );
   const [ newWorkflow, setNewWorkflow ] = useState( {
-    name: '',
-    description: '',
-    category: '',
+    name,
+    description,
+    category,
   } );
+
+  const { toast } = useToast();
 
   // Query para workflows visuais (nova API)
   const { data, isLoading,
