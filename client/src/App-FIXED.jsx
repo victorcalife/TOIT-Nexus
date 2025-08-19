@@ -5,6 +5,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { queryClient } from './lib/queryClient';
 import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from './components/theme-provider';
+import { AuthProvider } from './hooks/useAuth';
 
 // Lazy load das páginas
 const Login = React.lazy( () => import( './pages/login' ) );
@@ -75,31 +76,33 @@ function App()
 {
   return (
     <QueryClientProvider client={ queryClient }>
-      <ThemeProvider defaultTheme="system" storageKey="toit-nexus-theme">
-        <TooltipProvider>
-          <Router>
-            <Toaster />
-            <Suspense fallback={ <LoadingSpinner /> }>
-              <Routes>
-                {/* Rota específica para login */ }
-                <Route path="/login" element={ <Login /> } />
+      <AuthProvider>
+        <ThemeProvider defaultTheme="system" storageKey="toit-nexus-theme">
+          <TooltipProvider>
+            <Router>
+              <Toaster />
+              <Suspense fallback={ <LoadingSpinner /> }>
+                <Routes>
+                  {/* Rota específica para login */ }
+                  <Route path="/login" element={ <Login /> } />
 
-                {/* Rota específica para support-login */ }
-                <Route path="/support-login" element={ <SupportLogin /> } />
+                  {/* Rota específica para support-login */ }
+                  <Route path="/support-login" element={ <SupportLogin /> } />
 
-                {/* Rota específica para dashboard */ }
-                <Route path="/dashboard" element={ <Dashboard /> } />
+                  {/* Rota específica para dashboard */ }
+                  <Route path="/dashboard" element={ <Dashboard /> } />
 
-                {/* Rota raiz baseada em domínio */ }
-                <Route path="/" element={ <DomainBasedRoute /> } />
+                  {/* Rota raiz baseada em domínio */ }
+                  <Route path="/" element={ <DomainBasedRoute /> } />
 
-                {/* Fallback para 404 */ }
-                <Route path="*" element={ <NotFound /> } />
-              </Routes>
-            </Suspense>
-          </Router>
-        </TooltipProvider>
-      </ThemeProvider>
+                  {/* Fallback para 404 */ }
+                  <Route path="*" element={ <NotFound /> } />
+                </Routes>
+              </Suspense>
+            </Router>
+          </TooltipProvider>
+        </ThemeProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
