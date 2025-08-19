@@ -403,7 +403,7 @@ router.post( '/simple-login', loginLimiter, [
 
     const { cpf, password, loginType = 'support' } = req.body;
 
-    // Fazer login usando o sistema de autenticação
+    // Fazer login usando o sistema de autenticação (usando CPF)
     const user = await authSystem.authenticateUser( null, password, cpf );
 
     if ( !user )
@@ -438,19 +438,25 @@ router.post( '/simple-login', loginLimiter, [
     // Gerar tokens JWT
     const { accessToken, refreshToken } = authSystem.generateTokens( user );
 
-    // Criar sessão no banco
-    await authSystem.createSession( user.id, accessToken, refreshToken, req.ip, req.get( 'User-Agent' ) );
-
     // Configurar cookies seguros
     const cookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: 'lax',
       maxAge: 24 * 60 * 60 * 1000 // 24 horas
     };
 
     res.cookie( 'accessToken', accessToken, cookieOptions );
     res.cookie( 'refreshToken', refreshToken, { ...cookieOptions, maxAge: 7 * 24 * 60 * 60 * 1000 } );
+
+    // Atualizar último login (sem criar sessão por enquanto)
+    try
+    {
+      await authSystem.updateLastLogin( user.id );
+    } catch ( error )
+    {
+      console.warn( '⚠️ Erro ao atualizar último login:', error.message );
+    }
 
     res.json( {
       success: true,
