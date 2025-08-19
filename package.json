@@ -2,9 +2,9 @@
   "name": "toit-nexus",
   "version": "2.0.0",
   "description": "TOIT NEXUS - Sistema Enterprise Completo",
-  "main": "server/server.js",
+  "main": "start.js",
   "scripts": {
-    "start": "cd server && npm start",
+    "start": "node start.js",
     "build": "cd client && npm install && npm run build && cd ../server && npm install",
     "client:install": "cd client && npm install",
     "client:build": "cd client && npm run build",

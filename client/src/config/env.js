@@ -8,9 +8,9 @@ const isDevelopment = import.meta.env.DEV;
 const isProduction = import.meta.env.PROD;
 
 // URLs base
-const API_BASE_URL = isDevelopment 
+const API_BASE_URL = isDevelopment
   ? 'http://localhost:8080'
-  : 'https://supnexus.toit.com.br';
+  : 'https://api.toit.com.br';
 
 const FRONTEND_URL = isDevelopment
   ? 'http://localhost:5173'
@@ -53,13 +53,14 @@ export const ENV_CONFIG = {
 };
 
 // Log da configuração (apenas em desenvolvimento)
-if (isDevelopment) {
-  console.log('🔧 [ENV-CONFIG] Configuração carregada:', {
+if ( isDevelopment )
+{
+  console.log( '🔧 [ENV-CONFIG] Configuração carregada:', {
     API_BASE_URL,
     FRONTEND_URL,
     SUPPORT_URL,
     NODE_ENV: import.meta.env.MODE
-  });
+  } );
 }
 
 export default {
