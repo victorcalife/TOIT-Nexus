@@ -404,21 +404,20 @@ router.post( '/simple-login', loginLimiter, [
     const { cpf, password, loginType = 'support' } = req.body;
 
     // Fazer login usando o sistema de autenticação
-    const loginResult = await authSystem.login( cpf, password );
+    const user = await authSystem.authenticateUser( null, password, cpf );
 
-    if ( !loginResult.success )
+    if ( !user )
     {
-      console.log( '❌ [SIMPLE-LOGIN] Login falhou:', loginResult.error );
+      console.log( '❌ [SIMPLE-LOGIN] Login falhou: Credenciais inválidas' );
       return res.status( 401 ).json( {
         success: false,
-        error: loginResult.error,
+        error: 'Credenciais inválidas',
         message: 'CPF ou senha incorretos',
         code: 'INVALID_CREDENTIALS'
       } );
     }
 
     // Verificar se o usuário tem permissão para login de suporte
-    const user = loginResult.user;
     if ( loginType === 'support' && ![ 'admin', 'super_admin', 'support' ].includes( user.role ) )
     {
       console.log( '❌ [SIMPLE-LOGIN] Usuário sem permissão de suporte:', user.role );
@@ -436,25 +435,41 @@ router.post( '/simple-login', loginLimiter, [
       loginType
     } );
 
-    // Configurar cookie de sessão
-    res.cookie( 'auth_token', loginResult.token, {
+    // Gerar tokens JWT
+    const { accessToken, refreshToken } = authSystem.generateTokens( user );
+
+    // Criar sessão no banco
+    await authSystem.createSession( user.id, accessToken, refreshToken, req.ip, req.get( 'User-Agent' ) );
+
+    // Configurar cookies seguros
+    const cookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: 'strict',
       maxAge: 24 * 60 * 60 * 1000 // 24 horas
-    } );
+    };
+
+    res.cookie( 'accessToken', accessToken, cookieOptions );
+    res.cookie( 'refreshToken', refreshToken, { ...cookieOptions, maxAge: 7 * 24 * 60 * 60 * 1000 } );
 
     res.json( {
       success: true,
       message: 'Login realizado com sucesso',
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        firstName: user.name?.split( ' ' )[ 0 ] || 'Usuário'
+      data: {
+        user: {
+          id: user.id,
+          uuid: user.uuid,
+          firstName: user.first_name,
+          lastName: user.last_name,
+          email: user.email,
+          role: user.role,
+          tenant: user.tenant_name
+        },
+        tokens: {
+          accessToken,
+          refreshToken
+        }
       },
-      token: loginResult.token,
       loginType
     } );
 
