@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Login | Acesso à Computação Quântica</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* Interactive Network Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        #networkCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.4;
+        }
+
+        /* Main Container */
+        .login-container {
+            position: relative;
+            z-index: 10;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            top: 22px;
+            left: 22px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 38px;
+            padding: 9px 15px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.68rem;
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .back-button:hover {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: #00d4ff;
+            transform: translateX(-5px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .back-button::before {
+            content: '←';
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .back-button:hover::before {
+            transform: translateX(-3px);
+        }
+
+        /* Login Card */
+        .login-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 19px;
+            padding: 30px;
+            width: 100%;
+            max-width: 338px;
+            position: relative;
+            overflow: hidden;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #00d4ff, #4a148c, #00ff88);
+            background-size: 200% 100%;
+            animation: gradientFlow 3s ease-in-out infinite;
+        }
+
+        /* Header */
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .nexus-logo {
+            font-size: 2.63rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #00d4ff, #4a148c);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite;
+            margin-bottom: 8px;
+            text-shadow: 0 0 23px rgba(0, 212, 255, 0.5);
+        }
+
+        .login-subtitle {
+            font-size: 0.83rem;
+            opacity: 0.8;
+            margin-bottom: 4px;
+        }
+
+        .quantum-tagline {
+            font-size: 0.68rem;
+            color: #00d4ff;
+            opacity: 0.7;
+        }
+
+        /* Form Tabs */
+        .form-tabs {
+            display: flex;
+            margin-bottom: 13px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 11px;
+            padding: 4px;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 9px;
+            background: transparent;
+            border: none;
+            color: white;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.68rem;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .tab-button:not(.active):hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Forms */
+        .form-container {
+            position: relative;
+        }
+
+        .login-form {
+            display: block;
+        }
+
+        .signup-form {
+            display: none;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #00d4ff;
+            font-weight: 600;
+            font-size: 0.68rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 9px 15px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 9px;
+            color: white;
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Password Strength Indicator */
+        .password-strength {
+            margin-top: 8px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .strength-weak {
+            background: #ff4444;
+            width: 25%;
+        }
+
+        .strength-fair {
+            background: #ffaa00;
+            width: 50%;
+        }
+
+        .strength-good {
+            background: #00d4ff;
+            width: 75%;
+        }
+
+        .strength-strong {
+            background: #00ff88;
+            width: 100%;
+        }
+
+        /* Remember Me & Forgot Password */
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 19px;
+            font-size: 0.68rem;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .forgot-password {
+            color: #4a148c;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .forgot-password:hover {
+            color: #00d4ff;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+
+        /* Submit Buttons */
+        .submit-btn {
+            width: 100%;
+            padding: 9px;
+            background: linear-gradient(135deg, #00d4ff, #4a148c);
+            color: white;
+            border: none;
+            border-radius: 9px;
+            font-size: 0.83rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.4);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+
+
+        /* Security Notice */
+        .security-notice {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 8px;
+            padding: 11px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .security-notice h4 {
+            color: #00ff88;
+            margin-bottom: 4px;
+            font-size: 0.68rem;
+        }
+
+        .security-notice p {
+            font-size: 0.6rem;
+            opacity: 0.8;
+            line-height: 1.4;
+        }
+
+        /* Loading Animation */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1s ease;
+        }
+
+        .loading.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-text {
+            font-size: 1.5rem;
+            background: linear-gradient(45deg, #00d4ff, #4a148c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* Animations */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes gradientShift {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        @keyframes gradientFlow {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 200% 50%;
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .login-card {
+                padding: 23px 19px;
+                margin: 15px;
+            }
+
+            .nexus-logo {
+                font-size: 2.1rem;
+            }
+
+            .back-button {
+                top: 15px;
+                left: 15px;
+                padding: 8px 11px;
+                font-size: 0.6rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 19px 15px;
+            }
+
+            .nexus-logo {
+                font-size: 1.65rem;
+            }
+
+
+
+            .form-options {
+                flex-direction: column;
+                gap: 8px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Loading Screen -->
+    <div class="loading" id="loading">
+        <div class="loading-text">Inicializando Nexus...</div>
+    </div>
+
+    <!-- Interactive Network Background -->
+    <div class="bg-animation" id="bgAnimation">
+        <canvas id="networkCanvas"></canvas>
+    </div>
+
+    <!-- Back Button -->
+    <a href="#" class="back-button" onclick="goBack()">
+        Voltar ao TOIT
+    </a>
+
+    <!-- Login Container -->
+    <div class="login-container">
+        <div class="login-card">
+            <!-- Header -->
+            <div class="login-header">
+                <div class="nexus-logo">NEXUS</div>
+                <div class="quantum-tagline">Plataforma NO-CODE + Machine Learning + Quantum</div>
+            </div>
+
+            <!-- Form Tabs -->
+            <div class="form-tabs">
+                <button class="tab-button active" onclick="switchTab('login')">Entrar</button>
+                <button class="tab-button" onclick="switchTab('signup')">Criar Conta</button>
+            </div>
+
+            <!-- Form Container -->
+            <div class="form-container">
+                <!-- Login Form -->
+                <form class="login-form" id="loginForm">
+                    <div class="form-group">
+                        <label for="login-email">Email ou Nome de Usuário</label>
+                        <input type="text" id="login-email" name="email" placeholder="seu@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="login-password">Senha</label>
+                        <input type="password" id="login-password" name="password" placeholder="Sua senha segura"
+                            required>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox" name="remember">
+                            Lembrar-me
+                        </label>
+                        <a href="#" class="forgot-password" onclick="forgotPassword()">Esqueci minha senha</a>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Acessar Nexus</button>
+                </form>
+
+                <!-- Signup Form -->
+                <form class="signup-form" id="signupForm">
+                    <div class="form-group">
+                        <label for="signup-name">Nome Completo</label>
+                        <input type="text" id="signup-name" name="name" placeholder="Seu nome completo" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signup-email">Email</label>
+                        <input type="email" id="signup-email" name="email" placeholder="seu@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signup-cpf">CPF</label>
+                        <input type="text" id="signup-cpf" name="cpf" placeholder="000.000.000-00" maxlength="14"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signup-phone">Telefone</label>
+                        <input type="text" id="signup-phone" name="phone" placeholder="(00) 00000-0000" maxlength="15"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signup-password">Senha</label>
+                        <input type="password" id="signup-password" name="password" placeholder="Crie uma senha forte"
+                            required>
+                        <div class="password-strength" id="passwordStrength">
+                            <div class="password-strength-bar" id="strengthBar"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signup-confirm">Confirmar Senha</label>
+                        <input type="password" id="signup-confirm" name="confirm_password"
+                            placeholder="Confirme sua senha" required>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox" name="terms" required>
+                            Aceito os <a href="#" style="color: #00d4ff;">Termos de Uso</a>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Criar Conta Nexus</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let mouse = { x: 0, y: 0 };
+        let canvas, ctx, nodes = [];
+
+        // Initialize everything
+        document.addEventListener( 'DOMContentLoaded', function ()
+        {
+            initBackground();
+            initMouseTracking();
+            initForms();
+
+            // Hide loading screen
+            setTimeout( () =>
+            {
+                document.getElementById( 'loading' ).classList.add( 'hidden' );
+            }, 1500 );
+        } );
+
+        // Interactive Network Background
+        function initBackground()
+        {
+            canvas = document.getElementById( 'networkCanvas' );
+            ctx = canvas.getContext( '2d' );
+
+            resizeCanvas();
+            createNodes();
+            animateNetwork();
+
+            window.addEventListener( 'resize', resizeCanvas );
+        }
+
+        function resizeCanvas()
+        {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        function createNodes()
+        {
+            nodes = [];
+            const nodeCount = Math.floor( ( canvas.width * canvas.height ) / 20000 );
+
+            for ( let i = 0; i < nodeCount; i++ )
+            {
+                nodes.push( {
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: ( Math.random() - 0.5 ) * 0.3,
+                    vy: ( Math.random() - 0.5 ) * 0.3,
+                    radius: Math.random() * 1.5 + 0.5
+                } );
+            }
+        }
+
+        function animateNetwork()
+        {
+            ctx.clearRect( 0, 0, canvas.width, canvas.height );
+
+            // Update and draw nodes
+            nodes.forEach( node =>
+            {
+                // Move nodes
+                node.x += node.vx;
+                node.y += node.vy;
+
+                // Bounce off edges
+                if ( node.x < 0 || node.x > canvas.width ) node.vx *= -1;
+                if ( node.y < 0 || node.y > canvas.height ) node.vy *= -1;
+
+                // Mouse interaction
+                const dx = mouse.x - node.x;
+                const dy = mouse.y - node.y;
+                const distance = Math.sqrt( dx * dx + dy * dy );
+
+                if ( distance < 100 )
+                {
+                    const force = ( 100 - distance ) / 100;
+                    node.x -= dx * force * 0.005;
+                    node.y -= dy * force * 0.005;
+                }
+
+                // Draw node
+                ctx.beginPath();
+                ctx.arc( node.x, node.y, node.radius, 0, Math.PI * 2 );
+                ctx.fillStyle = `rgba(0, 212, 255, ${ 0.4 + Math.sin( Date.now() * 0.001 + node.x * 0.01 ) * 0.2 })`;
+                ctx.fill();
+            } );
+
+            // Draw connections
+            for ( let i = 0; i < nodes.length; i++ )
+            {
+                for ( let j = i + 1; j < nodes.length; j++ )
+                {
+                    const dx = nodes[ i ].x - nodes[ j ].x;
+                    const dy = nodes[ i ].y - nodes[ j ].y;
+                    const distance = Math.sqrt( dx * dx + dy * dy );
+
+                    if ( distance < 80 )
+                    {
+                        const opacity = ( 80 - distance ) / 80 * 0.3;
+
+                        ctx.beginPath();
+                        ctx.moveTo( nodes[ i ].x, nodes[ i ].y );
+                        ctx.lineTo( nodes[ j ].x, nodes[ j ].y );
+                        ctx.strokeStyle = `rgba(0, 212, 255, ${ opacity })`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            requestAnimationFrame( animateNetwork );
+        }
+
+        // Mouse tracking
+        function initMouseTracking()
+        {
+            document.addEventListener( 'mousemove', ( e ) =>
+            {
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+            } );
+        }
+
+        // Tab switching
+        function switchTab( tab )
+        {
+            const loginForm = document.querySelector( '.login-form' );
+            const signupForm = document.querySelector( '.signup-form' );
+            const tabButtons = document.querySelectorAll( '.tab-button' );
+
+            tabButtons.forEach( btn => btn.classList.remove( 'active' ) );
+
+            if ( tab === 'login' )
+            {
+                loginForm.style.display = 'block';
+                signupForm.style.display = 'none';
+                tabButtons[ 0 ].classList.add( 'active' );
+            } else
+            {
+                loginForm.style.display = 'none';
+                signupForm.style.display = 'block';
+                tabButtons[ 1 ].classList.add( 'active' );
+            }
+        }
+
+        // Form initialization
+        function initForms()
+        {
+            // Login form
+            document.getElementById( 'loginForm' ).addEventListener( 'submit', function ( e )
+            {
+                e.preventDefault();
+                handleLogin( this );
+            } );
+
+            // Signup form
+            document.getElementById( 'signupForm' ).addEventListener( 'submit', function ( e )
+            {
+                e.preventDefault();
+                handleSignup( this );
+            } );
+
+            // Password strength checker
+            document.getElementById( 'signup-password' ).addEventListener( 'input', function ()
+            {
+                checkPasswordStrength( this.value );
+            } );
+
+            // Password confirmation
+            document.getElementById( 'signup-confirm' ).addEventListener( 'input', function ()
+            {
+                checkPasswordMatch();
+            } );
+
+            // CPF mask and validation
+            document.getElementById( 'signup-cpf' ).addEventListener( 'input', function ( e )
+            {
+                let value = e.target.value.replace( /\D/g, '' );
+                value = value.replace( /(\d{3})(\d)/, '$1.$2' );
+                value = value.replace( /(\d{3})(\d)/, '$1.$2' );
+                value = value.replace( /(\d{3})(\d{1,2})$/, '$1-$2' );
+                e.target.value = value;
+
+                if ( value.length === 14 )
+                {
+                    validateCPF( value );
+                }
+            } );
+
+            // Phone mask
+            document.getElementById( 'signup-phone' ).addEventListener( 'input', function ( e )
+            {
+                let value = e.target.value.replace( /\D/g, '' );
+
+                if ( value.length <= 10 )
+                {
+                    // Telefone fixo: (00) 0000-0000
+                    value = value.replace( /(\d{2})(\d)/, '($1) $2' );
+                    value = value.replace( /(\d{4})(\d)/, '$1-$2' );
+                } else
+                {
+                    // Celular: (00) 00000-0000
+                    value = value.replace( /(\d{2})(\d)/, '($1) $2' );
+                    value = value.replace( /(\d{5})(\d)/, '$1-$2' );
+                }
+
+                e.target.value = value;
+            } );
+        }
+
+        // Password strength checker
+        function checkPasswordStrength( password )
+        {
+            const strengthIndicator = document.getElementById( 'passwordStrength' );
+            const strengthBar = document.getElementById( 'strengthBar' );
+
+            if ( password.length === 0 )
+            {
+                strengthIndicator.style.display = 'none';
+                return;
+            }
+
+            strengthIndicator.style.display = 'block';
+
+            let strength = 0;
+            let strengthClass = '';
+
+            // Length check
+            if ( password.length >= 8 ) strength++;
+            if ( password.length >= 12 ) strength++;
+
+            // Character variety checks
+            if ( /[a-z]/.test( password ) ) strength++;
+            if ( /[A-Z]/.test( password ) ) strength++;
+            if ( /[0-9]/.test( password ) ) strength++;
+            if ( /[^A-Za-z0-9]/.test( password ) ) strength++;
+
+            // Determine strength level
+            if ( strength <= 2 )
+            {
+                strengthClass = 'strength-weak';
+            } else if ( strength <= 3 )
+            {
+                strengthClass = 'strength-fair';
+            } else if ( strength <= 4 )
+            {
+                strengthClass = 'strength-good';
+            } else
+            {
+                strengthClass = 'strength-strong';
+            }
+
+            strengthBar.className = `password-strength-bar ${ strengthClass }`;
+        }
+
+        // CPF validation function
+        function validateCPF( cpf )
+        {
+            const cpfField = document.getElementById( 'signup-cpf' );
+            const cleanCPF = cpf.replace( /\D/g, '' );
+
+            // Check if CPF has 11 digits
+            if ( cleanCPF.length !== 11 )
+            {
+                cpfField.style.borderColor = '#ff4444';
+                return false;
+            }
+
+            // Check if all digits are the same
+            if ( /^(\d)\1{10}$/.test( cleanCPF ) )
+            {
+                cpfField.style.borderColor = '#ff4444';
+                return false;
+            }
+
+            // Validate CPF algorithm
+            let sum = 0;
+            for ( let i = 0; i < 9; i++ )
+            {
+                sum += parseInt( cleanCPF.charAt( i ) ) * ( 10 - i );
+            }
+            let remainder = ( sum * 10 ) % 11;
+            if ( remainder === 10 || remainder === 11 ) remainder = 0;
+            if ( remainder !== parseInt( cleanCPF.charAt( 9 ) ) )
+            {
+                cpfField.style.borderColor = '#ff4444';
+                return false;
+            }
+
+            sum = 0;
+            for ( let i = 0; i < 10; i++ )
+            {
+                sum += parseInt( cleanCPF.charAt( i ) ) * ( 11 - i );
+            }
+            remainder = ( sum * 10 ) % 11;
+            if ( remainder === 10 || remainder === 11 ) remainder = 0;
+            if ( remainder !== parseInt( cleanCPF.charAt( 10 ) ) )
+            {
+                cpfField.style.borderColor = '#ff4444';
+                return false;
+            }
+
+            cpfField.style.borderColor = '#00ff88';
+            return true;
+        }
+
+        // Password match checker
+        function checkPasswordMatch()
+        {
+            const password = document.getElementById( 'signup-password' ).value;
+            const confirm = document.getElementById( 'signup-confirm' ).value;
+            const confirmField = document.getElementById( 'signup-confirm' );
+
+            if ( confirm.length === 0 )
+            {
+                confirmField.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                return;
+            }
+
+            if ( password === confirm )
+            {
+                confirmField.style.borderColor = '#00ff88';
+            } else
+            {
+                confirmField.style.borderColor = '#ff4444';
+            }
+        }
+
+        // Handle login
+        function handleLogin( form )
+        {
+            const formData = new FormData( form );
+            const data = Object.fromEntries( formData );
+            const submitBtn = form.querySelector( '.submit-btn' );
+            const originalText = submitBtn.textContent;
+
+            submitBtn.textContent = 'Conectando ao Nexus...';
+            submitBtn.disabled = true;
+
+            setTimeout( () =>
+            {
+                submitBtn.textContent = 'Autenticando Credenciais...';
+            }, 1000 );
+
+            setTimeout( () =>
+            {
+                submitBtn.textContent = 'Inicializando Ambiente Quântico...';
+            }, 2000 );
+
+            setTimeout( () =>
+            {
+                alert( `🚀 Bem-vindo ao Nexus!\n\nLogin realizado com sucesso!\n\nRedirecionando para o painel de controle da computação quântica...\n\nPrepare-se para revolucionar seus projetos!` );
+
+                // Simulate redirect to dashboard
+                window.location.href = '#dashboard';
+            }, 3000 );
+        }
+
+        // Handle signup
+        function handleSignup( form )
+        {
+            const formData = new FormData( form );
+            const data = Object.fromEntries( formData );
+            const submitBtn = form.querySelector( '.submit-btn' );
+            const originalText = submitBtn.textContent;
+
+            // Validate password match
+            if ( data.password !== data.confirm_password )
+            {
+                alert( '❌ As senhas não coincidem. Por favor, verifique e tente novamente.' );
+                return;
+            }
+
+            // Validate CPF
+            if ( !validateCPF( data.cpf ) )
+            {
+                alert( '❌ CPF inválido. Por favor, verifique e tente novamente.' );
+                return;
+            }
+
+            // Validate phone
+            const phoneClean = data.phone.replace( /\D/g, '' );
+            if ( phoneClean.length < 10 || phoneClean.length > 11 )
+            {
+                alert( '❌ Telefone inválido. Por favor, verifique e tente novamente.' );
+                return;
+            }
+
+            submitBtn.textContent = 'Criando Conta Nexus...';
+            submitBtn.disabled = true;
+
+            setTimeout( () =>
+            {
+                submitBtn.textContent = 'Configurando Ambiente Quântico...';
+            }, 1000 );
+
+            setTimeout( () =>
+            {
+                submitBtn.textContent = 'Ativando Recursos de IA...';
+            }, 2000 );
+
+            setTimeout( () =>
+            {
+                submitBtn.textContent = 'Finalizando Configuração...';
+            }, 3000 );
+
+            setTimeout( () =>
+            {
+                alert( `🎉 Conta Nexus criada com sucesso!\n\nBem-vindo, ${ data.name }!\n\nSua conta foi criada e você já pode acessar:\n• Plataforma NO-CODE completa\n• Machine Learning integrado\n• Computação Quântica Real\n\nVerifique seu email para ativar todos os recursos.` );
+
+                // Switch to login tab
+                switchTab( 'login' );
+                form.reset();
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }, 4000 );
+        }
+
+
+
+        // Forgot password
+        function forgotPassword()
+        {
+            const email = prompt( 'Digite seu email para recuperar a senha:' );
+            if ( email )
+            {
+                alert( `📧 Email de recuperação enviado!\n\nEnviamos instruções para ${ email } sobre como redefinir sua senha.\n\nVerifique sua caixa de entrada e spam.\n\nO link expira em 24 horas por segurança.` );
+            }
+        }
+
+        // Go back function
+        function goBack()
+        {
+            if ( confirm( 'Deseja voltar à página principal do TOIT?' ) )
+            {
+                // Simulate going back to main page
+                window.history.back();
+            }
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener( 'keydown', ( e ) =>
+        {
+            // Alt + L for login tab
+            if ( e.altKey && e.key === 'l' )
+            {
+                e.preventDefault();
+                switchTab( 'login' );
+            }
+
+            // Alt + S for signup tab
+            if ( e.altKey && e.key === 's' )
+            {
+                e.preventDefault();
+                switchTab( 'signup' );
+            }
+
+            // Escape to go back
+            if ( e.key === 'Escape' )
+            {
+                goBack();
+            }
+        } );
+    </script>
+    <script>( function () { function c() { var b = a.contentDocument || a.contentWindow.document; if ( b ) { var d = b.createElement( 'script' ); d.innerHTML = "window.__CF$cv$params={r:'971d2674b617f237',t:'MTc1NTY0MzIwMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName( 'head' )[ 0 ].appendChild( d ) } } if ( document.body ) { var a = document.createElement( 'iframe' ); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild( a ); if ( 'loading' !== document.readyState ) c(); else if ( window.addEventListener ) document.addEventListener( 'DOMContentLoaded', c ); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function ( b ) { e( b ); 'loading' !== document.readyState && ( document.onreadystatechange = e, c() ) } } } } )();</script>
+</body>
+
+</html>

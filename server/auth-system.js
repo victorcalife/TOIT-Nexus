@@ -39,8 +39,8 @@ class AuthSystem
       if ( email )
       {
         query = `
-          SELECT 
-            u.id, u.uuid, u.first_name, u.last_name, u.email, u.cpf,
+          SELECT
+            u.id, u.first_name, u.last_name, u.email, u.cpf,
             u.password_hash, u.role, u.permissions, u.is_active,
             u.tenant_id, u.last_login, u.login_count,
             t.name as tenant_name, t.slug as tenant_slug, t.status as tenant_status
@@ -52,8 +52,8 @@ class AuthSystem
       } else if ( cpf )
       {
         query = `
-          SELECT 
-            u.id, u.uuid, u.first_name, u.last_name, u.email, u.cpf,
+          SELECT
+            u.id, u.first_name, u.last_name, u.email, u.cpf,
             u.password_hash, u.role, u.permissions, u.is_active,
             u.tenant_id, u.last_login, u.login_count,
             t.name as tenant_name, t.slug as tenant_slug, t.status as tenant_status
@@ -112,7 +112,6 @@ class AuthSystem
   {
     const payload = {
       userId: user.id,
-      uuid: user.uuid,
       email: user.email,
       cpf: user.cpf,
       role: user.role,
@@ -258,8 +257,8 @@ class AuthSystem
     try
     {
       const query = `
-        SELECT 
-          u.id, u.uuid, u.first_name, u.last_name, u.email, u.cpf,
+        SELECT
+          u.id, u.first_name, u.last_name, u.email, u.cpf,
           u.role, u.permissions, u.is_active, u.tenant_id,
           t.name as tenant_name, t.slug as tenant_slug, t.status as tenant_status
         FROM users u

@@ -464,7 +464,6 @@ router.post( '/simple-login', loginLimiter, [
       data: {
         user: {
           id: user.id,
-          uuid: user.uuid,
           firstName: user.first_name,
           lastName: user.last_name,
           email: user.email,
