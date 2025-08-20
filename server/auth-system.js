@@ -40,7 +40,7 @@ class AuthSystem
       {
         query = `
           SELECT
-            u.id, u.first_name, u.last_name, u.email, u.cpf,
+            u.id, u.name, u.email, u.cpf,
             u.password_hash, u.role, u.permissions, u.is_active,
             u.tenant_id, u.last_login, u.login_count,
             t.name as tenant_name, t.slug as tenant_slug, t.status as tenant_status
@@ -53,7 +53,7 @@ class AuthSystem
       {
         query = `
           SELECT
-            u.id, u.first_name, u.last_name, u.email, u.cpf,
+            u.id, u.name, u.email, u.cpf,
             u.password_hash, u.role, u.permissions, u.is_active,
             u.tenant_id, u.last_login, u.login_count,
             t.name as tenant_name, t.slug as tenant_slug, t.status as tenant_status
@@ -258,7 +258,7 @@ class AuthSystem
     {
       const query = `
         SELECT
-          u.id, u.first_name, u.last_name, u.email, u.cpf,
+          u.id, u.name, u.email, u.cpf,
           u.role, u.permissions, u.is_active, u.tenant_id,
           t.name as tenant_name, t.slug as tenant_slug, t.status as tenant_status
         FROM users u

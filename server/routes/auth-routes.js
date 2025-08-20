@@ -464,8 +464,9 @@ router.post( '/simple-login', loginLimiter, [
       data: {
         user: {
           id: user.id,
-          firstName: user.first_name,
-          lastName: user.last_name,
+          name: user.name,
+          firstName: user.name?.split( ' ' )[ 0 ] || 'Usuário',
+          lastName: user.name?.split( ' ' ).slice( 1 ).join( ' ' ) || '',
           email: user.email,
           role: user.role,
           tenant: user.tenant_name
