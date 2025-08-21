@@ -33,6 +33,7 @@ class AuthSystem
     try
     {
       console.log( `🔐 Tentativa de login: ${ email || cpf }` );
+      console.log( `🔐 [AUTH-SYSTEM] Parâmetros: email=${ email }, cpf=${ cpf }, password_length=${ password?.length }` );
 
       // Buscar usuário por email ou CPF
       let query, params;

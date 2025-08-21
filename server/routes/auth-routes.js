@@ -403,8 +403,16 @@ router.post( '/simple-login', loginLimiter, [
 
     const { cpf, password, loginType = 'support' } = req.body;
 
+    console.log( '🛡️ [SIMPLE-LOGIN] Dados recebidos:', {
+      cpf: cpf?.length || 'undefined',
+      password: password?.length || 'undefined',
+      loginType
+    } );
+
     // Fazer login usando o sistema de autenticação (usando CPF)
+    console.log( '🛡️ [SIMPLE-LOGIN] Chamando authenticateUser com CPF:', cpf );
     const user = await authSystem.authenticateUser( null, password, cpf );
+    console.log( '🛡️ [SIMPLE-LOGIN] Resultado authenticateUser:', user ? 'USER_FOUND' : 'USER_NOT_FOUND' );
 
     if ( !user )
     {
