@@ -401,17 +401,22 @@ router.post( '/simple-login', loginLimiter, [
       } );
     }
 
-    const { cpf, password, loginType = 'support' } = req.body;
+    const { cpf, email, password, loginType = 'support' } = req.body;
+
+    // Usar email se fornecido, senão usar CPF como email (temporário)
+    const loginEmail = email || `${ cpf }@toit.com.br`;
 
     console.log( '🛡️ [SIMPLE-LOGIN] Dados recebidos:', {
       cpf: cpf?.length || 'undefined',
+      email: email?.length || 'undefined',
+      loginEmail: loginEmail?.length || 'undefined',
       password: password?.length || 'undefined',
       loginType
     } );
 
-    // Fazer login usando o sistema de autenticação (usando CPF)
-    console.log( '🛡️ [SIMPLE-LOGIN] Chamando authenticateUser com CPF:', cpf );
-    const user = await authSystem.authenticateUser( null, password, cpf );
+    // Fazer login usando o sistema de autenticação (usando EMAIL)
+    console.log( '🛡️ [SIMPLE-LOGIN] Chamando authenticateUser com EMAIL:', loginEmail );
+    const user = await authSystem.authenticateUser( loginEmail, password );
     console.log( '🛡️ [SIMPLE-LOGIN] Resultado authenticateUser:', user ? 'USER_FOUND' : 'USER_NOT_FOUND' );
 
     if ( !user )

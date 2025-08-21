@@ -41,10 +41,10 @@ class AuthSystem
       {
         query = `
           SELECT
-            u.id, u.name, u.email, u.cpf,
-            u.password_hash, u.role, u.permissions, u.is_active,
-            u.tenant_id, u.last_login_at, u.login_count,
-            t.name as tenant_name, t.slug as tenant_slug, t.status as tenant_status
+            u.id, u.name, u.email,
+            u.password, u.role, u.is_active,
+            u.tenant_id, u.last_login,
+            t.name as tenant_name
           FROM users u
           LEFT JOIN tenants t ON u.tenant_id = t.id
           WHERE u.email = $1 AND u.is_active = true
@@ -55,12 +55,12 @@ class AuthSystem
         query = `
           SELECT
             u.id, u.name, u.email, u.cpf,
-            u.password_hash, u.role, u.permissions, u.is_active,
-            u.tenant_id, u.last_login_at, u.login_count,
-            t.name as tenant_name, t.slug as tenant_slug, t.status as tenant_status
+            u.password, u.role, u.is_active,
+            u.tenant_id, u.last_login,
+            t.name as tenant_name
           FROM users u
           LEFT JOIN tenants t ON u.tenant_id = t.id
-          WHERE u.cpf = $1 AND u.is_active = true
+          WHERE u.email = $1 AND u.is_active = true
         `;
         params = [ cpf ];
       } else
@@ -86,7 +86,7 @@ class AuthSystem
       }
 
       // Verificar senha
-      const isValidPassword = await bcrypt.compare( password, user.password_hash );
+      const isValidPassword = await bcrypt.compare( password, user.password );
       if ( !isValidPassword )
       {
         console.log( `❌ Senha inválida para: ${ email || cpf }` );
@@ -259,9 +259,9 @@ class AuthSystem
     {
       const query = `
         SELECT
-          u.id, u.name, u.email, u.cpf,
-          u.role, u.permissions, u.is_active, u.tenant_id, u.last_login_at,
-          t.name as tenant_name, t.slug as tenant_slug, t.status as tenant_status
+          u.id, u.name, u.email,
+          u.role, u.is_active, u.tenant_id, u.last_login,
+          t.name as tenant_name
         FROM users u
         LEFT JOIN tenants t ON u.tenant_id = t.id
         WHERE u.id = $1 AND u.is_active = true
@@ -317,7 +317,7 @@ class AuthSystem
     {
       const query = `
         UPDATE users
-        SET last_login_at = CURRENT_TIMESTAMP, login_count = login_count + 1
+        SET last_login = CURRENT_TIMESTAMP, updated_at = CURRENT_TIMESTAMP
         WHERE id = $1
       `;
 
@@ -333,12 +333,14 @@ class AuthSystem
    */
   sanitizeUser( user )
   {
-    const { password_hash, ...sanitized } = user;
+    const { password, ...sanitized } = user;
     return {
       ...sanitized,
-      fullName: `${ user.first_name } ${ user.last_name }`.trim(),
+      fullName: user.name || 'Usuário',
+      firstName: user.name?.split( ' ' )[ 0 ] || 'Usuário',
+      lastName: user.name?.split( ' ' ).slice( 1 ).join( ' ' ) || '',
       isSuperAdmin: user.role === 'super_admin',
-      isTenantAdmin: user.role === 'tenant_admin',
+      isTenantAdmin: user.role === 'admin',
       isManager: user.role === 'manager',
       isUser: user.role === 'user'
     };
