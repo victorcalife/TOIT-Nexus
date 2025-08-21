@@ -43,7 +43,7 @@ class AuthSystem
           SELECT
             u.id, u.name, u.email, u.cpf,
             u.password_hash, u.role, u.permissions, u.is_active,
-            u.tenant_id, u.last_login, u.login_count,
+            u.tenant_id, u.last_login_at, u.login_count,
             t.name as tenant_name, t.slug as tenant_slug, t.status as tenant_status
           FROM users u
           LEFT JOIN tenants t ON u.tenant_id = t.id
@@ -56,7 +56,7 @@ class AuthSystem
           SELECT
             u.id, u.name, u.email, u.cpf,
             u.password_hash, u.role, u.permissions, u.is_active,
-            u.tenant_id, u.last_login, u.login_count,
+            u.tenant_id, u.last_login_at, u.login_count,
             t.name as tenant_name, t.slug as tenant_slug, t.status as tenant_status
           FROM users u
           LEFT JOIN tenants t ON u.tenant_id = t.id
@@ -260,7 +260,7 @@ class AuthSystem
       const query = `
         SELECT
           u.id, u.name, u.email, u.cpf,
-          u.role, u.permissions, u.is_active, u.tenant_id,
+          u.role, u.permissions, u.is_active, u.tenant_id, u.last_login_at,
           t.name as tenant_name, t.slug as tenant_slug, t.status as tenant_status
         FROM users u
         LEFT JOIN tenants t ON u.tenant_id = t.id
@@ -316,8 +316,8 @@ class AuthSystem
     try
     {
       const query = `
-        UPDATE users 
-        SET last_login = CURRENT_TIMESTAMP, login_count = login_count + 1
+        UPDATE users
+        SET last_login_at = CURRENT_TIMESTAMP, login_count = login_count + 1
         WHERE id = $1
       `;
 
