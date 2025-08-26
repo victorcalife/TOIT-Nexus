@@ -41,8 +41,8 @@ class AuthSystem
       {
         query = `
           SELECT
-            u.id, u.name, u.email,
-            u.password, u.role, u.is_active,
+            u.id, CONCAT(u.first_name, ' ', u.last_name) as name, u.email,
+            u.password_hash as password, u.role, u.is_active,
             u.tenant_id, u.last_login,
             t.name as tenant_name, t.status as tenant_status
           FROM users u
@@ -54,8 +54,8 @@ class AuthSystem
       {
         query = `
           SELECT
-            u.id, u.name, u.email, u.cpf,
-            u.password, u.role, u.is_active,
+            u.id, CONCAT(u.first_name, ' ', u.last_name) as name, u.email, u.cpf,
+            u.password_hash as password, u.role, u.is_active,
             u.tenant_id, u.last_login,
             t.name as tenant_name, t.status as tenant_status
           FROM users u
@@ -210,16 +210,23 @@ class AuthSystem
     try
     {
       const expiresAt = new Date( Date.now() + 7 * 24 * 60 * 60 * 1000 ); // 7 dias
+      const sessionId = crypto.randomUUID(); // Gerar UUID para o ID da sessão
+
+      const sessionData = {
+        accessToken,
+        refreshToken,
+        createdAt: new Date().toISOString()
+      };
 
       const query = `
-        INSERT INTO sessions (
-          user_id, token, refresh_token, ip_address, user_agent, expires_at
+        INSERT INTO user_sessions (
+          id, user_id, ip_address, user_agent, data, expires_at
         ) VALUES ($1, $2, $3, $4, $5, $6)
         RETURNING id, created_at
       `;
 
       const result = await this.db.query( query, [
-        userId, accessToken, refreshToken, ipAddress, userAgent, expiresAt
+        sessionId, userId, ipAddress, userAgent, JSON.stringify(sessionData), expiresAt
       ] );
 
       return result.rows[ 0 ];
@@ -238,8 +245,8 @@ class AuthSystem
     try
     {
       const query = `
-        DELETE FROM sessions 
-        WHERE token = $1 OR refresh_token = $1
+        DELETE FROM user_sessions 
+        WHERE data::text LIKE '%' || $1 || '%'
       `;
 
       await this.db.query( query, [ token ] );
@@ -259,7 +266,7 @@ class AuthSystem
     {
       const query = `
         SELECT
-          u.id, u.name, u.email,
+          u.id, CONCAT(u.first_name, ' ', u.last_name) as name, u.email,
           u.role, u.is_active, u.tenant_id, u.last_login,
           t.name as tenant_name, t.status as tenant_status
         FROM users u
