@@ -180,6 +180,50 @@ class DatabaseManager {
   }
 
   /**
+   * Verificar e adicionar coluna data à tabela user_sessions
+   */
+  async ensureUserSessionsDataColumn() {
+    try {
+      console.log('🔍 Verificando coluna data na tabela user_sessions...');
+      
+      // Verificar se a coluna data já existe
+      const columnCheck = await this.query(`
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_name = 'user_sessions' 
+        AND column_name = 'data'
+      `);
+      
+      if (columnCheck.rows.length === 0) {
+        console.log('➕ Adicionando coluna data à tabela user_sessions...');
+        
+        // Adicionar a coluna data
+        await this.query('ALTER TABLE user_sessions ADD COLUMN data JSON');
+        
+        // Criar índices se não existirem
+        await this.query(`
+          CREATE INDEX IF NOT EXISTS idx_user_sessions_user_id 
+          ON user_sessions(user_id)
+        `);
+        
+        await this.query(`
+          CREATE INDEX IF NOT EXISTS idx_user_sessions_session_token 
+          ON user_sessions(session_token)
+        `);
+        
+        console.log('✅ Coluna data adicionada com sucesso!');
+      } else {
+        console.log('✅ Coluna data já existe na tabela user_sessions');
+      }
+      
+      return true;
+    } catch (error) {
+      console.error('❌ Erro ao verificar/adicionar coluna data:', error.message);
+      throw error;
+    }
+  }
+
+  /**
    * Executar migrations
    */
   async runMigrations() {
@@ -200,7 +244,10 @@ class DatabaseManager {
         console.log('✅ Seeders executados');
       }
 
-      // 3. Verificar integridade
+      // 3. Verificar e adicionar coluna data na tabela user_sessions
+      await this.ensureUserSessionsDataColumn();
+
+      // 4. Verificar integridade
       const integrity = await this.checkIntegrity();
       
       if (integrity.missingTables.length === 0) {
