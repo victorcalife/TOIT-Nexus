@@ -19,7 +19,6 @@ export default function Login()
   const [activeTab, setActiveTab] = useState('login');
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
-  const [showLoading, setShowLoading] = useState(true);
   const { login, register } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
