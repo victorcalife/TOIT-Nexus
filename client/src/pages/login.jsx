@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { formatCpf, cleanCpf, validateCpf } from '../lib/utils';
+import { API_CONFIG } from '../config/env';
 
 export default function Login()
 {
@@ -18,14 +19,17 @@ export default function Login()
   const [activeTab, setActiveTab] = useState('login');
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
-
-  const { login, isAuthenticated } = useAuth();
+  const [showLoading, setShowLoading] = useState(true);
+  const { login, register } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const canvasRef = useRef(null);
   const mouseRef = useRef({ x: 0, y: 0 });
   const nodesRef = useRef([]);
+  
+  // Detectar se é acesso de suporte baseado no domínio
+  const isSupportLogin = window.location.hostname === 'supnexus.toit.com.br' || 
+                        window.location.hostname.includes('supnexus');
 
   // Redirecionar se já autenticado
   useEffect(() => {
@@ -144,16 +148,49 @@ export default function Login()
       return;
     }
 
-    if (!validateCpf(cleanCpf(cpf))) {
+    const cleanedCpf = cleanCpf(cpf);
+    if (!validateCpf(cleanedCpf)) {
       setError('CPF inválido');
       setIsLoading(false);
       return;
     }
 
     try {
-      await login(cleanCpf(cpf), password, rememberMe);
+      console.log(`🛡️ [LOGIN] Iniciando login ${isSupportLogin ? 'SUPORTE' : 'NORMAL'}:`, { cpf: cleanedCpf });
+      
+      const response = await fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.AUTH.SIMPLE_LOGIN}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          cpf: cleanedCpf,
+          password,
+          loginType: isSupportLogin ? 'support' : 'normal',
+          rememberMe
+        }),
+      });
+
+      console.log(`🛡️ [LOGIN] Resposta recebida:`, response.status);
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Erro desconhecido' }));
+        throw new Error(errorData.error || `Erro HTTP ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log(`🛡️ [LOGIN] Login realizado com sucesso:`, data.user?.name);
+      
+      // Armazenar dados do usuário
+      if (data.user) {
+        localStorage.setItem('user', JSON.stringify(data.user));
+      }
+      
+      const redirectTo = searchParams.get('redirect') || '/dashboard';
+      navigate(redirectTo);
     } catch (err) {
-      console.error('Erro no login:', err);
+      console.error('❌ Erro no login:', err);
       setError(err.message || 'Erro no login. Tente novamente.');
     } finally {
       setIsLoading(false);
@@ -240,20 +277,47 @@ export default function Login()
             <div className="logo">
               <img 
                 src="/assets/SELOtoit-workflow-logo.svg" 
-                alt="TOIT Nexus" 
+                alt={isSupportLogin ? 'TOIT Nexus - Suporte' : 'TOIT Nexus'} 
                 className="logo-image"
               />
             </div>
+            <h1>{isSupportLogin ? 'TOIT Nexus - Suporte' : 'TOIT Nexus'}</h1>
+            <p className="subtitle">{isSupportLogin ? 'Portal de Suporte Técnico' : 'Sistema de Gestão Empresarial'}</p>
           </div>
 
           <div className="tab-container">
+            {!isSupportLogin && (
+              <div className="form-tabs">
+                <button 
+                  type="button"
+                  className={`tab ${activeTab === 'login' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('login')}
+                >
+                  Entrar
+                </button>
+                <button 
+                  type="button"
+                  className={`tab ${activeTab === 'register' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('register')}
+                >
+                  Criar Conta
+                </button>
+              </div>
+            )}
+            
+            {isSupportLogin && (
+              <div className="support-login-title">
+                <h2>Acesso ao Portal de Suporte</h2>
+              </div>
+            )}
+
             {error && (
               <div className="error-message">
                 {error}
               </div>
             )}
 
-            {activeTab === 'login' ? (
+            {(activeTab === 'login' || isSupportLogin) ? (
               <form onSubmit={handleLoginSubmit} className="login-form">
                 <div className="form-group">
                   <label htmlFor="cpf">CPF</label>
@@ -515,7 +579,22 @@ export default function Login()
           width: 100%;
         }
 
-
+        .support-login-title {
+          text-align: center;
+          margin-bottom: 2rem;
+          padding: 1rem;
+          background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 150, 255, 0.1));
+          border-radius: 8px;
+          border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+        
+        .support-login-title h2 {
+          color: #00d4ff;
+          font-size: 1.5rem;
+          font-weight: 600;
+          margin: 0;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
 
         .error-message {
           background: #fee;

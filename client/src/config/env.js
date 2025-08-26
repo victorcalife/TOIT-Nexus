@@ -7,18 +7,31 @@
 const isDevelopment = import.meta.env.DEV;
 const isProduction = import.meta.env.PROD;
 
-// URLs base
+// URLs base - Detectar domínio atual para usar a API correta
+const getCurrentDomain = () => {
+  if (typeof window !== 'undefined') {
+    return window.location.hostname;
+  }
+  return 'localhost';
+};
+
+const currentDomain = getCurrentDomain();
+
 const API_BASE_URL = isDevelopment
   ? 'http://localhost:8080'
   : 'https://toit-nexus-backend-production.up.railway.app';
 
 const FRONTEND_URL = isDevelopment
   ? 'http://localhost:5173'
-  : 'https://toit-nexus-frontend-production.up.railway.app';
+  : currentDomain === 'nexus.toit.com.br' 
+    ? 'https://nexus.toit.com.br'
+    : currentDomain === 'supnexus.toit.com.br'
+    ? 'https://supnexus.toit.com.br'
+    : 'https://toit-nexus-frontend-production.up.railway.app';
 
 const SUPPORT_URL = isDevelopment
   ? 'http://localhost:5173'
-  : 'https://toit-nexus-frontend-production.up.railway.app';
+  : 'https://supnexus.toit.com.br';
 
 // Configuração da API
 export const API_CONFIG = {
