@@ -1,7 +1,7 @@
 // Teste das APIs principais do TOIT NEXUS
 import fetch from 'node-fetch';
 
-const BASE_URL = 'https://api.toit.com.br:8080';
+const BASE_URL = 'http://localhost:8080';
 
 async function testAPI( endpoint, method = 'GET', body = null )
 {
@@ -45,7 +45,7 @@ async function runTests()
 
   // 2. Login com credenciais válidas
   await testAPI( '/api/auth/login', 'POST', {
-    cpf: '33656299803',
+    identifier: '33656299803',
     password: '241286'
   } );
 
@@ -58,7 +58,7 @@ async function runTests()
 
   // 4. Login com credenciais inválidas
   await testAPI( '/api/auth/login', 'POST', {
-    cpf: '00000000000',
+    identifier: '00000000000',
     password: 'senha_errada'
   } );
 
