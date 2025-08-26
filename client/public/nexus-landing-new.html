@@ -417,9 +417,31 @@
     
     <!-- Header Compacto -->
     <header class="header">
-        <div class="logo-container">
-            <div class="logo-icon">N</div>
-            <div class="logo-text">NEXUS</div>
+        <div class="logo-container" style="display: flex; align-items: center; justify-content: flex-start; height: 100%;">
+            <svg viewBox="0 0 400 100" xmlns="http://www.w3.org/2000/svg" style="height: calc(225% - 9px); width: auto; margin: 8.5px 0 0.5px 0; display: block; transform: scale(1.125);">
+              <!-- Definições -->
+              <defs>
+                <!-- Gradiente principal -->
+                <linearGradient id="brandGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
+                  <stop offset="50%" style="stop-color:#581c87;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+                </linearGradient>
+              </defs>
+              
+              <!-- Texto principal -->
+              <g transform="translate(20,50)">
+                <!-- TOIT -->
+                <text x="0" y="0" font-family="Arial Black, sans-serif" font-size="42" font-weight="900" fill="#1e3a8a" text-anchor="start" dominant-baseline="middle">
+                  TOIT
+                </text>
+                
+                <!-- NEXUS -->
+                <text x="105" y="0" font-family="Arial, sans-serif" font-size="42" font-weight="300" fill="url(#brandGradient)" text-anchor="start" dominant-baseline="middle">
+                  NEXUS
+                </text>
+              </g>
+            </svg>
         </div>
         <button class="header-cta" onclick="openLoginModal()">Entrar</button>
     </header>
@@ -496,9 +518,8 @@
                 <button onclick="closeLoginModal()" style="position: absolute; top: 0.8rem; right: 0.8rem; background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer; opacity: 0.7; transition: opacity 0.3s;">×</button>
                 
                 <div style="text-align: center; margin-bottom: 1.5rem;">
-                    <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #00d4ff, #4a148c); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.8rem; color: white; font-weight: 900; font-size: 1.2rem;">N</div>
-                    <h2 style="color: white; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.3rem;">NEXUS</h2>
-                    <p style="color: #00d4ff; font-size: 0.7rem; opacity: 0.8;">Acesso à Computação Quântica</p>
+                    <img src="assets/SELOtoit-workflow-logo.svg" alt="TOIT Logo" style="max-width: 600px; max-height: 240px; height: 150px; width: auto; margin: 0 auto 0.8rem; display: block;">
+
                 </div>
 
                 <form onsubmit="handleLogin(event)" style="display: flex; flex-direction: column; gap: 0.8rem;">

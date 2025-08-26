@@ -54,5 +54,6 @@ export default defineConfig( {
       : 4173,
     host: '0.0.0.0',
     cors: true,
+    allowedHosts: ['supnexus.toit.com.br', 'nexus.toit.com.br'],
   }
 } )
