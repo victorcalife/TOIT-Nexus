@@ -18,11 +18,11 @@ const getCurrentDomain = () => {
 const currentDomain = getCurrentDomain();
 
 const API_BASE_URL = isDevelopment
-  ? 'http://localhost:8080'
-  : 'https://toit-nexus-backend-production.up.railway.app';
+  ? 'http://localhost:3000'
+  : 'https://localhost:3000';
 
-const FRONTEND_URL = isDevelopment
-  ? 'http://localhost:5173'
+const FRONTEND_URL = isDevelopment    
+  ? 'http://localhost:3000'
   : currentDomain === 'nexus.toit.com.br' 
     ? 'https://nexus.toit.com.br'
     : currentDomain === 'supnexus.toit.com.br'
@@ -31,7 +31,7 @@ const FRONTEND_URL = isDevelopment
 
 const SUPPORT_URL = isDevelopment
   ? 'http://localhost:5173'
-  : 'https://supnexus.toit.com.br';
+  : 'https://toit-nexus-frontend-production.up.railway.app';
 
 // Configuração da API
 export const API_CONFIG = {

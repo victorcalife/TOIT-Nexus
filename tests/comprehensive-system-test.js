@@ -5,10 +5,10 @@
 
 import fetch from 'node-fetch';
 
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'http://api.toit.com.br';
 const TEST_USER = {
   cpf: '33656299803',
-  password: '241286'
+  password: '241286' 
 };
 
 class SystemTester

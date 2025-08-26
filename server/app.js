@@ -83,12 +83,7 @@ class TOITNexusServer
             'https://toit-nexus-backend-production.up.railway.app'
           ]
           : [
-            'http://localhost:3000',
-            'http://localhost:5173',
-            'http://localhost:8080',
-            'http://127.0.0.1:3000',
-            'http://127.0.0.1:5173',
-            'http://127.0.0.1:8080',
+            
             'https://nexus.toit.com.br',
             'https://supnexus.toit.com.br',
             'https://toit-nexus-frontend-production.up.railway.app',

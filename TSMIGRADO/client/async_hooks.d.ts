@@ -12,9 +12,11 @@
  * import async_hooks from 'node:async_hooks';
  * ```
  * @experimental
- * @see [source](https://github.com/nodejs/node/blob/v20.13.1/lib/async_hooks.js)
+ * @see [source](https://github.com/nodejs/node/blob/v21.7.1/lib/async_hooks.js)
+
  */
-declare module "async_hooks" {
+declare module 'node:async_hooks' {
+
     /**
      * ```js
      * import { executionAsyncId } from 'node:async_hooks';
@@ -202,7 +204,7 @@ declare module "async_hooks" {
      * ```
      *
      * Because promises are asynchronous resources whose lifecycle is tracked
-     * via the async hooks mechanism, the `init()`, `before()`, `after()`, and`destroy()` callbacks _must not_ be async functions that return promises.
+     * via the async hooks mechanism, the `init()`, `before()`, `after()`, and `destroy()` callbacks _must not_ be async functions that return promises.
      * @since v8.1.0
      * @param callbacks The `Hook Callbacks` to register
      * @return Instance used for disabling and enabling hooks
@@ -354,8 +356,8 @@ declare module "async_hooks" {
      *   });
      * }).listen(8080);
      *
-     * http.get('http://localhost:8080');
-     * http.get('http://localhost:8080');
+     * http.get('http://localhost:3000');
+     * http.get('http://localhost:3003');
      * // Prints:
      * //   0: start
      * //   1: start
@@ -599,7 +601,4 @@ declare module "async_hooks" {
         const TLSWRAP: number;
         const VERIFYREQUEST: number;
     }
-}
-declare module "node:async_hooks" {
-    export * from "async_hooks";
 }
