@@ -1,86 +1,210 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input';
-import { Label } from '../components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { Alert, AlertDescription } from '../components/ui/alert';
-import { Checkbox } from '../components/ui/checkbox';
-import { Eye, EyeOff, Loader2, Shield, Zap } from 'lucide-react';
+import { formatCpf, cleanCpf, validateCpf } from '../lib/utils';
 
 export default function Login()
 {
-  const [ formData, setFormData ] = useState( {
-    identifier: '',
-    password: '',
-    rememberMe: false
-  } );
-  const [ showPassword, setShowPassword ] = useState( false );
-  const [ isSubmitting, setIsSubmitting ] = useState( false );
-  const [ error, setError ] = useState( '' );
+  const [cpf, setCpf] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showLoading, setShowLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('login');
+  const [passwordStrength, setPasswordStrength] = useState(0);
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
 
-  const { login, isAuthenticated, loginError } = useAuth();
+  const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  const [ searchParams ] = useSearchParams();
+  const [searchParams] = useSearchParams();
+  const canvasRef = useRef(null);
+  const mouseRef = useRef({ x: 0, y: 0 });
+  const nodesRef = useRef([]);
 
   // Redirecionar se já autenticado
-  useEffect( () =>
-  {
-    if ( isAuthenticated )
-    {
-      const redirect = searchParams.get( 'redirect' ) || '/dashboard';
-      navigate( redirect, { replace: true } );
+  useEffect(() => {
+    if (isAuthenticated) {
+      const redirect = searchParams.get('redirect') || '/dashboard';
+      navigate(redirect, { replace: true });
     }
-  }, [ isAuthenticated, navigate, searchParams ] );
+  }, [isAuthenticated, navigate, searchParams]);
 
-  // Atualizar erro quando loginError mudar
-  useEffect( () =>
-  {
-    if ( loginError )
-    {
-      setError( loginError.message || 'Erro no login' );
-      setIsSubmitting( false );
+  // Hide loading screen
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Canvas animation
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Create nodes
+    const nodes = [];
+    for (let i = 0; i < 50; i++) {
+      nodes.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+        radius: Math.random() * 2 + 1
+      });
     }
-  }, [ loginError ] );
+    nodesRef.current = nodes;
 
-  const handleInputChange = ( e ) =>
-  {
-    const { name, value, type, checked } = e.target;
-    setFormData( prev => ( {
-      ...prev,
-      [ name ]: type === 'checkbox' ? checked : value
-    } ) );
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      nodes.forEach(node => {
+        node.x += node.vx;
+        node.y += node.vy;
+        
+        if (node.x < 0 || node.x > canvas.width) node.vx *= -1;
+        if (node.y < 0 || node.y > canvas.height) node.vy *= -1;
+        
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(59, 130, 246, 0.3)';
+        ctx.fill();
+        
+        // Draw connections
+        nodes.forEach(otherNode => {
+          const distance = Math.sqrt(
+            Math.pow(node.x - otherNode.x, 2) + Math.pow(node.y - otherNode.y, 2)
+          );
+          
+          if (distance < 100) {
+            ctx.beginPath();
+            ctx.moveTo(node.x, node.y);
+            ctx.lineTo(otherNode.x, otherNode.y);
+            ctx.strokeStyle = `rgba(59, 130, 246, ${0.1 * (1 - distance / 100)})`;
+            ctx.stroke();
+          }
+        });
+      });
+      
+      requestAnimationFrame(animate);
+    };
+    
+    animate();
+    
+    const handleResize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-    // Limpar erro quando usuário começar a digitar
-    if ( error ) setError( '' );
+  // Password strength calculation
+  const calculatePasswordStrength = (password) => {
+    let strength = 0;
+    if (password.length >= 8) strength += 25;
+    if (/[a-z]/.test(password)) strength += 25;
+    if (/[A-Z]/.test(password)) strength += 25;
+    if (/[0-9]/.test(password)) strength += 25;
+    return strength;
   };
 
-  const handleSubmit = async ( e ) =>
-  {
-    e.preventDefault();
+  const handleCpfChange = (e) => {
+    const value = formatCpf(e.target.value);
+    setCpf(value);
+  };
 
-    if ( !formData.identifier || !formData.password )
-    {
-      setError( 'Por favor, preencha todos os campos' );
+  const handlePasswordChange = (e) => {
+    const value = e.target.value;
+    setPassword(value);
+    if (activeTab === 'register') {
+      setPasswordStrength(calculatePasswordStrength(value));
+    }
+  };
+
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setIsLoading(true);
+
+    if (!cpf || !password) {
+      setError('Por favor, preencha todos os campos');
+      setIsLoading(false);
       return;
     }
 
-    setIsSubmitting( true );
-    setError( '' );
+    if (!validateCpf(cleanCpf(cpf))) {
+      setError('CPF inválido');
+      setIsLoading(false);
+      return;
+    }
 
-    try
-    {
-      await login( formData );
+    try {
+      await login(cleanCpf(cpf), password, rememberMe);
+    } catch (err) {
+      console.error('Erro no login:', err);
+      setError(err.message || 'Erro no login. Tente novamente.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-      // Sucesso - redirecionamento será feito pelo useEffect
-      const redirect = searchParams.get( 'redirect' ) || '/dashboard';
-      navigate( redirect, { replace: true } );
+  const handleRegisterSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setIsLoading(true);
 
-    } catch ( err )
-    {
-      setError( err.message || 'Erro no login' );
-      setIsSubmitting( false );
+    if (!name || !email || !cpf || !phone || !password || !confirmPassword) {
+      setError('Por favor, preencha todos os campos');
+      setIsLoading(false);
+      return;
+    }
+
+    if (!validateCpf(cleanCpf(cpf))) {
+      setError('CPF inválido');
+      setIsLoading(false);
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError('As senhas não coincidem');
+      setIsLoading(false);
+      return;
+    }
+
+    if (passwordStrength < 75) {
+      setError('A senha deve ser mais forte');
+      setIsLoading(false);
+      return;
+    }
+
+    if (!acceptTerms) {
+      setError('Você deve aceitar os termos de uso');
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      // Aqui você implementaria a lógica de registro
+      console.log('Registrando usuário:', { name, email, cpf: cleanCpf(cpf), phone });
+      setError('Registro realizado com sucesso! Faça login.');
+      setActiveTab('login');
+    } catch (err) {
+      console.error('Erro no registro:', err);
+      setError(err.message || 'Erro no registro. Tente novamente.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -89,179 +213,549 @@ export default function Login()
     setShowPassword( !showPassword );
   };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md space-y-8">
-        {/* Logo e Header */ }
-        <div className="text-center">
-          <div className="mx-auto h-16 w-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center mb-4">
-            <Zap className="h-8 w-8 text-white" />
+  if (showLoading) {
+    return (
+      <div className="loading-screen">
+        <div className="loading-content">
+          <div className="loading-logo">
+            <div className="logo-icon">🚀</div>
+            <h1>TOIT Nexus</h1>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            TOIT Nexus
-          </h1>
-          <p className="text-gray-600">
-            Acesse sua conta para continuar
-          </p>
+          <div className="loading-spinner">
+            <div className="spinner"></div>
+          </div>
+          <p>Carregando...</p>
         </div>
+      </div>
+    );
+  }
 
-        {/* Card de Login */ }
-        <Card className="shadow-xl border-0 bg-white/80 backdrop-blur-sm">
-          <CardHeader className="space-y-1 pb-6">
-            <CardTitle className="text-2xl font-semibold text-center text-gray-900">
-              Entrar
-            </CardTitle>
-            <CardDescription className="text-center text-gray-600">
-              Digite seu email ou CPF e senha para acessar
-            </CardDescription>
-          </CardHeader>
-
-          <CardContent>
-            <form onSubmit={ handleSubmit } className="space-y-6">
-              {/* Campo Email/CPF */ }
-              <div className="space-y-2">
-                <Label htmlFor="identifier" className="text-sm font-medium text-gray-700">
-                  Email ou CPF
-                </Label>
-                <Input
-                  id="identifier"
-                  name="identifier"
-                  type="text"
-                  placeholder="seu@email.com ou 000.000.000-00"
-                  value={ formData.identifier }
-                  onChange={ handleInputChange }
-                  className="h-11 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-                  disabled={ isSubmitting }
-                  autoComplete="username"
-                  autoFocus
-                />
-              </div>
-
-              {/* Campo Senha */ }
-              <div className="space-y-2">
-                <Label htmlFor="password" className="text-sm font-medium text-gray-700">
-                  Senha
-                </Label>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    name="password"
-                    type={ showPassword ? 'text' : 'password' }
-                    placeholder="Digite sua senha"
-                    value={ formData.password }
-                    onChange={ handleInputChange }
-                    className="h-11 pr-10 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-                    disabled={ isSubmitting }
-                    autoComplete="current-password"
-                  />
-                  <button
-                    type="button"
-                    onClick={ togglePasswordVisibility }
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
-                    disabled={ isSubmitting }
-                  >
-                    { showPassword ? (
-                      <EyeOff className="h-5 w-5" />
-                    ) : (
-                      <Eye className="h-5 w-5" />
-                    ) }
-                  </button>
-                </div>
-              </div>
-
-              {/* Lembrar de mim */ }
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="rememberMe"
-                  name="rememberMe"
-                  checked={ formData.rememberMe }
-                  onCheckedChange={ ( checked ) =>
-                    setFormData( prev => ( { ...prev, rememberMe: checked } ) )
-                  }
-                  disabled={ isSubmitting }
-                />
-                <Label
-                  htmlFor="rememberMe"
-                  className="text-sm text-gray-600 cursor-pointer"
-                >
-                  Lembrar de mim
-                </Label>
-              </div>
-
-              {/* Erro */ }
-              { error && (
-                <Alert variant="destructive" className="border-red-200 bg-red-50">
-                  <Shield className="h-4 w-4" />
-                  <AlertDescription className="text-red-800">
-                    { error }
-                  </AlertDescription>
-                </Alert>
-              ) }
-
-              {/* Botão de Login */ }
-              <Button
-                type="submit"
-                className="w-full h-11 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
-                disabled={ isSubmitting }
-              >
-                { isSubmitting ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Entrando...
-                  </>
-                ) : (
-                  'Entrar'
-                ) }
-              </Button>
-            </form>
-
-            {/* Links adicionais */ }
-            <div className="mt-6 text-center space-y-2">
-              <button
-                type="button"
-                className="text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors"
-                onClick={ () =>
-                {
-                  // TODO: Implementar recuperação de senha
-                  alert( 'Funcionalidade em desenvolvimento' );
-                } }
-              >
-                Esqueceu sua senha?
-              </button>
-
-              <div className="text-sm text-gray-500">
-                Não tem uma conta?{ ' ' }
-                <button
-                  type="button"
-                  className="text-blue-600 hover:text-blue-800 hover:underline transition-colors"
-                  onClick={ () =>
-                  {
-                    // TODO: Implementar registro
-                    alert( 'Entre em contato conosco para criar uma conta' );
-                  } }
-                >
-                  Entre em contato
-                </button>
-              </div>
+  return (
+    <div className="login-container">
+      <canvas ref={canvasRef} className="background-canvas"></canvas>
+      
+      <div className="login-content">
+        <div className="login-card">
+          <div className="card-header">
+            <div className="logo">
+              <img 
+                src="/assets/SELOtoit-workflow-logo.svg" 
+                alt="TOIT Nexus" 
+                className="logo-image"
+              />
             </div>
-          </CardContent>
-        </Card>
+          </div>
 
-        {/* Footer */ }
-        <div className="text-center text-sm text-gray-500">
-          <p>
-            © 2024 TOIT - Tecnologia e Inovação. Todos os direitos reservados.
-          </p>
-          <div className="mt-2 space-x-4">
-            <button className="hover:text-gray-700 transition-colors">
-              Termos de Uso
-            </button>
-            <button className="hover:text-gray-700 transition-colors">
-              Política de Privacidade
-            </button>
+          <div className="tab-container">
+            {error && (
+              <div className="error-message">
+                {error}
+              </div>
+            )}
+
+            {activeTab === 'login' ? (
+              <form onSubmit={handleLoginSubmit} className="login-form">
+                <div className="form-group">
+                  <label htmlFor="cpf">CPF</label>
+                  <input
+                    type="text"
+                    id="cpf"
+                    value={cpf}
+                    onChange={handleCpfChange}
+                    placeholder="000.000.000-00"
+                    maxLength="14"
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="password">Senha</label>
+                  <div className="password-input">
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      id="password"
+                      value={password}
+                      onChange={handlePasswordChange}
+                      placeholder="Digite sua senha"
+                      required
+                    />
+                    <button
+                      type="button"
+                      className="password-toggle"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? '👁️' : '👁️‍🗨️'}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="form-options">
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
+                    />
+                    <span className="checkmark"></span>
+                    Lembrar de mim
+                  </label>
+                  <a href="#" className="forgot-password">Esqueceu a senha?</a>
+                </div>
+
+                <button type="submit" className="submit-button" disabled={isLoading}>
+                  {isLoading ? (
+                    <>
+                      <div className="loading-spinner-small"></div>
+                      Entrando...
+                    </>
+                  ) : (
+                    'Entrar'
+                  )}
+                </button>
+              </form>
+            ) : (
+              <form onSubmit={handleRegisterSubmit} className="register-form">
+                <div className="form-row">
+                  <div className="form-group">
+                    <label htmlFor="name">Nome Completo</label>
+                    <input
+                      type="text"
+                      id="name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Seu nome completo"
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="email">E-mail</label>
+                    <input
+                      type="email"
+                      id="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="seu@email.com"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="form-row">
+                  <div className="form-group">
+                    <label htmlFor="cpf-register">CPF</label>
+                    <input
+                      type="text"
+                      id="cpf-register"
+                      value={cpf}
+                      onChange={handleCpfChange}
+                      placeholder="000.000.000-00"
+                      maxLength="14"
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="phone">Telefone</label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="(11) 99999-9999"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="password-register">Senha</label>
+                  <div className="password-input">
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      id="password-register"
+                      value={password}
+                      onChange={handlePasswordChange}
+                      placeholder="Crie uma senha forte"
+                      required
+                    />
+                    <button
+                      type="button"
+                      className="password-toggle"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? '👁️' : '👁️‍🗨️'}
+                    </button>
+                  </div>
+                  <div className="password-strength">
+                    <div className="strength-bar">
+                      <div 
+                        className="strength-fill" 
+                        style={{ width: `${passwordStrength}%` }}
+                      ></div>
+                    </div>
+                    <span className="strength-text">
+                      {passwordStrength < 25 && 'Muito fraca'}
+                      {passwordStrength >= 25 && passwordStrength < 50 && 'Fraca'}
+                      {passwordStrength >= 50 && passwordStrength < 75 && 'Média'}
+                      {passwordStrength >= 75 && 'Forte'}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="confirm-password">Confirmar Senha</label>
+                  <input
+                    type="password"
+                    id="confirm-password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Confirme sua senha"
+                    required
+                  />
+                </div>
+
+                <div className="form-options">
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={acceptTerms}
+                      onChange={(e) => setAcceptTerms(e.target.checked)}
+                      required
+                    />
+                    <span className="checkmark"></span>
+                    Aceito os <a href="#">termos de uso</a> e <a href="#">política de privacidade</a>
+                  </label>
+                </div>
+
+                <button type="submit" className="submit-button" disabled={isLoading}>
+                  {isLoading ? (
+                    <>
+                      <div className="loading-spinner-small"></div>
+                      Cadastrando...
+                    </>
+                  ) : (
+                    'Criar Conta'
+                  )}
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        .login-container {
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #ffffff;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .background-canvas {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 1;
+        }
+
+        .login-content {
+          position: relative;
+          z-index: 2;
+          width: 100%;
+          max-width: 400px;
+          padding: 8px;
+        }
+
+        .login-card {
+          background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+          backdrop-filter: blur(20px);
+          border-radius: 15px;
+          padding: 12px 20px 20px 20px;
+          box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card-header {
+          text-align: center;
+          margin-bottom: 15px;
+        }
+
+        .logo {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 10px;
+        }
+
+        .logo-image {
+          max-width: 400px;
+          max-height: 160px;
+          width: auto;
+          height: auto;
+          object-fit: contain;
+          filter: drop-shadow(0 8px 16px rgba(255, 255, 255, 0.2)) drop-shadow(0 4px 8px rgba(255, 255, 255, 0.1));
+          transition: filter 0.3s ease;
+        }
+
+        .logo-image:hover {
+          filter: drop-shadow(0 12px 24px rgba(255, 255, 255, 0.3)) drop-shadow(0 6px 12px rgba(255, 255, 255, 0.2));
+        }
+
+        .subtitle {
+          color: #e2e8f0;
+          margin: 0;
+          font-size: 0.9rem;
+        }
+
+        .tab-container {
+          width: 100%;
+        }
+
+
+
+        .error-message {
+          background: #fee;
+          color: #c33;
+          padding: 12px;
+          border-radius: 8px;
+          margin-bottom: 20px;
+          border: 1px solid #fcc;
+          font-size: 0.9rem;
+        }
+
+        .form-group {
+          margin-bottom: 15px;
+        }
+
+        .form-row {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+        }
+
+        .form-group label {
+          display: block;
+          margin-bottom: 6px;
+          font-weight: 500;
+          color: #e2e8f0;
+        }
+
+        .form-group input {
+          width: 100%;
+          padding: 10px 12px;
+          border: 2px solid #e1e5e9;
+          border-radius: 8px;
+          font-size: 0.95rem;
+          transition: all 0.3s ease;
+          background: white;
+          color: #2d3748;
+        }
+
+        .form-group input:focus {
+          outline: none;
+          border-color: #667eea;
+          box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .password-input {
+          position: relative;
+        }
+
+        .password-toggle {
+          position: absolute;
+          right: 15px;
+          top: 50%;
+          transform: translateY(-50%);
+          background: none;
+          border: none;
+          cursor: pointer;
+          font-size: 1.2rem;
+        }
+
+        .password-strength {
+          margin-top: 8px;
+        }
+
+        .strength-bar {
+          height: 4px;
+          background: #4a5568;
+          border-radius: 2px;
+          overflow: hidden;
+          margin-bottom: 5px;
+        }
+
+        .strength-fill {
+          height: 100%;
+          background: linear-gradient(90deg, #ff4757, #ffa502, #2ed573);
+          transition: width 0.3s ease;
+        }
+
+        .strength-text {
+          font-size: 0.8rem;
+          color: #cbd5e0;
+        }
+
+        .form-options {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 18px;
+        }
+
+        .checkbox-label {
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+          font-size: 0.9rem;
+          color: #e2e8f0;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+          display: none;
+        }
+
+        .checkmark {
+          width: 18px;
+          height: 18px;
+          border: 2px solid #718096;
+          border-radius: 4px;
+          margin-right: 8px;
+          position: relative;
+          transition: all 0.3s ease;
+        }
+
+        .checkbox-label input[type="checkbox"]:checked + .checkmark {
+          background: #4299e1;
+          border-color: #4299e1;
+        }
+
+        .checkbox-label input[type="checkbox"]:checked + .checkmark::after {
+          content: '✓';
+          position: absolute;
+          top: -2px;
+          left: 2px;
+          color: white;
+          font-size: 12px;
+        }
+
+        .forgot-password {
+          color: #90cdf4;
+          text-decoration: none;
+          font-size: 0.9rem;
+        }
+
+        .forgot-password:hover {
+          text-decoration: underline;
+        }
+
+        .submit-button {
+          width: 100%;
+          padding: 12px;
+          background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+          color: white;
+          border: none;
+          border-radius: 10px;
+          font-size: 1rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+        }
+
+        .submit-button:hover:not(:disabled) {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 25px rgba(66, 153, 225, 0.3);
+        }
+
+        .submit-button:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
+        }
+
+        .loading-spinner-small {
+          width: 16px;
+          height: 16px;
+          border: 2px solid rgba(255, 255, 255, 0.3);
+          border-top: 2px solid white;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+        }
+
+        .loading-screen {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 9999;
+        }
+
+        .loading-content {
+          text-align: center;
+          color: white;
+        }
+
+        .loading-logo {
+          margin-bottom: 30px;
+        }
+
+        .loading-logo .logo-icon {
+          font-size: 4rem;
+          margin-bottom: 10px;
+        }
+
+        .loading-logo h1 {
+          font-size: 2.5rem;
+          margin: 0;
+          font-weight: 700;
+        }
+
+        .loading-spinner {
+          margin: 30px 0;
+        }
+
+        .spinner {
+          width: 50px;
+          height: 50px;
+          border: 4px solid rgba(255, 255, 255, 0.3);
+          border-top: 4px solid white;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+          margin: 0 auto;
+        }
+
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 600px) {
+          .login-card {
+            padding: 30px 20px;
+          }
+
+          .form-row {
+            grid-template-columns: 1fr;
+          }
+
+          .form-options {
+            flex-direction: column;
+            gap: 15px;
+            align-items: flex-start;
+          }
+        }
+      `}</style>
     </div>
   );
 }

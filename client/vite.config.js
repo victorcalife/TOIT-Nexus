@@ -46,5 +46,13 @@ export default defineConfig( {
         secure: true,
       },
     } : undefined,
+  },
+  // Configuração do preview server para produção
+  preview: {
+    port: process.env.RAILWAY_TCP_APPLICATION_PORT || process.env.PORT
+      ? parseInt( process.env.RAILWAY_TCP_APPLICATION_PORT || process.env.PORT || '4173' )
+      : 4173,
+    host: '0.0.0.0',
+    cors: true,
   }
 } )

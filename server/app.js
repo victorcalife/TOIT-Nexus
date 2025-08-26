@@ -4,14 +4,25 @@
  * 100% JavaScript - SEM TYPESCRIPT
  */
 
-require( 'dotenv' ).config();
+// Carregar variáveis de ambiente - priorizar .env.local para desenvolvimento
+const fs = require('fs');
+const path = require('path');
+
+// Verificar se existe .env.local e carregar primeiro
+const envLocalPath = path.join(__dirname, '.env.local');
+if (fs.existsSync(envLocalPath)) {
+  console.log('🔧 Carregando configurações de desenvolvimento (.env.local)');
+  require('dotenv').config({ path: envLocalPath });
+} else {
+  console.log('🔧 Carregando configurações padrão (.env)');
+  require('dotenv').config();
+}
 const express = require( 'express' );
 const cors = require( 'cors' );
 const helmet = require( 'helmet' );
 const compression = require( 'compression' );
 const cookieParser = require( 'cookie-parser' );
 const rateLimit = require( 'express-rate-limit' );
-const path = require( 'path' );
 
 // Importar configurações e sistemas
 const { db } = require( './database-config' );

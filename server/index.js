@@ -35,10 +35,10 @@ app.get( '/', ( req, res, next ) =>
 {
   const hostname = req.hostname;
 
-  // Se for o domínio principal, serve a landing page
+  // Se for o domínio principal, serve a nova landing page
   if ( hostname === 'nexus.toit.com.br' || hostname === 'localhost' )
   {
-    return res.sendFile( path.join( __dirname, '..', 'nexus-quantum-landing.html' ) );
+    return res.sendFile( path.join( __dirname, '..', 'client', 'public', 'nexus-landing-new.html' ) );
   }
 
   // Se for o domínio de suporte, redireciona para o login de suporte
@@ -49,6 +49,13 @@ app.get( '/', ( req, res, next ) =>
 
   // Para qualquer outro caso, continua com o roteamento normal
   next();
+} );
+
+// Rota específica para login de suporte
+app.get( '/support-login', ( req, res ) =>
+{
+  // Serve a aplicação React que irá renderizar o componente SupportLogin
+  return res.sendFile( path.join( __dirname, '..', 'client', 'dist', 'index.html' ) );
 } );
 
 app.use( ( req, res, next ) =>
@@ -98,8 +105,9 @@ app.use( ( req, res, next ) =>
     console.log( '🗄️  Executando database migrations...' );
     try
     {
-      const { execSync } = await import( 'child_process' );
-      execSync( 'npm run db:push', { stdio: 'inherit' } );
+      const { DatabaseManager } = require( './database-config' );
+      const dbManager = new DatabaseManager();
+      await dbManager.runMigrations();
       console.log( '✅ Migrations executadas com sucesso' );
     } catch ( error )
     {

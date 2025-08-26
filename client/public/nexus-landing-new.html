@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOIT Nexus - Automação Inteligente para o Brasil</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="TOIT Nexus: A primeira plataforma de automação inteligente 100% brasileira. Workflows, IA Quantum, dashboards personalizados.">
+    <meta name="keywords" content="automação, workflow, brasil, inteligência artificial, quantum ml, produtividade, toit, nexus">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="TOIT Nexus - Automação Inteligente para o Brasil">
+    <meta property="og:description" content="Elimine tarefas repetitivas. Surpreenda com insights. Tecnologia quantum para todos os brasileiros.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://nexus.toit.com.br/">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Stripe -->
+    <script src="https://js.stripe.com/v3/"></script>
+    
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #141420;
+            --bg-card: #1e1e2e;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b8;
+            --text-muted: #808088;
+            --toit-cyan: #00d4ff;
+            --toit-blue: #0099ff;
+            --toit-purple: #6a0dad;
+            --toit-green: #10b981;
+            --gradient-epic: linear-gradient(135deg, #00d4ff 0%, #6a0dad 50%, #0099ff 100%);
+            --gradient-card: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow: hidden;
+            height: 100vh;
+            line-height: 1.4;
+            font-size: 14px;
+        }
+
+        /* Background */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 80% 20%, rgba(106, 13, 173, 0.1) 0%, transparent 40%),
+                linear-gradient(180deg, var(--bg-primary) 0%, #050508 100%);
+        }
+
+        /* Header Compacto */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 50px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--gradient-epic);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .logo-text {
+            font-size: 1.2rem;
+            font-weight: 800;
+            background: var(--gradient-epic);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-cta {
+            background: var(--gradient-epic);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .header-cta:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Container Principal */
+        .main-container {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 50px 15px 0;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Hero Section Compacta */
+        .hero-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+            align-items: center;
+            width: 100%;
+            max-height: calc(100vh - 80px);
+        }
+
+        .hero-content h1 {
+            font-size: 1.9rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 0.6rem;
+            background: var(--gradient-epic);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-tagline {
+            font-size: 0.85rem;
+            color: var(--toit-cyan);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.6rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.1rem;
+            font-weight: 800;
+            background: var(--gradient-epic);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            margin-top: 0.2rem;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: var(--gradient-epic);
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--toit-cyan);
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        /* Hero Visual Compacto */
+        .hero-visual {
+            position: relative;
+            height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feature-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.6rem;
+            width: 100%;
+            max-width: 350px;
+        }
+
+        .feature-card {
+            background: var(--gradient-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 0.6rem;
+            text-align: center;
+            transition: all 0.3s;
+            backdrop-filter: blur(20px);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--toit-cyan);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.4rem;
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .feature-desc {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            line-height: 1.3;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .header {
+                padding: 0.5rem 1rem;
+                height: 50px;
+            }
+
+            .logo-text {
+                font-size: 1.2rem;
+            }
+
+            .logo-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 1rem;
+            }
+
+            .main-container {
+                padding: 50px 1rem 0;
+            }
+
+            .hero-section {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                text-align: center;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .hero-tagline {
+                font-size: 1rem;
+            }
+
+            .hero-subtitle {
+                font-size: 0.9rem;
+            }
+
+            .hero-visual {
+                height: 300px;
+            }
+
+            .feature-cards {
+                max-width: 300px;
+            }
+
+            .hero-cta {
+                justify-content: center;
+            }
+
+            .btn-primary,
+            .btn-secondary {
+                font-size: 0.9rem;
+                padding: 0.6rem 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 1.75rem;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+
+            .feature-cards {
+                grid-template-columns: 1fr;
+                max-width: 250px;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+
+        /* Animações */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-content > * {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .hero-content > *:nth-child(1) { animation-delay: 0.1s; }
+        .hero-content > *:nth-child(2) { animation-delay: 0.2s; }
+        .hero-content > *:nth-child(3) { animation-delay: 0.3s; }
+        .hero-content > *:nth-child(4) { animation-delay: 0.4s; }
+        .hero-content > *:nth-child(5) { animation-delay: 0.5s; }
+
+        .feature-card:nth-child(1) { animation: fadeInUp 0.8s ease-out 0.6s forwards; opacity: 0; }
+        .feature-card:nth-child(2) { animation: fadeInUp 0.8s ease-out 0.7s forwards; opacity: 0; }
+        .feature-card:nth-child(3) { animation: fadeInUp 0.8s ease-out 0.8s forwards; opacity: 0; }
+        .feature-card:nth-child(4) { animation: fadeInUp 0.8s ease-out 0.9s forwards; opacity: 0; }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    
+    <!-- Header Compacto -->
+    <header class="header">
+        <div class="logo-container">
+            <div class="logo-icon">N</div>
+            <div class="logo-text">NEXUS</div>
+        </div>
+        <button class="header-cta" onclick="openLoginModal()">Entrar</button>
+    </header>
+
+    <!-- Container Principal -->
+    <main class="main-container">
+        <section class="hero-section">
+            <!-- Conteúdo Hero -->
+            <div class="hero-content">
+                <div class="hero-tagline">🇧🇷 100% Brasileiro</div>
+                <h1>Automação Inteligente para o Brasil</h1>
+                <p class="hero-subtitle">
+                    Elimine tarefas repetitivas. Surpreenda com insights. 
+                    Tecnologia quantum acessível para todos os brasileiros.
+                </p>
+                
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">98%</span>
+                        <div class="stat-label">Redução de Tempo</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">500+</span>
+                        <div class="stat-label">Empresas Ativas</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">24/7</span>
+                        <div class="stat-label">Suporte Nacional</div>
+                    </div>
+                </div>
+
+                <div class="hero-cta">
+                    <button class="btn-primary" onclick="startFreeTrial()">
+                        ⚡ Começar Grátis
+                    </button>
+                    <a href="#demo" class="btn-secondary">
+                        📹 Ver Demo
+                    </a>
+                </div>
+            </div>
+
+            <!-- Visual Hero -->
+            <div class="hero-visual">
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <div class="feature-icon">🤖</div>
+                        <div class="feature-title">IA Quantum</div>
+                        <div class="feature-desc">Algoritmos quânticos para insights impossíveis</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <div class="feature-title">Workflows</div>
+                        <div class="feature-desc">Automação visual sem código</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <div class="feature-title">Dashboards</div>
+                        <div class="feature-desc">Visualizações em tempo real</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <div class="feature-title">Segurança</div>
+                        <div class="feature-desc">Proteção de dados nacional</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal de Login -->
+    <div id="loginModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; backdrop-filter: blur(15px);">
+        <div style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0.8rem;">
+            <div style="background: rgba(255,255,255,0.05); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem; width: 100%; max-width: 320px; position: relative; overflow: hidden;">
+                <button onclick="closeLoginModal()" style="position: absolute; top: 0.8rem; right: 0.8rem; background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer; opacity: 0.7; transition: opacity 0.3s;">×</button>
+                
+                <div style="text-align: center; margin-bottom: 1.5rem;">
+                    <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #00d4ff, #4a148c); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.8rem; color: white; font-weight: 900; font-size: 1.2rem;">N</div>
+                    <h2 style="color: white; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.3rem;">NEXUS</h2>
+                    <p style="color: #00d4ff; font-size: 0.7rem; opacity: 0.8;">Acesso à Computação Quântica</p>
+                </div>
+
+                <form onsubmit="handleLogin(event)" style="display: flex; flex-direction: column; gap: 0.8rem;">
+                    <div>
+                        <label style="display: block; color: #00d4ff; font-weight: 600; font-size: 0.7rem; margin-bottom: 0.4rem;">CPF</label>
+                        <input 
+                            type="text" 
+                            id="cpfInput"
+                            placeholder="000.000.000-00" 
+                            maxlength="14"
+                            style="width: 100%; padding: 0.6rem 0.8rem; background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.1); border-radius: 6px; color: white; font-size: 0.8rem; transition: all 0.3s ease;"
+                            required
+                        >
+                    </div>
+                    
+                    <div>
+                        <label style="display: block; color: #00d4ff; font-weight: 600; font-size: 0.7rem; margin-bottom: 0.4rem;">Senha</label>
+                        <input 
+                            type="password" 
+                            id="passwordInput"
+                            placeholder="Digite sua senha" 
+                            style="width: 100%; padding: 0.6rem 0.8rem; background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.1); border-radius: 6px; color: white; font-size: 0.8rem; transition: all 0.3s ease;"
+                            required
+                        >
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin: 0.5rem 0; font-size: 0.7rem;">
+                        <label style="display: flex; align-items: center; gap: 0.4rem; color: rgba(255,255,255,0.7); cursor: pointer;">
+                            <input type="checkbox" style="width: auto; margin: 0;"> Lembrar-me
+                        </label>
+                        <a href="#" style="color: #4a148c; text-decoration: none; transition: color 0.3s;">Esqueci minha senha</a>
+                    </div>
+                    
+                    <button 
+                        type="submit" 
+                        style="width: 100%; background: linear-gradient(135deg, #00d4ff, #4a148c); color: white; padding: 0.6rem; border: none; border-radius: 6px; font-size: 0.8rem; font-weight: 700; cursor: pointer; margin-top: 0.3rem; transition: all 0.4s ease;"
+                    >
+                        Acessar NEXUS
+                    </button>
+                </form>
+                
+                <div style="text-align: center; margin-top: 1rem; padding-top: 0.8rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <p style="color: rgba(255,255,255,0.6); font-size: 0.7rem; margin-bottom: 0.4rem;">Não tem conta?</p>
+                    <button onclick="startFreeTrial()" style="background: none; border: 1px solid #00d4ff; color: #00d4ff; padding: 0.4rem 0.8rem; border-radius: 4px; font-size: 0.7rem; cursor: pointer; transition: all 0.3s ease;">Criar Conta Grátis</button>
+                </div>
+                
+                <div style="background: rgba(0, 255, 136, 0.1); border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 6px; padding: 0.6rem; margin-top: 0.8rem; text-align: center;">
+                    <p style="color: #00ff88; font-size: 0.6rem; font-weight: 600; margin-bottom: 0.2rem;">🔒 Acesso Seguro</p>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 0.55rem; line-height: 1.3;">Todas as sessões são monitoradas e criptografadas</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Máscara de CPF
+        document.getElementById('cpfInput')?.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            e.target.value = value;
+        });
+
+        // Funções do Modal
+        function openLoginModal() {
+            document.getElementById('loginModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Fechar modal ao clicar fora
+        document.getElementById('loginModal')?.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLoginModal();
+            }
+        });
+
+        // Handle Login
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const cpf = document.getElementById('cpfInput').value;
+            const password = document.getElementById('passwordInput').value;
+            
+            if (!cpf || !password) {
+                alert('Por favor, preencha todos os campos.');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/simple-login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        cpf: cpf.replace(/\D/g, ''),
+                        password: password,
+                        loginType: 'client'
+                    })
+                });
+                
+                if (response.ok) {
+                    const userData = await response.json();
+                    alert(`Bem-vindo, ${userData.firstName}!`);
+                    window.location.href = '/dashboard';
+                } else {
+                    const errorData = await response.json();
+                    alert(errorData.message || 'CPF ou senha incorretos.');
+                }
+            } catch (error) {
+                console.error('Erro no login:', error);
+                alert('Erro de conexão. Tente novamente.');
+            }
+        }
+
+        // Iniciar teste grátis
+        function startFreeTrial() {
+            // Integração com Stripe para teste grátis
+            window.location.href = '/signup';
+        }
+
+        // Fechar modal com ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLoginModal();
+            }
+        });
+    </script>
+</body>
+</html>

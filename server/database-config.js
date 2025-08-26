@@ -187,7 +187,7 @@ class DatabaseManager {
     
     try {
       // 1. Executar schema principal
-      const schemaPath = path.join(__dirname, '..', 'database', 'complete-schema-migration.sql');
+      const schemaPath = path.join(__dirname, '..', 'database', 'complete-schema-migration-fixed.sql');
       if (fs.existsSync(schemaPath)) {
         await this.executeSQLFile(schemaPath);
         console.log('✅ Schema principal criado');

@@ -44,7 +44,7 @@ class AuthSystem
             u.id, u.name, u.email,
             u.password, u.role, u.is_active,
             u.tenant_id, u.last_login,
-            t.name as tenant_name
+            t.name as tenant_name, t.status as tenant_status
           FROM users u
           LEFT JOIN tenants t ON u.tenant_id = t.id
           WHERE u.email = $1 AND u.is_active = true
@@ -57,10 +57,10 @@ class AuthSystem
             u.id, u.name, u.email, u.cpf,
             u.password, u.role, u.is_active,
             u.tenant_id, u.last_login,
-            t.name as tenant_name
+            t.name as tenant_name, t.status as tenant_status
           FROM users u
           LEFT JOIN tenants t ON u.tenant_id = t.id
-          WHERE u.email = $1 AND u.is_active = true
+          WHERE u.cpf = $1 AND u.is_active = true
         `;
         params = [ cpf ];
       } else
@@ -78,10 +78,10 @@ class AuthSystem
 
       const user = result.rows[ 0 ];
 
-      // Verificar se tenant está ativo
-      if ( user.tenant_status !== 'active' )
+      // Verificar se tenant está ativo (apenas se não for super_admin)
+      if ( user.role !== 'super_admin' && user.tenant_status && user.tenant_status !== 'active' )
       {
-        console.log( `❌ Tenant inativo: ${ user.tenant_slug }` );
+        console.log( `❌ Tenant inativo: ${ user.tenant_name }` );
         throw new Error( 'Organização inativa ou suspensa' );
       }
 
@@ -261,7 +261,7 @@ class AuthSystem
         SELECT
           u.id, u.name, u.email,
           u.role, u.is_active, u.tenant_id, u.last_login,
-          t.name as tenant_name
+          t.name as tenant_name, t.status as tenant_status
         FROM users u
         LEFT JOIN tenants t ON u.tenant_id = t.id
         WHERE u.id = $1 AND u.is_active = true

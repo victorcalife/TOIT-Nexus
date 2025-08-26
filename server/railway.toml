@@ -1,0 +1,36 @@
+[build]
+builder = "nixpacks"
+buildCommand = "npm install"
+
+[deploy]
+startCommand = "npm start"
+healthcheckPath = "/health"
+healthcheckTimeout = 300
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3
+
+[env]
+NODE_ENV = "production"
+PORT = "8080"
+TRUST_PROXY = "true"
+ENABLE_COMPRESSION = "true"
+LOG_FORMAT = "json"
+LOG_LEVEL = "info"
+ENABLE_METRICS = "true"
+HEALTH_CHECK_PATH = "/health"
+CACHE_TTL = "3600"
+RATE_LIMIT_MAX = "1000"
+LOGIN_RATE_LIMIT_MAX = "5"
+MAX_FILE_SIZE = "50"
+UPLOAD_DIR = "uploads"
+JWT_EXPIRES_IN = "1h"
+JWT_REFRESH_EXPIRES_IN = "7d"
+ENABLE_REGISTRATION = "false"
+ENABLE_PASSWORD_RESET = "true"
+ENABLE_EMAIL_VERIFICATION = "true"
+ENABLE_TWO_FACTOR = "false"
+DEFAULT_TENANT_SLUG = "toit"
+DEFAULT_TENANT_NAME = "TOIT - Tecnologia e Inovação"
+DEFAULT_MAX_USERS = "10"
+DEFAULT_MAX_WORKSPACES = "5"
+DEFAULT_MAX_STORAGE_GB = "1"
