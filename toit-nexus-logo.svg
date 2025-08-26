@@ -7,26 +7,67 @@
       <stop offset="50%" style="stop-color:#581c87;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
     </linearGradient>
-      <!-- Gradiente principal -->
-    <linearGradient id="brand1Gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#001366ff;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#581c87;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#1e3a8a;stop-opacity:1" />
-    </linearGradient>
+    
+    <!-- Padrão de circuito -->
+    <pattern id="circuitPattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="10" cy="10" r="1.5" fill="#06b6d4" opacity="0.3"/>
+      <line x1="10" y1="0" x2="10" y2="20" stroke="#06b6d4" stroke-width="0.5" opacity="0.2"/>
+      <line x1="0" y1="10" x2="20" y2="10" stroke="#06b6d4" stroke-width="0.5" opacity="0.2"/>
+    </pattern>
   </defs>
   
-  <!-- Ícone do logo aumentado 30% e reposicionado -->
+  <!-- Background sutil -->
+  <rect width="400" height="100" fill="#f8fafc"/>
+  <rect width="400" height="100" fill="url(#circuitPattern)"/>
+  
+  <!-- Ícone do logo -->
+  <g transform="translate(20,50)">
+    <!-- Base hexagonal -->
+    <path d="M 15 0 L 30 -8.66 L 30 -26 L 15 -34.66 L 0 -26 L 0 -8.66 Z" 
+          fill="url(#brandGradient)" 
+          transform="translate(0,17)"/>
+    
+    <!-- Elementos de conexão -->
+    <g stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round">
+      <!-- Fluxo central -->
+      <path d="M 8 0 Q 15 -10 22 0" opacity="0.9"/>
+      <path d="M 8 0 Q 15 10 22 0" opacity="0.9"/>
+      
+      <!-- Nós -->
+      <circle cx="8" cy="0" r="3" fill="#ffffff"/>
+      <circle cx="15" cy="0" r="3" fill="#ffffff"/>
+      <circle cx="22" cy="0" r="3" fill="#ffffff"/>
+    </g>
+    
+    <!-- Conexões externas animadas -->
+    <g opacity="0.6">
+      <line x1="30" y1="-8.66" x2="40" y2="-15" stroke="#06b6d4" stroke-width="2">
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/>
+      </line>
+      <line x1="30" y1="8.66" x2="40" y2="15" stroke="#06b6d4" stroke-width="2">
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+      </line>
+      <line x1="0" y1="0" x2="-10" y2="0" stroke="#06b6d4" stroke-width="2">
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" begin="1s" repeatCount="indefinite"/>
+      </line>
+    </g>
+  </g>
   
   <!-- Texto principal -->
-  <g transform="translate(105,50)">
+  <g transform="translate(90,50)">
     <!-- TOIT -->
-    <text x="-35" y="15" font-family="Arial Black, sans-serif" font-size="45" font-weight="700" fill="url(#brand1Gradient)">
+    <text x="0" y="5" font-family="Arial Black, sans-serif" font-size="42" font-weight="900" fill="#1e3a8a">
       TOIT
     </text>
     
     <!-- NEXUS -->
-    <text x="75" y="15" font-family="Arial, sans-serif" font-size="45" font-weight="300" fill="url(#brandGradient)">
+    <text x="105" y="5" font-family="Arial, sans-serif" font-size="42" font-weight="300" fill="url(#brandGradient)">
       NEXUS
+    </text>
+    
+    <!-- Tagline -->
+    <text x="0" y="25" font-family="Arial, sans-serif" font-size="12" fill="#64748b" letter-spacing="2">
+      WORKFLOW AUTOMATION PLATFORM
     </text>
   </g>
 </svg>
