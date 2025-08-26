@@ -15,11 +15,11 @@ const getApiBaseUrl = () =>
   // Para desenvolvimento local, ainda usar Railway
   if ( import.meta.env.DEV )
   {
-    return 'https://api.toit.com.br';
+    return 'https://toit-nexus-backend-production.up.railway.app';
   }
 
   // Fallback para produção
-  return 'https://api.toit.com.br';
+  return 'https://toit-nexus-backend-production.up.railway.app';
 };
 
 export const API_BASE_URL = getApiBaseUrl();

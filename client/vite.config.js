@@ -41,7 +41,7 @@ export default defineConfig( {
     proxy: process.env.NODE_ENV === 'development' ? {
       // No desenvolvimento, redireciona as requisições para a API
       '/api': {
-        target: process.env.VITE_API_URL || 'https://api.toit.com.br',
+        target: process.env.VITE_API_URL || 'https://toit-nexus-backend-production.up.railway.app',
         changeOrigin: true,
         secure: true,
       },

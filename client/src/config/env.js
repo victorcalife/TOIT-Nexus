@@ -10,15 +10,15 @@ const isProduction = import.meta.env.PROD;
 // URLs base
 const API_BASE_URL = isDevelopment
   ? 'http://localhost:8080'
-  : 'https://api.toit.com.br';
+  : 'https://toit-nexus-backend-production.up.railway.app';
 
 const FRONTEND_URL = isDevelopment
   ? 'http://localhost:5173'
-  : 'https://nexus.toit.com.br';
+  : 'https://toit-nexus-frontend-production.up.railway.app';
 
 const SUPPORT_URL = isDevelopment
   ? 'http://localhost:5173'
-  : 'https://supnexus.toit.com.br';
+  : 'https://toit-nexus-frontend-production.up.railway.app';
 
 // Configuração da API
 export const API_CONFIG = {
