@@ -14,6 +14,11 @@ const SystemSetup = lazy( () => import( '@/pages/system-setup' ) );
 // Rotas públicas acessíveis sem autenticação
 export const publicRoutes = [
   {
+    path: '/',
+    component: Login,
+    exact: true,
+  },
+  {
     path: '/login',
     component: Login,
     exact: true,

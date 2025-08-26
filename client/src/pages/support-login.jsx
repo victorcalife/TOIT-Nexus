@@ -363,11 +363,6 @@ export default function SupportLogin()
         <canvas ref={ canvasRef } id="networkCanvas"></canvas>
       </div>
 
-      {/* Back Button */ }
-      <button className="back-button" onClick={ goBack }>
-        Voltar ao TOIT
-      </button>
-
       {/* Login Container */ }
       <div className="login-container">
         <div style={ {
