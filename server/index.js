@@ -36,13 +36,13 @@ app.get( '/', ( req, res, next ) =>
   const hostname = req.hostname;
 
   // Se for o domínio principal, serve a nova landing page
-  if ( hostname === 'toit.com.br' )
+  if ( hostname === 'nexus.toit.com.br' )
   {
     return res.sendFile( path.join( __dirname, '..', 'client', 'public', 'nexus-landing-new.html' ) );
   }
 
   // Se for o domínio de suporte, redireciona para o login de suporte
-  if ( hostname === 'admin.toit.com.br' )
+  if ( hostname === 'supnexus.toit.com.br' )
   {
     return res.redirect( '/support-login' );
   }

@@ -76,14 +76,15 @@ class TOITNexusServer
       {
         const allowedOrigins = this.environment === 'production'
           ? [
-            'https://toit.com.br',
-    'https://admin.toit.com.br',
-    'https://api.toit.com.br'
+            'https://nexus.toit.com.br',
+            'https://supnexus.toit.com.br',
+            'https://api.toit.com.br'
           ]
           : [
-            
-            'https://toit.com.br',
-    'https://admin.toit.com.br'
+            'https://nexus.toit.com.br',
+            'https://supnexus.toit.com.br',
+            'http://localhost:5173',
+            'http://localhost:3000'
           ];
 
         // Permitir requisições sem origin (Postman, mobile apps, etc.)
