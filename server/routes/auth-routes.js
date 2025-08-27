@@ -403,20 +403,29 @@ router.post( '/simple-login', loginLimiter, [
 
     const { cpf, email, password, loginType = 'support' } = req.body;
 
-    // Usar email se fornecido, senão usar CPF como email (temporário)
-    const loginEmail = email || `${ cpf }@toit.com.br`;
-
     console.log( '🛡️ [SIMPLE-LOGIN] Dados recebidos:', {
       cpf: cpf?.length || 'undefined',
       email: email?.length || 'undefined',
-      loginEmail: loginEmail?.length || 'undefined',
       password: password?.length || 'undefined',
       loginType
     } );
 
-    // Fazer login usando o sistema de autenticação (usando EMAIL)
-    console.log( '🛡️ [SIMPLE-LOGIN] Chamando authenticateUser com EMAIL:', loginEmail );
-    const user = await authSystem.authenticateUser( loginEmail, password );
+    // Para login de suporte, usar CPF diretamente (não transformar em email)
+    let user;
+    if ( email ) {
+      console.log( '🛡️ [SIMPLE-LOGIN] Chamando authenticateUser com EMAIL:', email );
+      user = await authSystem.authenticateUser( email, password );
+    } else if ( cpf ) {
+      console.log( '🛡️ [SIMPLE-LOGIN] Chamando authenticateUser com CPF:', cpf );
+      user = await authSystem.authenticateUser( null, password, cpf );
+    } else {
+      return res.status( 400 ).json( {
+        success: false,
+        error: 'CPF ou email é obrigatório',
+        code: 'MISSING_CREDENTIALS'
+      } );
+    }
+    
     console.log( '🛡️ [SIMPLE-LOGIN] Resultado authenticateUser:', user ? 'USER_FOUND' : 'USER_NOT_FOUND' );
 
     if ( !user )

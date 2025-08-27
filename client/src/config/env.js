@@ -3,7 +3,7 @@
  * Centraliza todas as variáveis de ambiente do frontend
  */
 
-// Configuração de ambiente - APENAS PRODUÇÃO
+// Configuração de ambiente - RAILWAY PRODUCTION
 const getCurrentDomain = () => {
   if (typeof window !== 'undefined') {
     return window.location.hostname;
@@ -13,8 +13,10 @@ const getCurrentDomain = () => {
 
 const currentDomain = getCurrentDomain();
 
-// URLs de produção fixas
-const API_BASE_URL = 'https://api.toit.com.br';
+// URLs do Railway - usar variáveis de ambiente corretas
+const API_BASE_URL = import.meta.env.VITE_API_URL || 
+                   import.meta.env.VITE_BACKEND_URL || 
+                   'https://toit-nexus-backend-production.up.railway.app';
 
 const FRONTEND_URL = currentDomain === 'nexus.toit.com.br' 
   ? 'https://nexus.toit.com.br'
@@ -58,16 +60,15 @@ export const ENV_CONFIG = {
   API_URL: import.meta.env.VITE_API_URL || API_BASE_URL
 };
 
-// Log da configuração (apenas em desenvolvimento)
-if ( isDevelopment )
-{
-  console.log( '🔧 [ENV-CONFIG] Configuração carregada:', {
-    API_BASE_URL,
-    FRONTEND_URL,
-    SUPPORT_URL,
-    NODE_ENV: import.meta.env.MODE
-  } );
-}
+// Log da configuração (sempre em produção para debug)
+console.log( '🔧 [ENV-CONFIG] Configuração carregada:', {
+  API_BASE_URL,
+  FRONTEND_URL,
+  SUPPORT_URL,
+  NODE_ENV: import.meta.env.MODE,
+  VITE_API_URL: import.meta.env.VITE_API_URL,
+  VITE_BACKEND_URL: import.meta.env.VITE_BACKEND_URL
+} );
 
 export default {
   API_CONFIG,
