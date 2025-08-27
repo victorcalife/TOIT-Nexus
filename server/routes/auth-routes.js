@@ -379,7 +379,7 @@ router.delete( '/sessions/:sessionId', requireAuth( authSystem ), async ( req, r
 router.post( '/simple-login', loginLimiter, [
   body( 'cpf' ).notEmpty().withMessage( 'CPF é obrigatório' ),
   body( 'password' ).notEmpty().withMessage( 'Senha é obrigatória' ),
-  body( 'loginType' ).optional().isIn( [ 'support', 'admin' ] ).withMessage( 'Tipo de login inválido' )
+  body( 'loginType' ).optional().isIn( [ 'support', 'admin', 'normal', 'client' ] ).withMessage( 'Tipo de login inválido' )
 ], async ( req, res ) =>
 {
   try
@@ -446,7 +446,7 @@ router.post( '/simple-login', loginLimiter, [
       } );
     }
 
-    // Verificar se o usuário tem permissão para login de suporte
+    // Verificar se o usuário tem permissão para o tipo de login solicitado
     if ( loginType === 'support' && ![ 'admin', 'super_admin', 'support' ].includes( user.role ) )
     {
       console.log( '❌ [SIMPLE-LOGIN] Usuário sem permissão de suporte:', user.role );
@@ -455,6 +455,18 @@ router.post( '/simple-login', loginLimiter, [
         error: 'Acesso negado',
         message: 'Usuário não tem permissão para login de suporte',
         code: 'INSUFFICIENT_PERMISSIONS'
+      } );
+    }
+    
+    // Para login normal/client, verificar se usuário está ativo
+    if ( ( loginType === 'normal' || loginType === 'client' ) && !user.is_active )
+    {
+      console.log( '❌ [SIMPLE-LOGIN] Usuário inativo:', user.id );
+      return res.status( 403 ).json( {
+        success: false,
+        error: 'Conta desativada',
+        message: 'Entre em contato com o suporte',
+        code: 'ACCOUNT_DISABLED'
       } );
     }
 

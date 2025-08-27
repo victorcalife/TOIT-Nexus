@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import { useQueryClient } from '@tanstack/react-query';
 import { formatCpf, cleanCpf, validateCpf } from '../lib/utils';
 import { API_CONFIG } from '../config/env';
+import { detectLoginType } from '../lib/domainUtils';
 
 export default function Login()
 {
@@ -23,13 +25,14 @@ export default function Login()
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const queryClient = useQueryClient();
   const canvasRef = useRef(null);
   const mouseRef = useRef({ x: 0, y: 0 });
   const nodesRef = useRef([]);
   
-  // Detectar se é acesso de suporte baseado no domínio
-  const isSupportLogin = window.location.hostname === 'supnexus.toit.com.br' || 
-                        window.location.hostname.includes('supnexus');
+  // Detectar tipo de login baseado no domínio
+  const loginType = detectLoginType();
+  const isSupportLogin = loginType === 'support';
 
   // Redirecionar se já autenticado
   useEffect(() => {
@@ -167,7 +170,7 @@ export default function Login()
         body: JSON.stringify({
           cpf: cleanedCpf,
           password,
-          loginType: isSupportLogin ? 'support' : 'normal',
+          loginType: loginType,
           rememberMe
         }),
       });
@@ -185,10 +188,14 @@ export default function Login()
       // Armazenar dados do usuário
       if (data.user) {
         localStorage.setItem('user', JSON.stringify(data.user));
+        
+        // Atualizar cache do React Query
+        queryClient.setQueryData(['auth', 'me'], data.user);
+        queryClient.invalidateQueries({ queryKey: ['auth'] });
       }
       
       const redirectTo = searchParams.get('redirect') || '/dashboard';
-      navigate(redirectTo);
+      navigate(redirectTo, { replace: true });
     } catch (err) {
       console.error('❌ Erro no login:', err);
       setError(err.message || 'Erro no login. Tente novamente.');
