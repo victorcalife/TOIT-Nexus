@@ -2,7 +2,7 @@
  * Utilitários para detecção de domínio e subdomínio
  */
 
-export /**
+/**
  * Detecta o tipo de login baseado no domínio atual
  */
 export function detectLoginType(){
@@ -63,7 +63,15 @@ export function getDashboardUrl(role){
     case 'tenant_admin':
     case 'manager':
     case 'employee':
-    default){
+    default:
+      return '/dashboard';
+  }
+}
+
+/**
+ * Verificar se o usuário é administrador
+ */
+export function isAdmin(role){
   return role === 'super_admin' || role === 'toit_admin';
 }
 
