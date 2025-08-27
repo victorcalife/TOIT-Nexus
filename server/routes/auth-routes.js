@@ -384,9 +384,16 @@ router.post( '/simple-login', loginLimiter, [
 {
   try
   {
+    // Debug completo do body da requisição
+    console.log( '🔐 [SIMPLE-LOGIN] Body completo recebido:', JSON.stringify( req.body, null, 2 ) );
+    console.log( '🔐 [SIMPLE-LOGIN] Headers da requisição:', JSON.stringify( req.headers, null, 2 ) );
+    console.log( '🔐 [SIMPLE-LOGIN] Content-Type:', req.get( 'Content-Type' ) );
+    
     console.log( '🔐 [SIMPLE-LOGIN] Tentativa de login de suporte:', {
       cpf: req.body.cpf,
-      loginType: req.body.loginType
+      password: req.body.password ? '***PRESENTE***' : '***AUSENTE***',
+      loginType: req.body.loginType,
+      bodyKeys: Object.keys( req.body || {} )
     } );
 
     // Verificar erros de validação
