@@ -32,7 +32,7 @@ app.get( '/', ( req, res ) =>
   console.log( `🌐 Frontend Root - Host: ${ realHost } | Path: ${ req.originalUrl }` );
 
   // ADMIN (equipe TOIT) → React app sempre
-  if ( realHost.includes( 'admin.toit.com.br' ) || realHost.includes( 'admin' ) )
+  if ( realHost.includes( 'supnexus.toit.com.br' ) || realHost.includes( 'supnexus' ) )
   {
     console.log( `👥 [ADMIN] Servindo React app para equipe TOIT` );
 
@@ -53,8 +53,8 @@ app.get( '/', ( req, res ) =>
     }
   }
 
-  // TOIT (clientes) → Landing page sempre  
-  console.log( `🎯 [TOIT] Servindo landing page para: ${ realHost }` );
+  // NEXUS (clientes) → Landing page sempre  
+  console.log( `🎯 [NEXUS] Servindo landing page para: ${ realHost }` );
 
   const landingPath = path.join( __dirname, 'nexus-quantum-landing.html' );
 
@@ -101,8 +101,8 @@ app.get( '*', ( req, res ) =>
     } );
   }
 
-  // Se é admin, serve o React app para qualquer rota (SPA)
-  if ( realHost.includes( 'admin.toit.com.br' ) || realHost.includes( 'admin' ) )
+  // Se é supnexus, serve o React app para qualquer rota (SPA)
+  if ( realHost.includes( 'supnexus.toit.com.br' ) || realHost.includes( 'supnexus' ) )
   {
     console.log( `🎯 [ADMIN SPA] Fallback para React Router: ${ req.originalUrl }` );
 
@@ -117,8 +117,8 @@ app.get( '*', ( req, res ) =>
     }
   }
 
-  // Para toit.com.br, serve a landing page
-  console.log( `🎯 [TOIT] Servindo landing page para rota: ${ req.originalUrl }` );
+  // Para nexus.toit.com.br, serve a landing page
+  console.log( `🎯 [NEXUS] Servindo landing page para rota: ${ req.originalUrl }` );
 
   const landingPath = path.join( __dirname, 'nexus-quantum-landing.html' );
 
@@ -141,8 +141,8 @@ app.listen( port, '0.0.0.0', () =>
   console.log( `🔧 Modo: ${ process.env.NODE_ENV || 'development' }` );
   console.log( '' );
   console.log( '🔗 ENDPOINTS PRINCIPAIS:' );
-  console.log( '   🌐 https://toit.com.br → Landing Page' );
-  console.log( '   👥 https://admin.toit.com.br → Portal Equipe TOIT' );
+  console.log( '   🌐 https://nexus.toit.com.br → Landing Page' );
+  console.log( '   👥 https://supnexus.toit.com.br → Portal Equipe TOIT' );
   console.log( '   💚 /api/health → Health Check' );
   console.log( '' );
   console.log( '🎯 STATUS: SISTEMA INTEGRADO 100% OPERACIONAL - V2.0' );

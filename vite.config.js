@@ -64,8 +64,8 @@ export default defineConfig({
   },
   preview: {
     allowedHosts: [
-      "admin.toit.com.br",
-      "toit.com.br",
+      "nexus.toit.com.br",
+      "supnexus.toit.com.br",
       "localhost",
       "127.0.0.1"
     ]

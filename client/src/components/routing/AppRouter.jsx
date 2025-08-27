@@ -25,7 +25,7 @@ function ProtectedRoute({ children, requiredRoles = [], requireTenantSelection =
   if (!isAuthenticated) {
     // Determinar página de login baseada no domínio
     const hostname = window.location.hostname;
-    const loginPath = hostname === 'admin.toit.com.br' ? '/support-login' : '/login';
+    const loginPath = hostname === 'supnexus.toit.com.br' ? '/support-login' : '/login';
     return <Navigate to={loginPath} state={{ from: location }} replace />;
   }
 

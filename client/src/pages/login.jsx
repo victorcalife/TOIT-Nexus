@@ -28,7 +28,7 @@ export default function Login()
   const nodesRef = useRef([]);
   
   // Detectar se é acesso de suporte baseado no domínio
-  const isSupportLogin = window.location.hostname === 'admin.toit.com.br' || 
+  const isSupportLogin = window.location.hostname === 'supnexus.toit.com.br' || 
                         window.location.hostname.includes('supnexus');
 
   // Redirecionar se já autenticado
