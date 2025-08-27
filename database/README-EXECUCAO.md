@@ -105,7 +105,7 @@ Para testar se tudo funcionou:
 
 1. Execute os SQLs no TablePlus
 2. Configure o `.env` do servidor
-3. Execute: `cd server && npm run dev`
+3. Verifique status: `railway status`
 4. Acesse: `https://api.toit.com.br/health`
 5. Teste login com dados do Victor
 

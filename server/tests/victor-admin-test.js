@@ -185,7 +185,7 @@ class VictorAdminTester {
   }
 
   /**
-   * Testar login no sistema de clientes (nexus.toit.com.br)
+   * Testar login no sistema de clientes (toit.com.br)
    */
   async testClientSystemLogin() {
     console.log('\n🌐 Testando login no sistema de clientes...');
@@ -218,7 +218,7 @@ class VictorAdminTester {
   }
 
   /**
-   * Testar login no sistema da equipe TOIT (supnexus.toit.com.br)
+   * Testar login no sistema da equipe TOIT (admin.toit.com.br)
    */
   async testToitTeamLogin() {
     console.log('\n🏢 Testando login no sistema da equipe TOIT...');

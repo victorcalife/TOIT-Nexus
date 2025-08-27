@@ -33,8 +33,8 @@ class MiddlewareTestSuite {
   async testCorsMiddleware() {
     const corsMiddleware = (req, res, next) => {
       const allowedOrigins = [
-        'https://nexus.toit.com.br',
-        'https://supnexus.toit.com.br',
+        'https://toit.com.br',
+'https://admin.toit.com.br',
         'https://admin.toit.com.br'
       ];
 
@@ -58,7 +58,7 @@ class MiddlewareTestSuite {
     const req = {
       method: 'GET',
       headers: {
-        origin: 'https://nexus.toit.com.br'
+        origin: 'https://toit.com.br'
       }
     };
 
@@ -77,7 +77,7 @@ class MiddlewareTestSuite {
       throw new Error('CORS middleware não chamou next()');
     }
 
-    if (headers['Access-Control-Allow-Origin'] !== 'https://nexus.toit.com.br') {
+    if (headers['Access-Control-Allow-Origin'] !== 'https://toit.com.br') {
       throw new Error('CORS origin não configurado corretamente');
     }
 

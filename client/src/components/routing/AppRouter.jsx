@@ -25,7 +25,7 @@ function ProtectedRoute({ children, requiredRoles = [], requireTenantSelection =
   if (!isAuthenticated) {
     // Determinar página de login baseada no domínio
     const hostname = window.location.hostname;
-    const loginPath = hostname === 'supnexus.toit.com.br' ? '/support-login' : '/login';
+    const loginPath = hostname === 'admin.toit.com.br' ? '/support-login' : '/login';
     return <Navigate to={loginPath} state={{ from: location }} replace />;
   }
 
@@ -80,10 +80,8 @@ function RootRedirect() {
     return <Navigate to={dashboardPath} replace />;
   }
 
-  // Se não autenticado, redirecionar para login baseado no domínio
-  const hostname = window.location.hostname;
-  const loginPath = hostname === 'supnexus.toit.com.br' ? '/support-login' : '/login';
-  return <Navigate to={loginPath} replace />;
+  // Se não autenticado, mostrar a HomePage
+  return null; // Deixa a rota / ser tratada pelas rotas públicas
 }
 
 // Componente de roteamento interno (dentro do Router)
@@ -95,9 +93,6 @@ function AppRoutes() {
     <ErrorBoundary>
       <Suspense fallback={<LoadingSpinner />}>
         <Routes>
-          {/* Rota raiz com redirecionamento inteligente */}
-          <Route path="/" element={<RootRedirect />} />
-
           {/* Rotas públicas */}
           {publicRoutes.map((route) => (
             <Route

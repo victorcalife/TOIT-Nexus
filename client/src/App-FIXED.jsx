@@ -28,15 +28,15 @@ function DomainBasedRoute()
 
   console.log( `🌐 [DOMAIN-ROUTE] Hostname: ${ hostname } | Path: ${ pathname }` );
 
-  // Se é supnexus.toit.com.br, sempre mostrar support-login
-  if ( hostname === 'supnexus.toit.com.br' )
+  // Se é admin.toit.com.br, sempre mostrar support-login
+  if ( hostname === 'admin.toit.com.br' )
   {
     console.log( `🛡️ [SUPNEXUS] Carregando support-login` );
     return <SupportLogin />;
   }
 
-  // Se é nexus.toit.com.br
-  if ( hostname === 'nexus.toit.com.br' )
+  // Se é toit.com.br
+  if ( hostname === 'toit.com.br' )
   {
     // Se está na rota raiz (/), redirecionar para login
     if ( pathname === '/' )

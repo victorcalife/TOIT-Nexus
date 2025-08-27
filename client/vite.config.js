@@ -41,7 +41,7 @@ export default defineConfig( {
     proxy: process.env.NODE_ENV === 'development' ? {
       // No desenvolvimento, redireciona as requisições para a API
       '/api': {
-        target: process.env.VITE_API_URL || 'https://toit-nexus-backend-production.up.railway.app',
+        target: process.env.VITE_API_URL || 'https://api.toit.com.br',
         changeOrigin: true,
         secure: true,
       },
@@ -54,6 +54,6 @@ export default defineConfig( {
       : 4173,
     host: '0.0.0.0',
     cors: true,
-    allowedHosts: ['supnexus.toit.com.br', 'nexus.toit.com.br'],
+    allowedHosts: ['admin.toit.com.br', 'toit.com.br'],
   }
 } )

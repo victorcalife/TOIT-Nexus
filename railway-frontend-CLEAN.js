@@ -17,7 +17,7 @@ app.get('*', (req, res) => {
   console.log(`🌐 Request: ${realHost}${req.originalUrl}`);
   
   // SUPNEXUS = React App
-  if (realHost === 'supnexus.toit.com.br') {
+  if (realHost === 'admin.toit.com.br') {
     const reactApp = path.join(__dirname, 'client', 'dist', 'index.html');
     
     if (fs.existsSync(reactApp)) {

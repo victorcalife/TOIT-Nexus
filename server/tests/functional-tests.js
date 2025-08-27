@@ -614,7 +614,7 @@ class FunctionalTestSuite {
   async testChatWebSocket() {
     return new Promise((resolve) => {
       try {
-        const wsUrl = process.env.WEBSOCKET_URL || 'wss://nexus.toit.com.br';
+        const wsUrl = process.env.WEBSOCKET_URL || 'wss://api.toit.com.br';
         const ws = new WebSocket(wsUrl);
         
         ws.on('open', () => {

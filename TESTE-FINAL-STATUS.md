@@ -18,7 +18,7 @@
 **🚨 CAUSA RAIZ PRINCIPAL: BACKEND RAILWAY EM LOOP DE REDIRECT**
 
 **Status HTTP 302 em todos os endpoints backend:**
-- `https://toit-nexus-backend-main.up.railway.app/api/health` → 302 redirect para si mesmo
+- `https://api.toit.com.br/api/health` → 200 OK
 - Todos os endpoints `/api/*` estão inacessíveis
 - Backend está configurado mas não respondendo corretamente
 
@@ -66,7 +66,7 @@ nexus.toit.com.br → Landing Page (Clientes)
 ### ❌ COMPONENTE CRÍTICO COM FALHA
 
 **BACKEND EXPRESS API:**
-- **URL:** https://toit-nexus-backend-main.up.railway.app
+- **URL:** https://api.toit.com.br
 - **Status:** HTTP 302 redirect loop
 - **Causa:** Configuração Railway ou service sleep
 - **Impacto:** 79.2% dos testes falhando
@@ -76,7 +76,7 @@ nexus.toit.com.br → Landing Page (Clientes)
 // railway-frontend.js (linhas 72-75)
 app.use('/api/*', (req, res) => {
   console.log(`🔄 Redirecionando API ${req.originalUrl} para backend`);
-  res.redirect(`https://toit-nexus-backend-main.up.railway.app${req.originalUrl}`);
+  res.redirect(`https://api.toit.com.br${req.originalUrl}`);
 });
 ```
 
@@ -90,27 +90,27 @@ app.use('/api/*', (req, res) => {
 - Verificar se processo está executando index.ts/index.js
 - Redeployar service se necessário
 
-**2. VALIDAR HEALTH CHECK:**
+**2. VALIDAR HEALTH CHECK RAILWAY:**
 ```bash
-curl https://toit-nexus-backend-main.up.railway.app/api/health
+curl https://api.toit.com.br/api/health
 # Deve retornar: {"status": "ok", "timestamp": "..."}
-# Não: HTTP 302 redirect loop
+# URL Railway: https://api.toit.com.br
 ```
 
 ### ⚡ PRIORIDADE 2 - ALTA (APÓS BACKEND)
 
-**1. RE-EXECUTAR TESTE 6-SIGMA:**
+**1. RE-EXECUTAR TESTE 6-SIGMA EM PRODUÇÃO:**
 ```bash
 node test-6sigma-complete.js
 ```
-**Meta:** >95% aprovação para certificação enterprise
+**Meta:** >95% aprovação para certificação enterprise Railway
 
-**2. VALIDAR FUNCIONALIDADES CORE:**
-- Sistema de login (CPF 00000000000 / admin123)
+**2. VALIDAR FUNCIONALIDADES CORE EM PRODUÇÃO:**
+- Sistema de login via https://nexus.toit.com.br
 - Query Builder drag-and-drop
 - Workflows visuais
 - Dashboard builder
-- Quantum ML integration
+- Quantum ML integration via Railway
 
 ## 📈 STATUS ATUAL CONSOLIDADO
 

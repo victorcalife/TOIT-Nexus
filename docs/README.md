@@ -111,7 +111,7 @@ npm start
 ### Executar em Modo Desenvolvimento
 ```bash
 # Frontend e backend simultaneamente
-npm run dev
+railway status
 
 # Apenas frontend
 npm run client:dev
@@ -361,7 +361,7 @@ GET /api/mila/health
 
 ### Desenvolvimento
 ```bash
-npm run dev
+railway logs
 ```
 
 ### Produção
@@ -382,7 +382,7 @@ node deploy-production.js
 docker build -t toit-nexus .
 
 # Executar container
-docker run -p 3000:3000 toit-nexus
+railway open
 ```
 
 ## 🧪 Testes

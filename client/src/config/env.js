@@ -8,7 +8,7 @@ const getCurrentDomain = () => {
   if (typeof window !== 'undefined') {
     return window.location.hostname;
   }
-  return 'nexus.toit.com.br';
+  return 'toit.com.br';
 };
 
 const currentDomain = getCurrentDomain();
@@ -16,17 +16,16 @@ const currentDomain = getCurrentDomain();
 // URLs do Railway - usar variáveis de ambiente corretas
 const API_BASE_URL = import.meta.env.VITE_API_URL || 
                    import.meta.env.VITE_BACKEND_URL || 
-                   'https://toit-nexus-backend-production.up.railway.app';
+                   'https://api.toit.com.br';
 
-const FRONTEND_URL = currentDomain === 'nexus.toit.com.br' 
-  ? 'https://nexus.toit.com.br'
-  : 'https://supnexus.toit.com.br';
+const FRONTEND_URL = currentDomain === 'toit.com.br'
+  ? 'https://toit.com.br'
+  : 'https://admin.toit.com.br';
 
-const SUPPORT_URL = 'https://supnexus.toit.com.br';
+const SUPPORT_URL = 'https://admin.toit.com.br';
 
-// Variáveis de ambiente
-const isDevelopment = import.meta.env.MODE === 'development';
-const isProduction = import.meta.env.MODE === 'production';
+// Configuração para produção Railway apenas
+const isProduction = true;
 
 // Configuração da API
 export const API_CONFIG = {
@@ -52,20 +51,18 @@ export const DOMAIN_CONFIG = {
   API: API_BASE_URL
 };
 
-// Configuração do ambiente
+// Configuração do ambiente - Railway Production
 export const ENV_CONFIG = {
-  NODE_ENV: import.meta.env.MODE,
-  IS_DEV: isDevelopment,
+  NODE_ENV: 'production',
   IS_PROD: isProduction,
   API_URL: import.meta.env.VITE_API_URL || API_BASE_URL
 };
 
-// Log da configuração (sempre em produção para debug)
-console.log( '🔧 [ENV-CONFIG] Configuração carregada:', {
+// Log da configuração Railway
+console.log( '🔧 [RAILWAY-CONFIG] Configuração de produção carregada:', {
   API_BASE_URL,
   FRONTEND_URL,
   SUPPORT_URL,
-  NODE_ENV: import.meta.env.MODE,
   VITE_API_URL: import.meta.env.VITE_API_URL,
   VITE_BACKEND_URL: import.meta.env.VITE_BACKEND_URL
 } );

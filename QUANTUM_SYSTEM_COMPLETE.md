@@ -547,7 +547,7 @@ curl -X GET "https://nexus.toit.com.br/api/long-range-entanglement/status" \
 IBM_SECRET=your_ibm_quantum_api_key
 
 # 2. Restart servidor
-npm run dev
+railway status
 
 # 3. Testar sistema quântico completo
 curl -X GET "https://nexus.toit.com.br/api/native-quantum/diagnostics" \
@@ -626,7 +626,7 @@ curl -X GET "https://nexus.toit.com.br/api/native-quantum/diagnostics" \
 IBM_SECRET=your_ibm_quantum_premium_api_key
 
 # 2. Inicializar sistema quântico completo
-npm run dev
+railway logs
 
 # 3. Testar AI Transpiler Passes
 curl -X POST "https://nexus.toit.com.br/api/qiskit-transpiler/generate-ai-pass-manager" \

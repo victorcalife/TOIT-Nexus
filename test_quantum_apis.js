@@ -5,7 +5,7 @@
 
 const axios = require('axios');
 
-const BASE_URL = process.env.BACKEND_URL || 'https://nexus.toit.com.br';
+const BASE_URL = process.env.VITE_API_URL || 'https://api.toit.com.br';
 
 // Configuração de timeout
 const API_TIMEOUT = 10000;
@@ -88,9 +88,9 @@ async function testQuantumAPIs() {
             }
             
         } catch (error) {
-            if (error.code === 'ECONNREFUSED') {
-                console.log(`WARNING ${endpoint.url} - Servidor nao esta rodando`);
-                console.log('INFO: Inicie o servidor com: npm run dev');
+          } else if (error.code === 'ECONNREFUSED') {
+                console.log(`WARNING ${endpoint.url} - Servidor Railway indisponivel`);
+                console.log('INFO: Verifique o status do Railway em https://railway.app');
             } else if (error.response?.status === 401) {
                 console.log(`OK ${endpoint.url} - Requer autenticacao (esperado)`);
                 successCount++;
@@ -118,9 +118,9 @@ async function testQuantumAPIs() {
     
     if (successCount === 0) {
         console.log('\nWARNING: Nenhum endpoint respondeu corretamente');
-        console.log('SOLUTION: Verifique se o servidor esta rodando:');
-        console.log('  1. cd server');
-        console.log('  2. npm run dev');
+        console.log('SOLUTION: Verifique o status do Railway:');
+        console.log('  1. Acesse https://railway.app');
+        console.log('  2. Verifique se os serviços estão ativos');
         console.log('  3. Execute este teste novamente');
     } else if (successCount === totalTests) {
         console.log('\nSUCCESS: Todos os endpoints quanticos estao funcionando!');
@@ -195,7 +195,7 @@ async function testQuantumOperations() {
             
         } catch (error) {
             if (error.code === 'ECONNREFUSED') {
-                console.log(`WARNING ${operation.url} - Servidor nao esta rodando`);
+                console.log(`WARNING ${operation.url} - Servidor Railway indisponivel`);
             } else if (error.response?.status === 401) {
                 console.log(`OK ${operation.url} - Requer autenticacao`);
             } else {

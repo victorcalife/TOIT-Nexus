@@ -76,18 +76,14 @@ class TOITNexusServer
       {
         const allowedOrigins = this.environment === 'production'
           ? [
-            'https://nexus.toit.com.br',
-            'https://supnexus.toit.com.br',
-            'https://api.toit.com.br',
-            'https://toit-nexus-frontend-production.up.railway.app',
-            'https://toit-nexus-backend-production.up.railway.app'
+            'https://toit.com.br',
+    'https://admin.toit.com.br',
+    'https://api.toit.com.br'
           ]
           : [
             
-            'https://nexus.toit.com.br',
-            'https://supnexus.toit.com.br',
-            'https://toit-nexus-frontend-production.up.railway.app',
-            'https://toit-nexus-backend-production.up.railway.app'
+            'https://toit.com.br',
+    'https://admin.toit.com.br'
           ];
 
         // Permitir requisições sem origin (Postman, mobile apps, etc.)

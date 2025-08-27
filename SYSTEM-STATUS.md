@@ -111,7 +111,7 @@
 - **Landing comercial**: https://nexus.toit.com.br
 - **Portal clientes**: https://nexus.toit.com.br (após login)
 - **Portal equipe TOIT**: https://supnexus.toit.com.br
-- **Backend API**: https://toit-nexus-backend-main.up.railway.app
+- **Backend API**: https://api.toit.com.br
 
 ### 🔐 CREDENCIAIS DE TESTE
 - **Super Admin TOIT**: CPF `00000000000` / Senha `admin123`

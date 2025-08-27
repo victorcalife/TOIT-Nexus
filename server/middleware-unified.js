@@ -37,8 +37,8 @@ class UnifiedMiddlewareSystem {
     return (req, res, next) => {
       // Configuração CORS baseada no ambiente
       const allowedOrigins = [
-        'https://nexus.toit.com.br',
-        'https://supnexus.toit.com.br',
+        'https://toit.com.br',
+    'https://admin.toit.com.br',
         'https://admin.toit.com.br'
       ];
 

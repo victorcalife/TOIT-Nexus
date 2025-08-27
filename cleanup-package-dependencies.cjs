@@ -246,10 +246,10 @@ class PackageCleanup {
     }
 
     const rootScripts = {
-      'server:dev': 'cd server && npm run dev',
+      'server:deploy': 'cd server && railway deploy',
       'server:start': 'cd server && npm run start',
       'server:test': 'cd server && npm run test:all',
-      'client:dev': 'cd client && npm run dev',
+      'client:deploy': 'cd client && railway deploy',
       'client:build': 'cd client && npm run build',
       'dev': 'concurrently "npm run server:dev" "npm run client:dev"'
     };

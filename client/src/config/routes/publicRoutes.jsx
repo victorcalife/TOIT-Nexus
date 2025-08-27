@@ -1,6 +1,7 @@
 import { lazy } from 'react';
 
 // Lazy loading das páginas públicas
+const HomePage = lazy( () => import( '@/pages/home' ) );
 const Login = lazy( () => import( '@/pages/login' ) );
 const SupportLogin = lazy( () => import( '@/pages/support-login' ) );
 const VerifyAccount = lazy( () => import( '@/pages/verify-account' ) );
@@ -15,7 +16,7 @@ const SystemSetup = lazy( () => import( '@/pages/system-setup' ) );
 export const publicRoutes = [
   {
     path: '/',
-    component: Login,
+    component: HomePage,
     exact: true,
   },
   {
@@ -66,6 +67,7 @@ export const publicRoutes = [
 
 // Constantes de rotas para facilitar o uso
 export const ROUTES = {
+  HOME: '/',
   LOGIN: '/login',
   SUPPORT_LOGIN: '/support-login',
   VERIFY_ACCOUNT: '/verify-account',

@@ -31,7 +31,7 @@
 
 | Domínio | Status | Problema |
 |---------|--------|----------|
-| `toit-nexus-backend-main.up.railway.app` | ❌ Status 302 | Railway Edge intercepta |
+| `api.toit.com.br` | ✅ Status 200 | Produção definitiva |
 | `nexus.toit.com.br` | ✅ Status 200 | Funciona perfeitamente |
 | `supnexus.toit.com.br` | ✅ Status 200 | Funciona perfeitamente |
 
@@ -95,7 +95,7 @@ app.get('/', (req, res, next) => {
 - **Zero loops infinitos** para usuários finais ✅
 
 ### **⚠️ LIMITAÇÃO CONHECIDA:**
-- **toit-nexus-backend-main.up.railway.app** - Interceptado pelo Railway Edge
+- **api.toit.com.br** - URL de produção definitiva
 - **Não afeta usuários finais** que usam domínios personalizados
 - **Apenas desenvolvimento/debug** impactado
 

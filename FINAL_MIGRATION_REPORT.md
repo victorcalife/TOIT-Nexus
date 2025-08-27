@@ -203,7 +203,7 @@ TOIT-Nexus/
 ### 🚀 **Desenvolvimento**
 ```bash
 # Iniciar servidor de desenvolvimento
-npm run dev
+railway status
 
 # Executar todos os testes
 npm run test:all

@@ -223,7 +223,7 @@ curl -X POST https://nexus.toit.com.br/api/native-quantum/business-analytics \
 IBM_SECRET=your_ibm_api_key_from_quantum_network
 
 # Restart do servidor
-npm run dev
+railway status
 ```
 
 **SISTEMA QUÂNTICO NATIVO TOIT NEXUS PRONTO PARA PRODUÇÃO!** 🚀

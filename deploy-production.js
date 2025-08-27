@@ -196,8 +196,8 @@ class ProductionDeployer {
       security: {
         cors: {
           origin: [
-            'https://nexus.toit.com.br',
-            'https://supnexus.toit.com.br',
+            'https://toit.com.br',
+'https://admin.toit.com.br',
             process.env.RAILWAY_STATIC_URL
           ]
         },
@@ -244,7 +244,7 @@ EXPOSE 3000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \\
-  CMD curl -f https://nexus.toit.com.br/health || exit 1
+  CMD curl -f https://api.toit.com.br/health || exit 1
 
 # Comando de inicialização
 CMD ["npm", "start"]

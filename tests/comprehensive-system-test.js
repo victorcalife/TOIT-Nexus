@@ -5,7 +5,7 @@
 
 import fetch from 'node-fetch';
 
-const BASE_URL = 'http://api.toit.com.br';
+const BASE_URL = 'https://api.toit.com.br';
 const TEST_USER = {
   cpf: '33656299803',
   password: '241286' 

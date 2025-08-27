@@ -19,7 +19,7 @@
 
 ### 1. Executar o servidor
 ```bash
-npm run dev
+railway status
 # Servidor rodando em https://api.toit.com.br
 ```
 

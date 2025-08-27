@@ -6,20 +6,14 @@
 
 const getApiBaseUrl = () =>
 {
-  // Sempre usar a API do Railway em produção
+  // Configuração Railway - usar variável de ambiente ou fallback
   if ( import.meta.env.VITE_API_URL )
   {
     return import.meta.env.VITE_API_URL.replace( /\/$/, '' ); // Remove trailing slash
   }
 
-  // Para desenvolvimento local, ainda usar Railway
-  if ( import.meta.env.DEV )
-  {
-    return 'https://toit-nexus-backend-production.up.railway.app';
-  }
-
-  // Fallback para produção
-  return 'https://toit-nexus-backend-production.up.railway.app';
+  // URL padrão do Railway para produção
+  return 'https://api.toit.com.br';
 };
 
 export const API_BASE_URL = getApiBaseUrl();

@@ -277,7 +277,7 @@ async function testQuantumAPIs() {
         }
     }
     
-    console.log('\n🎯 Para testar completamente, inicie o servidor com: npm run dev');
+    console.log('\n🎯 Para verificar status do sistema Railway: railway status');
 }
 
 testQuantumAPIs().catch(console.error);
@@ -416,7 +416,7 @@ echo -e "⚛️  QUANTUM SYSTEM ACTIVATION COMPLETE!"
 echo -e "⚛️ ==========================================${NC}"
 echo
 log_quantum "PRÓXIMOS PASSOS:"
-echo -e "${CYAN}1. Inicie o servidor: ${YELLOW}npm run dev${NC}"
+echo -e "${CYAN}1. Verifique status Railway: ${YELLOW}railway status${NC}"
 echo -e "${CYAN}2. Teste as APIs: ${YELLOW}node test_quantum_apis.js${NC}"
 echo -e "${CYAN}3. Verifique status: ${YELLOW}python3 quantum_status.py${NC}"
 echo -e "${CYAN}4. Acesse: ${YELLOW}https://api.toit.com.br/api/native-quantum/status${NC}"

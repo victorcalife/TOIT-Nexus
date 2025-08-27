@@ -15,7 +15,7 @@ class WebSocketService
   {
     this.io = new Server( server, {
       cors: {
-        origin: process.env.FRONTEND_URL || "https://nexus.toit.com.br",
+        origin: process.env.FRONTEND_URL || "https://toit.com.br",
         methods: [ "GET", "POST" ],
         credentials: true
       },

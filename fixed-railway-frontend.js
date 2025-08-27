@@ -27,24 +27,24 @@ app.get( '/', ( req, res ) =>
 {
   const host = req.get( 'host' );
   const xForwardedHost = req.get( 'x-forwarded-host' );
-  const realHost = xForwardedHost || host || 'nexus.toit.com.br';
+  const realHost = xForwardedHost || host || 'toit.com.br';
 
   console.log( `🌐 Frontend Root - Host: ${ realHost } | Path: ${ req.originalUrl }` );
 
-  // SUPNEXUS (equipe TOIT) → React app sempre
-  if ( realHost.includes( 'supnexus.toit.com.br' ) || realHost.includes( 'supnexus' ) )
+  // ADMIN (equipe TOIT) → React app sempre
+  if ( realHost.includes( 'admin.toit.com.br' ) || realHost.includes( 'admin' ) )
   {
-    console.log( `👥 [SUPNEXUS] Servindo React app para equipe TOIT` );
+    console.log( `👥 [ADMIN] Servindo React app para equipe TOIT` );
 
     const distIndexPath = path.join( __dirname, 'client', 'dist', 'index.html' );
 
     if ( fs.existsSync( distIndexPath ) )
     {
-      console.log( `✅ [SUPNEXUS] Servindo React app buildado: ${ distIndexPath }` );
+      console.log( `✅ [ADMIN] Servindo React app buildado: ${ distIndexPath }` );
       return res.sendFile( distIndexPath );
     } else
     {
-      console.error( `❌ [SUPNEXUS] React app não encontrado` );
+      console.error( `❌ [ADMIN] React app não encontrado` );
       return res.status( 404 ).send( `
         <h1>Sistema TOIT Indisponível</h1>
         <p>Portal da equipe TOIT temporariamente indisponível</p>
@@ -53,8 +53,8 @@ app.get( '/', ( req, res ) =>
     }
   }
 
-  // NEXUS (clientes) → Landing page sempre  
-  console.log( `🎯 [NEXUS] Servindo landing page para: ${ realHost }` );
+  // TOIT (clientes) → Landing page sempre  
+  console.log( `🎯 [TOIT] Servindo landing page para: ${ realHost }` );
 
   const landingPath = path.join( __dirname, 'nexus-quantum-landing.html' );
 
@@ -90,7 +90,7 @@ app.get( '*', ( req, res ) =>
 {
   const host = req.get( 'host' );
   const xForwardedHost = req.get( 'x-forwarded-host' );
-  const realHost = xForwardedHost || host || 'nexus.toit.com.br';
+  const realHost = xForwardedHost || host || 'toit.com.br';
 
   // Se é API, deve ter sido tratado anteriormente
   if ( req.originalUrl.startsWith( '/api/' ) )
@@ -101,10 +101,10 @@ app.get( '*', ( req, res ) =>
     } );
   }
 
-  // Se é supnexus, serve o React app para qualquer rota (SPA)
-  if ( realHost.includes( 'supnexus.toit.com.br' ) || realHost.includes( 'supnexus' ) )
+  // Se é admin, serve o React app para qualquer rota (SPA)
+  if ( realHost.includes( 'admin.toit.com.br' ) || realHost.includes( 'admin' ) )
   {
-    console.log( `🎯 [SUPNEXUS SPA] Fallback para React Router: ${ req.originalUrl }` );
+    console.log( `🎯 [ADMIN SPA] Fallback para React Router: ${ req.originalUrl }` );
 
     const distIndexPath = path.join( __dirname, 'client', 'dist', 'index.html' );
 
@@ -117,8 +117,8 @@ app.get( '*', ( req, res ) =>
     }
   }
 
-  // Para nexus.toit.com.br, serve a landing page
-  console.log( `🎯 [NEXUS] Servindo landing page para rota: ${ req.originalUrl }` );
+  // Para toit.com.br, serve a landing page
+  console.log( `🎯 [TOIT] Servindo landing page para rota: ${ req.originalUrl }` );
 
   const landingPath = path.join( __dirname, 'nexus-quantum-landing.html' );
 
@@ -141,8 +141,8 @@ app.listen( port, '0.0.0.0', () =>
   console.log( `🔧 Modo: ${ process.env.NODE_ENV || 'development' }` );
   console.log( '' );
   console.log( '🔗 ENDPOINTS PRINCIPAIS:' );
-  console.log( '   🌐 https://nexus.toit.com.br → Landing Page' );
-  console.log( '   👥 https://supnexus.toit.com.br → Portal Equipe TOIT' );
+  console.log( '   🌐 https://toit.com.br → Landing Page' );
+  console.log( '   👥 https://admin.toit.com.br → Portal Equipe TOIT' );
   console.log( '   💚 /api/health → Health Check' );
   console.log( '' );
   console.log( '🎯 STATUS: SISTEMA INTEGRADO 100% OPERACIONAL - V2.0' );

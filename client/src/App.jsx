@@ -6,6 +6,8 @@ import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from './components/theme-provider';
 import { AuthProvider } from '@/hooks/useAuth';
 
+const API_BASE_URL = 'https://api.toit.com.br';
+
 function App()
 {
   return (

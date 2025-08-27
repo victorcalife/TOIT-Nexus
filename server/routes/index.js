@@ -41,8 +41,8 @@ function setupRoutes( app )
   // CORS configurado
   app.use( cors( {
     origin: [
-      'https://nexus.toit.com.br',
-      'https://supnexus.toit.com.br',
+      'https://toit.com.br',
+    'https://admin.toit.com.br',
       'https://admin.toit.com.br'
     ],
     credentials: true,

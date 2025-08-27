@@ -509,82 +509,52 @@ quantum:computation
 - Injeção SQL
 - XSS Protection
 
-### **Execução dos Testes:**
+### **Execução dos Testes em Produção Railway:**
 ```bash
-# Todos os testes
-npm run test
+# Todos os testes em produção
+node tests/comprehensive-system-test.js
 
-# Apenas unit tests
-npm run test:unit
+# Teste 6-Sigma completo
+node test-6sigma-complete.js
 
-# Apenas integration tests
-npm run test:integration
-
-# Coverage report
-npm run test:coverage
+# Verificar status Railway
+curl https://api.toit.com.br/api/health
 ```
 
 ---
 
 ## 🚀 **DEPLOY E DEVOPS**
 
-### **Containerização:**
-```dockerfile
-# Dockerfile para frontend
-FROM node:18-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --only=production
-COPY . .
-RUN npm run build
-EXPOSE 3000
-CMD ["npm", "start"]
+### **Deploy Railway:**
+```yaml
+# railway.toml para frontend
+[build]
+builder = "NIXPACKS"
+buildCommand = "npm install && npm run build"
+
+[deploy]
+startCommand = "npm run preview"
+restartPolicyType = "ON_FAILURE"
 ```
 
-### **Kubernetes:**
+### **Configuração Railway:**
 ```yaml
-# deployment.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: toit-nexus-frontend
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: toit-nexus-frontend
-  template:
-    metadata:
-      labels:
-        app: toit-nexus-frontend
-    spec:
-      containers:
-      - name: frontend
-        image: toit-nexus/frontend:latest
-        ports:
-        - containerPort: 3000
+# Variáveis de Ambiente Railway
+VITE_API_URL=https://api.toit.com.br
+DATABASE_URL=postgresql://...
+REDIS_URL=redis://...
+BACKEND_PUBLIC_URL=https://api.toit.com.br
+FRONTEND_PUBLIC_URL=https://nexus.toit.com.br
 ```
 
-### **CI/CD Pipeline:**
+### **Deploy Automático Railway:**
 ```yaml
-# .github/workflows/deploy.yml
-name: Deploy
-on:
-  push:
-    branches: [main]
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Run tests
-        run: npm test
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to production
-        run: kubectl apply -f k8s/
+# Auto-deploy via GitHub
+# Railway detecta mudanças no branch main
+# Deploy automático para:
+# - Frontend: https://nexus.toit.com.br
+# - Backend: https://api.toit.com.br
+# - Suporte: https://supnexus.toit.com.br
 ```
 
 ---
