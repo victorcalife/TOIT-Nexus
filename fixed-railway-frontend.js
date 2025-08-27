@@ -27,7 +27,7 @@ app.get( '/', ( req, res ) =>
 {
   const host = req.get( 'host' );
   const xForwardedHost = req.get( 'x-forwarded-host' );
-  const realHost = xForwardedHost || host || 'localhost';
+  const realHost = xForwardedHost || host || 'nexus.toit.com.br';
 
   console.log( `🌐 Frontend Root - Host: ${ realHost } | Path: ${ req.originalUrl }` );
 
@@ -90,7 +90,7 @@ app.get( '*', ( req, res ) =>
 {
   const host = req.get( 'host' );
   const xForwardedHost = req.get( 'x-forwarded-host' );
-  const realHost = xForwardedHost || host || 'localhost';
+  const realHost = xForwardedHost || host || 'nexus.toit.com.br';
 
   // Se é API, deve ter sido tratado anteriormente
   if ( req.originalUrl.startsWith( '/api/' ) )
@@ -117,7 +117,7 @@ app.get( '*', ( req, res ) =>
     }
   }
 
-  // Para nexus.toit.com.br e localhost, serve a landing page
+  // Para nexus.toit.com.br, serve a landing page
   console.log( `🎯 [NEXUS] Servindo landing page para rota: ${ req.originalUrl }` );
 
   const landingPath = path.join( __dirname, 'nexus-quantum-landing.html' );

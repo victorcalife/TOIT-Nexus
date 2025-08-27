@@ -40,18 +40,11 @@ function setupRoutes( app )
 
   // CORS configurado
   app.use( cors( {
-    origin: process.env.NODE_ENV === 'production'
-      ? [
-        'https://nexus.toit.com.br',
-        'https://supnexus.toit.com.br',
-        'https://api.toit.com.br'
-      ]
-      : [
-        'http://localhost:3000',
-        'http://localhost:5173',
-        'http://127.0.0.1:3000',
-        'http://127.0.0.1:5173'
-      ],
+    origin: [
+      'https://nexus.toit.com.br',
+      'https://supnexus.toit.com.br',
+      'https://admin.toit.com.br'
+    ],
     credentials: true,
     methods: [ 'GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS' ],
     allowedHeaders: [ 'Content-Type', 'Authorization', 'X-Requested-With' ]

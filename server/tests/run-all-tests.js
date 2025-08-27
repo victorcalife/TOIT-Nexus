@@ -131,12 +131,9 @@ class TestRunner {
       process.env.NODE_ENV = 'test';
     }
     
-    if (!process.env.DATABASE_URL && !process.env.DB_HOST) {
-      console.log('⚠️ Configurações de banco não encontradas - usando padrões de teste');
-      process.env.DB_HOST = 'localhost';
-      process.env.DB_NAME = 'toit_nexus_test';
-      process.env.DB_USER = 'root';
-      process.env.DB_PASS = '';
+    if (!process.env.DATABASE_URL) {
+      console.log('⚠️ DATABASE_URL não encontrada - necessária para execução dos testes');
+      throw new Error('DATABASE_URL é obrigatória para execução dos testes');
     }
     
     // Criar diretório de relatórios

@@ -154,7 +154,7 @@ class FrontendIntegrationTestSuite {
             id: 'db-conn-1',
             name: 'PostgreSQL Principal',
             type: 'postgresql',
-            host: 'localhost',
+            host: process.env.DB_HOST || 'railway-host.com',
             port: 5432,
             database: 'toit_nexus',
             isActive: true,

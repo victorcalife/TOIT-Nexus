@@ -376,7 +376,7 @@ export default function DatabaseConnections()
                     id="host"
                     value={ connectionForm.host }
                     onChange={ ( e ) => setConnectionForm( prev => ( { ...prev, host: e.target.value } ) ) }
-                    placeholder="localhost ou IP do servidor"
+                    placeholder="api.toit.com.br ou IP do servidor"
                   />
                 </div>
 

@@ -141,10 +141,10 @@ kubectl apply -f k8s/ingress.yaml
 ### **1. Health Checks:**
 ```bash
 # Frontend
-curl http://localhost:3000/health
+curl https://nexus.toit.com.br/health
 
 # Backend
-curl http://localhost:5000/health
+curl https://nexus.toit.com.br/health
 
 # Banco de dados
 docker exec toit-nexus-postgres pg_isready -U postgres
@@ -156,15 +156,15 @@ docker exec toit-nexus-postgres pg_isready -U postgres
 npm run test:smoke
 
 # Verificar APIs principais
-curl -X POST http://localhost:5000/api/auth/login \
+curl -X POST https://nexus.toit.com.br/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"admin@toit.com","password":"admin123"}'
 ```
 
 ### **3. Monitoramento:**
-- **Grafana:** http://localhost:3001 (admin/senha_configurada)
-- **Prometheus:** http://localhost:9090
-- **Kibana:** http://localhost:5601
+- **Grafana:** https://grafana.toit.com.br (admin/senha_configurada)
+- **Prometheus:** https://prometheus.toit.com.br
+- **Kibana:** https://kibana.toit.com.br
 
 ---
 

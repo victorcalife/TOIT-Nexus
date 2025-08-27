@@ -355,7 +355,7 @@ module.exports = {
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: 'https://nexus.toit.com.br',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure'
   },

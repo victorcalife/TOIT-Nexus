@@ -21,7 +21,7 @@ export function detectLoginType(){
     return 'support';
   }
   
-  // Default para cliente (incluindo localhost durante desenvolvimento)
+  // Default para cliente (ambiente de produção)
   return 'client';
 }
 

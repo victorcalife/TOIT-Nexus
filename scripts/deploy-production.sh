@@ -199,17 +199,18 @@ health_checks() {
     sleep 30
     
     # Check application health
-    if ! curl -f http://localhost:3000/health; then
+    HEALTH_URL="${BACKEND_URL:-https://nexus.toit.com.br}"
+    if ! curl -f "$HEALTH_URL/health"; then
         error "Aplicação não está respondendo"
     fi
     
     # Check ML APIs
-    if ! curl -f http://localhost:3000/api/ml-credits; then
+    if ! curl -f "$HEALTH_URL/api/ml-credits"; then
         error "APIs ML não estão funcionando"
     fi
     
     # Check quantum engine
-    if ! curl -f http://localhost:3000/api/quantum/health; then
+    if ! curl -f "$HEALTH_URL/api/quantum/health"; then
         error "Quantum engine não está funcionando"
     fi
     
@@ -286,8 +287,8 @@ main() {
     log "📊 Estatísticas do deploy:"
     log "   - Backup criado em: $BACKUP_DIR"
     log "   - Log do deploy: $LOG_FILE"
-    log "   - Aplicação disponível em: http://localhost:3000"
-    log "   - Dashboard ML: http://localhost:3000/quantum-ml"
+    log "   - Aplicação disponível em: ${FRONTEND_URL:-https://nexus.toit.com.br}"
+    log "   - Dashboard ML: ${FRONTEND_URL:-https://nexus.toit.com.br}/quantum-ml"
     
     # Send notification
     if [ ! -z "$SLACK_WEBHOOK" ]; then

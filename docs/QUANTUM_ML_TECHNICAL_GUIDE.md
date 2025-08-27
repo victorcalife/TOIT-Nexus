@@ -220,7 +220,7 @@ Get tenant's slot information
 ```bash
 curl -H "X-Tenant-ID: tenant-123" \
      -H "Content-Type: application/json" \
-     http://localhost:3000/api/ml-slots
+     https://nexus.toit.com.br/api/ml-slots
 ```
 
 #### POST /api/ml-slots
@@ -237,7 +237,7 @@ curl -X POST \
        "slotLocation": "dashboard_sales_1",
        "config": {"autoRefresh": true}
      }' \
-     http://localhost:3000/api/ml-slots
+     https://api.toit.com.br/api/ml-slots
 ```
 
 #### POST /api/ml-slots/:location/use
@@ -252,7 +252,7 @@ curl -X POST \
        "insightType": "prediction",
        "dataPoints": 100
      }' \
-     http://localhost:3000/api/ml-slots/dashboard_sales_1/use
+     https://nexus.toit.com.br/api/ml-slots/dashboard_sales_1/use
 ```
 
 ### Storage Endpoints
@@ -263,7 +263,7 @@ Get storage usage information
 
 ```bash
 curl -H "X-Tenant-ID: tenant-123" \
-     http://localhost:3000/api/storage
+     https://nexus.toit.com.br/api/storage
 ```
 
 #### POST /api/storage/check
@@ -278,7 +278,7 @@ curl -X POST \
        "bytes": 1048576,
        "category": "uploads"
      }' \
-     http://localhost:3000/api/storage/check
+     https://nexus.toit.com.br/api/storage/check
 ```
 
 ### Quantum Insights Endpoints
@@ -299,7 +299,7 @@ curl -X POST \
        "insightType": "prediction",
        "options": {"forecastDays": 7}
      }' \
-     http://localhost:3000/api/quantum/insight
+     https://nexus.toit.com.br/api/quantum/insight
 ```
 
 ## ⚙️ Configuration
@@ -308,8 +308,8 @@ curl -X POST \
 
 ```bash
 # Database
-DATABASE_URL=postgresql://user:pass@localhost:5432/toit_nexus
-TEST_DATABASE_URL=postgresql://user:pass@localhost:5432/toit_nexus_test
+DATABASE_URL=postgresql://user:pass@railway-host:5432/toit_nexus
+TEST_DATABASE_URL=postgresql://user:pass@railway-host:5432/toit_nexus_test
 
 # ML Configuration
 ML_PROCESSING_TIMEOUT=30000
@@ -400,10 +400,10 @@ kubectl apply -f k8s/
 node scripts/health-check-ml.js
 
 # API health
-curl http://localhost:3000/api/health
+curl https://nexus.toit.com.br/api/health
 
 # ML services health
-curl http://localhost:3000/api/quantum-ml/status
+curl https://nexus.toit.com.br/api/quantum-ml/status
 ```
 
 ## 🧪 Testing
@@ -566,7 +566,7 @@ StorageService.performCleanup('your-tenant').then(console.log);
 
 ```bash
 # Check service status
-curl http://localhost:3000/api/quantum-ml/status
+curl https://api.toit.com.br/api/quantum-ml/status
 
 # Check logs
 tail -f logs/ml-processing.log | grep ERROR
@@ -616,7 +616,7 @@ psql -c "SELECT * FROM pg_stat_activity WHERE state = 'active';"
 psql -c "SELECT * FROM pg_stat_user_tables ORDER BY seq_tup_read DESC;"
 
 # Application metrics
-curl http://localhost:3000/metrics
+curl https://nexus.toit.com.br/metrics
 pm2 monit
 ```
 

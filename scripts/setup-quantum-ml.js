@@ -10,7 +10,7 @@ const { Pool } = require('pg');
 
 // Configuração do banco de dados
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgresql://localhost:5432/toit_nexus',
+  connectionString: process.env.DATABASE_URL,
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
 });
 
@@ -317,7 +317,7 @@ function showNextSteps() {
   console.log('   npm start');
   console.log('');
   console.log('2. Acessar o dashboard ML:');
-  console.log('   http://localhost:3000/quantum-ml');
+  console.log('   https://nexus.toit.com.br/quantum-ml');
   console.log('');
   console.log('3. Verificar status dos serviços:');
   console.log('   GET /api/quantum-ml/status');

@@ -12,15 +12,20 @@ const { performance } = require('perf_hooks');
 
 // Configuração do banco de dados
 const databaseConfig = {
-  host: process.env.DB_HOST || 'localhost',
-  port: process.env.DB_PORT || 5432,
-  database: process.env.DB_NAME || 'toit_nexus',
-  user: process.env.DB_USER || 'postgres',
-  password: process.env.DB_PASSWORD || 'password',
+  connectionString: process.env.DATABASE_URL,
   max: 20,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 2000,
 };
+
+// Fallback para configuração individual se DATABASE_URL não estiver disponível
+if (!process.env.DATABASE_URL) {
+  databaseConfig.host = process.env.DB_HOST;
+  databaseConfig.port = process.env.DB_PORT || 5432;
+  databaseConfig.database = process.env.DB_NAME;
+  databaseConfig.user = process.env.DB_USER;
+  databaseConfig.password = process.env.DB_PASSWORD;
+}
 
 // Inicializar TQL Engine
 const tqlEngine = new TQLEngine(databaseConfig);

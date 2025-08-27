@@ -187,7 +187,7 @@ npm start
 
 ### **2. Acessar TQL Builder:**
 ```
-http://localhost:3001/team/tql-builder.html
+https://api.toit.com.br/team/tql-builder.html
 ```
 
 ### **3. Exemplo Básico:**
@@ -203,12 +203,12 @@ DASHBOARD "Vendas Hoje":
 ### **4. APIs Diretas:**
 ```bash
 # Executar query
-curl -X POST http://localhost:3001/api/tql/execute \
+curl -X POST https://api.toit.com.br/api/tql/execute \
   -H "Content-Type: application/json" \
   -d '{"tql": "SOMAR valor DE vendas"}'
 
 # Ver exemplos
-curl http://localhost:3001/api/tql/examples
+curl https://api.toit.com.br/api/tql/examples
 ```
 
 ---

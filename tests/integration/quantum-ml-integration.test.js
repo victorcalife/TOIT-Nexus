@@ -23,7 +23,7 @@ app.use('/api', storageRoutes);
 
 // Configuração do banco de teste
 const testPool = new Pool({
-  connectionString: process.env.TEST_DATABASE_URL || 'postgresql://localhost:5432/toit_nexus_test',
+  connectionString: process.env.DATABASE_URL,
   ssl: false
 });
 

@@ -170,7 +170,7 @@ export default function DashboardBuilder({ dashboardId, onSave, onClose }) {
           id: 'ds_1',
           name: 'Banco Principal',
           type: 'mysql',
-          host: 'localhost',
+          host: 'api.toit.com.br',
           database: 'toit_nexus',
           status: 'connected'
         },
@@ -584,7 +584,7 @@ export default function DashboardBuilder({ dashboardId, onSave, onClose }) {
                         <Input
                           value={newDataSource.host}
                           onChange={(e) => setNewDataSource(prev => ({ ...prev, host: e.target.value }))}
-                          placeholder="localhost"
+                          placeholder="api.toit.com.br"
                         />
                       </div>
                       <div>

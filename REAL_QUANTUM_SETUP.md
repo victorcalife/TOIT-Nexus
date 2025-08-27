@@ -101,7 +101,7 @@ IBM_QUANTUM_TOKEN=your_token_here_from_ibm_quantum_network
 
 #### **3. Verificar Conexão:**
 ```bash
-curl -X GET http://localhost:3001/api/real-quantum/health \
+curl -X GET https://nexus.toit.com.br/api/real-quantum/health \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
 

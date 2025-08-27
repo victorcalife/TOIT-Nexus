@@ -238,7 +238,7 @@ log_info "Criando script de teste de APIs..."
 cat > test_quantum_apis.js << 'EOF'
 const axios = require('axios');
 
-const BASE_URL = 'http://localhost:5000';
+const BASE_URL = 'https://api.toit.com.br';
 
 async function testQuantumAPIs() {
     console.log('🧪 Testando APIs quânticas...\n');
@@ -419,6 +419,6 @@ log_quantum "PRÓXIMOS PASSOS:"
 echo -e "${CYAN}1. Inicie o servidor: ${YELLOW}npm run dev${NC}"
 echo -e "${CYAN}2. Teste as APIs: ${YELLOW}node test_quantum_apis.js${NC}"
 echo -e "${CYAN}3. Verifique status: ${YELLOW}python3 quantum_status.py${NC}"
-echo -e "${CYAN}4. Acesse: ${YELLOW}http://localhost:5000/api/native-quantum/status${NC}"
+echo -e "${CYAN}4. Acesse: ${YELLOW}https://api.toit.com.br/api/native-quantum/status${NC}"
 echo
 log_quantum "SISTEMA QUÂNTICO TOIT NEXUS ESTÁ ATIVO! 🚀"

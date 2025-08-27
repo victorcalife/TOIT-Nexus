@@ -35,8 +35,8 @@ function DomainBasedRoute()
     return <SupportLogin />;
   }
 
-  // Se é nexus.toit.com.br ou localhost
-  if ( hostname === 'nexus.toit.com.br' || hostname === 'localhost' || hostname === '127.0.0.1' )
+  // Se é nexus.toit.com.br
+  if ( hostname === 'nexus.toit.com.br' )
   {
     // Se está na rota raiz (/), redirecionar para login
     if ( pathname === '/' )

@@ -87,7 +87,7 @@ quantum-ml/
 CREATE DATABASE toit_nexus;
 
 -- Configurar variáveis de ambiente
-DATABASE_URL=postgresql://user:password@localhost:5432/toit_nexus
+DATABASE_URL=postgresql://user:password@railway-host:5432/railway
 ```
 
 ### 3. Setup Automático
@@ -260,7 +260,7 @@ const prediction = {
 node scripts/health-check-ml.js
 
 # Verificação via API
-curl http://localhost:3000/api/quantum-ml/status
+curl https://nexus.toit.com.br/api/quantum-ml/status
 ```
 
 ### Logs do Sistema
@@ -304,7 +304,7 @@ node -e "require('./services/scheduler/MLCreditsResetService').forceResetTenant(
 #### Predições não executando
 ```bash
 # Verificar scheduler
-curl http://localhost:3000/api/quantum-ml/status
+curl https://api.toit.com.br/api/quantum-ml/status
 
 # Reconfigurar jobs
 # (Reiniciar servidor)
@@ -316,7 +316,7 @@ curl http://localhost:3000/api/quantum-ml/status
 grep "QUANTUM-INSIGHTS" logs/app.log
 
 # Testar manualmente
-curl -X POST http://localhost:3000/api/quantum/insight \
+curl -X POST https://nexus.toit.com.br/api/quantum/insight \
   -H "Content-Type: application/json" \
   -d '{"data":[{"date":"2024-01-01","value":100}],"insightType":"prediction"}'
 ```

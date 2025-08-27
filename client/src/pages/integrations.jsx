@@ -549,7 +549,7 @@ const getTypeIcon = ( type ) =>
                             id="host"
                             value={ currentConfig.host || '' }
                             onChange={ ( e ) => updateConfig( 'host', e.target.value ) }
-                            placeholder="localhost"
+                            placeholder="api.toit.com.br"
                           />
                         </div>
                         <div>

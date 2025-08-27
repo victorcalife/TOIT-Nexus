@@ -10,7 +10,7 @@ const { Pool } = require('pg');
 
 // Configuração do banco de dados
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgresql://localhost:5432/toit_nexus',
+  connectionString: process.env.DATABASE_URL || 'postgresql://railway-host:5432/toit_nexus',
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
 });
 

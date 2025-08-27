@@ -200,7 +200,8 @@ class HealthCheckSystem {
   async checkMLService() {
     try {
       // Test ML credits endpoint
-      const response = await fetch('http://localhost:3000/api/ml-credits', {
+      const baseUrl = process.env.BACKEND_URL || 'https://nexus.toit.com.br';
+      const response = await fetch(`${baseUrl}/api/ml-credits`, {
         headers: {
           'Authorization': `Bearer ${process.env.HEALTH_CHECK_TOKEN || 'test-token'}`
         }
@@ -231,7 +232,8 @@ class HealthCheckSystem {
   async checkQuantumEngine() {
     try {
       // Test quantum health endpoint
-      const response = await fetch('http://localhost:3000/api/quantum/health');
+      const baseUrl = process.env.BACKEND_URL || 'https://nexus.toit.com.br';
+      const response = await fetch(`${baseUrl}/api/quantum/health`);
 
       if (!response.ok) {
         throw new Error(`Quantum API returned ${response.status}`);

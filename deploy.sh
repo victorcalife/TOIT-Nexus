@@ -234,14 +234,14 @@ check_docker_health() {
     fi
     
     # Check frontend health
-    if curl -f http://localhost:3000/health > /dev/null 2>&1; then
+    if curl -f https://nexus.toit.com.br/health > /dev/null 2>&1; then
         log_success "Frontend está saudável"
     else
         log_warning "Frontend pode não estar totalmente pronto"
     fi
     
     # Check backend health
-    if curl -f http://localhost:5000/health > /dev/null 2>&1; then
+    if curl -f https://nexus.toit.com.br/api/health > /dev/null 2>&1; then
         log_success "Backend está saudável"
     else
         log_warning "Backend pode não estar totalmente pronto"

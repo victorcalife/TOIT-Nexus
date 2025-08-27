@@ -35,7 +35,7 @@
 
 ### 1. Acesso Super Admin
 ```
-URL: http://localhost:5000/
+URL: https://supnexus.toit.com.br/
 CPF: 00000000000
 Senha: admin123
 ```
@@ -43,7 +43,7 @@ Senha: admin123
 
 ### 2. Acesso Tenant Admin
 ```
-URL: http://localhost:5000/
+URL: https://supnexus.toit.com.br/
 CPF: 11111111111  
 Senha: admin123
 ```

@@ -3,35 +3,28 @@
  * Centraliza todas as variáveis de ambiente do frontend
  */
 
-// Detectar ambiente
-const isDevelopment = import.meta.env.DEV;
-const isProduction = import.meta.env.PROD;
-
-// URLs base - Detectar domínio atual para usar a API correta
+// Configuração de ambiente - APENAS PRODUÇÃO
 const getCurrentDomain = () => {
   if (typeof window !== 'undefined') {
     return window.location.hostname;
   }
-  return 'localhost';
+  return 'nexus.toit.com.br';
 };
 
 const currentDomain = getCurrentDomain();
 
-const API_BASE_URL = isDevelopment
-  ? 'http://localhost:3000'
-  : 'https://localhost:3000';
+// URLs de produção fixas
+const API_BASE_URL = 'https://api.toit.com.br';
 
-const FRONTEND_URL = isDevelopment    
-  ? 'http://localhost:3000'
-  : currentDomain === 'nexus.toit.com.br' 
-    ? 'https://nexus.toit.com.br'
-    : currentDomain === 'supnexus.toit.com.br'
-    ? 'https://supnexus.toit.com.br'
-    : 'https://toit-nexus-frontend-production.up.railway.app';
+const FRONTEND_URL = currentDomain === 'nexus.toit.com.br' 
+  ? 'https://nexus.toit.com.br'
+  : 'https://supnexus.toit.com.br';
 
-const SUPPORT_URL = isDevelopment
-  ? 'http://localhost:5173'
-  : 'https://toit-nexus-frontend-production.up.railway.app';
+const SUPPORT_URL = 'https://supnexus.toit.com.br';
+
+// Variáveis de ambiente
+const isDevelopment = import.meta.env.MODE === 'development';
+const isProduction = import.meta.env.MODE === 'production';
 
 // Configuração da API
 export const API_CONFIG = {

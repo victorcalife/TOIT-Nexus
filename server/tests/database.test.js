@@ -400,7 +400,7 @@ describe( '🗄️ TESTES BANCO DE DADOS - OPERAÇÕES REAIS', () =>
         testUserId,
         'test_action',
         JSON.stringify( { test: true, data: 'teste' } ),
-        '127.0.0.1'
+        'production-ip'
       ] );
 
       expect( result.insertId ).toBeDefined();
@@ -417,7 +417,7 @@ describe( '🗄️ TESTES BANCO DE DADOS - OPERAÇÕES REAIS', () =>
 
       expect( logs.length ).toBeGreaterThan( 0 );
       expect( logs[ 0 ].action ).toBe( 'test_action' );
-      expect( logs[ 0 ].ip_address ).toBe( '127.0.0.1' );
+      expect( logs[ 0 ].ip_address ).toBe( 'production-ip' );
     } );
 
     test( 'Deve buscar logs por ação', async () =>

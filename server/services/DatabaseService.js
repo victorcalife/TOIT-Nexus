@@ -13,11 +13,11 @@ class DatabaseService
     this.isConnected = false;
     this.useSQLite = false;
     this.connectionConfig = {
-      host: process.env.DB_HOST || 'localhost',
+      host: process.env.DB_HOST,
       port: process.env.DB_PORT || 3306,
-      user: process.env.DB_USER || 'root',
-      password: process.env.DB_PASSWORD || '',
-      database: process.env.DB_NAME || 'toit_nexus',
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       charset: 'utf8mb4',
       timezone: '+00:00',
       acquireTimeout: 60000,
@@ -29,6 +29,12 @@ class DatabaseService
         rejectUnauthorized: false
       } : false
     };
+
+    // Verificar se DATABASE_URL está disponível para Railway
+    if (process.env.DATABASE_URL) {
+      // Usar DATABASE_URL do Railway se disponível
+      this.databaseUrl = process.env.DATABASE_URL;
+    }
 
     this.initialize();
   }

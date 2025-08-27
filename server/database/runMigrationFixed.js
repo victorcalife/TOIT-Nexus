@@ -9,7 +9,7 @@ const path = require('path');
 
 // Configuração do pool de conexões (igual ao database-config.js)
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgresql://localhost:5432/toit_nexus',
+  connectionString: process.env.DATABASE_URL,
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
   max: 20,
   idleTimeoutMillis: 30000,

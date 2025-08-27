@@ -167,10 +167,10 @@ class UnifiedServer {
       // Iniciar servidor
       this.server = this.app.listen(PORT, '0.0.0.0', () => {
         console.log(`✅ [SERVER] TOIT NEXUS rodando na porta ${PORT}`);
-        console.log(`🌐 [SERVER] URL: http://localhost:${PORT}`);
-        console.log(`📊 [SERVER] Health Check: http://localhost:${PORT}/api/health`);
-        console.log(`🔐 [SERVER] Auth Status: http://localhost:${PORT}/api/auth/check`);
-        console.log(`📋 [SERVER] Routes Status: http://localhost:${PORT}/api/modules/status`);
+        console.log(`🌐 [SERVER] URL: ${process.env.BACKEND_URL || 'https://nexus.toit.com.br'}`);
+        console.log(`📊 [SERVER] Health Check: ${process.env.BACKEND_URL || 'https://nexus.toit.com.br'}/api/health`);
+        console.log(`🔐 [SERVER] Auth Status: ${process.env.BACKEND_URL || 'https://nexus.toit.com.br'}/api/auth/check`);
+        console.log(`📋 [SERVER] Routes Status: ${process.env.BACKEND_URL || 'https://nexus.toit.com.br'}/api/modules/status`);}]}]}}
         
         if (NODE_ENV === 'development') {
           console.log(`🔧 [SERVER] Modo desenvolvimento ativo`);

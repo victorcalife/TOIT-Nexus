@@ -190,17 +190,17 @@ Content-Type: application/json
 
 ```bash
 # 1. Verificar status do motor nativo
-curl -X GET http://localhost:3001/api/native-quantum/status \
+curl -X GET https://nexus.toit.com.br/api/native-quantum/status \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 
 # 2. Executar busca quântica nativa
-curl -X POST http://localhost:3001/api/native-quantum/search \
+curl -X POST https://nexus.toit.com.br/api/native-quantum/search \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -d '{"searchSpace": [1,2,3,4,5], "targetValue": 4}'
 
 # 3. Analytics empresarial quântico
-curl -X POST http://localhost:3001/api/native-quantum/business-analytics \
+curl -X POST https://nexus.toit.com.br/api/native-quantum/business-analytics \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```

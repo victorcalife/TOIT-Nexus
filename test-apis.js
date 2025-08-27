@@ -1,7 +1,7 @@
 // Teste das APIs principais do TOIT NEXUS
 import fetch from 'node-fetch';
 
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = process.env.BACKEND_URL || 'https://nexus.toit.com.br';
 
 async function testAPI( endpoint, method = 'GET', body = null )
 {

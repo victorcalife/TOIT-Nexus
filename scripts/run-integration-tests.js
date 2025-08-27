@@ -104,7 +104,7 @@ async function setupTestEnvironment() {
 
   // Configurar variáveis de ambiente de teste
   process.env.NODE_ENV = 'test';
-  process.env.TEST_DATABASE_URL = process.env.TEST_DATABASE_URL || 'postgresql://localhost:5432/toit_nexus_test';
+  process.env.TEST_DATABASE_URL = process.env.TEST_DATABASE_URL || process.env.DATABASE_URL;
 
   // Criar diretório de resultados se não existir
   const resultsDir = path.join(__dirname, '..', 'test-results');

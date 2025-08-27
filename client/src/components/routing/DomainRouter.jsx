@@ -7,18 +7,25 @@ const DOMAINS = {
   NEXUS,
   /** Domínio para a área administrativa */
   SUPPORT,
-} as const;
+};
 
-</>;
+// Componente de roteamento baseado no domínio
+const DomainRouter = ( { children } ) => {
+  const location = useLocation();
+
+  // Se não for um caminho de API, ignora o restante do roteamento
+  if ( location.pathname.startsWith( '/api' ) )
+  {
+    return <>
+      {children}
+    </>;
   }
 
   const currentDomain = window.location.hostname;
   // Verifica se o domínio atual é o de suporte
   const isSupportDomain = currentDomain === DOMAINS.SUPPORT;
   // Verifica se o domínio atual é o principal
-  const isMainDomain = currentDomain === DOMAINS.NEXUS || 
-    (process.env['NODE_ENV'] === 'development' && 
-     (currentDomain === 'localhost' || currentDomain === '127.0.0.1'));
+  const isMainDomain = currentDomain === DOMAINS.NEXUS;
 
   // Se for o domínio de suporte e estiver na raiz, redireciona para o login de suporte
   if ( isSupportDomain && location.pathname === '/' )

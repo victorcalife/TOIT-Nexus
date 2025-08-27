@@ -33,9 +33,9 @@ class MiddlewareTestSuite {
   async testCorsMiddleware() {
     const corsMiddleware = (req, res, next) => {
       const allowedOrigins = [
-        'http://localhost:3000',
-        'http://localhost:5173',
-        'https://nexus.toit.com.br'
+        'https://nexus.toit.com.br',
+        'https://supnexus.toit.com.br',
+        'https://admin.toit.com.br'
       ];
 
       const origin = req.headers.origin;
@@ -58,7 +58,7 @@ class MiddlewareTestSuite {
     const req = {
       method: 'GET',
       headers: {
-        origin: 'http://localhost:3000'
+        origin: 'https://nexus.toit.com.br'
       }
     };
 
@@ -77,7 +77,7 @@ class MiddlewareTestSuite {
       throw new Error('CORS middleware não chamou next()');
     }
 
-    if (headers['Access-Control-Allow-Origin'] !== 'http://localhost:3000') {
+    if (headers['Access-Control-Allow-Origin'] !== 'https://nexus.toit.com.br') {
       throw new Error('CORS origin não configurado corretamente');
     }
 
@@ -111,7 +111,7 @@ class MiddlewareTestSuite {
     const req = {
       method: 'GET',
       url: '/api/test',
-      ip: '127.0.0.1',
+      ip: 'railway-ip',
       requestId: null
     };
 
@@ -364,7 +364,7 @@ class MiddlewareTestSuite {
 
     // Teste normal
     const req = {
-      ip: '127.0.0.1',
+      ip: 'production-ip',
       user: { id: 'test-user' }
     };
 

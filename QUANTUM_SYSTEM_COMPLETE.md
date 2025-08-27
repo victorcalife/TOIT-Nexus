@@ -427,53 +427,53 @@ Dynamic Decoupling: +15% (1.15x)
 
 ```bash
 # 1. Verificar status do sistema quântico completo
-curl -X GET "http://localhost:3001/api/native-quantum/status" \
+curl -X GET "https://nexus.toit.com.br/api/native-quantum/status" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 
 # 2. Testar busca quântica nativa
-curl -X POST "http://localhost:3001/api/native-quantum/search" \
+curl -X POST "https://nexus.toit.com.br/api/native-quantum/search" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -d '{"searchSpace": [1,2,3,4,5], "targetValue": 4}'
 
 # 3. Verificar Qiskit AI Service
-curl -X GET "http://localhost:3001/api/qiskit-transpiler/status" \
+curl -X GET "https://nexus.toit.com.br/api/qiskit-transpiler/status" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 
 # 4. Testar busca quântica com AI enhancement
-curl -X POST "http://localhost:3001/api/qiskit-transpiler/enhanced-search" \
+curl -X POST "https://nexus.toit.com.br/api/qiskit-transpiler/enhanced-search" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -d '{"searchSpace": [1,2,3,4,5], "targetValue": 4, "useAI": true}'
 
 # 5. Analytics empresarial quântico
-curl -X POST "http://localhost:3001/api/native-quantum/business-analytics" \
+curl -X POST "https://nexus.toit.com.br/api/native-quantum/business-analytics" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 
 # 6. Testar emaranhamento unitary de longo alcance
-curl -X POST "http://localhost:3001/api/long-range-entanglement/unitary" \
+curl -X POST "https://nexus.toit.com.br/api/long-range-entanglement/unitary" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -d '{"controlQubit": 0, "targetQubit": 8, "optimizeWithAI": true}'
 
 # 7. Testar emaranhamento measurement-based
-curl -X POST "http://localhost:3001/api/long-range-entanglement/measurement" \
+curl -X POST "https://nexus.toit.com.br/api/long-range-entanglement/measurement" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -d '{"controlQubit": 0, "targetQubit": 10, "intermediateQubits": [2,4,6,8]}'
 
 # 8. Testar teleportação quântica em cadeia
-curl -X POST "http://localhost:3001/api/long-range-entanglement/teleportation" \
+curl -X POST "https://nexus.toit.com.br/api/long-range-entanglement/teleportation" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -d '{"sourceQubit": 0, "targetQubit": 12, "auxiliaryQubits": [3,6,9]}'
 
 # 9. Análise da rede de emaranhamento
-curl -X GET "http://localhost:3001/api/long-range-entanglement/analysis" \
+curl -X GET "https://nexus.toit.com.br/api/long-range-entanglement/analysis" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 
 # 10. Status do sistema de emaranhamento de longo alcance
-curl -X GET "http://localhost:3001/api/long-range-entanglement/status" \
+curl -X GET "https://nexus.toit.com.br/api/long-range-entanglement/status" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
 
@@ -550,7 +550,7 @@ IBM_SECRET=your_ibm_quantum_api_key
 npm run dev
 
 # 3. Testar sistema quântico completo
-curl -X GET "http://localhost:3001/api/native-quantum/diagnostics" \
+curl -X GET "https://nexus.toit.com.br/api/native-quantum/diagnostics" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
 
@@ -629,7 +629,7 @@ IBM_SECRET=your_ibm_quantum_premium_api_key
 npm run dev
 
 # 3. Testar AI Transpiler Passes
-curl -X POST "http://localhost:3001/api/qiskit-transpiler/generate-ai-pass-manager" \
+curl -X POST "https://nexus.toit.com.br/api/qiskit-transpiler/generate-ai-pass-manager" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -d '{"ai_optimization_level": 3, "enable_ai_synthesis": true}'

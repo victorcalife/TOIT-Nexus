@@ -10,11 +10,11 @@ const fetch = require('node-fetch');
 // Configuração
 const config = {
   database: {
-    connectionString: process.env.DATABASE_URL || 'postgresql://localhost:5432/toit_nexus',
+    connectionString: process.env.DATABASE_URL,
     ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
   },
   api: {
-    baseUrl: process.env.API_URL || 'http://localhost:3000',
+    baseUrl: process.env.BACKEND_URL || 'https://nexus.toit.com.br',
     timeout: 10000
   }
 };

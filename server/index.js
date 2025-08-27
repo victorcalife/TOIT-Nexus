@@ -36,7 +36,7 @@ app.get( '/', ( req, res, next ) =>
   const hostname = req.hostname;
 
   // Se for o domínio principal, serve a nova landing page
-  if ( hostname === 'nexus.toit.com.br' || hostname === 'localhost' )
+  if ( hostname === 'nexus.toit.com.br' )
   {
     return res.sendFile( path.join( __dirname, '..', 'client', 'public', 'nexus-landing-new.html' ) );
   }

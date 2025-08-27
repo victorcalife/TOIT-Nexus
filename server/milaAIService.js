@@ -513,10 +513,10 @@ SOMAR receita ONDE data >= '2024-01-01'
 
 **Configuração típica PostgreSQL:**
 \`\`\`
-Host: localhost
+Host: seu-host-railway.com
 Porta: 5432
-Database: meu_banco
-Usuário: usuario
+Database: railway
+Usuário: postgres
 Senha: ••••••••
 \`\`\`
 

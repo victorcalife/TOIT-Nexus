@@ -20,13 +20,13 @@
 ### 1. Executar o servidor
 ```bash
 npm run dev
-# Servidor rodando em http://localhost:3001
+# Servidor rodando em https://api.toit.com.br
 ```
 
 ### 2. Configurar forwarding do Stripe CLI
 ```bash
 # Terminal 2
-stripe listen --forward-to localhost:3001/api/webhooks/stripe
+stripe listen --forward-to https://api.toit.com.br/api/webhooks/stripe
 ```
 
 **⚠️ IMPORTANTE:** Copie o webhook secret que aparece:
@@ -75,7 +75,7 @@ SELECT * FROM subscriptions ORDER BY updated_at DESC LIMIT 5;
 
 ### 3. Endpoint de teste
 ```bash
-curl http://localhost:3001/api/webhooks/stripe/test
+curl https://api.toit.com.br/api/webhooks/stripe/test
 ```
 
 ## Deploy na Railway

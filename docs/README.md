@@ -85,7 +85,7 @@ npm run client:install
 cp .env.example .env
 
 # Editar variáveis obrigatórias
-DATABASE_URL=mysql://user:password@localhost:3306/toit_nexus
+DATABASE_URL=postgresql://user:password@railway-host:5432/toit_nexus
 JWT_SECRET=your_super_secret_key_here
 SENDGRID_API_KEY=your_sendgrid_api_key
 IBM_QUANTUM_TOKEN=your_ibm_quantum_token

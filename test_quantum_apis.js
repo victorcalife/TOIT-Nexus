@@ -5,7 +5,7 @@
 
 const axios = require('axios');
 
-const BASE_URL = 'http://localhost:5000';
+const BASE_URL = process.env.BACKEND_URL || 'https://nexus.toit.com.br';
 
 // Configuração de timeout
 const API_TIMEOUT = 10000;

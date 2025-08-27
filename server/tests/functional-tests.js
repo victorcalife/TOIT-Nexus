@@ -614,7 +614,8 @@ class FunctionalTestSuite {
   async testChatWebSocket() {
     return new Promise((resolve) => {
       try {
-        const ws = new WebSocket('ws://localhost:8081');
+        const wsUrl = process.env.WEBSOCKET_URL || 'wss://nexus.toit.com.br';
+        const ws = new WebSocket(wsUrl);
         
         ws.on('open', () => {
           // Autenticar

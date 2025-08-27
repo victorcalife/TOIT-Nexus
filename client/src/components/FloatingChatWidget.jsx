@@ -68,7 +68,7 @@ export default function FloatingChatWidget() {
     if (!token || !userId) return;
 
     // Conectar WebSocket
-    const newSocket = io(process.env.REACT_APP_WS_URL || 'http://localhost:5000', {
+    const newSocket = io( process.env.REACT_APP_WS_URL || 'https://api.toit.com.br', {
       transports: ['websocket', 'polling']
     });
 

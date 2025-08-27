@@ -337,10 +337,10 @@ COMPONENT_INTEGRATION: {
 tail -f logs/quantum-system.log
 
 # Métricas em tempo real
-curl http://localhost:3000/api/quantum/metrics
+curl https://nexus.toit.com.br/api/quantum/metrics
 
 # Status detalhado
-curl http://localhost:3000/api/quantum/status
+curl https://nexus.toit.com.br/api/quantum/status
 ```
 
 ## 🎉 Resultados Esperados

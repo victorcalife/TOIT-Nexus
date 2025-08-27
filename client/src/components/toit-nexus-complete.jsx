@@ -417,7 +417,7 @@ export default function ToitNexusComplete() {
                   <Input 
                     value={dbForm.host}
                     onChange={(e) => setDbForm({...dbForm, host)}
-                    placeholder="localhost"
+                    placeholder="api.toit.com.br"
                   />
                 </div>
                 <div>
