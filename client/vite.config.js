@@ -54,6 +54,11 @@ export default defineConfig( {
       : 4173,
     host: '0.0.0.0',
     cors: true,
-    allowedHosts: ['admin.toit.com.br', 'toit.com.br'],
+    allowedHosts: [
+      'admin.toit.com.br', 
+      'toit.com.br',
+      'localhost',
+      '127.0.0.1'
+    ],
   }
 } )

@@ -62,4 +62,12 @@ export default defineConfig({
       deny: ["**/.*"],
     },
   },
+  preview: {
+    allowedHosts: [
+      "admin.toit.com.br",
+      "toit.com.br",
+      "localhost",
+      "127.0.0.1"
+    ]
+  },
 });
