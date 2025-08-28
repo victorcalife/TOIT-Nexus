@@ -22,9 +22,9 @@ function Router() {
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/" component={() => {
         const hostname = window.location.hostname.toLowerCase();
-        const isSupportDomain = hostname.includes('admin.toit.com.br');
+        const isSupportDomain = hostname.includes('supnexus.') || hostname.includes('support.') || hostname.includes('suporte.');
         
-        console.log(`🌐 Hostname);
+        console.log(`🌐 Hostname: ${hostname}, isSupportDomain: ${isSupportDomain}`);
         
         if (isSupportDomain) {
           return <SupportLogin />;
