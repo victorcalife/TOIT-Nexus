@@ -88,7 +88,7 @@ async function testQuantumAPIs() {
             }
             
         } catch (error) {
-          } else if (error.code === 'ECONNREFUSED') {
+            if (error.code === 'ECONNREFUSED') {
                 console.log(`WARNING ${endpoint.url} - Servidor Railway indisponivel`);
                 console.log('INFO: Verifique o status do Railway em https://railway.app');
             } else if (error.response?.status === 401) {

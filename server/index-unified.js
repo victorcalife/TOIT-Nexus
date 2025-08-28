@@ -170,7 +170,7 @@ class UnifiedServer {
         console.log(`🌐 [SERVER] URL: ${process.env.BACKEND_URL || 'https://api.toit.com.br'}`);
         console.log(`📊 [SERVER] Health Check: ${process.env.BACKEND_URL || 'https://api.toit.com.br'}/api/health`);
         console.log(`🔐 [SERVER] Auth Status: ${process.env.BACKEND_URL || 'https://api.toit.com.br'}/api/auth/check`);
-        console.log(`📋 [SERVER] Routes Status: ${process.env.BACKEND_URL || 'https://api.toit.com.br'}/api/modules/status`);}]}]}}
+        console.log(`📋 [SERVER] Routes Status: ${process.env.BACKEND_URL || 'https://api.toit.com.br'}/api/modules/status`);
         
         if (NODE_ENV === 'development') {
           console.log(`🔧 [SERVER] Modo desenvolvimento ativo`);
