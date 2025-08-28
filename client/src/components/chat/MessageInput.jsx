@@ -6,17 +6,17 @@
 import React, { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { 
-  Send, 
-  Paperclip, 
-  Smile, 
-  Image, 
-  Mic, 
-  MicOff,
-  Plus,
-  Calendar,
-  MapPin,
-  AtSign
+import {  
+
+
+
+
+
+
+
+
+
+ }
 } from 'lucide-react';
 
 const MessageInput = ({ 
@@ -26,13 +26,12 @@ const MessageInput = ({
   onFileUpload, 
   fileInputRef, 
   isTyping 
-}) => {
-  const [isRecording, setIsRecording] = useState(false);
+}) => ({ const [isRecording, setIsRecording] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [showQuickActions, setShowQuickActions] = useState(false);
   const inputRef = useRef(null);
 
-  const handleKeyPress = (e) => {
+  const handleKeyPress = (e }) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       onSendMessage();
@@ -66,7 +65,7 @@ const MessageInput = ({
         <div className="mb-3 flex items-center space-x-2">
           <Button variant="outline" size="sm">
             <Calendar className="h-4 w-4 mr-1" />
-            Agendar
+
           </Button>
           <Button variant="outline" size="sm">
             <MapPin className="h-4 w-4 mr-1" />
@@ -74,7 +73,7 @@ const MessageInput = ({
           </Button>
           <Button variant="outline" size="sm">
             <AtSign className="h-4 w-4 mr-1" />
-            Mencionar
+
           </Button>
         </div>
       )}
@@ -86,7 +85,7 @@ const MessageInput = ({
             {quickEmojis.map(emoji => (
               <button
                 key={emoji}
-                onClick={() => insertEmoji(emoji)}
+                onClick=({ ( }) => insertEmoji(emoji)}
                 className="text-xl hover:bg-slate-200 rounded p-1 transition-colors duration-200"
               >
                 {emoji}
@@ -102,7 +101,7 @@ const MessageInput = ({
         <Button
           variant="outline"
           size="sm"
-          onClick={() => setShowQuickActions(!showQuickActions)}
+          onClick=({ ( }) => setShowQuickActions(!showQuickActions)}
           className={showQuickActions ? 'bg-blue-50' : ''}
         >
           <Plus className="h-4 w-4" />
@@ -113,7 +112,7 @@ const MessageInput = ({
           <Input
             ref={inputRef}
             value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
+            onChange=({ (e }) => setNewMessage(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Digite sua mensagem..."
             className="pr-20"
@@ -125,7 +124,7 @@ const MessageInput = ({
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => fileInputRef.current?.click()}
+              onClick=({ ( }) => fileInputRef.current?.click()}
             >
               <Paperclip className="h-4 w-4" />
             </Button>
@@ -133,7 +132,7 @@ const MessageInput = ({
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+              onClick=({ ( }) => setShowEmojiPicker(!showEmojiPicker)}
             >
               <Smile className="h-4 w-4" />
             </Button>

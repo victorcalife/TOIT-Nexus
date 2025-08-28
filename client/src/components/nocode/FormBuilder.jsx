@@ -4,42 +4,42 @@
  */
 
 import React, { useState, useCallback } from 'react';
-import { 
-  Card, 
-  Button, 
-  Drawer, 
-  Form, 
-  Input, 
-  Select, 
-  Switch, 
-  Checkbox,
-  Radio,
-  DatePicker,
-  InputNumber,
-  Upload,
-  Modal,
+import {  
+
+
+
+
+
+
+
+
+
+
+
+
+
   message,
-  Space,
-  Tabs,
-  Row,
-  Col,
-  Tooltip,
-  Divider
+
+
+
+
+
+ }
 } from 'antd';
-import { 
-  PlusOutlined, 
-  EyeOutlined, 
-  SaveOutlined, 
-  SettingOutlined,
-  DragOutlined,
-  DeleteOutlined,
-  CopyOutlined,
-  FormOutlined,
-  CalendarOutlined,
-  NumberOutlined,
-  FileTextOutlined,
-  CheckSquareOutlined,
-  ExperimentOutlined
+import {  
+
+
+
+
+
+
+
+
+
+
+
+
+ }
 } from '@ant-design/icons';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import './FormBuilder.css';
@@ -140,8 +140,8 @@ const FormBuilder = ({ formId, onSave, onPreview }) => {
   const addField = (type) => {
     const newField = {
       id: `field_${Date.now()}`,
-      type: type,
-      name: `field_${fields.length + 1}`,
+      type: type,`
+      name: `field_${fields.length + 1}`,`
       label: `${fieldTypes[type].label} ${fields.length + 1}`,
       placeholder: fieldTypes[type].defaultProps.placeholder || '',
       required: false,
@@ -177,9 +177,9 @@ const FormBuilder = ({ formId, onSave, onPreview }) => {
   // Duplicar campo
   const duplicateField = (field) => {
     const duplicatedField = {
-      ...field,
-      id: `field_${Date.now()}`,
-      name: `${field.name}_copy`,
+      ...field,`
+      id: `field_${Date.now()}`,`
+      name: `${field.name}_copy`,`
       label: `${field.label} (Copy)`
     };
 
@@ -215,7 +215,7 @@ const FormBuilder = ({ formId, onSave, onPreview }) => {
   // Salvar formulário
   const saveForm = async () => {
     try {
-      const formData = {
+      const formData = {`
         id: formId || `form_${Date.now()}`,
         name: formConfig.name,
         description: formConfig.description,
@@ -246,12 +246,12 @@ const FormBuilder = ({ formId, onSave, onPreview }) => {
       <Tabs defaultActiveKey="basic" size="small">
         <TabPane tab="Basic" key="basic">
           <div className="field-types">
-            {Object.entries(fieldTypes).filter(([key]) => key !== 'quantum').map(([type, config]) => (
+            ({ Object.entries(fieldTypes).filter(([key]) => key !== 'quantum').map(([type, config] }) => (
               <Button
                 key={type}
                 block
                 className="field-button"
-                onClick={() => addField(type)}
+                onClick=({ ( }) => addField(type)}
                 icon={config.icon}
               >
                 {config.label}
@@ -265,7 +265,7 @@ const FormBuilder = ({ formId, onSave, onPreview }) => {
             <Button
               block
               className="quantum-field-button"
-              onClick={() => addField('quantum')}
+              onClick=({ ( }) => addField('quantum')}
               icon={<ExperimentOutlined />}
             >
               ⚛️ Quantum Input
@@ -278,13 +278,13 @@ const FormBuilder = ({ formId, onSave, onPreview }) => {
 
         <TabPane tab="Templates" key="templates">
           <div className="field-templates">
-            <Button block onClick={() => addFormTemplate('contact')}>
+            <Button block onClick=({ ( }) => addFormTemplate('contact')}>
               📞 Contact Form
             </Button>
-            <Button block onClick={() => addFormTemplate('registration')}>
+            <Button block onClick=({ ( }) => addFormTemplate('registration')}>
               👤 Registration Form
             </Button>
-            <Button block onClick={() => addFormTemplate('survey')}>
+            <Button block onClick=({ ( }) => addFormTemplate('survey')}>
               📊 Survey Form
             </Button>
           </div>
@@ -296,10 +296,10 @@ const FormBuilder = ({ formId, onSave, onPreview }) => {
   // Renderizar campo no formulário
   const renderFormField = (field, index) => (
     <Draggable key={field.id} draggableId={field.id} index={index}>
-      {(provided, snapshot) => (
+      ({ (provided, snapshot }) => (
         <div
           ref={provided.innerRef}
-          {...provided.draggableProps}
+          {...provided.draggableProps}`
           className={`form-field ${snapshot.isDragging ? 'dragging' : ''}`}
         >
           <div className="field-header">
@@ -313,7 +313,7 @@ const FormBuilder = ({ formId, onSave, onPreview }) => {
                   size="small"
                   type="text"
                   icon={<SettingOutlined />}
-                  onClick={() => selectField(field)}
+                  onClick=({ ( }) => selectField(field)}
                 />
               </Tooltip>
               <Tooltip title="Duplicate">
@@ -321,7 +321,7 @@ const FormBuilder = ({ formId, onSave, onPreview }) => {
                   size="small"
                   type="text"
                   icon={<CopyOutlined />}
-                  onClick={() => duplicateField(field)}
+                  onClick=({ ( }) => duplicateField(field)}
                 />
               </Tooltip>
               <Tooltip title="Delete">
@@ -330,7 +330,7 @@ const FormBuilder = ({ formId, onSave, onPreview }) => {
                   type="text"
                   danger
                   icon={<DeleteOutlined />}
-                  onClick={() => removeField(field.id)}
+                  onClick=({ ( }) => removeField(field.id)}
                 />
               </Tooltip>
             </div>
@@ -352,7 +352,7 @@ const FormBuilder = ({ formId, onSave, onPreview }) => {
       case 'select':
         return (
           <Select placeholder={field.placeholder} disabled style={{ width: '100%' }}>
-            {field.options.map((option, index) => (
+            ({ field.options.map((option, index }) => (
               <Option key={index} value={option}>{option}</Option>
             ))}
           </Select>
@@ -361,7 +361,7 @@ const FormBuilder = ({ formId, onSave, onPreview }) => {
       case 'radio':
         return (
           <Radio.Group disabled>
-            {field.options.map((option, index) => (
+            ({ field.options.map((option, index }) => (
               <Radio key={index} value={option}>{option}</Radio>
             ))}
           </Radio.Group>
@@ -437,10 +437,10 @@ const FormBuilder = ({ formId, onSave, onPreview }) => {
               <TextArea rows={2} />
             </Form.Item>
 
-            {(selectedField.type === 'select' || selectedField.type === 'radio') && (
+            ({ (selectedField.type === 'select' || selectedField.type === 'radio') && (
               <Form.Item name="options" label="Options">
                 <Select mode="tags" placeholder="Enter options...">
-                  {selectedField.options?.map((option, index) => (
+                  {selectedField.options?.map((option, index }) => (
                     <Option key={index} value={option}>{option}</Option>
                   ))}
                 </Select>
@@ -504,8 +504,8 @@ const FormBuilder = ({ formId, onSave, onPreview }) => {
             <Button type="primary" htmlType="submit">
               Save Field
             </Button>
-            <Button onClick={() => setDrawerVisible(false)}>
-              Cancel
+            <Button onClick=({ ( }) => setDrawerVisible(false)}>
+
             </Button>
           </Space>
         </Form.Item>
@@ -518,7 +518,7 @@ const FormBuilder = ({ formId, onSave, onPreview }) => {
     <Form
       form={previewForm}
       layout={formConfig.layout}
-      onFinish={(values) => {
+      onFinish=({ (values }) => {
         console.log('Form values:', values);
         message.success(formConfig.successMessage);
       }}
@@ -528,7 +528,7 @@ const FormBuilder = ({ formId, onSave, onPreview }) => {
           key={field.id}
           name={field.name}
           label={field.label}
-          rules={[
+          rules={[`}
             { required: field.required, message: `${field.label} is required` },
             ...(field.validation?.minLength ? [{ min: field.validation.minLength }] : []),
             ...(field.validation?.maxLength ? [{ max: field.validation.maxLength }] : []),
@@ -586,7 +586,7 @@ const FormBuilder = ({ formId, onSave, onPreview }) => {
         break;
     }
 
-    const newFields = templateFields.map((field, index) => ({
+    const newFields = templateFields.map((field, index) => ({`
       id: `field_${Date.now()}_${index}`,
       placeholder: '',
       quantumOptimized: false,
@@ -597,7 +597,7 @@ const FormBuilder = ({ formId, onSave, onPreview }) => {
       ...field
     }));
 
-    setFields([...fields, ...newFields]);
+    setFields([...fields, ...newFields]);`
     message.success(`${type} form template added`);
   };
 
@@ -615,16 +615,16 @@ const FormBuilder = ({ formId, onSave, onPreview }) => {
           <Space>
             <Button
               icon={<SettingOutlined />}
-              onClick={() => setConfigModalVisible(true)}
+              onClick=({ ( }) => setConfigModalVisible(true)}
             >
-              Settings
+
             </Button>
             <Button
               icon={<EyeOutlined />}
               onClick={previewForm}
               disabled={fields.length === 0}
             >
-              Preview
+
             </Button>
             <Button
               type="primary"
@@ -632,7 +632,7 @@ const FormBuilder = ({ formId, onSave, onPreview }) => {
               onClick={saveForm}
               disabled={fields.length === 0}
             >
-              Save
+
             </Button>
           </Space>
         </div>
@@ -646,7 +646,7 @@ const FormBuilder = ({ formId, onSave, onPreview }) => {
         <div className="form-canvas">
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="form-fields">
-              {(provided) => (
+              ({ (provided }) => (
                 <div
                   {...provided.droppableProps}
                   ref={provided.innerRef}
@@ -669,11 +669,11 @@ const FormBuilder = ({ formId, onSave, onPreview }) => {
       </div>
 
       {/* Drawer de configuração do campo */}
-      <Drawer
+      <Drawer`
         title={`Configure ${selectedField?.label || 'Field'}`}
         placement="right"
         width={400}
-        onClose={() => setDrawerVisible(false)}
+        onClose=({ ( }) => setDrawerVisible(false)}
         open={drawerVisible}
       >
         {renderFieldConfig()}
@@ -683,14 +683,14 @@ const FormBuilder = ({ formId, onSave, onPreview }) => {
       <Modal
         title="Form Settings"
         open={configModalVisible}
-        onCancel={() => setConfigModalVisible(false)}
+        onCancel=({ ( }) => setConfigModalVisible(false)}
         footer={null}
         width={600}
       >
         <Form
           layout="vertical"
           initialValues={formConfig}
-          onFinish={(values) => {
+          onFinish=({ (values }) => {
             setFormConfig(values);
             setConfigModalVisible(false);
             message.success('Form settings updated');
@@ -763,8 +763,8 @@ const FormBuilder = ({ formId, onSave, onPreview }) => {
               <Button type="primary" htmlType="submit">
                 Save Settings
               </Button>
-              <Button onClick={() => setConfigModalVisible(false)}>
-                Cancel
+              <Button onClick=({ ( }) => setConfigModalVisible(false)}>
+
               </Button>
             </Space>
           </Form.Item>
@@ -772,10 +772,10 @@ const FormBuilder = ({ formId, onSave, onPreview }) => {
       </Modal>
 
       {/* Modal de preview */}
-      <Modal
+      <Modal`
         title={`Preview: ${formConfig.name}`}
         open={previewModalVisible}
-        onCancel={() => setPreviewModalVisible(false)}
+        onCancel=({ ( }) => setPreviewModalVisible(false)}
         footer={null}
         width={800}
       >
@@ -786,3 +786,4 @@ const FormBuilder = ({ formId, onSave, onPreview }) => {
 };
 
 export default FormBuilder;
+`

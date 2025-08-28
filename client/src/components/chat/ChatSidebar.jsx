@@ -7,14 +7,15 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { 
-  MessageCircle, 
-  Phone, 
-  Video, 
+import {
+  MessageCircle,
   Plus,
   Search,
   MoreHorizontal,
-  Circle
+  Circle,
+  Users,
+  Phone,
+  Video
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -224,7 +225,7 @@ export function ChatSidebar({
         <div className="flex items-center justify-center space-x-4">
           <Button size="sm" variant="ghost" className="flex-1">
             <Phone className="w-4 h-4 mr-2" />
-            Ligar
+            Áudio
           </Button>
           <Button size="sm" variant="ghost" className="flex-1">
             <Video className="w-4 h-4 mr-2" />

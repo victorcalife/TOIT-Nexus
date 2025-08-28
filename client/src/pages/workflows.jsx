@@ -6,8 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
-import
-  {
+import { 
     Plus,
     Play,
     Pause,
@@ -23,27 +22,25 @@ import
     Copy,
     Settings,
     RefreshCw,
-    ArrowRight
+    ArrowRight }
   } from "lucide-react";
-import
-  {
+import { 
     Dialog,
     DialogContent,
     DialogDescription,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
+    DialogTrigger, }
   } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import
-  {
+import { 
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
-    SelectValue,
+    SelectValue, }
   } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import VisualWorkflowBuilder from "@/components/visual-workflow-builder";
@@ -62,8 +59,8 @@ export default function Workflows()
   const { toast } = useToast();
 
   // Query para workflows visuais (nova API)
-  const { data, isLoading,
-    queryFn) => {
+  const ({ data, isLoading,
+    queryFn }) => {
     const response = await apiRequest( 'GET', '/api/visual-workflows' );
     return response.json();
   },
@@ -80,8 +77,7 @@ const { data,
 });
 
 // Mutation para criar workflow visual
-const createWorkflowMutation = useMutation( {
-  mutationFn) => {
+const createWorkflowMutation = useMutation( ({ mutationFn }) => {
   const response = await apiRequest( 'POST', '/api/visual-workflows', {
     name,
     description,
@@ -124,7 +120,7 @@ const createWorkflowMutation = useMutation( {
 // Mutation para atualizar status do workflow visual
 const updateWorkflowStatusMutation = useMutation( {
   mutationFn, isActive
-}: { id, isActive) => {
+}: ({ id, isActive }) => {
   const response = await apiRequest( 'PUT', `/api/visual-workflows/${ id }`, { isActive } );
   return response.json();
 },
@@ -145,8 +141,7 @@ const updateWorkflowStatusMutation = useMutation( {
   });
 
 // Mutation para deletar workflow visual
-const deleteWorkflowMutation = useMutation( {
-  mutationFn) => {
+const deleteWorkflowMutation = useMutation( ({ mutationFn }) => {`
   const response = await apiRequest( 'DELETE', `/api/visual-workflows/${ workflowId }` );
   return response.json();
 },
@@ -167,13 +162,11 @@ const deleteWorkflowMutation = useMutation( {
   });
 
 const getCategoryName = ( categoryId ) =>
-{
-  return categories?.find( ( cat ) => cat.id === categoryId )?.name || 'Geral';
+({ return categories?.find( ( cat  }) => cat.id === categoryId )?.name || 'Geral';
 };
 
 const getStatusColor = ( status ) =>
-{
-  switch ( status )
+({ switch ( status )
   {
     case 'active':
       return 'bg-success-100 text-success-800';
@@ -199,7 +192,7 @@ const getStatusColor = ( status ) =>
           return <Pause className="w-4 h-4 text-gray-500" />;
         case 'draft':
           return <AlertCircle className="w-4 h-4 text-warning-500" />;
-        default) => {
+        default }) => {
           if ( !newWorkflow.name )
           {
             toast( {
@@ -243,7 +236,7 @@ const getStatusColor = ( status ) =>
               <div className="h-screen">
                 <VisualWorkflowBuilder
                   workflowId={ selectedWorkflowId || undefined }
-                  onSave={ ( workflow ) =>
+                  onSave=({ ( workflow  }) =>
                   {
                     toast( {
                       title,
@@ -254,7 +247,7 @@ const getStatusColor = ( status ) =>
                 <Button
                   variant="outline"
                   className="absolute top-4 left-4 z-50"
-                  onClick={ () =>
+                  onClick=({ ( }) =>
                   {
                     setActiveTab( 'list' );
                     setSelectedWorkflowId( null );
@@ -295,7 +288,7 @@ const getStatusColor = ( status ) =>
                     <Input
                       id="workflow-category"
                       value={newWorkflow.category}
-                      onChange={(e) => setNewWorkflow({ ...newWorkflow, category)}
+                      onChange=({ (e }) => setNewWorkflow({ ...newWorkflow, category)}
                       placeholder="Ex, Marketing, Suporte"
                     />
                   </div>
@@ -303,10 +296,8 @@ const getStatusColor = ( status ) =>
                 <div className="flex justify-end space-x-2">
                   <Button 
                     variant="outline" 
-                    onClick={() => setIsCreateDialogOpen(false)}
+                    onClick=({ ( }) => setIsCreateDialogOpen(false)}
                   >
-                    Cancelar
-                  </Button>
                   <Button 
                     onClick={handleCreateWorkflow}
                     disabled={createWorkflowMutation.isPending}
@@ -321,8 +312,8 @@ const getStatusColor = ( status ) =>
 
           <TabsContent value="visual" className="space-y-6">
             {/* Workflows Grid */}
-            {workflowsLoading ? (
-              <div className="grid grid-cols-1 md)].map((_, i) => (
+            ({ workflowsLoading ? (
+              <div className="grid grid-cols-1 md)].map((_, i }) => (
                   <Card key={i}>
                     <CardHeader>
                       <div className="flex items-start justify-between">
@@ -352,7 +343,7 @@ const getStatusColor = ( status ) =>
                         </div>
                         <Badge className={workflow.workflow.isActive 
                           ? 'bg-green-100 text-green-800 border-green-200' 
-                          : 'bg-gray-100 text-gray-800 border-gray-200'
+                          : 'bg-gray-100 text-gray-800 border-gray-200'}
                         }>
                           {workflow.workflow.isActive ? 'Ativo' : 'Inativo'}
                         </Badge>
@@ -378,16 +369,16 @@ const getStatusColor = ( status ) =>
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={ () => handleEditWorkflow( workflow.workflow.id ) }
+                      onClick=({ ( }) => handleEditWorkflow( workflow.workflow.id ) }
                       className="text-blue-600 hover) => handleDuplicateWorkflow(workflow.workflow)}
                               className="text-purple-600 hover) => toggleWorkflowStatus(workflow.workflow)}
                     disabled={ updateWorkflowStatusMutation.isPending }
-                    className={ workflow.workflow.isActive
-                      ? "text-orange-600 hover) {() => deleteWorkflowMutation.mutate(workflow.workflow.id)}
+                    className=({ workflow.workflow.isActive
+                      ? "text-orange-600 hover) {( }) => deleteWorkflowMutation.mutate(workflow.workflow.id)}
                               disabled={ deleteWorkflowMutation.isPending }
                               className="text-red-600 hover))}
                   </div>
-                  ) { () => setIsCreateDialogOpen( true ) }
+                  ) ({ ( }) => setIsCreateDialogOpen( true ) }
                   className="bg-blue-600 hover)}
                 </TabsContent>
 
@@ -441,3 +432,4 @@ const getStatusColor = ( status ) =>
     </div >
   );
       }
+`

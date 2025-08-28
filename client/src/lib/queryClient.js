@@ -30,7 +30,6 @@ const buildFullUrl = ( url ) =>
 
   const baseUrl = API_BASE_URL;
   const cleanUrl = url.startsWith( '/' ) ? url : `/${ url }`;
-
   return `${ baseUrl }${ cleanUrl }`;
 };
 

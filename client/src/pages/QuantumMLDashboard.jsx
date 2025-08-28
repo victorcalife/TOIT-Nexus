@@ -8,7 +8,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useMLCredits } from '../hooks/useMLCredits';
 import { MLCreditsWidget } from '../components/ml/MLCreditsWidget';
 import { QuantumInsightButton } from '../components/ml/QuantumInsightButton';
-import { 
+import {  
   Brain, 
   Zap, 
   TrendingUp, 
@@ -20,7 +20,7 @@ import {
   Play,
   Pause,
   Trash2,
-  Eye
+  Eye }
 } from 'lucide-react';
 
 /**
@@ -179,7 +179,7 @@ export function QuantumMLDashboard() {
                 insightType="prediction"
                 variant="secondary"
                 size="sm"
-                onSuccess={(result) => {
+                onSuccess: (result) => {
                   console.log('Predição executada:', result);
                   loadUsageHistory();
                 }}
@@ -198,13 +198,12 @@ export function QuantumMLDashboard() {
                 insightType="optimization"
                 variant="secondary"
                 size="sm"
-                onSuccess={(result) => {
+                onSuccess: (result) => {
                   console.log('Otimização executada:', result);
                   loadUsageHistory();
                 }}
               >
-                Otimizar
-              </QuantumInsightButton>
+
             </div>
 
             <div className="p-4 border border-gray-200 rounded-lg">
@@ -217,7 +216,7 @@ export function QuantumMLDashboard() {
                 insightType="anomaly"
                 variant="secondary"
                 size="sm"
-                onSuccess={(result) => {
+                onSuccess: (result) => {
                   console.log('Detecção executada:', result);
                   loadUsageHistory();
                 }}
@@ -260,7 +259,7 @@ export function QuantumMLDashboard() {
         </div>
 
         <div className="p-6">
-          {isLoadingHistory ? (
+          ({ isLoadingHistory ? (
             <div className="text-center py-8">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto"></div>
               <p className="text-sm text-gray-500 mt-2">Carregando histórico...</p>
@@ -272,11 +271,11 @@ export function QuantumMLDashboard() {
             </div>
           ) : (
             <div className="space-y-4">
-              {usageHistory.map((usage, index) => (
+              {usageHistory.map((usage, index }) => (
                 <div key={index} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-                  <div className="flex items-center space-x-3">
+                  <div className="flex items-center space-x-3">`
                     <div className={`p-2 rounded-lg ${
-                      usage.success ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'
+                      usage.success ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'`}
                     }`}>
                       {usage.usage_type === 'manual_insight' ? <Brain className="w-4 h-4" /> :
                        usage.usage_type === 'auto_prediction' ? <Calendar className="w-4 h-4" /> :
@@ -311,8 +310,7 @@ export function QuantumMLDashboard() {
   /**
    * Renderizar predições automáticas
    */
-  const renderAutoPredictions = useCallback(() => {
-    return (
+  const renderAutoPredictions = useCallback(() => ({ return (
       <div className="bg-white rounded-lg border shadow-sm">
         <div className="p-6 border-b border-gray-200">
           <div className="flex items-center justify-between">
@@ -342,11 +340,11 @@ export function QuantumMLDashboard() {
             </div>
           ) : (
             <div className="space-y-4">
-              {autoPredictions.map((prediction) => (
+              {autoPredictions.map((prediction }) => (
                 <div key={prediction.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-                  <div className="flex items-center space-x-3">
+                  <div className="flex items-center space-x-3">`
                     <div className={`p-2 rounded-lg ${
-                      prediction.is_active ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-600'
+                      prediction.is_active ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-600'`}
                     }`}>
                       <TrendingUp className="w-4 h-4" />
                     </div>
@@ -359,11 +357,11 @@ export function QuantumMLDashboard() {
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2">`
                     <span className={`px-2 py-1 text-xs rounded-full ${
                       prediction.is_active 
                         ? 'bg-green-100 text-green-800' 
-                        : 'bg-gray-100 text-gray-800'
+                        : 'bg-gray-100 text-gray-800'`}
                     }`}>
                       {prediction.is_active ? 'Ativo' : 'Inativo'}
                     </span>
@@ -444,11 +442,11 @@ export function QuantumMLDashboard() {
               ].map(tab => (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
+                  onClick={() => setActiveTab(tab.id)}`
                   className={`flex items-center space-x-2 py-2 px-1 border-b-2 font-medium text-sm ${
                     activeTab === tab.id
                       ? 'border-purple-500 text-purple-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'`}
                   }`}
                 >
                   <tab.icon className="w-4 h-4" />
@@ -481,3 +479,4 @@ export function QuantumMLDashboard() {
 }
 
 export default QuantumMLDashboard;
+`

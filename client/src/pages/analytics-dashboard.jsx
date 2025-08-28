@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   LineChart, 
   Line, 
   AreaChart,
@@ -26,9 +26,9 @@ import {
   Tooltip, 
   Legend, 
   ResponsiveContainer,
-  RechartsScale
+  RechartsScale }
 } from 'recharts';
-import { 
+import {  
   BarChart3, 
   TrendingUp, 
   TrendingDown,
@@ -58,7 +58,7 @@ import {
   Minus,
   AlertTriangle,
   CheckCircle,
-  Info
+  Info }
 } from 'lucide-react';
 
 const AnalyticsDashboard = () => {
@@ -86,7 +86,7 @@ const AnalyticsDashboard = () => {
     setLoading(true);
     try {
       const response = await fetch(`/api/analytics?dateRange=${dateRange}&filters=${JSON.stringify(filters)}`, {
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }
@@ -118,7 +118,7 @@ const AnalyticsDashboard = () => {
 
     try {
       const response = await fetch('/api/analytics/realtime', {
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }
@@ -138,7 +138,7 @@ const AnalyticsDashboard = () => {
    */
   const setupRealTimeStream = () => {
     if (!isRealTime) return;
-
+`
     const eventSource = new EventSource(`/api/analytics/stream?token=${localStorage.getItem('token')}`);
     
     eventSource.onmessage = (event) => {
@@ -161,7 +161,7 @@ const AnalyticsDashboard = () => {
     try {
       const response = await fetch('/api/analytics/export', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -180,7 +180,7 @@ const AnalyticsDashboard = () => {
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.href = url;
+      a.href = url;`
       a.download = `analytics_${dateRange}_${new Date().toISOString().split('T')[0]}.${format}`;
       document.body.appendChild(a);
       a.click();
@@ -188,7 +188,7 @@ const AnalyticsDashboard = () => {
       document.body.removeChild(a);
       
       toast({
-        title: "Relatório exportado",
+        title: "Relatório exportado",`
         description: `Relatório exportado em formato ${format.toUpperCase()}`,
       });
     } catch (error) {
@@ -217,7 +217,7 @@ const AnalyticsDashboard = () => {
             <div>
               <p className="text-sm font-medium text-gray-600">{metric.label}</p>
               <p className="text-2xl font-bold text-gray-900">{metric.value}</p>
-              {metric.change !== undefined && (
+              {metric.change !== undefined && (`
                 <div className={`flex items-center mt-1 ${changeColor}`}>
                   <ChangeIcon className="h-4 w-4 mr-1" />
                   <span className="text-sm font-medium">
@@ -233,7 +233,7 @@ const AnalyticsDashboard = () => {
                   </Badge>
                 </div>
               )}
-            </div>
+            </div>`
             <div className={`p-3 rounded-full ${metric.bgColor || 'bg-blue-100'}`}>
               {metric.icon || <BarChart3 className="h-6 w-6 text-blue-600" />}
             </div>
@@ -330,13 +330,13 @@ const AnalyticsDashboard = () => {
                 data={data}
                 cx="50%"
                 cy="50%"
-                labelLine={false}
+                labelLine={false}`
                 label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                 outerRadius={100}
                 fill="#8884d8"
                 dataKey="value"
               >
-                {data.map((entry, index) => (
+                ({ data.map((entry, index }) => (`
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
@@ -351,8 +351,7 @@ const AnalyticsDashboard = () => {
   /**
    * RENDERIZAR TABELA TOP PÁGINAS
    */
-  const renderTopPagesTable = (pages) => {
-    return (
+  const renderTopPagesTable = (pages) => ({ return (
       <Card>
         <CardHeader>
           <CardTitle>Páginas Mais Visitadas</CardTitle>
@@ -370,7 +369,7 @@ const AnalyticsDashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {pages.map((page, index) => (
+                {pages.map((page, index }) => (
                   <tr key={index} className="border-b hover:bg-gray-50">
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-2">
@@ -383,10 +382,10 @@ const AnalyticsDashboard = () => {
                     <td className="py-3 px-4">{page.pageviews.toLocaleString()}</td>
                     <td className="py-3 px-4">{page.uniqueUsers.toLocaleString()}</td>
                     <td className="py-3 px-4">{page.avgTime}</td>
-                    <td className="py-3 px-4">
+                    <td className="py-3 px-4">`
                       <span className={`${
                         page.bounceRate > 70 ? 'text-red-600' : 
-                        page.bounceRate > 40 ? 'text-yellow-600' : 'text-green-600'
+                        page.bounceRate > 40 ? 'text-yellow-600' : 'text-green-600'`}
                       }`}>
                         {page.bounceRate}%
                       </span>
@@ -423,21 +422,21 @@ const AnalyticsDashboard = () => {
                 </div>
               ))}
             </div>
-            {days.map((day, dayIndex) => (
+            ({ days.map((day, dayIndex }) => (
               <div key={day} className="grid grid-cols-25 gap-1">
                 <div className="text-xs text-gray-500 flex items-center">{day}</div>
                 {hours.map(hour => {
                   const activity = data.find(d => d.day === dayIndex && d.hour === hour);
                   const intensity = activity ? Math.min(activity.value / 100, 1) : 0;
                   return (
-                    <div
+                    <div`
                       key={`${day}-${hour}`}
                       className="w-3 h-3 rounded-sm"
                       style={{
-                        backgroundColor: intensity > 0 
+                        backgroundColor: intensity > 0 `}
                           ? `rgba(59, 130, 246, ${intensity})` 
                           : '#f3f4f6'
-                      }}
+                      }}`
                       title={`${day} ${hour}:00 - ${activity?.value || 0} atividades`}
                     />
                   );
@@ -453,7 +452,7 @@ const AnalyticsDashboard = () => {
                   key={intensity}
                   className="w-3 h-3 rounded-sm"
                   style={{
-                    backgroundColor: intensity > 0 
+                    backgroundColor: intensity > 0 `}
                       ? `rgba(59, 130, 246, ${intensity})` 
                       : '#f3f4f6'
                   }}
@@ -470,13 +469,12 @@ const AnalyticsDashboard = () => {
   /**
    * CONFIGURAR COMPONENTE
    */
-  useEffect(() => {
-    loadAnalytics();
+  useEffect(() => ({ loadAnalytics();
     
     const cleanup = setupRealTimeStream();
     const interval = setInterval(loadRealTimeData, 30000); // 30 segundos
     
-    return () => {
+    return ( }) => {
       cleanup && cleanup();
       clearInterval(interval);
     };
@@ -500,8 +498,8 @@ const AnalyticsDashboard = () => {
             <div className="flex gap-3">
               <Button
                 variant="outline"
-                onClick={() => setIsRealTime(!isRealTime)}
-              >
+                onClick=({ ( }) => setIsRealTime(!isRealTime)}
+              >`
                 <Activity className={`h-4 w-4 mr-2 ${isRealTime ? 'text-green-600' : 'text-gray-600'}`} />
                 {isRealTime ? 'Tempo Real Ativo' : 'Tempo Real Inativo'}
               </Button>
@@ -509,17 +507,15 @@ const AnalyticsDashboard = () => {
                 variant="outline"
                 onClick={loadAnalytics}
                 disabled={loading}
-              >
+              >`
                 <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-                Atualizar
-              </Button>
+
               <Button
                 variant="outline"
-                onClick={() => exportReport('pdf')}
+                onClick=({ ( }) => exportReport('pdf')}
               >
                 <Download className="h-4 w-4 mr-2" />
-                Exportar
-              </Button>
+
             </div>
           </div>
         </div>
@@ -531,7 +527,7 @@ const AnalyticsDashboard = () => {
               <div className="flex gap-4">
                 <select
                   value={dateRange}
-                  onChange={(e) => setDateRange(e.target.value)}
+                  onChange=({ (e }) => setDateRange(e.target.value)}
                   className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="today">Hoje</option>
@@ -545,7 +541,7 @@ const AnalyticsDashboard = () => {
 
                 <select
                   value={filters.device}
-                  onChange={(e) => setFilters(prev => ({ ...prev, device: e.target.value }))}
+                  onChange=({ (e }) => setFilters(prev => ({ ...prev, device: e.target.value }))}
                   className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="all">Todos os Dispositivos</option>
@@ -556,7 +552,7 @@ const AnalyticsDashboard = () => {
 
                 <select
                   value={filters.source}
-                  onChange={(e) => setFilters(prev => ({ ...prev, source: e.target.value }))}
+                  onChange=({ (e }) => setFilters(prev => ({ ...prev, source: e.target.value }))}
                   className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="all">Todas as Fontes</option>
@@ -660,3 +656,4 @@ const AnalyticsDashboard = () => {
 };
 
 export default AnalyticsDashboard;
+`

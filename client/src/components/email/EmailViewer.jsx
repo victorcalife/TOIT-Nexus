@@ -8,27 +8,27 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { 
-  Reply, 
-  ReplyAll, 
-  Forward, 
-  Archive, 
+import {  
+
+
+
+
   Trash2, 
-  Star, 
-  StarOff,
-  Paperclip, 
-  Download, 
-  Eye, 
-  EyeOff,
-  MoreHorizontal,
-  Calendar,
-  Clock,
-  MapPin,
-  Users,
-  Tag,
-  Print,
+
+
+
+
+
+
+
+
+
+
+
+
+
   Share2,
-  Flag
+ }
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -106,7 +106,7 @@ const EmailViewer = ({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => onToggleStar(email.id)}
+              onClick=({ ( }) => onToggleStar(email.id)}
             >
               {email.isStarred ? (
                 <Star className="h-4 w-4 text-yellow-500 fill-current" />
@@ -118,16 +118,16 @@ const EmailViewer = ({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => onReply(email)}
+              onClick=({ ( }) => onReply(email)}
             >
               <Reply className="h-4 w-4 mr-1" />
-              Responder
+
             </Button>
 
             <Button
               variant="outline"
               size="sm"
-              onClick={() => onReplyAll(email)}
+              onClick=({ ( }) => onReplyAll(email)}
             >
               <ReplyAll className="h-4 w-4 mr-1" />
               Resp. Todos
@@ -136,10 +136,10 @@ const EmailViewer = ({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => onForward(email)}
+              onClick=({ ( }) => onForward(email)}
             >
               <Forward className="h-4 w-4 mr-1" />
-              Encaminhar
+
             </Button>
 
             <Separator orientation="vertical" className="h-6" />
@@ -147,7 +147,7 @@ const EmailViewer = ({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => onArchive(email.id)}
+              onClick=({ ( }) => onArchive(email.id)}
             >
               <Archive className="h-4 w-4" />
             </Button>
@@ -155,7 +155,7 @@ const EmailViewer = ({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => onDelete(email.id)}
+              onClick=({ ( }) => onDelete(email.id)}
             >
               <Trash2 className="h-4 w-4" />
             </Button>
@@ -204,14 +204,14 @@ const EmailViewer = ({
 
           <div className="flex items-center space-x-4 text-sm">
             <button
-              onClick={() => setShowFullHeaders(!showFullHeaders)}
+              onClick=({ ( }) => setShowFullHeaders(!showFullHeaders)}
               className="text-blue-600 hover:text-blue-800"
             >
               {showFullHeaders ? 'Ocultar' : 'Mostrar'} detalhes
             </button>
             
             <button
-              onClick={() => setShowRawContent(!showRawContent)}
+              onClick=({ ( }) => setShowRawContent(!showRawContent)}
               className="text-blue-600 hover:text-blue-800"
             >
               {showRawContent ? 'Visualização normal' : 'Código fonte'}
@@ -219,12 +219,12 @@ const EmailViewer = ({
 
             <button className="text-blue-600 hover:text-blue-800 flex items-center">
               <Print className="h-4 w-4 mr-1" />
-              Imprimir
+
             </button>
 
             <button className="text-blue-600 hover:text-blue-800 flex items-center">
               <Download className="h-4 w-4 mr-1" />
-              Baixar
+
             </button>
           </div>
         </div>
@@ -266,7 +266,7 @@ const EmailViewer = ({
 To: ${email.to}
 Subject: ${email.subject}
 Date: ${format(email.date, 'dd/MM/yyyy HH:mm:ss')}
-
+`
 ${email.body}`}
           </pre>
         ) : (
@@ -284,7 +284,7 @@ ${email.body}`}
           <div className="flex items-center space-x-2">
             <Button
               variant="default"
-              onClick={() => onReply(email)}
+              onClick=({ ( }) => onReply(email)}
               className="flex items-center space-x-1"
             >
               <Reply className="h-4 w-4" />
@@ -293,7 +293,7 @@ ${email.body}`}
             
             <Button
               variant="outline"
-              onClick={() => onForward(email)}
+              onClick=({ ( }) => onForward(email)}
               className="flex items-center space-x-1"
             >
               <Forward className="h-4 w-4" />
@@ -304,17 +304,17 @@ ${email.body}`}
           <div className="flex items-center space-x-2">
             <Button variant="outline" size="sm">
               <Calendar className="h-4 w-4 mr-1" />
-              Agendar
+
             </Button>
             
             <Button variant="outline" size="sm">
               <Flag className="h-4 w-4 mr-1" />
-              Marcar
+
             </Button>
             
             <Button variant="outline" size="sm">
               <Share2 className="h-4 w-4 mr-1" />
-              Compartilhar
+
             </Button>
           </div>
         </div>
@@ -324,8 +324,7 @@ ${email.body}`}
 };
 
 // Componente de Anexo
-const AttachmentItem = ({ name, size, type }) => {
-  const getFileIcon = (type) => {
+const AttachmentItem = ({ name, size, type }) => ({ const getFileIcon = (type }) => {
     switch (type) {
       case 'pdf':
         return '📄';
@@ -362,3 +361,4 @@ const AttachmentItem = ({ name, size, type }) => {
 };
 
 export default EmailViewer;
+`

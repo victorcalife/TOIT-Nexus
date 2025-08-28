@@ -4,41 +4,30 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { 
-  Video, 
-  VideoOff, 
-  Mic, 
-  MicOff, 
-  Phone, 
+import {
+  Video,
+  VideoOff,
+  Mic,
+  MicOff,
+  Phone,
   PhoneOff,
   Monitor,
   MonitorOff,
-  Settings,
-  Users,
-  MessageCircle,
   Volume2,
   VolumeX,
+  Settings,
+  Users,
+  MessageSquare,
+  Grid3X3,
   Maximize,
   Minimize,
-  MoreVertical,
-  Camera,
-  CameraOff,
-  Record,
-  StopCircle,
-  Share,
-  Hand,
-  Grid3X3,
-  User,
-  Clock,
-  Wifi,
-  WifiOff,
   Signal,
   SignalHigh,
   SignalMedium,
   SignalLow,
   Brain,
   Atom,
-  Zap
+  RefreshCw
 } from 'lucide-react';
 
 // Importar sistema quântico integrado
@@ -592,8 +581,8 @@ export default function VideoCallInterface({
           
           {/* Quality Indicator */}
           <div className="flex items-center gap-1">
-            {React.createElement(getQualityInfo().icon, { 
-              className: `w-4 h-4 ${getQualityInfo().color}` 
+            {React.createElement(getQualityInfo().icon, {
+              className: `w-4 h-4 ${getQualityInfo().color}`
             })}
             <span className={`text-xs ${getQualityInfo().color}`}>
               {getQualityInfo().label}

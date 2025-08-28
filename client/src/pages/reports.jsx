@@ -12,8 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import quantumSystemCore from '@/core/QuantumSystemCore';
 import milaOmnipresence from '@/core/MilaOmnipresence';
 import universalWorkflowEngine from '@/core/UniversalWorkflowEngine';
-import
-{
+import { 
   Plus,
   Search,
   FileText,
@@ -24,26 +23,24 @@ import
   Calendar,
   Mail,
   Settings,
-  BarChart3
+  BarChart3 }
 } from "lucide-react";
-import
-{
+import { 
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+  DialogTrigger, }
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import
-{
+import { 
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue, }
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -80,8 +77,7 @@ export default function Reports()
     retry,
   });
 
-  const createReportMutation = useMutation( {
-    mutationFn) => {
+  const createReportMutation = useMutation( ({ mutationFn }) => {
     const processedData = {
       ...reportData,
       filters,
@@ -106,7 +102,7 @@ export default function Reports()
 
   const updateReportMutation = useMutation( {
     mutationFn, data
-  }: { id, data) => {
+  }: ({ id, data }) => {
     const processedData = {
       ...data,
       filters,
@@ -130,8 +126,7 @@ export default function Reports()
     },
   });
 
-  const deleteReportMutation = useMutation({
-    mutationFn) => {
+  const deleteReportMutation = useMutation(({ mutationFn }) => {`
       await apiRequest('DELETE', `/ api / reports / ${ reportId } `);
     },
     onSuccess) => {
@@ -150,8 +145,7 @@ export default function Reports()
     },
   });
 
-  const generateReportMutation = useMutation({
-    mutationFn) => {
+  const generateReportMutation = useMutation(({ mutationFn }) => {`
       const response = await apiRequest('POST', `/ api / reports / ${ reportId }/generate`);
     return response;
   },
@@ -271,8 +265,7 @@ const filteredReports = ( reports || [] ).filter( ( report ) =>
 );
 
 const getTypeLabel = ( type ) =>
-{
-  switch ( type )
+({ switch ( type )
   {
     case 'client_summary':
       return 'Resumo de Clientes';
@@ -310,7 +303,7 @@ const getTypeLabel = ( type ) =>
               { id, label,
     {
               id, label,
-                { id, label) => {
+                { id, label }) => {
                 setIsCreateDialogOpen( open );
                 if ( !open )
                 {
@@ -320,7 +313,7 @@ const getTypeLabel = ( type ) =>
               }
             }>
             <DialogTrigger asChild>
-              <Button onClick={() => setIsCreateDialogOpen(true)}>
+              <Button onClick=({ ( }) => setIsCreateDialogOpen(true)}>
                 <Plus className="w-4 h-4 mr-2" />
                 Novo Relatório
               </Button>
@@ -348,7 +341,7 @@ const getTypeLabel = ( type ) =>
                       <Input
                         id="name"
                         value={newReport.name}
-                        onChange={(e) => setNewReport(prev => ({ ...prev, name))}
+                        onChange=({ (e }) => setNewReport(prev => ({ ...prev, name))}
                         placeholder="Ex) => setNewReport(prev => ({ ...prev, description))}
                         placeholder="Descreva o propósito deste relatório..."
                       />
@@ -356,7 +349,7 @@ const getTypeLabel = ( type ) =>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="type">Tipo de Relatório</Label>
-                        <Select value={newReport.type} onValueChange={(value) => setNewReport(prev => ({ ...prev, type))}>
+                        <Select value={newReport.type} onValueChange=({ (value }) => setNewReport(prev => ({ ...prev, type))}>
                           <SelectTrigger>
                             <SelectValue placeholder="Selecione o tipo" />
                           </SelectTrigger>
@@ -371,7 +364,7 @@ const getTypeLabel = ( type ) =>
                       </div>
                       <div>
                         <Label htmlFor="template">Template</Label>
-                        <Select value={newReport.template} onValueChange={(value) => setNewReport(prev => ({ ...prev, template))}>
+                        <Select value={newReport.template} onValueChange=({ (value }) => setNewReport(prev => ({ ...prev, template))}>
                           <SelectTrigger>
                             <SelectValue placeholder="Selecione o template" />
                           </SelectTrigger>
@@ -387,7 +380,7 @@ const getTypeLabel = ( type ) =>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="schedule">Agendamento</Label>
-                        <Select value={newReport.schedule} onValueChange={(value) => setNewReport(prev => ({ ...prev, schedule))}>
+                        <Select value={newReport.schedule} onValueChange=({ (value }) => setNewReport(prev => ({ ...prev, schedule))}>
                           <SelectTrigger>
                             <SelectValue placeholder="Selecione a frequência" />
                           </SelectTrigger>
@@ -407,7 +400,7 @@ const getTypeLabel = ( type ) =>
                             id="frequency"
                             type="time"
                             value={newReport.frequency}
-                            onChange={(e) => setNewReport(prev => ({ ...prev, frequency))}
+                            onChange=({ (e }) => setNewReport(prev => ({ ...prev, frequency))}
                           />
                         </div>
                       )}
@@ -420,13 +413,13 @@ const getTypeLabel = ( type ) =>
                     <div>
                       <Label>Categorias de Cliente</Label>
                       <div className="grid grid-cols-2 gap-2 mt-2">
-                        {(categories || []).map((category) => (
+                        ({ (categories || []).map((category }) => (
                           <div key={category.id} className="flex items-center space-x-2">
-                            <Checkbox
+                            <Checkbox`
                               id={`category-${category.id}`}
                               checked={newReport.filters.categories.includes(category.id)}
-                              onCheckedChange={() => handleCategoryToggle(category.id)}
-                            />
+                              onCheckedChange=({ ( }) => handleCategoryToggle(category.id)}
+                            />`
                             <Label htmlFor={`category-${category.id}`}>{category.name}</Label>
                           </div>
                         ))}
@@ -436,13 +429,13 @@ const getTypeLabel = ( type ) =>
                     <div>
                       <Label>Perfis de Risco</Label>
                       <div className="flex gap-4 mt-2">
-                        {['conservative', 'moderate', 'aggressive'].map((profile) => (
+                        ({ ['conservative', 'moderate', 'aggressive'].map((profile }) => (
                           <div key={profile} className="flex items-center space-x-2">
-                            <Checkbox
+                            <Checkbox`
                               id={`risk-${profile}`}
                               checked={newReport.filters.riskProfiles.includes(profile)}
-                              onCheckedChange={() => handleRiskProfileToggle(profile)}
-                            />
+                              onCheckedChange=({ ( }) => handleRiskProfileToggle(profile)}
+                            />`
                             <Label htmlFor={`risk-${profile}`}>
                               {profile === 'conservative' ? 'Conservador' : 
                                profile === 'moderate' ? 'Moderado' : 'Agressivo'}
@@ -454,7 +447,7 @@ const getTypeLabel = ( type ) =>
                     
                     <div>
                       <Label htmlFor="dateRange">Período dos Dados</Label>
-                      <Select value={newReport.filters.dateRange} onValueChange={(value) => setNewReport(prev => ({
+                      <Select value={newReport.filters.dateRange} onValueChange=({ (value }) => setNewReport(prev => ({
                         ...prev,
                         filters, dateRange))}>
                         <SelectTrigger>
@@ -478,7 +471,7 @@ const getTypeLabel = ( type ) =>
                           id="minInvestment"
                           type="number"
                           value={newReport.filters.minInvestment}
-                          onChange={(e) => setNewReport(prev => ({
+                          onChange=({ (e }) => setNewReport(prev => ({
                             ...prev,
                             filters, minInvestment))}
                           placeholder="0.00"
@@ -490,7 +483,7 @@ const getTypeLabel = ( type ) =>
                           id="maxInvestment"
                           type="number"
                           value={newReport.filters.maxInvestment}
-                          onChange={(e) => setNewReport(prev => ({
+                          onChange=({ (e }) => setNewReport(prev => ({
                             ...prev,
                             filters, maxInvestment))}
                           placeholder="Deixe vazio para ilimitado"
@@ -504,13 +497,13 @@ const getTypeLabel = ( type ) =>
                   <div>
                     <Label>Campos a Incluir no Relatório</Label>
                     <div className="grid grid-cols-2 gap-2 mt-2">
-                      {availableFields.map((field) => (
+                      ({ availableFields.map((field }) => (
                         <div key={field.id} className="flex items-center space-x-2">
-                          <Checkbox
+                          <Checkbox`
                             id={`field-${field.id}`}
                             checked={newReport.fields.includes(field.id)}
-                            onCheckedChange={() => handleFieldToggle(field.id)}
-                          />
+                            onCheckedChange=({ ( }) => handleFieldToggle(field.id)}
+                          />`
                           <Label htmlFor={`field-${field.id}`}>{field.label}</Label>
                         </div>
                       ))}
@@ -521,7 +514,7 @@ const getTypeLabel = ( type ) =>
                 <TabsContent value="delivery" className="space-y-4">
                   <div>
                     <Label htmlFor="deliveryMethod">Método de Entrega</Label>
-                    <Select value={newReport.deliveryMethod} onValueChange={(value) => setNewReport(prev => ({ ...prev, deliveryMethod))}>
+                    <Select value={newReport.deliveryMethod} onValueChange=({ (value }) => setNewReport(prev => ({ ...prev, deliveryMethod))}>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione o método" />
                       </SelectTrigger>
@@ -534,14 +527,14 @@ const getTypeLabel = ( type ) =>
                     </Select>
                   </div>
                   
-                  {newReport.deliveryMethod === 'email' && (
+                  ({ newReport.deliveryMethod === 'email' && (
                     <div>
                       <Label>Destinatários</Label>
                       <div className="space-y-2 mt-2">
                         <div className="flex gap-2">
                           <Input
                             placeholder="email@exemplo.com"
-                            onKeyPress={(e) => {
+                            onKeyPress={(e }) => {
                               if (e.key === 'Enter') {
                                 handleRecipientAdd((e.target as HTMLInputElement).value);
                                 (e.target as HTMLInputElement).value = '';
@@ -549,12 +542,10 @@ const getTypeLabel = ( type ) =>
                             }}
                           />
                           <Button type="button" variant="outline" size="sm">
-                            Adicionar
-                          </Button>
                         </div>
                         <div className="flex flex-wrap gap-2">
-                          {newReport.recipients.map((email) => (
-                            <Badge key={email} variant="secondary" className="cursor-pointer" onClick={() => handleRecipientRemove(email)}>
+                          ({ newReport.recipients.map((email }) => (
+                            <Badge key={email} variant="secondary" className="cursor-pointer" onClick=({ ( }) => handleRecipientRemove(email)}>
                               {email} ×
                             </Badge>
                           ))}
@@ -567,7 +558,7 @@ const getTypeLabel = ( type ) =>
                     <Checkbox
                       id="isActive"
                       checked={newReport.isActive}
-                      onCheckedChange={(checked) => setNewReport(prev => ({ ...prev, isActive))}
+                      onCheckedChange=({ (checked }) => setNewReport(prev => ({ ...prev, isActive))}
                     />
                     <Label htmlFor="isActive">Relatório ativo</Label>
                   </div>
@@ -578,13 +569,11 @@ const getTypeLabel = ( type ) =>
                 <Button onClick={handleSubmit} disabled={createReportMutation.isPending || updateReportMutation.isPending}>
                   {editingReport ? 'Atualizar' : 'Criar'} Relatório
                 </Button>
-                <Button variant="outline" onClick={() => {
+                <Button variant="outline" onClick=({ ( }) => {
                   setIsCreateDialogOpen(false);
                   setEditingReport(null);
                   resetForm();
                 }}>
-                  Cancelar
-                </Button>
               </div>
             </DialogContent>
           </Dialog >
@@ -599,16 +588,15 @@ const getTypeLabel = ( type ) =>
                     placeholder="Buscar relatórios..."
                     className="pl-10"
                     value={ searchTerm }
-                    onChange={ ( e ) => setSearchTerm( e.target.value ) }
+                    onChange=({ ( e  }) => setSearchTerm( e.target.value ) }
                   />
                 </div>
       </div >
 
               {/* Reports List */ }
               < main className = "flex-1 overflow-y-auto p-6" >
-              {
-                reportsLoading?(
-          <div className = "grid grid-cols-1 md)].map((_, i) => (
+              ({ reportsLoading?(
+          <div className = "grid grid-cols-1 md)].map((_, i }) => (
                     < Card key = { i } >
                       <CardContent className="p-6">
                         <Skeleton className="h-6 w-32 mb-2" />
@@ -635,7 +623,7 @@ const getTypeLabel = ( type ) =>
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={ () => generateReportMutation.mutate( report.id ) }
+                onClick=({ ( }) => generateReportMutation.mutate( report.id ) }
                 disabled={ generateReportMutation.isPending }
               >
                 <Play className="w-4 h-4" />
@@ -643,14 +631,14 @@ const getTypeLabel = ( type ) =>
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={ () => handleEdit( report ) }
+                onClick=({ ( }) => handleEdit( report ) }
               >
                 <Edit className="w-4 h-4" />
               </Button>
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={ () => deleteReportMutation.mutate( report.id ) }
+                onClick=({ ( }) => deleteReportMutation.mutate( report.id ) }
               >
                 <Trash2 className="w-4 h-4" />
               </Button>
@@ -675,7 +663,7 @@ const getTypeLabel = ( type ) =>
                     </div>
                     ) { searchTerm ? 'Nenhum relatório corresponde aos critérios de busca.' : 'Crie seu primeiro template de relatório.' }
                   </p>
-                  <Button onClick={ () => setIsCreateDialogOpen( true ) }>
+                  <Button onClick=({ ( }) => setIsCreateDialogOpen( true ) }>
                     <Plus className="w-4 h-4 mr-2" />
                     Novo Relatório
                   </Button>
@@ -684,4 +672,4 @@ const getTypeLabel = ( type ) =>
               </main>
             </div>
   );
-        }
+        }`

@@ -8,26 +8,26 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Video, 
-  VideoOff, 
-  Mic, 
-  MicOff, 
-  PhoneOff, 
-  ScreenShare, 
-  ScreenShareOff,
-  Users, 
-  Settings, 
+import {
+  Mic,
+  MicOff,
+  Video,
+  VideoOff,
+  PhoneOff,
+  Monitor,
+  Users,
+  MessageSquare,
+  Record,
   Minimize2, 
   Maximize2,
   Volume2,
-  VolumeX,
-  MessageSquare,
-  MoreHorizontal,
-  UserPlus,
-  Record,
+  VolumeX,  Settings,
+  MoreVertical,
   Camera,
-  Monitor
+  UserPlus,
+  MoreHorizontal,
+  ScreenShare,
+  ScreenShareOff
 } from 'lucide-react';
 
 const CallInterface = ({

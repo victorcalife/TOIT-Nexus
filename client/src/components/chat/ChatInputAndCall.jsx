@@ -9,35 +9,34 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { 
-  Send, 
-  Paperclip, 
-  Image, 
+import {
+  Paperclip,
+  Image,
   Smile,
-  Mic, 
-  MicOff, 
-  Video, 
-  VideoOff,
-  ScreenShare,
-  ScreenShareOff,
+  Mic,
+  MicOff,
+  Send,
+  Phone,
   PhoneOff,
+  Video,
+  VideoOff,
   Volume2,
   VolumeX,
   Minimize2,
   Maximize2,
-  Settings,
+  Monitor,
   Users,
   MessageSquare,
+  Settings,
+  MoreVertical,
   Camera,
-  CameraOff,
-  Phone,
-  Monitor,
-  MonitorOff,
-  UserPlus,
+  ScreenShare,
+  ScreenShareOff,
   Grid3X3,
-  Maximize,
-  MoreHorizontal,
-  X
+  UserPlus,
+  Record,
+  X,
+  Maximize
 } from 'lucide-react';
 
 // Input de Mensagem

@@ -2,23 +2,22 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { 
+import {  
   CheckCircle, 
   Mail, 
   Phone, 
   Clock,
   RefreshCw,
   AlertCircle,
-  Zap
+  Zap }
 } from 'lucide-react';
 import VerificationForm from '@/components/verification-form';
 
-export default function VerifyAccount() {
-  const [user, setUser] = useState<any>(null);
+export default function VerifyAccount() ({ const [user, setUser] = useState<any>(null);
   const [isCompleted, setIsCompleted] = useState(false);
 
   // Verificar se há dados do usuário recém-criado
-  useEffect(() => {
+  useEffect(( }) => {
     const urlParams = new URLSearchParams(window.location.search);
     const userId = urlParams.get('userId');
     const email = urlParams.get('email');
@@ -32,9 +31,8 @@ export default function VerifyAccount() {
     }
   }, []);
 
-  const handleVerificationComplete = () => {
-    setIsCompleted(true);
-    setTimeout(() => {
+  const handleVerificationComplete = () => ({ setIsCompleted(true);
+    setTimeout(( }) => {
       window.location.href = '/login?verified=true&activated=true';
     }, 2000);
   };
@@ -103,7 +101,7 @@ export default function VerifyAccount() {
           )}
 
           {/* Conta Ativada */}
-          {isCompleted && (
+          ({ isCompleted && (
             <Card className="border-green-500 bg-green-50">
               <CardContent className="pt-6">
                 <div className="text-center">
@@ -116,7 +114,7 @@ export default function VerifyAccount() {
                     Você será redirecionado para fazer login em alguns segundos.
                   </p>
                   <Button
-                    onClick={() => window.location.href = '/login?verified=true&activated=true'}
+                    onClick={( }) => window.location.href = '/login?verified=true&activated=true'}
                     className="bg-green-600 hover)}
 
           {/* Ajuda */}

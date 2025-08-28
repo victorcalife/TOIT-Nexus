@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   DollarSign, 
   TrendingUp,
   TrendingDown,
@@ -69,9 +69,9 @@ import {
   TrendingUpIcon,
   Percent,
   Hash,
-  ExternalLink
+  ExternalLink }
 } from 'lucide-react';
-import { 
+import {  
   LineChart as RechartsLineChart, 
   Line, 
   AreaChart,
@@ -86,7 +86,7 @@ import {
   CartesianGrid, 
   Tooltip, 
   Legend, 
-  ResponsiveContainer
+  ResponsiveContainer }
 } from 'recharts';
 
 const FinancialManagement = () => {
@@ -139,25 +139,25 @@ const FinancialManagement = () => {
     setLoading(true);
     try {
       const [transactionsRes, accountsRes, budgetsRes, invoicesRes, expensesRes, revenuesRes, categoriesRes] = await Promise.all([
-        fetch(`/api/financial/transactions?dateRange=${dateRange}`, {
+        fetch(`/api/financial/transactions?dateRange=${dateRange}`, {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/financial/accounts', {
+        fetch('/api/financial/accounts', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/financial/budgets', {
+        fetch('/api/financial/budgets', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/financial/invoices', {
+        fetch('/api/financial/invoices', {`
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        }),`
+        fetch(`/api/financial/expenses?dateRange=${dateRange}`, {`
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        }),`
+        fetch(`/api/financial/revenues?dateRange=${dateRange}`, {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch(`/api/financial/expenses?dateRange=${dateRange}`, {
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-        }),
-        fetch(`/api/financial/revenues?dateRange=${dateRange}`, {
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-        }),
-        fetch('/api/financial/categories', {
+        fetch('/api/financial/categories', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);
@@ -216,13 +216,13 @@ const FinancialManagement = () => {
     try {
       const response = await fetch('/api/financial/transactions', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           ...transactionData,
-          createdAt: new Date().toISOString(),
+          createdAt: new Date().toISOString(),`
           transactionId: `TXN-${Date.now()}`
         })
       });
@@ -236,7 +236,7 @@ const FinancialManagement = () => {
       setShowTransactionModal(false);
       
       toast({
-        title: "Transação criada",
+        title: "Transação criada",`
         description: `Transação de ${data.transaction.type} criada com sucesso`,
       });
     } catch (error) {
@@ -256,14 +256,14 @@ const FinancialManagement = () => {
     try {
       const response = await fetch('/api/financial/invoices', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           ...invoiceData,
           status: 'draft',
-          createdAt: new Date().toISOString(),
+          createdAt: new Date().toISOString(),`
           invoiceNumber: `INV-${Date.now()}`
         })
       });
@@ -277,7 +277,7 @@ const FinancialManagement = () => {
       setShowInvoiceModal(false);
       
       toast({
-        title: "Fatura criada",
+        title: "Fatura criada",`
         description: `Fatura #${data.invoice.invoiceNumber} criada com sucesso`,
       });
     } catch (error) {
@@ -294,10 +294,10 @@ const FinancialManagement = () => {
    * ATUALIZAR STATUS DA FATURA
    */
   const updateInvoiceStatus = async (invoiceId, newStatus) => {
-    try {
+    try {`
       const response = await fetch(`/api/financial/invoices/${invoiceId}/status`, {
         method: 'PATCH',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -342,8 +342,8 @@ const FinancialManagement = () => {
             <RechartsLineChart data={data}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip formatter={(value) => [`R$ ${value.toLocaleString()}`, 'Valor']} />
+              <YAxis />`
+              <Tooltip formatter=({ (value }) => [`R$ ${value.toLocaleString()}`, 'Valor']} />
               <Legend />
               <Line 
                 type="monotone" 
@@ -376,17 +376,17 @@ const FinancialManagement = () => {
                 data={data}
                 cx="50%"
                 cy="50%"
-                labelLine={false}
+                labelLine={false}`
                 label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                 outerRadius={100}
                 fill="#8884d8"
                 dataKey="value"
               >
-                {data.map((entry, index) => (
+                ({ data.map((entry, index }) => (`
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
-              </Pie>
-              <Tooltip formatter={(value) => [`R$ ${value.toLocaleString()}`, 'Valor']} />
+              </Pie>`
+              <Tooltip formatter=({ (value }) => [`R$ ${value.toLocaleString()}`, 'Valor']} />
             </RechartsPieChart>
           </ResponsiveContainer>
         </CardContent>
@@ -404,7 +404,7 @@ const FinancialManagement = () => {
     
     return (
       <div key={transaction.id} className="flex items-center justify-between p-4 border-b border-gray-100 hover:bg-gray-50">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4">`
           <div className={`p-2 rounded-full ${type.color}`}>
             {type.icon}
           </div>
@@ -419,9 +419,9 @@ const FinancialManagement = () => {
           </div>
         </div>
         
-        <div className="text-right">
+        <div className="text-right">`
           <div className={`font-bold text-lg ${
-            transaction.type === 'income' ? 'text-green-600' : 'text-red-600'
+            transaction.type === 'income' ? 'text-green-600' : 'text-red-600'`}
           }`}>
             {transaction.type === 'income' ? '+' : '-'}R$ {transaction.amount.toLocaleString()}
           </div>
@@ -436,9 +436,8 @@ const FinancialManagement = () => {
   /**
    * RENDERIZAR CONTA
    */
-  const renderAccount = (account) => {
-    const accountTransactions = transactions.filter(t => t.accountId === account.id);
-    const balance = accountTransactions.reduce((sum, t) => {
+  const renderAccount = (account) => ({ const accountTransactions = transactions.filter(t => t.accountId === account.id);
+    const balance = accountTransactions.reduce((sum, t }) => {
       return sum + (t.type === 'income' ? t.amount : -t.amount);
     }, account.initialBalance || 0);
     
@@ -457,7 +456,7 @@ const FinancialManagement = () => {
           
           <div className="space-y-2 mb-4">
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Saldo atual:</span>
+              <span className="text-gray-600">Saldo atual:</span>`
               <span className={`font-bold ${balance >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                 R$ {balance.toLocaleString()}
               </span>
@@ -494,8 +493,7 @@ const FinancialManagement = () => {
             </Button>
             <Button variant="outline" size="sm">
               <Edit className="h-3 w-3 mr-1" />
-              Editar
-            </Button>
+
           </div>
         </CardContent>
       </Card>
@@ -543,7 +541,7 @@ const FinancialManagement = () => {
               <span className={
                 new Date(invoice.dueDate) < new Date() && invoice.status !== 'paid'
                   ? 'text-red-600 font-medium'
-                  : ''
+                  : ''}
               }>
                 {new Date(invoice.dueDate).toLocaleDateString('pt-BR')}
               </span>
@@ -557,18 +555,17 @@ const FinancialManagement = () => {
           <div className="flex gap-2">
             <select
               value={invoice.status}
-              onChange={(e) => updateInvoiceStatus(invoice.id, e.target.value)}
+              onChange=({ (e }) => updateInvoiceStatus(invoice.id, e.target.value)}
               className="flex-1 px-2 py-1 border border-gray-300 rounded text-sm"
             >
-              {Object.entries(invoiceStatuses).map(([key, status]) => (
+              ({ Object.entries(invoiceStatuses).map(([key, status] }) => (
                 <option key={key} value={key}>{status.name}</option>
               ))}
             </select>
             
             <Button variant="outline" size="sm">
               <Download className="h-3 w-3 mr-1" />
-              PDF
-            </Button>
+
           </div>
         </CardContent>
       </Card>
@@ -578,8 +575,7 @@ const FinancialManagement = () => {
   /**
    * OBTER ESTATÍSTICAS FINANCEIRAS
    */
-  const getFinancialStats = () => {
-    const totalIncome = transactions
+  const getFinancialStats = () => ({ const totalIncome = transactions
       .filter(t => t.type === 'income')
       .reduce((sum, t) => sum + t.amount, 0);
     
@@ -597,7 +593,7 @@ const FinancialManagement = () => {
     
     const totalInvoiceAmount = invoices
       .filter(i => i.status !== 'cancelled')
-      .reduce((sum, i) => sum + (i.amount || 0), 0);
+      .reduce((sum, i }) => sum + (i.amount || 0), 0);
     
     return { 
       totalIncome, 
@@ -680,7 +676,7 @@ const FinancialManagement = () => {
             <div className="flex gap-3">
               <select
                 value={dateRange}
-                onChange={(e) => setDateRange(e.target.value)}
+                onChange=({ (e }) => setDateRange(e.target.value)}
                 className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="thisMonth">Este Mês</option>
@@ -693,19 +689,18 @@ const FinancialManagement = () => {
                 variant="outline"
                 onClick={loadFinancialData}
                 disabled={loading}
-              >
+              >`
                 <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-                Atualizar
-              </Button>
+
               <Button
                 variant="outline"
-                onClick={() => setShowInvoiceModal(true)}
+                onClick=({ ( }) => setShowInvoiceModal(true)}
               >
                 <Receipt className="h-4 w-4 mr-2" />
                 Nova Fatura
               </Button>
               <Button
-                onClick={() => setShowTransactionModal(true)}
+                onClick=({ ( }) => setShowTransactionModal(true)}
                 className="bg-blue-600 hover:bg-blue-700"
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -749,11 +744,11 @@ const FinancialManagement = () => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Lucro Líquido</p>
+                  <p className="text-sm font-medium text-gray-600">Lucro Líquido</p>`
                   <p className={`text-2xl font-bold ${stats.netIncome >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                     R$ {stats.netIncome.toLocaleString()}
                   </p>
-                </div>
+                </div>`
                 <DollarSign className={`h-8 w-8 ${stats.netIncome >= 0 ? 'text-green-600' : 'text-red-600'}`} />
               </div>
             </CardContent>
@@ -794,8 +789,8 @@ const FinancialManagement = () => {
                     <BarChart data={chartData.monthlyData}>
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="name" />
-                      <YAxis />
-                      <Tooltip formatter={(value) => [`R$ ${value.toLocaleString()}`, '']} />
+                      <YAxis />`
+                      <Tooltip formatter=({ (value }) => [`R$ ${value.toLocaleString()}`, '']} />
                       <Legend />
                       <Bar dataKey="receitas" fill="#10B981" name="Receitas" />
                       <Bar dataKey="despesas" fill="#EF4444" name="Despesas" />
@@ -814,14 +809,14 @@ const FinancialManagement = () => {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {accounts.slice(0, 3).map(account => {
+                  ({ accounts.slice(0, 3).map(account => {
                     const balance = transactions
                       .filter(t => t.accountId === account.id)
-                      .reduce((sum, t) => sum + (t.type === 'income' ? t.amount : -t.amount), account.initialBalance || 0);
+                      .reduce((sum, t }) => sum + (t.type === 'income' ? t.amount : -t.amount), account.initialBalance || 0);
                     
                     return (
                       <div key={account.id} className="p-4 border rounded-lg">
-                        <h4 className="font-medium mb-2">{account.name}</h4>
+                        <h4 className="font-medium mb-2">{account.name}</h4>`
                         <p className={`text-2xl font-bold ${balance >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                           R$ {balance.toLocaleString()}
                         </p>
@@ -845,7 +840,7 @@ const FinancialManagement = () => {
                       <Input
                         placeholder="Buscar transações..."
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange=({ (e }) => setSearchTerm(e.target.value)}
                         className="pl-10"
                       />
                     </div>
@@ -854,18 +849,18 @@ const FinancialManagement = () => {
                   <div className="flex gap-3">
                     <select
                       value={filters.type}
-                      onChange={(e) => setFilters(prev => ({ ...prev, type: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, type: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todos os Tipos</option>
-                      {Object.entries(transactionTypes).map(([key, type]) => (
+                      ({ Object.entries(transactionTypes).map(([key, type] }) => (
                         <option key={key} value={key}>{type.name}</option>
                       ))}
                     </select>
 
                     <select
                       value={filters.category}
-                      onChange={(e) => setFilters(prev => ({ ...prev, category: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, category: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todas as Categorias</option>
@@ -876,7 +871,7 @@ const FinancialManagement = () => {
 
                     <select
                       value={filters.account}
-                      onChange={(e) => setFilters(prev => ({ ...prev, account: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, account: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todas as Contas</option>
@@ -942,7 +937,7 @@ const FinancialManagement = () => {
 
           <TabsContent value="invoices" className="space-y-6">
             {/* Lista de Faturas */}
-            {loading ? (
+            ({ loading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 <span className="ml-2">Carregando faturas...</span>
@@ -957,7 +952,7 @@ const FinancialManagement = () => {
                   <p className="text-gray-500 mb-4">
                     Crie sua primeira fatura para começar
                   </p>
-                  <Button onClick={() => setShowInvoiceModal(true)}>
+                  <Button onClick={( }) => setShowInvoiceModal(true)}>
                     <Plus className="h-4 w-4 mr-2" />
                     Criar Fatura
                   </Button>
@@ -992,9 +987,8 @@ const FinancialManagement = () => {
               <h2 className="text-xl font-bold mb-4">Nova Transação</h2>
               {/* Formulário será implementado */}
               <div className="flex justify-end gap-3 mt-6">
-                <Button variant="outline" onClick={() => setShowTransactionModal(false)}>
-                  Cancelar
-                </Button>
+                <Button variant="outline" onClick=({ ( }) => setShowTransactionModal(false)}>
+
                 <Button disabled={loading}>
                   {loading ? 'Criando...' : 'Criar Transação'}
                 </Button>
@@ -1008,3 +1002,4 @@ const FinancialManagement = () => {
 };
 
 export default FinancialManagement;
+`

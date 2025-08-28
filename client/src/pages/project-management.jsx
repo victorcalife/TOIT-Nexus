@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   FolderKanban, 
   Calendar,
   Users,
@@ -81,7 +81,7 @@ import {
   Shield,
   Lock,
   Unlock,
-  Key
+  Key }
 } from 'lucide-react';
 
 const ProjectManagement = () => {
@@ -143,19 +143,19 @@ const ProjectManagement = () => {
         fetch('/api/projects', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/projects/tasks', {
+        fetch('/api/projects/tasks', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/projects/teams', {
+        fetch('/api/projects/teams', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/projects/milestones', {
+        fetch('/api/projects/milestones', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/projects/time-tracking', {
+        fetch('/api/projects/time-tracking', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/projects/resources', {
+        fetch('/api/projects/resources', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);
@@ -209,14 +209,14 @@ const ProjectManagement = () => {
     try {
       const response = await fetch('/api/projects', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           ...projectData,
           status: 'planning',
-          createdAt: new Date().toISOString(),
+          createdAt: new Date().toISOString(),`
           projectCode: `PRJ-${Date.now()}`
         })
       });
@@ -230,7 +230,7 @@ const ProjectManagement = () => {
       setShowProjectModal(false);
       
       toast({
-        title: "Projeto criado",
+        title: "Projeto criado",`
         description: `Projeto ${data.project.name} criado com sucesso`,
       });
     } catch (error) {
@@ -250,14 +250,14 @@ const ProjectManagement = () => {
     try {
       const response = await fetch('/api/projects/tasks', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           ...taskData,
           status: 'todo',
-          createdAt: new Date().toISOString(),
+          createdAt: new Date().toISOString(),`
           taskCode: `TSK-${Date.now()}`
         })
       });
@@ -271,7 +271,7 @@ const ProjectManagement = () => {
       setShowTaskModal(false);
       
       toast({
-        title: "Tarefa criada",
+        title: "Tarefa criada",`
         description: `Tarefa ${data.task.title} criada com sucesso`,
       });
     } catch (error) {
@@ -288,10 +288,10 @@ const ProjectManagement = () => {
    * ATUALIZAR STATUS DO PROJETO
    */
   const updateProjectStatus = async (projectId, newStatus) => {
-    try {
+    try {`
       const response = await fetch(`/api/projects/${projectId}/status`, {
         method: 'PATCH',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -326,10 +326,10 @@ const ProjectManagement = () => {
    * ATUALIZAR STATUS DA TAREFA
    */
   const updateTaskStatus = async (taskId, newStatus) => {
-    try {
+    try {`
       const response = await fetch(`/api/projects/tasks/${taskId}/status`, {
         method: 'PATCH',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -404,7 +404,7 @@ const ProjectManagement = () => {
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div
-                  className="bg-blue-600 h-2 rounded-full transition-all"
+                  className="bg-blue-600 h-2 rounded-full transition-all"`
                   style={{ width: `${progress}%` }}
                 ></div>
               </div>
@@ -455,10 +455,10 @@ const ProjectManagement = () => {
           <div className="flex gap-2">
             <select
               value={project.status}
-              onChange={(e) => updateProjectStatus(project.id, e.target.value)}
+              onChange=({ (e }) => updateProjectStatus(project.id, e.target.value)}
               className="flex-1 px-2 py-1 border border-gray-300 rounded text-sm"
             >
-              {Object.entries(projectStatuses).map(([key, status]) => (
+              ({ Object.entries(projectStatuses).map(([key, status] }) => (
                 <option key={key} value={key}>{status.name}</option>
               ))}
             </select>
@@ -466,11 +466,10 @@ const ProjectManagement = () => {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setSelectedProject(project)}
+              onClick=({ ( }) => setSelectedProject(project)}
             >
               <Eye className="h-3 w-3 mr-1" />
-              Ver
-            </Button>
+
           </div>
         </CardContent>
       </Card>
@@ -480,12 +479,11 @@ const ProjectManagement = () => {
   /**
    * RENDERIZAR KANBAN BOARD
    */
-  const renderKanbanBoard = () => {
-    const statusColumns = Object.entries(taskStatuses);
+  const renderKanbanBoard = () => ({ const statusColumns = Object.entries(taskStatuses);
     
     return (
       <div className="grid grid-cols-5 gap-6">
-        {statusColumns.map(([statusKey, statusInfo]) => {
+        {statusColumns.map(([statusKey, statusInfo] }) => {
           const columnTasks = tasks.filter(task => task.status === statusKey);
           
           return (
@@ -537,7 +535,7 @@ const ProjectManagement = () => {
                 <Button
                   variant="ghost"
                   className="w-full border-2 border-dashed border-gray-300 hover:border-gray-400"
-                  onClick={() => setShowTaskModal(true)}
+                  onClick=({ ( }) => setShowTaskModal(true)}
                 >
                   <Plus className="h-4 w-4 mr-2" />
                   Adicionar Tarefa
@@ -604,8 +602,7 @@ const ProjectManagement = () => {
             </Button>
             <Button variant="outline" size="sm">
               <Edit className="h-3 w-3 mr-1" />
-              Editar
-            </Button>
+
           </div>
         </CardContent>
       </Card>
@@ -671,19 +668,18 @@ const ProjectManagement = () => {
                 variant="outline"
                 onClick={loadProjectData}
                 disabled={loading}
-              >
+              >`
                 <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-                Atualizar
-              </Button>
+
               <Button
                 variant="outline"
-                onClick={() => setShowTaskModal(true)}
+                onClick=({ ( }) => setShowTaskModal(true)}
               >
                 <Plus className="h-4 w-4 mr-2" />
                 Nova Tarefa
               </Button>
               <Button
-                onClick={() => setShowProjectModal(true)}
+                onClick=({ ( }) => setShowProjectModal(true)}
                 className="bg-blue-600 hover:bg-blue-700"
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -788,7 +784,7 @@ const ProjectManagement = () => {
                       <Input
                         placeholder="Buscar projetos..."
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange=({ (e }) => setSearchTerm(e.target.value)}
                         className="pl-10"
                       />
                     </div>
@@ -797,22 +793,22 @@ const ProjectManagement = () => {
                   <div className="flex gap-3">
                     <select
                       value={filters.status}
-                      onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, status: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todos os Status</option>
-                      {Object.entries(projectStatuses).map(([key, status]) => (
+                      ({ Object.entries(projectStatuses).map(([key, status] }) => (
                         <option key={key} value={key}>{status.name}</option>
                       ))}
                     </select>
 
                     <select
                       value={filters.priority}
-                      onChange={(e) => setFilters(prev => ({ ...prev, priority: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, priority: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todas as Prioridades</option>
-                      {Object.entries(priorities).map(([key, priority]) => (
+                      ({ Object.entries(priorities).map(([key, priority] }) => (
                         <option key={key} value={key}>{priority.name}</option>
                       ))}
                     </select>
@@ -822,7 +818,7 @@ const ProjectManagement = () => {
             </Card>
 
             {/* Lista de Projetos */}
-            {loading ? (
+            ({ loading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 <span className="ml-2">Carregando projetos...</span>
@@ -837,7 +833,7 @@ const ProjectManagement = () => {
                   <p className="text-gray-500 mb-4">
                     Comece criando seu primeiro projeto
                   </p>
-                  <Button onClick={() => setShowProjectModal(true)}>
+                  <Button onClick={( }) => setShowProjectModal(true)}>
                     <Plus className="h-4 w-4 mr-2" />
                     Criar Projeto
                   </Button>
@@ -859,12 +855,10 @@ const ProjectManagement = () => {
                   <div className="flex gap-2">
                     <Button variant="outline" size="sm">
                       <Filter className="h-4 w-4 mr-2" />
-                      Filtros
-                    </Button>
+
                     <Button variant="outline" size="sm">
                       <Settings className="h-4 w-4 mr-2" />
-                      Configurar
-                    </Button>
+
                   </div>
                 </CardTitle>
               </CardHeader>
@@ -922,9 +916,8 @@ const ProjectManagement = () => {
               <h2 className="text-xl font-bold mb-4">Novo Projeto</h2>
               {/* Formulário será implementado */}
               <div className="flex justify-end gap-3 mt-6">
-                <Button variant="outline" onClick={() => setShowProjectModal(false)}>
-                  Cancelar
-                </Button>
+                <Button variant="outline" onClick=({ ( }) => setShowProjectModal(false)}>
+
                 <Button disabled={loading}>
                   {loading ? 'Criando...' : 'Criar Projeto'}
                 </Button>
@@ -938,3 +931,4 @@ const ProjectManagement = () => {
 };
 
 export default ProjectManagement;
+`

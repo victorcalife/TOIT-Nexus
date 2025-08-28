@@ -41,9 +41,9 @@ function Calendar({
         day_disabled,
         day_range_middle,
         day_hidden,
-        ...classNames,
+        ...classNames,}
       }}
-      components={{
+      components={{}
         IconLeft, ...props }) => (
           <ChevronLeft className={cn("h-4 w-4", className)} {...props} />
         ),

@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   Truck, 
   Package,
   Factory,
@@ -111,7 +111,7 @@ import {
   PackageCheck,
   PackageX,
   PackagePlus,
-  PackageMinus
+  PackageMinus }
 } from 'lucide-react';
 
 const SupplyChainManagement = () => {
@@ -185,22 +185,22 @@ const SupplyChainManagement = () => {
         fetch('/api/supply-chain/suppliers', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/supply-chain/orders', {
+        fetch('/api/supply-chain/orders', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/supply-chain/shipments', {
+        fetch('/api/supply-chain/shipments', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/supply-chain/warehouses', {
+        fetch('/api/supply-chain/warehouses', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/supply-chain/logistics', {
+        fetch('/api/supply-chain/logistics', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/supply-chain/procurement', {
+        fetch('/api/supply-chain/procurement', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/supply-chain/tracking', {
+        fetch('/api/supply-chain/tracking', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);
@@ -259,14 +259,14 @@ const SupplyChainManagement = () => {
     try {
       const response = await fetch('/api/supply-chain/orders', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           ...orderData,
           status: 'draft',
-          createdAt: new Date().toISOString(),
+          createdAt: new Date().toISOString(),`
           orderNumber: `PO-${Date.now()}`
         })
       });
@@ -280,7 +280,7 @@ const SupplyChainManagement = () => {
       setShowOrderModal(false);
       
       toast({
-        title: "Pedido criado",
+        title: "Pedido criado",`
         description: `Pedido ${data.order.orderNumber} criado com sucesso`,
       });
     } catch (error) {
@@ -297,10 +297,10 @@ const SupplyChainManagement = () => {
    * ATUALIZAR STATUS DO PEDIDO
    */
   const updateOrderStatus = async (orderId, newStatus) => {
-    try {
+    try {`
       const response = await fetch(`/api/supply-chain/orders/${orderId}/status`, {
         method: 'PATCH',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -338,14 +338,14 @@ const SupplyChainManagement = () => {
     try {
       const response = await fetch('/api/supply-chain/shipments', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           ...shipmentData,
           status: 'preparing',
-          createdAt: new Date().toISOString(),
+          createdAt: new Date().toISOString(),`
           trackingNumber: `TRK-${Date.now()}`
         })
       });
@@ -359,7 +359,7 @@ const SupplyChainManagement = () => {
       setShowShipmentModal(false);
       
       toast({
-        title: "Embarque criado",
+        title: "Embarque criado",`
         description: `Embarque ${data.shipment.trackingNumber} criado com sucesso`,
       });
     } catch (error) {
@@ -446,7 +446,7 @@ const SupplyChainManagement = () => {
               onChange={(e) => updateOrderStatus(order.id, e.target.value)}
               className="flex-1 px-2 py-1 border border-gray-300 rounded text-sm"
             >
-              {Object.entries(orderStatuses).map(([key, status]) => (
+              ({ Object.entries(orderStatuses).map(([key, status] }) => (
                 <option key={key} value={key}>{status.name}</option>
               ))}
             </select>
@@ -457,8 +457,7 @@ const SupplyChainManagement = () => {
               onClick={() => setSelectedOrder(order)}
             >
               <Eye className="h-3 w-3 mr-1" />
-              Ver
-            </Button>
+
           </div>
         </CardContent>
       </Card>
@@ -536,16 +535,14 @@ const SupplyChainManagement = () => {
           <div className="flex gap-2">
             <Button variant="outline" size="sm">
               <Navigation className="h-3 w-3 mr-1" />
-              Rastrear
-            </Button>
+
             <Button variant="outline" size="sm">
               <Eye className="h-3 w-3 mr-1" />
               Ver Detalhes
             </Button>
             <Button variant="outline" size="sm">
               <Download className="h-3 w-3 mr-1" />
-              Etiqueta
-            </Button>
+
           </div>
         </CardContent>
       </Card>
@@ -555,10 +552,9 @@ const SupplyChainManagement = () => {
   /**
    * RENDERIZAR FORNECEDOR
    */
-  const renderSupplier = (supplier) => {
-    const supplierOrders = orders.filter(o => o.supplierId === supplier.id);
+  const renderSupplier = (supplier) => ({ const supplierOrders = orders.filter(o => o.supplierId === supplier.id);
     const activeOrders = supplierOrders.filter(o => !['delivered', 'cancelled'].includes(o.status)).length;
-    const totalValue = supplierOrders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+    const totalValue = supplierOrders.reduce((sum, o }) => sum + (o.totalAmount || 0), 0);
     
     return (
       <Card key={supplier.id} className="hover:shadow-md transition-shadow">
@@ -617,8 +613,7 @@ const SupplyChainManagement = () => {
             </Button>
             <Button variant="outline" size="sm">
               <Edit className="h-3 w-3 mr-1" />
-              Editar
-            </Button>
+
             <Button variant="outline" size="sm">
               <Plus className="h-3 w-3 mr-1" />
               Novo Pedido
@@ -659,11 +654,11 @@ const SupplyChainManagement = () => {
               <span className="font-medium">{occupancyRate}%</span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
-              <div
+              <div`
                 className={`h-2 rounded-full transition-all ${
                   occupancyRate > 90 ? 'bg-red-600' : 
-                  occupancyRate > 70 ? 'bg-yellow-600' : 'bg-green-600'
-                }`}
+                  occupancyRate > 70 ? 'bg-yellow-600' : 'bg-green-600'`}
+                }`}`
                 style={{ width: `${occupancyRate}%` }}
               ></div>
             </div>
@@ -706,8 +701,7 @@ const SupplyChainManagement = () => {
             </Button>
             <Button variant="outline" size="sm">
               <Settings className="h-3 w-3 mr-1" />
-              Configurar
-            </Button>
+
           </div>
         </CardContent>
       </Card>
@@ -717,15 +711,14 @@ const SupplyChainManagement = () => {
   /**
    * OBTER ESTATÍSTICAS
    */
-  const getStats = () => {
-    const totalOrders = orders.length;
+  const getStats = () => ({ const totalOrders = orders.length;
     const activeOrders = orders.filter(o => !['delivered', 'cancelled'].includes(o.status)).length;
     const totalShipments = shipments.length;
     const inTransitShipments = shipments.filter(s => s.status === 'in_transit').length;
     const totalSuppliers = suppliers.length;
     const activeSuppliers = suppliers.filter(s => s.status === 'active').length;
     const totalWarehouses = warehouses.length;
-    const totalValue = orders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+    const totalValue = orders.reduce((sum, o }) => sum + (o.totalAmount || 0), 0);
     
     return { 
       totalOrders, 
@@ -783,19 +776,18 @@ const SupplyChainManagement = () => {
                 variant="outline"
                 onClick={loadSupplyChainData}
                 disabled={loading}
-              >
+              >`
                 <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-                Atualizar
-              </Button>
+
               <Button
                 variant="outline"
-                onClick={() => setShowShipmentModal(true)}
+                onClick=({ ( }) => setShowShipmentModal(true)}
               >
                 <Truck className="h-4 w-4 mr-2" />
                 Novo Embarque
               </Button>
               <Button
-                onClick={() => setShowOrderModal(true)}
+                onClick=({ ( }) => setShowOrderModal(true)}
                 className="bg-blue-600 hover:bg-blue-700"
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -896,7 +888,7 @@ const SupplyChainManagement = () => {
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todos os Status</option>
-                      {Object.entries(orderStatuses).map(([key, status]) => (
+                      ({ Object.entries(orderStatuses).map(([key, status] }) => (
                         <option key={key} value={key}>{status.name}</option>
                       ))}
                     </select>
@@ -918,7 +910,7 @@ const SupplyChainManagement = () => {
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todas as Prioridades</option>
-                      {Object.entries(priorities).map(([key, priority]) => (
+                      ({ Object.entries(priorities).map(([key, priority] }) => (
                         <option key={key} value={key}>{priority.name}</option>
                       ))}
                     </select>
@@ -928,7 +920,7 @@ const SupplyChainManagement = () => {
             </Card>
 
             {/* Lista de Pedidos */}
-            {loading ? (
+            ({ loading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 <span className="ml-2">Carregando pedidos...</span>
@@ -958,7 +950,7 @@ const SupplyChainManagement = () => {
 
           <TabsContent value="shipments" className="space-y-6">
             {/* Lista de Embarques */}
-            {loading ? (
+            ({ loading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 <span className="ml-2">Carregando embarques...</span>
@@ -1061,8 +1053,7 @@ const SupplyChainManagement = () => {
               {/* Formulário será implementado */}
               <div className="flex justify-end gap-3 mt-6">
                 <Button variant="outline" onClick={() => setShowOrderModal(false)}>
-                  Cancelar
-                </Button>
+
                 <Button disabled={loading}>
                   {loading ? 'Criando...' : 'Criar Pedido'}
                 </Button>
@@ -1076,3 +1067,4 @@ const SupplyChainManagement = () => {
 };
 
 export default SupplyChainManagement;
+`

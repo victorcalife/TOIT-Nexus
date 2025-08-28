@@ -12,7 +12,7 @@ const ResizablePanelGroup = ({
   <ResizablePrimitive.PanelGroup
     className={cn(
       "flex h-full w-full data-[panel-group-direction=vertical]:flex-col",
-      className
+      className}
     )}
     {...props}
   />
@@ -24,12 +24,11 @@ const ResizableHandle = ({
   withHandle,
   className,
   ...props
-}: React.ComponentProps<typeof ResizablePrimitive.PanelResizeHandle> & {
-  withHandle) => (
+}: React.ComponentProps<typeof ResizablePrimitive.PanelResizeHandle> & ({ withHandle }) => (
   <ResizablePrimitive.PanelResizeHandle
     className={cn(
-      "relative flex w-px items-center justify-center bg-border after,
-      className
+      "relative flex w-px items-center justify-center bg-border after",
+        className}
     )}
     {...props}
   >

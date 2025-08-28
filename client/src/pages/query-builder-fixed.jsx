@@ -25,42 +25,42 @@ const TQL_EXAMPLES = {
       description: "Dashboard com KPIs atualizados em tempo real",
       code: `DASHBOARD "Vendas Tempo Real":
     KPI vendas_hoje TITULO "Vendas Hoje", MOEDA R$;
-    KPI pedidos_ativo TITULO "Pedidos Ativos";
+    KPI pedidos_ativo TITULO "Pedidos Ativos";`
     KPI usuarios_online TITULO "Online";`
     }
   ],
   basico: [
     {
       title: "Consulta Simples",
-      description: "Buscar todos os clientes ativos",
+      description: "Buscar todos os clientes ativos",`
       code: `BUSCAR clientes ONDE status = "ativo";`
     },
     {
       title: "Filtro por Data",
-      description: "Vendas dos últimos 30 dias",
+      description: "Vendas dos últimos 30 dias",`
       code: `BUSCAR vendas ONDE data >= HOJE(-30);`
     }
   ],
   temporal: [
     {
       title: "Comparação Mensal",
-      description: "Vendas do mês atual vs anterior",
+      description: "Vendas do mês atual vs anterior",`
       code: `COMPARAR vendas MES(0) COM MES(-1);`
     },
     {
       title: "Previsão",
-      description: "Previsão de vendas próximos 30 dias",
+      description: "Previsão de vendas próximos 30 dias",`
       code: `PREVER vendas PROXIMOS(30) DIAS;`
     }
   ],
   dashboard: [
     {
       title: "Dashboard Executivo",
-      description: "Dashboard completo para executivos",
+      description: "Dashboard completo para executivos",`
       code: `DASHBOARD "Executivo":
     KPI receita_mes TITULO "Receita Mensal", MOEDA R$;
     KPI clientes_novos TITULO "Novos Clientes";
-    GRAFICO vendas_tempo TIPO linha PERIODO 30;
+    GRAFICO vendas_tempo TIPO linha PERIODO 30;`
     TABELA top_produtos LIMITE 10;`
     }
   ]
@@ -121,15 +121,13 @@ export default function QueryBuilder() {
   ];
 
   // Fetch saved queries
-  const { data: savedQueries = [] } = useQuery({
-    queryKey: ['saved-queries'],
-    queryFn: () => apiRequest('/api/query-builder/queries'),
+  const { data: savedQueries = [] } = useQuery(({ queryKey: ['saved-queries'],
+    queryFn: ( }) => apiRequest('/api/query-builder/queries'),
     retry: 2
   });
 
   // Execute query mutation
-  const executeQueryMutation = useMutation({
-    mutationFn: async (query) => {
+  const executeQueryMutation = useMutation(({ mutationFn: async (query }) => {
       // Simulate MILA quantum processing
       const milaResponse = await apiRequest('/api/mila/process-query', 'POST', {
         query: query.tqlCode || query,
@@ -141,7 +139,7 @@ export default function QueryBuilder() {
     onSuccess: (data) => {
       setQueryResults(data.results || SAMPLE_DATA);
       toast({
-        title: "Query executada com MILA",
+        title: "Query executada com MILA",`
         description: `${data.results?.length || SAMPLE_DATA.length} resultados com otimização quântica`,
       });
     },
@@ -155,8 +153,7 @@ export default function QueryBuilder() {
   });
 
   // Save query mutation
-  const saveQueryMutation = useMutation({
-    mutationFn: async (queryData) => {
+  const saveQueryMutation = useMutation(({ mutationFn: async (queryData }) => {
       return await apiRequest('/api/query-builder/queries', 'POST', queryData);
     },
     onSuccess: () => {
@@ -244,13 +241,13 @@ export default function QueryBuilder() {
                 data={queryResults}
                 cx="50%"
                 cy="50%"
-                labelLine={false}
+                labelLine={false}`
                 label={({ name, value }) => `${name}: ${value}`}
                 outerRadius={80}
                 fill="#8884d8"
                 dataKey="vendas"
               >
-                {queryResults.map((entry, index) => (
+                ({ queryResults.map((entry, index }) => (`
                   <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
                 ))}
               </Pie>
@@ -271,7 +268,7 @@ export default function QueryBuilder() {
           <p className="text-muted-foreground">Construa consultas com TQL e visualize dados com MILA</p>
         </div>
         <div className="flex gap-2">
-          <Button onClick={() => setIsPreviewMode(!isPreviewMode)} variant="outline">
+          <Button onClick=({ ( }) => setIsPreviewMode(!isPreviewMode)} variant="outline">
             <Eye className="w-4 h-4 mr-2" />
             {isPreviewMode ? 'Editor' : 'Preview'}
           </Button>
@@ -279,8 +276,7 @@ export default function QueryBuilder() {
             <DialogTrigger asChild>
               <Button variant="outline">
                 <Save className="w-4 h-4 mr-2" />
-                Salvar
-              </Button>
+
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
@@ -292,7 +288,7 @@ export default function QueryBuilder() {
                   <Input
                     id="queryName"
                     value={currentTQLQuery.name}
-                    onChange={(e) => setCurrentTQLQuery(prev => ({ ...prev, name: e.target.value }))}
+                    onChange=({ (e }) => setCurrentTQLQuery(prev => ({ ...prev, name: e.target.value }))}
                     placeholder="Digite o nome da query"
                   />
                 </div>
@@ -301,12 +297,12 @@ export default function QueryBuilder() {
                   <Textarea
                     id="queryDescription"
                     value={currentTQLQuery.description}
-                    onChange={(e) => setCurrentTQLQuery(prev => ({ ...prev, description: e.target.value }))}
+                    onChange=({ (e }) => setCurrentTQLQuery(prev => ({ ...prev, description: e.target.value }))}
                     placeholder="Descreva o que esta query faz"
                   />
                 </div>
                 <Button 
-                  onClick={() => saveQueryMutation.mutate(currentTQLQuery)}
+                  onClick=({ ( }) => saveQueryMutation.mutate(currentTQLQuery)}
                   disabled={saveQueryMutation.isPending}
                   className="w-full"
                 >
@@ -346,8 +342,8 @@ export default function QueryBuilder() {
                     </SelectContent>
                   </Select>
                   <div className="space-y-2 max-h-96 overflow-y-auto">
-                    {TQL_EXAMPLES[selectedCategory]?.map((example, index) => (
-                      <div key={index} className="p-3 border rounded-lg cursor-pointer hover:bg-muted" onClick={() => loadExample(example)}>
+                    ({ TQL_EXAMPLES[selectedCategory]?.map((example, index }) => (
+                      <div key={index} className="p-3 border rounded-lg cursor-pointer hover:bg-muted" onClick=({ ( }) => loadExample(example)}>
                         <h4 className="font-medium">{example.title}</h4>
                         <p className="text-sm text-muted-foreground">{example.description}</p>
                       </div>
@@ -370,7 +366,7 @@ export default function QueryBuilder() {
                 <div className="space-y-4">
                   <Textarea
                     value={tqlCode}
-                    onChange={(e) => setTqlCode(e.target.value)}
+                    onChange=({ (e }) => setTqlCode(e.target.value)}
                     placeholder="Digite sua query TQL aqui..."
                     className="min-h-[300px] font-mono"
                   />
@@ -381,8 +377,7 @@ export default function QueryBuilder() {
                     </Button>
                     <Button variant="outline">
                       <Download className="w-4 h-4 mr-2" />
-                      Exportar
-                    </Button>
+
                   </div>
                 </div>
               </CardContent>
@@ -417,21 +412,21 @@ export default function QueryBuilder() {
                         <Button
                           variant={visualization.type === 'bar' ? 'default' : 'outline'}
                           size="sm"
-                          onClick={() => setVisualization(prev => ({ ...prev, type: 'bar' }))}
+                          onClick=({ ( }) => setVisualization(prev => ({ ...prev, type: 'bar' }))}
                         >
                           <BarChart3 className="w-4 h-4" />
                         </Button>
                         <Button
                           variant={visualization.type === 'line' ? 'default' : 'outline'}
                           size="sm"
-                          onClick={() => setVisualization(prev => ({ ...prev, type: 'line' }))}
+                          onClick=({ ( }) => setVisualization(prev => ({ ...prev, type: 'line' }))}
                         >
                           <LineChartIcon className="w-4 h-4" />
                         </Button>
                         <Button
                           variant={visualization.type === 'pie' ? 'default' : 'outline'}
                           size="sm"
-                          onClick={() => setVisualization(prev => ({ ...prev, type: 'pie' }))}
+                          onClick=({ ( }) => setVisualization(prev => ({ ...prev, type: 'pie' }))}
                         >
                           <PieChartIcon className="w-4 h-4" />
                         </Button>
@@ -442,7 +437,7 @@ export default function QueryBuilder() {
                       <Input
                         id="chartTitle"
                         value={visualization.title}
-                        onChange={(e) => setVisualization(prev => ({ ...prev, title: e.target.value }))}
+                        onChange=({ (e }) => setVisualization(prev => ({ ...prev, title: e.target.value }))}
                         placeholder="Digite o título"
                       />
                     </div>
@@ -481,9 +476,9 @@ export default function QueryBuilder() {
                         </tr>
                       </thead>
                       <tbody>
-                        {queryResults.map((row, index) => (
+                        ({ queryResults.map((row, index }) => (
                           <tr key={index} className="hover:bg-muted/50">
-                            {Object.values(row).map((value, cellIndex) => (
+                            ({ Object.values(row).map((value, cellIndex }) => (
                               <td key={cellIndex} className="border border-gray-300 px-4 py-2">
                                 {value}
                               </td>
@@ -510,3 +505,4 @@ export default function QueryBuilder() {
     </div>
   );
 }
+`

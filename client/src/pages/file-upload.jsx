@@ -8,7 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useToast } from '@/hooks/use-toast';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { 
+import {  
   Upload, 
   File, 
   FileSpreadsheet, 
@@ -18,15 +18,15 @@ import {
   AlertCircle,
   CheckCircle,
   Clock,
-  Database
+  Database }
 } from 'lucide-react';
 
 = useToast();
   const queryClient = useQueryClient();
 
   // Query para listar arquivos
-  const { data= [], isLoading,
-    queryFn) => {
+  const ({ data= [], isLoading,
+    queryFn }) => {
       const response = await fetch('/api/files/list');
       if (!response.ok) throw new Error('Erro ao buscar arquivos');
       const result = await response.json();
@@ -35,8 +35,8 @@ import {
   });
 
   // Query para estatísticas
-  const { data,
-    queryFn) => {
+  const ({ data,
+    queryFn }) => {
       const response = await fetch('/api/files/stats');
       if (!response.ok) throw new Error('Erro ao buscar estatísticas');
       const result = await response.json();
@@ -45,8 +45,8 @@ import {
   });
 
   // Query para preview de arquivo
-  const { data, isLoading, previewFileId, 'data', previewPage],
-    queryFn) => {
+  const ({ data, isLoading, previewFileId, 'data', previewPage],
+    queryFn }) => {
       if (!previewFileId) return null;
       const limit = 20;
       const offset = (previewPage - 1) * limit;
@@ -58,8 +58,7 @@ import {
     enabled);
 
   // Mutation para upload
-  const uploadMutation = useMutation({
-    mutationFn) => {
+  const uploadMutation = useMutation(({ mutationFn }) => {
       const formData = new FormData();
       formData.append('file', file);
 
@@ -98,8 +97,7 @@ import {
   });
 
   // Mutation para deletar arquivo
-  const deleteMutation = useMutation({
-    mutationFn) => {
+  const deleteMutation = useMutation(({ mutationFn }) => {`
       const response = await fetch(`/api/files/${fileId}`, {
         method,
       });
@@ -152,14 +150,13 @@ import {
     }
   };
 
-  const handleUpload = async () => {
-    if (!selectedFile) return;
+  const handleUpload = async () => ({ if (!selectedFile) return;
 
     setIsUploading(true);
     setUploadProgress(0);
 
     // Simular progresso
-    const progressInterval = setInterval(() => {
+    const progressInterval = setInterval(( }) => {
       setUploadProgress(prev => {
         if (prev >= 90) {
           clearInterval(progressInterval);
@@ -223,7 +220,7 @@ import {
                 <div>
                   <p className="text-sm text-gray-600">Tipos</p>
                   <div className="flex space-x-1 mt-1">
-                    {Object.entries(stats.fileTypes).map(([type, count]) => (
+                    ({ Object.entries(stats.fileTypes).map(([type, count] }) => (
                       <Badge key={type} variant="outline" className="text-xs">
                         {type}: {count}
                       </Badge>
@@ -305,15 +302,15 @@ import {
           </CardHeader>
           <CardContent>
             <ScrollArea className="h-96">
-              {filesLoading ? (
+              ({ filesLoading ? (
                 <div className="text-center py-8">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
                   <p>Carregando arquivos...</p>
                 </div>
-              ) {files.map((file) => (
+              ) {files.map((file }) => (
                     <div
-                      key={file.id}
-                      className={`flex items-center justify-between p-3 rounded-lg border hover) => setPreviewFileId(file.id)}
+                      key={file.id}`
+                      className=({ `flex items-center justify-between p-3 rounded-lg border hover }) => setPreviewFileId(file.id)}
                     >
                       <div className="flex items-center space-x-3">
                         {getFileIcon(file.originalName)}
@@ -330,7 +327,7 @@ import {
                         <Button
                           size="sm"
                           variant="ghost"
-                          onClick={(e) => {
+                          onClick=({ (e }) => {
                             e.stopPropagation();
                             setPreviewFileId(previewFileId === file.id ? null);
                           }}
@@ -340,7 +337,7 @@ import {
                         <Button
                           size="sm"
                           variant="ghost"
-                          onClick={(e) => {
+                          onClick=({ (e }) => {
                             e.stopPropagation();
                             deleteMutation.mutate(file.id);
                           }}
@@ -359,7 +356,7 @@ import {
       </div>
 
       {/* File Preview */}
-      {previewFileId && (
+      ({ previewFileId && (
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
@@ -370,10 +367,8 @@ import {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => setPreviewFileId(null)}
+                onClick={( }) => setPreviewFileId(null)}
               >
-                Fechar
-              </Button>
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -392,15 +387,13 @@ import {
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => setPreviewPage(Math.max(1, previewPage - 1))}
+                      onClick=({ ( }) => setPreviewPage(Math.max(1, previewPage - 1))}
                       disabled={previewPage <= 1}
                     >
-                      Anterior
-                    </Button>
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => setPreviewPage(previewPage + 1)}
+                      onClick=({ ( }) => setPreviewPage(previewPage + 1)}
                       disabled={!fileData.hasMore}
                     >
                       Próxima
@@ -412,17 +405,17 @@ import {
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        {fileData.headers.map((header, index) => (
-                          <TableHead key={index} className="whitespace-nowrap">
+                        ({ fileData.headers.map((header, index }) => (
+                          <TableHead key={index} className="whitespace-nowrap">`
                             {header || `Coluna ${index + 1}`}
                           </TableHead>
                         ))}
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {fileData.rows.map((row, rowIndex) => (
+                      ({ fileData.rows.map((row, rowIndex }) => (
                         <TableRow key={rowIndex}>
-                          {fileData.headers.map((header, colIndex) => (
+                          ({ fileData.headers.map((header, colIndex }) => (
                             <TableCell key={colIndex} className="whitespace-nowrap">
                               {row[header] || ''}
                             </TableCell>
@@ -444,4 +437,4 @@ import {
       )}
     </div>
   );
-}
+}`

@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   Users, 
   UserPlus,
   Briefcase,
@@ -71,7 +71,7 @@ import {
   PiggyBank,
   Wallet,
   BanknoteIcon,
-  Percent
+  Percent }
 } from 'lucide-react';
 
 const HRSystem = () => {
@@ -123,19 +123,19 @@ const HRSystem = () => {
         fetch('/api/hr/employees', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/hr/departments', {
+        fetch('/api/hr/departments', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/hr/positions', {
+        fetch('/api/hr/positions', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/hr/payroll', {
+        fetch('/api/hr/payroll', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/hr/leaves', {
+        fetch('/api/hr/leaves', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/hr/performance', {
+        fetch('/api/hr/performance', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);
@@ -189,14 +189,14 @@ const HRSystem = () => {
     try {
       const response = await fetch('/api/hr/employees', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           ...employeeData,
           status: 'active',
-          hireDate: new Date().toISOString(),
+          hireDate: new Date().toISOString(),`
           employeeId: `EMP-${Date.now()}`
         })
       });
@@ -210,7 +210,7 @@ const HRSystem = () => {
       setShowEmployeeModal(false);
       
       toast({
-        title: "Funcionário criado",
+        title: "Funcionário criado",`
         description: `Funcionário ${data.employee.name} criado com sucesso`,
       });
     } catch (error) {
@@ -230,7 +230,7 @@ const HRSystem = () => {
     try {
       const response = await fetch('/api/hr/payroll/process', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -268,7 +268,7 @@ const HRSystem = () => {
     try {
       const response = await fetch('/api/hr/leaves', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -372,7 +372,7 @@ const HRSystem = () => {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setSelectedEmployee(employee)}
+              onClick=({ ( }) => setSelectedEmployee(employee)}
             >
               <Eye className="h-3 w-3 mr-1" />
               Ver Perfil
@@ -380,13 +380,12 @@ const HRSystem = () => {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => {
+              onClick=({ ( }) => {
                 // Implementar edição
               }}
             >
               <Edit className="h-3 w-3 mr-1" />
-              Editar
-            </Button>
+
           </div>
         </CardContent>
       </Card>
@@ -396,11 +395,10 @@ const HRSystem = () => {
   /**
    * RENDERIZAR DEPARTAMENTO
    */
-  const renderDepartment = (department) => {
-    const employeeCount = employees.filter(e => e.departmentId === department.id).length;
+  const renderDepartment = (department) => ({ const employeeCount = employees.filter(e => e.departmentId === department.id).length;
     const avgSalary = employees
       .filter(e => e.departmentId === department.id)
-      .reduce((sum, e) => sum + (e.salary || 0), 0) / employeeCount || 0;
+      .reduce((sum, e }) => sum + (e.salary || 0), 0) / employeeCount || 0;
     
     return (
       <Card key={department.id} className="hover:shadow-md transition-shadow">
@@ -436,7 +434,7 @@ const HRSystem = () => {
               <div className="text-xs text-gray-600">Funcionários</div>
             </div>
             <div className="text-center p-2 bg-gray-50 rounded">
-              <div className="text-lg font-bold text-green-600">
+              <div className="text-lg font-bold text-green-600">`
                 {department.budget ? `R$ ${department.budget.toLocaleString()}` : 'N/A'}
               </div>
               <div className="text-xs text-gray-600">Orçamento</div>
@@ -450,8 +448,7 @@ const HRSystem = () => {
             </Button>
             <Button variant="outline" size="sm">
               <Edit className="h-3 w-3 mr-1" />
-              Editar
-            </Button>
+
           </div>
         </CardContent>
       </Card>
@@ -481,7 +478,7 @@ const HRSystem = () => {
               </Badge>
               <Badge variant={
                 leave.status === 'approved' ? 'default' :
-                leave.status === 'rejected' ? 'destructive' : 'secondary'
+                leave.status === 'rejected' ? 'destructive' : 'secondary'}
               }>
                 {leave.status === 'approved' ? 'Aprovado' :
                  leave.status === 'rejected' ? 'Rejeitado' : 'Pendente'}
@@ -508,28 +505,26 @@ const HRSystem = () => {
             </div>
           </div>
           
-          {leave.status === 'pending' && (
+          ({ leave.status === 'pending' && (
             <div className="flex gap-2">
               <Button
                 variant="default"
                 size="sm"
-                onClick={() => {
+                onClick={( }) => {
                   // Implementar aprovação
                 }}
               >
                 <CheckCircle className="h-3 w-3 mr-1" />
-                Aprovar
-              </Button>
+
               <Button
                 variant="destructive"
                 size="sm"
-                onClick={() => {
+                onClick=({ ( }) => {
                   // Implementar rejeição
                 }}
               >
                 <XCircle className="h-3 w-3 mr-1" />
-                Rejeitar
-              </Button>
+
             </div>
           )}
         </CardContent>
@@ -540,10 +535,9 @@ const HRSystem = () => {
   /**
    * OBTER ESTATÍSTICAS
    */
-  const getStats = () => {
-    const totalEmployees = employees.length;
+  const getStats = () => ({ const totalEmployees = employees.length;
     const activeEmployees = employees.filter(e => e.status === 'active').length;
-    const totalPayroll = employees.reduce((sum, e) => sum + (e.salary || 0), 0);
+    const totalPayroll = employees.reduce((sum, e }) => sum + (e.salary || 0), 0);
     const pendingLeaves = leaves.filter(l => l.status === 'pending').length;
     const avgSalary = totalEmployees > 0 ? totalPayroll / totalEmployees : 0;
     
@@ -594,19 +588,18 @@ const HRSystem = () => {
                 variant="outline"
                 onClick={loadHRData}
                 disabled={loading}
-              >
+              >`
                 <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-                Atualizar
-              </Button>
+
               <Button
                 variant="outline"
-                onClick={() => setShowPayrollModal(true)}
+                onClick=({ ( }) => setShowPayrollModal(true)}
               >
                 <Calculator className="h-4 w-4 mr-2" />
                 Processar Folha
               </Button>
               <Button
-                onClick={() => setShowEmployeeModal(true)}
+                onClick=({ ( }) => setShowEmployeeModal(true)}
                 className="bg-blue-600 hover:bg-blue-700"
               >
                 <UserPlus className="h-4 w-4 mr-2" />
@@ -704,7 +697,7 @@ const HRSystem = () => {
                       <Input
                         placeholder="Buscar funcionários..."
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange=({ (e }) => setSearchTerm(e.target.value)}
                         className="pl-10"
                       />
                     </div>
@@ -713,7 +706,7 @@ const HRSystem = () => {
                   <div className="flex gap-3">
                     <select
                       value={filters.department}
-                      onChange={(e) => setFilters(prev => ({ ...prev, department: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, department: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todos os Departamentos</option>
@@ -724,7 +717,7 @@ const HRSystem = () => {
 
                     <select
                       value={filters.position}
-                      onChange={(e) => setFilters(prev => ({ ...prev, position: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, position: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todos os Cargos</option>
@@ -735,11 +728,11 @@ const HRSystem = () => {
 
                     <select
                       value={filters.status}
-                      onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, status: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todos os Status</option>
-                      {Object.entries(employeeStatuses).map(([key, status]) => (
+                      ({ Object.entries(employeeStatuses).map(([key, status] }) => (
                         <option key={key} value={key}>{status.name}</option>
                       ))}
                     </select>
@@ -749,7 +742,7 @@ const HRSystem = () => {
             </Card>
 
             {/* Lista de Funcionários */}
-            {loading ? (
+            ({ loading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 <span className="ml-2">Carregando funcionários...</span>
@@ -764,7 +757,7 @@ const HRSystem = () => {
                   <p className="text-gray-500 mb-4">
                     Comece adicionando seu primeiro funcionário
                   </p>
-                  <Button onClick={() => setShowEmployeeModal(true)}>
+                  <Button onClick={( }) => setShowEmployeeModal(true)}>
                     <UserPlus className="h-4 w-4 mr-2" />
                     Adicionar Funcionário
                   </Button>
@@ -865,9 +858,8 @@ const HRSystem = () => {
               <h2 className="text-xl font-bold mb-4">Novo Funcionário</h2>
               {/* Formulário será implementado */}
               <div className="flex justify-end gap-3 mt-6">
-                <Button variant="outline" onClick={() => setShowEmployeeModal(false)}>
-                  Cancelar
-                </Button>
+                <Button variant="outline" onClick=({ ( }) => setShowEmployeeModal(false)}>
+
                 <Button disabled={loading}>
                   {loading ? 'Criando...' : 'Criar Funcionário'}
                 </Button>
@@ -881,3 +873,4 @@ const HRSystem = () => {
 };
 
 export default HRSystem;
+`

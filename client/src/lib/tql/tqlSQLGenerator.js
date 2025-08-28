@@ -85,26 +85,26 @@ class SQLGenerator {
         if (action.toUpperCase() === 'MOSTRAR') {
             sql += field === '*' ? '*' : field;
         } else {
-            const sqlFunction = this.functionMap[action.toUpperCase()];
+            const sqlFunction = this.functionMap[action.toUpperCase()];`
             sql += `${sqlFunction}(${field}) as result`;
         }
         
-        // FROM
+        // FROM`
         sql += ` FROM ${table}`;
         
         // WHERE
         if (whereClause) {
-            const whereSQL = this.generateWhereClause(whereClause, schema);
+            const whereSQL = this.generateWhereClause(whereClause, schema);`
             sql += ` WHERE ${whereSQL}`;
         }
         
         // GROUP BY
-        if (groupBy) {
+        if (groupBy) {`
             sql += ` GROUP BY ${groupBy}`;
         }
         
         // ORDER BY
-        if (orderBy) {
+        if (orderBy) {`
             sql += ` ORDER BY ${field} ${orderBy}`;
         }
         
@@ -130,9 +130,9 @@ class SQLGenerator {
         }
         
         const [, table, field, order = 'DESC'] = match;
-        
+        `
         const sql = `SELECT *, ROW_NUMBER() OVER (ORDER BY ${field} ${order}) as ranking 
-                     FROM ${table} 
+                     FROM ${table} `
                      ORDER BY ${field} ${order}`;
         
         console.log('✅ SQL ranking gerado:', sql);
@@ -158,13 +158,13 @@ class SQLGenerator {
         
         const [, type, limit, table, field] = match;
         const order = type.toUpperCase() === 'TOP' ? 'DESC' : 'ASC';
-        
+        `
         let sql = `SELECT * FROM ${table} ORDER BY ${field} ${order}`;
         
         // Adicionar LIMIT baseado no SGBD
-        if (this.dbType === 'postgres' || this.dbType === 'mysql') {
+        if (this.dbType === 'postgres' || this.dbType === 'mysql') {`
             sql += ` LIMIT ${limit}`;
-        } else if (this.dbType === 'sqlserver') {
+        } else if (this.dbType === 'sqlserver') {`
             sql = `SELECT TOP ${limit} * FROM ${table} ORDER BY ${field} ${order}`;
         }
         
@@ -199,7 +199,7 @@ class SQLGenerator {
         // Reconstruir com operadores SQL
         let result = sqlConditions[0];
         for (let i = 1; i < conditions.length; i++) {
-            const operator = conditions[i].operator === 'E' ? 'AND' : 'OR';
+            const operator = conditions[i].operator === 'E' ? 'AND' : 'OR';`
             result += ` ${operator} ${sqlConditions[i]}`;
         }
         
@@ -210,10 +210,9 @@ class SQLGenerator {
     /**
      * Processa funções temporais
      */
-    processTemporalFunctions(whereClause) {
-        console.log('📅 Processando funções temporais...');
+    processTemporalFunctions(whereClause) ({ console.log('📅 Processando funções temporais...');
         
-        return whereClause.replace(this.patterns.temporal, (match, unit, offset) => {
+        return whereClause.replace(this.patterns.temporal, (match, unit, offset }) => {
             const num = parseInt(offset);
             
             switch (this.dbType) {
@@ -241,7 +240,7 @@ class SQLGenerator {
                    'DATE_TRUNC(\'year\', CURRENT_DATE)';
         }
         
-        const operator = offset > 0 ? '+' : '';
+        const operator = offset > 0 ? '+' : '';`
         return `CURRENT_DATE ${operator} INTERVAL '${offset} ${sqlUnit}'`;
     }
     
@@ -256,12 +255,12 @@ class SQLGenerator {
         if (offset === 0) {
             return 'CURDATE()';
         }
-        
+        `
         return `DATE_ADD(CURDATE(), INTERVAL ${offset} ${sqlUnit})`;
     }
     
     generateGenericTemporal(unit, offset) {
-        // Fallback para outros SGBDs
+        // Fallback para outros SGBDs`
         return `DATE('now', '${offset > 0 ? '+' : ''}${offset} ${unit.toLowerCase()}')`;
     }
     
@@ -291,7 +290,7 @@ class SQLGenerator {
         console.log('🔍 Processando condição:', condition);
         
         const match = condition.match(this.patterns.whereClause);
-        if (!match) {
+        if (!match) {`
             throw new Error(`Condição inválida: ${condition}`);
         }
         
@@ -305,7 +304,7 @@ class SQLGenerator {
         if (schema && !this.validateField(field, schema)) {
             console.warn('⚠️ Campo não encontrado no schema:', field);
         }
-        
+        `
         return `${field.trim()} ${sqlOperator} ${processedValue}`;
     }
     
@@ -323,21 +322,21 @@ class SQLGenerator {
         
         // Processar baseado no operador
         switch (operator) {
-            case 'TEM':
+            case 'TEM':`
                 return `'%${value}%'`;
-            case 'NTEM':
+            case 'NTEM':`
                 return `'%${value}%'`;
             case 'EM':
                 // Lista de valores: (val1, val2, val3)
                 if (value.startsWith('(') && value.endsWith(')')) {
                     return value;
-                }
+                }`
                 return `('${value}')`;
             default:
                 // Número ou string
                 if (/^\d+(\.\d+)?$/.test(value)) {
                     return value; // Número
-                } else {
+                } else {`
                     return `'${value}'`; // String
                 }
         }
@@ -383,7 +382,7 @@ class SQLGenerator {
     
     optimizeMySQL(sql) {
         // Otimizações específicas do MySQL
-        // Usar backticks para nomes de colunas reservadas
+        // Usar backticks para nomes de colunas reservadas`
         sql = sql.replace(/\b(order|group|index)\b/gi, '`$1`');
         
         return sql;
@@ -433,7 +432,7 @@ class SQLGenerator {
     generateKPIQuery(widget, schema) {
         // Widget KPI já tem a variável resolvida
         // Retornar query simples para buscar o valor
-        return {
+        return {`
             sql: `SELECT ${widget.variable} as value`,
             params: [],
             format: widget.config.format
@@ -451,7 +450,7 @@ class SQLGenerator {
         
         // Se dados são variáveis, usar subquery
         if (this.isVariable(dataQuery)) {
-            return {
+            return {`
                 sql: `SELECT value FROM variables WHERE name = '${dataQuery}'`,
                 params: [],
                 chartType: widget.chartType
@@ -472,4 +471,4 @@ class SQLGenerator {
     }
 }
 
-module.exports = { SQLGenerator };
+module.exports = { SQLGenerator };`

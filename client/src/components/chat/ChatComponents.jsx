@@ -10,43 +10,40 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { 
-  MessageCircle, 
-  Send, 
-  Phone, 
-  Video, 
-  Mic, 
-  MicOff, 
-  VideoOff,
-  ScreenShare,
-  ScreenShareOff,
-  Users, 
-  Search, 
-  Paperclip, 
-  Image, 
-  Smile,
+import {
+  Search,
+  ChevronDown,
+  ChevronUp,
+  Phone,
+  Video,
+  MoreVertical,
   MoreHorizontal,
   Settings,
-  Check,
-  CheckCheck,
-  Clock,
-  Download,
-  Reply,
-  Edit,
-  Trash2,
-  Star,
+  UserPlus,
+  Users,
+  Bell,
+  BellOff,
   Pin,
+  Archive,
+  Trash2,
+  Edit,
   Copy,
+  Reply,
   Forward,
-  PhoneOff,
+  Smile,
+  Paperclip,
+  Send,
   Minimize2,
   Maximize2,
   Volume2,
   VolumeX,
-  X,
-  Plus,
-  ChevronDown,
-  ChevronUp
+  Mic,
+  MicOff,
+  Clock,
+  Check,
+  CheckCheck,
+  MessageCircle,
+  Download
 } from 'lucide-react';
 import { format, isToday, isYesterday } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -142,8 +139,7 @@ const ConversationItem = ({
         p-4 cursor-pointer transition-all duration-200 border-b border-slate-100
         ${isSelected 
           ? 'bg-gradient-to-r from-blue-100 to-blue-50 border-l-4 border-l-blue-500' 
-          : 'hover:bg-slate-50'
-        }
+          : 'hover:bg-slate-50'}
       `}
     >
       <div className="flex items-center space-x-3">
@@ -370,8 +366,7 @@ const MessageItem = ({
               px-4 py-2 rounded-2xl relative
               ${isOwn 
                 ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white' 
-                : 'bg-white border border-slate-200 text-slate-800'
-              }
+                : 'bg-white border border-slate-200 text-slate-800'}
               ${message.type === 'image' ? 'p-1' : ''}
             `}
           >
@@ -429,8 +424,7 @@ const MessageItem = ({
                     flex items-center space-x-1 px-2 py-1 rounded-full text-xs
                     ${reaction.users.includes('current_user')
                       ? 'bg-blue-100 text-blue-700 border border-blue-200'
-                      : 'bg-slate-100 text-slate-600 border border-slate-200'
-                    }
+                      : 'bg-slate-100 text-slate-600 border border-slate-200'}
                     hover:bg-blue-50 transition-colors duration-200
                   `}
                 >

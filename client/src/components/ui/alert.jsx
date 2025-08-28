@@ -54,13 +54,12 @@ const Alert = React.forwardRef(({
   showIcon = true,
   children,
   ...props 
-}, ref) => {
-  const [isVisible, setIsVisible] = React.useState(true)
+}, ref) => ({ const [isVisible, setIsVisible] = React.useState(true)
 
   // Auto-hide functionality
   React.useEffect(() => {
     if (autoHide && autoHideDelay > 0) {
-      const timer = setTimeout(() => {
+      const timer = setTimeout(( }) => {
         setIsVisible(false)
         onDismiss?.()
       }, autoHideDelay)
@@ -100,9 +99,9 @@ const Alert = React.forwardRef(({
       <div className="flex-1">
         {children}
       </div>
-      {dismissible && (
+      ({ dismissible && (
         <button
-          onClick={() => {
+          onClick={( }) => {
             setIsVisible(false)
             onDismiss?.()
           }}
@@ -205,7 +204,7 @@ export const showSuccessAlert = (message, duration = 3000) => {
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
       </svg>
       <span class="text-sm font-medium">${message}</span>
-    </div>
+    </div>`
   `
   
   alertElement.innerHTML = alertContent
@@ -222,14 +221,14 @@ export const showSuccessAlert = (message, duration = 3000) => {
 export const showErrorAlert = (message, duration = 5000) => {
   const alertElement = document.createElement('div')
   alertElement.className = 'fixed top-4 right-4 z-50'
-  
+  `
   const alertContent = `
     <div class="bg-red-50 border border-red-200 text-red-900 px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 animate-in slide-in-from-top-2">
       <svg class="h-4 w-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
       </svg>
       <span class="text-sm font-medium">${message}</span>
-    </div>
+    </div>`
   `
   
   alertElement.innerHTML = alertContent
@@ -243,15 +242,13 @@ export const showErrorAlert = (message, duration = 5000) => {
 /**
  * HOOK PARA GERENCIAR ALERTS
  */
-export const useAlerts = () => {
-  const [alerts, setAlerts] = React.useState([])
+export const useAlerts = () => ({ const [alerts, setAlerts] = React.useState([])
 
-  const addAlert = (alert) => {
+  const addAlert = (alert }) => {
     const id = Date.now()
     setAlerts(prev => [...prev, { ...alert, id }])
     
-    if (alert.autoHide !== false) {
-      setTimeout(() => {
+    if (alert.autoHide !== false) ({ setTimeout(( }) => {
         removeAlert(id)
       }, alert.duration || 5000)
     }
@@ -292,10 +289,11 @@ export const useAlerts = () => {
 }
 
 export { 
-  Alert, 
-  AlertTitle, 
-  AlertDescription, 
-  AlertWithActions,
-  ConfirmAlert,
+
+
+
+
+
   alertVariants 
 }
+`

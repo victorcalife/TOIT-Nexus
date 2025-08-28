@@ -4,23 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
-import { 
-  Users, 
-  TrendingUp, 
-  AlertTriangle, 
-  Download,
-  RefreshCw,
-  Filter,
-  Search,
-  Eye,
-  DollarSign,
-  Clock,
-  Shield,
-  Target,
-  XCircle,
-  CheckCircle,
-  Timer,
-  UserX
+import {   }
 } from 'lucide-react';
 
 } catch (error) {
@@ -38,7 +22,7 @@ import {
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
-        a.href = url;
+        a.href = url;`
         a.download = `toit-nexus-subscriptions-${new Date().toISOString().split('T')[0]}.${format}`;
         document.body.appendChild(a);
         a.click();
@@ -64,8 +48,7 @@ import {
     return new Date(date).toLocaleDateString('pt-BR');
   };
 
-  const getStatusBadge = (status) => {
-    switch (status) {
+  const getStatusBadge = (status) => ({ switch (status) {
       case 'active':
         return <Badge className="bg-green-100 text-green-800">Ativo</Badge>;
       case 'trial':
@@ -74,7 +57,7 @@ import {
         return <Badge className="bg-red-100 text-red-800">Inativo</Badge>;
       case 'expired':
         return <Badge className="bg-gray-100 text-gray-800">Expirado</Badge>;
-      default) => {
+      default }) => {
     if (riskScore >= 70) {
       return <Badge className="bg-red-100 text-red-800">Alto Risco</Badge>;
     } else if (riskScore >= 40) {
@@ -148,25 +131,22 @@ import {
             disabled={refreshing}
             variant="outline"
             size="sm"
-          >
+          >`
             <RefreshCw className={`w-4 h-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
-            Atualizar
           </Button>
           <Button
-            onClick={() => exportReport('csv')}
+            onClick=({ ( }) => exportReport('csv')}
             variant="outline"
             size="sm"
           >
             <Download className="w-4 h-4 mr-2" />
-            CSV
           </Button>
           <Button
-            onClick={() => exportReport('json')}
+            onClick=({ ( }) => exportReport('json')}
             variant="outline"
             size="sm"
           >
             <Download className="w-4 h-4 mr-2" />
-            JSON
           </Button>
         </div>
       </div>
@@ -267,13 +247,13 @@ import {
               placeholder="Buscar por nome, email ou empresa..."
               className="w-64"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange=({ (e }) => setSearchTerm(e.target.value)}
             />
           </div>
           
           <select
             value={selectedStatus}
-            onChange={(e) => setSelectedStatus(e.target.value)}
+            onChange=({ (e }) => setSelectedStatus(e.target.value)}
             className="px-3 py-2 border border-gray-300 rounded-md text-sm"
           >
             <option value="all">Todos os Status</option>
@@ -284,7 +264,7 @@ import {
 
           <select
             value={riskFilter}
-            onChange={(e) => setRiskFilter(e.target.value)}
+            onChange=({ (e }) => setRiskFilter(e.target.value)}
             className="px-3 py-2 border border-gray-300 rounded-md text-sm"
           >
             <option value="all">Todos os Riscos</option>
@@ -333,7 +313,7 @@ import {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  {report.analytics.monthlyTrends.slice(-6).map((trend, index) => (
+                  ({ report.analytics.monthlyTrends.slice(-6).map((trend, index }) => (
                     <div key={index} className="flex justify-between items-center py-1">
                       <span className="text-sm">{trend.month}</span>
                       <div className="text-right">
@@ -354,8 +334,8 @@ import {
   );
 }
 
-function SubscriptionTable({ subscriptions }: { subscriptions) {
-  const formatCurrency = (value) => {
+function SubscriptionTable({ subscriptions }: ({ subscriptions) {
+  const formatCurrency = (value }) => {
     return new Intl.NumberFormat('pt-BR', {
       style,
       currency).format(value);
@@ -365,8 +345,7 @@ function SubscriptionTable({ subscriptions }: { subscriptions) {
     return new Date(date).toLocaleDateString('pt-BR');
   };
 
-  const getStatusBadge = (status) => {
-    switch (status) {
+  const getStatusBadge = (status) => ({ switch (status) {
       case 'active':
         return <Badge className="bg-green-100 text-green-800">Ativo</Badge>;
       case 'trial':
@@ -375,7 +354,7 @@ function SubscriptionTable({ subscriptions }: { subscriptions) {
         return <Badge className="bg-red-100 text-red-800">Inativo</Badge>;
       case 'expired':
         return <Badge className="bg-gray-100 text-gray-800">Expirado</Badge>;
-      default) => {
+      default }) => {
     if (riskScore >= 70) {
       return <Badge className="bg-red-100 text-red-800">Alto ({riskScore}%)</Badge>;
     } else if (riskScore >= 40) {
@@ -406,22 +385,17 @@ function SubscriptionTable({ subscriptions }: { subscriptions) {
                   Usuário
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Empresa
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Plano
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Status
                 </th>
                 <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">
                   Receita/Mês
                 </th>
                 <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">
-                  Risco
                 </th>
                 <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">
-                  Tenure
                 </th>
                 <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">
                   Último Login
@@ -429,7 +403,7 @@ function SubscriptionTable({ subscriptions }: { subscriptions) {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {subscriptions.map((subscription) => (
+              ({ subscriptions.map((subscription }) => (
                 <tr key={subscription.id} className="hover)}
                   </td>
                   <td className="px-4 py-4 text-right font-medium">
@@ -454,4 +428,4 @@ function SubscriptionTable({ subscriptions }: { subscriptions) {
   );
 }
 
-export default SubscriptionReportsDashboard;
+export default SubscriptionReportsDashboard;`

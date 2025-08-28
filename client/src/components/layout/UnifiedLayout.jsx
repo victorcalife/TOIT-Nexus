@@ -12,25 +12,25 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Toaster } from '@/components/ui/toaster';
 import { ChatSidebar } from '@/components/chat/ChatSidebar';
 import { UserProfile } from '@/components/profile/UserProfile';
-import { 
-  Home, 
-  Users, 
-  Settings, 
-  Bell, 
-  Search,
-  Menu,
-  X,
-  MessageCircle,
-  Calendar,
-  FileText,
+import {  
+
+
+
+
+
+
+
+
+
+
   BarChart3,
-  Database,
-  Workflow,
-  Zap,
-  Shield,
-  CreditCard,
-  HelpCircle,
-  LogOut
+
+
+
+
+
+
+ }
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
@@ -157,9 +157,9 @@ export function UnifiedLayout() {
       variant={isActiveRoute(item.href) ? 'secondary' : 'ghost'}
       className={cn(
         'w-full justify-start h-10',
-        isActiveRoute(item.href) && 'bg-primary-50 text-primary-700 border-primary-200'
+        isActiveRoute(item.href) && 'bg-primary-50 text-primary-700 border-primary-200'}
       )}
-      onClick={() => navigate(item.href)}
+      onClick=({ ( }) => navigate(item.href)}
     >
       <item.icon className="w-4 h-4 mr-3" />
       {sidebarOpen && (
@@ -183,7 +183,7 @@ export function UnifiedLayout() {
       {/* Sidebar */}
       <div className={cn(
         'bg-white border-r border-gray-200 transition-all duration-300 flex flex-col',
-        sidebarOpen ? 'w-64' : 'w-16'
+        sidebarOpen ? 'w-64' : 'w-16'}
       )}>
         {/* Header da Sidebar */}
         <div className="p-4 border-b border-gray-200">
@@ -202,7 +202,7 @@ export function UnifiedLayout() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setSidebarOpen(!sidebarOpen)}
+              onClick=({ ( }) => setSidebarOpen(!sidebarOpen)}
               className="w-8 h-8 p-0"
             >
               {sidebarOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
@@ -225,7 +225,7 @@ export function UnifiedLayout() {
           
           {/* Perfil do Usuário */}
           <div className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer"
-               onClick={() => setProfileOpen(true)}>
+               onClick=({ ( }) => setProfileOpen(true)}>
             <Avatar className="w-8 h-8">
               <AvatarImage src={user?.profileImage} />
               <AvatarFallback className="bg-primary-100 text-primary-700 text-xs">
@@ -282,7 +282,7 @@ export function UnifiedLayout() {
               <Button 
                 variant="ghost" 
                 size="sm"
-                onClick={() => setChatOpen(!chatOpen)}
+                onClick=({ ( }) => setChatOpen(!chatOpen)}
               >
                 <MessageCircle className="w-5 h-5" />
               </Button>
@@ -304,7 +304,7 @@ export function UnifiedLayout() {
       {/* Chat Sidebar */}
       <ChatSidebar
         isOpen={chatOpen}
-        onToggle={() => setChatOpen(!chatOpen)}
+        onToggle=({ ( }) => setChatOpen(!chatOpen)}
         currentUserId={user?.id}
       />
 
@@ -314,11 +314,11 @@ export function UnifiedLayout() {
           <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-auto">
             <UserProfile
               user={user}
-              onSave={(data) => {
+              onSave=({ (data }) => {
                 console.log('Perfil salvo:', data);
                 setProfileOpen(false);
               }}
-              onCancel={() => setProfileOpen(false)}
+              onCancel=({ ( }) => setProfileOpen(false)}
             />
           </div>
         </div>

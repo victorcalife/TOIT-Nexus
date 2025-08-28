@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   Users, 
   UserPlus,
   Building,
@@ -55,7 +55,7 @@ import {
   MoreHorizontal,
   ArrowRight,
   ArrowUp,
-  ArrowDown
+  ArrowDown }
 } from 'lucide-react';
 
 const CRMSystem = () => {
@@ -112,13 +112,13 @@ const CRMSystem = () => {
         fetch('/api/crm/customers', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/crm/leads', {
+        fetch('/api/crm/leads', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/crm/deals', {
+        fetch('/api/crm/deals', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/crm/activities', {
+        fetch('/api/crm/activities', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);
@@ -162,7 +162,7 @@ const CRMSystem = () => {
     try {
       const response = await fetch('/api/crm/customers', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -201,7 +201,7 @@ const CRMSystem = () => {
     try {
       const response = await fetch('/api/crm/leads', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -238,10 +238,10 @@ const CRMSystem = () => {
    * ATUALIZAR STATUS DO LEAD
    */
   const updateLeadStatus = async (leadId, newStatus) => {
-    try {
+    try {`
       const response = await fetch(`/api/crm/leads/${leadId}/status`, {
         method: 'PATCH',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -276,10 +276,10 @@ const CRMSystem = () => {
    * CONVERTER LEAD EM CLIENTE
    */
   const convertLeadToCustomer = async (leadId) => {
-    try {
+    try {`
       const response = await fetch(`/api/crm/leads/${leadId}/convert`, {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }
@@ -322,7 +322,7 @@ const CRMSystem = () => {
     try {
       const response = await fetch('/api/crm/activities', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -356,9 +356,8 @@ const CRMSystem = () => {
   /**
    * RENDERIZAR CARD DE CLIENTE
    */
-  const renderCustomerCard = (customer) => {
-    const totalDeals = deals.filter(deal => deal.customerId === customer.id);
-    const totalValue = totalDeals.reduce((sum, deal) => sum + (deal.value || 0), 0);
+  const renderCustomerCard = (customer) => ({ const totalDeals = deals.filter(deal => deal.customerId === customer.id);
+    const totalValue = totalDeals.reduce((sum, deal }) => sum + (deal.value || 0), 0);
     
     return (
       <Card key={customer.id} className="hover:shadow-md transition-shadow cursor-pointer">
@@ -419,7 +418,7 @@ const CRMSystem = () => {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setSelectedCustomer(customer)}
+              onClick=({ ( }) => setSelectedCustomer(customer)}
             >
               <Eye className="h-3 w-3 mr-1" />
               Ver Detalhes
@@ -427,13 +426,12 @@ const CRMSystem = () => {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => {
+              onClick=({ ( }) => {
                 // Implementar edição
               }}
             >
               <Edit className="h-3 w-3 mr-1" />
-              Editar
-            </Button>
+
           </div>
         </CardContent>
       </Card>
@@ -493,23 +491,22 @@ const CRMSystem = () => {
           <div className="flex gap-2">
             <select
               value={lead.status}
-              onChange={(e) => updateLeadStatus(lead.id, e.target.value)}
+              onChange=({ (e }) => updateLeadStatus(lead.id, e.target.value)}
               className="flex-1 px-2 py-1 border border-gray-300 rounded text-sm"
             >
-              {Object.entries(leadStatuses).map(([key, status]) => (
+              ({ Object.entries(leadStatuses).map(([key, status] }) => (
                 <option key={key} value={key}>{status.name}</option>
               ))}
             </select>
             
-            {lead.status === 'qualified' && (
+            ({ lead.status === 'qualified' && (
               <Button
                 variant="default"
                 size="sm"
-                onClick={() => convertLeadToCustomer(lead.id)}
+                onClick={( }) => convertLeadToCustomer(lead.id)}
               >
                 <ArrowRight className="h-3 w-3 mr-1" />
-                Converter
-              </Button>
+
             )}
           </div>
         </CardContent>
@@ -520,8 +517,7 @@ const CRMSystem = () => {
   /**
    * RENDERIZAR ATIVIDADE
    */
-  const renderActivity = (activity) => {
-    const getActivityIcon = (type) => {
+  const renderActivity = (activity) => ({ const getActivityIcon = (type }) => {
       switch (type) {
         case 'call': return <Phone className="h-4 w-4" />;
         case 'email': return <Mail className="h-4 w-4" />;
@@ -542,7 +538,7 @@ const CRMSystem = () => {
     };
 
     return (
-      <div key={activity.id} className="flex items-start gap-3 p-4 border-b border-gray-100">
+      <div key={activity.id} className="flex items-start gap-3 p-4 border-b border-gray-100">`
         <div className={`p-2 rounded-full ${getActivityColor(activity.type)}`}>
           {getActivityIcon(activity.type)}
         </div>
@@ -574,12 +570,11 @@ const CRMSystem = () => {
   /**
    * OBTER ESTATÍSTICAS
    */
-  const getStats = () => {
-    const totalCustomers = customers.length;
+  const getStats = () => ({ const totalCustomers = customers.length;
     const totalLeads = leads.length;
     const activeLeads = leads.filter(lead => !['closed_won', 'closed_lost', 'converted'].includes(lead.status)).length;
     const conversionRate = totalLeads > 0 ? ((leads.filter(l => l.status === 'converted').length / totalLeads) * 100).toFixed(1) : 0;
-    const totalDealsValue = deals.reduce((sum, deal) => sum + (deal.value || 0), 0);
+    const totalDealsValue = deals.reduce((sum, deal }) => sum + (deal.value || 0), 0);
     
     return { totalCustomers, totalLeads, activeLeads, conversionRate, totalDealsValue };
   };
@@ -613,19 +608,18 @@ const CRMSystem = () => {
                 variant="outline"
                 onClick={loadCRMData}
                 disabled={loading}
-              >
+              >`
                 <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-                Atualizar
-              </Button>
+
               <Button
                 variant="outline"
-                onClick={() => setShowLeadModal(true)}
+                onClick=({ ( }) => setShowLeadModal(true)}
               >
                 <UserPlus className="h-4 w-4 mr-2" />
                 Novo Lead
               </Button>
               <Button
-                onClick={() => setShowCustomerModal(true)}
+                onClick=({ ( }) => setShowCustomerModal(true)}
                 className="bg-blue-600 hover:bg-blue-700"
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -720,7 +714,7 @@ const CRMSystem = () => {
                       <Input
                         placeholder="Buscar clientes..."
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange=({ (e }) => setSearchTerm(e.target.value)}
                         className="pl-10"
                       />
                     </div>
@@ -729,7 +723,7 @@ const CRMSystem = () => {
                   <div className="flex gap-3">
                     <select
                       value={filters.status}
-                      onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, status: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todos os Status</option>
@@ -739,7 +733,7 @@ const CRMSystem = () => {
 
                     <select
                       value={filters.assignee}
-                      onChange={(e) => setFilters(prev => ({ ...prev, assignee: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, assignee: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todos os Responsáveis</option>
@@ -751,7 +745,7 @@ const CRMSystem = () => {
             </Card>
 
             {/* Lista de Clientes */}
-            {loading ? (
+            ({ loading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 <span className="ml-2">Carregando clientes...</span>
@@ -766,7 +760,7 @@ const CRMSystem = () => {
                   <p className="text-gray-500 mb-4">
                     Comece adicionando seu primeiro cliente
                   </p>
-                  <Button onClick={() => setShowCustomerModal(true)}>
+                  <Button onClick={( }) => setShowCustomerModal(true)}>
                     <Plus className="h-4 w-4 mr-2" />
                     Adicionar Cliente
                   </Button>
@@ -787,7 +781,7 @@ const CRMSystem = () => {
 
           <TabsContent value="leads" className="space-y-6">
             {/* Lista de Leads */}
-            {loading ? (
+            ({ loading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 <span className="ml-2">Carregando leads...</span>
@@ -802,7 +796,7 @@ const CRMSystem = () => {
                   <p className="text-gray-500 mb-4">
                     Comece adicionando seu primeiro lead
                   </p>
-                  <Button onClick={() => setShowLeadModal(true)}>
+                  <Button onClick={( }) => setShowLeadModal(true)}>
                     <Plus className="h-4 w-4 mr-2" />
                     Adicionar Lead
                   </Button>
@@ -857,9 +851,8 @@ const CRMSystem = () => {
               <h2 className="text-xl font-bold mb-4">Novo Cliente</h2>
               {/* Formulário será implementado */}
               <div className="flex justify-end gap-3 mt-6">
-                <Button variant="outline" onClick={() => setShowCustomerModal(false)}>
-                  Cancelar
-                </Button>
+                <Button variant="outline" onClick=({ ( }) => setShowCustomerModal(false)}>
+
                 <Button disabled={loading}>
                   {loading ? 'Criando...' : 'Criar Cliente'}
                 </Button>
@@ -873,3 +866,4 @@ const CRMSystem = () => {
 };
 
 export default CRMSystem;
+`

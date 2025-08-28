@@ -2,32 +2,16 @@ import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { 
-  Play, 
-  Plus, 
-  Settings, 
-  Code, 
-  Mail, 
-  Database,
-  Users,
-  Calendar,
-  ChevronDown,
-  ChevronRight,
-  Trash2
+import {  
+  Trash2 }
 } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+import {  }
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-export function WorkflowBuilder({ workflow, onSave }) {
-  const [nodes, setNodes] = useState<WorkflowNode[]>(workflow?.nodes || [
+export function WorkflowBuilder({ workflow, onSave }) ({ const [nodes, setNodes] = useState<WorkflowNode[]>(workflow?.nodes || [
     {
       id,
       type,
@@ -59,7 +43,7 @@ export function WorkflowBuilder({ workflow, onSave }) {
         { value, label,
         { value, label,
         { value, label,
-        { value, label, parentId?) => {
+        { value, label, parentId? }) => {
     const newNode= {
       id).toString(),
       type,
@@ -100,7 +84,7 @@ export function WorkflowBuilder({ workflow, onSave }) {
     const expanded = isExpanded[node.id];
 
     return (
-      <div key={node.id} className="space-y-2" style={{ marginLeft) => toggleExpanded(node.id)}
+      <div key={node.id} className="space-y-2" style=({ { marginLeft }) => toggleExpanded(node.id)}
                   className="p-1 h-6 w-6"
                 >
                   {expanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
@@ -119,7 +103,7 @@ export function WorkflowBuilder({ workflow, onSave }) {
               <Badge variant={
                 node.type === 'trigger' ? 'default' :
                 node.type === 'condition' ? 'secondary' :
-                'outline'
+                'outline'}
               }>
                 {node.type === 'trigger' ? 'Gatilho' :
                  node.type === 'condition' ? 'Condição' :
@@ -130,14 +114,14 @@ export function WorkflowBuilder({ workflow, onSave }) {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => setSelectedNode(node)}
+                  onClick=({ ( }) => setSelectedNode(node)}
                 >
                   <Settings className="w-4 h-4" />
                 </Button>
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => removeNode(node.id)}
+                  onClick=({ ( }) => removeNode(node.id)}
                   className="text-red-600 hover)}
 
         {/* Child Nodes */}
@@ -171,7 +155,7 @@ export function WorkflowBuilder({ workflow, onSave }) {
             <Input
               id="node-title"
               value={selectedNode.title}
-              onChange={(e) => updateNode(selectedNode.id, { title)}
+              onChange=({ (e }) => updateNode(selectedNode.id, { title)}
             />
           </div>
           
@@ -180,7 +164,7 @@ export function WorkflowBuilder({ workflow, onSave }) {
             <Textarea
               id="node-description"
               value={selectedNode.description}
-              onChange={(e) => updateNode(selectedNode.id, { description)}
+              onChange=({ (e }) => updateNode(selectedNode.id, { description)}
               rows={2}
             />
           </div>
@@ -192,7 +176,7 @@ export function WorkflowBuilder({ workflow, onSave }) {
               'Ação'
             }</Label>
             <Select>
-              <SelectTrigger>
+              <SelectTrigger>`
                 <SelectValue placeholder={`Selecione o tipo de ${selectedNode.type}`} />
               </SelectTrigger>
               <SelectContent>
@@ -211,12 +195,11 @@ export function WorkflowBuilder({ workflow, onSave }) {
     <div className="grid grid-cols-1 lg) => addNode('trigger')}
                 >
                   <Plus className="w-4 h-4 mr-1" />
-                  Gatilho
                 </Button>
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => addNode('condition')}
+                  onClick=({ ( }) => addNode('condition')}
                 >
                   <Plus className="w-4 h-4 mr-1" />
                   Condição
@@ -224,7 +207,7 @@ export function WorkflowBuilder({ workflow, onSave }) {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => addNode('action')}
+                  onClick=({ ( }) => addNode('action')}
                 >
                   <Plus className="w-4 h-4 mr-1" />
                   Ação
@@ -234,9 +217,9 @@ export function WorkflowBuilder({ workflow, onSave }) {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {nodes.length > 0 ? (
+              ({ nodes.length > 0 ? (
                 nodes.map(node => renderNode(node))
-              ) {() => addNode('trigger')}
+              ) {( }) => addNode('trigger')}
                   >
                     <Plus className="w-4 h-4 mr-2" />
                     Adicionar Gatilho
@@ -274,3 +257,4 @@ export function WorkflowBuilder({ workflow, onSave }) {
     </div>
   );
 }
+`

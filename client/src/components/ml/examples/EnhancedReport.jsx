@@ -7,17 +7,17 @@
 import React, { useState, useEffect } from 'react';
 import { ReportMLEnhancer } from '../ReportMLEnhancer';
 import { MLCreditsWidget } from '../MLCreditsWidget';
-import { 
-  FileText, 
-  Download, 
-  Share, 
-  Filter,
-  Calendar,
-  TrendingUp,
+import {  
+
+
+
+
+
+
   BarChart3,
-  PieChart,
-  Users,
-  DollarSign
+
+
+ }
 } from 'lucide-react';
 
 /**
@@ -36,8 +36,7 @@ export function EnhancedReport() {
   });
 
   // Simular carregamento de dados do relatório
-  useEffect(() => {
-    const generateReportData = () => {
+  useEffect(() => ({ const generateReportData = ( }) => {
       const days = dateRange === '7d' ? 7 : dateRange === '30d' ? 30 : 90;
       const data = [];
       
@@ -144,7 +143,7 @@ export function EnhancedReport() {
     
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url;
+    a.href = url;`
     a.download = `relatorio-${reportType}-${Date.now()}.json`;
     document.body.appendChild(a);
     a.click();
@@ -216,7 +215,7 @@ export function EnhancedReport() {
             
             <select
               value={reportType}
-              onChange={(e) => setReportType(e.target.value)}
+              onChange=({ (e }) => setReportType(e.target.value)}
               className="px-3 py-2 border border-gray-300 rounded-md text-sm"
             >
               <option value="sales">Vendas</option>
@@ -227,7 +226,7 @@ export function EnhancedReport() {
 
             <select
               value={dateRange}
-              onChange={(e) => setDateRange(e.target.value)}
+              onChange=({ (e }) => setDateRange(e.target.value)}
               className="px-3 py-2 border border-gray-300 rounded-md text-sm"
             >
               <option value="7d">Últimos 7 dias</option>
@@ -268,9 +267,9 @@ export function EnhancedReport() {
           <div className="bg-white p-6 rounded-lg border shadow-sm">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Crescimento</p>
+                <p className="text-sm text-gray-600">Crescimento</p>`
                 <p className={`text-2xl font-bold ${
-                  metrics.growth >= 0 ? 'text-green-900' : 'text-red-900'
+                  metrics.growth >= 0 ? 'text-green-900' : 'text-red-900'`}
                 }`}>
                   {metrics.growth?.toFixed(1) || '0'}%
                 </p>
@@ -296,7 +295,7 @@ export function EnhancedReport() {
         <div className="mb-8">
           <ReportMLEnhancer
             reportData={reportData}
-            reportType={reportType}
+            reportType={reportType}`
             reportTitle={`Relatório de ${reportType}`}
             reportConfig={reportConfig}
             onInsightGenerated={handleInsightsGenerated}
@@ -317,21 +316,21 @@ export function EnhancedReport() {
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Data
+
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Valor
+
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Categoria
+
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Trimestre
+
                   </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {reportData.slice(-15).reverse().map((item, index) => (
+                ({ reportData.slice(-15).reverse().map((item, index }) => (
                   <tr key={index} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {new Date(item.date).toLocaleDateString()}
@@ -357,3 +356,4 @@ export function EnhancedReport() {
 }
 
 export default EnhancedReport;
+`

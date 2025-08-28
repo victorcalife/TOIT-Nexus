@@ -6,15 +6,15 @@
 
 import React, { useState, useCallback } from 'react';
 import { useMLCredits } from '../../hooks/useMLCredits';
-import { 
-  Zap, 
-  Calendar, 
-  TrendingUp, 
-  AlertTriangle, 
-  CheckCircle, 
-  Settings,
-  RefreshCw,
-  Info
+import {  
+
+
+
+
+
+
+
+ }
 } from 'lucide-react';
 
 /**
@@ -115,7 +115,7 @@ export function MLCreditsWidget({
     return (
       <div className="w-full bg-gray-200 rounded-full h-2">
         <div 
-          className={`h-2 rounded-full transition-all duration-300 ${barColors[status]}`}
+          className={`h-2 rounded-full transition-all duration-300 ${barColors[status]}`}`
           style={{ width: `${Math.min(percentage, 100)}%` }}
         />
       </div>
@@ -146,7 +146,7 @@ export function MLCreditsWidget({
                 name="plan"
                 value={plan.id}
                 checked={selectedPlan === plan.id}
-                onChange={(e) => setSelectedPlan(e.target.value)}
+                onChange=({ (e }) => setSelectedPlan(e.target.value)}
                 className="text-purple-600 focus:ring-purple-500"
               />
               <div className="flex-1">
@@ -168,10 +168,10 @@ export function MLCreditsWidget({
             {isLoading ? 'Configurando...' : 'Configurar'}
           </button>
           <button
-            onClick={() => setShowSetup(false)}
+            onClick=({ ( }) => setShowSetup(false)}
             className="px-3 py-2 bg-gray-100 text-gray-700 text-sm rounded-md hover:bg-gray-200"
           >
-            Cancelar
+
           </button>
         </div>
       </div>
@@ -180,12 +180,12 @@ export function MLCreditsWidget({
 
   // Renderização para variante minimal
   if (variant === 'minimal') {
-    return (
+    return (`
       <div className={`inline-flex items-center space-x-2 ${className}`}>
         <Zap className="w-4 h-4 text-purple-600" />
-        <span className="text-sm font-medium">
+        <span className="text-sm font-medium">`
           {isLoading ? '...' : `${credits.available}/${credits.total}`}
-        </span>
+        </span>`
         <div className={`w-2 h-2 rounded-full ${getStatusColor().split(' ')[1]}`} />
       </div>
     );
@@ -193,17 +193,17 @@ export function MLCreditsWidget({
 
   // Renderização para variante compact
   if (variant === 'compact') {
-    return (
+    return (`
       <div className={`flex items-center justify-between p-3 bg-white rounded-lg border ${className}`}>
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-3">`
           <div className={`p-2 rounded-lg ${getStatusColor()}`}>
             <Zap className="w-4 h-4" />
           </div>
           <div>
-            <div className="text-sm font-medium text-gray-900">
+            <div className="text-sm font-medium text-gray-900">`
               {isLoading ? 'Carregando...' : `${credits.available} créditos`}
             </div>
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-gray-500">`
               {needsSetup ? 'Configure seu plano' : `${credits.used}/${credits.total} usados`}
             </div>
           </div>
@@ -223,12 +223,12 @@ export function MLCreditsWidget({
   }
 
   // Renderização para variante card (padrão)
-  return (
+  return (`
     <div className={`bg-white rounded-lg border shadow-sm ${className}`}>
       {/* Header */}
       <div className="p-4 border-b border-gray-200">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2">`
             <div className={`p-2 rounded-lg ${getStatusColor()}`}>
               <Zap className="w-5 h-5" />
             </div>
@@ -247,13 +247,13 @@ export function MLCreditsWidget({
                 disabled={isLoading}
                 className="p-1 text-gray-400 hover:text-gray-600 disabled:opacity-50"
                 title="Atualizar"
-              >
+              >`
                 <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
               </button>
               
-              {needsSetup && (
+              ({ needsSetup && (
                 <button
-                  onClick={() => setShowSetup(!showSetup)}
+                  onClick={( }) => setShowSetup(!showSetup)}
                   className="p-1 text-gray-400 hover:text-gray-600"
                   title="Configurar"
                 >
@@ -285,7 +285,7 @@ export function MLCreditsWidget({
               Configure seu plano ML para começar a usar insights
             </p>
             <button
-              onClick={() => setShowSetup(true)}
+              onClick=({ ( }) => setShowSetup(true)}
               className="px-4 py-2 bg-purple-600 text-white text-sm rounded-md hover:bg-purple-700"
             >
               Configurar Plano
@@ -337,7 +337,7 @@ export function MLCreditsWidget({
                     <span>Status</span>
                   </div>
                   <div className="flex items-center space-x-1">
-                    {getStatusIcon()}
+                    {getStatusIcon()}`
                     <span className={`font-medium ${getStatusColor().split(' ')[0]}`}>
                       {getCreditsStatus() === 'good' ? 'Bom' :
                        getCreditsStatus() === 'warning' ? 'Atenção' :
@@ -358,3 +358,4 @@ export function MLCreditsWidget({
 }
 
 export default MLCreditsWidget;
+`

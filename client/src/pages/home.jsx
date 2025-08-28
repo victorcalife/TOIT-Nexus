@@ -2,7 +2,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { 
+import {  
   Users, 
   Workflow, 
   Settings, 
@@ -11,7 +11,7 @@ import {
   FileText,
   Bell,
   Calendar,
-  TrendingUp
+  TrendingUp }
 } from "lucide-react";
 
 export default function Home() {
@@ -52,8 +52,6 @@ export default function Home() {
                 <p className="text-sm text-gray-500">{user.email}</p>
               </div>
               <Button variant="outline" onClick={handleLogout}>
-                Sair
-              </Button>
             </div>
           </div>
         </div>

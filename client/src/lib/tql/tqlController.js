@@ -182,8 +182,7 @@ class TQLController {
         });
         
         // Ordenar cada categoria por prioridade
-        Object.keys(grouped).forEach(category => {
-            grouped[category].sort((a, b) => b.priority - a.priority);
+        Object.keys(grouped).forEach(category => ({ grouped[category].sort((a, b }) => b.priority - a.priority);
         });
         
         return grouped;

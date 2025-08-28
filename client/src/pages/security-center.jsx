@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   Shield, 
   ShieldAlert,
   ShieldCheck,
@@ -59,7 +59,7 @@ import {
   Edit,
   Plus,
   Minus,
-  MoreHorizontal
+  MoreHorizontal }
 } from 'lucide-react';
 
 const SecurityCenter = () => {
@@ -126,7 +126,7 @@ const SecurityCenter = () => {
     setLoading(true);
     try {
       const response = await fetch(`/api/security/dashboard?timeRange=${filters.timeRange}`, {
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }
@@ -161,7 +161,7 @@ const SecurityCenter = () => {
     try {
       const response = await fetch('/api/security/scan', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -175,7 +175,7 @@ const SecurityCenter = () => {
       const data = await response.json();
       
       toast({
-        title: "Scan iniciado",
+        title: "Scan iniciado",`
         description: `Scan de segurança ${scanType} iniciado com sucesso`,
       });
 
@@ -197,10 +197,10 @@ const SecurityCenter = () => {
    * BLOQUEAR AMEAÇA
    */
   const blockThreat = async (threatId) => {
-    try {
+    try {`
       const response = await fetch(`/api/security/threats/${threatId}/block`, {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }
@@ -234,10 +234,10 @@ const SecurityCenter = () => {
    * MARCAR COMO FALSO POSITIVO
    */
   const markAsFalsePositive = async (threatId) => {
-    try {
+    try {`
       const response = await fetch(`/api/security/threats/${threatId}/false-positive`, {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }
@@ -272,7 +272,7 @@ const SecurityCenter = () => {
    */
   const setupRealTimeMonitoring = () => {
     if (!realTimeEnabled) return;
-
+`
     const eventSource = new EventSource(`/api/security/stream?token=${localStorage.getItem('token')}`);
     
     eventSource.onmessage = (event) => {
@@ -321,7 +321,7 @@ const SecurityCenter = () => {
             <div>
               <p className="text-sm font-medium text-gray-600">{metric.label}</p>
               <p className="text-2xl font-bold text-gray-900">{metric.value}</p>
-              {metric.change !== undefined && (
+              {metric.change !== undefined && (`
                 <div className={`flex items-center mt-1 ${changeColor}`}>
                   <TrendIcon className="h-4 w-4 mr-1" />
                   <span className="text-sm font-medium">
@@ -329,7 +329,7 @@ const SecurityCenter = () => {
                   </span>
                 </div>
               )}
-            </div>
+            </div>`
             <div className={`p-3 rounded-full ${metric.bgColor || 'bg-blue-100'}`}>
               {metric.icon || <Shield className="h-6 w-6 text-blue-600" />}
             </div>
@@ -349,16 +349,16 @@ const SecurityCenter = () => {
     
     return (
       <div
-        key={threat.id}
+        key={threat.id}`
         className={`p-4 border rounded-lg transition-colors ${
-          isSelected ? 'border-blue-500 bg-blue-50' : 'border-gray-200'
+          isSelected ? 'border-blue-500 bg-blue-50' : 'border-gray-200'`}
         } ${severity.color.includes('red') ? 'border-l-4 border-l-red-500' : ''}`}
       >
         <div className="flex items-start gap-3">
           <input
             type="checkbox"
             checked={isSelected}
-            onChange={(e) => {
+            onChange=({ (e }) => {
               if (e.target.checked) {
                 setSelectedItems(prev => [...prev, threat.id]);
               } else {
@@ -367,7 +367,7 @@ const SecurityCenter = () => {
             }}
             className="mt-1"
           />
-          
+          `
           <div className={`p-2 rounded-full ${severity.color}`}>
             {severity.icon}
           </div>
@@ -412,7 +412,7 @@ const SecurityCenter = () => {
                 <Badge variant={
                   threat.status === 'blocked' ? 'destructive' :
                   threat.status === 'resolved' ? 'default' :
-                  threat.status === 'false_positive' ? 'secondary' : 'outline'
+                  threat.status === 'false_positive' ? 'secondary' : 'outline'}
                 }>
                   {threat.status === 'blocked' ? 'Bloqueado' :
                    threat.status === 'resolved' ? 'Resolvido' :
@@ -421,20 +421,19 @@ const SecurityCenter = () => {
               </div>
             </div>
             
-            {threat.status === 'active' && (
+            ({ threat.status === 'active' && (
               <div className="flex gap-2">
                 <Button
                   variant="destructive"
                   size="sm"
-                  onClick={() => blockThreat(threat.id)}
+                  onClick={( }) => blockThreat(threat.id)}
                 >
                   <Lock className="h-3 w-3 mr-1" />
-                  Bloquear
-                </Button>
+
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => markAsFalsePositive(threat.id)}
+                  onClick=({ ( }) => markAsFalsePositive(threat.id)}
                 >
                   <XCircle className="h-3 w-3 mr-1" />
                   Falso Positivo
@@ -442,13 +441,12 @@ const SecurityCenter = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => {
+                  onClick=({ ( }) => {
                     // Implementar detalhes da ameaça
                   }}
                 >
                   <Eye className="h-3 w-3 mr-1" />
-                  Detalhes
-                </Button>
+
               </div>
             )}
           </div>
@@ -465,7 +463,7 @@ const SecurityCenter = () => {
     
     return (
       <div key={log.id} className="p-3 border-b border-gray-100 hover:bg-gray-50">
-        <div className="flex items-start gap-3">
+        <div className="flex items-start gap-3">`
           <div className={`p-1 rounded ${severity.color}`}>
             {severity.icon}
           </div>
@@ -548,7 +546,7 @@ const SecurityCenter = () => {
             <div className="flex gap-3">
               <Button
                 variant="outline"
-                onClick={() => setRealTimeEnabled(!realTimeEnabled)}
+                onClick=({ ( }) => setRealTimeEnabled(!realTimeEnabled)}
               >
                 {realTimeEnabled ? (
                   <>
@@ -564,14 +562,14 @@ const SecurityCenter = () => {
               </Button>
               <Button
                 variant="outline"
-                onClick={() => runSecurityScan('quick')}
+                onClick=({ ( }) => runSecurityScan('quick')}
                 disabled={loading}
               >
                 <Scan className="h-4 w-4 mr-2" />
                 Scan Rápido
               </Button>
               <Button
-                onClick={() => runSecurityScan('full')}
+                onClick=({ ( }) => runSecurityScan('full')}
                 disabled={loading}
                 className="bg-blue-600 hover:bg-blue-700"
               >
@@ -662,7 +660,7 @@ const SecurityCenter = () => {
                       <Input
                         placeholder="Buscar ameaças..."
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange=({ (e }) => setSearchTerm(e.target.value)}
                         className="pl-10"
                       />
                     </div>
@@ -671,7 +669,7 @@ const SecurityCenter = () => {
                   <div className="flex gap-3">
                     <select
                       value={filters.severity}
-                      onChange={(e) => setFilters(prev => ({ ...prev, severity: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, severity: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todas as Severidades</option>
@@ -683,7 +681,7 @@ const SecurityCenter = () => {
 
                     <select
                       value={filters.type}
-                      onChange={(e) => setFilters(prev => ({ ...prev, type: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, type: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todos os Tipos</option>
@@ -696,7 +694,7 @@ const SecurityCenter = () => {
 
                     <select
                       value={filters.status}
-                      onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, status: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todos os Status</option>
@@ -715,7 +713,7 @@ const SecurityCenter = () => {
                     <Button
                       variant="destructive"
                       size="sm"
-                      onClick={() => {
+                      onClick=({ ( }) => {
                         selectedItems.forEach(id => blockThreat(id));
                         setSelectedItems([]);
                       }}
@@ -726,7 +724,7 @@ const SecurityCenter = () => {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => {
+                      onClick=({ ( }) => {
                         selectedItems.forEach(id => markAsFalsePositive(id));
                         setSelectedItems([]);
                       }}
@@ -821,3 +819,4 @@ const SecurityCenter = () => {
 };
 
 export default SecurityCenter;
+`

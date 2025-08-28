@@ -32,7 +32,7 @@ export default function ModuleManagement() {
 
   // Toggle module mutation
   const toggleModuleMutation = useMutation({
-    mutationFn, enabled }: { moduleId) => {
+    mutationFn, enabled }: ({ moduleId }) => {
       return await apiRequest(`/api/modules/${moduleId}/toggle`, {
         method,
         body),
@@ -56,7 +56,8 @@ export default function ModuleManagement() {
 
   // Activate module mutation
   const activateModuleMutation = useMutation({
-    mutationFn, plan }: { moduleId) => {
+    mutationFn, plan }: ({ moduleId }) => {
+`
       return await apiRequest(`/api/modules/${moduleId}/activate`, {
         method,
         body),
@@ -78,12 +79,14 @@ export default function ModuleManagement() {
     },
   });
 
-  const getModuleStatus = (module) => {
-    if (!module.isEnabled) return { status, color, text) > new Date(module.trialEndsAt)) {
-      return { status, color, text) return { status, color, text) return { status, color, text, color, text) => {
+  const getModuleStatus = (module) => ({ if (!module.isEnabled) return { status, color, text) > new Date(module.trialEndsAt)) {
+      return { status, color, text) return { status, color, text) return { status, color, text, color, text }) => {
     if (module.priceModel === 'free') return 'Gratuito';
+`
     if (module.priceModel === 'per_user') return `R$ ${module.pricePerUser}/usuário/mês`;
+`
     if (module.priceModel === 'monthly') return `R$ ${module.basePrice}/mês`;
+`
     return `R$ ${module.basePrice}`;
   };
 
@@ -147,7 +150,7 @@ export default function ModuleManagement() {
                         <Switch
                           checked={module.isEnabled}
                           onCheckedChange={(enabled) => 
-                            toggleModuleMutation.mutate({ moduleId, enabled })
+                            toggleModuleMutation.mutate({ moduleId: module.id, enabled })
                           }
                           disabled={toggleModuleMutation.isPending}
                         />
@@ -174,10 +177,10 @@ export default function ModuleManagement() {
                       </div>
 
                       {/* Limites de uso */}
-                      {module.usageLimits && Object.keys(module.usageLimits).length > 0 && (
+                      ({ module.usageLimits && Object.keys(module.usageLimits).length > 0 && (
                         <div className="space-y-2">
                           <h4 className="text-sm font-medium">Limites de Uso</h4>
-                          {Object.entries(module.usageLimits).map(([key, limit]: [string, any]) => {
+                          {Object.entries(module.usageLimits).map(([key, limit]: [string, any] }) => {
                             const current = module.currentUsage?.[key] || 0;
                             const percentage = getUsagePercentage(current, limit);
                             
@@ -206,8 +209,6 @@ export default function ModuleManagement() {
                         onClick={() => setSelectedModule(module)}
                       >
                         <Settings className="h-4 w-4 mr-2" />
-                        Configurar
-                      </Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -241,9 +242,9 @@ export default function ModuleManagement() {
                     </div>
 
                     {/* Funcionalidades */}
-                    {module.features && module.features.length > 0 && (
+                    ({ module.features && module.features.length > 0 && (
                       <div className="space-y-2">
-                        <h4 className="text-sm font-medium">Funcionalidades, 3).map((feature, index) => (
+                        <h4 className="text-sm font-medium">Funcionalidades, 3).map((feature, index }) => (
                             <li key={index} className="flex items-center space-x-2">
                               <CheckCircle className="h-3 w-3 text-green-500" />
                               <span>{feature}</span>
@@ -261,8 +262,8 @@ export default function ModuleManagement() {
                     <Button 
                       className="w-full"
                       onClick={() => activateModuleMutation.mutate({ 
-                        moduleId, 
-                        plan)}
+                        moduleId: module.id, 
+                        plan: 'trial' })}
                       disabled={activateModuleMutation.isPending}
                     >
                       {activateModuleMutation.isPending ? "Ativando..." : 
@@ -318,8 +319,6 @@ export default function ModuleManagement() {
 
               <div className="flex justify-end space-x-2">
                 <Button variant="outline" onClick={() => setSelectedModule(null)}>
-                  Fechar
-                </Button>
                 <Button>
                   Fazer Upgrade
                 </Button>
@@ -330,4 +329,4 @@ export default function ModuleManagement() {
       )}
     </div>
   );
-}
+}`

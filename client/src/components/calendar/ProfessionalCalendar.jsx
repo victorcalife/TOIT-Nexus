@@ -13,27 +13,26 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import
-  {
-    Calendar,
-    Clock,
-    Plus,
-    ChevronLeft,
-    ChevronRight,
+import { 
+
+
+
+
+
     Grid3X3,
-    List,
-    Users,
-    Video,
-    MapPin,
-    Bell,
-    Repeat,
+
+
+
+
+
+
     Trash2,
-    Edit,
-    Eye,
-    Filter,
-    Search,
-    Download,
-    Share2
+
+
+
+
+
+    Share2 }
   } from 'lucide-react';
 import { format, addDays, subDays, startOfWeek, endOfWeek, startOfMonth, endOfMonth, isSameDay, isSameMonth } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -288,21 +287,21 @@ const ProfessionalCalendar = ( { tenantId, userId, userRole } ) =>
           <Button
             variant="outline"
             size="sm"
-            onClick={ () => navigateCalendar( 'prev' ) }
+            onClick=({ ( }) => navigateCalendar( 'prev' ) }
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
           <Button
             variant="outline"
             size="sm"
-            onClick={ () => setCurrentDate( new Date() ) }
+            onClick=({ ( }) => setCurrentDate( new Date() ) }
           >
-            Hoje
+
           </Button>
           <Button
             variant="outline"
             size="sm"
-            onClick={ () => navigateCalendar( 'next' ) }
+            onClick=({ ( }) => navigateCalendar( 'next' ) }
           >
             <ChevronRight className="h-4 w-4" />
           </Button>
@@ -316,7 +315,7 @@ const ProfessionalCalendar = ( { tenantId, userId, userRole } ) =>
           <Input
             placeholder="Buscar eventos..."
             value={ searchTerm }
-            onChange={ ( e ) => setSearchTerm( e.target.value ) }
+            onChange=({ ( e  }) => setSearchTerm( e.target.value ) }
             className="pl-10 w-64"
           />
         </div>
@@ -328,7 +327,7 @@ const ProfessionalCalendar = ( { tenantId, userId, userRole } ) =>
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Todas</SelectItem>
-            { Object.entries( eventCategories ).map( ( [ key, category ] ) => (
+            ({ Object.entries( eventCategories ).map( ( [ key, category ]  }) => (
               <SelectItem key={ key } value={ key }>
                 { category.label }
               </SelectItem>
@@ -348,7 +347,7 @@ const ProfessionalCalendar = ( { tenantId, userId, userRole } ) =>
               key={ mode }
               variant={ viewMode === mode ? 'default' : 'ghost' }
               size="sm"
-              onClick={ () => setViewMode( mode ) }
+              onClick=({ ( }) => setViewMode( mode ) }
               className="h-8"
             >
               <Icon className="h-4 w-4 mr-1" />
@@ -361,11 +360,11 @@ const ProfessionalCalendar = ( { tenantId, userId, userRole } ) =>
         <div className="flex items-center space-x-2">
           <Button variant="outline" size="sm">
             <Download className="h-4 w-4 mr-1" />
-            Exportar
+
           </Button>
           <Button variant="outline" size="sm">
             <Share2 className="h-4 w-4 mr-1" />
-            Compartilhar
+
           </Button>
           <Button onClick={ handleCreateEvent }>
             <Plus className="h-4 w-4 mr-1" />
@@ -386,12 +385,12 @@ const ProfessionalCalendar = ( { tenantId, userId, userRole } ) =>
       <div
         key={ event.id }
         draggable
-        onDragStart={ ( e ) => handleDragStart( e, event ) }
-        onClick={ () => handleEditEvent( event ) }
-        className={ `
+        onDragStart=({ ( e  }) => handleDragStart( e, event ) }
+        onClick=({ ( }) => handleEditEvent( event ) }
+        className={ `}
           ${ category.color } text-white p-2 rounded-md mb-1 cursor-pointer
           hover:opacity-90 transition-opacity duration-200
-          text-xs font-medium shadow-sm
+          text-xs font-medium shadow-sm`
         `}
       >
         <div className="flex items-center space-x-1">
@@ -458,11 +457,11 @@ const ProfessionalCalendar = ( { tenantId, userId, userRole } ) =>
       {/* Dialog de Evento */ }
       <EventDialog
         isOpen={ isEventDialogOpen }
-        onClose={ () => setIsEventDialogOpen( false ) }
+        onClose=({ ( }) => setIsEventDialogOpen( false ) }
         eventForm={ eventForm }
         setEventForm={ setEventForm }
         onSave={ handleSaveEvent }
-        onDelete={ selectedEvent ? () => handleDeleteEvent( selectedEvent.id ) : null }
+        onDelete=({ selectedEvent ? ( }) => handleDeleteEvent( selectedEvent.id ) : null }
         isCreateMode={ isCreateMode }
         eventCategories={ eventCategories }
       />
@@ -506,19 +505,19 @@ const MonthView = ( { currentDate, events, onDrop, onDragOver, renderEvent } ) =
         return (
           <div
             key={ day.toString() }
-            onDrop={ ( e ) => onDrop( e, day ) }
-            onDragOver={ onDragOver }
+            onDrop=({ ( e  }) => onDrop( e, day ) }
+            onDragOver={ onDragOver }`
             className={ `
-              min-h-[120px] p-2 border border-slate-200
+              min-h-[120px] p-2 border border-slate-200}
               ${ isCurrentMonth ? 'bg-white' : 'bg-slate-50' }
               ${ isToday ? 'bg-blue-50 border-blue-300' : '' }
-              hover:bg-slate-50 transition-colors duration-200
+              hover:bg-slate-50 transition-colors duration-200`
             `}
-          >
+          >`
             <div className={ `
-              text-sm font-medium mb-1
+              text-sm font-medium mb-1}
               ${ isCurrentMonth ? 'text-slate-900' : 'text-slate-400' }
-              ${ isToday ? 'text-blue-600 font-bold' : '' }
+              ${ isToday ? 'text-blue-600 font-bold' : '' }`
             `}>
               { format( day, 'd' ) }
             </div>
@@ -563,14 +562,14 @@ const WeekView = ( { currentDate, events, onDrop, onDragOver, renderEvent } ) =>
 
         return (
           <div key={ day.toString() } className="space-y-1">
-            {/* Cabeçalho do dia */ }
+            {/* Cabeçalho do dia */ }`
             <div className={ `
-              h-12 p-2 text-center border border-slate-200 rounded
-              ${ isToday ? 'bg-blue-100 border-blue-300' : 'bg-slate-50' }
+              h-12 p-2 text-center border border-slate-200 rounded}
+              ${ isToday ? 'bg-blue-100 border-blue-300' : 'bg-slate-50' }`
             `}>
               <div className="text-xs text-slate-600">
                 { format( day, 'EEE', { locale: ptBR } ) }
-              </div>
+              </div>`
               <div className={ `text-lg font-semibold ${ isToday ? 'text-blue-600' : 'text-slate-900' }` }>
                 { format( day, 'd' ) }
               </div>
@@ -581,7 +580,7 @@ const WeekView = ( { currentDate, events, onDrop, onDragOver, renderEvent } ) =>
               { Array.from( { length: 24 }, ( _, hour ) => (
                 <div
                   key={ hour }
-                  onDrop={ ( e ) => onDrop( e, day ) }
+                  onDrop=({ ( e  }) => onDrop( e, day ) }
                   onDragOver={ onDragOver }
                   className="h-12 border border-slate-100 hover:bg-slate-50 transition-colors duration-200"
                 >
@@ -619,7 +618,7 @@ const DayView = ( { currentDate, events, onDrop, onDragOver, renderEvent } ) =>
         { Array.from( { length: 24 }, ( _, hour ) => (
           <div
             key={ hour }
-            onDrop={ ( e ) => onDrop( e, currentDate ) }
+            onDrop=({ ( e  }) => onDrop( e, currentDate ) }
             onDragOver={ onDragOver }
             className="flex items-center h-16 border border-slate-200 rounded hover:bg-slate-50 transition-colors duration-200"
           >
@@ -684,10 +683,9 @@ const DayView = ( { currentDate, events, onDrop, onDragOver, renderEvent } ) =>
 
 // Componente de Visualização de Agenda
 const AgendaView = ( { events, renderEvent } ) =>
-{
-  const sortedEvents = events.sort( ( a, b ) =>
-  {
-    const dateA = new Date( `${ a.startDate } ${ a.startTime }` );
+({ const sortedEvents = events.sort( ( a, b  }) =>
+  {`
+    const dateA = new Date( `${ a.startDate } ${ a.startTime }` );`
     const dateB = new Date( `${ b.startDate } ${ b.startTime }` );
     return dateA - dateB;
   } );
@@ -705,7 +703,7 @@ const AgendaView = ( { events, renderEvent } ) =>
 
   return (
     <div className="space-y-6">
-      { Object.entries( groupedEvents ).map( ( [ date, dayEvents ] ) => (
+      ({ Object.entries( groupedEvents ).map( ( [ date, dayEvents ]  }) => (
         <div key={ date }>
           <h3 className="text-lg font-semibold mb-3 text-slate-800">
             { format( new Date( date ), 'EEEE, d MMMM yyyy', { locale: ptBR } ) }
@@ -714,7 +712,7 @@ const AgendaView = ( { events, renderEvent } ) =>
             { dayEvents.map( event => (
               <Card key={ event.id } className="p-4 hover:shadow-md transition-shadow duration-200">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-4">`
                     <div className={ `w-4 h-4 rounded-full ${ eventCategories[ event.category ]?.color }` }></div>
                     <div>
                       <h4 className="font-semibold text-slate-900">{ event.title }</h4>
@@ -751,3 +749,4 @@ const AgendaView = ( { events, renderEvent } ) =>
 };
 
 export default ProfessionalCalendar;
+`

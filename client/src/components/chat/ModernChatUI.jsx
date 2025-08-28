@@ -14,57 +14,57 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
-import { 
-  MessageCircle, 
-  Send, 
-  Phone, 
-  Video, 
-  Mic, 
-  MicOff, 
-  VideoOff,
-  ScreenShare,
-  ScreenShareOff,
-  Users, 
-  UserPlus,
-  Settings,
-  Search, 
-  Paperclip, 
-  Image, 
-  FileText, 
-  Download,
-  Smile,
-  MoreHorizontal,
-  Pin,
-  Archive,
+import {  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   Trash2,
-  Edit,
-  Reply,
-  Forward,
-  Copy,
-  Star,
-  Clock,
-  Check,
-  CheckCheck,
-  AlertCircle,
-  Info,
-  X,
-  Plus,
+
+
+
+
+
+
+
+
+
+
+
+
   Minimize2,
   Maximize2,
   Volume2,
-  VolumeX,
-  Camera,
-  CameraOff,
-  PhoneCall,
-  PhoneOff,
-  Calendar,
-  MapPin,
-  Link,
-  Zap,
-  Heart,
-  ThumbsUp,
-  Laugh,
-  Frown
+
+
+
+
+
+
+
+
+
+
+
+
+ }
 } from 'lucide-react';
 import { format, isToday, isYesterday } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -409,7 +409,7 @@ const ModernChatUI = ({ tenantId, userId, userRole }) => {
         .filter(p => p !== 'current_user')
         .map(p => ({
           id: p,
-          name: `Usuário ${p}`,
+          name: `Usuário ${p}`,`
           avatar: `/avatars/${p}.jpg`,
           isMuted: false,
           isVideoOff: type === 'audio'
@@ -417,7 +417,7 @@ const ModernChatUI = ({ tenantId, userId, userRole }) => {
     ]);
 
     // Simular conexão
-    setTimeout(() => {
+    setTimeout(() => {`
       console.log(`Chamada ${type} iniciada com ${selectedConversation.name}`);
     }, 1000);
   };
@@ -560,7 +560,7 @@ const ModernChatUI = ({ tenantId, userId, userRole }) => {
       <ChatSidebar
         conversations={filteredConversations}
         selectedConversation={selectedConversation}
-        onSelectConversation={(conv) => {
+        onSelectConversation=({ (conv }) => {
           setSelectedConversation(conv);
           loadMessages(conv.id);
         }}
@@ -569,7 +569,7 @@ const ModernChatUI = ({ tenantId, userId, userRole }) => {
         onlineUsers={onlineUsers}
         userStatuses={userStatuses}
         collapsed={sidebarCollapsed}
-        onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
+        onToggleCollapse=({ ( }) => setSidebarCollapsed(!sidebarCollapsed)}
       />
 
       {/* Área Principal do Chat */}
@@ -602,7 +602,7 @@ const ModernChatUI = ({ tenantId, userId, userRole }) => {
               onSendMessage={sendMessage}
               onFileUpload={handleFileUpload}
               showEmojiPicker={showEmojiPicker}
-              onToggleEmojiPicker={() => setShowEmojiPicker(!showEmojiPicker)}
+              onToggleEmojiPicker=({ ( }) => setShowEmojiPicker(!showEmojiPicker)}
               fileInputRef={fileInputRef}
               isTyping={isTyping}
             />
@@ -639,3 +639,4 @@ const ModernChatUI = ({ tenantId, userId, userRole }) => {
 };
 
 export default ModernChatUI;
+`

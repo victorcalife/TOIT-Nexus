@@ -116,7 +116,7 @@ const TabsTrigger = React.forwardRef(({
 }, ref) => (
   <TabsPrimitive.Trigger
     ref={ref}
-    className={cn(
+    className={cn(}
       tabsTriggerVariants({ variant, size }),
       dismissible && "pr-8",
       className
@@ -136,9 +136,9 @@ const TabsTrigger = React.forwardRef(({
         </span>
       )}
     </div>
-    {dismissible && (
+    ({ dismissible && (
       <button
-        onClick={(e) => {
+        onClick={(e }) => {
           e.stopPropagation()
           onDismiss?.()
         }}
@@ -160,10 +160,9 @@ const TabsContent = React.forwardRef(({
   loading = false,
   children,
   ...props 
-}, ref) => {
-  const [hasBeenActive, setHasBeenActive] = React.useState(!lazy)
+}, ref) => ({ const [hasBeenActive, setHasBeenActive] = React.useState(!lazy)
 
-  React.useEffect(() => {
+  React.useEffect(( }) => {
     if (!hasBeenActive && !lazy) {
       setHasBeenActive(true)
     }
@@ -174,9 +173,9 @@ const TabsContent = React.forwardRef(({
       ref={ref}
       className={cn(
         "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-        className
+        className}
       )}
-      onFocus={() => setHasBeenActive(true)}
+      onFocus=({ ( }) => setHasBeenActive(true)}
       {...props}
     >
       {loading ? (
@@ -231,7 +230,7 @@ const NavigationTabs = React.forwardRef(({
       {...props}
     >
       <TabsList variant={variant}>
-        {tabs.map((tab) => (
+        ({ tabs.map((tab }) => (
           <TabsTrigger
             key={tab.value}
             value={tab.value}
@@ -246,7 +245,7 @@ const NavigationTabs = React.forwardRef(({
           </TabsTrigger>
         ))}
       </TabsList>
-      {tabs.map((tab) => (
+      ({ tabs.map((tab }) => (
         <TabsContent
           key={tab.value}
           value={tab.value}
@@ -271,11 +270,10 @@ const DynamicTabs = React.forwardRef(({
   maxTabs = 10,
   className,
   ...props 
-}, ref) => {
-  const [tabs, setTabs] = React.useState(initialTabs)
+}, ref) => ({ const [tabs, setTabs] = React.useState(initialTabs)
   const [activeTab, setActiveTab] = React.useState(initialTabs[0]?.value)
 
-  const addTab = (tab) => {
+  const addTab = (tab }) => {
     if (tabs.length < maxTabs) {
       setTabs(prev => [...prev, tab])
       setActiveTab(tab.value)
@@ -298,19 +296,19 @@ const DynamicTabs = React.forwardRef(({
     <div className={className}>
       <NavigationTabs
         ref={ref}
-        tabs={tabs.map(tab => ({
+        tabs=({ tabs.map(tab => ({
           ...tab,
           dismissible: true,
-          onDismiss: () => removeTab(tab.value)
+          onDismiss: ( }) => removeTab(tab.value)
         }))}
         activeTab={activeTab}
         onTabChange={setActiveTab}
         {...props}
       />
-      {tabs.length < maxTabs && (
+      ({ tabs.length < maxTabs && (
         <button
-          onClick={() => addTab({
-            value: `tab-${Date.now()}`,
+          onClick={( }) => addTab({
+            value: `tab-${Date.now()}`,`
             label: `Nova Aba ${tabs.length + 1}`,
             content: <div>Conteúdo da nova aba</div>
           })}
@@ -327,11 +325,10 @@ DynamicTabs.displayName = "DynamicTabs"
 /**
  * HOOK PARA GERENCIAR TABS
  */
-export const useTabs = (initialTab = "") => {
-  const [activeTab, setActiveTab] = React.useState(initialTab)
+export const useTabs = (initialTab = "") => ({ const [activeTab, setActiveTab] = React.useState(initialTab)
   const [tabHistory, setTabHistory] = React.useState([initialTab])
 
-  const changeTab = (tabValue) => {
+  const changeTab = (tabValue }) => {
     setActiveTab(tabValue)
     setTabHistory(prev => [...prev.filter(t => t !== tabValue), tabValue])
   }
@@ -360,8 +357,7 @@ export const useTabs = (initialTab = "") => {
 /**
  * HOOK PARA PERSISTIR ESTADO DAS TABS
  */
-export const usePersistedTabs = (key, initialTab = "") => {
-  const [activeTab, setActiveTab] = React.useState(() => {
+export const usePersistedTabs = (key, initialTab = "") => ({ const [activeTab, setActiveTab] = React.useState(( }) => {
     if (typeof window !== 'undefined') {
       return localStorage.getItem(key) || initialTab
     }
@@ -382,13 +378,14 @@ export const usePersistedTabs = (key, initialTab = "") => {
 }
 
 export {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
-  VerticalTabs,
-  NavigationTabs,
-  DynamicTabs,
+
+
+
+
+
+
+
   tabsListVariants,
   tabsTriggerVariants
 }
+`

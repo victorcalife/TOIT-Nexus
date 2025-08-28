@@ -3,20 +3,38 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  TrendingUp, 
-  Users, 
-  DollarSign, 
-  Timer, 
-  Download,
-  RefreshCw,
+import {
   BarChart3,
-  Target,
-  CreditCard
+  RefreshCw,
+  Download,
+  Users,
+  Timer,
+  TrendingUp,
+  DollarSign
 } from 'lucide-react';
 
-} catch (error) {
-      console.error('Erro ao carregar métricas, error);
+const SalesMetricsDashboard = () => {
+  const [metrics, setMetrics] = useState(null);
+  const [realTimeMetrics, setRealTimeMetrics] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const fetchMetrics = async () => {
+    try {
+      setRefreshing(true);
+      const [metricsResponse, realTimeResponse] = await Promise.all([
+        fetch('/api/admin/sales-metrics'),
+        fetch('/api/admin/real-time-metrics')
+      ]);
+      
+      if (metricsResponse.ok && realTimeResponse.ok) {
+        const metricsData = await metricsResponse.json();
+        const realTimeData = await realTimeResponse.json();
+        setMetrics(metricsData);
+        setRealTimeMetrics(realTimeData);
+      }
+    } catch (error) {
+      console.error('Erro ao carregar métricas:', error);
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -38,21 +56,21 @@ import {
         window.URL.revokeObjectURL(url);
       }
     } catch (error) {
-      console.error('Erro ao exportar métricas, error);
+      console.error('Erro ao exportar métricas:', error);
     }
   };
 
   useEffect(() => {
     fetchMetrics();
-    // Atualizar métricas em tempo real a cada 30 segundos
     const interval = setInterval(fetchMetrics, 30000);
     return () => clearInterval(interval);
   }, []);
 
   const formatCurrency = (value) => {
     return new Intl.NumberFormat('pt-BR', {
-      style,
-      currency).format(value);
+      style: 'currency',
+      currency: 'BRL'
+    }).format(value);
   };
 
   const formatPercentage = (value) => {
@@ -100,6 +118,7 @@ import {
             <RefreshCw className={`w-4 h-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
             Atualizar
           </Button>
+
           <Button
             onClick={() => exportMetrics('csv')}
             variant="outline"
@@ -120,9 +139,16 @@ import {
       </div>
 
       {/* Cards de Overview */}
-      <div className="grid grid-cols-1 md)}</div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Receita Total</CardTitle>
+            <DollarSign className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{formatCurrency(metrics?.overview?.totalRevenue || 0)}</div>
             <p className="text-xs text-muted-foreground">
-              MRR)}
+              MRR: {formatCurrency(metrics?.overview?.mrr || 0)}
             </p>
           </CardContent>
         </Card>
@@ -133,9 +159,9 @@ import {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{metrics.overview.totalUsers}</div>
+            <div className="text-2xl font-bold">{metrics?.overview?.totalUsers || 0}</div>
             <p className="text-xs text-muted-foreground">
-              ARPU)}
+              ARPU: {formatCurrency(metrics?.overview?.arpu || 0)}
             </p>
           </CardContent>
         </Card>
@@ -146,9 +172,9 @@ import {
             <Timer className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{metrics.overview.activeTrials}</div>
+            <div className="text-2xl font-bold">{metrics?.overview?.activeTrials || 0}</div>
             <p className="text-xs text-muted-foreground">
-              Conversão)}
+              Conversão: {formatPercentage(metrics?.overview?.conversionRate || 0)}
             </p>
           </CardContent>
         </Card>
@@ -160,7 +186,7 @@ import {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {metrics.revenue.growth > 0 ? '+' : ''}{formatPercentage(metrics.revenue.growth)}
+              {metrics?.revenue?.growth > 0 ? '+' : ''}{formatPercentage(metrics?.revenue?.growth || 0)}
             </div>
             <p className="text-xs text-muted-foreground">vs. mês anterior</p>
           </CardContent>
@@ -177,7 +203,28 @@ import {
           <CardDescription>Dados atualizados automaticamente</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 md)}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-green-600">
+                {formatCurrency(realTimeMetrics?.todayRevenue || 0)}
+              </div>
+              <div className="text-sm text-gray-500">Receita Hoje</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-blue-600">
+                {realTimeMetrics?.newSignups || 0}
+              </div>
+              <div className="text-sm text-gray-500">Novos Cadastros</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-purple-600">
+                {realTimeMetrics?.activeUsers || 0}
+              </div>
+              <div className="text-sm text-gray-500">Usuários Online</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-orange-600">
+                {formatCurrency(realTimeMetrics?.monthlyRevenue || 0)}
               </div>
               <div className="text-sm text-gray-500">Receita Mensal</div>
             </div>
@@ -195,7 +242,14 @@ import {
         </TabsList>
 
         <TabsContent value="subscriptions" className="space-y-4">
-          <div className="grid grid-cols-1 lg, index) => (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Distribuição por Plano</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {metrics?.subscriptions?.byPlan?.map((plan, index) => (
                     <div key={index} className="flex justify-between items-center">
                       <div className="flex items-center space-x-2">
                         <Badge variant="outline">{plan.plan}</Badge>
@@ -203,102 +257,81 @@ import {
                       </div>
                       <span className="font-medium">{formatCurrency(plan.revenue)}</span>
                     </div>
-                  ))}
+                  )) || []}
                 </div>
               </CardContent>
             </Card>
 
-            {/* Status das Contas */}
             <Card>
               <CardHeader>
-                <CardTitle>Status das Contas</CardTitle>
+                <CardTitle>Status das Assinaturas</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {metrics.subscriptions.byStatus.map((status, index) => (
-                    <div key={index} className="flex justify-between items-center">
-                      <span className="text-sm">{status.status}</span>
-                      <Badge 
-                        variant={
-                          status.status === 'Ativas' ? 'default' :
-                          status.status === 'Trial' ? 'secondary' : 'outline'
-                        }
-                      >
-                        {status.count}
-                      </Badge>
-                    </div>
-                  ))}
+                  <div className="flex justify-between">
+                    <span>Ativas</span>
+                    <span className="font-medium text-green-600">{metrics?.subscriptions?.active || 0}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Canceladas</span>
+                    <span className="font-medium text-red-600">{metrics?.subscriptions?.cancelled || 0}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Pausadas</span>
+                    <span className="font-medium text-yellow-600">{metrics?.subscriptions?.paused || 0}</span>
+                  </div>
                 </div>
               </CardContent>
             </Card>
           </div>
+        </TabsContent>
 
-          {/* Signups Recentes */}
+        <TabsContent value="trials" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Signups Recentes (Últimos 7 dias)</CardTitle>
+              <CardTitle>Análise de Trials</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-2">
-                {metrics.subscriptions.recentSignups.slice(0, 5).map((signup, index) => (
-                  <div key={index} className="flex justify-between items-center py-2 border-b last).toLocaleDateString('pt-BR')}
-                      </div>
-                    </div>
-                  </div>
-                ))}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="text-center">
+                  <div className="text-2xl font-bold">{metrics?.trials?.active || 0}</div>
+                  <div className="text-sm text-gray-500">Trials Ativos</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold">{metrics?.trials?.converted || 0}</div>
+                  <div className="text-sm text-gray-500">Convertidos</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold">{metrics?.trials?.expired || 0}</div>
+                  <div className="text-sm text-gray-500">Expirados</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold">{formatPercentage(metrics?.trials?.conversionRate || 0)}</div>
+                  <div className="text-sm text-gray-500">Taxa de Conversão</div>
+                </div>
               </div>
             </CardContent>
           </Card>
         </TabsContent>
 
-        <TabsContent value="trials" className="space-y-4">
-          <div className="grid grid-cols-1 lg)}
-                    </span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Performance de Trials</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div>
-                    <div className="flex justify-between mb-2">
-                      <span className="text-sm">Taxa de Conversão</span>
-                      <span className="text-sm font-medium">
-                        {formatPercentage(metrics.trials.conversionRate)}
-                      </span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div 
-                        className="bg-green-600 h-2 rounded-full" 
-                        style={{ width, 100)}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                  <div className="pt-2">
-                    <span className="text-sm text-gray-600">
-                      Duração Média)</CardTitle>
+        <TabsContent value="revenue" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Análise de Receita</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-2">
-                {metrics.revenue.monthly.map((month, index) => (
-                  <div key={index} className="flex justify-between items-center py-2">
-                    <span className="text-sm">{month.month}</span>
-                    <div className="text-right">
-                      <div className="font-medium">{formatCurrency(month.revenue)}</div>
-                      <div className="text-xs text-gray-500">{month.users} usuários</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="pt-4 border-t mt-4">
-                <div className="flex justify-between font-bold">
-                  <span>Total Anual</span>
-                  <span>{formatCurrency(metrics.revenue.yearly)}</span>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="text-center">
+                  <div className="text-2xl font-bold">{formatCurrency(metrics?.revenue?.monthly || 0)}</div>
+                  <div className="text-sm text-gray-500">Receita Mensal</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold">{formatCurrency(metrics?.revenue?.annual || 0)}</div>
+                  <div className="text-sm text-gray-500">Receita Anual</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold">{formatPercentage(metrics?.revenue?.growth || 0)}</div>
+                  <div className="text-sm text-gray-500">Crescimento</div>
                 </div>
               </div>
             </CardContent>
@@ -312,20 +345,15 @@ import {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {metrics.geography.byRegion.map((region, index) => (
+                {metrics?.geography?.map((location, index) => (
                   <div key={index} className="flex justify-between items-center">
-                    <div>
-                      <div className="font-medium">{region.region}</div>
-                      <div className="text-sm text-gray-500">{region.users} usuários</div>
-                    </div>
-                    <div className="text-right">
-                      <div className="font-medium">{formatCurrency(region.revenue)}</div>
-                      <div className="text-xs text-gray-500">
-                        {((region.revenue / metrics.overview.totalRevenue) * 100).toFixed(1)}%
-                      </div>
+                    <span>{location.country}</span>
+                    <div className="flex items-center space-x-2">
+                      <span className="text-sm text-gray-500">{location.users} usuários</span>
+                      <span className="font-medium">{formatCurrency(location.revenue)}</span>
                     </div>
                   </div>
-                ))}
+                )) || []}
               </div>
             </CardContent>
           </Card>
@@ -333,6 +361,6 @@ import {
       </Tabs>
     </div>
   );
-}
+};
 
-export default SalesMetricsDashboard;
+export default SalesMetricsDashboard;`

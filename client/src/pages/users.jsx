@@ -5,8 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import
-  {
+import { 
     Plus,
     Search,
     Users as UsersIcon,
@@ -15,30 +14,27 @@ import
     Shield,
     UserCheck,
     Crown,
-    User
+    User }
   } from "lucide-react";
-import
-  {
+import { 
     Dialog,
     DialogContent,
     DialogDescription,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
+    DialogTrigger, }
   } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import
-  {
+import { 
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
-    SelectValue,
+    SelectValue, }
   } from "@/components/ui/select";
 
 export default function Users()
-{
-  const [ searchTerm, setSearchTerm ] = useState( "" );
+({ const [ searchTerm, setSearchTerm ] = useState( "" );
   const [ isCreateDialogOpen, setIsCreateDialogOpen ] = useState( false );
   const { user);
 
@@ -97,7 +93,7 @@ export default function Users()
                 return 'Gerente';
               case 'employee':
                 return 'Funcionário';
-              default, lastName) => {
+              default, lastName }) => {
                 return `${ firstName[ 0 ] }${ lastName[ 0 ] }`.toUpperCase();
               };
 
@@ -122,8 +118,6 @@ export default function Users()
             <DialogTrigger asChild>
               <Button className="bg-primary-500 hover) => setIsCreateDialogOpen(false)}
                 >
-                  Cancelar
-                </Button>
                 <Button>
                   Criar Usuário
                 </Button>
@@ -186,7 +180,7 @@ export default function Users()
                       <Input
                         placeholder="Buscar usuários por nome ou email..."
                         value={ searchTerm }
-                        onChange={ ( e ) => setSearchTerm( e.target.value ) }
+                        onChange=({ ( e  }) => setSearchTerm( e.target.value ) }
                         className="pl-10"
                       />
                     </div>
@@ -199,7 +193,7 @@ export default function Users()
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {filteredUsers.map((user) => {
+              ({ filteredUsers.map((user }) => {
                 const RoleIcon = getRoleIcon(user.role);
                 return (
                   <div key={user.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover, user.lastName)}
@@ -228,8 +222,6 @@ export default function Users()
                     <div className="flex space-x-2">
                       <Button variant="ghost" size="sm">
                         <Edit className="w-4 h-4 mr-1" />
-                        Editar
-                      </Button>
                       { currentUser?.id !== user.id && (
                         <Button variant="ghost" size="sm" className="text-red-600 hover)}
                       </div>
@@ -244,3 +236,4 @@ export default function Users()
     </div>
   );
 }
+`

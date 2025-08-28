@@ -8,9 +8,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { 
+import {  
   Database, Globe, Code, Workflow, Upload, BarChart3, Play, TestTube, 
-  Plus, X, Save, Settings, Eye, Trash2, LogOut, RefreshCw
+  Plus, X, Save, Settings, Eye, Trash2, LogOut, RefreshCw }
 } from 'lucide-react';
 
 // SISTEMA COMPLETO TOIT NEXUS - PRONTO PARA GO-LIVE
@@ -23,8 +23,7 @@ export default function ToitNexusComplete() {
   const { toast } = useToast();
 
   // FORMS STATE
-  const [dbForm, setDbForm] = useState({
-    name, type, host, port,
+  const [dbForm, setDbForm] = useState(({ name, type, host, port,
     database, username, password, ssl);
 
   const [apiForm, setApiForm] = useState({
@@ -42,35 +41,32 @@ export default function ToitNexusComplete() {
 
   // QUERIES - DADOS REAIS DO BACKEND
   const { data= [], refetch,
-    queryFn) => apiRequest('/api/database-connections?tenantId=default'),
+    queryFn }) => apiRequest('/api/database-connections?tenantId=default'),
   });
 
-  const { data= [], refetch,
-    queryFn) => apiRequest('/api/api-connections?tenantId=default'),
+  const ({ data= [], refetch,
+    queryFn }) => apiRequest('/api/api-connections?tenantId=default'),
   });
 
-  const { data= [], refetch,
-    queryFn) => apiRequest('/api/query-builders?tenantId=default'),
+  const ({ data= [], refetch,
+    queryFn }) => apiRequest('/api/query-builders?tenantId=default'),
   });
 
-  const { data= [], refetch,
-    queryFn) => apiRequest('/api/complete-workflows?tenantId=default'),
+  const ({ data= [], refetch,
+    queryFn }) => apiRequest('/api/complete-workflows?tenantId=default'),
   });
 
-  const { data= [] } = useQuery({
-    queryKey,
-    queryFn) => apiRequest('/api/kpi-dashboards?tenantId=default'),
+  const { data= [] } = useQuery(({ queryKey,
+    queryFn }) => apiRequest('/api/kpi-dashboards?tenantId=default'),
   });
 
-  const { data= [] } = useQuery({
-    queryKey,
-    queryFn) => apiRequest('/api/uploaded-files?tenantId=default'),
+  const { data= [] } = useQuery(({ queryKey,
+    queryFn }) => apiRequest('/api/uploaded-files?tenantId=default'),
   });
 
   // MUTATIONS
-  const createDbMutation = useMutation({
-    mutationFn) => apiRequest('/api/database-connections', { method, body, tenantId),
-    onSuccess) => {
+  const createDbMutation = useMutation(({ mutationFn) => apiRequest('/api/database-connections', { method, body, tenantId),
+    onSuccess }) => {
       toast({ title, description);
       refetchDb();
       setShowCreateDbConnection(false);
@@ -78,9 +74,8 @@ export default function ToitNexusComplete() {
     }
   });
 
-  const createApiMutation = useMutation({
-    mutationFn) => apiRequest('/api/api-connections', { method, body, tenantId),
-    onSuccess) => {
+  const createApiMutation = useMutation(({ mutationFn) => apiRequest('/api/api-connections', { method, body, tenantId),
+    onSuccess }) => {
       toast({ title, description);
       refetchApi();
       setShowCreateApiConnection(false);
@@ -88,9 +83,8 @@ export default function ToitNexusComplete() {
     }
   });
 
-  const createQueryMutation = useMutation({
-    mutationFn) => apiRequest('/api/query-builders', { method, body, tenantId, userId),
-    onSuccess) => {
+  const createQueryMutation = useMutation(({ mutationFn) => apiRequest('/api/query-builders', { method, body, tenantId, userId),
+    onSuccess }) => {
       toast({ title, description);
       refetchQueries();
       setShowCreateQuery(false);
@@ -98,9 +92,8 @@ export default function ToitNexusComplete() {
     }
   });
 
-  const createWorkflowMutation = useMutation({
-    mutationFn) => apiRequest('/api/complete-workflows', { method, body, tenantId, userId),
-    onSuccess) => {
+  const createWorkflowMutation = useMutation(({ mutationFn) => apiRequest('/api/complete-workflows', { method, body, tenantId, userId),
+    onSuccess }) => {
       toast({ title, description);
       refetchWorkflows();
       setShowCreateWorkflow(false);
@@ -108,27 +101,24 @@ export default function ToitNexusComplete() {
     }
   });
 
-  const testDbMutation = useMutation({
-    mutationFn) => apiRequest(`/api/database-connections/${id}/test`, { method),
-    onSuccess) => {
+  const testDbMutation = useMutation(({ mutationFn }) => apiRequest(`/api/database-connections/${id}/test`, ({ method),
+    onSuccess }) => {
       toast({ 
         title, 
         description,
         variant);
     }
   });
-
-  const executeQueryMutation = useMutation({
-    mutationFn) => apiRequest(`/api/query-builders/${id}/execute`, { method),
-    onSuccess) => {
+`
+  const executeQueryMutation = useMutation(({ mutationFn }) => apiRequest(`/api/query-builders/${id}/execute`, ({ method),
+    onSuccess }) => {
       toast({ title, description);
       refetchQueries();
     }
   });
-
-  const executeWorkflowMutation = useMutation({
-    mutationFn) => apiRequest(`/api/complete-workflows/${id}/execute`, { method),
-    onSuccess) => {
+`
+  const executeWorkflowMutation = useMutation(({ mutationFn }) => apiRequest(`/api/complete-workflows/${id}/execute`, ({ method),
+    onSuccess }) => {
       toast({ title, description);
       refetchWorkflows();
     }
@@ -166,18 +156,18 @@ export default function ToitNexusComplete() {
       <div className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex space-x-1 py-3">
-            {[
+            ({ [
               { key, label, icon,
               { key, label, icon,
               { key, label, icon,
               { key, label, icon,
-              { key, label, icon, label, icon) => (
+              { key, label, icon, label, icon }) => (
               <button
                 key={key}
-                onClick={() => setActiveSection(key)}
+                onClick=({ ( }) => setActiveSection(key)}`
                 className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all ${
                   activeSection === key 
-                    ? 'bg-blue-600 text-white shadow-md' 
+                    ? 'bg-blue-600 text-white shadow-md' }
                     : 'text-gray-600 hover))}
           </div>
         </div>
@@ -187,7 +177,7 @@ export default function ToitNexusComplete() {
       <div className="max-w-7xl mx-auto px-4 py-6">
         
         {/* DASHBOARD */}
-        {activeSection === 'dashboard' && (
+        ({ activeSection === 'dashboard' && (
           <div className="space-y-6">
             <div className="grid grid-cols-1 md, PostgreSQL, SQL Server, Oracle)</span>
                       </li>
@@ -239,7 +229,7 @@ export default function ToitNexusComplete() {
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold">Conexões Universais</h2>
               <div className="flex space-x-3">
-                <Button onClick={() => setShowCreateDbConnection(true)} className="bg-blue-600 hover) => setShowCreateApiConnection(true)} className="bg-green-600 hover)</span>
+                <Button onClick={( }) => setShowCreateDbConnection(true)} className="bg-blue-600 hover) => setShowCreateApiConnection(true)} className="bg-green-600 hover)</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -255,7 +245,7 @@ export default function ToitNexusComplete() {
                             <Button 
                               size="sm" 
                               variant="outline"
-                              onClick={() => testDbMutation.mutate(conn.id)}
+                              onClick=({ ( }) => testDbMutation.mutate(conn.id)}
                               disabled={testDbMutation.isPending}
                             >
                               <TestTube className="w-4 h-4" />
@@ -301,11 +291,11 @@ export default function ToitNexusComplete() {
         )}
 
         {/* QUERY BUILDER */}
-        {activeSection === 'queries' && (
+        ({ activeSection === 'queries' && (
           <div className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold">Query Builder No-Code</h2>
-              <Button onClick={() => setShowCreateQuery(true)} className="bg-purple-600 hover) {query.id}>
+              <Button onClick={( }) => setShowCreateQuery(true)} className="bg-purple-600 hover) {query.id}>
                     <CardHeader>
                       <CardTitle className="text-lg">{query.name}</CardTitle>
                       <p className="text-sm text-gray-600">{query.description}</p>
@@ -318,7 +308,6 @@ export default function ToitNexusComplete() {
                             className="flex-1"
                           >
                             <Play className="w-4 h-4 mr-1" />
-                            Executar
                           </Button>
                           <Button size="sm" variant="outline">
                             <Eye className="w-4 h-4" />
@@ -334,11 +323,11 @@ export default function ToitNexusComplete() {
         )}
 
         {/* WORKFLOWS */}
-        {activeSection === 'workflows' && (
+        ({ activeSection === 'workflows' && (
           <div className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold">Workflows Automatizados</h2>
-              <Button onClick={() => setShowCreateWorkflow(true)} className="bg-orange-600 hover) {workflow.id}>
+              <Button onClick={( }) => setShowCreateWorkflow(true)} className="bg-orange-600 hover) {workflow.id}>
                     <CardHeader>
                       <CardTitle className="text-lg">{workflow.name}</CardTitle>
                       <p className="text-sm text-gray-600">{workflow.description}</p>
@@ -351,7 +340,6 @@ export default function ToitNexusComplete() {
                             className="flex-1"
                           >
                             <Play className="w-4 h-4 mr-1" />
-                            Executar
                           </Button>
                           <Button size="sm" variant="outline">
                             <Settings className="w-4 h-4" />
@@ -377,13 +365,13 @@ export default function ToitNexusComplete() {
       {/* MODALS */}
       
       {/* CREATE DB CONNECTION MODAL */}
-      {showCreateDbConnection && (
+      ({ showCreateDbConnection && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <Card className="w-full max-w-lg mx-4">
             <CardHeader>
               <div className="flex justify-between items-center">
                 <CardTitle>Nova Conexão de Banco</CardTitle>
-                <Button variant="ghost" size="sm" onClick={() => setShowCreateDbConnection(false)}>
+                <Button variant="ghost" size="sm" onClick={( }) => setShowCreateDbConnection(false)}>
                   <X className="w-4 h-4" />
                 </Button>
               </div>
@@ -393,13 +381,13 @@ export default function ToitNexusComplete() {
                 <Label>Nome da Conexão</Label>
                 <Input 
                   value={dbForm.name}
-                  onChange={(e) => setDbForm({...dbForm, name)}
+                  onChange=({ (e }) => setDbForm({...dbForm, name)}
                   placeholder="Meu Banco MySQL"
                 />
               </div>
               <div>
                 <Label>Tipo do Banco</Label>
-                <Select value={dbForm.type} onValueChange={(value) => setDbForm({...dbForm, type)}>
+                <Select value={dbForm.type} onValueChange=({ (value }) => setDbForm({...dbForm, type)}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -416,7 +404,7 @@ export default function ToitNexusComplete() {
                   <Label>Host</Label>
                   <Input 
                     value={dbForm.host}
-                    onChange={(e) => setDbForm({...dbForm, host)}
+                    onChange=({ (e }) => setDbForm({...dbForm, host)}
                     placeholder="api.toit.com.br"
                   />
                 </div>
@@ -425,7 +413,7 @@ export default function ToitNexusComplete() {
                   <Input 
                     type="number"
                     value={dbForm.port}
-                    onChange={(e) => setDbForm({...dbForm, port)})}
+                    onChange=({ (e }) => setDbForm({...dbForm, port)})}
                   />
                 </div>
               </div>
@@ -433,7 +421,7 @@ export default function ToitNexusComplete() {
                 <Label>Banco de Dados</Label>
                 <Input 
                   value={dbForm.database}
-                  onChange={(e) => setDbForm({...dbForm, database)}
+                  onChange=({ (e }) => setDbForm({...dbForm, database)}
                   placeholder="nome_do_banco"
                 />
               </div>
@@ -442,7 +430,7 @@ export default function ToitNexusComplete() {
                   <Label>Usuário</Label>
                   <Input 
                     value={dbForm.username}
-                    onChange={(e) => setDbForm({...dbForm, username)}
+                    onChange=({ (e }) => setDbForm({...dbForm, username)}
                     placeholder="usuario"
                   />
                 </div>
@@ -451,17 +439,16 @@ export default function ToitNexusComplete() {
                   <Input 
                     type="password"
                     value={dbForm.password}
-                    onChange={(e) => setDbForm({...dbForm, password)}
+                    onChange=({ (e }) => setDbForm({...dbForm, password)}
                     placeholder="senha"
                   />
                 </div>
               </div>
               <div className="flex justify-end space-x-3">
-                <Button variant="outline" onClick={() => setShowCreateDbConnection(false)}>
-                  Cancelar
+                <Button variant="outline" onClick=({ ( }) => setShowCreateDbConnection(false)}>
                 </Button>
                 <Button 
-                  onClick={() => createDbMutation.mutate(dbForm)}
+                  onClick=({ ( }) => createDbMutation.mutate(dbForm)}
                   disabled={createDbMutation.isPending}
                 >
                   {createDbMutation.isPending ? <RefreshCw className="w-4 h-4 animate-spin mr-2" /> : <Save className="w-4 h-4 mr-2" />}
@@ -474,13 +461,13 @@ export default function ToitNexusComplete() {
       )}
 
       {/* CREATE API CONNECTION MODAL */}
-      {showCreateApiConnection && (
+      ({ showCreateApiConnection && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <Card className="w-full max-w-lg mx-4">
             <CardHeader>
               <div className="flex justify-between items-center">
                 <CardTitle>Nova Conexão API</CardTitle>
-                <Button variant="ghost" size="sm" onClick={() => setShowCreateApiConnection(false)}>
+                <Button variant="ghost" size="sm" onClick={( }) => setShowCreateApiConnection(false)}>
                   <X className="w-4 h-4" />
                 </Button>
               </div>
@@ -490,7 +477,7 @@ export default function ToitNexusComplete() {
                 <Label>Nome da API</Label>
                 <Input 
                   value={apiForm.name}
-                  onChange={(e) => setApiForm({...apiForm, name)}
+                  onChange=({ (e }) => setApiForm({...apiForm, name)}
                   placeholder="Minha API"
                 />
               </div>
@@ -498,7 +485,7 @@ export default function ToitNexusComplete() {
                 <Label>URL Base</Label>
                 <Input 
                   value={apiForm.baseUrl}
-                  onChange={(e) => setApiForm({...apiForm, baseUrl)}
+                  onChange=({ (e }) => setApiForm({...apiForm, baseUrl)}
                   placeholder="https) => setApiForm({...apiForm, authType)}>
                   <SelectTrigger>
                     <SelectValue />
@@ -516,16 +503,15 @@ export default function ToitNexusComplete() {
                 <Input 
                   type="password"
                   value={apiForm.authConfig.token}
-                  onChange={(e) => setApiForm({...apiForm, authConfig)}
+                  onChange=({ (e }) => setApiForm({...apiForm, authConfig)}
                   placeholder="seu_token_aqui"
                 />
               </div>
               <div className="flex justify-end space-x-3">
-                <Button variant="outline" onClick={() => setShowCreateApiConnection(false)}>
-                  Cancelar
+                <Button variant="outline" onClick=({ ( }) => setShowCreateApiConnection(false)}>
                 </Button>
                 <Button 
-                  onClick={() => createApiMutation.mutate(apiForm)}
+                  onClick=({ ( }) => createApiMutation.mutate(apiForm)}
                   disabled={createApiMutation.isPending}
                 >
                   {createApiMutation.isPending ? <RefreshCw className="w-4 h-4 animate-spin mr-2" /> : <Save className="w-4 h-4 mr-2" />}
@@ -538,13 +524,13 @@ export default function ToitNexusComplete() {
       )}
 
       {/* CREATE QUERY MODAL */}
-      {showCreateQuery && (
+      ({ showCreateQuery && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <Card className="w-full max-w-lg mx-4">
             <CardHeader>
               <div className="flex justify-between items-center">
                 <CardTitle>Novo Query Builder</CardTitle>
-                <Button variant="ghost" size="sm" onClick={() => setShowCreateQuery(false)}>
+                <Button variant="ghost" size="sm" onClick={( }) => setShowCreateQuery(false)}>
                   <X className="w-4 h-4" />
                 </Button>
               </div>
@@ -554,7 +540,7 @@ export default function ToitNexusComplete() {
                 <Label>Nome da Query</Label>
                 <Input 
                   value={queryForm.name}
-                  onChange={(e) => setQueryForm({...queryForm, name)}
+                  onChange=({ (e }) => setQueryForm({...queryForm, name)}
                   placeholder="Relatório de Vendas"
                 />
               </div>
@@ -562,13 +548,13 @@ export default function ToitNexusComplete() {
                 <Label>Descrição</Label>
                 <Textarea 
                   value={queryForm.description}
-                  onChange={(e) => setQueryForm({...queryForm, description)}
+                  onChange=({ (e }) => setQueryForm({...queryForm, description)}
                   placeholder="Descreva o que esta query faz..."
                 />
               </div>
               <div>
                 <Label>Tipo de Conexão</Label>
-                <Select value={queryForm.connectionType} onValueChange={(value) => setQueryForm({...queryForm, connectionType)}>
+                <Select value={queryForm.connectionType} onValueChange=({ (value }) => setQueryForm({...queryForm, connectionType)}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -580,13 +566,13 @@ export default function ToitNexusComplete() {
               </div>
               <div>
                 <Label>Conexão</Label>
-                <Select value={queryForm.connectionId} onValueChange={(value) => setQueryForm({...queryForm, connectionId)}>
+                <Select value={queryForm.connectionId} onValueChange=({ (value }) => setQueryForm({...queryForm, connectionId)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Selecionar conexão" />
                   </SelectTrigger>
                   <SelectContent>
-                    {queryForm.connectionType === 'database' ? (
-                      dbConnections.map((conn) => (
+                    ({ queryForm.connectionType === 'database' ? (
+                      dbConnections.map((conn }) => (
                         <SelectItem key={conn.id} value={conn.id}>
                           {conn.name} ({conn.type})
                         </SelectItem>
@@ -600,11 +586,10 @@ export default function ToitNexusComplete() {
                 </Select>
               </div>
               <div className="flex justify-end space-x-3">
-                <Button variant="outline" onClick={() => setShowCreateQuery(false)}>
-                  Cancelar
+                <Button variant="outline" onClick=({ ( }) => setShowCreateQuery(false)}>
                 </Button>
                 <Button 
-                  onClick={() => createQueryMutation.mutate(queryForm)}
+                  onClick=({ ( }) => createQueryMutation.mutate(queryForm)}
                   disabled={createQueryMutation.isPending}
                 >
                   {createQueryMutation.isPending ? <RefreshCw className="w-4 h-4 animate-spin mr-2" /> : <Save className="w-4 h-4 mr-2" />}
@@ -617,13 +602,13 @@ export default function ToitNexusComplete() {
       )}
 
       {/* CREATE WORKFLOW MODAL */}
-      {showCreateWorkflow && (
+      ({ showCreateWorkflow && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <Card className="w-full max-w-lg mx-4">
             <CardHeader>
               <div className="flex justify-between items-center">
                 <CardTitle>Novo Workflow</CardTitle>
-                <Button variant="ghost" size="sm" onClick={() => setShowCreateWorkflow(false)}>
+                <Button variant="ghost" size="sm" onClick={( }) => setShowCreateWorkflow(false)}>
                   <X className="w-4 h-4" />
                 </Button>
               </div>
@@ -633,7 +618,7 @@ export default function ToitNexusComplete() {
                 <Label>Nome do Workflow</Label>
                 <Input 
                   value={workflowForm.name}
-                  onChange={(e) => setWorkflowForm({...workflowForm, name)}
+                  onChange=({ (e }) => setWorkflowForm({...workflowForm, name)}
                   placeholder="Processamento Automático"
                 />
               </div>
@@ -641,16 +626,15 @@ export default function ToitNexusComplete() {
                 <Label>Descrição</Label>
                 <Textarea 
                   value={workflowForm.description}
-                  onChange={(e) => setWorkflowForm({...workflowForm, description)}
+                  onChange=({ (e }) => setWorkflowForm({...workflowForm, description)}
                   placeholder="Descreva o workflow..."
                 />
               </div>
               <div className="flex justify-end space-x-3">
-                <Button variant="outline" onClick={() => setShowCreateWorkflow(false)}>
-                  Cancelar
+                <Button variant="outline" onClick=({ ( }) => setShowCreateWorkflow(false)}>
                 </Button>
                 <Button 
-                  onClick={() => createWorkflowMutation.mutate(workflowForm)}
+                  onClick=({ ( }) => createWorkflowMutation.mutate(workflowForm)}
                   disabled={createWorkflowMutation.isPending}
                 >
                   {createWorkflowMutation.isPending ? <RefreshCw className="w-4 h-4 animate-spin mr-2" /> : <Save className="w-4 h-4 mr-2" />}
@@ -663,4 +647,4 @@ export default function ToitNexusComplete() {
       )}
     </div>
   );
-}
+}`

@@ -4,9 +4,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { CheckCircle, Mail, Clock, AlertCircle } from "lucide-react";
 import { StandardHeader } from "@/components/standard-header";
 import workflowLogo from "@/assets/SELOtoit-workflow-logo.svg";
-
-export default function VerifyEmail() {
-  const [status, setStatus] = useState<'loading' | 'success' | 'error' | 'expired'>('loading');
+  
+function VerifyEmail() {
+  const [status, setStatus] = useState('loading');
   const [message, setMessage] = useState('');
   const [accountActivated, setAccountActivated] = useState(false);
   const [userId, setUserId] = useState('');
@@ -33,12 +33,15 @@ export default function VerifyEmail() {
   const verifyEmailToken = async (token, userId) => {
     try {
       const response = await fetch(`/api/verification/verify-code`, {
-        method,
-        headers,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
         },
-        body,
-          type,
-          code)
+        body: JSON.stringify({
+          type: 'email',
+          code: token,
+          userId: userId
+        })
       });
 
       const result = await response.json();
@@ -58,7 +61,7 @@ export default function VerifyEmail() {
               setAccountActivated(isActive);
             }
           } catch (error) {
-            console.error('Erro ao verificar status da conta, error);
+            console.error('Erro ao verificar status da conta:', error);
           }
         };
         
@@ -71,7 +74,7 @@ export default function VerifyEmail() {
         setMessage(result.message || 'Erro ao verificar email');
       }
     } catch (error) {
-      console.error('Erro na verificação, error);
+      console.error('Erro na verificação:', error);
       setStatus('error');
       setMessage('Erro de conexão');
     }
@@ -83,10 +86,14 @@ export default function VerifyEmail() {
     setResendLoading(true);
     try {
       const response = await fetch('/api/verification/resend', {
-        method,
-        headers,
-        body,
-          type)
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          type: 'email',
+          userId: userId
+        })
       });
 
       const result = await response.json();
@@ -112,7 +119,12 @@ export default function VerifyEmail() {
       case 'error':
       case 'expired':
         return <AlertCircle className="h-16 w-16 text-red-500" />;
-      default) => {
+      default:
+        return <Clock className="h-16 w-16 text-gray-500" />;
+    }
+  };
+
+  const getStatusColor = () => {
     switch (status) {
       case 'success':
         return 'text-green-600';
@@ -121,22 +133,38 @@ export default function VerifyEmail() {
         return 'text-red-600';
       case 'loading':
         return 'text-blue-600';
-      default)}
-              </div>
-              
-              <CardTitle className={`text-2xl font-semibold ${getStatusColor()}`}>
-                {status === 'loading' && 'Verificando email...'}
-                {status === 'success' && 'Email verificado!'}
-                {status === 'error' && 'Erro na verificação'}
-                {status === 'expired' && 'Link expirado'}
-              </CardTitle>
-              
-              <CardDescription className="text-center">
-                {message}
-              </CardDescription>
-            </CardHeader>
+      default:
+        return 'text-gray-600';
+    }
+  };
 
-            <CardContent className="space-y-4">
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">TOIT Nexus</h1>
+          <p className="text-gray-600">Verificação de Email</p>
+        </div>
+
+        <Card className="shadow-lg">
+          <CardHeader className="text-center space-y-4">
+            <div className="flex justify-center">
+              {getStatusIcon()}
+            </div>
+            
+            <CardTitle className={`text-2xl font-semibold ${getStatusColor()}`}>
+              {status === 'loading' && 'Verificando email...'}
+              {status === 'success' && 'Email verificado!'}
+              {status === 'error' && 'Erro na verificação'}
+              {status === 'expired' && 'Link expirado'}
+            </CardTitle>
+            
+            <CardDescription className="text-center">
+              {message}
+            </CardDescription>
+          </CardHeader>
+
+          <CardContent className="space-y-4">
               {status === 'success' && (
                 <div className="text-center space-y-4">
                   {accountActivated ? (
@@ -146,8 +174,23 @@ export default function VerifyEmail() {
                         Você já pode fazer login e usar a plataforma.
                       </p>
                     </div>
-                  ) {() => window.location.href = accountActivated ? '/login' : `/verify-phone?userId=${userId}`}
-                    className="w-full bg-green-500 hover)}
+                  ) : (
+                    <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                      <p className="text-yellow-800 font-medium">📱 Verificação de telefone pendente</p>
+                      <p className="text-yellow-600 text-sm mt-1">
+                        Para ativar completamente sua conta, verifique seu telefone.
+                      </p>
+                    </div>
+                  )}
+                  
+                  <Button 
+                    onClick={() => window.location.href = accountActivated ? '/login' : `/verify-phone?userId=${userId}`}
+                    className="w-full bg-green-500 hover:bg-green-600"
+                  >
+                    {accountActivated ? 'Fazer Login' : 'Verificar Telefone'}
+                  </Button>
+                </div>
+              )}
 
               {(status === 'error' || status === 'expired') && (
                 <div className="text-center space-y-4">
@@ -164,7 +207,11 @@ export default function VerifyEmail() {
                     <Button 
                       onClick={handleResendEmail}
                       disabled={resendLoading}
-                      className="w-full bg-blue-500 hover)}
+                      className="w-full bg-blue-500 hover:bg-blue-600"
+                    >
+                      {resendLoading ? 'Reenviando...' : 'Reenviar Email'}
+                    </Button>
+                  )}
                   
                   <Button 
                     variant="outline"
@@ -195,6 +242,9 @@ export default function VerifyEmail() {
           </div>
         </div>
       </div>
-    </div>
-  );
-}
+    
+  )
+  
+};
+
+export default VerifyEmail;

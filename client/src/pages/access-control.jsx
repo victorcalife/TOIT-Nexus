@@ -26,9 +26,8 @@ const queryClient = useQueryClient();
   const { data= [], isLoading,
   });
 
-  const setupDefaultPermissions = useMutation({
-    mutationFn) => apiRequest('/api/access-control/setup-default-permissions', { method),
-    onSuccess) => {
+  const setupDefaultPermissions = useMutation(({ mutationFn) => apiRequest('/api/access-control/setup-default-permissions', { method),
+    onSuccess }) => {
       toast({ title, description);
       queryClient.invalidateQueries({ queryKey);
       queryClient.invalidateQueries({ queryKey);
@@ -38,10 +37,9 @@ const queryClient = useQueryClient();
     },
   });
 
-  const createDepartment = useMutation({
-    mutationFn) =>
+  const createDepartment = useMutation(({ mutationFn) =>
       apiRequest('/api/access-control/departments', { method, body),
-    onSuccess) => {
+    onSuccess }) => {
       toast({ title, description);
       queryClient.invalidateQueries({ queryKey);
     },
@@ -50,10 +48,9 @@ const queryClient = useQueryClient();
     },
   });
 
-  const createPermission = useMutation({
-    mutationFn) =>
+  const createPermission = useMutation(({ mutationFn) =>
       apiRequest('/api/access-control/permissions', { method, body),
-    onSuccess) => {
+    onSuccess }) => {
       toast({ title, description);
       queryClient.invalidateQueries({ queryKey);
     },
@@ -63,7 +60,7 @@ const queryClient = useQueryClient();
   });
 
   const assignUserToDepartment = useMutation({
-    mutationFn, departmentId }: { userId) =>
+    mutationFn, departmentId }: ({ userId }) =>
       apiRequest(`/api/access-control/users/${userId}/departments`, {
         method,
         body,
@@ -90,7 +87,7 @@ const queryClient = useQueryClient();
           </p>
         </div>
         <Button
-          onClick={() => setupDefaultPermissions.mutate()}
+          onClick=({ ( }) => setupDefaultPermissions.mutate()}
           disabled={setupDefaultPermissions.isPending}
           variant="outline"
         >
@@ -103,8 +100,6 @@ const queryClient = useQueryClient();
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="departments">
             <Building2 className="h-4 w-4 mr-2" />
-            Departamentos
-          </TabsTrigger>
           <TabsTrigger value="permissions">
             <Key className="h-4 w-4 mr-2" />
             Permissões
@@ -115,8 +110,6 @@ const queryClient = useQueryClient();
           </TabsTrigger>
           <TabsTrigger value="examples">
             <Shield className="h-4 w-4 mr-2" />
-            Exemplos
-          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="departments" className="space-y-4">
@@ -187,7 +180,7 @@ const queryClient = useQueryClient();
           <div className="grid grid-cols-1 md);
 }
 
-function DepartmentDialog({ onSubmit }: { onSubmit) => void }) {
+function DepartmentDialog({ onSubmit }: ({ onSubmit }) => void }) {
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     name,
@@ -223,7 +216,7 @@ function DepartmentDialog({ onSubmit }: { onSubmit) => void }) {
             <Input
               id="name"
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name)}
+              onChange=({ (e }) => setFormData({ ...formData, name)}
               placeholder="Ex) => setFormData({ ...formData, type)}>
               <SelectTrigger>
                 <SelectValue placeholder="Selecione o tipo" />
@@ -245,7 +238,7 @@ function DepartmentDialog({ onSubmit }: { onSubmit) => void }) {
             <Textarea
               id="description"
               value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description)}
+              onChange=({ (e }) => setFormData({ ...formData, description)}
               placeholder="Descreva as responsabilidades do departamento"
             />
           </div>
@@ -258,7 +251,7 @@ function DepartmentDialog({ onSubmit }: { onSubmit) => void }) {
   );
 }
 
-function PermissionDialog({ onSubmit }: { onSubmit) => void }) {
+function PermissionDialog({ onSubmit }: ({ onSubmit }) => void }) {
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     name,
@@ -295,7 +288,7 @@ function PermissionDialog({ onSubmit }: { onSubmit) => void }) {
             <Input
               id="name"
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name)}
+              onChange=({ (e }) => setFormData({ ...formData, name)}
               placeholder="Ex) => setFormData({ ...formData, resource)}>
               <SelectTrigger>
                 <SelectValue placeholder="Selecione o recurso" />
@@ -312,7 +305,7 @@ function PermissionDialog({ onSubmit }: { onSubmit) => void }) {
           </div>
           <div>
             <Label htmlFor="action">Ação</Label>
-            <Select value={formData.action} onValueChange={(value) => setFormData({ ...formData, action)}>
+            <Select value={formData.action} onValueChange=({ (value }) => setFormData({ ...formData, action)}>
               <SelectTrigger>
                 <SelectValue placeholder="Selecione a ação" />
               </SelectTrigger>
@@ -329,7 +322,7 @@ function PermissionDialog({ onSubmit }: { onSubmit) => void }) {
             <Textarea
               id="description"
               value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description)}
+              onChange=({ (e }) => setFormData({ ...formData, description)}
               placeholder="Descreva o que esta permissão permite"
             />
           </div>
@@ -346,12 +339,10 @@ function UserDepartmentAssignment({
   user, 
   departments, 
   onAssign 
-}: { 
-  user) => void;
-}) {
-  const [selectedDept, setSelectedDept] = useState('');
+}: ({ user }) => void;
+}) ({ const [selectedDept, setSelectedDept] = useState('');
 
-  const handleAssign = () => {
+  const handleAssign = ( }) => {
     if (selectedDept) {
       onAssign({ userId, departmentId);
       setSelectedDept('');
@@ -367,7 +358,7 @@ function UserDepartmentAssignment({
             <SelectValue placeholder="Selecione o departamento" />
           </SelectTrigger>
           <SelectContent>
-            {departments.map((dept) => (
+            ({ departments.map((dept }) => (
               <SelectItem key={dept.id} value={dept.id}>
                 {dept.name}
               </SelectItem>
@@ -380,4 +371,4 @@ function UserDepartmentAssignment({
       </div>
     </div>
   );
-}
+}`

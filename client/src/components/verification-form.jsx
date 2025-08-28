@@ -9,16 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { 
-  Mail, 
-  Phone, 
-  Send, 
-  Check, 
-  Clock, 
-  RefreshCw, 
-  AlertCircle,
-  CheckCircle,
-  Shield
+import {   }
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
@@ -40,12 +31,12 @@ import { useMutation, useQuery } from '@tanstack/react-query';
   const [isPhoneVerified, setIsPhoneVerified] = useState(false);
 
   // Query para status de verificação
-  const { data, refetch,
+  const ({ data, refetch,
     retry);
 
   // Mutations para envio de códigos
   const sendEmailMutation = useMutation({
-    mutationFn) => {
+    mutationFn }) => {
       return await apiRequest('/api/verification/send-email', 'POST', { email);
     },
     onSuccess) => {
@@ -65,8 +56,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
     }
   });
 
-  const sendPhoneMutation = useMutation({
-    mutationFn) => {
+  const sendPhoneMutation = useMutation(({ mutationFn }) => {
       return await apiRequest('/api/verification/send-phone', 'POST', { phone);
     },
     onSuccess) => {
@@ -87,8 +77,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
   });
 
   // Mutations para verificação
-  const verifyEmailMutation = useMutation({
-    mutationFn) => {
+  const verifyEmailMutation = useMutation(({ mutationFn }) => {
       return await apiRequest('/api/verification/verify', 'POST', { type, code });
     },
     onSuccess) => {
@@ -110,8 +99,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
     }
   });
 
-  const verifyPhoneMutation = useMutation({
-    mutationFn) => {
+  const verifyPhoneMutation = useMutation(({ mutationFn }) => {
       return await apiRequest('/api/verification/verify', 'POST', { type, code });
     },
     onSuccess) => {
@@ -134,8 +122,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
   });
 
   // Mutations para reenvio
-  const resendEmailMutation = useMutation({
-    mutationFn) => {
+  const resendEmailMutation = useMutation(({ mutationFn }) => {
       return await apiRequest('/api/verification/resend', 'POST', { type);
     },
     onSuccess) => {
@@ -147,8 +134,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
     }
   });
 
-  const resendPhoneMutation = useMutation({
-    mutationFn) => {
+  const resendPhoneMutation = useMutation(({ mutationFn }) => {
       return await apiRequest('/api/verification/resend', 'POST', { type);
     },
     onSuccess) => {
@@ -161,8 +147,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
   });
 
   // Timer countdown
-  useEffect(() => {
-    const interval = setInterval(() => {
+  useEffect(() => ({ const interval = setInterval(( }) => {
       if (emailTimer > 0) {
         setEmailTimer(prev => prev - 1);
       }
@@ -302,7 +287,6 @@ import { useMutation, useQuery } from '@tanstack/react-query';
               {(isEmailVerified || verificationStatus?.email_verified) && (
                 <Badge variant="default" className="bg-green-100 text-green-800">
                   <CheckCircle className="w-3 h-3 mr-1" />
-                  Verificado
                 </Badge>
               )}
             </div>
@@ -315,7 +299,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
                       type="email"
                       placeholder="Digite seu email"
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange=({ (e }) => setEmail(e.target.value)}
                     />
                     <Button 
                       onClick={handleSendEmail}
@@ -332,7 +316,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
                       <Input
                         placeholder="000000"
                         value={emailCode}
-                        onChange={(e) => setEmailCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                        onChange=({ (e }) => setEmailCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
                         className="text-center text-lg tracking-widest"
                       />
                       <Button 
@@ -346,7 +330,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
                           <Clock className="w-3 h-3" />
                           {formatTime(emailTimer)}
                         </div>
-                      ) {() => resendEmailMutation.mutate()}
+                      ) ({ ( }) => resendEmailMutation.mutate()}
                           disabled={resendEmailMutation.isPending}
                         >
                           Reenviar código
@@ -369,7 +353,6 @@ import { useMutation, useQuery } from '@tanstack/react-query';
               {(isPhoneVerified || verificationStatus?.phone_verified) && (
                 <Badge variant="default" className="bg-green-100 text-green-800">
                   <CheckCircle className="w-3 h-3 mr-1" />
-                  Verificado
                 </Badge>
               )}
             </div>
@@ -382,7 +365,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
                       type="tel"
                       placeholder="(11) 99999-9999"
                       value={formatPhone(phone)}
-                      onChange={(e) => setPhone(e.target.value)}
+                      onChange=({ (e }) => setPhone(e.target.value)}
                     />
                     <Button 
                       onClick={handleSendPhone}
@@ -399,7 +382,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
                       <Input
                         placeholder="000000"
                         value={phoneCode}
-                        onChange={(e) => setPhoneCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                        onChange=({ (e }) => setPhoneCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
                         className="text-center text-lg tracking-widest"
                       />
                       <Button 
@@ -413,7 +396,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
                           <Clock className="w-3 h-3" />
                           {formatTime(phoneTimer)}
                         </div>
-                      ) {() => resendPhoneMutation.mutate()}
+                      ) ({ ( }) => resendPhoneMutation.mutate()}
                           disabled={resendPhoneMutation.isPending}
                         >
                           Reenviar SMS
@@ -439,4 +422,4 @@ import { useMutation, useQuery } from '@tanstack/react-query';
       </CardContent>
     </Card>
   );
-}
+}`

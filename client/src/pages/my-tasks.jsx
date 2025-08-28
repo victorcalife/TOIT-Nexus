@@ -29,8 +29,7 @@ export default function MyTasks() {
   });
 
   // Start task mutation
-  const startTaskMutation = useMutation({
-    mutationFn) => {
+  const startTaskMutation = useMutation(({ mutationFn }) => {
       return await apiRequest(`/api/tasks/instances/${taskId}/start`, {
         method,
       });
@@ -46,7 +45,7 @@ export default function MyTasks() {
 
   // Complete task mutation
   const completeTaskMutation = useMutation({
-    mutationFn, notes }: { taskId) => {
+    mutationFn, notes }: ({ taskId }) => {`
       return await apiRequest(`/api/tasks/instances/${taskId}/complete`, {
         method,
         body,
@@ -66,8 +65,7 @@ export default function MyTasks() {
   });
 
   // Mark notification as read
-  const markNotificationRead = useMutation({
-    mutationFn) => {
+  const markNotificationRead = useMutation(({ mutationFn }) => {`
       return await apiRequest(`/api/tasks/notifications/${notificationId}/read`, {
         method,
       });
@@ -90,20 +88,18 @@ export default function MyTasks() {
     }
   };
 
-  const handleNotificationClick = (notification) => {
-    markNotificationRead.mutate(notification.id);
+  const handleNotificationClick = (notification) => ({ markNotificationRead.mutate(notification.id);
     if (notification.actionUrl) {
       // In a real app, would navigate to the task
       const taskId = notification.data?.taskInstanceId;
-      const task = tasks.find((t) => t.id === taskId);
+      const task = tasks.find((t }) => t.id === taskId);
       if (task) {
         setSelectedTask(task);
       }
     }
   };
 
-  const getPriorityColor = (priority) => {
-    switch (priority) {
+  const getPriorityColor = (priority) => ({ switch (priority) {
       case 'urgent': return 'destructive';
       case 'high': return 'default';
       case 'medium': return 'secondary';
@@ -112,7 +108,7 @@ export default function MyTasks() {
       case 'completed': return 'bg-green-100 text-green-800';
       case 'in_progress': return 'bg-blue-100 text-blue-800';
       case 'overdue': return 'bg-red-100 text-red-800';
-      default) => !n.isRead);
+      default }) => !n.isRead);
 
   if (isLoading) {
     return (
@@ -156,7 +152,7 @@ export default function MyTasks() {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              {unreadNotifications.slice(0, 3).map((notification) => (
+              ({ unreadNotifications.slice(0, 3).map((notification }) => (
                 <div
                   key={notification.id}
                   className="flex items-center justify-between p-3 bg-white rounded-lg cursor-pointer hover) => handleNotificationClick(notification)}
@@ -178,7 +174,7 @@ export default function MyTasks() {
       )}
 
       {/* Tasks Grid */}
-      <div className="grid gap-4 md) => (
+      <div className="grid gap-4 md) => (`
           <Card key={task.id} className={`relative ${task.status === 'overdue' ? 'border-red-200' : ''}`}>
             <CardHeader>
               <div className="flex items-center justify-between">
@@ -194,7 +190,7 @@ export default function MyTasks() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-3">
+              <div className="space-y-3">`
                 <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(task.status)}`}>
                   {task.status === 'pending' ? 'Pendente' :
                    task.status === 'in_progress' ? 'Em Progresso' :
@@ -212,35 +208,29 @@ export default function MyTasks() {
                 )}
 
                 <div className="flex gap-2 mt-4">
-                  {task.status === 'pending' && (
+                  ({ task.status === 'pending' && (
                     <Button 
                       size="sm" 
-                      onClick={() => handleStartTask(task.id)}
+                      onClick={( }) => handleStartTask(task.id)}
                       disabled={startTaskMutation.isPending}
                     >
                       <Play className="h-4 w-4 mr-2" />
-                      Iniciar
-                    </Button>
                   )}
                   
-                  {task.status === 'in_progress' && (
+                  ({ task.status === 'in_progress' && (
                     <Button 
                       size="sm" 
-                      onClick={() => setSelectedTask(task)}
+                      onClick={( }) => setSelectedTask(task)}
                     >
                       <CheckCircle className="h-4 w-4 mr-2" />
-                      Concluir
-                    </Button>
                   )}
 
                   <Button 
                     variant="outline" 
                     size="sm" 
-                    onClick={() => setSelectedTask(task)}
+                    onClick=({ ( }) => setSelectedTask(task)}
                   >
                     <MessageSquare className="h-4 w-4 mr-2" />
-                    Detalhes
-                  </Button>
                 </div>
               </div>
             </CardContent>
@@ -262,7 +252,7 @@ export default function MyTasks() {
 
       {/* Task Details/Completion Dialog */}
       {selectedTask && (
-        <Dialog open={!!selectedTask} onOpenChange={() => setSelectedTask(null)}>
+        <Dialog open={!!selectedTask} onOpenChange=({ ( }) => setSelectedTask(null)}>
           <DialogContent className="max-w-2xl">
             <DialogHeader>
               <DialogTitle>{selectedTask.title}</DialogTitle>
@@ -274,7 +264,7 @@ export default function MyTasks() {
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <Label className="font-medium">Status</Label>
+                  <Label className="font-medium">Status</Label>`
                   <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium mt-1 ${getStatusColor(selectedTask.status)}`}>
                     {selectedTask.status === 'pending' ? 'Pendente' :
                      selectedTask.status === 'in_progress' ? 'Em Progresso' :
@@ -299,12 +289,10 @@ export default function MyTasks() {
                     id="completion-notes"
                     placeholder="Descreva o que foi realizado, resultados obtidos, observações importantes..."
                     value={completionNotes}
-                    onChange={(e) => setCompletionNotes(e.target.value)}
+                    onChange=({ (e }) => setCompletionNotes(e.target.value)}
                   />
                   <div className="flex justify-end space-x-2">
-                    <Button variant="outline" onClick={() => setSelectedTask(null)}>
-                      Cancelar
-                    </Button>
+                    <Button variant="outline" onClick=({ ( }) => setSelectedTask(null)}>
                     <Button 
                       onClick={handleCompleteTask}
                       disabled={completeTaskMutation.isPending}
@@ -315,11 +303,9 @@ export default function MyTasks() {
                 </div>
               )}
 
-              {selectedTask.status !== 'in_progress' && (
+              ({ selectedTask.status !== 'in_progress' && (
                 <div className="flex justify-end">
-                  <Button variant="outline" onClick={() => setSelectedTask(null)}>
-                    Fechar
-                  </Button>
+                  <Button variant="outline" onClick={( }) => setSelectedTask(null)}>
                 </div>
               )}
             </div>
@@ -328,4 +314,4 @@ export default function MyTasks() {
       )}
     </div>
   );
-}
+}`

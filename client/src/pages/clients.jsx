@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
-import { 
+import {  
   Plus, 
   Search, 
   Users, 
@@ -15,24 +15,24 @@ import {
   Trash2, 
   TrendingUp,
   Mail,
-  Phone
+  Phone }
 } from "lucide-react";
-import {
+import { 
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+  DialogTrigger, }
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
+import { 
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue, }
 } from "@/components/ui/select";
 
 export default function Clients() {
@@ -57,8 +57,7 @@ export default function Clients() {
     retry,
   });
 
-  const createClientMutation = useMutation({
-    mutationFn) => {
+  const createClientMutation = useMutation(({ mutationFn }) => {
       await apiRequest('POST', '/api/clients', clientData);
     },
     onSuccess) => {
@@ -86,8 +85,7 @@ export default function Clients() {
     },
   });
 
-  const deleteClientMutation = useMutation({
-    mutationFn) => {
+  const deleteClientMutation = useMutation(({ mutationFn }) => {
       await apiRequest('DELETE', `/api/clients/${clientId}`);
     },
     onSuccess) => {
@@ -111,12 +109,10 @@ export default function Clients() {
     client.email?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const getCategoryName = (categoryId) => {
-    return (categories || []).find((cat) => cat.id === categoryId)?.name || 'Não categorizado';
+  const getCategoryName = (categoryId) => ({ return (categories || []).find((cat }) => cat.id === categoryId)?.name || 'Não categorizado';
   };
 
-  const getRiskProfileColor = (profile) => {
-    switch (profile) {
+  const getRiskProfileColor = (profile) => ({ switch (profile) {
       case 'conservative':
         return 'bg-blue-100 text-blue-800';
       case 'moderate':
@@ -131,7 +127,7 @@ export default function Clients() {
         return 'Moderado';
       case 'aggressive':
         return 'Agressivo';
-      default) => {
+      default }) => {
     if (!newClient.name) {
       toast({
         title,
@@ -165,7 +161,7 @@ export default function Clients() {
                     id="email"
                     type="email"
                     value={newClient.email}
-                    onChange={(e) => setNewClient({ ...newClient, email)}
+                    onChange=({ (e }) => setNewClient({ ...newClient, email)}
                     placeholder="email@exemplo.com"
                   />
                 </div>
@@ -175,7 +171,7 @@ export default function Clients() {
                   <Input
                     id="phone"
                     value={newClient.phone}
-                    onChange={(e) => setNewClient({ ...newClient, phone)}
+                    onChange=({ (e }) => setNewClient({ ...newClient, phone)}
                     placeholder="(11) 99999-9999"
                   />
                 </div>
@@ -186,7 +182,7 @@ export default function Clients() {
                     id="investment"
                     type="number"
                     value={newClient.currentInvestment}
-                    onChange={(e) => setNewClient({ ...newClient, currentInvestment)}
+                    onChange=({ (e }) => setNewClient({ ...newClient, currentInvestment)}
                     placeholder="100000"
                   />
                 </div>
@@ -195,7 +191,7 @@ export default function Clients() {
                   <Label htmlFor="risk">Perfil de Risco</Label>
                   <Select 
                     value={newClient.riskProfile} 
-                    onValueChange={(value) => setNewClient({ ...newClient, riskProfile)}
+                    onValueChange=({ (value }) => setNewClient({ ...newClient, riskProfile)}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Selecione o perfil" />
@@ -212,13 +208,13 @@ export default function Clients() {
                   <Label htmlFor="category">Categoria</Label>
                   <Select 
                     value={newClient.categoryId} 
-                    onValueChange={(value) => setNewClient({ ...newClient, categoryId)}
+                    onValueChange=({ (value }) => setNewClient({ ...newClient, categoryId)}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Selecione a categoria" />
                     </SelectTrigger>
                     <SelectContent>
-                      {categories?.map((category) => (
+                      ({ categories?.map((category }) => (
                         <SelectItem key={category.id} value={category.id}>
                           {category.name}
                         </SelectItem>
@@ -230,10 +226,8 @@ export default function Clients() {
               <div className="flex justify-end space-x-2">
                 <Button 
                   variant="outline" 
-                  onClick={() => setIsCreateDialogOpen(false)}
+                  onClick=({ ( }) => setIsCreateDialogOpen(false)}
                 >
-                  Cancelar
-                </Button>
                 <Button 
                   onClick={handleCreateClient}
                   disabled={createClientMutation.isPending}
@@ -255,15 +249,15 @@ export default function Clients() {
             <Input
               placeholder="Buscar clientes por nome ou email..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange=({ (e }) => setSearchTerm(e.target.value)}
               className="pl-10"
             />
           </div>
         </div>
 
         {/* Clients Grid */}
-        {clientsLoading ? (
-          <div className="grid grid-cols-1 md)].map((_, i) => (
+        ({ clientsLoading ? (
+          <div className="grid grid-cols-1 md)].map((_, i }) => (
               <Card key={i}>
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between mb-4">
@@ -319,12 +313,10 @@ export default function Clients() {
                   <div className="flex justify-between">
                     <Button variant="ghost" size="sm">
                       <Edit className="w-4 h-4 mr-1" />
-                      Editar
-                    </Button>
                     <Button 
                       variant="ghost" 
                       size="sm"
-                      onClick={() => deleteClientMutation.mutate(client.id)}
+                      onClick=({ ( }) => deleteClientMutation.mutate(client.id)}
                       disabled={deleteClientMutation.isPending}
                       className="text-red-600 hover))}
           </div>
@@ -336,8 +328,8 @@ export default function Clients() {
                 : 'Comece adicionando seus primeiros clientes ao sistema.'
               }
             </p>
-            {!searchTerm && (
-              <Button onClick={() => setIsCreateDialogOpen(true)}>
+            ({ !searchTerm && (
+              <Button onClick={( }) => setIsCreateDialogOpen(true)}>
                 <Plus className="w-4 h-4 mr-2" />
                 Adicionar Primeiro Cliente
               </Button>
@@ -348,3 +340,4 @@ export default function Clients() {
     </div>
   );
 }
+`

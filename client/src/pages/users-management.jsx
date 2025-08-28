@@ -12,7 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CheckboxWithLabel } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   Users, 
   Plus, 
   Edit, 
@@ -29,7 +29,7 @@ import {
   UserCheck,
   UserX,
   Crown,
-  Settings
+  Settings }
 } from 'lucide-react';
 
 const UserManagement = () => {
@@ -81,7 +81,7 @@ const UserManagement = () => {
       setUsers(data.users || []);
       
       toast({
-        title: "Usuários carregados",
+        title: "Usuários carregados",`
         description: `${data.users?.length || 0} usuários encontrados`,
       });
     } catch (error) {
@@ -113,7 +113,7 @@ const UserManagement = () => {
     try {
       const response = await fetch('/api/users', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -140,7 +140,7 @@ const UserManagement = () => {
       resetForm();
       
       toast({
-        title: "Usuário criado",
+        title: "Usuário criado",`
         description: `${newUser.user.name} foi criado com sucesso`,
       });
     } catch (error) {
@@ -160,10 +160,10 @@ const UserManagement = () => {
    */
   const updateUser = async () => {
     setLoading(true);
-    try {
+    try {`
       const response = await fetch(`/api/users/${currentUser.id}`, {
         method: 'PUT',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -191,7 +191,7 @@ const UserManagement = () => {
       resetForm();
       
       toast({
-        title: "Usuário atualizado",
+        title: "Usuário atualizado",`
         description: `${updatedUser.user.name} foi atualizado com sucesso`,
       });
     } catch (error) {
@@ -209,16 +209,16 @@ const UserManagement = () => {
   /**
    * DELETAR USUÁRIO
    */
-  const deleteUser = async (userId, userName) => {
+  const deleteUser = async (userId, userName) => {`
     if (!confirm(`Tem certeza que deseja deletar o usuário ${userName}?`)) {
       return;
     }
 
     setLoading(true);
-    try {
+    try {`
       const response = await fetch(`/api/users/${userId}`, {
         method: 'DELETE',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }
@@ -232,7 +232,7 @@ const UserManagement = () => {
       setUsers(prev => prev.filter(user => user.id !== userId));
       
       toast({
-        title: "Usuário deletado",
+        title: "Usuário deletado",`
         description: `${userName} foi removido do sistema`,
       });
     } catch (error) {
@@ -252,10 +252,10 @@ const UserManagement = () => {
    */
   const toggleUserStatus = async (userId, currentStatus) => {
     setLoading(true);
-    try {
+    try {`
       const response = await fetch(`/api/users/${userId}/toggle-status`, {
         method: 'PATCH',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }
@@ -272,7 +272,7 @@ const UserManagement = () => {
       ));
       
       toast({
-        title: "Status alterado",
+        title: "Status alterado",`
         description: `Usuário ${!currentStatus ? 'ativado' : 'desativado'} com sucesso`,
       });
     } catch (error) {
@@ -364,7 +364,7 @@ const UserManagement = () => {
             </div>
             <div className="flex gap-3">
               <Button
-                onClick={() => setShowCreateModal(true)}
+                onClick=({ ( }) => setShowCreateModal(true)}
                 className="bg-blue-600 hover:bg-blue-700"
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -439,15 +439,15 @@ const UserManagement = () => {
                 <SearchInput
                   placeholder="Buscar por nome, email ou CPF..."
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  onClear={() => setSearchTerm('')}
+                  onChange=({ (e }) => setSearchTerm(e.target.value)}
+                  onClear=({ ( }) => setSearchTerm('')}
                 />
               </div>
               
               <div className="flex gap-3">
                 <select
                   value={filters.role}
-                  onChange={(e) => setFilters(prev => ({ ...prev, role: e.target.value }))}
+                  onChange=({ (e }) => setFilters(prev => ({ ...prev, role: e.target.value }))}
                   className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="all">Todas as Funções</option>
@@ -458,7 +458,7 @@ const UserManagement = () => {
 
                 <select
                   value={filters.status}
-                  onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
+                  onChange=({ (e }) => setFilters(prev => ({ ...prev, status: e.target.value }))}
                   className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="all">Todos os Status</option>
@@ -483,8 +483,7 @@ const UserManagement = () => {
                   </Button>
                   <Button variant="outline" size="sm">
                     <Download className="h-4 w-4 mr-2" />
-                    Exportar
-                  </Button>
+
                 </div>
               )}
             </CardTitle>
@@ -508,7 +507,7 @@ const UserManagement = () => {
                       <th className="text-left py-3 px-4">
                         <CheckboxWithLabel
                           checked={selectedUsers.length === filteredUsers.length}
-                          onCheckedChange={(checked) => {
+                          onCheckedChange=({ (checked }) => {
                             if (checked) {
                               setSelectedUsers(filteredUsers.map(u => u.id));
                             } else {
@@ -526,12 +525,12 @@ const UserManagement = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredUsers.map((user) => (
+                    ({ filteredUsers.map((user }) => (
                       <tr key={user.id} className="border-b hover:bg-gray-50">
                         <td className="py-3 px-4">
                           <CheckboxWithLabel
                             checked={selectedUsers.includes(user.id)}
-                            onCheckedChange={(checked) => {
+                            onCheckedChange=({ (checked }) => {
                               if (checked) {
                                 setSelectedUsers(prev => [...prev, user.id]);
                               } else {
@@ -562,7 +561,7 @@ const UserManagement = () => {
                         <td className="py-3 px-4">
                           <Badge variant={
                             user.role === 'super_admin' ? 'destructive' :
-                            user.role === 'admin' ? 'default' : 'secondary'
+                            user.role === 'admin' ? 'default' : 'secondary'}
                           }>
                             {user.role === 'super_admin' ? 'Super Admin' :
                              user.role === 'admin' ? 'Admin' : 'Usuário'}
@@ -586,21 +585,21 @@ const UserManagement = () => {
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => openEditModal(user)}
+                              onClick=({ ( }) => openEditModal(user)}
                             >
                               <Edit className="h-4 w-4" />
                             </Button>
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => toggleUserStatus(user.id, user.isActive)}
+                              onClick=({ ( }) => toggleUserStatus(user.id, user.isActive)}
                             >
                               {user.isActive ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                             </Button>
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => deleteUser(user.id, user.name)}
+                              onClick=({ ( }) => deleteUser(user.id, user.name)}
                               className="text-red-600 hover:text-red-700"
                             >
                               <Trash2 className="h-4 w-4" />
@@ -624,9 +623,8 @@ const UserManagement = () => {
             <h2 className="text-xl font-bold mb-4">Criar Novo Usuário</h2>
             {/* Formulário será implementado na próxima parte */}
             <div className="flex justify-end gap-3 mt-6">
-              <Button variant="outline" onClick={() => setShowCreateModal(false)}>
-                Cancelar
-              </Button>
+              <Button variant="outline" onClick=({ ( }) => setShowCreateModal(false)}>
+
               <Button onClick={createUser} disabled={loading}>
                 {loading ? 'Criando...' : 'Criar Usuário'}
               </Button>
@@ -639,3 +637,4 @@ const UserManagement = () => {
 };
 
 export default UserManagement;
+`

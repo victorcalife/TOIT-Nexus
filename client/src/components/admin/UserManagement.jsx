@@ -12,29 +12,22 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 
-import {
+import { 
   Users,
   UserPlus,
+  Edit,
+  Trash2,
   Search,
   Filter,
   MoreHorizontal,
-  Edit,
-  Trash2,
   Shield,
   Key,
   Eye,
   EyeOff,
-  CheckCircle,
-  XCircle,
-  Clock,
-  Mail,
-  Phone,
-  MapPin,
-  Calendar,
-  Activity,
-  Settings,
-  Download,
-  Upload
+  Check,
+  X,
+  AlertTriangle,
+  Settings
 } from 'lucide-react';
 
 // Importar sistema de permissões
@@ -299,7 +292,7 @@ export default function UserManagement() {
   const handlePermissionChange = async (permission, granted) => {
     try {
       const method = granted ? 'POST' : 'DELETE';
-      const url = granted 
+      const url = granted
         ? `/api/permissions/user/${selectedUser.id}`
         : `/api/permissions/user/${selectedUser.id}/${permission}`;
 

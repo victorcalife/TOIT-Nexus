@@ -88,7 +88,7 @@ import { useToast } from "@/hooks/use-toast";
   };
 
   const revokePermission = async (userId, permissionId) => {
-    try {
+    try {`
       const response = await fetch(`/api/access-control/users/${userId}/permissions/${permissionId}`, {
         method,
       });
@@ -115,7 +115,7 @@ import { useToast } from "@/hooks/use-toast";
   };
 
   const previewUserData = async (userId) => {
-    try {
+    try {`
       const response = await fetch(`/api/access-control/users/${userId}/data-preview`);
       
       if (response.ok) {
@@ -264,19 +264,17 @@ import { useToast } from "@/hooks/use-toast";
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => previewUserData(user.id)}
+                      onClick=({ ( }) => previewUserData(user.id)}
                     >
                       <Eye className="h-4 w-4 mr-1" />
-                      Preview
-                    </Button>
+
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => setSelectedUser(user)}
+                      onClick=({ ( }) => setSelectedUser(user)}
                     >
                       <Settings className="h-4 w-4 mr-1" />
-                      Configurar
-                    </Button>
+
                   </div>
                 </div>
               </CardHeader>
@@ -288,11 +286,11 @@ import { useToast } from "@/hooks/use-toast";
                         const hasPermission = getPermissionStatus(user, permission.id);
                         return (
                           <div
-                            key={permission.id}
+                            key={permission.id}`
                             className={`flex items-center space-x-2 p-2 rounded-lg border ${
                               hasPermission 
                                 ? 'bg-green-50 border-green-200' 
-                                : 'bg-gray-50 border-gray-200'
+                                : 'bg-gray-50 border-gray-200'`}
                             }`}
                           >
                             <div className="text-sm">
@@ -303,13 +301,13 @@ import { useToast } from "@/hooks/use-toast";
                                 {permission.name}
                               </p>
                             </div>
-                            {hasPermission ? (
+                            ({ hasPermission ? (
                               <CheckCircle className="h-3 w-3 text-green-600" />
                             ) {user.departments && user.departments.length > 0 && (
                     <div>
                       <h4 className="text-sm font-medium text-gray-700 mb-2">Departamentos</h4>
                       <div className="flex flex-wrap gap-1">
-                        {user.departments.map((deptId) => {
+                        {user.departments.map((deptId }) => {
                           const dept = departments.find(d => d.id === deptId);
                           return dept ? (
                             <Badge key={deptId} variant="outline" className="text-xs">
@@ -317,7 +315,7 @@ import { useToast } from "@/hooks/use-toast";
                             </Badge>
                           ) {/* Dialog de Configuração de Usuário */}
       {selectedUser && (
-        <Dialog open={!!selectedUser} onOpenChange={() => setSelectedUser(null)}>
+        <Dialog open={!!selectedUser} onOpenChange=({ ( }) => setSelectedUser(null)}>
           <DialogContent className="max-w-4xl">
             <DialogHeader>
               <DialogTitle>Configurar Permissões - {selectedUser.name}</DialogTitle>
@@ -334,7 +332,7 @@ import { useToast } from "@/hooks/use-toast";
               
               <TabsContent value="permissions" className="space-y-4">
                 <div className="grid gap-4 max-h-96 overflow-y-auto">
-                  {permissions.map((permission) => {
+                  ({ permissions.map((permission }) => {
                     const hasPermission = getPermissionStatus(selectedUser, permission.id);
                     return (
                       <div key={permission.id} className="flex items-center justify-between p-3 border rounded-lg">
@@ -357,7 +355,7 @@ import { useToast } from "@/hooks/use-toast";
                         </div>
                         <Switch
                           checked={hasPermission}
-                          onCheckedChange={(checked) => {
+                          onCheckedChange=({ (checked }) => {
                             if (checked) {
                               grantPermission(selectedUser.id, permission.id);
                             } else {
@@ -394,7 +392,7 @@ import { useToast } from "@/hooks/use-toast";
           </DialogHeader>
           
           <div className="space-y-4 max-h-96 overflow-y-auto">
-            {dataPreview.map((preview) => (
+            ({ dataPreview.map((preview }) => (
               <Card key={preview.resource}>
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
@@ -414,11 +412,11 @@ import { useToast } from "@/hooks/use-toast";
                     </div>
                   </div>
                   
-                  {preview.restrictions.length > 0 && (
+                  ({ preview.restrictions.length > 0 && (
                     <div className="mb-4">
                       <p className="text-sm font-medium text-gray-700 mb-2">Restrições Aplicadas</p>
                       <div className="flex flex-wrap gap-1">
-                        {preview.restrictions.map((restriction, index) => (
+                        {preview.restrictions.map((restriction, index }) => (
                           <Badge key={index} variant="secondary" className="text-xs">
                             {restriction}
                           </Badge>
@@ -446,3 +444,4 @@ import { useToast } from "@/hooks/use-toast";
     </div>
   );
 }
+`

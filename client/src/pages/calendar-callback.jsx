@@ -51,7 +51,7 @@ export default function CalendarCallback() {
         setMessage('Provedor de calendário inválido');
         return;
       }
-
+`
       setMessage(`Finalizando integração com ${provider}...`);
 
       // Processar callback no backend
@@ -64,13 +64,12 @@ export default function CalendarCallback() {
       const data = await response.json();
 
       if (data.success) {
-        setStatus('success');
+        setStatus('success');`
         setMessage(`${provider} conectado com sucesso!`);
         setIntegrationDetails(data.integration);
         
         // Fechar popup após sucesso (se aberto em popup)
-        if (window.opener) {
-          setTimeout(() => {
+        if (window.opener) ({ setTimeout(( }) => {
             window.close();
           }, 3000);
         }
@@ -112,11 +111,11 @@ export default function CalendarCallback() {
                   <AlertCircle className="h-16 w-16 text-red-500" />
                 )}
               </div>
-              
+              `
               <CardTitle className={`text-2xl ${
                 status === 'success' ? 'text-green-600' : 
                 status === 'error' ? 'text-red-600' : 
-                'text-blue-600'
+                'text-blue-600'`}
               }`}>
                 {status === 'processing' && 'Conectando Calendário'}
                 {status === 'success' && 'Conexão Bem-sucedida!'}
@@ -180,4 +179,4 @@ export default function CalendarCallback() {
       </div>
     </div>
   );
-}
+}`

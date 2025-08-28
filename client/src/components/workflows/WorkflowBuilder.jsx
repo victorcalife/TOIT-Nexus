@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import ReactFlow, {
-  MiniMap,
-  Controls,
-  Background,
+
+
+
   useNodesState,
   useEdgesState,
   addEdge,
-  ConnectionLineType,
-  Panel,
+
+
   useReactFlow,
-  ReactFlowProvider
+
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 
@@ -25,42 +25,42 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useToast } from '@/hooks/use-toast';
 
-import {
-  Play,
-  Pause,
-  Square,
-  Save,
-  Download,
-  Upload,
-  Settings,
-  Plus,
+import { 
+
+
+
+
+
+
+
+
   Trash2,
-  Copy,
-  Edit,
-  Eye,
-  EyeOff,
-  Zap,
-  Clock,
-  Mail,
-  MessageSquare,
-  Calendar,
-  Database,
-  Code,
-  GitBranch,
-  Filter,
-  ArrowRight,
-  CheckCircle,
-  XCircle,
-  AlertCircle,
-  Timer,
-  Webhook,
-  FileText,
-  Users,
-  Bell,
-  Atom,
-  Brain,
-  Sparkles,
-  Workflow
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ }
 } from 'lucide-react';
 
 // Importar sistema quântico integrado
@@ -125,9 +125,9 @@ const CustomNode = ({ data, selected }) => {
   return (
     <div 
       className={`
-        px-4 py-3 shadow-lg rounded-lg bg-white border-2 min-w-[200px]
+        px-4 py-3 shadow-lg rounded-lg bg-white border-2 min-w-[200px]}
         ${selected ? 'border-blue-500' : 'border-gray-200'}
-        hover:shadow-xl transition-all duration-200
+        hover:shadow-xl transition-all duration-200`
       `}
       style={{ borderLeftColor: nodeConfig.color, borderLeftWidth: '4px' }}
     >
@@ -213,13 +213,12 @@ export default function WorkflowBuilder({
     }
   }, [isOpen, workflowId]);
 
-  const initializeQuantumWorkflow = async () => {
-    try {
+  const initializeQuantumWorkflow = async () => ({ try {
       console.log('🔄⚛️ Inicializando Workflow Quântico...');
       
       // Conectar ao sistema quântico
       quantumSystemCore.connectModule('workflow', {
-        receiveQuantumUpdate: (result) => {
+        receiveQuantumUpdate: (result }) => {
           if (result.workflowOptimizations) {
             setQuantumOptimizations(result.workflowOptimizations);
             applyQuantumOptimizations(result.workflowOptimizations);
@@ -251,9 +250,8 @@ export default function WorkflowBuilder({
     }
   };
 
-  const setupMilaObservation = () => {
-    // Observar interações do workflow
-    const observeWorkflowInteraction = (action, data) => {
+  const setupMilaObservation = () => ({ // Observar interações do workflow
+    const observeWorkflowInteraction = (action, data }) => {
       milaOmnipresence.observeUserInteraction({
         type: 'workflow_interaction',
         module: 'workflow',
@@ -419,13 +417,13 @@ export default function WorkflowBuilder({
         y: event.clientY - reactFlowBounds.top,
       });
 
-      const newNode = {
+      const newNode = {`
         id: `node_${Date.now()}`,
         type: 'custom',
         position,
         data: {
           ...nodeData,
-          label: nodeData.label,
+          label: nodeData.label,`
           description: `Configurar ${nodeData.label.toLowerCase()}`
         },
       };
@@ -439,7 +437,7 @@ export default function WorkflowBuilder({
       setNodes((nds) => nds.concat(newNode));
 
       toast({
-        title: "Nó adicionado",
+        title: "Nó adicionado",`
         description: `${nodeData.label} foi adicionado ao workflow`
       });
     },
@@ -494,7 +492,7 @@ export default function WorkflowBuilder({
             },
             complexity: 2
           });
-          
+          `
           console.log(`⚛️ Nó ${node.id} processado com speedup: ${quantumResult.speedup}x`);
         }
 
@@ -503,7 +501,7 @@ export default function WorkflowBuilder({
           timestamp: new Date(),
           nodeId: node.id,
           nodeName: node.data.label,
-          status: 'success',
+          status: 'success',`
           message: `${node.data.label} executado com sucesso`
         }]);
 
@@ -525,7 +523,7 @@ export default function WorkflowBuilder({
       
       setExecutionLog(prev => [...prev, {
         timestamp: new Date(),
-        status: 'error',
+        status: 'error',`
         message: `Erro na execução: ${error.message}`
       }]);
 
@@ -590,7 +588,7 @@ export default function WorkflowBuilder({
       
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.href = url;
+      a.href = url;`
       a.download = `workflow_${workflow.name.replace(/\s+/g, '_')}.json`;
       a.click();
       
@@ -627,7 +625,7 @@ export default function WorkflowBuilder({
         </div>
 
         {/* MILA Insights */}
-        {milaInsights.length > 0 && (
+        ({ milaInsights.length > 0 && (
           <div className="p-4 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 border-b">
             <div className="flex items-center gap-2 mb-2">
               <Brain className="w-4 h-4 text-purple-600" />
@@ -636,7 +634,7 @@ export default function WorkflowBuilder({
               </span>
             </div>
             <div className="space-y-1">
-              {milaInsights.slice(0, 2).map((insight, index) => (
+              {milaInsights.slice(0, 2).map((insight, index }) => (
                 <p key={index} className="text-xs text-purple-700 dark:text-purple-300">
                   💡 {insight.message}
                 </p>
@@ -647,20 +645,20 @@ export default function WorkflowBuilder({
 
         <ScrollArea className="flex-1">
           <div className="p-4 space-y-4">
-            {Object.entries(NODE_TYPES).map(([categoryKey, category]) => (
+            ({ Object.entries(NODE_TYPES).map(([categoryKey, category] }) => (
               <div key={categoryKey}>
                 <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   {category.category}
                 </h3>
                 <div className="space-y-2">
-                  {category.nodes.map((node) => {
+                  ({ category.nodes.map((node }) => {
                     const IconComponent = node.icon;
                     return (
                       <div
                         key={node.type}
                         className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-move hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
                         draggable
-                        onDragStart={(event) => onDragStart(event, node)}
+                        onDragStart=({ (event }) => onDragStart(event, node)}
                       >
                         <IconComponent 
                           className="w-4 h-4" 
@@ -688,7 +686,7 @@ export default function WorkflowBuilder({
           <div className="flex items-center gap-4">
             <Input
               value={workflow.name}
-              onChange={(e) => setWorkflow({ ...workflow, name: e.target.value })}
+              onChange=({ (e }) => setWorkflow({ ...workflow, name: e.target.value })}
               className="text-lg font-semibold bg-transparent border-none p-0 h-auto"
               placeholder="Nome do Workflow"
             />
@@ -723,7 +721,7 @@ export default function WorkflowBuilder({
               ) : (
                 <>
                   <Play className="w-4 h-4 mr-2" />
-                  Executar
+
                 </>
               )}
             </Button>
@@ -734,7 +732,7 @@ export default function WorkflowBuilder({
               onClick={saveWorkflow}
             >
               <Save className="w-4 h-4 mr-2" />
-              Salvar
+
             </Button>
 
             <Button
@@ -743,13 +741,13 @@ export default function WorkflowBuilder({
               onClick={exportWorkflow}
             >
               <Download className="w-4 h-4 mr-2" />
-              Exportar
+
             </Button>
 
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setShowSettings(true)}
+              onClick=({ ( }) => setShowSettings(true)}
             >
               <Settings className="w-4 h-4" />
             </Button>
@@ -793,7 +791,7 @@ export default function WorkflowBuilder({
         </div>
 
         {/* Log de Execução */}
-        {executionLog.length > 0 && (
+        ({ executionLog.length > 0 && (
           <div className="h-48 bg-white dark:bg-gray-800 border-t">
             <div className="p-4">
               <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
@@ -801,7 +799,7 @@ export default function WorkflowBuilder({
               </h3>
               <ScrollArea className="h-32">
                 <div className="space-y-1">
-                  {executionLog.map((log, index) => (
+                  {executionLog.map((log, index }) => (
                     <div key={index} className="flex items-center gap-2 text-xs">
                       <span className="text-gray-500">
                         {log.timestamp.toLocaleTimeString()}
@@ -821,7 +819,7 @@ export default function WorkflowBuilder({
       </div>
 
       {/* Panel de Configuração do Nó */}
-      {showNodePanel && selectedNode && (
+      ({ showNodePanel && selectedNode && (
         <div className="w-80 bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700">
           <div className="p-4 border-b">
             <div className="flex items-center justify-between">
@@ -831,7 +829,7 @@ export default function WorkflowBuilder({
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => setShowNodePanel(false)}
+                onClick={( }) => setShowNodePanel(false)}
               >
                 <XCircle className="w-4 h-4" />
               </Button>
@@ -844,7 +842,7 @@ export default function WorkflowBuilder({
               <Input
                 id="node-label"
                 value={selectedNode.data.label}
-                onChange={(e) => {
+                onChange=({ (e }) => {
                   const updatedNode = {
                     ...selectedNode,
                     data: { ...selectedNode.data, label: e.target.value }
@@ -862,7 +860,7 @@ export default function WorkflowBuilder({
               <Textarea
                 id="node-description"
                 value={selectedNode.data.description || ''}
-                onChange={(e) => {
+                onChange=({ (e }) => {
                   const updatedNode = {
                     ...selectedNode,
                     data: { ...selectedNode.data, description: e.target.value }
@@ -884,7 +882,7 @@ export default function WorkflowBuilder({
                   id="schedule-cron"
                   placeholder="0 9 * * 1-5"
                   value={selectedNode.data.cronExpression || ''}
-                  onChange={(e) => {
+                  onChange=({ (e }) => {
                     const updatedNode = {
                       ...selectedNode,
                       data: { ...selectedNode.data, cronExpression: e.target.value }
@@ -920,7 +918,7 @@ export default function WorkflowBuilder({
               <Button
                 variant="destructive"
                 size="sm"
-                onClick={() => {
+                onClick=({ ( }) => {
                   setNodes(nds => nds.filter(n => n.id !== selectedNode.id));
                   setEdges(eds => eds.filter(e => 
                     e.source !== selectedNode.id && e.target !== selectedNode.id
@@ -956,7 +954,7 @@ export default function WorkflowBuilder({
                 <Input
                   id="workflow-name"
                   value={workflow.name}
-                  onChange={(e) => setWorkflow({ ...workflow, name: e.target.value })}
+                  onChange=({ (e }) => setWorkflow({ ...workflow, name: e.target.value })}
                 />
               </div>
 
@@ -965,7 +963,7 @@ export default function WorkflowBuilder({
                 <Textarea
                   id="workflow-description"
                   value={workflow.description}
-                  onChange={(e) => setWorkflow({ ...workflow, description: e.target.value })}
+                  onChange=({ (e }) => setWorkflow({ ...workflow, description: e.target.value })}
                   rows={3}
                 />
               </div>
@@ -975,7 +973,7 @@ export default function WorkflowBuilder({
                   type="checkbox"
                   id="workflow-active"
                   checked={workflow.isActive}
-                  onChange={(e) => setWorkflow({ ...workflow, isActive: e.target.checked })}
+                  onChange=({ (e }) => setWorkflow({ ...workflow, isActive: e.target.checked })}
                 />
                 <Label htmlFor="workflow-active">Workflow Ativo</Label>
               </div>
@@ -987,7 +985,7 @@ export default function WorkflowBuilder({
                   type="checkbox"
                   id="quantum-enhanced"
                   checked={workflow.quantumEnhanced}
-                  onChange={(e) => setWorkflow({ ...workflow, quantumEnhanced: e.target.checked })}
+                  onChange=({ (e }) => setWorkflow({ ...workflow, quantumEnhanced: e.target.checked })}
                 />
                 <Label htmlFor="quantum-enhanced">
                   <Atom className="w-4 h-4 inline mr-1" />
@@ -1006,7 +1004,7 @@ export default function WorkflowBuilder({
                   type="checkbox"
                   id="mila-assisted"
                   checked={workflow.milaAssisted}
-                  onChange={(e) => setWorkflow({ ...workflow, milaAssisted: e.target.checked })}
+                  onChange=({ (e }) => setWorkflow({ ...workflow, milaAssisted: e.target.checked })}
                 />
                 <Label htmlFor="mila-assisted">
                   <Brain className="w-4 h-4 inline mr-1" />
@@ -1031,3 +1029,4 @@ const WorkflowBuilderWrapper = (props) => (
     <WorkflowBuilder {...props} />
   </ReactFlowProvider>
 );
+`

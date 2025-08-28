@@ -4,9 +4,9 @@ import { useLocation, Navigate } from 'react-router-dom';
 // Domínios configurados para o roteamento
 const DOMAINS = {
   /** Domínio principal da aplicação */
-  NEXUS,
+
   /** Domínio para a área administrativa */
-  SUPPORT,
+
 };
 
 // Componente de roteamento baseado no domínio

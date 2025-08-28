@@ -13,8 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 
 = useToast();
 
-  const [newDepartment, setNewDepartment] = useState({
-    name,
+  const [newDepartment, setNewDepartment] = useState(({ name,
     type,
     description,
     parentDepartmentId,
@@ -33,7 +32,7 @@ import { useToast } from "@/hooks/use-toast";
     { value, label, icon,
     { value, label, icon,
     { value, label, icon,
-    { value, label, icon) => {
+    { value, label, icon }) => {
     loadData();
   }, []);
 
@@ -158,7 +157,7 @@ import { useToast } from "@/hooks/use-toast";
       return;
     }
 
-    try {
+    try {`
       const response = await fetch(`/api/access-control/departments/${departmentId}`, {
         method,
       });
@@ -270,14 +269,14 @@ import { useToast } from "@/hooks/use-toast";
                     <Input
                       id="name"
                       value={newDepartment.name}
-                      onChange={(e) => setNewDepartment(prev => ({ ...prev, name))}
+                      onChange=({ (e }) => setNewDepartment(prev => ({ ...prev, name))}
                       placeholder="Ex) => setNewDepartment(prev => ({ ...prev, type))}
                     >
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        {departmentTypes.map((type) => (
+                        ({ departmentTypes.map((type }) => (
                           <SelectItem key={type.value} value={type.value}>
                             {type.icon} {type.label}
                           </SelectItem>
@@ -292,7 +291,7 @@ import { useToast } from "@/hooks/use-toast";
                   <Input
                     id="description"
                     value={newDepartment.description}
-                    onChange={(e) => setNewDepartment(prev => ({ ...prev, description))}
+                    onChange=({ (e }) => setNewDepartment(prev => ({ ...prev, description))}
                     placeholder="Descreva as responsabilidades deste departamento"
                   />
                 </div>
@@ -301,7 +300,7 @@ import { useToast } from "@/hooks/use-toast";
                   <Label htmlFor="parent">Departamento Pai (Opcional)</Label>
                   <Select
                     value={newDepartment.parentDepartmentId || ''}
-                    onValueChange={(value) => setNewDepartment(prev => ({ 
+                    onValueChange=({ (value }) => setNewDepartment(prev => ({ 
                       ...prev, 
                       parentDepartmentId))}
                   >
@@ -310,7 +309,7 @@ import { useToast } from "@/hooks/use-toast";
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="">Nenhum (Departamento raiz)</SelectItem>
-                      {departments.map((dept) => (
+                      ({ departments.map((dept }) => (
                         <SelectItem key={dept.id} value={dept.id}>
                           {getDepartmentTypeInfo(dept.type).icon} {dept.name}
                         </SelectItem>
@@ -329,7 +328,7 @@ import { useToast } from "@/hooks/use-toast";
                       </div>
                       <Switch
                         checked={newDepartment.settings.autoAssignNewUsers}
-                        onCheckedChange={(checked) => setNewDepartment(prev => ({
+                        onCheckedChange=({ (checked }) => setNewDepartment(prev => ({
                           ...prev,
                           settings, autoAssignNewUsers))}
                       />
@@ -341,7 +340,7 @@ import { useToast } from "@/hooks/use-toast";
                       </div>
                       <Switch
                         checked={newDepartment.settings.requireApprovalForAccess}
-                        onCheckedChange={(checked) => setNewDepartment(prev => ({
+                        onCheckedChange=({ (checked }) => setNewDepartment(prev => ({
                           ...prev,
                           settings, requireApprovalForAccess))}
                       />
@@ -350,9 +349,8 @@ import { useToast } from "@/hooks/use-toast";
                 </div>
 
                 <div className="flex justify-end space-x-2">
-                  <Button variant="outline" onClick={() => setShowCreateDialog(false)}>
-                    Cancelar
-                  </Button>
+                  <Button variant="outline" onClick=({ ( }) => setShowCreateDialog(false)}>
+
                   <Button 
                     onClick={createDepartment} 
                     disabled={isCreating || !newDepartment.name}
@@ -398,7 +396,7 @@ import { useToast } from "@/hooks/use-toast";
 
       {/* Lista de Departamentos */}
       <div className="grid gap-4">
-        {departments.length === 0 ? (
+        ({ departments.length === 0 ? (
           <Card>
             <CardContent className="pt-6">
               <div className="text-center py-8">
@@ -407,7 +405,7 @@ import { useToast } from "@/hooks/use-toast";
                 <p className="text-gray-600 mb-4">
                   Crie departamentos para organizar usuários e controlar acesso aos dados.
                 </p>
-                <Button onClick={() => setShowCreateDialog(true)}>
+                <Button onClick={( }) => setShowCreateDialog(true)}>
                   <Plus className="h-4 w-4 mr-2" />
                   Criar Primeiro Departamento
                 </Button>
@@ -441,19 +439,18 @@ import { useToast } from "@/hooks/use-toast";
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => setSelectedDepartment(department)}
+                        onClick=({ ( }) => setSelectedDepartment(department)}
                       >
                         <Settings className="h-4 w-4 mr-1" />
-                        Configurar
-                      </Button>
+
                       <Switch
                         checked={department.isActive}
-                        onCheckedChange={(checked) => toggleDepartment(department.id, checked)}
+                        onCheckedChange=({ (checked }) => toggleDepartment(department.id, checked)}
                       />
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => deleteDepartment(department.id)}
+                        onClick=({ ( }) => deleteDepartment(department.id)}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
@@ -477,3 +474,4 @@ import { useToast } from "@/hooks/use-toast";
     </div>
   );
 }
+`

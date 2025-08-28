@@ -5,28 +5,27 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { Card, Row, Col, Progress, Badge, Alert, Button, Statistic, Timeline, Tabs } from 'antd';
-import { 
-  ExperimentOutlined, 
-  ThunderboltOutlined, 
-  BranchesOutlined,
-  DashboardOutlined,
-  RocketOutlined,
-  EyeOutlined
+import {  
+
+
+
+
+
+ }
 } from '@ant-design/icons';
 import axios from 'axios';
 import './QuantumDashboard.css';
 
 const { TabPane } = Tabs;
 
-const QuantumDashboard = () => {
-  const [quantumStatus, setQuantumStatus] = useState(null);
+const QuantumDashboard = () => ({ const [quantumStatus, setQuantumStatus] = useState(null);
   const [quantumMetrics, setQuantumMetrics] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [realTimeData, setRealTimeData] = useState([]);
 
   // Carregar status do sistema quântico
-  const loadQuantumStatus = useCallback(async () => {
+  const loadQuantumStatus = useCallback(async ( }) => {
     try {
       const response = await axios.get('/api/quantum/status');
       setQuantumStatus(response.data.status);
@@ -50,8 +49,7 @@ const QuantumDashboard = () => {
   }, []);
 
   // Inicializar dashboard
-  useEffect(() => {
-    const initializeDashboard = async () => {
+  useEffect(() => ({ const initializeDashboard = async ( }) => {
       setLoading(true);
       await Promise.all([
         loadQuantumStatus(),
@@ -131,7 +129,7 @@ const QuantumDashboard = () => {
           percent={entanglementPercent}
           strokeColor={{
             '0%': '#108ee9',
-            '100%': '#87d068',
+            '100%': '#87d068',}
           }}
         />
         <div className="quantum-network-info">
@@ -157,15 +155,14 @@ const QuantumDashboard = () => {
   };
 
   // Renderizar algoritmos quânticos
-  const renderQuantumAlgorithms = () => {
-    if (!quantumStatus) return null;
+  const renderQuantumAlgorithms = () => ({ if (!quantumStatus) return null;
 
     const algorithms = quantumStatus.algorithms;
 
     return (
       <Card title="⚛️ Algoritmos Quânticos" className="quantum-card">
         <div className="quantum-algorithms">
-          {Object.entries(algorithms).map(([name, status]) => (
+          {Object.entries(algorithms).map(([name, status] }) => (
             <div key={name} className="algorithm-status">
               <Badge 
                 status={status === 'active' ? 'success' : 'default'} 
@@ -385,3 +382,4 @@ const QuantumDashboard = () => {
 };
 
 export default QuantumDashboard;
+`

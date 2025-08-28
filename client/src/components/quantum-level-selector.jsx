@@ -15,13 +15,12 @@ import { Loader2, Zap, Cpu, Brain, Sparkles, Rocket, DollarSign, CheckCircle } f
   onExecute,
   disabled = false,
   className = ''
-}) {
-  const [selectedLevel, setSelectedLevel] = useState<'logic' | 'logic_x' | 'boost'>('logic');
+}) ({ const [selectedLevel, setSelectedLevel] = useState<'logic' | 'logic_x' | 'boost'>('logic');
   const [capabilities, setCapabilities] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [executing, setExecuting] = useState(false);
 
-  useEffect(() => {
+  useEffect(( }) => {
     checkQuantumCapabilities();
   }, [context, dataSize, complexity]);
 
@@ -81,6 +80,7 @@ import { Loader2, Zap, Cpu, Brain, Sparkles, Rocket, DollarSign, CheckCircle } f
   }
 
   return (
+`
     <div className={`space-y-6 ${className}`}>
       {/* Quantum Level Selection */}
       <Card className="border-2 border-blue-200">
@@ -102,6 +102,7 @@ import { Loader2, Zap, Cpu, Brain, Sparkles, Rocket, DollarSign, CheckCircle } f
                 'Otimização básica de workflows',
                 'Reconhecimento de padrões',
                 'Sugestões automatizadas'
+}
               ]}
               borderColor="border-green-200"
               bgColor="bg-green-50"
@@ -124,6 +125,7 @@ import { Loader2, Zap, Cpu, Brain, Sparkles, Rocket, DollarSign, CheckCircle } f
                 'Predições inteligentes',
                 'Analytics melhorado',
                 'Auto-otimização'
+}
               ]}
               borderColor="border-blue-200"
               bgColor="bg-blue-50"
@@ -147,6 +149,7 @@ import { Loader2, Zap, Cpu, Brain, Sparkles, Rocket, DollarSign, CheckCircle } f
                 'Qiskit AI Enhancement',
                 'IBM Quantum Network',
                 'Long-range entanglement'
+}
               ]}
               borderColor="border-purple-200"
               bgColor="bg-purple-50"
@@ -182,7 +185,10 @@ import { Loader2, Zap, Cpu, Brain, Sparkles, Rocket, DollarSign, CheckCircle } f
         <Alert className="border-yellow-200 bg-yellow-50">
           <Sparkles className="h-4 w-4 text-yellow-600" />
           <AlertDescription className="text-yellow-800">
-            <strong>Recomendação IA)}
+            <strong>Recomendação IA:</strong> {capabilities.recommendation}
+          </AlertDescription>
+        </Alert>
+      )}
     </div>
   );
 }
@@ -193,13 +199,14 @@ import { Loader2, Zap, Cpu, Brain, Sparkles, Rocket, DollarSign, CheckCircle } f
   return (
     <div
       className={`relative p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
-        selected ? `${borderColor} ${bgColor} shadow-lg` : 'border-gray-200 hover)}
+        selected ? `${borderColor} ${bgColor} shadow-lg` : 'border-gray-200 hover:border-gray-300'
+      }`}
+      onClick={onClick}
 
       {/* Premium badge */}
       {premium && (
         <div className="absolute top-2 right-2">
           <Badge variant="secondary" className="bg-purple-100 text-purple-800">
-            Premium
           </Badge>
         </div>
       )}
@@ -208,7 +215,8 @@ import { Loader2, Zap, Cpu, Brain, Sparkles, Rocket, DollarSign, CheckCircle } f
       <div className="flex items-center space-x-3 mb-3">
         <div className={`p-2 rounded-lg ${bgColor}`}>
           {React.cloneElement(icon as React.ReactElement, {
-            className)}
+            className: 'h-6 w-6'
+          })}
         </div>
         <div>
           <h3 className="font-semibold text-gray-900">{title}</h3>
@@ -238,7 +246,15 @@ import { Loader2, Zap, Cpu, Brain, Sparkles, Rocket, DollarSign, CheckCircle } f
             <div className="text-xs text-gray-600">
               Requer upgrade para Quantum Unstoppable
             </div>
-          ) {/* Selection indicator */}
+          ) : (
+            <div className="text-xs text-gray-600">
+              Créditos necessários: {creditsNeeded}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Selection indicator */}
       {selected && (
         <div className="absolute inset-0 rounded-lg border-2 border-blue-500 bg-blue-50 bg-opacity-20 pointer-events-none" />
       )}
@@ -248,26 +264,48 @@ import { Loader2, Zap, Cpu, Brain, Sparkles, Rocket, DollarSign, CheckCircle } f
 
 function ExecutionPanel({ selectedLevel, capabilities, onExecute, executing, disabled }) {
   const levelConfig = {
-    logic,
-      description,
-      buttonText,
-      buttonClass,
-      icon,
-    logic_x,
-      description,
-      buttonText,
-      buttonClass,
-      icon,
-    boost,
-      description,
-      buttonText,
-      buttonClass,
-      icon, index) => (
-              <li key={index} className="flex items-start space-x-2">
-                <Zap className="h-4 w-4 text-yellow-500 mt-0.5 flex-shrink-0" />
-                <span>{benefit}</span>
-              </li>
-            ))}
+    logic: {
+      description: 'Processamento clássico otimizado',
+      buttonText: 'Executar Logic',
+      buttonClass: 'bg-green-600 hover:bg-green-700',
+      icon: <Play className="mr-2 h-4 w-4" />
+    },
+    logic_x: {
+      description: 'Algoritmos híbridos avançados',
+      buttonText: 'Executar Logic X',
+      buttonClass: 'bg-blue-600 hover:bg-blue-700',
+      icon: <Sparkles className="mr-2 h-4 w-4" />
+    },
+    boost: {
+      description: 'Computação quântica real',
+      buttonText: 'Executar Quantum Boost',
+      buttonClass: 'bg-purple-600 hover:bg-purple-700',
+      icon: <Rocket className="mr-2 h-4 w-4" />
+    }
+  };
+
+  const config = levelConfig[selectedLevel];
+  const levelData = capabilities?.[selectedLevel];
+
+  return (
+    <div className="space-y-4">
+      {/* Description */}
+      <div className="text-center">
+        <h3 className="text-lg font-semibold mb-2">{config.description}</h3>
+        
+        {/* Benefits for current level */}
+        {levelData?.benefits && (
+          <div className="text-sm text-gray-600">
+            <ul className="space-y-1">
+              {levelData.benefits.map((benefit, index) => (
+                <li key={index} className="flex items-start space-x-2">
+                  <Zap className="h-4 w-4 text-yellow-500 mt-0.5 flex-shrink-0" />
+                  <span>{benefit}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
           </ul>
         </div>
       )}
@@ -275,7 +313,10 @@ function ExecutionPanel({ selectedLevel, capabilities, onExecute, executing, dis
       {/* Cost info for Boost */}
       {selectedLevel === 'boost' && levelData?.cost && (
         <div className="flex items-center justify-between text-sm p-3 bg-purple-50 rounded-lg">
-          <span className="text-purple-700">Custo desta execução)}
+          <span className="text-purple-700">Custo desta execução:</span>
+          <span className="font-semibold text-purple-900">{levelData.cost}</span>
+        </div>
+      )}
 
       {/* Execute button */}
       <Button
@@ -289,7 +330,9 @@ function ExecutionPanel({ selectedLevel, capabilities, onExecute, executing, dis
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             Processando...
           </>
-        ) {config.icon}
+        ) : (
+          <>
+            {config.icon}
             {config.buttonText}
           </>
         )}
@@ -306,7 +349,8 @@ function ExecutionPanel({ selectedLevel, capabilities, onExecute, executing, dis
           </p>
           <Button
             size="sm"
-            className="bg-yellow-600 hover) => window.location.href = levelData?.upgradeRequired ? '/quantum-packages' : '/quantum-credits'}
+            className="bg-yellow-600 hover:bg-yellow-700"
+            onClick={() => window.location.href = levelData?.upgradeRequired ? '/quantum-packages' : '/quantum-credits'}
           >
             {levelData?.upgradeRequired ? 'Fazer Upgrade' : 'Comprar Créditos'}
           </Button>
@@ -314,4 +358,4 @@ function ExecutionPanel({ selectedLevel, capabilities, onExecute, executing, dis
       )}
     </div>
   );
-}
+}`

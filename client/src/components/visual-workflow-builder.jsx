@@ -12,39 +12,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { 
-  Play, 
-  Pause, 
-  Square, 
-  Save, 
-  Plus, 
-  Zap, 
-  Mail, 
-  Database, 
-  Settings, 
-  Code, 
-  Clock, 
-  GitBranch, 
-  RefreshCw,
+import {  
   Trash2,
-  Copy,
-  Eye,
-  Download,
-  Upload,
-  CheckCircle,
-  XCircle,
-  AlertTriangle,
-  Activity,
-  Target,
-  Workflow,
-  Calendar,
-  Filter,
-  Search,
-  ArrowRight,
-  MousePointer,
-  Move,
-  Link,
-  Unlink
+ }
 } from 'lucide-react';
 import { apiRequest } from '@/lib/queryClient';
 
@@ -52,8 +22,7 @@ import { apiRequest } from '@/lib/queryClient';
 }
 
 const NODE_PALETTE= [
-  {
-    category,
+  ({ category,
     items,
         name,
         description,
@@ -117,7 +86,7 @@ const NODE_PALETTE= [
         description,
         icon,
         color,
-        defaultConfig, condition) => void;
+        defaultConfig, condition }) => void;
   readOnly, onSave, readOnly = false }) {
   const [workflow, setWorkflow] = useState<VisualWorkflow>({
     name,
@@ -145,9 +114,8 @@ const NODE_PALETTE= [
   const queryClient = useQueryClient();
 
   // Query para carregar workflow existente
-  const { data, isLoading } = useQuery({
-    queryKey, workflowId],
-    queryFn) => {
+  const { data, isLoading } = useQuery(({ queryKey, workflowId],
+    queryFn }) => {
       if (!workflowId) return null;
       const response = await apiRequest('GET', `/api/visual-workflows/${workflowId}`);
       return response.json();
@@ -155,19 +123,20 @@ const NODE_PALETTE= [
     enabled);
 
   // Query para histórico de execuções
-  const { data, workflowId, 'executions'],
-    queryFn) => {
+  const ({ data, workflowId, 'executions'],
+    queryFn }) => {
       if (!workflowId) return [];
+`
       const response = await apiRequest('GET', `/api/visual-workflows/${workflowId}/executions`);
       return response.json();
     },
     enabled);
 
   // Mutation para salvar workflow
-  const saveWorkflowMutation = useMutation({
-    mutationFn) => {
+  const saveWorkflowMutation = useMutation(({ mutationFn }) => {
       const method = workflowData.id ? 'PUT' : 'POST';
       const url = workflowData.id 
+`
         ? `/api/visual-workflows/${workflowData.id}` 
         : '/api/visual-workflows';
       
@@ -189,10 +158,10 @@ const NODE_PALETTE= [
   });
 
   // Mutation para executar workflow
-  const executeWorkflowMutation = useMutation({
-    mutationFn, any>) => {
+  const executeWorkflowMutation = useMutation(({ mutationFn, any> }) => {
       if (!workflow.id) throw new Error('Workflow deve ser salvo antes de executar');
       
+`
       const response = await apiRequest('POST', `/api/visual-workflows/${workflow.id}/execute`, {
         input,
         triggerData, timestamp).toISOString() }
@@ -247,7 +216,9 @@ const NODE_PALETTE= [
     if (!nodeTemplate) return;
 
     const newNode= {
+`
       id)}`,
+`
       nodeKey)}`,
       nodeType,
       name,
@@ -275,6 +246,7 @@ const NODE_PALETTE= [
   // Conectar nodes
   const connectNodes = useCallback((sourceNodeId, targetNodeId) => {
     const newConnection= {
+`
       id)}`,
       sourceNodeId,
       targetNodeId,
@@ -402,18 +374,19 @@ const NODE_PALETTE= [
         </div>
         
         <div className="p-4 space-y-4">
-          {NODE_PALETTE.map((category) => (
+          ({ NODE_PALETTE.map((category }) => (
             <div key={category.category}>
               <h4 className="font-medium text-gray-900 mb-2">{category.category}</h4>
               <div className="space-y-2">
-                {category.items.map((item) => (
+                ({ category.items.map((item }) => (
                   <div
                     key={item.type}
                     draggable={!readOnly}
-                    onDragStart={(e) => e.dataTransfer.setData('text/plain', item.type)}
+                    onDragStart={(e) => e.dataTransfer.setData('text/plain', item.type)}`
                     className={`p-3 rounded-lg border-2 border-dashed cursor-move transition-colors ${
                       readOnly 
                         ? 'opacity-50 cursor-not-allowed' 
+}
                         : 'hover))}
               </div>
             </div>
@@ -430,21 +403,21 @@ const NODE_PALETTE= [
               <Input
                 placeholder="Nome do workflow"
                 value={workflow.name}
-                onChange={(e) => setWorkflow(prev => ({ ...prev, name))}
+                onChange={(e) => setWorkflow(prev => ({ ...prev, name: e.target.value }))}
                 className="w-64"
                 disabled={readOnly}
               />
               <Input
                 placeholder="Descrição (opcional)"
                 value={workflow.description}
-                onChange={(e) => setWorkflow(prev => ({ ...prev, description))}
+                onChange={(e) => setWorkflow(prev => ({ ...prev, description: e.target.value }))}
                 className="w-80"
                 disabled={readOnly}
               />
               <div className="flex items-center space-x-2">
                 <Switch
                   checked={workflow.isActive}
-                  onCheckedChange={(checked) => setWorkflow(prev => ({ ...prev, isActive))}
+                  onCheckedChange={(checked) => setWorkflow(prev => ({ ...prev, isActive: checked }))}
                   disabled={readOnly}
                 />
                 <Label className="text-sm">Ativo</Label>
@@ -489,9 +462,9 @@ const NODE_PALETTE= [
             onMouseUp={handleMouseUp}
             onDrop={handleDrop}
             onDragOver={(e) => e.preventDefault()}
-            style={{
+            style=({ {
               backgroundImage, #d1d5db 1px, transparent 1px)',
-              backgroundSize) => {
+              backgroundSize }) => {
                 const sourceNode = workflow.nodes.find(n => n.id === connection.sourceNodeId);
                 const targetNode = workflow.nodes.find(n => n.id === connection.targetNodeId);
                 
@@ -507,6 +480,7 @@ const NODE_PALETTE= [
                 return (
                   <g key={connection.id}>
                     <path
+`
                       d={`M ${startX} ${startY} C ${midX} ${startY} ${midX} ${endY} ${endX} ${endY}`}
                       stroke={connection.style?.stroke || '#666'}
                       strokeWidth={connection.style?.strokeWidth || 2}
@@ -515,6 +489,7 @@ const NODE_PALETTE= [
                       onClick={() => setSelectedConnection(connection)}
                     />
                     <polygon
+`
                       points={`${endX-8},${endY-4} ${endX},${endY} ${endX-8},${endY+4}`}
                       fill={connection.style?.stroke || '#666'}
                     />
@@ -534,18 +509,20 @@ const NODE_PALETTE= [
             </svg>
 
             {/* Render Nodes */}
-            {workflow.nodes.map((node) => (
+            ({ workflow.nodes.map((node }) => (
               <div
                 key={node.id}
+`
                 className={`absolute border-2 rounded-lg shadow-lg cursor-move transition-all ${
                   selectedNode?.id === node.id ? 'ring-2 ring-blue-500' : ''
+`}
                 } ${node.style?.backgroundColor || 'bg-white border-gray-300'}`}
-                style={{
+                style=({ {
                   left,
                   top,
                   width,
                   height,
-                  zIndex) => handleMouseDown(e, node.id)}
+                  zIndex }) => handleMouseDown(e, node.id)}
                 onClick={() => setSelectedNode(node)}
               >
                 <div className="p-3 h-full flex flex-col">
@@ -556,11 +533,11 @@ const NODE_PALETTE= [
                         .find(item => item.type === node.nodeType)?.icon}
                       <span className="font-medium text-sm">{node.name}</span>
                     </div>
-                    {!readOnly && (
+                    ({ !readOnly && (
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={(e) => {
+                        onClick={(e }) => {
                           e.stopPropagation();
                           removeNode(node.id);
                         }}
@@ -776,7 +753,7 @@ const NODE_PALETTE= [
           </DialogHeader>
           
           <div className="space-y-3">
-            {executionHistory?.data?.map((execution) => (
+            ({ executionHistory?.data?.map((execution }) => (
               <Card key={execution.executionId}>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
@@ -810,4 +787,4 @@ const NODE_PALETTE= [
       </Dialog>
     </div>
   );
-}
+}`

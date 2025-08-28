@@ -11,7 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
-import { 
+import {  
   Zap, 
   Brain, 
   Atom, 
@@ -42,7 +42,7 @@ import {
   TrendingDown,
   FileText,
   Calendar,
-  BarChart2
+  BarChart2 }
 } from 'lucide-react';
 
 = useAuth();
@@ -53,8 +53,7 @@ import {
   const [showDemoModal, setShowDemoModal] = useState(false);
   const [isFirstVisit, setIsFirstVisit] = useState(true);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
+  useEffect(() => ({ const interval = setInterval(( }) => {
       setAnimationProgress(prev => prev >= 100 ? 0 : prev + 1);
     }, 50);
     return () => clearInterval(interval);
@@ -262,8 +261,6 @@ import {
           {/* Logo TOIT + NEXUS */}
           <div className="flex items-center justify-center gap-4 mb-6">
             <div className="text-6xl font-black bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-              TOIT
-            </div>
             <svg className="w-20 h-20" viewBox="0 0 400 400" xmlns="http, stopOpacity, stopOpacity, stopOpacity, stopOpacity,250,252,0.1)" stroke="#e2e8f0" strokeWidth="2"/>
               <g transform="translate(200,200)">
                 <path d="M -80 0 L -40 -69.3 L 40 -69.3 L 80 0 L 40 69.3 L -40 69.3 Z" 
@@ -369,7 +366,7 @@ import {
             </div>
           </TabsContent>
 
-          {/* Tab, index) => (
+          ({ /* Tab, index }) => (
                 <Card key={index} className="bg-gradient-to-r from-slate-800/50 to-slate-900/50 border-orange-500/30 hover, idx) => (
                               <Badge key={idx} variant="secondary" className="bg-slate-700 text-gray-300 text-xs">
                                 {industry}
@@ -417,13 +414,13 @@ import {
             </Card>
           </TabsContent>
 
-          {/* Tab, 
+          ({ /* Tab, 
                 oferecendo otimizações computacionais significativas em problemas específicos.
               </p>
             </div>
 
             <div className="space-y-6">
-              {quantumAlgorithms.map((algorithm, index) => (
+              {quantumAlgorithms.map((algorithm, index }) => (
                 <Card key={index} className="bg-slate-800 border-slate-700 hover))}
             </div>
 
@@ -467,7 +464,7 @@ import {
             </Card>
           </TabsContent>
 
-          {/* Tab, index) => (
+          ({ /* Tab, index }) => (
                 <Card key={index} className="bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700 hover))}
             </div>
 
@@ -485,8 +482,7 @@ import {
                 <div className="grid md,
                     description,
                     benefit,
-                  {
-                    title,
+                  ({ title,
                     description,
                     benefit,
                   {
@@ -504,18 +500,18 @@ import {
                   {
                     title,
                     description,
-                    benefit, index) => (
+                    benefit, index }) => (
                   <Card key={index} className="bg-slate-800 border-slate-700 hover))}
               </div>
             </div>
           </TabsContent>
 
-          {/* Tab, posicionando o país na vanguarda da computação quântica.
+          ({ /* Tab, posicionando o país na vanguarda da computação quântica.
               </p>
             </div>
 
             <div className="space-y-8">
-              {achievements.map((achievement, index) => (
+              {achievements.map((achievement, index }) => (
                 <Card key={index} className="bg-gradient-to-r from-slate-800 to-purple-900/30 border-amber-500 hover)[0]}</div>
                       <div className="flex-1">
                         <h3 className="text-xl font-bold text-white mb-3">
@@ -564,14 +560,13 @@ import {
                       title,
                       description) funcionando"
                     },
-                    {
-                      date,
+                    ({ date,
                       title,
                       description,
                     {
                       date,
                       title,
-                      description, index) => (
+                      description, index }) => (
                     <div key={index} className="flex items-center space-x-4">
                       <div className="w-24 text-sm text-gray-400 font-mono">{milestone.date}</div>
                       <div className="w-4 h-4 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-full"></div>
@@ -600,8 +595,7 @@ import {
                       country,
                       focus,
                       advantage,
-                    {
-                      company,
+                    ({ company,
                       country, 
                       focus,
                       advantage,
@@ -614,12 +608,12 @@ import {
                       company,
                       country,
                       focus,
-                      advantage, index) => (
+                      advantage, index }) => (`
                     <Card key={index} className={`${index === 3 ? 'bg-gradient-to-br from-amber-900/30 to-green-900/30 border-amber-500' : 'bg-slate-700 border-slate-600'}`}>
                       <CardContent className="p-4 text-center">
                         <div className="text-2xl mb-2">{competitor.country}</div>
                         <h4 className="text-white font-bold text-sm mb-2">{competitor.company}</h4>
-                        <p className="text-gray-300 text-xs mb-2">{competitor.focus}</p>
+                        <p className="text-gray-300 text-xs mb-2">{competitor.focus}</p>`
                         <Badge className={`text-xs ${index === 3 ? 'bg-amber-600' : 'bg-slate-600'}`}>
                           {competitor.advantage}
                         </Badge>
@@ -677,8 +671,8 @@ import {
 
               <Button className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover)}
 
-      {/* Modal) => setShowPricingModal(false)}
-                className="absolute right-2 top-2 text-gray-400 hover, index) => (
+      ({ /* Modal }) => setShowPricingModal(false)}
+                className="absolute right-2 top-2 text-gray-400 hover, index) => (`
                   <Card key={index} className={`relative ${plan.highlight ? 'border-purple-500 bg-gradient-to-b from-purple-900/20 to-slate-800' : 'border-slate-600 bg-slate-800'}`}>
                     {plan.highlight && (
                       <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
@@ -696,7 +690,7 @@ import {
                       <p className="text-gray-400 text-sm mb-6">{plan.description}</p>
                       
                       <ul className="space-y-2 text-left mb-6">
-                        {plan.features.map((feature, idx) => (
+                        ({ plan.features.map((feature, idx }) => (
                           <li key={idx} className="text-gray-300 text-sm flex items-start">
                             <CheckCircle className="h-4 w-4 text-green-400 mr-2 mt-0.5 flex-shrink-0" />
                             {feature}
@@ -704,10 +698,10 @@ import {
                         ))}
                       </ul>
                       
-                      <Button 
-                        className={`w-full py-3 ${
+                      <Button `
+                        className=({ `w-full py-3 ${
                           plan.highlight 
-                            ? 'bg-gradient-to-r from-purple-600 to-cyan-600 hover) => setShowTrialModal(true)}
+                            ? 'bg-gradient-to-r from-purple-600 to-cyan-600 hover }) => setShowTrialModal(true)}
                       >
                         <CreditCard className="h-4 w-4 mr-2" />
                         {plan.highlight ? 'Começar Agora' : 'Selecionar Plano'}
@@ -725,10 +719,10 @@ import {
                 </div>
                 <Button 
                   variant="outline" 
-                  onClick={() => setShowTrialModal(true)}
+                  onClick=({ ( }) => setShowTrialModal(true)}
                   className="border-cyan-400 text-cyan-400 hover)}
 
-      {/* Modal) => setShowDemoModal(false)}
+      ({ /* Modal }) => setShowDemoModal(false)}
                 className="absolute right-2 top-2 text-gray-400 hover)</option>
                   <option value="pequena">Pequena (11-50 funcionários)</option>
                   <option value="media">Média (51-200 funcionários)</option>
@@ -745,4 +739,4 @@ import {
                 ⏱️ Duração)}
     </div>
   );
-}
+}`

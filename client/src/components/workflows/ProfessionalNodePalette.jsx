@@ -5,11 +5,11 @@
  */
 
 import React from 'react';
-import { 
+import {  
   Play, Square, GitBranch, Clock, Database, CheckSquare,
   Mail, Calendar, FileText, BarChart3, MessageSquare,
   Bot, Webhook, FileUp, Bell, Code, Repeat, Zap,
-  Users, Settings, Filter, Link, Plus, Search
+  Users, Settings, Filter, Link, Plus, Search }
 } from 'lucide-react';
 
 export const PROFESSIONAL_NODE_TYPES = {
@@ -365,8 +365,7 @@ export const PROFESSIONAL_NODE_TYPES = {
   }
 };
 
-export const ProfessionalNodePalette = ({ onNodeSelect, searchQuery = '' }) => {
-  const filteredCategories = Object.entries(PROFESSIONAL_NODE_TYPES).map(([key, category]) => ({
+export const ProfessionalNodePalette = ({ onNodeSelect, searchQuery = '' }) => ({ const filteredCategories = Object.entries(PROFESSIONAL_NODE_TYPES).map(([key, category] }) => ({
     key,
     ...category,
     nodes: category.nodes.filter(node => 
@@ -396,9 +395,9 @@ export const ProfessionalNodePalette = ({ onNodeSelect, searchQuery = '' }) => {
                 <div
                   key={node.type}
                   className="p-3 border rounded-lg cursor-pointer hover:bg-gray-50 hover:border-gray-300 transition-all group"
-                  onClick={() => onNodeSelect(node)}
+                  onClick=({ ( }) => onNodeSelect(node)}
                   draggable
-                  onDragStart={(e) => {
+                  onDragStart=({ (e }) => {
                     e.dataTransfer.setData('application/json', JSON.stringify(node));
                   }}
                 >
@@ -422,7 +421,7 @@ export const ProfessionalNodePalette = ({ onNodeSelect, searchQuery = '' }) => {
                       <div className="flex items-center gap-1 mt-2">
                         {node.config.conditions && (
                           <span className="text-xs bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded">
-                            Condicional
+
                           </span>
                         )}
                         {node.config.saveAs && (
@@ -457,3 +456,4 @@ export const ProfessionalNodePalette = ({ onNodeSelect, searchQuery = '' }) => {
 };
 
 export default ProfessionalNodePalette;
+`

@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   BookOpen, 
   Brain,
   Lightbulb,
@@ -94,7 +94,7 @@ import {
   Square,
   Circle,
   Triangle,
-  Hexagon
+  Hexagon }
 } from 'lucide-react';
 
 const KnowledgeManagement = () => {
@@ -158,22 +158,22 @@ const KnowledgeManagement = () => {
         fetch('/api/knowledge/articles', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/knowledge/categories', {
+        fetch('/api/knowledge/categories', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/knowledge/tags', {
+        fetch('/api/knowledge/tags', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/knowledge/wikis', {
+        fetch('/api/knowledge/wikis', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/knowledge/faqs', {
+        fetch('/api/knowledge/faqs', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/knowledge/tutorials', {
+        fetch('/api/knowledge/tutorials', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/knowledge/documents', {
+        fetch('/api/knowledge/documents', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);
@@ -232,14 +232,14 @@ const KnowledgeManagement = () => {
     try {
       const response = await fetch('/api/knowledge/articles', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           ...articleData,
           status: 'draft',
-          createdAt: new Date().toISOString(),
+          createdAt: new Date().toISOString(),`
           articleId: `ART-${Date.now()}`
         })
       });
@@ -253,7 +253,7 @@ const KnowledgeManagement = () => {
       setShowArticleModal(false);
       
       toast({
-        title: "Artigo criado",
+        title: "Artigo criado",`
         description: `Artigo "${data.article.title}" criado com sucesso`,
       });
     } catch (error) {
@@ -270,10 +270,10 @@ const KnowledgeManagement = () => {
    * PUBLICAR ARTIGO
    */
   const publishArticle = async (articleId) => {
-    try {
+    try {`
       const response = await fetch(`/api/knowledge/articles/${articleId}/publish`, {
         method: 'PATCH',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }
@@ -307,10 +307,10 @@ const KnowledgeManagement = () => {
    * CURTIR ARTIGO
    */
   const likeArticle = async (articleId) => {
-    try {
+    try {`
       const response = await fetch(`/api/knowledge/articles/${articleId}/like`, {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }
@@ -413,9 +413,9 @@ const KnowledgeManagement = () => {
           </div>
           
           {/* Tags */}
-          {article.tags && article.tags.length > 0 && (
+          ({ article.tags && article.tags.length > 0 && (
             <div className="flex flex-wrap gap-1 mb-4">
-              {article.tags.slice(0, 3).map((tag, index) => (
+              {article.tags.slice(0, 3).map((tag, index }) => (
                 <Badge key={index} variant="outline" className="text-xs">
                   #{tag}
                 </Badge>
@@ -448,9 +448,9 @@ const KnowledgeManagement = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => likeArticle(article.id)}
+                onClick=({ ( }) => likeArticle(article.id)}
                 className={article.isLiked ? 'text-red-600' : ''}
-              >
+              >`
                 <Heart className={`h-4 w-4 ${article.isLiked ? 'fill-current' : ''}`} />
               </Button>
               
@@ -464,25 +464,23 @@ const KnowledgeManagement = () => {
             </div>
             
             <div className="flex gap-2">
-              {article.status === 'draft' && (
+              ({ article.status === 'draft' && (
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => publishArticle(article.id)}
+                  onClick={( }) => publishArticle(article.id)}
                 >
                   <BookOpen className="h-3 w-3 mr-1" />
-                  Publicar
-                </Button>
+
               )}
               
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setSelectedArticle(article)}
+                onClick=({ ( }) => setSelectedArticle(article)}
               >
                 <Eye className="h-3 w-3 mr-1" />
-                Ver
-              </Button>
+
             </div>
           </div>
         </CardContent>
@@ -544,8 +542,7 @@ const KnowledgeManagement = () => {
             </Button>
             <Button variant="outline" size="sm">
               <Edit className="h-3 w-3 mr-1" />
-              Editar
-            </Button>
+
           </div>
         </CardContent>
       </Card>
@@ -608,8 +605,7 @@ const KnowledgeManagement = () => {
               </Button>
               <Button variant="outline" size="sm">
                 <Edit className="h-3 w-3 mr-1" />
-                Editar
-              </Button>
+
             </div>
           </div>
         </CardContent>
@@ -678,12 +674,10 @@ const KnowledgeManagement = () => {
             </Button>
             <Button variant="outline" size="sm">
               <Eye className="h-3 w-3 mr-1" />
-              Visualizar
-            </Button>
+
             <Button variant="outline" size="sm">
               <Bookmark className="h-3 w-3 mr-1" />
-              Salvar
-            </Button>
+
           </div>
         </CardContent>
       </Card>
@@ -693,11 +687,10 @@ const KnowledgeManagement = () => {
   /**
    * OBTER ESTATÍSTICAS
    */
-  const getStats = () => {
-    const totalArticles = articles.length;
+  const getStats = () => ({ const totalArticles = articles.length;
     const publishedArticles = articles.filter(a => a.status === 'published').length;
     const totalViews = articles.reduce((sum, a) => sum + (a.views || 0), 0);
-    const totalLikes = articles.reduce((sum, a) => sum + (a.likes || 0), 0);
+    const totalLikes = articles.reduce((sum, a }) => sum + (a.likes || 0), 0);
     const totalCategories = categories.length;
     const totalTutorials = tutorials.length;
     const totalFAQs = faqs.length;
@@ -761,19 +754,18 @@ const KnowledgeManagement = () => {
                 variant="outline"
                 onClick={loadKnowledgeData}
                 disabled={loading}
-              >
+              >`
                 <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-                Atualizar
-              </Button>
+
               <Button
                 variant="outline"
-                onClick={() => setShowWikiModal(true)}
+                onClick=({ ( }) => setShowWikiModal(true)}
               >
                 <BookMarked className="h-4 w-4 mr-2" />
                 Nova Wiki
               </Button>
               <Button
-                onClick={() => setShowArticleModal(true)}
+                onClick=({ ( }) => setShowArticleModal(true)}
                 className="bg-blue-600 hover:bg-blue-700"
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -859,7 +851,7 @@ const KnowledgeManagement = () => {
                       <Input
                         placeholder="Buscar artigos..."
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange=({ (e }) => setSearchTerm(e.target.value)}
                         className="pl-10"
                       />
                     </div>
@@ -868,7 +860,7 @@ const KnowledgeManagement = () => {
                   <div className="flex gap-3">
                     <select
                       value={filters.category}
-                      onChange={(e) => setFilters(prev => ({ ...prev, category: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, category: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todas as Categorias</option>
@@ -879,22 +871,22 @@ const KnowledgeManagement = () => {
 
                     <select
                       value={filters.status}
-                      onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, status: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todos os Status</option>
-                      {Object.entries(articleStatuses).map(([key, status]) => (
+                      ({ Object.entries(articleStatuses).map(([key, status] }) => (
                         <option key={key} value={key}>{status.name}</option>
                       ))}
                     </select>
 
                     <select
                       value={filters.type}
-                      onChange={(e) => setFilters(prev => ({ ...prev, type: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, type: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todos os Tipos</option>
-                      {Object.entries(contentTypes).map(([key, type]) => (
+                      ({ Object.entries(contentTypes).map(([key, type] }) => (
                         <option key={key} value={key}>{type.name}</option>
                       ))}
                     </select>
@@ -902,7 +894,7 @@ const KnowledgeManagement = () => {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
+                      onClick=({ ( }) => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
                     >
                       {viewMode === 'grid' ? <List className="h-4 w-4" /> : <BookOpen className="h-4 w-4" />}
                     </Button>
@@ -912,7 +904,7 @@ const KnowledgeManagement = () => {
             </Card>
 
             {/* Lista de Artigos */}
-            {loading ? (
+            ({ loading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 <span className="ml-2">Carregando artigos...</span>
@@ -927,7 +919,7 @@ const KnowledgeManagement = () => {
                   <p className="text-gray-500 mb-4">
                     Comece criando seu primeiro artigo de conhecimento
                   </p>
-                  <Button onClick={() => setShowArticleModal(true)}>
+                  <Button onClick={( }) => setShowArticleModal(true)}>
                     <Plus className="h-4 w-4 mr-2" />
                     Criar Artigo
                   </Button>
@@ -936,7 +928,7 @@ const KnowledgeManagement = () => {
             ) : (
               <div className={viewMode === 'grid' 
                 ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
-                : 'space-y-4'
+                : 'space-y-4'}
               }>
                 {filteredArticles.map(renderArticleCard)}
               </div>
@@ -1043,9 +1035,8 @@ const KnowledgeManagement = () => {
               <h2 className="text-xl font-bold mb-4">Novo Artigo</h2>
               {/* Formulário será implementado */}
               <div className="flex justify-end gap-3 mt-6">
-                <Button variant="outline" onClick={() => setShowArticleModal(false)}>
-                  Cancelar
-                </Button>
+                <Button variant="outline" onClick=({ ( }) => setShowArticleModal(false)}>
+
                 <Button disabled={loading}>
                   {loading ? 'Criando...' : 'Criar Artigo'}
                 </Button>
@@ -1059,3 +1050,4 @@ const KnowledgeManagement = () => {
 };
 
 export default KnowledgeManagement;
+`

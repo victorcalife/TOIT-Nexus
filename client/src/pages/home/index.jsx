@@ -8,7 +8,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      <div className="modal-content" onClick=({ (e }) => e.stopPropagation()}>
         <div className="modal-header">
           <h2>{title}</h2>
           <button className="modal-close" onClick={onClose}>
@@ -24,8 +24,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
 };
 
 // Componente principal da página inicial
-const HomePage = () => {
-  const navigate = useNavigate();
+const HomePage = () => ({ const navigate = useNavigate();
   const [selectedCard, setSelectedCard] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAnimationPaused, setIsAnimationPaused] = useState(false);
@@ -37,7 +36,7 @@ const HomePage = () => {
       title: 'Login',
       description: 'Acesse sua conta no TOIT Nexus',
       icon: '🔐',
-      action: () => navigate('/login'),
+      action: ( }) => navigate('/login'),
       isSpecial: true // Login é especial pois muda URL
     },
     {
@@ -189,9 +188,8 @@ const HomePage = () => {
     setIsAnimationPaused(false);
   };
 
-  useEffect(() => {
-    // Carregar bibliotecas externas
-    const loadExternalLibs = () => {
+  useEffect(() => ({ // Carregar bibliotecas externas
+    const loadExternalLibs = ( }) => {
       // Typed.js
       if (!window.Typed) {
         const typedScript = document.createElement('script');
@@ -274,11 +272,11 @@ const HomePage = () => {
             </div>
 
             <div className={`main-grid d-flex ${isAnimationPaused ? 'paused' : ''}`}>
-              {nexusCards.map((card, index) => (
+              ({ nexusCards.map((card, index }) => (
                 <div 
-                  key={card.id}
+                  key={card.id}`
                   className={`box box-${index + 1} ${selectedCard?.id === card.id ? 'selected' : ''}`}
-                  onClick={() => handleCardClick(card)}
+                  onClick=({ ( }) => handleCardClick(card)}
                 >
                   <div className="card-content">
                     <div className="card-icon">{card.icon}</div>
@@ -317,4 +315,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default HomePage;`

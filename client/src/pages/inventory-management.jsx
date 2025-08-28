@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   Package, 
   PackageCheck,
   PackageX,
@@ -76,7 +76,7 @@ import {
   Mail,
   Phone,
   Link,
-  ExternalLink
+  ExternalLink }
 } from 'lucide-react';
 
 const InventoryManagement = () => {
@@ -136,22 +136,22 @@ const InventoryManagement = () => {
         fetch('/api/inventory/products', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/inventory/categories', {
+        fetch('/api/inventory/categories', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/inventory/suppliers', {
+        fetch('/api/inventory/suppliers', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/inventory/warehouses', {
+        fetch('/api/inventory/warehouses', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/inventory/movements', {
+        fetch('/api/inventory/movements', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/inventory/alerts', {
+        fetch('/api/inventory/alerts', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/inventory/orders', {
+        fetch('/api/inventory/orders', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);
@@ -210,14 +210,14 @@ const InventoryManagement = () => {
     try {
       const response = await fetch('/api/inventory/products', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           ...productData,
           status: 'active',
-          createdAt: new Date().toISOString(),
+          createdAt: new Date().toISOString(),`
           sku: `SKU-${Date.now()}`
         })
       });
@@ -231,7 +231,7 @@ const InventoryManagement = () => {
       setShowProductModal(false);
       
       toast({
-        title: "Produto criado",
+        title: "Produto criado",`
         description: `Produto ${data.product.name} criado com sucesso`,
       });
     } catch (error) {
@@ -251,13 +251,13 @@ const InventoryManagement = () => {
     try {
       const response = await fetch('/api/inventory/movements', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           ...movementData,
-          createdAt: new Date().toISOString(),
+          createdAt: new Date().toISOString(),`
           movementId: `MOV-${Date.now()}`
         })
       });
@@ -284,7 +284,7 @@ const InventoryManagement = () => {
       setShowMovementModal(false);
       
       toast({
-        title: "Movimento registrado",
+        title: "Movimento registrado",`
         description: `Movimento de ${movementData.type} registrado com sucesso`,
       });
     } catch (error) {
@@ -301,10 +301,10 @@ const InventoryManagement = () => {
    * ATUALIZAR STATUS DO PRODUTO
    */
   const updateProductStatus = async (productId, newStatus) => {
-    try {
+    try {`
       const response = await fetch(`/api/inventory/products/${productId}/status`, {
         method: 'PATCH',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -372,8 +372,7 @@ const InventoryManagement = () => {
             {stockLevel === 'low' && (
               <Badge className="text-red-600 bg-red-100">
                 <AlertTriangle className="h-3 w-3 mr-1" />
-                Baixo
-              </Badge>
+
             )}
           </div>
         </div>
@@ -401,7 +400,7 @@ const InventoryManagement = () => {
           </div>
           
           <div className="grid grid-cols-3 gap-4 mb-4">
-            <div className="text-center p-2 bg-gray-50 rounded">
+            <div className="text-center p-2 bg-gray-50 rounded">`
               <div className={`text-lg font-bold ${stockLevel === 'low' ? 'text-red-600' : 'text-blue-600'}`}>
                 {product.stock || 0}
               </div>
@@ -420,10 +419,10 @@ const InventoryManagement = () => {
           <div className="flex gap-2">
             <select
               value={product.status}
-              onChange={(e) => updateProductStatus(product.id, e.target.value)}
+              onChange=({ (e }) => updateProductStatus(product.id, e.target.value)}
               className="flex-1 px-2 py-1 border border-gray-300 rounded text-sm"
             >
-              {Object.entries(productStatuses).map(([key, status]) => (
+              ({ Object.entries(productStatuses).map(([key, status] }) => (
                 <option key={key} value={key}>{status.name}</option>
               ))}
             </select>
@@ -431,7 +430,7 @@ const InventoryManagement = () => {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setSelectedProduct(product)}
+              onClick=({ ( }) => setSelectedProduct(product)}
               className="h-8 w-8 p-0"
             >
               <Eye className="h-4 w-4" />
@@ -452,7 +451,7 @@ const InventoryManagement = () => {
     
     return (
       <div key={movement.id} className="flex items-center justify-between p-4 border-b border-gray-100 hover:bg-gray-50">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4">`
           <div className={`p-2 rounded-full ${type.color}`}>
             {type.icon}
           </div>
@@ -470,9 +469,9 @@ const InventoryManagement = () => {
           </div>
         </div>
         
-        <div className="text-right">
+        <div className="text-right">`
           <div className={`font-bold text-lg ${
-            movement.type === 'in' ? 'text-green-600' : 'text-red-600'
+            movement.type === 'in' ? 'text-green-600' : 'text-red-600'`}
           }`}>
             {movement.type === 'in' ? '+' : '-'}{movement.quantity}
           </div>
@@ -538,8 +537,7 @@ const InventoryManagement = () => {
             </Button>
             <Button variant="outline" size="sm">
               <Edit className="h-3 w-3 mr-1" />
-              Editar
-            </Button>
+
           </div>
         </CardContent>
       </Card>
@@ -590,8 +588,7 @@ const InventoryManagement = () => {
             </Button>
             <Button variant="outline" size="sm">
               <XCircle className="h-3 w-3 mr-1" />
-              Ignorar
-            </Button>
+
           </div>
         </CardContent>
       </Card>
@@ -601,12 +598,11 @@ const InventoryManagement = () => {
   /**
    * OBTER ESTATÍSTICAS
    */
-  const getStats = () => {
-    const totalProducts = products.length;
+  const getStats = () => ({ const totalProducts = products.length;
     const activeProducts = products.filter(p => p.status === 'active').length;
     const lowStockProducts = products.filter(p => p.stock <= p.minStock).length;
     const outOfStockProducts = products.filter(p => p.stock === 0).length;
-    const totalStockValue = products.reduce((sum, p) => sum + ((p.stock || 0) * (p.price || 0)), 0);
+    const totalStockValue = products.reduce((sum, p }) => sum + ((p.stock || 0) * (p.price || 0)), 0);
     const totalMovements = movements.length;
     
     return { 
@@ -663,19 +659,17 @@ const InventoryManagement = () => {
                 variant="outline"
                 onClick={loadInventoryData}
                 disabled={loading}
-              >
+              >`
                 <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-                Atualizar
-              </Button>
+
               <Button
                 variant="outline"
-                onClick={() => setShowMovementModal(true)}
+                onClick=({ ( }) => setShowMovementModal(true)}
               >
                 <ArrowRight className="h-4 w-4 mr-2" />
-                Movimento
-              </Button>
+
               <Button
-                onClick={() => setShowProductModal(true)}
+                onClick=({ ( }) => setShowProductModal(true)}
                 className="bg-blue-600 hover:bg-blue-700"
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -783,7 +777,7 @@ const InventoryManagement = () => {
                       <Input
                         placeholder="Buscar produtos..."
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange=({ (e }) => setSearchTerm(e.target.value)}
                         className="pl-10"
                       />
                     </div>
@@ -792,7 +786,7 @@ const InventoryManagement = () => {
                   <div className="flex gap-3">
                     <select
                       value={filters.category}
-                      onChange={(e) => setFilters(prev => ({ ...prev, category: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, category: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todas as Categorias</option>
@@ -803,7 +797,7 @@ const InventoryManagement = () => {
 
                     <select
                       value={filters.supplier}
-                      onChange={(e) => setFilters(prev => ({ ...prev, supplier: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, supplier: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todos os Fornecedores</option>
@@ -814,11 +808,11 @@ const InventoryManagement = () => {
 
                     <select
                       value={filters.status}
-                      onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, status: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todos os Status</option>
-                      {Object.entries(productStatuses).map(([key, status]) => (
+                      ({ Object.entries(productStatuses).map(([key, status] }) => (
                         <option key={key} value={key}>{status.name}</option>
                       ))}
                     </select>
@@ -826,7 +820,7 @@ const InventoryManagement = () => {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
+                      onClick=({ ( }) => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
                     >
                       {viewMode === 'grid' ? <ClipboardList className="h-4 w-4" /> : <Package className="h-4 w-4" />}
                     </Button>
@@ -836,7 +830,7 @@ const InventoryManagement = () => {
             </Card>
 
             {/* Lista de Produtos */}
-            {loading ? (
+            ({ loading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 <span className="ml-2">Carregando produtos...</span>
@@ -851,7 +845,7 @@ const InventoryManagement = () => {
                   <p className="text-gray-500 mb-4">
                     Comece adicionando seu primeiro produto ao estoque
                   </p>
-                  <Button onClick={() => setShowProductModal(true)}>
+                  <Button onClick={( }) => setShowProductModal(true)}>
                     <Plus className="h-4 w-4 mr-2" />
                     Adicionar Produto
                   </Button>
@@ -860,7 +854,7 @@ const InventoryManagement = () => {
             ) : (
               <div className={viewMode === 'grid' 
                 ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
-                : 'space-y-4'
+                : 'space-y-4'}
               }>
                 {filteredProducts.map(renderProductCard)}
               </div>
@@ -967,9 +961,8 @@ const InventoryManagement = () => {
               <h2 className="text-xl font-bold mb-4">Novo Produto</h2>
               {/* Formulário será implementado */}
               <div className="flex justify-end gap-3 mt-6">
-                <Button variant="outline" onClick={() => setShowProductModal(false)}>
-                  Cancelar
-                </Button>
+                <Button variant="outline" onClick=({ ( }) => setShowProductModal(false)}>
+
                 <Button disabled={loading}>
                   {loading ? 'Criando...' : 'Criar Produto'}
                 </Button>
@@ -983,3 +976,4 @@ const InventoryManagement = () => {
 };
 
 export default InventoryManagement;
+`

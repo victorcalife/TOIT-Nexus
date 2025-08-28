@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   Shield, 
   CheckCircle,
   XCircle,
@@ -93,7 +93,7 @@ import {
   Cpu,
   HardDrive,
   Wifi,
-  WifiOff
+  WifiOff }
 } from 'lucide-react';
 
 const QualityAssurance = () => {
@@ -166,22 +166,22 @@ const QualityAssurance = () => {
         fetch('/api/qa/testcases', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/qa/testsuites', {
+        fetch('/api/qa/testsuites', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/qa/testruns', {
+        fetch('/api/qa/testruns', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/qa/defects', {
+        fetch('/api/qa/defects', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/qa/requirements', {
+        fetch('/api/qa/requirements', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/qa/testplans', {
+        fetch('/api/qa/testplans', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/qa/metrics', {
+        fetch('/api/qa/metrics', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);
@@ -247,7 +247,7 @@ const QualityAssurance = () => {
         body: JSON.stringify({
           ...testCaseData,
           status: 'draft',
-          createdAt: new Date().toISOString(),
+          createdAt: new Date().toISOString(),`
           testCaseId: `TC-${Date.now()}`
         })
       });
@@ -261,7 +261,7 @@ const QualityAssurance = () => {
       setShowTestCaseModal(false);
       
       toast({
-        title: "Caso de teste criado",
+        title: "Caso de teste criado",`
         description: `Caso de teste ${data.testCase.testCaseId} criado com sucesso`,
       });
     } catch (error) {
@@ -278,10 +278,10 @@ const QualityAssurance = () => {
    * EXECUTAR CASO DE TESTE
    */
   const executeTestCase = async (testCaseId, result) => {
-    try {
+    try {`
       const response = await fetch(`/api/qa/testcases/${testCaseId}/execute`, {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -322,7 +322,7 @@ const QualityAssurance = () => {
     try {
       const response = await fetch('/api/qa/defects', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -452,7 +452,7 @@ const QualityAssurance = () => {
                 onClick={() => executeTestCase(testCase.id, 'ready')}
               >
                 <RotateCcw className="h-3 w-3 mr-1" />
-                Reexecutar
+                Resetar
               </Button>
             )}
             
@@ -543,13 +543,11 @@ const QualityAssurance = () => {
             </Button>
             <Button variant="outline" size="sm">
               <Edit className="h-3 w-3 mr-1" />
-              Editar
-            </Button>
+
             {defect.status === 'new' && (
               <Button variant="default" size="sm">
                 <User className="h-3 w-3 mr-1" />
-                Atribuir
-              </Button>
+
             )}
           </div>
         </CardContent>
@@ -587,7 +585,7 @@ const QualityAssurance = () => {
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div
-                className="bg-green-600 h-2 rounded-full transition-all"
+                className="bg-green-600 h-2 rounded-full transition-all"`
                 style={{ width: `${passRate}%` }}
               ></div>
             </div>
@@ -703,19 +701,18 @@ const QualityAssurance = () => {
                 variant="outline"
                 onClick={loadQAData}
                 disabled={loading}
-              >
+              >`
                 <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-                Atualizar
-              </Button>
+
               <Button
                 variant="outline"
-                onClick={() => setShowDefectModal(true)}
+                onClick=({ ( }) => setShowDefectModal(true)}
               >
                 <Bug className="h-4 w-4 mr-2" />
                 Novo Defeito
               </Button>
               <Button
-                onClick={() => setShowTestCaseModal(true)}
+                onClick=({ ( }) => setShowTestCaseModal(true)}
                 className="bg-blue-600 hover:bg-blue-700"
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -814,7 +811,7 @@ const QualityAssurance = () => {
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todos os Status</option>
-                      {Object.entries(testCaseStatuses).map(([key, status]) => (
+                      ({ Object.entries(testCaseStatuses).map(([key, status] }) => (
                         <option key={key} value={key}>{status.name}</option>
                       ))}
                     </select>
@@ -825,7 +822,7 @@ const QualityAssurance = () => {
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todas as Prioridades</option>
-                      {Object.entries(priorities).map(([key, priority]) => (
+                      ({ Object.entries(priorities).map(([key, priority] }) => (
                         <option key={key} value={key}>{priority.name}</option>
                       ))}
                     </select>
@@ -846,7 +843,7 @@ const QualityAssurance = () => {
             </Card>
 
             {/* Lista de Casos de Teste */}
-            {loading ? (
+            ({ loading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 <span className="ml-2">Carregando casos de teste...</span>
@@ -902,7 +899,7 @@ const QualityAssurance = () => {
 
           <TabsContent value="defects" className="space-y-6">
             {/* Lista de Defeitos */}
-            {loading ? (
+            ({ loading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 <span className="ml-2">Carregando defeitos...</span>
@@ -967,8 +964,7 @@ const QualityAssurance = () => {
               {/* Formulário será implementado */}
               <div className="flex justify-end gap-3 mt-6">
                 <Button variant="outline" onClick={() => setShowTestCaseModal(false)}>
-                  Cancelar
-                </Button>
+
                 <Button disabled={loading}>
                   {loading ? 'Criando...' : 'Criar Caso de Teste'}
                 </Button>
@@ -982,3 +978,4 @@ const QualityAssurance = () => {
 };
 
 export default QualityAssurance;
+`

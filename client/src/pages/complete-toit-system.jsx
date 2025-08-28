@@ -10,10 +10,10 @@ import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest, queryClient } from '@/lib/queryClient';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { 
+import {  
   Users, Building2, Settings, Plus, CheckSquare, Workflow, Database, Webhook, Mail, BarChart3, LogOut,
   Upload, FileText, PieChart, LineChart, Filter, Code, Play, Save, Download, Eye, Edit, Trash2,
-  Calendar, Clock, Target, TrendingUp, Activity, Zap, Globe, Shield, Bell, Search, X, TestTube
+  Calendar, Clock, Target, TrendingUp, Activity, Zap, Globe, Shield, Bell, Search, X, TestTube }
 } from 'lucide-react';
 
 = useToast();
@@ -26,8 +26,7 @@ import {
   const [showCreateApiConnection, setShowCreateApiConnection] = useState(false);
 
   // Form states
-  const [dbConnectionForm, setDbConnectionForm] = useState({
-    name,
+  const [dbConnectionForm, setDbConnectionForm] = useState(({ name,
     type,
     host,
     port,
@@ -62,33 +61,32 @@ import {
 
   // QUERY HOOKS PARA DADOS REAIS DO BACKEND
   const { data= [], refetch,
-    queryFn) => apiRequest('/api/database-connections?tenantId=default'),
+    queryFn }) => apiRequest('/api/database-connections?tenantId=default'),
   });
 
-  const { data= [], refetch,
-    queryFn) => apiRequest('/api/api-connections?tenantId=default'),
+  const ({ data= [], refetch,
+    queryFn }) => apiRequest('/api/api-connections?tenantId=default'),
   });
 
-  const { data= [], refetch,
-    queryFn) => apiRequest('/api/query-builders?tenantId=default'),
+  const ({ data= [], refetch,
+    queryFn }) => apiRequest('/api/query-builders?tenantId=default'),
   });
 
-  const { data= [], refetch,
-    queryFn) => apiRequest('/api/complete-workflows?tenantId=default'),
+  const ({ data= [], refetch,
+    queryFn }) => apiRequest('/api/complete-workflows?tenantId=default'),
   });
 
-  const { data= [], refetch,
-    queryFn) => apiRequest('/api/kpi-dashboards?tenantId=default'),
+  const ({ data= [], refetch,
+    queryFn }) => apiRequest('/api/kpi-dashboards?tenantId=default'),
   });
 
-  const { data= [], refetch,
-    queryFn) => apiRequest('/api/uploaded-files?tenantId=default'),
+  const ({ data= [], refetch,
+    queryFn }) => apiRequest('/api/uploaded-files?tenantId=default'),
   });
 
   // MUTATIONS PARA CRIAR RECURSOS
-  const createDbConnectionMutation = useMutation({
-    mutationFn) => apiRequest('/api/database-connections', { method, body),
-    onSuccess) => {
+  const createDbConnectionMutation = useMutation(({ mutationFn) => apiRequest('/api/database-connections', { method, body),
+    onSuccess }) => {
       toast({ title, description);
       refetchDbConnections();
       setShowCreateDbConnection(false);
@@ -101,9 +99,8 @@ import {
     }
   });
 
-  const createApiConnectionMutation = useMutation({
-    mutationFn) => apiRequest('/api/api-connections', { method, body),
-    onSuccess) => {
+  const createApiConnectionMutation = useMutation(({ mutationFn) => apiRequest('/api/api-connections', { method, body),
+    onSuccess }) => {
       toast({ title, description);
       refetchApiConnections();
       setShowCreateApiConnection(false);
@@ -116,9 +113,8 @@ import {
     }
   });
 
-  const createQueryMutation = useMutation({
-    mutationFn) => apiRequest('/api/query-builders', { method, body),
-    onSuccess) => {
+  const createQueryMutation = useMutation(({ mutationFn) => apiRequest('/api/query-builders', { method, body),
+    onSuccess }) => {
       toast({ title, description);
       refetchQueries();
       setShowCreateQuery(false);
@@ -131,9 +127,8 @@ import {
     }
   });
 
-  const createWorkflowMutation = useMutation({
-    mutationFn) => apiRequest('/api/complete-workflows', { method, body),
-    onSuccess) => {
+  const createWorkflowMutation = useMutation(({ mutationFn) => apiRequest('/api/complete-workflows', { method, body),
+    onSuccess }) => {
       toast({ title, description);
       refetchWorkflows();
       setShowCreateWorkflow(false);
@@ -144,9 +139,8 @@ import {
     }
   });
 
-  const executeQueryMutation = useMutation({
-    mutationFn) => apiRequest(`/api/query-builders/${queryId}/execute`, { method),
-    onSuccess) => {
+  const executeQueryMutation = useMutation(({ mutationFn }) => apiRequest(`/api/query-builders/${queryId}/execute`, ({ method),
+    onSuccess }) => {
       toast({ title, description);
       refetchQueries();
     },
@@ -154,10 +148,9 @@ import {
       toast({ title, description, variant);
     }
   });
-
-  const executeWorkflowMutation = useMutation({
-    mutationFn) => apiRequest(`/api/complete-workflows/${workflowId}/execute`, { method),
-    onSuccess) => {
+`
+  const executeWorkflowMutation = useMutation(({ mutationFn }) => apiRequest(`/api/complete-workflows/${workflowId}/execute`, ({ method),
+    onSuccess }) => {
       toast({ title, description);
       refetchWorkflows();
     },
@@ -165,10 +158,9 @@ import {
       toast({ title, description, variant);
     }
   });
-
-  const testDbConnectionMutation = useMutation({
-    mutationFn) => apiRequest(`/api/database-connections/${connectionId}/test`, { method),
-    onSuccess) => {
+`
+  const testDbConnectionMutation = useMutation(({ mutationFn }) => apiRequest(`/api/database-connections/${connectionId}/test`, ({ method),
+    onSuccess }) => {
       toast({ 
         title, 
         description,
@@ -285,7 +277,7 @@ import {
 
       if (response.ok) {
         const result = await response.json();
-        setUploadedFiles(prev => [...prev, ...result.files]);
+        setUploadedFiles(prev => [...prev, ...result.files]);`
         toast({ title, description) enviado(s)` });
       }
     } catch (error) {
@@ -313,7 +305,7 @@ import {
 
   const runWorkflow = async (workflowId) => {
     try {
-      setLoading(true);
+      setLoading(true);`
       const response = await fetch(`/api/workflows/${workflowId}/execute`, {
         method);
 
@@ -344,7 +336,7 @@ import {
               <CardTitle className="text-sm font-medium">{widget.title}</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{widget.data.value.toLocaleString()}</div>
+              <div className="text-2xl font-bold">{widget.data.value.toLocaleString()}</div>`
               <div className={`text-sm ${widget.data.trend === 'up' ? 'text-green-600' : 'text-red-600'}`}>
                 {widget.data.change}
               </div>
@@ -363,10 +355,10 @@ import {
             </CardHeader>
             <CardContent>
               <div className="h-32 flex items-end justify-between space-x-2">
-                {widget.data.values.map((value, index) => (
+                ({ widget.data.values.map((value, index }) => (
                   <div key={index} className="flex flex-col items-center">
                     <div 
-                      className="bg-blue-500 w-8 rounded-t"
+                      className="bg-blue-500 w-8 rounded-t"`
                       style={{ height)) * 100}px` }}
                     ></div>
                     <span className="text-xs text-gray-500 mt-1">
@@ -411,15 +403,15 @@ import {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b">
-                      {widget.data.headers.map((header, index) => (
+                      ({ widget.data.headers.map((header, index }) => (
                         <th key={index} className="text-left p-2">{header}</th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
-                    {widget.data.rows.map((row, rowIndex) => (
+                    ({ widget.data.rows.map((row, rowIndex }) => (
                       <tr key={rowIndex} className="border-b">
-                        {row.map((cell, cellIndex) => (
+                        ({ row.map((cell, cellIndex }) => (
                           <td key={cellIndex} className="p-2">{cell}</td>
                         ))}
                       </tr>
@@ -432,17 +424,17 @@ import {
         );
 
       default, label, icon,
+              ({ key, label, icon,
               { key, label, icon,
               { key, label, icon,
               { key, label, icon,
-              { key, label, icon,
-              { key, label, icon, label, icon) => (
+              { key, label, icon, label, icon }) => (
               <button
                 key={key}
-                onClick={() => setActiveSection(key as any)}
+                onClick=({ ( }) => setActiveSection(key as any)}`
                 className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                   activeSection === key 
-                    ? 'bg-white text-gray-900 shadow-sm' 
+                    ? 'bg-white text-gray-900 shadow-sm' }
                     : 'text-gray-600 hover))}
           </div>
         </div>
@@ -468,7 +460,7 @@ import {
           <div className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold">Workflows Avançados ({workflows.length})</h2>
-              <Button onClick={() => setShowCreateWorkflow(true)}>
+              <Button onClick=({ ( }) => setShowCreateWorkflow(true)}>
                 <Plus className="h-4 w-4 mr-2" />
                 Criar Workflow
               </Button>
@@ -507,7 +499,7 @@ import {
 
                       {/* Steps do Workflow */}
                       <div className="flex space-x-2 overflow-x-auto pb-2">
-                        {workflow.steps.map((step, index) => (
+                        ({ workflow.steps.map((step, index }) => (
                           <div key={step.id} className="flex items-center">
                             <div className="bg-blue-100 p-2 rounded-md text-xs font-medium min-w-0">
                               {step.name}
@@ -526,14 +518,10 @@ import {
 
                       {/* Ações */}
                       <div className="flex space-x-2">
-                        <Button size="sm" onClick={() => runWorkflow(workflow.id)} disabled={loading}>
+                        <Button size="sm" onClick=({ ( }) => runWorkflow(workflow.id)} disabled={loading}>
                           <Play className="h-4 w-4 mr-1" />
-                          Executar
-                        </Button>
                         <Button size="sm" variant="outline">
                           <Edit className="h-4 w-4 mr-1" />
-                          Editar
-                        </Button>
                         <Button size="sm" variant="outline">
                           <Eye className="h-4 w-4 mr-1" />
                           Ver Logs
@@ -552,7 +540,7 @@ import {
           <div className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold">Query Builder No-Code ({queryBuilders.length})</h2>
-              <Button onClick={() => setShowCreateQuery(true)}>
+              <Button onClick=({ ( }) => setShowCreateQuery(true)}>
                 <Plus className="h-4 w-4 mr-2" />
                 Nova Query
               </Button>
@@ -570,7 +558,7 @@ import {
                         </CardTitle>
                         <p className="text-sm text-gray-600 mt-1">
                           Tabela, ')} FROM {query.query.table}
-                          {query.query.filters.length > 0 && (
+                          {query.query.filters.length > 0 && (`
                             <> WHERE {query.query.filters.map(f => `${f.field} ${f.operator} '${f.value}'`).join(' AND ')}</>
                           )}
                           {query.query.groupBy.length > 0 && <> GROUP BY {query.query.groupBy.join(', ')}</>}
@@ -588,9 +576,9 @@ import {
                                 </tr>
                               </thead>
                               <tbody>
-                                {query.results.slice(0, 3).map((row, index) => (
+                                ({ query.results.slice(0, 3).map((row, index }) => (
                                   <tr key={index}>
-                                    {Object.values(row).map((value, cellIndex) => (
+                                    ({ Object.values(row).map((value, cellIndex }) => (
                                       <td key={cellIndex} className="p-2 border-b">{value}</td>
                                     ))}
                                   </tr>
@@ -603,10 +591,8 @@ import {
 
                       {/* Ações */}
                       <div className="flex space-x-2">
-                        <Button size="sm" onClick={() => executeQuery(query.id)} disabled={loading}>
+                        <Button size="sm" onClick=({ ( }) => executeQuery(query.id)} disabled={loading}>
                           <Play className="h-4 w-4 mr-1" />
-                          Executar
-                        </Button>
                         <Button size="sm" variant="outline">
                           <Edit className="h-4 w-4 mr-1" />
                           Editar Query
@@ -634,7 +620,7 @@ import {
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold">Gestão de Arquivos ({uploadedFiles.length})</h2>
               <div className="space-x-2">
-                <Button onClick={() => document.getElementById('file-upload')?.click()}>
+                <Button onClick=({ ( }) => document.getElementById('file-upload')?.click()}>
                   <Upload className="h-4 w-4 mr-2" />
                   Upload de Arquivos
                 </Button>
@@ -718,11 +704,11 @@ import {
         )}
 
         {/* ANALYTICS AVANÇADO */}
-        {activeSection === 'analytics' && (
+        ({ activeSection === 'analytics' && (
           <div className="space-y-6">
             <h2 className="text-xl font-semibold">Analytics Avançado</h2>
             
-            <div className="grid grid-cols-1 md, (_, i) => {
+            <div className="grid grid-cols-1 md, (_, i }) => {
                     const height = Math.random() * 200 + 20;
                     return (
                       <div key={i} className="flex flex-col items-center">
@@ -740,4 +726,4 @@ import {
       </div>
     </div>
   );
-}
+}`

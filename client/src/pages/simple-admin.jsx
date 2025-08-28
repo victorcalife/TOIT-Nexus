@@ -56,8 +56,6 @@ export default function SimpleAdmin() {
                 <Badge variant="destructive">SUPER ADMIN</Badge>
               </div>
               <Button onClick={handleLogout} variant="outline">
-                Sair
-              </Button>
             </div>
           </div>
         </div>
@@ -68,26 +66,26 @@ export default function SimpleAdmin() {
         <div className="mb-6">
           <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg">
             <button
-              onClick={() => setActiveSection('dashboard')}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              onClick=({ ( }) => setActiveSection('dashboard')}
+              className=({ `px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                 activeSection === 'dashboard' 
                   ? 'bg-white text-gray-900 shadow-sm' 
-                  : 'text-gray-600 hover) => setActiveSection('users')}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                  : 'text-gray-600 hover }) => setActiveSection('users')}`
+              className=({ `px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                 activeSection === 'users' 
                   ? 'bg-white text-gray-900 shadow-sm' 
-                  : 'text-gray-600 hover) => setActiveSection('companies')}
+                  : 'text-gray-600 hover }) => setActiveSection('companies')}`
               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                 activeSection === 'companies' 
-                  ? 'bg-white text-gray-900 shadow-sm' 
+                  ? 'bg-white text-gray-900 shadow-sm' }
                   : 'text-gray-600 hover)}
 
         {/* CONTEÚDO USUÁRIOS */}
-        {activeSection === 'users' && (
+        ({ activeSection === 'users' && (
           <div className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold">Gestão de Usuários</h2>
-              <Button onClick={() => setShowCreateUser(true)}>
+              <Button onClick={( }) => setShowCreateUser(true)}>
                 Criar Usuário
               </Button>
             </div>
@@ -103,7 +101,7 @@ export default function SimpleAdmin() {
                     <Input
                       id="name"
                       value={userForm.name}
-                      onChange={(e) => setUserForm(prev => ({ ...prev, name))}
+                      onChange=({ (e }) => setUserForm(prev => ({ ...prev, name))}
                       placeholder="Nome completo"
                     />
                   </div>
@@ -113,7 +111,7 @@ export default function SimpleAdmin() {
                       id="email"
                       type="email"
                       value={userForm.email}
-                      onChange={(e) => setUserForm(prev => ({ ...prev, email))}
+                      onChange=({ (e }) => setUserForm(prev => ({ ...prev, email))}
                       placeholder="email@exemplo.com"
                     />
                   </div>
@@ -122,15 +120,13 @@ export default function SimpleAdmin() {
                     <Input
                       id="cpf"
                       value={userForm.cpf}
-                      onChange={(e) => setUserForm(prev => ({ ...prev, cpf))}
+                      onChange=({ (e }) => setUserForm(prev => ({ ...prev, cpf))}
                       placeholder="00000000000"
                     />
                   </div>
                   <div className="flex space-x-2">
                     <Button onClick={createUser}>Criar</Button>
-                    <Button variant="outline" onClick={() => setShowCreateUser(false)}>
-                      Cancelar
-                    </Button>
+                    <Button variant="outline" onClick=({ ( }) => setShowCreateUser(false)}>
                   </div>
                 </CardContent>
               </Card>
@@ -146,11 +142,11 @@ export default function SimpleAdmin() {
                       <p className="text-xs text-gray-500">CPF)}
 
         {/* CONTEÚDO EMPRESAS */}
-        {activeSection === 'companies' && (
+        ({ activeSection === 'companies' && (
           <div className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold">Gestão de Empresas</h2>
-              <Button onClick={() => setShowCreateCompany(true)}>
+              <Button onClick={( }) => setShowCreateCompany(true)}>
                 Criar Empresa
               </Button>
             </div>
@@ -166,7 +162,7 @@ export default function SimpleAdmin() {
                     <Input
                       id="companyName"
                       value={companyForm.name}
-                      onChange={(e) => setCompanyForm(prev => ({ ...prev, name))}
+                      onChange=({ (e }) => setCompanyForm(prev => ({ ...prev, name))}
                       placeholder="Nome da empresa"
                     />
                   </div>
@@ -175,15 +171,13 @@ export default function SimpleAdmin() {
                     <Input
                       id="description"
                       value={companyForm.description}
-                      onChange={(e) => setCompanyForm(prev => ({ ...prev, description))}
+                      onChange=({ (e }) => setCompanyForm(prev => ({ ...prev, description))}
                       placeholder="Descrição da empresa"
                     />
                   </div>
                   <div className="flex space-x-2">
                     <Button onClick={createCompany}>Criar</Button>
-                    <Button variant="outline" onClick={() => setShowCreateCompany(false)}>
-                      Cancelar
-                    </Button>
+                    <Button variant="outline" onClick=({ ( }) => setShowCreateCompany(false)}>
                   </div>
                 </CardContent>
               </Card>
@@ -199,4 +193,4 @@ export default function SimpleAdmin() {
       </div>
     </div>
   );
-}
+}`

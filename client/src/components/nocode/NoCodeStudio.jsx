@@ -4,37 +4,37 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { 
-  Card, 
-  Tabs, 
-  Button, 
-  Modal, 
-  Form, 
-  Input, 
-  Select, 
-  Switch,
+import {  
+
+
+
+
+
+
+
+
   message,
-  Space,
-  Row,
-  Col,
-  Statistic,
-  Progress,
-  Tag,
-  List,
-  Avatar
+
+
+
+
+
+
+
+ }
 } from 'antd';
-import { 
-  PlusOutlined,
-  BranchesOutlined,
-  DashboardOutlined,
-  FormOutlined,
-  FileTextOutlined,
-  ExperimentOutlined,
-  RocketOutlined,
-  SaveOutlined,
-  EyeOutlined,
-  SettingOutlined,
-  ThunderboltOutlined
+import {  
+
+
+
+
+
+
+
+
+
+
+ }
 } from '@ant-design/icons';
 import WorkflowBuilder from './WorkflowBuilder';
 import DashboardBuilder from './DashboardBuilder';
@@ -238,33 +238,33 @@ const NoCodeStudio = () => {
                 <List.Item
                   actions={[
                     <Button 
-                      type="text" 
+                      type="text" }
                       icon={<EyeOutlined />}
-                      onClick={() => previewProject(project)}
+                      onClick=({ ( }) => previewProject(project)}
                     >
-                      Preview
+
                     </Button>,
                     <Button 
                       type="text" 
                       icon={<SettingOutlined />}
-                      onClick={() => {
+                      onClick=({ ( }) => {
                         setSelectedProject(project);
                         setActiveTab(project.type);
                       }}
                     >
-                      Edit
+
                     </Button>
                   ]}
                 >
                   <List.Item.Meta
                     avatar={
-                      <Avatar 
+                      <Avatar }
                         icon={getProjectIcon(project.type)} 
                         style={{ backgroundColor: getProjectColor(project.type) }}
                       />
                     }
                     title={
-                      <Space>
+                      <Space>}
                         {project.name}
                         {project.quantumOptimized && (
                           <Tag color="purple" size="small">⚛️ Quantum</Tag>
@@ -275,7 +275,7 @@ const NoCodeStudio = () => {
                       </Space>
                     }
                     description={
-                      <Space direction="vertical" size="small">
+                      <Space direction="vertical" size="small">}
                         <span>Type: {project.type}</span>
                         <Progress 
                           percent={project.performance} 
@@ -343,14 +343,14 @@ const NoCodeStudio = () => {
                 block 
                 type="primary" 
                 icon={<PlusOutlined />}
-                onClick={() => setCreateModalVisible(true)}
+                onClick=({ ( }) => setCreateModalVisible(true)}
               >
                 Create New Project
               </Button>
               <Button 
                 block 
                 icon={<BranchesOutlined />}
-                onClick={() => {
+                onClick=({ ( }) => {
                   setCreateModalVisible(true);
                   form.setFieldsValue({ type: 'workflow' });
                 }}
@@ -360,7 +360,7 @@ const NoCodeStudio = () => {
               <Button 
                 block 
                 icon={<DashboardOutlined />}
-                onClick={() => {
+                onClick=({ ( }) => {
                   setCreateModalVisible(true);
                   form.setFieldsValue({ type: 'dashboard' });
                 }}
@@ -370,7 +370,7 @@ const NoCodeStudio = () => {
               <Button 
                 block 
                 icon={<FormOutlined />}
-                onClick={() => {
+                onClick=({ ( }) => {
                   setCreateModalVisible(true);
                   form.setFieldsValue({ type: 'form' });
                 }}
@@ -419,7 +419,7 @@ const NoCodeStudio = () => {
             <Button 
               type="primary" 
               icon={<PlusOutlined />}
-              onClick={() => setCreateModalVisible(true)}
+              onClick=({ ( }) => setCreateModalVisible(true)}
             >
               New Project
             </Button>
@@ -428,7 +428,7 @@ const NoCodeStudio = () => {
               style={{ 
                 background: 'linear-gradient(45deg, #722ed1, #eb2f96)',
                 borderColor: '#722ed1',
-                color: 'white'
+                color: 'white'}
               }}
             >
               ⚛️ Quantum Mode
@@ -448,8 +448,8 @@ const NoCodeStudio = () => {
             tab={
               <span>
                 <RocketOutlined />
-                Overview
-              </span>
+
+              </span>}
             } 
             key="overview"
           >
@@ -461,7 +461,7 @@ const NoCodeStudio = () => {
               <span>
                 <BranchesOutlined />
                 Workflow Builder
-              </span>
+              </span>}
             } 
             key="workflow"
           >
@@ -477,7 +477,7 @@ const NoCodeStudio = () => {
               <span>
                 <DashboardOutlined />
                 Dashboard Builder
-              </span>
+              </span>}
             } 
             key="dashboard"
           >
@@ -493,7 +493,7 @@ const NoCodeStudio = () => {
               <span>
                 <FormOutlined />
                 Form Builder
-              </span>
+              </span>}
             } 
             key="form"
           >
@@ -509,7 +509,7 @@ const NoCodeStudio = () => {
               <span>
                 <FileTextOutlined />
                 Report Builder
-              </span>
+              </span>}
             } 
             key="report"
           >
@@ -526,7 +526,7 @@ const NoCodeStudio = () => {
       <Modal
         title="Create New Project"
         open={createModalVisible}
-        onCancel={() => {
+        onCancel=({ ( }) => {
           setCreateModalVisible(false);
           form.resetFields();
         }}
@@ -538,7 +538,7 @@ const NoCodeStudio = () => {
           layout="vertical"
           onFinish={createProject}
           initialValues={{
-            quantumOptimized: true
+            quantumOptimized: true}
           }}
         >
           <Row gutter={16}>
@@ -605,11 +605,11 @@ const NoCodeStudio = () => {
               >
                 Create Project
               </Button>
-              <Button onClick={() => {
+              <Button onClick=({ ( }) => {
                 setCreateModalVisible(false);
                 form.resetFields();
               }}>
-                Cancel
+
               </Button>
             </Space>
           </Form.Item>

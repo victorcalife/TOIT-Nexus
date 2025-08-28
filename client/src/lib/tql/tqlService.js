@@ -50,8 +50,7 @@ class TQLService extends EventEmitter {
         };
         
         // Funções TQL pré-definidas
-        this.tqlFunctions = {
-            // Tempo
+        this.tqlFunctions = ({ // Tempo
             'THIS_MONTH': () => this.getTimeRange('current_month'),
             'LAST_MONTH': () => this.getTimeRange('last_month'),
             'THIS_QUARTER': () => this.getTimeRange('current_quarter'),
@@ -61,7 +60,7 @@ class TQLService extends EventEmitter {
             'LAST_30_DAYS': () => this.getTimeRange('last_30_days'),
             
             // Agregações
-            'COUNT': (field) => ({ type: 'count', field }),
+            'COUNT': (field }) => ({ type: 'count', field }),
             'AVG': (field) => ({ type: 'avg', field }),
             'MEDIA': (field) => ({ type: 'avg', field }),
             'SUM': (field) => ({ type: 'sum', field }),
@@ -503,7 +502,7 @@ class TQLService extends EventEmitter {
                 tqlFunction: this.tqlFunctions[functionName.toUpperCase()]
             };
         }
-        
+        `
         throw new Error(`Função MAX/MIN inválida: ${token.value}`);
     }
     
@@ -547,7 +546,7 @@ class TQLService extends EventEmitter {
     validateQuery(ast) {
         // Validar entidades referenciadas
         for (const fromClause of ast.from) {
-            if (fromClause.type === 'identifier' && !this.dataSchema[fromClause.value]) {
+            if (fromClause.type === 'identifier' && !this.dataSchema[fromClause.value]) {`
                 throw new Error(`Entidade '${fromClause.value}' não encontrada. Entidades disponíveis: ${Object.keys(this.dataSchema).join(', ')}`);
             }
         }
@@ -560,7 +559,7 @@ class TQLService extends EventEmitter {
                     return entity && entity.fields.includes(selectClause.value);
                 });
                 
-                if (!isValidField) {
+                if (!isValidField) {`
                     throw new Error(`Campo '${selectClause.value}' não encontrado nas entidades especificadas`);
                 }
             }
@@ -568,7 +567,7 @@ class TQLService extends EventEmitter {
         
         // Validar funções TQL
         for (const func of ast.functions) {
-            if (!this.tqlFunctions[func.name]) {
+            if (!this.tqlFunctions[func.name]) {`
                 throw new Error(`Função '${func.name}' não reconhecida. Funções disponíveis: ${Object.keys(this.tqlFunctions).join(', ')}`);
             }
         }
@@ -599,7 +598,7 @@ class TQLService extends EventEmitter {
         
         // Cláusula FROM
         if (ast.from.length > 0) {
-            const fromParts = ast.from.map(item => item.value);
+            const fromParts = ast.from.map(item => item.value);`
             sql += ` FROM ${fromParts.join(', ')}`;
         }
         
@@ -607,40 +606,40 @@ class TQLService extends EventEmitter {
         if (ast.where.length > 0) {
             const whereParts = ast.where.map(item => {
                 if (item.type === 'condition_equals') {
-                    // 🔥 TQL 2.0: campo = valor → campo = 'valor'
+                    // 🔥 TQL 2.0: campo = valor → campo = 'valor'`
                     return `${item.field} = '${item.value}'`;
                 } else if (item.type === 'condition_in') {
-                    // 🔥 TQL 2.0: campo = (val1, val2) → campo IN ('val1', 'val2')
-                    const valuesList = item.values.map(v => `'${v}'`).join(', ');
+                    // 🔥 TQL 2.0: campo = (val1, val2) → campo IN ('val1', 'val2')`
+                    const valuesList = item.values.map(v => `'${v}'`).join(', ');`
                     return `${item.field} IN (${valuesList})`;
                 } else if (item.type === 'function') {
                     return this.generateFunctionSQL(item);
                 }
                 return item.value;
-            });
+            });`
             sql += ` WHERE ${whereParts.join(' AND ')}`;
         }
         
         // Cláusula GROUP BY
         if (ast.groupBy.length > 0) {
-            const groupParts = ast.groupBy.map(item => item.value);
+            const groupParts = ast.groupBy.map(item => item.value);`
             sql += ` GROUP BY ${groupParts.join(', ')}`;
         }
         
         // Cláusula HAVING
         if (ast.having.length > 0) {
-            const havingParts = ast.having.map(item => item.value);
+            const havingParts = ast.having.map(item => item.value);`
             sql += ` HAVING ${havingParts.join(' ')}`;
         }
         
         // Cláusula ORDER BY
         if (ast.orderBy.length > 0) {
-            const orderParts = ast.orderBy.map(item => item.value);
+            const orderParts = ast.orderBy.map(item => item.value);`
             sql += ` ORDER BY ${orderParts.join(', ')}`;
         }
         
         // Cláusula LIMIT
-        if (ast.limit) {
+        if (ast.limit) {`
             sql += ` LIMIT ${ast.limit}`;
         }
         
@@ -672,15 +671,15 @@ class TQLService extends EventEmitter {
         ];
         
         for (const query of testQueries) {
-            try {
+            try {`
                 console.log(`\n🧪 Testando: ${query}`);
                 const result = this.parseTQL(query);
-                if (result.success) {
+                if (result.success) {`
                     console.log(`✅ SQL: ${result.sql}`);
-                } else {
+                } else {`
                     console.log(`❌ Erro: ${result.error}`);
                 }
-            } catch (error) {
+            } catch (error) {`
                 console.log(`❌ Exception: ${error.message}`);
             }
         }
@@ -695,12 +694,12 @@ class TQLService extends EventEmitter {
         // TQL 3.0: MAX(5) funcionarios POR salario
         if (func.quantity && func.quantity > 1) {
             // Múltiplos registros - usar LIMIT com ORDER BY
-            const orderDir = func.name === 'MAX' ? 'DESC' : 'ASC';
+            const orderDir = func.name === 'MAX' ? 'DESC' : 'ASC';`
             return `* ORDER BY ${func.field || 'id'} ${orderDir} LIMIT ${func.quantity}`;
         } else {
             // Registro único ou valor
-            return func.name === 'MAX' ? 
-                `MAX(${func.field || '*'})` : 
+            return func.name === 'MAX' ? `
+                `MAX(${func.field || '*'})` : `
                 `MIN(${func.field || '*'})`;
         }
     }
@@ -710,21 +709,21 @@ class TQLService extends EventEmitter {
      */
     generateFunctionSQL(func) {
         switch (func.name) {
-            case 'COUNT':
+            case 'COUNT':`
                 return func.args.length > 0 ? `COUNT(${func.args[0]})` : 'COUNT(*)';
-            case 'AVG':
+            case 'AVG':`
                 return `AVG(${func.args[0]})`;
-            case 'SUM':
+            case 'SUM':`
                 return `SUM(${func.args[0]})`;
-            case 'MIN':
+            case 'MIN':`
                 return `MIN(${func.args[0]})`;
-            case 'MAX':
+            case 'MAX':`
                 return `MAX(${func.args[0]})`;
-            case 'THIS_MONTH':
+            case 'THIS_MONTH':`
                 return `created_at >= DATE_TRUNC('month', CURRENT_DATE) AND created_at < DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month'`;
-            case 'LAST_MONTH':
+            case 'LAST_MONTH':`
                 return `created_at >= DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '1 month' AND created_at < DATE_TRUNC('month', CURRENT_DATE)`;
-            case 'SLA_COMPLIANCE':
+            case 'SLA_COMPLIANCE':`
                 return `(CASE WHEN resolved_at <= due_date THEN 1 ELSE 0 END)`;
             default:
                 return func.name + '(' + func.args.join(', ') + ')';
@@ -806,7 +805,7 @@ class TQLService extends EventEmitter {
                         userPalette.name,
                         processedResult.length
                     );
-                    
+                    `
                     console.log(`🎨 Cores geradas automaticamente: ${colors.length} cores para ${processedResult.length} dados`);
                 } catch (colorError) {
                     console.warn('⚠️ Erro na geração de cores:', colorError.message);
@@ -944,7 +943,7 @@ class TQLService extends EventEmitter {
      */
     async executeDashboard(dashboardId) {
         const dashboard = this.dashboards.get(dashboardId);
-        if (!dashboard) {
+        if (!dashboard) {`
             throw new Error(`Dashboard '${dashboardId}' não encontrado`);
         }
         
@@ -1014,8 +1013,8 @@ class TQLService extends EventEmitter {
                 const entities = Object.keys(this.dataSchema);
                 suggestions.push(...entities.map(e => ({
                     type: 'entity',
-                    value: e,
-                    description: `📋 ${this.getEntityDescription(e)}`,
+                    value: e,`
+                    description: `📋 ${this.getEntityDescription(e)}`,`
                     example: `${context.functionName}${context.quantity ? `(${context.quantity})` : ''} ${e} POR campo`
                 })));
                 break;
@@ -1026,9 +1025,9 @@ class TQLService extends EventEmitter {
                     const fields = this.dataSchema[context.table].fields;
                     suggestions.push(...fields.map(f => ({
                         type: 'field',
-                        value: f,
+                        value: f,`
                         description: `🏷️ Campo: ${f}`,
-                        entity: context.table,
+                        entity: context.table,`
                         example: `${beforeCursor} ${f}`
                     })));
                 }
@@ -1039,8 +1038,8 @@ class TQLService extends EventEmitter {
                 const entitiesDE = Object.keys(this.dataSchema);
                 suggestions.push(...entitiesDE.map(e => ({
                     type: 'entity',
-                    value: e,
-                    description: `📋 ${this.getEntityDescription(e)}`,
+                    value: e,`
+                    description: `📋 ${this.getEntityDescription(e)}`,`
                     example: `${beforeCursor} ${e}`
                 })));
                 break;
@@ -1052,9 +1051,9 @@ class TQLService extends EventEmitter {
                     if (this.dataSchema[entity]) {
                         suggestions.push(...this.dataSchema[entity].fields.map(f => ({
                             type: 'field',
-                            value: f,
+                            value: f,`
                             description: `🔍 Filtrar por: ${f}`,
-                            entity,
+                            entity,`
                             example: `${beforeCursor} ${f} = valor`
                         })));
                     }
@@ -1063,11 +1062,11 @@ class TQLService extends EventEmitter {
                 
             case 'after_equals':
                 // Após "=" - sugerir valores comuns ou funções temporais
-                suggestions.push(
-                    { type: 'temporal', value: 'DIA(0)', description: '📅 Hoje', example: `${beforeCursor} DIA(0)` },
-                    { type: 'temporal', value: 'MES(0)', description: '📅 Este mês', example: `${beforeCursor} MES(0)` },
-                    { type: 'temporal', value: 'ANO(0)', description: '📅 Este ano', example: `${beforeCursor} ANO(0)` },
-                    { type: 'temporal', value: 'DIA(-7)', description: '📅 7 dias atrás', example: `${beforeCursor} DIA(-7)` },
+                suggestions.push(`
+                    { type: 'temporal', value: 'DIA(0)', description: '📅 Hoje', example: `${beforeCursor} DIA(0)` },`
+                    { type: 'temporal', value: 'MES(0)', description: '📅 Este mês', example: `${beforeCursor} MES(0)` },`
+                    { type: 'temporal', value: 'ANO(0)', description: '📅 Este ano', example: `${beforeCursor} ANO(0)` },`
+                    { type: 'temporal', value: 'DIA(-7)', description: '📅 7 dias atrás', example: `${beforeCursor} DIA(-7)` },`
                     { type: 'list', value: '(valor1, valor2)', description: '📝 Lista de valores', example: `${beforeCursor} (TI, RH, Vendas)` }
                 );
                 break;
@@ -1075,10 +1074,10 @@ class TQLService extends EventEmitter {
             case 'numbers':
                 // Contexto de números - sugerir quantidades comuns
                 if (context.expectingNumber) {
-                    suggestions.push(
-                        { type: 'number', value: '5', description: '🔢 Top 5', example: `${beforeCursor}5` },
-                        { type: 'number', value: '10', description: '🔢 Top 10', example: `${beforeCursor}10` },
-                        { type: 'number', value: '3', description: '🔢 Top 3', example: `${beforeCursor}3` },
+                    suggestions.push(`
+                        { type: 'number', value: '5', description: '🔢 Top 5', example: `${beforeCursor}5` },`
+                        { type: 'number', value: '10', description: '🔢 Top 10', example: `${beforeCursor}10` },`
+                        { type: 'number', value: '3', description: '🔢 Top 3', example: `${beforeCursor}3` },`
                         { type: 'number', value: '1', description: '🔢 Melhor', example: `${beforeCursor}1` }
                     );
                 }
@@ -1276,36 +1275,36 @@ class TQLService extends EventEmitter {
     /**
      * Cálculos específicos de métricas ITSM
      */
-    async calculateSLACompliance(entity) {
+    async calculateSLACompliance(entity) {`
         const query = `
             SELECT 
                 COUNT(CASE WHEN resolved_at <= due_date THEN 1 END) * 100.0 / COUNT(*) as compliance_rate
             FROM ${entity}
-            WHERE resolved_at IS NOT NULL
+            WHERE resolved_at IS NOT NULL`
         `;
         
         const result = await this.database.query(query);
         return result.rows[0]?.compliance_rate || 0;
     }
     
-    async calculateMTTR(entity) {
+    async calculateMTTR(entity) {`
         const query = `
             SELECT 
                 AVG(EXTRACT(EPOCH FROM (resolved_at - created_at))/3600) as mttr_hours
             FROM ${entity}
-            WHERE resolved_at IS NOT NULL
+            WHERE resolved_at IS NOT NULL`
         `;
         
         const result = await this.database.query(query);
         return result.rows[0]?.mttr_hours || 0;
     }
     
-    async calculateFCR() {
+    async calculateFCR() {`
         const query = `
             SELECT 
                 COUNT(CASE WHEN resolution_attempts = 1 THEN 1 END) * 100.0 / COUNT(*) as fcr_rate
             FROM tickets
-            WHERE status = 'resolved'
+            WHERE status = 'resolved'`
         `;
         
         const result = await this.database.query(query);
@@ -1313,12 +1312,12 @@ class TQLService extends EventEmitter {
     }
     
     async calculateCSAT(period) {
-        const timeFilter = this.getTimeRange(period);
+        const timeFilter = this.getTimeRange(period);`
         const query = `
             SELECT AVG(satisfaction_rating) as csat_score
             FROM tickets
             WHERE resolved_at BETWEEN $1 AND $2
-            AND satisfaction_rating IS NOT NULL
+            AND satisfaction_rating IS NOT NULL`
         `;
         
         const result = await this.database.query(query, [timeFilter.start, timeFilter.end]);
@@ -1349,4 +1348,4 @@ class TQLService extends EventEmitter {
     }
 }
 
-module.exports = TQLService;
+module.exports = TQLService;`

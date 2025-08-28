@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { StandardHeader } from '@/components/standard-header';
-import { 
+import {  
   Users, 
   Building2, 
   Settings, 
@@ -18,22 +18,24 @@ import {
   BuildingIcon
 } from 'lucide-react';
 
-= useToast();
+const { toast } = useToast();
 
   // Estados para criação de usuário
   const [newUser, setNewUser] = useState({
-    cpf,
-    email,
-    firstName,
-    lastName,
-    password,
-    role,
-    tenantId);
+    cpf: '',
+    email: '',
+    firstName: '',
+    lastName: '',
+    password: '',
+    role: 'employee',
+    tenantId: ''
+  });
 
   // Estados para criação de tenant
   const [newTenant, setNewTenant] = useState({
-    name,
-    description);
+    name: '',
+    description: ''
+  });
 
   useEffect(() => {
     loadData();
@@ -51,42 +53,45 @@ import {
       // Simular dados para teste (já que as APIs não estão funcionando)
       setUsers([
         {
-          id,
-          cpf,
-          email,
-          firstName,
-          lastName,
-          role,
-          isActive,
+          id: '1',
+          cpf: '12345678901',
+          email: 'admin@sistema.com',
+          firstName: 'Admin',
+          lastName: 'Sistema',
+          role: 'super_admin',
+          isActive: true
+        },
         {
-          id, 
-          cpf,
-          email,
-          firstName,
-          lastName,
-          role,
-          tenantId,
-          isActive);
+          id: '2', 
+          cpf: '98765432109',
+          email: 'user@empresa.com',
+          firstName: 'Usuário',
+          lastName: 'Teste',
+          role: 'employee',
+          tenantId: '1',
+          isActive: true
+        }
+      ]);
 
       setTenants([
         {
-          id,
-          name,
-          description,
-          isActive,
-          createdAt).toISOString()
+          id: '1',
+          name: 'Empresa Principal',
+          description: 'Empresa principal do sistema',
+          isActive: true,
+          createdAt: new Date().toISOString()
         },
         {
-          id,
-          name,
-          description,
-          isActive,
-          createdAt).toISOString()
+          id: '2',
+          name: 'Empresa Secundária',
+          description: 'Segunda empresa do sistema',
+          isActive: true,
+          createdAt: new Date().toISOString()
         }
       ]);
 
     } catch (error) {
-      console.error('Erro ao carregar dados, error);
+      console.error('Erro ao carregar dados:', error);
     }
     setLoading(false);
   };
@@ -94,35 +99,41 @@ import {
   const handleCreateUser = async () => {
     if (!newUser.cpf || !newUser.email || !newUser.firstName || !newUser.password) {
       toast({
-        title,
-        description,
-        variant);
+        title: 'Erro',
+        description: 'Preencha todos os campos obrigatórios',
+        variant: 'destructive'
+      });
       return;
     }
 
     // Simular criação (já que a API não funciona)
-    const user= {
-      id)}`,
-      cpf,
-      email,
-      firstName,
-      lastName,
-      role,
-      tenantId,
-      isActive, user]);
+    const user = {
+      id: Date.now().toString(),
+      cpf: newUser.cpf,
+      email: newUser.email,
+      firstName: newUser.firstName,
+      lastName: newUser.lastName,
+      role: newUser.role,
+      tenantId: newUser.tenantId,
+      isActive: true
+    };
+    
+    setUsers(prev => [...prev, user]);
     
     toast({
-      title,
-      description);
+      title: 'Sucesso',
+      description: 'Usuário criado com sucesso'
+    });
     
     setNewUser({
-      cpf,
-      email,
-      firstName,
-      lastName,
-      password,
-      role,
-      tenantId);
+      cpf: '',
+      email: '',
+      firstName: '',
+      lastName: '',
+      password: '',
+      role: 'employee',
+      tenantId: ''
+    });
     
     setShowCreateUser(false);
   };
@@ -130,44 +141,49 @@ import {
   const handleCreateTenant = async () => {
     if (!newTenant.name) {
       toast({
-        title,
-        description,
-        variant);
+        title: 'Erro',
+        description: 'Nome da empresa é obrigatório',
+        variant: 'destructive'
+      });
       return;
     }
 
     // Simular criação (já que a API não funciona)
-    const tenant= {
-      id)}`,
-      name,
-      description,
-      isActive,
-      createdAt).toISOString()
+    const tenant = {
+      id: Date.now().toString(),
+      name: newTenant.name,
+      description: newTenant.description,
+      isActive: true,
+      createdAt: new Date().toISOString()
     };
 
     setTenants(prev => [...prev, tenant]);
     
     toast({
-      title,
-      description);
+      title: 'Sucesso',
+      description: 'Empresa criada com sucesso'
+    });
     
-    setNewTenant({ name, description);
+    setNewTenant({ name: '', description: '' });
     setShowCreateTenant(false);
   };
 
   const handleToggleUserStatus = async (userId) => {
     setUsers(prev => prev.map(user => 
       user.id === userId 
-        ? { ...user, isActive));
+        ? { ...user, isActive: !user.isActive }
+        : user
+    ));
 
     toast({
-      title,
-      description);
+      title: 'Status atualizado',
+      description: 'Status do usuário foi alterado com sucesso'
+    });
   };
 
   const handleLogout = async () => {
     try {
-      await fetch('/api/logout', { method);
+      await fetch('/api/logout', { method: 'POST' });
       window.location.reload();
     } catch (error) {
       window.location.reload();
@@ -188,7 +204,22 @@ import {
   return (
     <div className="min-h-screen bg-gray-50">
       <StandardHeader 
-        user={currentUser || { firstName, lastName, email, role)</h2>
+        user={currentUser || { firstName: 'Admin', lastName: 'Sistema', email: 'admin@sistema.com', role: 'super_admin' }}
+        onLogout={handleLogout}
+      />
+      
+      <div className="container mx-auto px-4 py-8">
+        <Tabs defaultValue="users" className="w-full">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="users">Usuários</TabsTrigger>
+            <TabsTrigger value="tenants">Empresas</TabsTrigger>
+            <TabsTrigger value="settings">Configurações</TabsTrigger>
+          </TabsList>
+
+          {/* Gestão de Usuários */}
+          <TabsContent value="users" className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-semibold">Usuários do Sistema ({users.length})</h2>
               <Button onClick={() => setShowCreateUser(true)}>
                 <UserPlus className="h-4 w-4 mr-2" />
                 Criar Usuário
@@ -223,7 +254,7 @@ import {
           <TabsContent value="tenants" className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold">Empresas do Sistema ({tenants.length})</h2>
-              <Button onClick={() => setShowCreateTenant(true)}>
+              <Button onClick=({ ( }) => setShowCreateTenant(true)}>
                 <BuildingIcon className="h-4 w-4 mr-2" />
                 Criar Empresa
               </Button>
@@ -252,8 +283,6 @@ import {
                         </Badge>
                         <Button size="sm" variant="outline">
                           <Settings className="h-4 w-4 mr-1" />
-                          Configurar
-                        </Button>
                       </div>
                     </div>
                   </CardContent>
@@ -286,7 +315,7 @@ import {
                 <Input
                   id="lastName"
                   value={newUser.lastName}
-                  onChange={(e) => setNewUser(prev => ({ ...prev, lastName))}
+                  onChange=({ (e }) => setNewUser(prev => ({ ...prev, lastName))}
                 />
               </div>
             </div>
@@ -295,7 +324,7 @@ import {
               <Input
                 id="cpf"
                 value={newUser.cpf}
-                onChange={(e) => setNewUser(prev => ({ ...prev, cpf))}
+                onChange=({ (e }) => setNewUser(prev => ({ ...prev, cpf))}
                 placeholder="00000000000"
               />
             </div>
@@ -305,7 +334,7 @@ import {
                 id="email"
                 type="email"
                 value={newUser.email}
-                onChange={(e) => setNewUser(prev => ({ ...prev, email))}
+                onChange=({ (e }) => setNewUser(prev => ({ ...prev, email))}
               />
             </div>
             <div>
@@ -314,12 +343,12 @@ import {
                 id="password"
                 type="password"
                 value={newUser.password}
-                onChange={(e) => setNewUser(prev => ({ ...prev, password))}
+                onChange=({ (e }) => setNewUser(prev => ({ ...prev, password))}
               />
             </div>
             <div>
               <Label htmlFor="role">Função</Label>
-              <Select value={newUser.role} onValueChange={(value) => setNewUser(prev => ({ ...prev, role))}>
+              <Select value={newUser.role} onValueChange=({ (value }) => setNewUser(prev => ({ ...prev, role))}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -353,4 +382,4 @@ import {
       </Dialog>
     </div>
   );
-}
+}`

@@ -8,17 +8,16 @@ import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import
-  {
-    Send,
-    Paperclip,
-    Phone,
-    Video,
-    MoreVertical,
-    Smile,
+import { 
+
+
+
+
+
+
     Image as ImageIcon,
-    File,
-    Download
+
+ }
   } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -27,8 +26,7 @@ export function ChatWindow( {
   currentUserId,
   onClose
 } )
-{
-  const [ messages, setMessages ] = useState( [] );
+({ const [ messages, setMessages ] = useState( [] );
   const [ newMessage, setNewMessage ] = useState( '' );
   const [ isTyping, setIsTyping ] = useState( false );
   const [ onlineUsers, setOnlineUsers ] = useState( [] );
@@ -37,7 +35,7 @@ export function ChatWindow( {
   const fileInputRef = useRef( null );
 
   // Scroll para a última mensagem
-  const scrollToBottom = () =>
+  const scrollToBottom = ( }) =>
   {
     messagesEndRef.current?.scrollIntoView( { behavior: 'smooth' } );
   };
@@ -101,7 +99,7 @@ export function ChatWindow( {
     if ( !newMessage.trim() ) return;
 
     try
-    {
+    {`
       const response = await fetch( `/api/chat/conversations/${ conversationId }/messages`, {
         method: 'POST',
         headers: {
@@ -138,7 +136,7 @@ export function ChatWindow( {
       const formData = new FormData();
       formData.append( 'file', file );
       formData.append( 'senderId', currentUserId );
-
+`
       const response = await fetch( `/api/chat/conversations/${ conversationId }/upload`, {
         method: 'POST',
         body: formData
@@ -196,7 +194,7 @@ export function ChatWindow( {
         key={ message.id }
         className={ cn(
           'flex mb-4',
-          isOwnMessage ? 'justify-end' : 'justify-start'
+          isOwnMessage ? 'justify-end' : 'justify-start'}
         ) }
       >
         { !isOwnMessage && (
@@ -210,7 +208,7 @@ export function ChatWindow( {
             'max-w-xs lg:max-w-md px-4 py-2 rounded-lg',
             isOwnMessage
               ? 'bg-blue-500 text-white'
-              : 'bg-gray-100 text-gray-900'
+              : 'bg-gray-100 text-gray-900'}
           ) }
         >
           { message.type === 'text' && (
@@ -297,7 +295,7 @@ export function ChatWindow( {
           <Button
             size="sm"
             variant="ghost"
-            onClick={ () => fileInputRef.current?.click() }
+            onClick=({ ( }) => fileInputRef.current?.click() }
           >
             <Paperclip className="w-4 h-4" />
           </Button>
@@ -312,10 +310,10 @@ export function ChatWindow( {
 
           <Input
             value={ newMessage }
-            onChange={ ( e ) => setNewMessage( e.target.value ) }
+            onChange=({ ( e  }) => setNewMessage( e.target.value ) }
             placeholder="Digite sua mensagem..."
             className="flex-1"
-            onKeyPress={ ( e ) =>
+            onKeyPress=({ ( e  }) =>
             {
               if ( e.key === 'Enter' )
               {
@@ -339,3 +337,4 @@ export function ChatWindow( {
     </Card>
   );
 }
+`

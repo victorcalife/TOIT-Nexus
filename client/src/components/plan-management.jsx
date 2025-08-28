@@ -3,21 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  CreditCard, 
-  TrendingUp, 
-  TrendingDown,
-  ArrowRight,
-  Check,
-  X,
-  AlertTriangle,
-  Crown,
-  Zap,
-  Shield,
-  Star,
-  Calendar,
-  DollarSign,
-  RefreshCw
+import {   }
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -113,14 +99,13 @@ import { useToast } from '@/hooks/use-toast';
       
       const data = await response.json();
       
-      if (data.success) {
-        toast({
+      if (data.success) ({ toast({
           title,
           description,
           variant);
         
         // Recarregar página após alguns segundos para refletir mudanças
-        setTimeout(() => {
+        setTimeout(( }) => {
           window.location.reload();
         }, 2000);
       } else {
@@ -146,8 +131,7 @@ import { useToast } from '@/hooks/use-toast';
       currency).format(value);
   };
 
-  const getPlanIcon = (planSlug) => {
-    switch (planSlug.toLowerCase()) {
+  const getPlanIcon = (planSlug) => ({ switch (planSlug.toLowerCase()) {
       case 'basico':
         return <Shield className="w-6 h-6" />;
       case 'standard':
@@ -156,7 +140,7 @@ import { useToast } from '@/hooks/use-toast';
         return <Crown className="w-6 h-6" />;
       case 'enterprise':
         return <Zap className="w-6 h-6" />;
-      default) => {
+      default }) => {
     switch (changeType) {
       case 'upgrade':
         return <TrendingUp className="w-4 h-4 text-green-600" />;
@@ -189,11 +173,11 @@ import { useToast } from '@/hooks/use-toast';
         <TabsContent value="plans" className="space-y-4">
           <div className="grid grid-cols-1 md) => (
               <Card 
-                key={plan.slug} 
-                className={`cursor-pointer transition-all duration-200 ${
+                key={plan.slug} `
+                className=({ `cursor-pointer transition-all duration-200 ${
                   selectedPlan === plan.slug 
                     ? 'ring-2 ring-blue-500 shadow-lg' 
-                    : 'hover) => setSelectedPlan(plan.slug)}
+                    : 'hover }) => setSelectedPlan(plan.slug)}
               >
                 <CardHeader>
                   <div className="flex items-center justify-between">
@@ -268,9 +252,9 @@ import { useToast } from '@/hooks/use-toast';
                       </div>
                     </div>
 
-                    {comparison.changes.addedModules.length > 0 && (
+                    ({ comparison.changes.addedModules.length > 0 && (
                       <div>
-                        <p className="font-medium text-green-700 mb-2">Módulos adicionados) => (
+                        <p className="font-medium text-green-700 mb-2">Módulos adicionados }) => (
                             <div key={module} className="flex items-center text-sm text-green-600">
                               <Check className="w-4 h-4 mr-2" />
                               {module}
@@ -280,9 +264,9 @@ import { useToast } from '@/hooks/use-toast';
                       </div>
                     )}
 
-                    {comparison.changes.removedModules.length > 0 && (
+                    ({ comparison.changes.removedModules.length > 0 && (
                       <div>
-                        <p className="font-medium text-red-700 mb-2">Módulos removidos) => (
+                        <p className="font-medium text-red-700 mb-2">Módulos removidos }) => (
                             <div key={module} className="flex items-center text-sm text-red-600">
                               <X className="w-4 h-4 mr-2" />
                               {module}
@@ -294,19 +278,18 @@ import { useToast } from '@/hooks/use-toast';
 
                     <div className="flex gap-3 pt-4">
                       <Button
-                        onClick={() => executePlanChange()}
+                        onClick=({ ( }) => executePlanChange()}
                         disabled={processing}
                         className="flex-1"
                       >
-                        {processing ? (
+                        ({ processing ? (
                           <>
                             <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
                             Processando...
                           </>
-                        ) {() => setSelectedPlan(null)}
+                        ) {( }) => setSelectedPlan(null)}
                         disabled={processing}
                       >
-                        Cancelar
                       </Button>
                     </div>
                   </div>
@@ -357,14 +340,14 @@ import { useToast } from '@/hooks/use-toast';
                           const isNew = comparison.changes.addedModules.includes(module);
                           const isRemoved = comparison.changes.removedModules.includes(module);
                           
-                          return (
+                          return (`
                             <div key={module} className={`flex items-center text-sm ${
                               isNew ? 'text-green-600 font-medium' :
-                              isRemoved ? 'text-red-600 line-through' : ''
-                            }`}>
+                              isRemoved ? 'text-red-600 line-through' : ''`}
+                            }`}>`
                               <Check className={`w-4 h-4 mr-2 ${
                                 isNew ? 'text-green-500' :
-                                isRemoved ? 'text-red-500' : 'text-green-500'
+                                isRemoved ? 'text-red-500' : 'text-green-500'`}
                               }`} />
                               {module}
                               {isNew && <Badge className="ml-2 text-xs bg-green-100 text-green-800">Novo</Badge>}
@@ -390,4 +373,4 @@ import { useToast } from '@/hooks/use-toast';
   );
 }
 
-export default PlanManagement;
+export default PlanManagement;`

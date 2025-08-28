@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
-import { 
+import {  
   Users, 
   Building2, 
   Settings, 
@@ -19,7 +19,7 @@ import {
   Webhook,
   Mail,
   BarChart3,
-  LogOut
+  LogOut }
 } from 'lucide-react';
 
 = useToast();
@@ -30,8 +30,7 @@ import {
   const [showCreateWorkflow, setShowCreateWorkflow] = useState(false);
 
   // Formulários
-  const [userForm, setUserForm] = useState({
-    cpf,
+  const [userForm, setUserForm] = useState(({ cpf,
     email,
     firstName,
     lastName,
@@ -50,7 +49,7 @@ import {
       { type, label, options, 'Marketing', 'Financeiro'], required,
       { type, label, required);
 
-  useEffect(() => {
+  useEffect(( }) => {
     loadData();
   }, []);
 
@@ -209,8 +208,6 @@ import {
               </div>
               <Button onClick={handleLogout} variant="outline">
                 <LogOut className="h-4 w-4 mr-2" />
-                Sair
-              </Button>
             </div>
           </div>
         </div>
@@ -220,19 +217,19 @@ import {
         {/* NAVEGAÇÃO POR MÓDULOS */}
         <div className="mb-6">
           <div className="flex flex-wrap gap-2 bg-gray-100 p-2 rounded-lg">
-            {[
+            ({ [
               { key, label, icon,
               { key, label, icon,
               { key, label, icon,
               { key, label, icon,
               { key, label, icon,
-              { key, label, icon, label, icon) => (
+              { key, label, icon, label, icon }) => (
               <button
                 key={key}
-                onClick={() => setActiveSection(key as any)}
+                onClick=({ ( }) => setActiveSection(key as any)}`
                 className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                   activeSection === key 
-                    ? 'bg-white text-gray-900 shadow-sm' 
+                    ? 'bg-white text-gray-900 shadow-sm' }
                     : 'text-gray-600 hover))}
           </div>
         </div>
@@ -268,8 +265,6 @@ import {
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium flex items-center">
                     <Workflow className="h-4 w-4 mr-2 text-purple-500" />
-                    Workflows
-                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold text-purple-600">{taskTemplates.length}</div>
@@ -298,7 +293,7 @@ import {
           <div className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold">Gestão de Usuários ({users.length})</h2>
-              <Button onClick={() => setShowCreateUser(true)}>
+              <Button onClick=({ ( }) => setShowCreateUser(true)}>
                 <Plus className="h-4 w-4 mr-2" />
                 Criar Usuário Real
               </Button>
@@ -315,7 +310,7 @@ import {
                       <Label>Nome</Label>
                       <Input
                         value={userForm.firstName}
-                        onChange={(e) => setUserForm(prev => ({ ...prev, firstName))}
+                        onChange=({ (e }) => setUserForm(prev => ({ ...prev, firstName))}
                         placeholder="Nome"
                       />
                     </div>
@@ -323,7 +318,7 @@ import {
                       <Label>Sobrenome</Label>
                       <Input
                         value={userForm.lastName}
-                        onChange={(e) => setUserForm(prev => ({ ...prev, lastName))}
+                        onChange=({ (e }) => setUserForm(prev => ({ ...prev, lastName))}
                         placeholder="Sobrenome"
                       />
                     </div>
@@ -332,7 +327,7 @@ import {
                     <Label>CPF</Label>
                     <Input
                       value={userForm.cpf}
-                      onChange={(e) => setUserForm(prev => ({ ...prev, cpf))}
+                      onChange=({ (e }) => setUserForm(prev => ({ ...prev, cpf))}
                       placeholder="00000000000"
                     />
                   </div>
@@ -340,13 +335,13 @@ import {
                     <Label>Email</Label>
                     <Input
                       value={userForm.email}
-                      onChange={(e) => setUserForm(prev => ({ ...prev, email))}
+                      onChange=({ (e }) => setUserForm(prev => ({ ...prev, email))}
                       placeholder="usuario@empresa.com"
                     />
                   </div>
                   <div>
                     <Label>Função</Label>
-                    <Select value={userForm.role} onValueChange={(value) => setUserForm(prev => ({ ...prev, role))}>
+                    <Select value={userForm.role} onValueChange=({ (value }) => setUserForm(prev => ({ ...prev, role))}>
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
@@ -360,7 +355,7 @@ import {
                   </div>
                   <div className="flex space-x-2">
                     <Button onClick={handleCreateUser}>Salvar no Banco</Button>
-                    <Button variant="outline" onClick={() => setShowCreateUser(false)}>Cancelar</Button>
+                    <Button variant="outline" onClick=({ ( }) => setShowCreateUser(false)}>Cancelar</Button>
                   </div>
                 </CardContent>
               </Card>
@@ -392,7 +387,7 @@ import {
           <div className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold">Gestão de Empresas ({tenants.length})</h2>
-              <Button onClick={() => setShowCreateTenant(true)}>
+              <Button onClick=({ ( }) => setShowCreateTenant(true)}>
                 <Plus className="h-4 w-4 mr-2" />
                 Criar Empresa Real
               </Button>
@@ -408,7 +403,7 @@ import {
                     <Label>Nome da Empresa</Label>
                     <Input
                       value={tenantForm.name}
-                      onChange={(e) => setTenantForm(prev => ({ ...prev, name))}
+                      onChange=({ (e }) => setTenantForm(prev => ({ ...prev, name))}
                       placeholder="Nome da empresa"
                     />
                   </div>
@@ -416,13 +411,13 @@ import {
                     <Label>Descrição</Label>
                     <Textarea
                       value={tenantForm.description}
-                      onChange={(e) => setTenantForm(prev => ({ ...prev, description))}
+                      onChange=({ (e }) => setTenantForm(prev => ({ ...prev, description))}
                       placeholder="Descrição da empresa"
                     />
                   </div>
                   <div className="flex space-x-2">
                     <Button onClick={handleCreateTenant}>Salvar no Banco</Button>
-                    <Button variant="outline" onClick={() => setShowCreateTenant(false)}>Cancelar</Button>
+                    <Button variant="outline" onClick=({ ( }) => setShowCreateTenant(false)}>Cancelar</Button>
                   </div>
                 </CardContent>
               </Card>
@@ -446,7 +441,7 @@ import {
           <div className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold">Gestão de Workflows ({taskTemplates.length})</h2>
-              <Button onClick={() => setShowCreateWorkflow(true)}>
+              <Button onClick=({ ( }) => setShowCreateWorkflow(true)}>
                 <Plus className="h-4 w-4 mr-2" />
                 Criar Workflow Real
               </Button>
@@ -462,7 +457,7 @@ import {
                     <Label>Nome do Workflow</Label>
                     <Input
                       value={workflowForm.name}
-                      onChange={(e) => setWorkflowForm(prev => ({ ...prev, name))}
+                      onChange=({ (e }) => setWorkflowForm(prev => ({ ...prev, name))}
                       placeholder="Ex) => setWorkflowForm(prev => ({ ...prev, description))}
                       placeholder="Descrição do workflow"
                     />
@@ -480,7 +475,7 @@ import {
                   </div>
                   <div className="flex space-x-2">
                     <Button onClick={handleCreateWorkflow}>Salvar Workflow</Button>
-                    <Button variant="outline" onClick={() => setShowCreateWorkflow(false)}>Cancelar</Button>
+                    <Button variant="outline" onClick=({ ( }) => setShowCreateWorkflow(false)}>Cancelar</Button>
                   </div>
                 </CardContent>
               </Card>
@@ -501,8 +496,6 @@ import {
                       <div className="flex space-x-2">
                         <Badge variant="default">
                           <CheckSquare className="h-3 w-3 mr-1" />
-                          Ativo
-                        </Badge>
                         <Button size="sm" variant="outline">
                           Editar Campos
                         </Button>
@@ -537,8 +530,6 @@ import {
                           {module.isActive ? "Ativo" : "Inativo"}
                         </Badge>
                         <Button size="sm" variant="outline">
-                          Configurar
-                        </Button>
                       </div>
                     </div>
                   </CardContent>
@@ -557,4 +548,4 @@ import {
       </div>
     </div>
   );
-}
+}`

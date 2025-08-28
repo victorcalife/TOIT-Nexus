@@ -5,8 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import
-  {
+import { 
     BarChart3,
     Users,
     Workflow,
@@ -30,7 +29,7 @@ import
     Save,
     CheckSquare,
     Building2,
-    Shield
+    Shield }
   } from 'lucide-react';
 import { StandardHeader } from '@/components/standard-header';
 import { useAuth } from '@/hooks/useAuth';
@@ -87,8 +86,7 @@ export default function ClientDashboard()
 
   // Check if a module is available and active for this tenant
   const isModuleActive = ( moduleCode ) =>
-  {
-    return tenantModules.some( ( module ) =>
+  ({ return tenantModules.some( ( module  }) =>
       module.moduleCode === moduleCode &&
       module.isEnabled &&
       module.status === 'active'
@@ -325,7 +323,7 @@ export default function ClientDashboard()
 
 {/* Segunda linha de tabs (adicionais) se necessário */ }
 {
-  availableTabs.length > 8 && (
+  availableTabs.length > 8 && (`
     <TabsList className="grid w-full mt-2" style={ { gridTemplateColumns, 8) }, 1fr)` }}>
               {availableTabs.includes('notifications') && <TabsTrigger value="notifications">Notificações</TabsTrigger>}
               {availableTabs.includes('api_connections') && <TabsTrigger value="api_connections">APIs</TabsTrigger>}
@@ -355,36 +353,36 @@ export default function ClientDashboard()
                   <CardDescription>Módulos ativos para sua empresa</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  {isModuleActive('task_management') && (
-                    <Button variant="outline" className="w-full justify-start" onClick={() => window.location.hash = 'tasks'}>
+                  ({ isModuleActive('task_management') && (
+                    <Button variant="outline" className="w-full justify-start" onClick={( }) => window.location.hash = 'tasks'}>
                       <CheckSquare className="h-4 w-4 mr-2" />
                       Gestão de Tarefas
                     </Button>
                   )}
                   
-                  {isModuleActive('query_builder') && (
-                    <Button variant="outline" className="w-full justify-start" onClick={() => window.location.hash = 'queries'}>
+                  ({ isModuleActive('query_builder') && (
+                    <Button variant="outline" className="w-full justify-start" onClick={( }) => window.location.hash = 'queries'}>
                       <Search className="h-4 w-4 mr-2" />
                       Construtor de Consultas
                     </Button>
                   )}
                   
-                  {isModuleActive('workflow_builder') && (
-                    <Button variant="outline" className="w-full justify-start" onClick={() => window.location.hash = 'workflows'}>
+                  ({ isModuleActive('workflow_builder') && (
+                    <Button variant="outline" className="w-full justify-start" onClick={( }) => window.location.hash = 'workflows'}>
                       <Workflow className="h-4 w-4 mr-2" />
                       Builder de Workflows
                     </Button>
                   )}
                   
-                  {isModuleActive('reports') && (
-                    <Button variant="outline" className="w-full justify-start" onClick={() => window.location.hash = 'reports'}>
+                  ({ isModuleActive('reports') && (
+                    <Button variant="outline" className="w-full justify-start" onClick={( }) => window.location.hash = 'reports'}>
                       <FileText className="h-4 w-4 mr-2" />
                       Relatórios Personalizados
                     </Button>
                   )}
 
-                  {isModuleActive('database_connections') && (
-                    <Button variant="outline" className="w-full justify-start" onClick={() => window.location.hash = 'db_connections'}>
+                  ({ isModuleActive('database_connections') && (
+                    <Button variant="outline" className="w-full justify-start" onClick={( }) => window.location.hash = 'db_connections'}>
                       <Database className="h-4 w-4 mr-2" />
                       Conexões de Dados
                     </Button>
@@ -542,8 +540,6 @@ export default function ClientDashboard()
                 <CardHeader>
                   <CardTitle>
                     <Webhook className="h-5 w-5 mr-2 inline" />
-                    Webhooks
-                  </CardTitle>
                   <CardDescription>Configuração de webhooks e callbacks</CardDescription>
                 </CardHeader>
                 <CardContent className="p-6">
@@ -604,8 +600,6 @@ export default function ClientDashboard()
                 <CardHeader>
                   <CardTitle>
                     <Building2 className="h-5 w-5 mr-2 inline" />
-                    Departamentos
-                  </CardTitle>
                   <CardDescription>Gestão de departamentos e controle de dados</CardDescription>
                 </CardHeader>
                 <CardContent className="p-6">
@@ -681,4 +675,4 @@ export default function ClientDashboard()
       </div>
     </div>
   );
-}
+}`

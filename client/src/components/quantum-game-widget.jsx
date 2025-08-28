@@ -419,13 +419,13 @@ const QuantumGameWidget = () => {
             flex-direction: column;
             gap: 8px;
           }
-        }
+        }`
       `}</style>
 
       {/* Partículas de fundo */}
       <div className="quantum-particles" ref={particlesRef}></div>
 
-      {/* Tela 1: Introdução */}
+      {/* Tela 1: Introdução */}`
       <div className={`game-screen ${currentScreen === 1 ? 'active' : ''}`}>
         <div className="game-logo">TOITNEXUS</div>
         <h2 className="game-title">Revolução Quântica + TQL</h2>
@@ -448,27 +448,27 @@ const QuantumGameWidget = () => {
         </button>
       </div>
 
-      {/* Tela 2: O que é TQL */}
+      {/* Tela 2: O que é TQL */}`
       <div className={`game-screen ${currentScreen === 2 ? 'active' : ''}`}>
         <h2 className="game-title">TQL: Linguagem em Português</h2>
         
         <div className="comparison-grid">
           <div className="code-block bad">
-            <h4 style={{ color: '#ff4444', margin: '0 0 5px 0', fontSize: '0.8em' }}>❌ SQL Tradicional</h4>
+            <h4 style={{ color: '#ff4444', margin: '0 0 5px 0', fontSize: '0.8em' }}>❌ SQL Tradicional</h4>`
             <pre style={{ margin: 0, fontSize: '0.65em' }}>{`SELECT SUM(sales.value)
 FROM sales
 WHERE date >= '2025-01-01'
-GROUP BY product_id
+GROUP BY product_id`
 -- Complexo e em inglês`}</pre>
           </div>
 
           <div className="code-block good">
-            <h4 style={{ color: '#00ff88', margin: '0 0 5px 0', fontSize: '0.8em' }}>✅ TQL em Português</h4>
+            <h4 style={{ color: '#00ff88', margin: '0 0 5px 0', fontSize: '0.8em' }}>✅ TQL em Português</h4>`
             <pre style={{ margin: 0, fontSize: '0.65em' }}>{`vendas_mes = SOMAR valor 
     DE vendas ONDE data = MES(0);
 
 MAX(10) produtos POR vendas;
-
+`
 # Simples e intuitivo!`}</pre>
           </div>
         </div>
@@ -487,7 +487,7 @@ MAX(10) produtos POR vendas;
         </button>
       </div>
 
-      {/* Tela 3: Quando usar Quantum */}
+      {/* Tela 3: Quando usar Quantum */}`
       <div className={`game-screen ${currentScreen === 3 ? 'active' : ''}`}>
         <h2 className="game-title">Quando TQL Ativa Modo Quântico?</h2>
 
@@ -497,7 +497,7 @@ MAX(10) produtos POR vendas;
             <div className="strategy-name">Pequeno</div>
             <div className="strategy-cost">&lt; 1GB</div>
             <p style={{ margin: '5px 0 0 0', fontSize: '0.7em' }}>
-              Local<br/>
+
               <strong style={{ color: '#00ff88' }}>R$ 0</strong>
             </p>
           </div>
@@ -507,7 +507,7 @@ MAX(10) produtos POR vendas;
             <div className="strategy-name">Médio</div>
             <div className="strategy-cost">1GB-1TB</div>
             <p style={{ margin: '5px 0 0 0', fontSize: '0.7em' }}>
-              Cloud<br/>
+
               <strong style={{ color: '#ffaa00' }}>R$ 0.10/GB</strong>
             </p>
           </div>
@@ -537,7 +537,7 @@ MAX(10) produtos POR vendas;
         </button>
       </div>
 
-      {/* Tela 4: Game Interativo */}
+      {/* Tela 4: Game Interativo */}`
       <div className={`game-screen ${currentScreen === 4 ? 'active' : ''}`}>
         <h2 className="game-title">Simulador de Economia Quântica</h2>
 
@@ -569,9 +569,9 @@ MAX(10) produtos POR vendas;
             <h4 style={{ margin: '0 0 8px 0', fontSize: '0.9em' }}>Escolha sua Estratégia:</h4>
             
             <div className="strategies">
-              <div 
+              <div `
                 className={`strategy-card ${gameState.strategy === 'individual' ? 'active' : ''}`}
-                onClick={() => selectStrategy('individual')}
+                onClick=({ ( }) => selectStrategy('individual')}
               >
                 <div className="strategy-icon">🚶</div>
                 <div className="strategy-name">Individual</div>
@@ -581,9 +581,9 @@ MAX(10) produtos POR vendas;
                 </p>
               </div>
 
-              <div 
+              <div `
                 className={`strategy-card ${gameState.strategy === 'batch' ? 'active' : ''}`}
-                onClick={() => selectStrategy('batch')}
+                onClick=({ ( }) => selectStrategy('batch')}
               >
                 <div className="strategy-icon">📦</div>
                 <div className="strategy-name">Batch TQL</div>
@@ -593,9 +593,9 @@ MAX(10) produtos POR vendas;
                 </p>
               </div>
 
-              <div 
+              <div `
                 className={`strategy-card ${gameState.strategy === 'collab' ? 'active' : ''}`}
-                onClick={() => selectStrategy('collab')}
+                onClick=({ ( }) => selectStrategy('collab')}
               >
                 <div className="strategy-icon">🤝</div>
                 <div className="strategy-name">Colaborativo</div>
@@ -606,7 +606,7 @@ MAX(10) produtos POR vendas;
               </div>
             </div>
 
-            <div className="progress-bar">
+            <div className="progress-bar">`
               <div className="progress-fill" style={{ width: `${gameState.progress}%` }}>
                 {Math.floor(gameState.progress)}%
               </div>
@@ -623,7 +623,7 @@ MAX(10) produtos POR vendas;
         </div>
       </div>
 
-      {/* Tela 5: Resultados */}
+      {/* Tela 5: Resultados */}`
       <div className={`game-screen ${currentScreen === 5 ? 'active' : ''}`}>
         <div className="game-logo">TOITNEXUS</div>
         <h2 className="game-title">🎉 Você Domina TQL + Quantum!</h2>
@@ -667,9 +667,9 @@ MAX(10) produtos POR vendas;
       <div className="navigation">
         {[1, 2, 3, 4, 5].map(num => (
           <div 
-            key={num}
+            key={num}`
             className={`nav-dot ${currentScreen === num ? 'active' : ''}`}
-            onClick={() => goToScreen(num)}
+            onClick=({ ( }) => goToScreen(num)}
           />
         ))}
       </div>
@@ -678,3 +678,4 @@ MAX(10) produtos POR vendas;
 };
 
 export default QuantumGameWidget;
+`

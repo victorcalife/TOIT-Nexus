@@ -2,52 +2,51 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { 
-  LogOut, 
-  Settings, 
-  LayoutDashboard, 
-  Users, 
-  FileText, 
-  Calendar, 
-  Search, 
-  Link as LinkIcon, 
-  CheckSquare, 
-  ClipboardList,
-  Tag,
-  Workflow,
+import {
+  Home,
+  Users,
+  Settings,
+  FileText,
+  BarChart3,
+  Calendar,
+  MessageSquare,
+  Bell,
   Shield,
-  TestTube,
-  Package,
-  Database
+  Database,
+  Workflow,
+  LogOut,
+  Link as LinkIcon
 } from 'lucide-react';
 
 import toitNexusLogo from '@/assets/toit-nexus-logo.svg?url';
 
 const navigation = [
-  { name, href, icon,
-  { name, href, icon,
-  { name, href, icon,
-  { name, href, icon,
-  { name, href, icon,
-  { name, href, icon,
-  { name, href, icon,
-  { name, href, icon,
-  { name, href, icon,
-  { name, href, icon,
-  { name, href, icon,
-  { name, href, icon,
-  { name, href, icon,
-  { name, href, icon,
-  { name, href, icon,
-  { name, href, icon,
+  { name: 'Dashboard', href: '/', icon: Home },
+  { name: 'Usuários', href: '/users', icon: Users },
+  { name: 'Relatórios', href: '/reports', icon: BarChart3 },
+  { name: 'Calendário', href: '/calendar', icon: Calendar },
+  { name: 'Chat', href: '/chat', icon: MessageSquare },
+  { name: 'Notificações', href: '/notifications', icon: Bell },
+  { name: 'Workflows', href: '/workflows', icon: Workflow },
+  { name: 'Documentos', href: '/documents', icon: FileText },
+  { name: 'Configurações', href: '/settings', icon: Settings },
+  { name: 'Controle de Acesso', href: '/access-control', icon: Shield },
+  { name: 'Gerenciar Módulos', href: '/module-management', icon: Database }
 ];
 
-) {
+const Sidebar = ({ 
+  isOpen, 
+  onNavigate, 
+  onLogout, 
+  currentPath, 
+  isAdmin = false 
+}) => {
   const { user } = useAuth();
 
   // Filtra a navegação com base no tipo de usuário
   const filteredNavigation = isAdmin 
-    ? navigation, '/access-control', '/module-management'].includes(item.href));
+    ? navigation 
+    : navigation.filter(item => !['/access-control', '/module-management'].includes(item.href));
 
   const getUserInitials = (user) => {
     if (user?.firstName && user?.lastName) {
@@ -71,9 +70,26 @@ const navigation = [
 
   const getUserRole = (user) => {
     const roleMap = {
-      admin,
-      manager,
-      employee) => onNavigate('/')}
+      admin: 'Administrador',
+      manager: 'Gerente',
+      employee: 'Funcionário'
+    };
+    return roleMap[user?.role] || 'Usuário';
+  };
+
+  return (
+    <div className={cn(
+      'fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out',
+      isOpen ? 'translate-x-0' : '-translate-x-full'
+    )}>
+      {/* Logo */}
+      <div className="flex items-center justify-center h-16 px-4 border-b border-gray-200">
+        <div className="flex items-center space-x-2">
+          <img 
+            src={toitNexusLogo} 
+            alt="TOIT Nexus" 
+            className="h-8 w-auto cursor-pointer"
+            onClick={() => onNavigate('/')}
           />
         </div>
       </div>
@@ -92,11 +108,13 @@ const navigation = [
                 'w-full text-left group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors',
                 isActive
                   ? 'bg-primary-50 text-primary-700'
-                  : 'text-gray-700 hover)}
+                  : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+              )}
             >
               <item.icon className={cn(
                 'mr-3 h-5 w-5 flex-shrink-0',
-                isActive ? 'text-primary-500' : 'text-gray-400 group-hover)} />
+                isActive ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500'
+              )} />
               {item.name}
             </button>
           );
@@ -124,5 +142,14 @@ const navigation = [
             variant="ghost"
             size="sm"
             onClick={onLogout}
-            className="text-gray-400 hover);
-}
+            className="text-gray-400 hover:text-gray-600"
+          >
+            <LogOut className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Sidebar;

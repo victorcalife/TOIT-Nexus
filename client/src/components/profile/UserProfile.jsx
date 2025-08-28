@@ -11,20 +11,20 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Camera, 
-  Edit, 
-  Save, 
-  X, 
-  Phone, 
-  Mail, 
-  MapPin, 
-  Calendar,
-  Briefcase,
-  Star,
-  Settings,
-  Shield,
-  Bell
+import {  
+
+
+
+
+
+
+
+
+
+
+
+
+ }
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -58,8 +58,7 @@ export function UserProfile({
   };
 
   // Upload de avatar
-  const handleAvatarUpload = async (event) => {
-    const file = event.target.files[0];
+  const handleAvatarUpload = async (event) => ({ const file = event.target.files[0];
     if (!file) return;
 
     try {
@@ -67,7 +66,7 @@ export function UserProfile({
       
       // Criar preview local
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = (e }) => {
         updateField('profileImage', e.target.result);
       };
       reader.readAsDataURL(file);
@@ -143,11 +142,11 @@ export function UserProfile({
             </AvatarFallback>
           </Avatar>
           
-          {editMode && (
+          ({ editMode && (
             <Button
               size="sm"
               className="absolute -bottom-2 -right-2 rounded-full w-8 h-8 p-0"
-              onClick={() => fileInputRef.current?.click()}
+              onClick={( }) => fileInputRef.current?.click()}
               disabled={isLoading}
             >
               <Camera className="w-4 h-4" />
@@ -159,7 +158,7 @@ export function UserProfile({
           {editMode ? (
             <Input
               value={formData.name}
-              onChange={(e) => updateField('name', e.target.value)}
+              onChange=({ (e }) => updateField('name', e.target.value)}
               className="text-center text-xl font-semibold"
               placeholder="Nome completo"
             />
@@ -183,11 +182,11 @@ export function UserProfile({
               </Button>
               <Button variant="outline" onClick={handleCancel}>
                 <X className="w-4 h-4 mr-2" />
-                Cancelar
+
               </Button>
             </>
           ) : (
-            <Button onClick={() => setEditMode(true)}>
+            <Button onClick=({ ( }) => setEditMode(true)}>
               <Edit className="w-4 h-4 mr-2" />
               Editar Perfil
             </Button>
@@ -214,7 +213,7 @@ export function UserProfile({
                     id="email"
                     type="email"
                     value={formData.email}
-                    onChange={(e) => updateField('email', e.target.value)}
+                    onChange=({ (e }) => updateField('email', e.target.value)}
                     placeholder="seu@email.com"
                   />
                 ) : (
@@ -231,7 +230,7 @@ export function UserProfile({
                   <Input
                     id="phone"
                     value={formData.phone}
-                    onChange={(e) => updateField('phone', e.target.value)}
+                    onChange=({ (e }) => updateField('phone', e.target.value)}
                     placeholder="(11) 99999-9999"
                   />
                 ) : (
@@ -248,7 +247,7 @@ export function UserProfile({
                   <Input
                     id="location"
                     value={formData.location}
-                    onChange={(e) => updateField('location', e.target.value)}
+                    onChange=({ (e }) => updateField('location', e.target.value)}
                     placeholder="Cidade, Estado"
                   />
                 ) : (
@@ -265,7 +264,7 @@ export function UserProfile({
                   <Input
                     id="department"
                     value={formData.department}
-                    onChange={(e) => updateField('department', e.target.value)}
+                    onChange=({ (e }) => updateField('department', e.target.value)}
                     placeholder="Tecnologia"
                   />
                 ) : (
@@ -283,7 +282,7 @@ export function UserProfile({
                 <Textarea
                   id="bio"
                   value={formData.bio}
-                  onChange={(e) => updateField('bio', e.target.value)}
+                  onChange=({ (e }) => updateField('bio', e.target.value)}
                   placeholder="Conte um pouco sobre você..."
                   rows={4}
                 />

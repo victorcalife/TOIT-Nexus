@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import { 
+import {  
   MessageCircle, 
   Send, 
   Users, 
@@ -33,7 +33,7 @@ import {
   Check,
   CheckCheck,
   Clock,
-  AlertCircle
+  AlertCircle }
 } from 'lucide-react';
 
 const ChatSystem = () => {
@@ -123,10 +123,9 @@ const ChatSystem = () => {
         break;
         
       case 'user_typing':
-        if (data.userId !== user.id) {
-          setTypingUsers(prev => [...prev.filter(u => u.id !== data.userId), data.user]);
+        if (data.userId !== user.id) ({ setTypingUsers(prev => [...prev.filter(u => u.id !== data.userId), data.user]);
           // Remove typing após 3 segundos
-          setTimeout(() => {
+          setTimeout(( }) => {
             setTypingUsers(prev => prev.filter(u => u.id !== data.userId));
           }, 3000);
         }
@@ -164,7 +163,7 @@ const ChatSystem = () => {
     };
 
     // Adicionar mensagem localmente (otimistic update)
-    const tempMessage = {
+    const tempMessage = {`
       id: `temp-${Date.now()}`,
       content: newMessage.trim(),
       senderId: user.id,
@@ -188,7 +187,7 @@ const ChatSystem = () => {
   const loadChats = async () => {
     try {
       const response = await fetch('/api/chat/conversations', {
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }
@@ -219,9 +218,9 @@ const ChatSystem = () => {
    * CARREGAR MENSAGENS DO CHAT
    */
   const loadMessages = async (chatId) => {
-    try {
+    try {`
       const response = await fetch(`/api/chat/messages/${chatId}`, {
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }
@@ -251,7 +250,7 @@ const ChatSystem = () => {
     try {
       const response = await fetch('/api/chat/create', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -297,7 +296,7 @@ const ChatSystem = () => {
     try {
       const response = await fetch('/api/chat/upload', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
         body: formData
@@ -323,7 +322,7 @@ const ChatSystem = () => {
       wsRef.current.send(JSON.stringify(messageData));
       
       toast({
-        title: "Arquivo enviado",
+        title: "Arquivo enviado",`
         description: `${file.name} foi enviado com sucesso`,
       });
     } catch (error) {
@@ -368,8 +367,7 @@ const ChatSystem = () => {
   /**
    * SCROLL PARA BAIXO
    */
-  const scrollToBottom = () => {
-    setTimeout(() => {
+  const scrollToBottom = () => ({ setTimeout(( }) => {
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, 100);
   };
@@ -426,11 +424,10 @@ const ChatSystem = () => {
   /**
    * INICIALIZAR COMPONENTE
    */
-  useEffect(() => {
-    connectWebSocket();
+  useEffect(() => ({ connectWebSocket();
     loadChats();
 
-    return () => {
+    return ( }) => {
       if (wsRef.current) {
         wsRef.current.close();
       }
@@ -458,8 +455,7 @@ const ChatSystem = () => {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
               <MessageCircle className="h-6 w-6 text-blue-600" />
-              Chat
-            </h2>
+
             <div className="flex gap-2">
               <Button variant="outline" size="sm">
                 <UserPlus className="h-4 w-4" />
@@ -471,7 +467,7 @@ const ChatSystem = () => {
           </div>
           
           {/* Status de Conexão */}
-          <div className="flex items-center gap-2 mb-4">
+          <div className="flex items-center gap-2 mb-4">`
             <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-green-500' : 'bg-red-500'}`}></div>
             <span className="text-sm text-gray-600">
               {isConnected ? 'Online' : 'Desconectado'}
@@ -484,7 +480,7 @@ const ChatSystem = () => {
             <Input
               placeholder="Buscar conversas..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange=({ (e }) => setSearchTerm(e.target.value)}
               className="pl-10"
             />
           </div>
@@ -492,18 +488,18 @@ const ChatSystem = () => {
 
         {/* Lista de Chats */}
         <div className="flex-1 overflow-y-auto">
-          {filteredChats.length === 0 ? (
+          ({ filteredChats.length === 0 ? (
             <div className="p-4 text-center text-gray-500">
               <MessageCircle className="h-12 w-12 text-gray-300 mx-auto mb-2" />
               <p>Nenhuma conversa encontrada</p>
             </div>
           ) : (
-            filteredChats.map((chat) => (
+            filteredChats.map((chat }) => (
               <div
                 key={chat.id}
-                onClick={() => setActiveChat(chat)}
+                onClick=({ ( }) => setActiveChat(chat)}`
                 className={`p-4 border-b border-gray-100 cursor-pointer hover:bg-gray-50 ${
-                  activeChat?.id === chat.id ? 'bg-blue-50 border-blue-200' : ''
+                  activeChat?.id === chat.id ? 'bg-blue-50 border-blue-200' : ''`}
                 }`}
               >
                 <div className="flex items-center gap-3">
@@ -566,7 +562,7 @@ const ChatSystem = () => {
                       {activeChat.name || activeChat.participants?.filter(p => p.id !== user.id).map(p => p.name).join(', ')}
                     </h3>
                     <p className="text-sm text-gray-500">
-                      {activeChat.chatType === 'group' 
+                      {activeChat.chatType === 'group' `
                         ? `${activeChat.participants?.length} participantes`
                         : onlineUsers.some(u => activeChat.participants?.some(p => p.id === u.id && p.id !== user.id))
                           ? 'Online'
@@ -592,15 +588,15 @@ const ChatSystem = () => {
 
             {/* Área de Mensagens */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              {messages.map((message) => (
+              ({ messages.map((message }) => (
                 <div
-                  key={message.id}
+                  key={message.id}`
                   className={`flex ${message.senderId === user.id ? 'justify-end' : 'justify-start'}`}
-                >
+                >`
                   <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
                     message.senderId === user.id
                       ? 'bg-blue-600 text-white'
-                      : 'bg-gray-200 text-gray-900'
+                      : 'bg-gray-200 text-gray-900'`}
                   }`}>
                     {message.senderId !== user.id && activeChat.chatType === 'group' && (
                       <p className="text-xs font-medium mb-1 opacity-75">
@@ -650,7 +646,7 @@ const ChatSystem = () => {
                 <input
                   type="file"
                   ref={fileInputRef}
-                  onChange={(e) => {
+                  onChange=({ (e }) => {
                     if (e.target.files[0]) {
                       sendFile(e.target.files[0]);
                     }
@@ -661,7 +657,7 @@ const ChatSystem = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => fileInputRef.current?.click()}
+                  onClick=({ ( }) => fileInputRef.current?.click()}
                 >
                   <Paperclip className="h-4 w-4" />
                 </Button>
@@ -670,11 +666,11 @@ const ChatSystem = () => {
                   <Input
                     placeholder="Digite sua mensagem..."
                     value={newMessage}
-                    onChange={(e) => {
+                    onChange=({ (e }) => {
                       setNewMessage(e.target.value);
                       handleTyping();
                     }}
-                    onKeyPress={(e) => {
+                    onKeyPress=({ (e }) => {
                       if (e.key === 'Enter' && !e.shiftKey) {
                         e.preventDefault();
                         sendMessage();
@@ -686,7 +682,7 @@ const ChatSystem = () => {
                     variant="ghost"
                     size="sm"
                     className="absolute right-2 top-1/2 transform -translate-y-1/2"
-                    onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                    onClick=({ ( }) => setShowEmojiPicker(!showEmojiPicker)}
                   >
                     <Smile className="h-4 w-4" />
                   </Button>
@@ -721,3 +717,4 @@ const ChatSystem = () => {
 };
 
 export default ChatSystem;
+`

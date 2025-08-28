@@ -19,14 +19,13 @@ export default function SupportLogin()
 
   // Animação de background
   useEffect( () =>
-  {
-    const canvas = canvasRef.current;
+  ({ const canvas = canvasRef.current;
     if ( !canvas ) return;
 
     const ctx = canvas.getContext( '2d' );
     let animationId;
 
-    const resizeCanvas = () =>
+    const resizeCanvas = ( }) =>
     {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -100,7 +99,7 @@ export default function SupportLogin()
             const opacity = ( 80 - distance ) / 80 * 0.3;
             ctx.beginPath();
             ctx.moveTo( nodes[ i ].x, nodes[ i ].y );
-            ctx.lineTo( nodes[ j ].x, nodes[ j ].y );
+            ctx.lineTo( nodes[ j ].x, nodes[ j ].y );`
             ctx.strokeStyle = `rgba(0, 212, 255, ${ opacity })`;
             ctx.lineWidth = 0.5;
             ctx.stroke();
@@ -175,7 +174,7 @@ export default function SupportLogin()
     try
     {
       console.log( '🛡️ [SUPPORT-LOGIN] Iniciando login:', { cpf: cleanedCpf } );
-
+`
       const response = await fetch( `${ API_CONFIG.BASE_URL }${ API_CONFIG.ENDPOINTS.AUTH.SIMPLE_LOGIN }`, {
         method: 'POST',
         headers: {
@@ -192,8 +191,7 @@ export default function SupportLogin()
       console.log( '🛡️ [SUPPORT-LOGIN] Resposta recebida:', response.status );
 
       if ( !response.ok )
-      {
-        const errorData = await response.json().catch( () => ( { error: 'Erro desconhecido' } ) );
+      ({ const errorData = await response.json().catch( ( }) => ( { error: 'Erro desconhecido' } ) );`
         throw new Error( errorData.error || `Erro HTTP ${ response.status }` );
       }
 
@@ -201,13 +199,13 @@ export default function SupportLogin()
       console.log( '✅ [SUPPORT-LOGIN] Login realizado com sucesso:', data );
 
       toast( {
-        title: "Login realizado com sucesso!",
+        title: "Login realizado com sucesso!",`
         description: `Bem-vindo, ${ data.user?.firstName || 'Usuário' }!`,
         variant: "default",
       } );
 
-      // Redirecionar para dashboard ou página apropriada
-      // window.location.href = '/dashboard';
+      // Redirecionar para dashboard de suporte
+      window.location.href = '/support/dashboard';
 
     } catch ( error )
     {
@@ -237,7 +235,7 @@ export default function SupportLogin()
     if ( email )
     {
       toast( {
-        title: "Email de recuperação enviado!",
+        title: "Email de recuperação enviado!",`
         description: `Enviamos instruções para ${ email } sobre como redefinir sua senha.`,
         variant: "default",
       } );
@@ -245,7 +243,7 @@ export default function SupportLogin()
   };
 
   return (
-    <>
+    <>`
       <style jsx>{ `
         * {
           margin: 0;
@@ -327,7 +325,7 @@ export default function SupportLogin()
 
         .back-button:hover::before {
           transform: translateX(-3px);
-        }
+        }`
       `}</style>
 
       {/* Loading Screen */ }
@@ -343,7 +341,7 @@ export default function SupportLogin()
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          transition: 'opacity 1s ease'
+          transition: 'opacity 1s ease'}
         } }>
           <div style={ {
             fontSize: '1.5rem',
@@ -351,7 +349,7 @@ export default function SupportLogin()
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
-            animation: 'pulse 2s ease-in-out infinite'
+            animation: 'pulse 2s ease-in-out infinite'}
           } }>
             Inicializando Nexus...
           </div>
@@ -375,7 +373,7 @@ export default function SupportLogin()
           maxWidth: '338px',
           position: 'relative',
           overflow: 'hidden',
-          animation: 'slideIn 0.8s ease-out'
+          animation: 'slideIn 0.8s ease-out'}
         } }>
           {/* Header Gradient */ }
           <div style={ {
@@ -387,7 +385,7 @@ export default function SupportLogin()
             height: '4px',
             background: 'linear-gradient(90deg, #00d4ff, #4a148c, #00ff88)',
             backgroundSize: '200% 100%',
-            animation: 'gradientFlow 3s ease-in-out infinite'
+            animation: 'gradientFlow 3s ease-in-out infinite'}
           } }></div>
 
           {/* Header */ }
@@ -402,21 +400,20 @@ export default function SupportLogin()
               backgroundClip: 'text',
               animation: 'gradientShift 3s ease-in-out infinite',
               marginBottom: '8px',
-              textShadow: '0 0 23px rgba(0, 212, 255, 0.5)'
+              textShadow: '0 0 23px rgba(0, 212, 255, 0.5)'}
             } }>
-              NEXUS
-            </div>
+
             <div style={ {
               fontSize: '0.83rem',
               opacity: 0.8,
-              marginBottom: '4px'
+              marginBottom: '4px'}
             } }>
               Acesso da Equipe de Suporte
             </div>
             <div style={ {
               fontSize: '0.68rem',
               color: '#00d4ff',
-              opacity: 0.7
+              opacity: 0.7}
             } }>
               Plataforma NO-CODE + Machine Learning + Quantum
             </div>
@@ -430,10 +427,9 @@ export default function SupportLogin()
                 marginBottom: '6px',
                 color: '#00d4ff',
                 fontWeight: 600,
-                fontSize: '0.68rem'
+                fontSize: '0.68rem'}
               } }>
-                CPF
-              </label>
+
               <input
                 type="text"
                 value={ cpf }
@@ -450,15 +446,15 @@ export default function SupportLogin()
                   color: 'white',
                   fontSize: '0.75rem',
                   transition: 'all 0.3s ease',
-                  position: 'relative'
+                  position: 'relative'}
                 } }
-                onFocus={ ( e ) =>
+                onFocus=({ ( e  }) =>
                 {
                   e.target.style.borderColor = '#00d4ff';
                   e.target.style.boxShadow = '0 0 30px rgba(0, 212, 255, 0.3)';
                   e.target.style.background = 'rgba(255, 255, 255, 0.12)';
                 } }
-                onBlur={ ( e ) =>
+                onBlur=({ ( e  }) =>
                 {
                   e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)';
                   e.target.style.boxShadow = 'none';
@@ -473,14 +469,13 @@ export default function SupportLogin()
                 marginBottom: '6px',
                 color: '#00d4ff',
                 fontWeight: 600,
-                fontSize: '0.68rem'
+                fontSize: '0.68rem'}
               } }>
-                Senha
-              </label>
+
               <input
                 type="password"
                 value={ password }
-                onChange={ ( e ) => setPassword( e.target.value ) }
+                onChange=({ ( e  }) => setPassword( e.target.value ) }
                 placeholder="Sua senha segura"
                 required
                 style={ {
@@ -492,15 +487,15 @@ export default function SupportLogin()
                   color: 'white',
                   fontSize: '0.75rem',
                   transition: 'all 0.3s ease',
-                  position: 'relative'
+                  position: 'relative'}
                 } }
-                onFocus={ ( e ) =>
+                onFocus=({ ( e  }) =>
                 {
                   e.target.style.borderColor = '#00d4ff';
                   e.target.style.boxShadow = '0 0 30px rgba(0, 212, 255, 0.3)';
                   e.target.style.background = 'rgba(255, 255, 255, 0.12)';
                 } }
-                onBlur={ ( e ) =>
+                onBlur=({ ( e  }) =>
                 {
                   e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)';
                   e.target.style.boxShadow = 'none';
@@ -514,17 +509,17 @@ export default function SupportLogin()
               justifyContent: 'space-between',
               alignItems: 'center',
               marginBottom: '19px',
-              fontSize: '0.68rem'
+              fontSize: '0.68rem'}
             } }>
               <label style={ {
                 display: 'flex',
                 alignItems: 'center',
-                gap: '8px'
+                gap: '8px'}
               } }>
                 <input
                   type="checkbox"
                   checked={ rememberMe }
-                  onChange={ ( e ) => setRememberMe( e.target.checked ) }
+                  onChange=({ ( e  }) => setRememberMe( e.target.checked ) }
                   style={ { width: 'auto', margin: 0 } }
                 />
                 Lembrar-me
@@ -539,14 +534,14 @@ export default function SupportLogin()
                   textDecoration: 'none',
                   transition: 'all 0.3s ease',
                   cursor: 'pointer',
-                  fontSize: '0.68rem'
+                  fontSize: '0.68rem'}
                 } }
-                onMouseEnter={ ( e ) =>
+                onMouseEnter=({ ( e  }) =>
                 {
                   e.target.style.color = '#00d4ff';
                   e.target.style.textShadow = '0 0 10px rgba(0, 212, 255, 0.5)';
                 } }
-                onMouseLeave={ ( e ) =>
+                onMouseLeave=({ ( e  }) =>
                 {
                   e.target.style.color = '#4a148c';
                   e.target.style.textShadow = 'none';
@@ -573,9 +568,9 @@ export default function SupportLogin()
                 position: 'relative',
                 overflow: 'hidden',
                 marginBottom: '15px',
-                opacity: isLoading ? 0.6 : 1
+                opacity: isLoading ? 0.6 : 1}
               } }
-              onMouseEnter={ ( e ) =>
+              onMouseEnter=({ ( e  }) =>
               {
                 if ( !isLoading )
                 {
@@ -583,7 +578,7 @@ export default function SupportLogin()
                   e.target.style.boxShadow = '0 20px 40px rgba(0, 212, 255, 0.4)';
                 }
               } }
-              onMouseLeave={ ( e ) =>
+              onMouseLeave=({ ( e  }) =>
               {
                 if ( !isLoading )
                 {
@@ -603,26 +598,26 @@ export default function SupportLogin()
             borderRadius: '8px',
             padding: '11px',
             marginTop: '15px',
-            textAlign: 'center'
+            textAlign: 'center'}
           } }>
             <h4 style={ {
               color: '#00ff88',
               marginBottom: '4px',
-              fontSize: '0.68rem'
+              fontSize: '0.68rem'}
             } }>
               🔒 Acesso Seguro
             </h4>
             <p style={ {
               fontSize: '0.6rem',
               opacity: 0.8,
-              lineHeight: 1.4
+              lineHeight: 1.4}
             } }>
               Este é o portal exclusivo da equipe de suporte TOIT. Todas as ações são monitoradas e registradas para garantir a segurança dos dados.
             </p>
           </div>
         </div>
       </div>
-
+`
       <style jsx>{ `
         @keyframes slideIn {
           from {
@@ -692,8 +687,9 @@ export default function SupportLogin()
           .login-container h1 {
             font-size: 1.65rem !important;
           }
-        }
+        }`
       `}</style>
     </>
   );
 }
+`

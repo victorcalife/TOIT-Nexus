@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { 
+import {  
   Check, 
   Star,
   Crown,
@@ -27,15 +27,14 @@ import {
   Award,
   X,
   Atom,
-  Brain
+  Brain }
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 = useToast();
 
   // Estados do formulário
-  const [customerData, setCustomerData] = useState({
-    firstName,
+  const [customerData, setCustomerData] = useState(({ firstName,
     lastName,
     email,
     phone,
@@ -52,18 +51,17 @@ import { useToast } from '@/hooks/use-toast';
     email,
     phone);
 
-  useEffect(() => {
+  useEffect(( }) => {
     fetchProfiles();
   }, []);
 
-  const fetchProfiles = async () => {
-    try {
+  const fetchProfiles = async () => ({ try {
       const response = await fetch('/api/stripe/profiles');
       const data = await response.json();
       
       if (data.success) {
         // Filtrar apenas perfis ativos e não enterprise
-        const activeProfiles = data.data.filter((profile) => 
+        const activeProfiles = data.data.filter((profile }) => 
           profile.is_active && profile.slug !== 'enterprise'
         );
         setProfiles(activeProfiles);
@@ -338,20 +336,18 @@ import { useToast } from '@/hooks/use-toast';
 
       {/* Pricing Section */}
       <section id="pricing" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm) => setBillingCycle(billingCycle === 'monthly' ? 'yearly' : 'monthly')}
+        <div className="max-w-7xl mx-auto px-4 sm) => setBillingCycle(billingCycle === 'monthly' ? 'yearly' : 'monthly')}`
                 className={`relative inline-flex h-6 w-12 items-center rounded-full transition-colors ${
-                  billingCycle === 'yearly' ? 'bg-blue-600' : 'bg-gray-300'
+                  billingCycle === 'yearly' ? 'bg-blue-600' : 'bg-gray-300'`}
                 }`}
               >
-                <span
+                <span`
                   className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                    billingCycle === 'yearly' ? 'translate-x-7' : 'translate-x-1'
+                    billingCycle === 'yearly' ? 'translate-x-7' : 'translate-x-1'`}
                   }`}
                 />
-              </button>
+              </button>`
               <span className={`${billingCycle === 'yearly' ? 'text-gray-900' : 'text-gray-500'}`}>
-                Anual
-              </span>
               {billingCycle === 'yearly' && (
                 <Badge className="bg-green-100 text-green-800">
                   Economize até 30%
@@ -360,7 +356,7 @@ import { useToast } from '@/hooks/use-toast';
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md) => {
+          <div className="grid grid-cols-1 md) => {`
               const price = billingCycle === 'monthly' ? profile.price_monthly, profile.price_yearly) {profile.slug} className={`relative ${isPopular ? 'border-purple-500 border-2 shadow-lg scale-105' : 'border-gray-200'}`}>
                   {isPopular && (
                     <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
@@ -393,8 +389,8 @@ import { useToast } from '@/hooks/use-toast';
                   </CardHeader>
                   
                   <CardContent>
-                    <Button 
-                      className={`w-full mb-6 ${isPopular ? 'bg-purple-600 hover) => handleSelectPlan(profile.slug)}
+                    <Button `
+                      className=({ `w-full mb-6 ${isPopular ? 'bg-purple-600 hover }) => handleSelectPlan(profile.slug)}
                     >
                       <Target className="w-4 h-4 mr-2" />
                       Começar Teste Grátis
@@ -515,29 +511,29 @@ import { useToast } from '@/hooks/use-toast';
                 <Input
                   placeholder="Nome"
                   value={customerData.firstName}
-                  onChange={(e) => setCustomerData({...customerData, firstName)}
+                  onChange=({ (e }) => setCustomerData({...customerData, firstName)}
                 />
                 <Input
                   placeholder="Sobrenome"
                   value={customerData.lastName}
-                  onChange={(e) => setCustomerData({...customerData, lastName)}
+                  onChange=({ (e }) => setCustomerData({...customerData, lastName)}
                 />
               </div>
               <Input
                 type="email"
                 placeholder="Email"
                 value={customerData.email}
-                onChange={(e) => setCustomerData({...customerData, email)}
+                onChange=({ (e }) => setCustomerData({...customerData, email)}
               />
               <Input
                 placeholder="Telefone"
                 value={customerData.phone}
-                onChange={(e) => setCustomerData({...customerData, phone)}
+                onChange=({ (e }) => setCustomerData({...customerData, phone)}
               />
               <Input
                 placeholder="CPF"
                 value={customerData.cpf}
-                onChange={(e) => setCustomerData({...customerData, cpf)}
+                onChange=({ (e }) => setCustomerData({...customerData, cpf)}
               />
             </div>
 
@@ -559,9 +555,9 @@ import { useToast } from '@/hooks/use-toast';
       )}
 
       {/* Enterprise Form Modal */}
-      {showEnterpriseForm && (
+      ({ showEnterpriseForm && (
         <EnterpriseContactForm 
-          onClose={() => setShowEnterpriseForm(false)}
+          onClose={( }) => setShowEnterpriseForm(false)}
           onSubmit={submitEnterpriseForm}
           data={enterpriseData}
           setData={setEnterpriseData}
@@ -577,10 +573,9 @@ function EnterpriseContactForm({
   onSubmit, 
   data, 
   setData 
-}: {
-  onClose) => void;
+}: ({ onClose) => void;
   onSubmit) => void;
-  data) => void;
+  data }) => void;
 }) {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -594,23 +589,23 @@ function EnterpriseContactForm({
             <Input
               placeholder="Sobrenome"
               value={data.lastName}
-              onChange={(e) => setData({...data, lastName)}
+              onChange=({ (e }) => setData({...data, lastName)}
             />
           </div>
           <Input
             placeholder="Nome da Empresa"
             value={data.companyName}
-            onChange={(e) => setData({...data, companyName)}
+            onChange=({ (e }) => setData({...data, companyName)}
           />
           <Input
             placeholder="CNPJ"
             value={data.cnpj}
-            onChange={(e) => setData({...data, cnpj)}
+            onChange=({ (e }) => setData({...data, cnpj)}
           />
           <select
             className="w-full px-3 py-2 border border-gray-300 rounded-md"
             value={data.employees}
-            onChange={(e) => setData({...data, employees)}
+            onChange=({ (e }) => setData({...data, employees)}
           >
             <option value="">Quantidade de Funcionários</option>
             <option value="5-10">5-10</option>
@@ -622,7 +617,7 @@ function EnterpriseContactForm({
           <select
             className="w-full px-3 py-2 border border-gray-300 rounded-md"
             value={data.sector}
-            onChange={(e) => setData({...data, sector)}
+            onChange=({ (e }) => setData({...data, sector)}
           >
             <option value="">Setor de Atividade</option>
             <option value="Tecnologia">Tecnologia</option>
@@ -638,12 +633,12 @@ function EnterpriseContactForm({
             type="email"
             placeholder="Email para contato"
             value={data.email}
-            onChange={(e) => setData({...data, email)}
+            onChange=({ (e }) => setData({...data, email)}
           />
           <Input
             placeholder="Telefone para contato"
             value={data.phone}
-            onChange={(e) => setData({...data, phone)}
+            onChange=({ (e }) => setData({...data, phone)}
           />
         </div>
 
@@ -662,4 +657,4 @@ function EnterpriseContactForm({
       </div>
     </div>
   );
-}
+}`

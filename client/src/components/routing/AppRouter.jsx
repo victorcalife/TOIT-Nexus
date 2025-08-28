@@ -6,9 +6,7 @@ import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 
 // Layouts
-import DefaultLayout from '@/components/layouts/DefaultLayout';
-import ClientLayout from '@/components/layouts/ClientLayout';
-import AdminLayout from '@/components/layouts/AdminLayout';
+import StandardLayout from '@/components/layouts/StandardLayout';
 import MinimalLayout from '@/components/layouts/MinimalLayout';
 
 // Componente para rotas protegidas
@@ -118,9 +116,9 @@ function AppRoutes() {
                   requiredRoles={route.roles}
                   requireTenantSelection={route.requireTenantSelection}
                 >
-                  <ClientLayout>
+                  <StandardLayout>
                     <route.component />
-                  </ClientLayout>
+                  </StandardLayout>
                 </ProtectedRoute>
               }
             />
@@ -136,9 +134,9 @@ function AppRoutes() {
                   requiredRoles={route.roles}
                   requireTenantSelection={route.requireTenantSelection}
                 >
-                  <AdminLayout>
+                  <StandardLayout>
                     <route.component />
-                  </AdminLayout>
+                  </StandardLayout>
                 </ProtectedRoute>
               }
             />

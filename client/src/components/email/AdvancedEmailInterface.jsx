@@ -15,36 +15,35 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
-import
-  {
-    Mail,
-    Send,
-    Reply,
-    ReplyAll,
-    Forward,
-    Archive,
+import { 
+
+
+
+
+
+
     Trash2,
-    Star,
-    StarOff,
-    Paperclip,
-    Search,
-    Filter,
-    Plus,
-    Edit,
-    Eye,
-    Download,
-    Upload,
-    Tag,
-    Clock,
-    Users,
-    AlertCircle,
-    CheckCircle,
-    Circle,
-    MoreHorizontal,
-    Refresh,
-    Settings,
-    Folder,
-    FolderOpen
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ }
   } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -103,17 +102,17 @@ const AdvancedEmailInterface = ( { tenantId, userId, userRole } ) =>
     },
     followup: {
       name: 'Follow-up',
-      subject: 'Acompanhamento - [ASSUNTO]',
+      subject: 'Acompanhamento - [ASSUNTO]',`
       body: `Olá [NOME],\n\nEspero que esteja bem. Estou entrando em contato para dar continuidade à nossa conversa sobre [ASSUNTO].\n\n[CONTEÚDO_PERSONALIZADO]\n\nFico no aguardo do seu retorno.\n\nAtenciosamente,\n[SEU_NOME]`
     },
     meeting: {
       name: 'Convite para Reunião',
-      subject: 'Convite: Reunião sobre [ASSUNTO]',
+      subject: 'Convite: Reunião sobre [ASSUNTO]',`
       body: `Olá [NOME],\n\nGostaria de convidá-lo(a) para uma reunião sobre [ASSUNTO].\n\nData: [DATA]\nHorário: [HORÁRIO]\nLocal: [LOCAL]\n\nPor favor, confirme sua presença.\n\nAtenciosamente,\n[SEU_NOME]`
     },
     proposal: {
       name: 'Proposta Comercial',
-      subject: 'Proposta Comercial - [EMPRESA]',
+      subject: 'Proposta Comercial - [EMPRESA]',`
       body: `Prezado(a) [NOME],\n\nConforme nossa conversa, segue em anexo nossa proposta comercial para [PROJETO/SERVIÇO].\n\nA proposta inclui:\n- [ITEM_1]\n- [ITEM_2]\n- [ITEM_3]\n\nEstou à disposição para esclarecer qualquer dúvida.\n\nAtenciosamente,\n[SEU_NOME]`
     }
   };
@@ -223,9 +222,9 @@ const AdvancedEmailInterface = ( { tenantId, userId, userRole } ) =>
   const handleReply = ( email, replyAll = false ) =>
   {
     setEmailDraft( {
-      ...emailDraft,
-      to: replyAll ? `${ email.from }, ${ email.to }` : email.from,
-      subject: `Re: ${ email.subject }`,
+      ...emailDraft,`
+      to: replyAll ? `${ email.from }, ${ email.to }` : email.from,`
+      subject: `Re: ${ email.subject }`,`
       body: `\n\n--- Mensagem Original ---\nDe: ${ email.from }\nPara: ${ email.to }\nAssunto: ${ email.subject }\nData: ${ format( email.date, 'dd/MM/yyyy HH:mm' ) }\n\n${ email.body }`
     } );
     setIsComposing( true );
@@ -235,8 +234,8 @@ const AdvancedEmailInterface = ( { tenantId, userId, userRole } ) =>
   const handleForward = ( email ) =>
   {
     setEmailDraft( {
-      ...emailDraft,
-      subject: `Fwd: ${ email.subject }`,
+      ...emailDraft,`
+      subject: `Fwd: ${ email.subject }`,`
       body: `\n\n--- Mensagem Encaminhada ---\nDe: ${ email.from }\nPara: ${ email.to }\nAssunto: ${ email.subject }\nData: ${ format( email.date, 'dd/MM/yyyy HH:mm' ) }\n\n${ email.body }`
     } );
     setIsComposing( true );
@@ -330,7 +329,7 @@ const AdvancedEmailInterface = ( { tenantId, userId, userRole } ) =>
   const renderSidebar = () => (
     <div className="w-64 bg-white border-r border-slate-200 p-4">
       <Button
-        onClick={ () => handleCompose() }
+        onClick=({ ( }) => handleCompose() }
         className="w-full mb-6"
       >
         <Plus className="h-4 w-4 mr-2" />
@@ -339,19 +338,19 @@ const AdvancedEmailInterface = ( { tenantId, userId, userRole } ) =>
 
       {/* Pastas */ }
       <div className="space-y-1 mb-6">
-        { Object.entries( emailFolders ).map( ( [ key, folder ] ) =>
+        ({ Object.entries( emailFolders ).map( ( [ key, folder ]  }) =>
         {
           const Icon = folder.icon;
           return (
             <button
               key={ key }
-              onClick={ () => setCurrentFolder( key ) }
+              onClick=({ ( }) => setCurrentFolder( key ) }`
               className={ `
                 w-full flex items-center justify-between p-2 rounded-lg text-left
                 ${ currentFolder === key
                   ? 'bg-blue-100 text-blue-700'
-                  : 'hover:bg-slate-100 text-slate-700'
-                }
+                  : 'hover:bg-slate-100 text-slate-700'}
+                }`
               `}
             >
               <div className="flex items-center space-x-2">
@@ -372,10 +371,10 @@ const AdvancedEmailInterface = ( { tenantId, userId, userRole } ) =>
       <div>
         <h3 className="text-sm font-semibold text-slate-600 mb-2">Templates Rápidos</h3>
         <div className="space-y-1">
-          { Object.entries( emailTemplates ).map( ( [ key, template ] ) => (
+          ({ Object.entries( emailTemplates ).map( ( [ key, template ]  }) => (
             <button
               key={ key }
-              onClick={ () => handleCompose( key ) }
+              onClick=({ ( }) => handleCompose( key ) }
               className="w-full text-left p-2 text-sm text-slate-600 hover:bg-slate-100 rounded"
             >
               { template.name }
@@ -401,7 +400,7 @@ const AdvancedEmailInterface = ( { tenantId, userId, userRole } ) =>
               </h1>
               <Button variant="outline" size="sm" onClick={ loadEmails }>
                 <Refresh className="h-4 w-4 mr-1" />
-                Atualizar
+
               </Button>
             </div>
 
@@ -412,7 +411,7 @@ const AdvancedEmailInterface = ( { tenantId, userId, userRole } ) =>
                 <Input
                   placeholder="Buscar emails..."
                   value={ searchTerm }
-                  onChange={ ( e ) => setSearchTerm( e.target.value ) }
+                  onChange=({ ( e  }) => setSearchTerm( e.target.value ) }
                   className="pl-10 w-80"
                 />
               </div>
@@ -425,7 +424,7 @@ const AdvancedEmailInterface = ( { tenantId, userId, userRole } ) =>
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">Todos</SelectItem>
-                  { Object.entries( emailStatuses ).map( ( [ key, status ] ) => (
+                  ({ Object.entries( emailStatuses ).map( ( [ key, status ]  }) => (
                     <SelectItem key={ key } value={ key }>
                       { status.label }
                     </SelectItem>
@@ -463,7 +462,7 @@ const AdvancedEmailInterface = ( { tenantId, userId, userRole } ) =>
             <EmailViewer
               email={ selectedEmail }
               onReply={ handleReply }
-              onReplyAll={ ( email ) => handleReply( email, true ) }
+              onReplyAll=({ ( email  }) => handleReply( email, true ) }
               onForward={ handleForward }
               onArchive={ archiveEmail }
               onDelete={ deleteEmail }
@@ -476,7 +475,7 @@ const AdvancedEmailInterface = ( { tenantId, userId, userRole } ) =>
       {/* Composer Dialog */ }
       <EmailComposer
         isOpen={ isComposing }
-        onClose={ () => setIsComposing( false ) }
+        onClose=({ ( }) => setIsComposing( false ) }
         emailDraft={ emailDraft }
         setEmailDraft={ setEmailDraft }
         onSend={ sendEmail }
@@ -501,9 +500,7 @@ const EmailList = ( {
   setSelectedEmails,
   isLoading
 } ) =>
-{
-
-  const toggleEmailSelection = ( emailId ) =>
+({ const toggleEmailSelection = ( emailId  }) =>
   {
     const newSelected = new Set( selectedEmails );
     if ( newSelected.has( emailId ) )
@@ -528,11 +525,10 @@ const EmailList = ( {
   };
 
   if ( isLoading )
-  {
-    return (
+  ({ return (
       <div className="w-96 border-r border-slate-200 bg-white p-4">
         <div className="space-y-4">
-          { [ ...Array( 5 ) ].map( ( _, i ) => (
+          { [ ...Array( 5 ) ].map( ( _, i  }) => (
             <div key={ i } className="animate-pulse">
               <div className="h-4 bg-slate-200 rounded w-3/4 mb-2"></div>
               <div className="h-3 bg-slate-200 rounded w-1/2 mb-1"></div>
@@ -554,10 +550,10 @@ const EmailList = ( {
               { selectedEmails.size } email(s) selecionado(s)
             </span>
             <div className="flex items-center space-x-2">
-              <Button size="sm" variant="outline" onClick={ () => selectedEmails.forEach( onArchive ) }>
+              <Button size="sm" variant="outline" onClick=({ ( }) => selectedEmails.forEach( onArchive ) }>
                 <Archive className="h-3 w-3" />
               </Button>
-              <Button size="sm" variant="outline" onClick={ () => selectedEmails.forEach( onDelete ) }>
+              <Button size="sm" variant="outline" onClick=({ ( }) => selectedEmails.forEach( onDelete ) }>
                 <Trash2 className="h-3 w-3" />
               </Button>
             </div>
@@ -594,14 +590,14 @@ const EmailList = ( {
               email={ email }
               isSelected={ selectedEmail?.id === email.id }
               isChecked={ selectedEmails.has( email.id ) }
-              onSelect={ () => onSelectEmail( email ) }
-              onToggleCheck={ () => toggleEmailSelection( email.id ) }
-              onToggleStar={ () => onToggleStar( email.id ) }
-              onToggleRead={ () => onToggleRead( email.id ) }
-              onArchive={ () => onArchive( email.id ) }
-              onDelete={ () => onDelete( email.id ) }
-              onReply={ () => onReply( email ) }
-              onForward={ () => onForward( email ) }
+              onSelect=({ ( }) => onSelectEmail( email ) }
+              onToggleCheck=({ ( }) => toggleEmailSelection( email.id ) }
+              onToggleStar=({ ( }) => onToggleStar( email.id ) }
+              onToggleRead=({ ( }) => onToggleRead( email.id ) }
+              onArchive=({ ( }) => onArchive( email.id ) }
+              onDelete=({ ( }) => onDelete( email.id ) }
+              onReply=({ ( }) => onReply( email ) }
+              onForward=({ ( }) => onForward( email ) }
             />
           ) )
         ) }
@@ -624,10 +620,9 @@ const EmailListItem = ( {
   onReply,
   onForward
 } ) =>
-{
-  const [ showActions, setShowActions ] = useState( false );
+({ const [ showActions, setShowActions ] = useState( false );
 
-  const getPriorityColor = ( priority ) =>
+  const getPriorityColor = ( priority  }) =>
   {
     switch ( priority )
     {
@@ -649,28 +644,28 @@ const EmailListItem = ( {
   };
 
   return (
-    <div
-      className={ `
+    <div`
+      className={ `}
         border-l-4 ${ getPriorityColor( email.priority ) } p-3 border-b border-slate-100 cursor-pointer
         ${ isSelected ? 'bg-blue-50' : 'hover:bg-slate-50' }
-        ${ email.status === 'unread' ? 'bg-white' : 'bg-slate-25' }
+        ${ email.status === 'unread' ? 'bg-white' : 'bg-slate-25' }`
       `}
       onClick={ onSelect }
-      onMouseEnter={ () => setShowActions( true ) }
-      onMouseLeave={ () => setShowActions( false ) }
+      onMouseEnter=({ ( }) => setShowActions( true ) }
+      onMouseLeave=({ ( }) => setShowActions( false ) }
     >
       <div className="flex items-start space-x-3">
         <input
           type="checkbox"
           checked={ isChecked }
           onChange={ onToggleCheck }
-          onClick={ ( e ) => e.stopPropagation() }
+          onClick=({ ( e  }) => e.stopPropagation() }
           className="mt-1 rounded"
         />
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between mb-1">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2">`
               <span className={ `text-sm truncate ${ email.status === 'unread' ? 'font-semibold' : 'font-normal' }` }>
                 { email.from }
               </span>
@@ -685,7 +680,7 @@ const EmailListItem = ( {
               ) }
             </div>
           </div>
-
+`
           <div className={ `text-sm mb-1 ${ email.status === 'unread' ? 'font-semibold' : 'font-normal' }` }>
             { email.subject }
           </div>
@@ -707,7 +702,7 @@ const EmailListItem = ( {
 
         <div className="flex flex-col items-center space-y-1">
           <button
-            onClick={ ( e ) =>
+            onClick=({ ( e  }) =>
             {
               e.stopPropagation();
               onToggleStar();
@@ -721,10 +716,10 @@ const EmailListItem = ( {
             ) }
           </button>
 
-          { showActions && (
+          ({ showActions && (
             <div className="flex flex-col space-y-1">
               <button
-                onClick={ ( e ) =>
+                onClick={ ( e  }) =>
                 {
                   e.stopPropagation();
                   onReply();
@@ -735,7 +730,7 @@ const EmailListItem = ( {
                 <Reply className="h-3 w-3 text-slate-500" />
               </button>
               <button
-                onClick={ ( e ) =>
+                onClick=({ ( e  }) =>
                 {
                   e.stopPropagation();
                   onArchive();
@@ -746,7 +741,7 @@ const EmailListItem = ( {
                 <Archive className="h-3 w-3 text-slate-500" />
               </button>
               <button
-                onClick={ ( e ) =>
+                onClick=({ ( e  }) =>
                 {
                   e.stopPropagation();
                   onDelete();
@@ -765,3 +760,4 @@ const EmailListItem = ( {
 };
 
 export default AdvancedEmailInterface;
+`

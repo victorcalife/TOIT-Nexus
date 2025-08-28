@@ -14,52 +14,51 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
-import
-  {
-    Mail,
-    Send,
-    Reply,
-    ReplyAll,
-    Forward,
-    Archive,
+import { 
+
+
+
+
+
+
     Trash2,
-    Star,
-    StarOff,
-    Paperclip,
-    Search,
-    Filter,
-    Plus,
-    Edit,
-    Eye,
-    Download,
-    Upload,
-    Tag,
-    Clock,
-    Users,
-    AlertCircle,
-    CheckCircle,
-    Circle,
-    MoreHorizontal,
-    Refresh,
-    Settings,
-    Folder,
-    FolderOpen,
-    Image,
-    FileText,
-    Video,
-    Mic,
-    Bold,
-    Italic,
-    Underline,
-    Link,
-    List,
-    AlignLeft,
-    AlignCenter,
-    AlignRight,
-    Smile,
-    Calendar,
-    MapPin,
-    Phone
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ }
   } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -136,12 +135,12 @@ const AdvancedEmailUI = ( { tenantId, userId, userRole } ) =>
           </ul>
         </div>
         <p>Se tiver alguma dúvida, não hesite em entrar em contato conosco.</p>
-        <p>Atenciosamente,<br><strong>Equipe TOIT Nexus</strong></p>
+        <p>Atenciosamente,<br><strong>Equipe TOIT Nexus</strong></p>`
       </div>`
     },
     followup: {
       name: 'Follow-up',
-      subject: 'Acompanhamento - [ASSUNTO]',
+      subject: 'Acompanhamento - [ASSUNTO]',`
       body: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #2563eb;">Acompanhamento</h2>
         <p>Olá <strong>[NOME]</strong>,</p>
@@ -150,12 +149,12 @@ const AdvancedEmailUI = ( { tenantId, userId, userRole } ) =>
           <p style="margin: 0; color: #475569;">[CONTEÚDO_PERSONALIZADO]</p>
         </div>
         <p>Fico no aguardo do seu retorno.</p>
-        <p>Atenciosamente,<br><strong>[SEU_NOME]</strong></p>
+        <p>Atenciosamente,<br><strong>[SEU_NOME]</strong></p>`
       </div>`
     },
     meeting: {
       name: 'Convite para Reunião',
-      subject: 'Convite: Reunião sobre [ASSUNTO]',
+      subject: 'Convite: Reunião sobre [ASSUNTO]',`
       body: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #2563eb;">Convite para Reunião</h2>
         <p>Olá <strong>[NOME]</strong>,</p>
@@ -168,12 +167,12 @@ const AdvancedEmailUI = ( { tenantId, userId, userRole } ) =>
           <p style="margin: 5px 0;"><strong>Duração:</strong> [DURAÇÃO]</p>
         </div>
         <p>Por favor, confirme sua presença.</p>
-        <p>Atenciosamente,<br><strong>[SEU_NOME]</strong></p>
+        <p>Atenciosamente,<br><strong>[SEU_NOME]</strong></p>`
       </div>`
     },
     proposal: {
       name: 'Proposta Comercial',
-      subject: 'Proposta Comercial - [EMPRESA]',
+      subject: 'Proposta Comercial - [EMPRESA]',`
       body: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #2563eb;">Proposta Comercial</h2>
         <p>Prezado(a) <strong>[NOME]</strong>,</p>
@@ -187,7 +186,7 @@ const AdvancedEmailUI = ( { tenantId, userId, userRole } ) =>
           </ul>
         </div>
         <p>Estou à disposição para esclarecer qualquer dúvida.</p>
-        <p>Atenciosamente,<br><strong>[SEU_NOME]</strong></p>
+        <p>Atenciosamente,<br><strong>[SEU_NOME]</strong></p>`
       </div>`
     }
   };
@@ -335,9 +334,9 @@ const AdvancedEmailUI = ( { tenantId, userId, userRole } ) =>
   const handleReply = ( email, replyAll = false ) =>
   {
     setEmailDraft( {
-      ...emailDraft,
-      to: replyAll ? `${ email.from }, ${ email.to }` : email.from,
-      subject: `Re: ${ email.subject }`,
+      ...emailDraft,`
+      to: replyAll ? `${ email.from }, ${ email.to }` : email.from,`
+      subject: `Re: ${ email.subject }`,`
       body: `\n\n--- Mensagem Original ---\nDe: ${ email.fromName } <${ email.from }>\nPara: ${ email.to }\nAssunto: ${ email.subject }\nData: ${ format( email.date, 'dd/MM/yyyy HH:mm' ) }\n\n${ email.body }`
     } );
     setIsComposing( true );
@@ -347,8 +346,8 @@ const AdvancedEmailUI = ( { tenantId, userId, userRole } ) =>
   const handleForward = ( email ) =>
   {
     setEmailDraft( {
-      ...emailDraft,
-      subject: `Fwd: ${ email.subject }`,
+      ...emailDraft,`
+      subject: `Fwd: ${ email.subject }`,`
       body: `\n\n--- Mensagem Encaminhada ---\nDe: ${ email.fromName } <${ email.from }>\nPara: ${ email.to }\nAssunto: ${ email.subject }\nData: ${ format( email.date, 'dd/MM/yyyy HH:mm' ) }\n\n${ email.body }`,
       attachments: email.attachments || []
     } );
@@ -408,7 +407,7 @@ const AdvancedEmailUI = ( { tenantId, userId, userRole } ) =>
         fromName: 'Você',
         to: emailDraft.to,
         subject: emailDraft.subject,
-        body: emailDraft.body,
+        body: emailDraft.body,`
         htmlBody: emailDraft.isHtml ? emailDraft.body : `<p>${ emailDraft.body }</p>`,
         date: new Date(),
         status: 'read',
@@ -510,7 +509,7 @@ const AdvancedEmailUI = ( { tenantId, userId, userRole } ) =>
           onSortOrderChange={ setSortOrder }
           emailStatuses={ emailStatuses }
           onRefresh={ loadEmails }
-          onCompose={ () => handleCompose() }
+          onCompose=({ ( }) => handleCompose() }
         />
 
         {/* Lista de Emails e Visualização */ }
@@ -535,7 +534,7 @@ const AdvancedEmailUI = ( { tenantId, userId, userRole } ) =>
             <EmailViewer
               email={ selectedEmail }
               onReply={ handleReply }
-              onReplyAll={ ( email ) => handleReply( email, true ) }
+              onReplyAll=({ ( email  }) => handleReply( email, true ) }
               onForward={ handleForward }
               onArchive={ archiveEmail }
               onDelete={ deleteEmail }
@@ -548,7 +547,7 @@ const AdvancedEmailUI = ( { tenantId, userId, userRole } ) =>
       {/* Composer Dialog */ }
       <EmailComposer
         isOpen={ isComposing }
-        onClose={ () => setIsComposing( false ) }
+        onClose=({ ( }) => setIsComposing( false ) }
         emailDraft={ emailDraft }
         setEmailDraft={ setEmailDraft }
         onSend={ sendEmail }
@@ -569,7 +568,7 @@ const AdvancedEmailUI = ( { tenantId, userId, userRole } ) =>
 const EmailSidebar = ( { folders, currentFolder, onFolderChange, templates, onCompose } ) => (
   <div className="w-64 bg-white/80 backdrop-blur-sm border-r border-slate-200 p-4">
     <Button
-      onClick={ () => onCompose() }
+      onClick=({ ( }) => onCompose() }
       className="w-full mb-6 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
     >
       <Plus className="h-4 w-4 mr-2" />
@@ -579,22 +578,22 @@ const EmailSidebar = ( { folders, currentFolder, onFolderChange, templates, onCo
     {/* Pastas */ }
     <div className="space-y-1 mb-6">
       <h3 className="text-sm font-semibold text-slate-600 mb-3">Pastas</h3>
-      { Object.entries( folders ).map( ( [ key, folder ] ) =>
+      ({ Object.entries( folders ).map( ( [ key, folder ]  }) =>
       {
         const Icon = folder.icon;
         return (
           <button
             key={ key }
-            onClick={ () => onFolderChange( key ) }
+            onClick=({ ( }) => onFolderChange( key ) }`
             className={ `
               w-full flex items-center justify-between p-3 rounded-lg text-left transition-all duration-200
               ${ currentFolder === key
                 ? 'bg-gradient-to-r from-blue-100 to-blue-50 text-blue-700 shadow-sm'
-                : 'hover:bg-slate-100 text-slate-700'
-              }
+                : 'hover:bg-slate-100 text-slate-700'}
+              }`
             `}
           >
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-3">`
               <Icon className={ `h-4 w-4 ${ folder.color }` } />
               <span className="text-sm font-medium">{ folder.label }</span>
             </div>
@@ -615,10 +614,10 @@ const EmailSidebar = ( { folders, currentFolder, onFolderChange, templates, onCo
     <div>
       <h3 className="text-sm font-semibold text-slate-600 mb-3">Templates Rápidos</h3>
       <div className="space-y-1">
-        { Object.entries( templates ).map( ( [ key, template ] ) => (
+        ({ Object.entries( templates ).map( ( [ key, template ]  }) => (
           <button
             key={ key }
-            onClick={ () => onCompose( key ) }
+            onClick=({ ( }) => onCompose( key ) }
             className="w-full text-left p-2 text-sm text-slate-600 hover:bg-slate-100 rounded-lg transition-colors duration-200"
           >
             <FileText className="h-3 w-3 inline mr-2" />
@@ -650,7 +649,7 @@ const EmailHeader = ( {
         <h1 className="text-xl font-semibold text-slate-800">Email</h1>
         <Button variant="outline" size="sm" onClick={ onRefresh }>
           <Refresh className="h-4 w-4 mr-1" />
-          Atualizar
+
         </Button>
       </div>
 
@@ -661,7 +660,7 @@ const EmailHeader = ( {
           <Input
             placeholder="Buscar emails..."
             value={ searchTerm }
-            onChange={ ( e ) => onSearchChange( e.target.value ) }
+            onChange=({ ( e  }) => onSearchChange( e.target.value ) }
             className="pl-10 w-80"
           />
         </div>
@@ -674,7 +673,7 @@ const EmailHeader = ( {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Todos</SelectItem>
-            { Object.entries( emailStatuses ).map( ( [ key, status ] ) => (
+            ({ Object.entries( emailStatuses ).map( ( [ key, status ]  }) => (
               <SelectItem key={ key } value={ key }>
                 { status.label }
               </SelectItem>
@@ -698,7 +697,7 @@ const EmailHeader = ( {
         <Button
           variant="outline"
           size="sm"
-          onClick={ () => onSortOrderChange( sortOrder === 'asc' ? 'desc' : 'asc' ) }
+          onClick=({ ( }) => onSortOrderChange( sortOrder === 'asc' ? 'desc' : 'asc' ) }
         >
           { sortOrder === 'asc' ? '↑' : '↓' }
         </Button>
@@ -709,7 +708,7 @@ const EmailHeader = ( {
 
         <Button onClick={ onCompose }>
           <Plus className="h-4 w-4 mr-1" />
-          Novo
+
         </Button>
       </div>
     </div>
@@ -732,9 +731,7 @@ const EmailList = ( {
   isLoading,
   emailStatuses
 } ) =>
-{
-
-  const toggleEmailSelection = ( emailId ) =>
+({ const toggleEmailSelection = ( emailId  }) =>
   {
     const newSelected = new Set( selectedEmails );
     if ( newSelected.has( emailId ) )
@@ -748,11 +745,10 @@ const EmailList = ( {
   };
 
   if ( isLoading )
-  {
-    return (
+  ({ return (
       <div className="w-96 border-r border-slate-200 bg-white/50 p-4">
         <div className="space-y-4">
-          { [ ...Array( 5 ) ].map( ( _, i ) => (
+          { [ ...Array( 5 ) ].map( ( _, i  }) => (
             <div key={ i } className="animate-pulse">
               <div className="h-4 bg-slate-200 rounded w-3/4 mb-2"></div>
               <div className="h-3 bg-slate-200 rounded w-1/2 mb-1"></div>
@@ -774,10 +770,10 @@ const EmailList = ( {
               { selectedEmails.size } email(s) selecionado(s)
             </span>
             <div className="flex items-center space-x-2">
-              <Button size="sm" variant="outline" onClick={ () => selectedEmails.forEach( onArchive ) }>
+              <Button size="sm" variant="outline" onClick=({ ( }) => selectedEmails.forEach( onArchive ) }>
                 <Archive className="h-3 w-3" />
               </Button>
-              <Button size="sm" variant="outline" onClick={ () => selectedEmails.forEach( onDelete ) }>
+              <Button size="sm" variant="outline" onClick=({ ( }) => selectedEmails.forEach( onDelete ) }>
                 <Trash2 className="h-3 w-3" />
               </Button>
             </div>
@@ -799,14 +795,14 @@ const EmailList = ( {
               email={ email }
               isSelected={ selectedEmail?.id === email.id }
               isChecked={ selectedEmails.has( email.id ) }
-              onSelect={ () => onSelectEmail( email ) }
-              onToggleCheck={ () => toggleEmailSelection( email.id ) }
-              onToggleStar={ () => onToggleStar( email.id ) }
-              onToggleRead={ () => onToggleRead( email.id ) }
-              onArchive={ () => onArchive( email.id ) }
-              onDelete={ () => onDelete( email.id ) }
-              onReply={ () => onReply( email ) }
-              onForward={ () => onForward( email ) }
+              onSelect=({ ( }) => onSelectEmail( email ) }
+              onToggleCheck=({ ( }) => toggleEmailSelection( email.id ) }
+              onToggleStar=({ ( }) => onToggleStar( email.id ) }
+              onToggleRead=({ ( }) => onToggleRead( email.id ) }
+              onArchive=({ ( }) => onArchive( email.id ) }
+              onDelete=({ ( }) => onDelete( email.id ) }
+              onReply=({ ( }) => onReply( email ) }
+              onForward=({ ( }) => onForward( email ) }
               emailStatuses={ emailStatuses }
             />
           ) )
@@ -817,3 +813,4 @@ const EmailList = ( {
 };
 
 export default AdvancedEmailUI;
+`

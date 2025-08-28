@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   Zap, 
   Plus, 
   Edit,
@@ -41,7 +41,7 @@ import {
   TrendingUp,
   Filter,
   Search,
-  MoreHorizontal
+  MoreHorizontal }
 } from 'lucide-react';
 
 const APIIntegrations = () => {
@@ -149,7 +149,7 @@ const APIIntegrations = () => {
     try {
       const response = await fetch('/api/integrations', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -187,10 +187,10 @@ const APIIntegrations = () => {
    */
   const testIntegration = async (integrationId) => {
     setLoading(true);
-    try {
+    try {`
       const response = await fetch(`/api/integrations/${integrationId}/test`, {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }
@@ -207,7 +207,7 @@ const APIIntegrations = () => {
       }));
       
       toast({
-        title: "Teste concluído",
+        title: "Teste concluído",`
         description: `Integração testada: ${data.result.success ? 'Sucesso' : 'Falha'}`,
         variant: data.result.success ? "default" : "destructive"
       });
@@ -227,10 +227,10 @@ const APIIntegrations = () => {
    * ATIVAR/DESATIVAR INTEGRAÇÃO
    */
   const toggleIntegration = async (integrationId, isActive) => {
-    try {
+    try {`
       const response = await fetch(`/api/integrations/${integrationId}/toggle`, {
         method: 'PATCH',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -248,7 +248,7 @@ const APIIntegrations = () => {
       ));
       
       toast({
-        title: "Status alterado",
+        title: "Status alterado",`
         description: `Integração ${!isActive ? 'ativada' : 'desativada'} com sucesso`,
       });
     } catch (error) {
@@ -265,9 +265,9 @@ const APIIntegrations = () => {
    * CARREGAR LOGS DE INTEGRAÇÃO
    */
   const loadIntegrationLogs = async (integrationId) => {
-    try {
+    try {`
       const response = await fetch(`/api/integrations/${integrationId}/logs`, {
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }
@@ -294,10 +294,10 @@ const APIIntegrations = () => {
    */
   const executeIntegration = async (integrationId, payload = {}) => {
     setLoading(true);
-    try {
+    try {`
       const response = await fetch(`/api/integrations/${integrationId}/execute`, {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -372,7 +372,7 @@ const APIIntegrations = () => {
       <Card key={integration.id} className="hover:shadow-md transition-shadow">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3">`
               <div className={`p-2 rounded ${integrationType?.color || 'bg-gray-500'} text-white`}>
                 {integrationType?.icon || <Globe className="h-5 w-5" />}
               </div>
@@ -388,7 +388,7 @@ const APIIntegrations = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => setActiveIntegration(integration)}
+                onClick=({ ( }) => setActiveIntegration(integration)}
               >
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
@@ -418,18 +418,18 @@ const APIIntegrations = () => {
             </div>
 
             {/* Resultado do último teste */}
-            {testResult && (
+            {testResult && (`
               <div className={`p-3 rounded-lg ${
-                testResult.success ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'
+                testResult.success ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'`}
               }`}>
                 <div className="flex items-center gap-2 mb-2">
                   {testResult.success ? (
                     <CheckCircle className="h-4 w-4 text-green-600" />
                   ) : (
                     <XCircle className="h-4 w-4 text-red-600" />
-                  )}
+                  )}`
                   <span className={`text-sm font-medium ${
-                    testResult.success ? 'text-green-800' : 'text-red-800'
+                    testResult.success ? 'text-green-800' : 'text-red-800'`}
                   }`}>
                     Último teste: {testResult.success ? 'Sucesso' : 'Falha'}
                   </span>
@@ -471,44 +471,39 @@ const APIIntegrations = () => {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => testIntegration(integration.id)}
+                onClick=({ ( }) => testIntegration(integration.id)}
                 disabled={loading}
               >
                 <Play className="h-3 w-3 mr-1" />
-                Testar
-              </Button>
+
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => executeIntegration(integration.id)}
+                onClick=({ ( }) => executeIntegration(integration.id)}
                 disabled={loading || !integration.isActive}
               >
                 <Zap className="h-3 w-3 mr-1" />
-                Executar
-              </Button>
+
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => loadIntegrationLogs(integration.id)}
+                onClick=({ ( }) => loadIntegrationLogs(integration.id)}
               >
                 <Eye className="h-3 w-3 mr-1" />
-                Logs
-              </Button>
+
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => toggleIntegration(integration.id, integration.isActive)}
+                onClick=({ ( }) => toggleIntegration(integration.id, integration.isActive)}
               >
                 {integration.isActive ? (
                   <>
                     <Pause className="h-3 w-3 mr-1" />
-                    Desativar
-                  </>
+
                 ) : (
                   <>
                     <Play className="h-3 w-3 mr-1" />
-                    Ativar
-                  </>
+
                 )}
               </Button>
             </div>
@@ -533,13 +528,13 @@ const APIIntegrations = () => {
 
     return (
       <div className="space-y-2 max-h-96 overflow-y-auto">
-        {logs.map((log) => (
+        ({ logs.map((log }) => (
           <div
-            key={log.id}
+            key={log.id}`
             className={`p-3 rounded-lg border ${
               log.level === 'error' ? 'bg-red-50 border-red-200' :
               log.level === 'warning' ? 'bg-yellow-50 border-yellow-200' :
-              'bg-gray-50 border-gray-200'
+              'bg-gray-50 border-gray-200'`}
             }`}
           >
             <div className="flex items-center justify-between mb-1">
@@ -595,12 +590,11 @@ const APIIntegrations = () => {
                 variant="outline"
                 onClick={loadIntegrations}
                 disabled={loading}
-              >
+              >`
                 <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-                Atualizar
-              </Button>
+
               <Button
-                onClick={() => setShowCreateModal(true)}
+                onClick=({ ( }) => setShowCreateModal(true)}
                 className="bg-blue-600 hover:bg-blue-700"
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -658,7 +652,7 @@ const APIIntegrations = () => {
                 <div>
                   <p className="text-sm font-medium text-gray-600">Requisições Hoje</p>
                   <p className="text-2xl font-bold text-purple-600">
-                    {integrations.reduce((acc, i) => acc + (i.stats?.todayRequests || 0), 0)}
+                    ({ integrations.reduce((acc, i }) => acc + (i.stats?.todayRequests || 0), 0)}
                   </p>
                 </div>
                 <BarChart3 className="h-8 w-8 text-purple-600" />
@@ -677,7 +671,7 @@ const APIIntegrations = () => {
           </TabsList>
 
           <TabsContent value="integrations">
-            {loading ? (
+            ({ loading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 <span className="ml-2">Carregando integrações...</span>
@@ -692,7 +686,7 @@ const APIIntegrations = () => {
                   <p className="text-gray-500 mb-4">
                     Crie sua primeira integração para conectar com APIs externas
                   </p>
-                  <Button onClick={() => setShowCreateModal(true)}>
+                  <Button onClick={( }) => setShowCreateModal(true)}>
                     <Plus className="h-4 w-4 mr-2" />
                     Criar Integração
                   </Button>
@@ -721,8 +715,7 @@ const APIIntegrations = () => {
               <CardContent className="p-12 text-center">
                 <Webhook className="h-16 w-16 text-gray-300 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-gray-900 mb-2">
-                  Webhooks
-                </h3>
+
                 <p className="text-gray-500">
                   Configuração de webhooks será implementada aqui
                 </p>
@@ -753,9 +746,8 @@ const APIIntegrations = () => {
             <h2 className="text-xl font-bold mb-4">Criar Nova Integração</h2>
             {/* Formulário será implementado na próxima parte */}
             <div className="flex justify-end gap-3 mt-6">
-              <Button variant="outline" onClick={() => setShowCreateModal(false)}>
-                Cancelar
-              </Button>
+              <Button variant="outline" onClick=({ ( }) => setShowCreateModal(false)}>
+
               <Button onClick={createIntegration} disabled={loading}>
                 {loading ? 'Criando...' : 'Criar Integração'}
               </Button>
@@ -768,3 +760,4 @@ const APIIntegrations = () => {
 };
 
 export default APIIntegrations;
+`

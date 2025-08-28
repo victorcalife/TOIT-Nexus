@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   GraduationCap, 
   BookOpen,
   Video,
@@ -73,7 +73,7 @@ import {
   Unlock,
   Trophy,
   Medal,
-  Certificate
+  Certificate }
 } from 'lucide-react';
 
 const LMSSystem = () => {
@@ -122,16 +122,16 @@ const LMSSystem = () => {
         fetch('/api/lms/courses', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/lms/students', {
+        fetch('/api/lms/students', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/lms/instructors', {
+        fetch('/api/lms/instructors', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/lms/categories', {
+        fetch('/api/lms/categories', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/lms/enrollments', {
+        fetch('/api/lms/enrollments', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);
@@ -180,7 +180,7 @@ const LMSSystem = () => {
     try {
       const response = await fetch('/api/lms/courses', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -220,7 +220,7 @@ const LMSSystem = () => {
     try {
       const response = await fetch('/api/lms/enrollments', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -257,10 +257,10 @@ const LMSSystem = () => {
    * ATUALIZAR PROGRESSO
    */
   const updateProgress = async (enrollmentId, progress) => {
-    try {
+    try {`
       const response = await fetch(`/api/lms/enrollments/${enrollmentId}/progress`, {
         method: 'PATCH',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -348,13 +348,13 @@ const LMSSystem = () => {
           
           <div className="flex items-center gap-2 mb-3">
             <div className="flex items-center">
-              {[...Array(5)].map((_, i) => (
+              ({ [...Array(5)].map((_, i }) => (
                 <Star
-                  key={i}
+                  key={i}`
                   className={`h-4 w-4 ${
                     i < (course.rating || 0) 
                       ? 'text-yellow-400 fill-current' 
-                      : 'text-gray-300'
+                      : 'text-gray-300'`}
                   }`}
                 />
               ))}
@@ -385,7 +385,7 @@ const LMSSystem = () => {
           
           <div className="flex gap-2">
             <Button
-              onClick={() => setSelectedCourse(course)}
+              onClick=({ ( }) => setSelectedCourse(course)}
               className="flex-1"
             >
               <Eye className="h-4 w-4 mr-2" />
@@ -394,7 +394,7 @@ const LMSSystem = () => {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => {
+              onClick=({ ( }) => {
                 // Implementar inscrição
               }}
               className="h-9 w-9 p-0"
@@ -410,11 +410,10 @@ const LMSSystem = () => {
   /**
    * RENDERIZAR ESTUDANTE
    */
-  const renderStudent = (student) => {
-    const studentEnrollments = enrollments.filter(e => e.studentId === student.id);
+  const renderStudent = (student) => ({ const studentEnrollments = enrollments.filter(e => e.studentId === student.id);
     const completedCourses = studentEnrollments.filter(e => e.progress >= 100).length;
     const avgProgress = studentEnrollments.length > 0 
-      ? studentEnrollments.reduce((sum, e) => sum + e.progress, 0) / studentEnrollments.length 
+      ? studentEnrollments.reduce((sum, e }) => sum + e.progress, 0) / studentEnrollments.length 
       : 0;
     
     return (
@@ -429,9 +428,9 @@ const LMSSystem = () => {
             <div>
               <h3 className="font-semibold text-lg">{student.name}</h3>
               <p className="text-gray-600 text-sm">{student.email}</p>
-              <div className="flex items-center gap-1 mt-1">
+              <div className="flex items-center gap-1 mt-1">`
                 <div className={`w-2 h-2 rounded-full ${
-                  student.status === 'active' ? 'bg-green-500' : 'bg-gray-400'
+                  student.status === 'active' ? 'bg-green-500' : 'bg-gray-400'`}
                 }`}></div>
                 <span className="text-xs text-gray-600 capitalize">{student.status}</span>
               </div>
@@ -471,9 +470,8 @@ const LMSSystem = () => {
   /**
    * RENDERIZAR INSTRUTOR
    */
-  const renderInstructor = (instructor) => {
-    const instructorCourses = courses.filter(c => c.instructorId === instructor.id);
-    const totalStudents = instructorCourses.reduce((sum, course) => {
+  const renderInstructor = (instructor) => ({ const instructorCourses = courses.filter(c => c.instructorId === instructor.id);
+    const totalStudents = instructorCourses.reduce((sum, course }) => {
       return sum + enrollments.filter(e => e.courseId === course.id).length;
     }, 0);
     
@@ -490,13 +488,13 @@ const LMSSystem = () => {
               <h3 className="font-semibold text-lg">{instructor.name}</h3>
               <p className="text-gray-600 text-sm">{instructor.title}</p>
               <div className="flex items-center gap-1 mt-1">
-                {[...Array(5)].map((_, i) => (
+                ({ [...Array(5)].map((_, i }) => (
                   <Star
-                    key={i}
+                    key={i}`
                     className={`h-3 w-3 ${
                       i < (instructor.rating || 0) 
                         ? 'text-yellow-400 fill-current' 
-                        : 'text-gray-300'
+                        : 'text-gray-300'`}
                     }`}
                   />
                 ))}
@@ -536,15 +534,14 @@ const LMSSystem = () => {
   /**
    * OBTER ESTATÍSTICAS
    */
-  const getStats = () => {
-    const totalCourses = courses.length;
+  const getStats = () => ({ const totalCourses = courses.length;
     const totalStudents = students.length;
     const totalEnrollments = enrollments.length;
     const completionRate = enrollments.length > 0 
       ? (enrollments.filter(e => e.progress >= 100).length / enrollments.length * 100).toFixed(1)
       : 0;
     const avgRating = courses.length > 0 
-      ? (courses.reduce((sum, c) => sum + (c.rating || 0), 0) / courses.length).toFixed(1)
+      ? (courses.reduce((sum, c }) => sum + (c.rating || 0), 0) / courses.length).toFixed(1)
       : 0;
     
     return { totalCourses, totalStudents, totalEnrollments, completionRate, avgRating };
@@ -594,19 +591,18 @@ const LMSSystem = () => {
                 variant="outline"
                 onClick={loadLMSData}
                 disabled={loading}
-              >
+              >`
                 <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-                Atualizar
-              </Button>
+
               <Button
                 variant="outline"
-                onClick={() => setShowLessonModal(true)}
+                onClick=({ ( }) => setShowLessonModal(true)}
               >
                 <Video className="h-4 w-4 mr-2" />
                 Nova Aula
               </Button>
               <Button
-                onClick={() => setShowCourseModal(true)}
+                onClick=({ ( }) => setShowCourseModal(true)}
                 className="bg-blue-600 hover:bg-blue-700"
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -699,7 +695,7 @@ const LMSSystem = () => {
                       <Input
                         placeholder="Buscar cursos..."
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange=({ (e }) => setSearchTerm(e.target.value)}
                         className="pl-10"
                       />
                     </div>
@@ -708,7 +704,7 @@ const LMSSystem = () => {
                   <div className="flex gap-3">
                     <select
                       value={filters.category}
-                      onChange={(e) => setFilters(prev => ({ ...prev, category: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, category: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todas as Categorias</option>
@@ -719,22 +715,22 @@ const LMSSystem = () => {
 
                     <select
                       value={filters.level}
-                      onChange={(e) => setFilters(prev => ({ ...prev, level: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, level: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todos os Níveis</option>
-                      {Object.entries(courseLevels).map(([key, level]) => (
+                      ({ Object.entries(courseLevels).map(([key, level] }) => (
                         <option key={key} value={key}>{level.name}</option>
                       ))}
                     </select>
 
                     <select
                       value={filters.status}
-                      onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, status: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todos os Status</option>
-                      {Object.entries(courseStatuses).map(([key, status]) => (
+                      ({ Object.entries(courseStatuses).map(([key, status] }) => (
                         <option key={key} value={key}>{status.name}</option>
                       ))}
                     </select>
@@ -744,7 +740,7 @@ const LMSSystem = () => {
             </Card>
 
             {/* Lista de Cursos */}
-            {loading ? (
+            ({ loading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 <span className="ml-2">Carregando cursos...</span>
@@ -759,7 +755,7 @@ const LMSSystem = () => {
                   <p className="text-gray-500 mb-4">
                     Comece criando seu primeiro curso
                   </p>
-                  <Button onClick={() => setShowCourseModal(true)}>
+                  <Button onClick={( }) => setShowCourseModal(true)}>
                     <Plus className="h-4 w-4 mr-2" />
                     Criar Curso
                   </Button>
@@ -846,9 +842,8 @@ const LMSSystem = () => {
               <h2 className="text-xl font-bold mb-4">Novo Curso</h2>
               {/* Formulário será implementado */}
               <div className="flex justify-end gap-3 mt-6">
-                <Button variant="outline" onClick={() => setShowCourseModal(false)}>
-                  Cancelar
-                </Button>
+                <Button variant="outline" onClick=({ ( }) => setShowCourseModal(false)}>
+
                 <Button disabled={loading}>
                   {loading ? 'Criando...' : 'Criar Curso'}
                 </Button>
@@ -862,3 +857,4 @@ const LMSSystem = () => {
 };
 
 export default LMSSystem;
+`

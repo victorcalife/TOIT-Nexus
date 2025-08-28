@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
-import { 
+import {  
   CheckCircle, 
   XCircle, 
   AlertTriangle, 
@@ -16,16 +16,16 @@ import {
   Wifi,
   Globe,
   RefreshCw,
-  TestTube
+  TestTube }
 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
+import { 
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue, }
 } from "@/components/ui/select";
 
 export default function Connectivity() {
@@ -51,8 +51,7 @@ export default function Connectivity() {
     retry,
   });
 
-  const testDatabaseMutation = useMutation({
-    mutationFn) => {
+  const testDatabaseMutation = useMutation(({ mutationFn }) => {
       return await apiRequest('POST', '/api/system/test-database');
     },
     onSuccess) => {
@@ -75,8 +74,7 @@ export default function Connectivity() {
     }
   });
 
-  const testIntegrationMutation = useMutation({
-    mutationFn) => {
+  const testIntegrationMutation = useMutation(({ mutationFn }) => {
       return await apiRequest('POST', `/api/integrations/${integrationId}/test`);
     },
     onSuccess, integrationId) => {
@@ -107,8 +105,7 @@ export default function Connectivity() {
     }
   });
 
-  const customTestMutation = useMutation({
-    mutationFn) => {
+  const customTestMutation = useMutation(({ mutationFn }) => {
       return await apiRequest('POST', '/api/system/custom-test', testConfig);
     },
     onSuccess) => {
@@ -152,8 +149,7 @@ export default function Connectivity() {
       ...customTest,
       timeout),
       headers) {},
-      body) {
-    switch (status) {
+      body) ({ switch (status) {
       case 'online':
       case 'success':
         return <CheckCircle className="w-5 h-5 text-green-500" />;
@@ -184,7 +180,7 @@ export default function Connectivity() {
         return 'Erro';
       case 'warning':
         return 'Atenção';
-      default) => refetchStatus()} disabled={statusLoading}>
+      default }) => refetchStatus()} disabled={statusLoading}>`
             <RefreshCw className={`w-4 h-4 mr-2 ${statusLoading ? 'animate-spin' : ''}`} />
             Atualizar Status
           </Button>
@@ -204,8 +200,8 @@ export default function Connectivity() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {statusLoading ? (
-              <div className="grid grid-cols-1 md)].map((_, i) => (
+            ({ statusLoading ? (
+              <div className="grid grid-cols-1 md)].map((_, i }) => (
                   <div key={i} className="flex items-center space-x-3">
                     <Skeleton className="h-10 w-10 rounded-lg" />
                     <div>
@@ -324,9 +320,9 @@ export default function Connectivity() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {(integrations || []).length > 0 ? (
+            ({ (integrations || []).length > 0 ? (
               <div className="space-y-4">
-                {(integrations || []).map((integration) => (
+                {(integrations || []).map((integration }) => (
                   <div key={integration.id} className="flex items-center justify-between p-4 border rounded-lg">
                     <div className="flex items-center space-x-3">
                       <div className="w-10 h-10 bg-gray-50 rounded-lg flex items-center justify-center">
@@ -349,7 +345,7 @@ export default function Connectivity() {
                       </div>
                     </div>
                     <Button
-                      onClick={() => handleIntegrationTest(integration.id)}
+                      onClick=({ ( }) => handleIntegrationTest(integration.id)}
                       disabled={isTestingIntegration}
                       variant="outline"
                       size="sm"
@@ -386,7 +382,7 @@ export default function Connectivity() {
                 </div>
                 <div>
                   <Label htmlFor="method">Método HTTP</Label>
-                  <Select value={customTest.method} onValueChange={(value) => setCustomTest(prev => ({ ...prev, method))}>
+                  <Select value={customTest.method} onValueChange=({ (value }) => setCustomTest(prev => ({ ...prev, method))}>
                     <SelectTrigger>
                       <SelectValue placeholder="Método" />
                     </SelectTrigger>
@@ -406,12 +402,12 @@ export default function Connectivity() {
                 <Input
                   id="url"
                   value={customTest.url}
-                  onChange={(e) => setCustomTest(prev => ({ ...prev, url))}
+                  onChange=({ (e }) => setCustomTest(prev => ({ ...prev, url))}
                   placeholder="https)</Label>
                   <Textarea
                     id="headers"
                     value={customTest.headers}
-                    onChange={(e) => setCustomTest(prev => ({ ...prev, headers))}
+                    onChange=({ (e }) => setCustomTest(prev => ({ ...prev, headers))}
                     placeholder='{"Authorization": "Bearer token"}'
                     rows={3}
                   />
@@ -421,7 +417,7 @@ export default function Connectivity() {
                   <Textarea
                     id="body"
                     value={customTest.body}
-                    onChange={(e) => setCustomTest(prev => ({ ...prev, body))}
+                    onChange=({ (e }) => setCustomTest(prev => ({ ...prev, body))}
                     placeholder='{"key": "value"}'
                     rows={3}
                   />
@@ -434,7 +430,7 @@ export default function Connectivity() {
                   id="timeout"
                   type="number"
                   value={customTest.timeout}
-                  onChange={(e) => setCustomTest(prev => ({ ...prev, timeout))}
+                  onChange=({ (e }) => setCustomTest(prev => ({ ...prev, timeout))}
                   placeholder="5000"
                 />
               </div>
@@ -474,4 +470,4 @@ export default function Connectivity() {
       </main>
     </div>
   );
-}
+}`

@@ -14,9 +14,10 @@ export default function SelectTenant()
   const { user } = useAuth();
 
   // Fetch real tenants from API
-  const { data,
-    queryFn) => fetch( '/api/user/tenants' ).then( res => res.json() )
-});
+  const { data: tenants } = useQuery({
+    queryKey: ['tenants'],
+    queryFn: () => fetch('/api/user/tenants').then(res => res.json())
+  });
 
 const handleSelectTenant = ( tenant ) =>
 {
@@ -55,22 +56,51 @@ return (
               placeholder="Buscar empresa..."
               className="pl-10 text-lg py-3"
               value={ searchTerm }
-              onChange={ ( e ) => setSearchTerm( e.target.value ) }
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md) => (
-              <Card key={tenant.id} className="hover) => handleSelectTenant(tenant)}
-                      >
-        Acessar { tenant.name }
-      </Button>
-    </div>
-  </div>
-                </CardContent >
-              </Card >
-            ))}
-          </div >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {filteredTenants.map((tenant) => (
+            <Card key={tenant.id} className="hover:shadow-lg transition-shadow cursor-pointer">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <Building2 className="w-8 h-8 text-blue-600" />
+                    <div>
+                      <CardTitle className="text-xl">{tenant.name}</CardTitle>
+                      <CardDescription>{tenant.description}</CardDescription>
+                    </div>
+                  </div>
+                  <Badge variant="secondary">
+                    {tenant.role || 'Usuário'}
+                  </Badge>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-4 text-sm text-gray-600">
+                    <div className="flex items-center space-x-1">
+                      <Users className="w-4 h-4" />
+                      <span>{tenant.userCount || 0} usuários</span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <Workflow className="w-4 h-4" />
+                      <span>{tenant.projectCount || 0} projetos</span>
+                    </div>
+                  </div>
+                </div>
+                <Button 
+                  className="w-full" 
+                  onClick={() => handleSelectTenant(tenant)}
+                >
+                  Acessar {tenant.name}
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
 
 {
   filteredTenants.length === 0 && (
@@ -85,7 +115,7 @@ return (
   < div className = "text-center mt-8" >
     <Button
       variant="outline"
-      onClick={ () => window.location.href = '/admin/dashboard' }
+      onClick={() => window.location.href = '/admin/dashboard'}
     >
       Voltar ao Painel Administrativo
     </Button>

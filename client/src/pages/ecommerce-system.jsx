@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   ShoppingCart, 
   Package,
   DollarSign,
@@ -56,7 +56,7 @@ import {
   Zap,
   Target,
   Award,
-  Bookmark
+  Bookmark }
 } from 'lucide-react';
 
 const EcommerceSystem = () => {
@@ -101,13 +101,13 @@ const EcommerceSystem = () => {
         fetch('/api/ecommerce/products', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/ecommerce/orders', {
+        fetch('/api/ecommerce/orders', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/ecommerce/customers', {
+        fetch('/api/ecommerce/customers', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/ecommerce/categories', {
+        fetch('/api/ecommerce/categories', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);
@@ -151,7 +151,7 @@ const EcommerceSystem = () => {
     try {
       const response = await fetch('/api/ecommerce/products', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -202,7 +202,7 @@ const EcommerceSystem = () => {
     });
     
     toast({
-      title: "Produto adicionado",
+      title: "Produto adicionado",`
       description: `${product.name} foi adicionado ao carrinho`,
     });
   };
@@ -242,7 +242,7 @@ const EcommerceSystem = () => {
     try {
       const response = await fetch('/api/ecommerce/orders', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -264,7 +264,7 @@ const EcommerceSystem = () => {
       setCart([]); // Limpar carrinho
       
       toast({
-        title: "Pedido criado",
+        title: "Pedido criado",`
         description: `Pedido #${data.order.id} criado com sucesso`,
       });
     } catch (error) {
@@ -281,10 +281,10 @@ const EcommerceSystem = () => {
    * ATUALIZAR STATUS DO PEDIDO
    */
   const updateOrderStatus = async (orderId, newStatus) => {
-    try {
+    try {`
       const response = await fetch(`/api/ecommerce/orders/${orderId}/status`, {
         method: 'PATCH',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -318,8 +318,7 @@ const EcommerceSystem = () => {
   /**
    * CALCULAR TOTAL DO CARRINHO
    */
-  const getCartTotal = () => {
-    return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+  const getCartTotal = () => ({ return cart.reduce((total, item }) => total + (item.price * item.quantity), 0);
   };
 
   /**
@@ -357,7 +356,7 @@ const EcommerceSystem = () => {
               variant="ghost"
               size="sm"
               className="h-8 w-8 p-0 bg-white/80 hover:bg-white"
-              onClick={() => {
+              onClick=({ ( }) => {
                 // Implementar favoritos
               }}
             >
@@ -367,7 +366,7 @@ const EcommerceSystem = () => {
               variant="ghost"
               size="sm"
               className="h-8 w-8 p-0 bg-white/80 hover:bg-white"
-              onClick={() => setSelectedProduct(product)}
+              onClick=({ ( }) => setSelectedProduct(product)}
             >
               <Eye className="h-4 w-4" />
             </Button>
@@ -382,13 +381,13 @@ const EcommerceSystem = () => {
           
           <div className="flex items-center gap-2 mb-2">
             <div className="flex items-center">
-              {[...Array(5)].map((_, i) => (
+              ({ [...Array(5)].map((_, i }) => (
                 <Star
-                  key={i}
+                  key={i}`
                   className={`h-4 w-4 ${
                     i < (product.rating || 0) 
                       ? 'text-yellow-400 fill-current' 
-                      : 'text-gray-300'
+                      : 'text-gray-300'`}
                   }`}
                 />
               ))}
@@ -410,18 +409,18 @@ const EcommerceSystem = () => {
               )}
             </div>
             
-            <Badge variant={product.stock > 0 ? 'default' : 'destructive'}>
+            <Badge variant={product.stock > 0 ? 'default' : 'destructive'}>`
               {product.stock > 0 ? `${product.stock} em estoque` : 'Esgotado'}
             </Badge>
           </div>
           
           <div className="flex gap-2">
-            {isInCart ? (
+            ({ isInCart ? (
               <div className="flex items-center gap-2 flex-1">
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => updateCartQuantity(product.id, cartItem.quantity - 1)}
+                  onClick={( }) => updateCartQuantity(product.id, cartItem.quantity - 1)}
                   className="h-8 w-8 p-0"
                 >
                   <Minus className="h-3 w-3" />
@@ -430,7 +429,7 @@ const EcommerceSystem = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => updateCartQuantity(product.id, cartItem.quantity + 1)}
+                  onClick=({ ( }) => updateCartQuantity(product.id, cartItem.quantity + 1)}
                   className="h-8 w-8 p-0"
                 >
                   <Plus className="h-3 w-3" />
@@ -438,19 +437,18 @@ const EcommerceSystem = () => {
               </div>
             ) : (
               <Button
-                onClick={() => addToCart(product)}
+                onClick=({ ( }) => addToCart(product)}
                 disabled={product.stock <= 0}
                 className="flex-1"
               >
                 <ShoppingCart className="h-4 w-4 mr-2" />
-                Adicionar
-              </Button>
+
             )}
             
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setSelectedProduct(product)}
+              onClick=({ ( }) => setSelectedProduct(product)}
               className="h-9 w-9 p-0"
             >
               <Eye className="h-4 w-4" />
@@ -509,10 +507,10 @@ const EcommerceSystem = () => {
           <div className="flex gap-2">
             <select
               value={order.status}
-              onChange={(e) => updateOrderStatus(order.id, e.target.value)}
+              onChange=({ (e }) => updateOrderStatus(order.id, e.target.value)}
               className="flex-1 px-2 py-1 border border-gray-300 rounded text-sm"
             >
-              {Object.entries(orderStatuses).map(([key, status]) => (
+              ({ Object.entries(orderStatuses).map(([key, status] }) => (
                 <option key={key} value={key}>{status.name}</option>
               ))}
             </select>
@@ -520,11 +518,10 @@ const EcommerceSystem = () => {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setShowOrderModal(true)}
+              onClick=({ ( }) => setShowOrderModal(true)}
             >
               <Eye className="h-3 w-3 mr-1" />
-              Detalhes
-            </Button>
+
           </div>
         </CardContent>
       </Card>
@@ -561,7 +558,7 @@ const EcommerceSystem = () => {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {cart.map((item) => (
+            ({ cart.map((item }) => (
               <div key={item.id} className="flex items-center gap-4 p-4 border rounded-lg">
                 <div className="w-16 h-16 bg-gray-100 rounded overflow-hidden">
                   {item.image ? (
@@ -586,7 +583,7 @@ const EcommerceSystem = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => updateCartQuantity(item.id, item.quantity - 1)}
+                    onClick=({ ( }) => updateCartQuantity(item.id, item.quantity - 1)}
                     className="h-8 w-8 p-0"
                   >
                     <Minus className="h-3 w-3" />
@@ -597,7 +594,7 @@ const EcommerceSystem = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => updateCartQuantity(item.id, item.quantity + 1)}
+                    onClick=({ ( }) => updateCartQuantity(item.id, item.quantity + 1)}
                     className="h-8 w-8 p-0"
                   >
                     <Plus className="h-3 w-3" />
@@ -611,7 +608,7 @@ const EcommerceSystem = () => {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => removeFromCart(item.id)}
+                    onClick=({ ( }) => removeFromCart(item.id)}
                     className="text-red-600 hover:text-red-700"
                   >
                     <Trash2 className="h-3 w-3" />
@@ -631,13 +628,13 @@ const EcommerceSystem = () => {
               <div className="flex gap-3">
                 <Button
                   variant="outline"
-                  onClick={() => setCart([])}
+                  onClick=({ ( }) => setCart([])}
                   className="flex-1"
                 >
                   Limpar Carrinho
                 </Button>
                 <Button
-                  onClick={() => {
+                  onClick=({ ( }) => {
                     // Implementar checkout
                     createOrder({
                       customerId: 'current-user', // Substituir pelo ID do usuário atual
@@ -661,10 +658,9 @@ const EcommerceSystem = () => {
   /**
    * OBTER ESTATÍSTICAS
    */
-  const getStats = () => {
-    const totalProducts = products.length;
+  const getStats = () => ({ const totalProducts = products.length;
     const totalOrders = orders.length;
-    const totalRevenue = orders.reduce((sum, order) => sum + (order.total || 0), 0);
+    const totalRevenue = orders.reduce((sum, order }) => sum + (order.total || 0), 0);
     const pendingOrders = orders.filter(order => order.status === 'pending').length;
     const averageOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
     
@@ -712,19 +708,18 @@ const EcommerceSystem = () => {
                 variant="outline"
                 onClick={loadEcommerceData}
                 disabled={loading}
-              >
+              >`
                 <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-                Atualizar
-              </Button>
+
               <Button
                 variant="outline"
-                onClick={() => setShowProductModal(true)}
+                onClick=({ ( }) => setShowProductModal(true)}
               >
                 <Plus className="h-4 w-4 mr-2" />
                 Novo Produto
               </Button>
               <Button
-                onClick={() => setActiveTab('cart')}
+                onClick=({ ( }) => setActiveTab('cart')}
                 className="bg-green-600 hover:bg-green-700 relative"
               >
                 <ShoppingCart className="h-4 w-4 mr-2" />
@@ -826,7 +821,7 @@ const EcommerceSystem = () => {
                       <Input
                         placeholder="Buscar produtos..."
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange=({ (e }) => setSearchTerm(e.target.value)}
                         className="pl-10"
                       />
                     </div>
@@ -835,7 +830,7 @@ const EcommerceSystem = () => {
                   <div className="flex gap-3">
                     <select
                       value={filters.category}
-                      onChange={(e) => setFilters(prev => ({ ...prev, category: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, category: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todas as Categorias</option>
@@ -847,7 +842,7 @@ const EcommerceSystem = () => {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
+                      onClick=({ ( }) => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
                     >
                       {viewMode === 'grid' ? <List className="h-4 w-4" /> : <Grid className="h-4 w-4" />}
                     </Button>
@@ -857,7 +852,7 @@ const EcommerceSystem = () => {
             </Card>
 
             {/* Lista de Produtos */}
-            {loading ? (
+            ({ loading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 <span className="ml-2">Carregando produtos...</span>
@@ -872,7 +867,7 @@ const EcommerceSystem = () => {
                   <p className="text-gray-500 mb-4">
                     Comece adicionando seu primeiro produto
                   </p>
-                  <Button onClick={() => setShowProductModal(true)}>
+                  <Button onClick={( }) => setShowProductModal(true)}>
                     <Plus className="h-4 w-4 mr-2" />
                     Adicionar Produto
                   </Button>
@@ -881,7 +876,7 @@ const EcommerceSystem = () => {
             ) : (
               <div className={viewMode === 'grid' 
                 ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
-                : 'space-y-4'
+                : 'space-y-4'}
               }>
                 {filteredProducts.map(renderProductCard)}
               </div>
@@ -940,9 +935,8 @@ const EcommerceSystem = () => {
               <h2 className="text-xl font-bold mb-4">Novo Produto</h2>
               {/* Formulário será implementado */}
               <div className="flex justify-end gap-3 mt-6">
-                <Button variant="outline" onClick={() => setShowProductModal(false)}>
-                  Cancelar
-                </Button>
+                <Button variant="outline" onClick=({ ( }) => setShowProductModal(false)}>
+
                 <Button disabled={loading}>
                   {loading ? 'Criando...' : 'Criar Produto'}
                 </Button>
@@ -956,3 +950,4 @@ const EcommerceSystem = () => {
 };
 
 export default EcommerceSystem;
+`

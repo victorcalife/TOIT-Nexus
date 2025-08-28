@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   LineChart, 
   Line, 
   XAxis, 
@@ -23,9 +23,9 @@ import {
   ScatterChart,
   Scatter,
   BarChart,
-  Bar
+  Bar }
 } from 'recharts';
-import { 
+import {  
   Zap, 
   Brain, 
   Cpu,
@@ -54,7 +54,7 @@ import {
   LineChart as LineChartIcon,
   Gauge,
   Network,
-  Workflow
+  Workflow }
 } from 'lucide-react';
 
 const QuantumMLSystem = () => {
@@ -159,7 +159,7 @@ const QuantumMLSystem = () => {
     try {
       const response = await fetch('/api/quantum/execute', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -239,7 +239,7 @@ const QuantumMLSystem = () => {
     try {
       const response = await fetch('/api/quantum/experiments', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -279,7 +279,7 @@ const QuantumMLSystem = () => {
     try {
       const response = await fetch('/api/quantum/ibm/connect', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }
@@ -292,7 +292,7 @@ const QuantumMLSystem = () => {
       const data = await response.json();
       
       toast({
-        title: "IBM Quantum conectado",
+        title: "IBM Quantum conectado",`
         description: `Conectado ao backend: ${data.backend}`,
       });
     } catch (error) {
@@ -400,9 +400,9 @@ const QuantumMLSystem = () => {
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600">Vantagem Quântica</p>
+                  <p className="text-sm text-gray-600">Vantagem Quântica</p>`
                   <p className={`text-2xl font-bold ${
-                    quantumAdvantage?.factor > 1 ? 'text-green-600' : 'text-orange-600'
+                    quantumAdvantage?.factor > 1 ? 'text-green-600' : 'text-orange-600'`}
                   }`}>
                     {quantumAdvantage?.factor?.toFixed(2)}x
                   </p>
@@ -512,17 +512,17 @@ const QuantumMLSystem = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                {quantumAlgorithms.map((algorithm) => (
+                ({ quantumAlgorithms.map((algorithm }) => (
                   <div
                     key={algorithm.id}
-                    onClick={() => setActiveAlgorithm(algorithm)}
+                    onClick=({ ( }) => setActiveAlgorithm(algorithm)}`
                     className={`p-3 border rounded-lg cursor-pointer transition-colors ${
                       activeAlgorithm?.id === algorithm.id
                         ? 'border-blue-500 bg-blue-50'
-                        : 'border-gray-200 hover:bg-gray-50'
+                        : 'border-gray-200 hover:bg-gray-50'`}
                     }`}
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3">`
                       <div className={`p-2 rounded ${algorithm.color} text-white`}>
                         {algorithm.icon}
                       </div>
@@ -560,7 +560,7 @@ const QuantumMLSystem = () => {
                   <Input
                     type="number"
                     value={qubits}
-                    onChange={(e) => setQubits(parseInt(e.target.value))}
+                    onChange=({ (e }) => setQubits(parseInt(e.target.value))}
                     min="2"
                     max="20"
                   />
@@ -573,14 +573,14 @@ const QuantumMLSystem = () => {
                   <Input
                     type="number"
                     value={iterations}
-                    onChange={(e) => setIterations(parseInt(e.target.value))}
+                    onChange=({ (e }) => setIterations(parseInt(e.target.value))}
                     min="10"
                     max="1000"
                   />
                 </div>
 
                 <Button
-                  onClick={() => activeAlgorithm && runQuantumAlgorithm(activeAlgorithm.id)}
+                  onClick=({ ( }) => activeAlgorithm && runQuantumAlgorithm(activeAlgorithm.id)}
                   disabled={!activeAlgorithm || isRunning}
                   className="w-full bg-blue-600 hover:bg-blue-700"
                 >
@@ -616,7 +616,7 @@ const QuantumMLSystem = () => {
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
                       <div
-                        className="bg-blue-600 h-2 rounded-full transition-all"
+                        className="bg-blue-600 h-2 rounded-full transition-all"`
                         style={{ width: `${realTimeMetrics.progress}%` }}
                       ></div>
                     </div>
@@ -651,7 +651,7 @@ const QuantumMLSystem = () => {
                 {/* Informações do Algoritmo */}
                 <Card>
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-3">
+                    <CardTitle className="flex items-center gap-3">`
                       <div className={`p-2 rounded ${activeAlgorithm.color} text-white`}>
                         {activeAlgorithm.icon}
                       </div>
@@ -705,7 +705,7 @@ const QuantumMLSystem = () => {
         </div>
 
         {/* Histórico de Experimentos */}
-        {experiments.length > 0 && (
+        ({ experiments.length > 0 && (
           <Card className="mt-8">
             <CardHeader>
               <CardTitle>Histórico de Experimentos</CardTitle>
@@ -725,7 +725,7 @@ const QuantumMLSystem = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {experiments.slice(0, 10).map((experiment) => (
+                    {experiments.slice(0, 10).map((experiment }) => (
                       <tr key={experiment.id} className="border-b hover:bg-gray-50">
                         <td className="py-3 px-4">
                           <Badge variant="outline">{experiment.algorithm}</Badge>
@@ -739,7 +739,7 @@ const QuantumMLSystem = () => {
                           <span className={
                             experiment.quantumAdvantage?.factor > 1 
                               ? 'text-green-600' 
-                              : 'text-orange-600'
+                              : 'text-orange-600'}
                           }>
                             {experiment.quantumAdvantage?.factor?.toFixed(2)}x
                           </span>
@@ -771,3 +771,4 @@ const QuantumMLSystem = () => {
 };
 
 export default QuantumMLSystem;
+`

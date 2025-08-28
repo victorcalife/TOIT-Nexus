@@ -12,14 +12,13 @@ import workflowLogo from "@/assets/SELOtoit-workflow-logo.svg";
 = useToast();
 
   // Carousel 3D Logic
-  useEffect(() => {
-    let currentCase = 0;
+  useEffect(() => ({ let currentCase = 0;
     const totalCases = 10;
     let carouselInterval) {
       const cards = document.querySelectorAll('.case-card');
       const dots = document.querySelectorAll('.case-dot');
       
-      cards.forEach((card, index) => {
+      cards.forEach((card, index }) => {
         card.classList.remove('active', 'next', 'prev');
         
         if (index === currentCase) {
@@ -114,13 +113,12 @@ import workflowLogo from "@/assets/SELOtoit-workflow-logo.svg";
     }
     
     // Initialize carousel
-    const timer = setTimeout(() => {
-      const carouselContainer = document.querySelector('.carousel-container');
+    const timer = setTimeout(() => ({ const carouselContainer = document.querySelector('.carousel-container');
       if (carouselContainer) {
         // Set up dots navigation
         const dots = document.querySelectorAll('.case-dot');
         dots.forEach((dot, index) => {
-          dot.addEventListener('click', () => {
+          dot.addEventListener('click', ( }) => {
             currentCase = index;
             updateCarousel();
             stopCarousel();
@@ -221,12 +219,11 @@ import workflowLogo from "@/assets/SELOtoit-workflow-logo.svg";
     return errors;
   };
 
-  const handlePlanSelection = (planId) => {
-    setSelectedPlan(planId);
+  const handlePlanSelection = (planId) => ({ setSelectedPlan(planId);
     setShowCheckout(true);
     
     // Scroll para o formulário
-    setTimeout(() => {
+    setTimeout(( }) => {
       const checkoutSection = document.getElementById('checkout-section');
       if (checkoutSection) {
         checkoutSection.scrollIntoView({ behavior);
@@ -359,19 +356,21 @@ import workflowLogo from "@/assets/SELOtoit-workflow-logo.svg";
       <section className="py-20 bg-gradient-to-r from-red-50 to-orange-50">
         <div className="max-w-7xl mx-auto px-4 sm, <section id="plans-section" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm) => setIsYearly(!isYearly)}
+`
                 className={`relative h-6 w-11 rounded-full ${isYearly ? 'bg-green-600' : 'bg-gray-300'}`}
               >
+`
                 <div className={`absolute w-4 h-4 bg-white rounded-full transition-transform ${isYearly ? 'translate-x-5' : 'translate-x-1'}`} />
               </Button>
+`
               <span className={`font-medium ${isYearly ? 'text-green-600' : 'text-gray-500'}`}>
-                Anual
-              </span>
               {isYearly && (
                 <Badge className="bg-green-100 text-green-800 hover)}
             </div>
           </div>
           
           <div className="flex flex-col lg) => (
+`
               <Card key={plan.id} className={`relative border-2 hover)}
                 
                 <CardHeader className="text-center pb-4">
@@ -418,7 +417,9 @@ import workflowLogo from "@/assets/SELOtoit-workflow-logo.svg";
                   
                   <Button 
                     className={`w-full py-4 text-lg font-bold ${
-                      plan.popular ? 'bg-gradient-to-r from-green-500 to-green-600 hover) => handlePlanSelection(plan.id)}
+                      plan.popular ? 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700' : 'bg-blue-600 hover:bg-blue-700'
+                    }`}
+                    onClick={() => handlePlanSelection(plan.id)}
                   >
                     <Gift className="w-5 h-5 mr-2" />
                     QUERO DEMO PERSONALIZADA
@@ -538,7 +539,9 @@ import workflowLogo from "@/assets/SELOtoit-workflow-logo.svg";
                   {[...Array(10)].map((_, i) => (
                     <button
                       key={i}
-                      className="w-3 h-3 rounded-full bg-white/30 hover))}
+                      className="w-3 h-3 rounded-full bg-white/30 hover:bg-white/50"
+                    />
+                  ))}
                 </div>
               </div>
               
@@ -612,7 +615,7 @@ import workflowLogo from "@/assets/SELOtoit-workflow-logo.svg";
                       id="email"
                       type="email"
                       value={formData.email}
-                      onChange={(e) => handleInputChange('email', e.target.value)}
+                      onChange=({ (e }) => handleInputChange('email', e.target.value)}
                       className="py-3 text-lg"
                       placeholder="seu.email@empresa.com.br"
                       required
@@ -630,7 +633,7 @@ import workflowLogo from "@/assets/SELOtoit-workflow-logo.svg";
                       <Input
                         id="cpf"
                         value={formData.cpf}
-                        onChange={(e) => handleInputChange('cpf', e.target.value)}
+                        onChange=({ (e }) => handleInputChange('cpf', e.target.value)}
                         placeholder="000.000.000-00"
                         className="py-3 text-lg"
                         required
@@ -645,7 +648,7 @@ import workflowLogo from "@/assets/SELOtoit-workflow-logo.svg";
                     <Input
                       id="company"
                       value={formData.company}
-                      onChange={(e) => handleInputChange('company', e.target.value)}
+                      onChange=({ (e }) => handleInputChange('company', e.target.value)}
                       placeholder={selectedPlan === 'quantum_lite' ? 'Ex, Consultor Financeiro...' : 'Nome da sua empresa ou tipo de negócio'}
                       className="py-3 text-lg"
                       required
@@ -657,7 +660,7 @@ import workflowLogo from "@/assets/SELOtoit-workflow-logo.svg";
                       <Checkbox
                         id="acceptTerms"
                         checked={formData.acceptTerms}
-                        onCheckedChange={(checked) => 
+                        onCheckedChange=({ (checked }) => 
                           setFormData(prev => ({ ...prev, acceptTerms))
                         }
                         required
@@ -733,8 +736,9 @@ import workflowLogo from "@/assets/SELOtoit-workflow-logo.svg";
           opacity, 255, 255, 0.9) !important;
           transform);
         }
+`
       `}</style>
       
     </div>
   );
-}
+}`

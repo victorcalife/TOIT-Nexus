@@ -7,10 +7,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { 
+import {  
   Building2, Users, Activity, TrendingUp, Settings, Plus, Edit, Trash2, Shield, Database,
   Workflow, BarChart3, UserCheck, Key, Monitor, Crown, FileText, AlertTriangle, CheckCircle, XCircle,
-  Eye, Download, Upload, Search, Filter, LogOut, Save, Play
+  Eye, Download, Upload, Search, Filter, LogOut, Save, Play }
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
@@ -21,8 +21,7 @@ export default function ToitAdmin() {
   const queryClient = useQueryClient();
 
   // Form states
-  const [companyForm, setCompanyForm] = useState({
-    name,
+  const [companyForm, setCompanyForm] = useState(({ name,
     domain,
     plan);
 
@@ -47,7 +46,7 @@ export default function ToitAdmin() {
 
   // Mutations
   const createCompanyMutation = useMutation({
-    mutationFn) => {
+    mutationFn }) => {
       return await apiRequest('/api/admin/tenants', 'POST', data);
     },
     onSuccess) => {
@@ -60,8 +59,7 @@ export default function ToitAdmin() {
     }
   });
 
-  const createUserMutation = useMutation({
-    mutationFn) => {
+  const createUserMutation = useMutation(({ mutationFn }) => {
       return await apiRequest('/api/admin/users', 'POST', data);
     },
     onSuccess) => {
@@ -74,8 +72,7 @@ export default function ToitAdmin() {
     }
   });
 
-  const createWorkflowMutation = useMutation({
-    mutationFn) => {
+  const createWorkflowMutation = useMutation(({ mutationFn }) => {
       return await apiRequest('/api/complete-workflows', 'POST', {
         ...data,
         trigger,
@@ -93,8 +90,7 @@ export default function ToitAdmin() {
     }
   });
 
-  const executeAdaptiveAnalysis = useMutation({
-    mutationFn) => {
+  const executeAdaptiveAnalysis = useMutation(({ mutationFn }) => {
       return await apiRequest(`/api/adaptive/analyze/${tenantId}`, 'GET');
     },
     onSuccess) => {
@@ -106,11 +102,11 @@ export default function ToitAdmin() {
   });
 
   const sections = [
+    ({ id, name, icon,
     { id, name, icon,
     { id, name, icon,
     { id, name, icon,
-    { id, name, icon,
-    { id, name, icon) => window.location.href = '/api/logout'}
+    { id, name, icon }) => window.location.href = '/api/logout'}
               variant="outline"
               className="flex items-center space-x-2"
             >
@@ -124,19 +120,19 @@ export default function ToitAdmin() {
       <div className="max-w-7xl mx-auto px-4 sm) => (
               <button
                 key={section.id}
-                onClick={() => setActiveSection(section.id as any)}
+                onClick=({ ( }) => setActiveSection(section.id as any)}`
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
                   activeSection === section.id 
-                    ? 'bg-purple-100 text-purple-700 border-l-4 border-purple-500' 
+                    ? 'bg-purple-100 text-purple-700 border-l-4 border-purple-500' }
                     : 'text-gray-600 hover))}
           </div>
 
           {/* Main Content */}
           <div className="flex-1">
             {/* Dashboard */}
-            {activeSection === 'dashboard' && (
+            ({ activeSection === 'dashboard' && (
               <div className="space-y-6">
-                <div className="grid grid-cols-1 md, 5).map((company) => (
+                <div className="grid grid-cols-1 md, 5).map((company }) => (
                         <div key={company.id} className="flex items-center justify-between p-3 border rounded-lg">
                           <div>
                             <h4 className="font-medium">{company.name}</h4>
@@ -154,14 +150,14 @@ export default function ToitAdmin() {
             )}
 
             {/* Empresas */}
-            {activeSection === 'companies' && (
+            ({ activeSection === 'companies' && (
               <div className="space-y-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Criar Nova Empresa</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="grid grid-cols-1 md) => setCompanyForm(prev => ({ ...prev, name))}
+                    <div className="grid grid-cols-1 md }) => setCompanyForm(prev => ({ ...prev, name))}
                           placeholder="Ex) => setCompanyForm(prev => ({ ...prev, domain))}
                           placeholder="Ex) => setCompanyForm(prev => ({ ...prev, plan))}>
                           <SelectTrigger>
@@ -176,7 +172,7 @@ export default function ToitAdmin() {
                       </div>
                     </div>
                     <Button 
-                      onClick={() => createCompanyMutation.mutate(companyForm)}
+                      onClick=({ ( }) => createCompanyMutation.mutate(companyForm)}
                       disabled={createCompanyMutation.isPending || !companyForm.name}
                       className="w-full"
                     >
@@ -191,7 +187,7 @@ export default function ToitAdmin() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3">
-                      {companies?.map((company) => (
+                      ({ companies?.map((company }) => (
                         <div key={company.id} className="flex items-center justify-between p-4 border rounded-lg">
                           <div>
                             <h4 className="font-medium">{company.name}</h4>
@@ -210,14 +206,14 @@ export default function ToitAdmin() {
             )}
 
             {/* Usuários */}
-            {activeSection === 'users' && (
+            ({ activeSection === 'users' && (
               <div className="space-y-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Criar Novo Usuário</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="grid grid-cols-1 md) => setUserForm(prev => ({ ...prev, email))}
+                    <div className="grid grid-cols-1 md }) => setUserForm(prev => ({ ...prev, email))}
                           placeholder="usuario@empresa.com"
                         />
                       </div>
@@ -226,7 +222,7 @@ export default function ToitAdmin() {
                         <Input
                           id="userFirstName"
                           value={userForm.firstName}
-                          onChange={(e) => setUserForm(prev => ({ ...prev, firstName))}
+                          onChange=({ (e }) => setUserForm(prev => ({ ...prev, firstName))}
                           placeholder="João"
                         />
                       </div>
@@ -235,13 +231,13 @@ export default function ToitAdmin() {
                         <Input
                           id="userLastName"
                           value={userForm.lastName}
-                          onChange={(e) => setUserForm(prev => ({ ...prev, lastName))}
+                          onChange=({ (e }) => setUserForm(prev => ({ ...prev, lastName))}
                           placeholder="Silva"
                         />
                       </div>
                       <div>
                         <Label htmlFor="userRole">Função</Label>
-                        <Select value={userForm.role} onValueChange={(value) => setUserForm(prev => ({ ...prev, role))}>
+                        <Select value={userForm.role} onValueChange=({ (value }) => setUserForm(prev => ({ ...prev, role))}>
                           <SelectTrigger>
                             <SelectValue />
                           </SelectTrigger>
@@ -254,12 +250,12 @@ export default function ToitAdmin() {
                       </div>
                       <div>
                         <Label htmlFor="userTenant">Empresa</Label>
-                        <Select value={userForm.tenantId} onValueChange={(value) => setUserForm(prev => ({ ...prev, tenantId))}>
+                        <Select value={userForm.tenantId} onValueChange=({ (value }) => setUserForm(prev => ({ ...prev, tenantId))}>
                           <SelectTrigger>
                             <SelectValue placeholder="Selecione uma empresa" />
                           </SelectTrigger>
                           <SelectContent>
-                            {companies?.map((company) => (
+                            ({ companies?.map((company }) => (
                               <SelectItem key={company.id} value={company.id}>{company.name}</SelectItem>
                             ))}
                           </SelectContent>
@@ -267,7 +263,7 @@ export default function ToitAdmin() {
                       </div>
                     </div>
                     <Button 
-                      onClick={() => createUserMutation.mutate(userForm)}
+                      onClick=({ ( }) => createUserMutation.mutate(userForm)}
                       disabled={createUserMutation.isPending || !userForm.email || !userForm.firstName}
                       className="w-full"
                     >
@@ -282,7 +278,7 @@ export default function ToitAdmin() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3">
-                      {users?.map((user) => (
+                      ({ users?.map((user }) => (
                         <div key={user.id} className="flex items-center justify-between p-4 border rounded-lg">
                           <div>
                             <h4 className="font-medium">{user.firstName} {user.lastName}</h4>
@@ -308,19 +304,19 @@ export default function ToitAdmin() {
                         <Input
                           id="workflowName"
                           value={workflowForm.name}
-                          onChange={(e) => setWorkflowForm(prev => ({ ...prev, name))}
+                          onChange=({ (e }) => setWorkflowForm(prev => ({ ...prev, name))}
                           placeholder="Ex) => setWorkflowForm(prev => ({ ...prev, description))}
                           placeholder="Descreva o que este workflow faz..."
                         />
                       </div>
                       <div>
                         <Label htmlFor="workflowTenant">Empresa</Label>
-                        <Select value={workflowForm.tenantId} onValueChange={(value) => setWorkflowForm(prev => ({ ...prev, tenantId))}>
+                        <Select value={workflowForm.tenantId} onValueChange=({ (value }) => setWorkflowForm(prev => ({ ...prev, tenantId))}>
                           <SelectTrigger>
                             <SelectValue placeholder="Selecione uma empresa" />
                           </SelectTrigger>
                           <SelectContent>
-                            {companies?.map((company) => (
+                            ({ companies?.map((company }) => (
                               <SelectItem key={company.id} value={company.id}>{company.name}</SelectItem>
                             ))}
                           </SelectContent>
@@ -328,7 +324,7 @@ export default function ToitAdmin() {
                       </div>
                     </div>
                     <Button 
-                      onClick={() => createWorkflowMutation.mutate(workflowForm)}
+                      onClick=({ ( }) => createWorkflowMutation.mutate(workflowForm)}
                       disabled={createWorkflowMutation.isPending || !workflowForm.name}
                       className="w-full"
                     >
@@ -340,7 +336,7 @@ export default function ToitAdmin() {
             )}
 
             {/* Analytics */}
-            {activeSection === 'analytics' && (
+            ({ activeSection === 'analytics' && (
               <div className="space-y-6">
                 <Card>
                   <CardHeader>
@@ -351,14 +347,14 @@ export default function ToitAdmin() {
                       Execute análises adaptativas para empresas específicas e veja insights em tempo real.
                     </p>
                     <div className="space-y-3">
-                      {companies?.map((company) => (
+                      {companies?.map((company }) => (
                         <div key={company.id} className="flex items-center justify-between p-3 border rounded-lg">
                           <div>
                             <h4 className="font-medium">{company.name}</h4>
                             <p className="text-sm text-gray-500">Análise de padrões e insights</p>
                           </div>
                           <Button 
-                            onClick={() => executeAdaptiveAnalysis.mutate(company.id)}
+                            onClick=({ ( }) => executeAdaptiveAnalysis.mutate(company.id)}
                             disabled={executeAdaptiveAnalysis.isPending}
                             size="sm"
                           >
@@ -376,4 +372,4 @@ export default function ToitAdmin() {
       </div>
     </div>
   );
-}
+}`

@@ -13,19 +13,19 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { 
-  Calendar, 
-  Clock, 
-  MapPin, 
-  Users, 
-  Bell, 
-  Repeat, 
+import {  
+
+
+
+
+
+
   Trash2, 
-  Save,
-  AlertTriangle,
-  Video,
-  Phone,
-  Mail
+
+
+
+
+ }
 } from 'lucide-react';
 
 const EventDialog = ({ 
@@ -37,10 +37,8 @@ const EventDialog = ({
   onDelete, 
   isCreateMode, 
   eventCategories 
-}) => {
-  
-  // Atualizar campo do formulário
-  const updateField = (field, value) => {
+}) => ({ // Atualizar campo do formulário
+  const updateField = (field, value }) => {
     setEventForm(prev => ({
       ...prev,
       [field]: value
@@ -100,7 +98,7 @@ const EventDialog = ({
               <Input
                 id="title"
                 value={eventForm.title}
-                onChange={(e) => updateField('title', e.target.value)}
+                onChange=({ (e }) => updateField('title', e.target.value)}
                 placeholder="Digite o título do evento"
                 className="mt-1"
               />
@@ -113,7 +111,7 @@ const EventDialog = ({
               <Textarea
                 id="description"
                 value={eventForm.description}
-                onChange={(e) => updateField('description', e.target.value)}
+                onChange=({ (e }) => updateField('description', e.target.value)}
                 placeholder="Adicione uma descrição (opcional)"
                 rows={3}
                 className="mt-1"
@@ -123,14 +121,14 @@ const EventDialog = ({
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="category" className="text-sm font-medium">
-                  Categoria
+
                 </Label>
-                <Select value={eventForm.category} onValueChange={(value) => updateField('category', value)}>
+                <Select value={eventForm.category} onValueChange=({ (value }) => updateField('category', value)}>
                   <SelectTrigger className="mt-1">
                     <SelectValue placeholder="Selecione a categoria" />
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.entries(eventCategories).map(([key, category]) => {
+                    ({ Object.entries(eventCategories).map(([key, category] }) => {
                       const Icon = category.icon;
                       return (
                         <SelectItem key={key} value={key}>
@@ -147,14 +145,14 @@ const EventDialog = ({
 
               <div>
                 <Label htmlFor="priority" className="text-sm font-medium">
-                  Prioridade
+
                 </Label>
-                <Select value={eventForm.priority} onValueChange={(value) => updateField('priority', value)}>
+                <Select value={eventForm.priority} onValueChange=({ (value }) => updateField('priority', value)}>
                   <SelectTrigger className="mt-1">
                     <SelectValue placeholder="Selecione a prioridade" />
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.entries(priorityOptions).map(([key, option]) => (
+                    ({ Object.entries(priorityOptions).map(([key, option] }) => (
                       <SelectItem key={key} value={key}>
                         <Badge className={option.color} variant="secondary">
                           {option.label}
@@ -180,7 +178,7 @@ const EventDialog = ({
               <Switch
                 id="allDay"
                 checked={eventForm.isAllDay}
-                onCheckedChange={(checked) => updateField('isAllDay', checked)}
+                onCheckedChange=({ (checked }) => updateField('isAllDay', checked)}
               />
               <Label htmlFor="allDay" className="text-sm">
                 Evento de dia inteiro
@@ -196,7 +194,7 @@ const EventDialog = ({
                   id="startDate"
                   type="date"
                   value={eventForm.startDate}
-                  onChange={(e) => updateField('startDate', e.target.value)}
+                  onChange=({ (e }) => updateField('startDate', e.target.value)}
                   className="mt-1"
                 />
               </div>
@@ -209,7 +207,7 @@ const EventDialog = ({
                   id="endDate"
                   type="date"
                   value={eventForm.endDate}
-                  onChange={(e) => updateField('endDate', e.target.value)}
+                  onChange=({ (e }) => updateField('endDate', e.target.value)}
                   className="mt-1"
                 />
               </div>
@@ -225,7 +223,7 @@ const EventDialog = ({
                     id="startTime"
                     type="time"
                     value={eventForm.startTime}
-                    onChange={(e) => updateField('startTime', e.target.value)}
+                    onChange=({ (e }) => updateField('startTime', e.target.value)}
                     className="mt-1"
                   />
                 </div>
@@ -238,7 +236,7 @@ const EventDialog = ({
                     id="endTime"
                     type="time"
                     value={eventForm.endTime}
-                    onChange={(e) => updateField('endTime', e.target.value)}
+                    onChange=({ (e }) => updateField('endTime', e.target.value)}
                     className="mt-1"
                   />
                 </div>
@@ -257,12 +255,12 @@ const EventDialog = ({
 
             <div>
               <Label htmlFor="location" className="text-sm font-medium">
-                Local
+
               </Label>
               <Input
                 id="location"
                 value={eventForm.location}
-                onChange={(e) => updateField('location', e.target.value)}
+                onChange=({ (e }) => updateField('location', e.target.value)}
                 placeholder="Sala de reuniões, endereço ou link online"
                 className="mt-1"
               />
@@ -270,12 +268,12 @@ const EventDialog = ({
 
             <div>
               <Label htmlFor="attendees" className="text-sm font-medium">
-                Participantes
+
               </Label>
               <Input
                 id="attendees"
                 value={eventForm.attendees}
-                onChange={(e) => updateField('attendees', e.target.value)}
+                onChange=({ (e }) => updateField('attendees', e.target.value)}
                 placeholder="Nome dos participantes (separados por vírgula)"
                 className="mt-1"
               />
@@ -293,17 +291,17 @@ const EventDialog = ({
 
             <div>
               <Label htmlFor="reminder" className="text-sm font-medium">
-                Lembrete
+
               </Label>
               <Select 
                 value={eventForm.reminderMinutes.toString()} 
-                onValueChange={(value) => updateField('reminderMinutes', parseInt(value))}
+                onValueChange=({ (value }) => updateField('reminderMinutes', parseInt(value))}
               >
                 <SelectTrigger className="mt-1">
                   <SelectValue placeholder="Selecione o lembrete" />
                 </SelectTrigger>
                 <SelectContent>
-                  {Object.entries(reminderOptions).map(([minutes, label]) => (
+                  ({ Object.entries(reminderOptions).map(([minutes, label] }) => (
                     <SelectItem key={minutes} value={minutes}>
                       {label}
                     </SelectItem>
@@ -317,7 +315,7 @@ const EventDialog = ({
                 <Switch
                   id="recurring"
                   checked={eventForm.isRecurring}
-                  onCheckedChange={(checked) => updateField('isRecurring', checked)}
+                  onCheckedChange=({ (checked }) => updateField('isRecurring', checked)}
                 />
                 <Label htmlFor="recurring" className="text-sm">
                   Evento recorrente
@@ -331,13 +329,13 @@ const EventDialog = ({
                   </Label>
                   <Select 
                     value={eventForm.recurringType} 
-                    onValueChange={(value) => updateField('recurringType', value)}
+                    onValueChange=({ (value }) => updateField('recurringType', value)}
                   >
                     <SelectTrigger className="mt-1">
                       <SelectValue placeholder="Selecione a frequência" />
                     </SelectTrigger>
                     <SelectContent>
-                      {Object.entries(recurringOptions).map(([key, label]) => (
+                      ({ Object.entries(recurringOptions).map(([key, label] }) => (
                         <SelectItem key={key} value={key}>
                           <div className="flex items-center space-x-2">
                             <Repeat className="h-4 w-4" />
@@ -385,7 +383,7 @@ const EventDialog = ({
 
           <div className="flex items-center space-x-2">
             <Button variant="outline" onClick={onClose}>
-              Cancelar
+
             </Button>
             <Button 
               onClick={onSave} 

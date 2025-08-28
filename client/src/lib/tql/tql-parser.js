@@ -188,7 +188,7 @@ class TQLParser {
         }
         
         // Validar campo
-        if (!this.fields[field.toLowerCase()]) {
+        if (!this.fields[field.toLowerCase()]) {`
             throw new Error(`Campo desconhecido: ${field}`);
         }
         
@@ -196,7 +196,7 @@ class TQLParser {
             type: 'filter',
             field: field.toLowerCase(),
             operator: operator,
-            value: value,
+            value: value,`
             description: `${this.fields[field.toLowerCase()]} ${this.operators[operator]} "${value}"`
         };
     }
@@ -323,7 +323,7 @@ class TQLParser {
                         if (value.toLowerCase().startsWith(partialValue.toLowerCase())) {
                             suggestions.push({
                                 type: 'value',
-                                text: value,
+                                text: value,`
                                 description: `${this.fields[field]}: ${value}`,
                                 insertText: value
                             });
@@ -347,7 +347,7 @@ class TQLParser {
             if (result.isValid) {
                 const filterCount = result.filters.length;
                 return { 
-                    isValid: true, 
+                    isValid: true, `
                     message: `${filterCount} filtro${filterCount !== 1 ? 's' : ''} aplicado${filterCount !== 1 ? 's' : ''}` 
                 };
             } else {
@@ -363,4 +363,4 @@ class TQLParser {
 window.TQLParser = TQLParser;
 
 // Criar instância global
-window.tqlParser = new TQLParser();
+window.tqlParser = new TQLParser();`

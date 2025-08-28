@@ -4,37 +4,37 @@
  */
 
 import React, { useState, useCallback } from 'react';
-import { 
-  Card, 
-  Button, 
-  Drawer, 
-  Form, 
-  Input, 
-  Select, 
-  ColorPicker, 
-  Slider,
-  Switch,
-  Modal,
+import {  
+
+
+
+
+
+
+
+
+
+
   message,
-  Space,
-  Tabs,
-  Row,
-  Col,
-  Tooltip
+
+
+
+
+ }
 } from 'antd';
-import { 
-  PlusOutlined, 
-  EyeOutlined, 
-  SaveOutlined, 
-  SettingOutlined,
-  BarChartOutlined,
-  LineChartOutlined,
-  PieChartOutlined,
-  TableOutlined,
-  NumberOutlined,
-  ExperimentOutlined,
-  DragOutlined,
-  DeleteOutlined
+import {  
+
+
+
+
+
+
+
+
+
+
+
+ }
 } from '@ant-design/icons';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
@@ -110,7 +110,7 @@ const DashboardBuilder = ({ dashboardId, onSave, onPreview }) => {
     const newWidget = {
       i: `widget_${Date.now()}`,
       type: type,
-      subtype: subtype,
+      subtype: subtype,`
       title: `${widgetTypes[type].label} ${widgets.length + 1}`,
       config: {
         dataSource: null,
@@ -180,7 +180,7 @@ const DashboardBuilder = ({ dashboardId, onSave, onPreview }) => {
   // Salvar dashboard
   const saveDashboard = async () => {
     try {
-      const dashboard = {
+      const dashboard = {`
         id: dashboardId || `dashboard_${Date.now()}`,
         name: dashboardConfig.name,
         description: dashboardConfig.description,
@@ -220,13 +220,13 @@ const DashboardBuilder = ({ dashboardId, onSave, onPreview }) => {
       <Tabs defaultActiveKey="basic" size="small">
         <TabPane tab="Basic" key="basic">
           <div className="widget-categories">
-            {Object.entries(widgetTypes).map(([type, config]) => (
+            ({ Object.entries(widgetTypes).map(([type, config] }) => (
               <div key={type} className="widget-category">
                 <Button
                   block
                   className="widget-button"
                   style={{ borderColor: config.color, color: config.color }}
-                  onClick={() => addWidget(type)}
+                  onClick=({ ( }) => addWidget(type)}
                   icon={config.icon}
                 >
                   {config.label}
@@ -239,7 +239,7 @@ const DashboardBuilder = ({ dashboardId, onSave, onPreview }) => {
                         key={subtype}
                         size="small"
                         type="text"
-                        onClick={() => addWidget(type, subtype)}
+                        onClick=({ ( }) => addWidget(type, subtype)}
                       >
                         {subtype}
                       </Button>
@@ -256,7 +256,7 @@ const DashboardBuilder = ({ dashboardId, onSave, onPreview }) => {
             <Button
               block
               className="quantum-widget-button"
-              onClick={() => addWidget('quantum', 'prediction')}
+              onClick=({ ( }) => addWidget('quantum', 'prediction')}
               icon={<ExperimentOutlined />}
             >
               🔮 Quantum Prediction
@@ -264,7 +264,7 @@ const DashboardBuilder = ({ dashboardId, onSave, onPreview }) => {
             <Button
               block
               className="quantum-widget-button"
-              onClick={() => addWidget('quantum', 'optimization')}
+              onClick=({ ( }) => addWidget('quantum', 'optimization')}
               icon={<ExperimentOutlined />}
             >
               ⚡ Quantum Optimization
@@ -272,7 +272,7 @@ const DashboardBuilder = ({ dashboardId, onSave, onPreview }) => {
             <Button
               block
               className="quantum-widget-button"
-              onClick={() => addWidget('quantum', 'analysis')}
+              onClick=({ ( }) => addWidget('quantum', 'analysis')}
               icon={<ExperimentOutlined />}
             >
               🧠 Quantum Analysis
@@ -282,13 +282,13 @@ const DashboardBuilder = ({ dashboardId, onSave, onPreview }) => {
 
         <TabPane tab="Templates" key="templates">
           <div className="widget-templates">
-            <Button block onClick={() => addPrebuiltDashboard('sales')}>
+            <Button block onClick=({ ( }) => addPrebuiltDashboard('sales')}>
               📈 Sales Dashboard
             </Button>
-            <Button block onClick={() => addPrebuiltDashboard('analytics')}>
+            <Button block onClick=({ ( }) => addPrebuiltDashboard('analytics')}>
               📊 Analytics Dashboard
             </Button>
-            <Button block onClick={() => addPrebuiltDashboard('quantum')}>
+            <Button block onClick=({ ( }) => addPrebuiltDashboard('quantum')}>
               ⚛️ Quantum Dashboard
             </Button>
           </div>
@@ -308,7 +308,7 @@ const DashboardBuilder = ({ dashboardId, onSave, onPreview }) => {
               size="small"
               type="text"
               icon={<SettingOutlined />}
-              onClick={() => selectWidget(widget.i)}
+              onClick=({ ( }) => selectWidget(widget.i)}
             />
           </Tooltip>
           <Tooltip title="Delete">
@@ -317,7 +317,7 @@ const DashboardBuilder = ({ dashboardId, onSave, onPreview }) => {
               type="text"
               danger
               icon={<DeleteOutlined />}
-              onClick={() => removeWidget(widget.i)}
+              onClick=({ ( }) => removeWidget(widget.i)}
             />
           </Tooltip>
         </div>
@@ -487,8 +487,8 @@ const DashboardBuilder = ({ dashboardId, onSave, onPreview }) => {
             <Button type="primary" htmlType="submit">
               Save Widget
             </Button>
-            <Button onClick={() => setDrawerVisible(false)}>
-              Cancel
+            <Button onClick=({ ( }) => setDrawerVisible(false)}>
+
             </Button>
           </Space>
         </Form.Item>
@@ -529,12 +529,12 @@ const DashboardBuilder = ({ dashboardId, onSave, onPreview }) => {
         break;
     }
 
-    setWidgets([...widgets, ...prebuiltWidgets]);
+    setWidgets([...widgets, ...prebuiltWidgets]);`
     message.success(`${type} dashboard template added`);
   };
 
   // Criar widget helper
-  const createWidget = (type, subtype, title, x, y, w, h) => ({
+  const createWidget = (type, subtype, title, x, y, w, h) => ({`
     i: `widget_${Date.now()}_${Math.random()}`,
     type,
     subtype,
@@ -563,16 +563,16 @@ const DashboardBuilder = ({ dashboardId, onSave, onPreview }) => {
           <Space>
             <Button
               icon={<SettingOutlined />}
-              onClick={() => setConfigModalVisible(true)}
+              onClick=({ ( }) => setConfigModalVisible(true)}
             >
-              Settings
+
             </Button>
             <Button
               icon={<EyeOutlined />}
               onClick={previewDashboard}
               disabled={widgets.length === 0}
             >
-              Preview
+
             </Button>
             <Button
               type="primary"
@@ -580,7 +580,7 @@ const DashboardBuilder = ({ dashboardId, onSave, onPreview }) => {
               onClick={saveDashboard}
               disabled={widgets.length === 0}
             >
-              Save
+
             </Button>
           </Space>
         </div>
@@ -607,11 +607,11 @@ const DashboardBuilder = ({ dashboardId, onSave, onPreview }) => {
       </div>
 
       {/* Drawer de configuração do widget */}
-      <Drawer
+      <Drawer`
         title={`Configure ${selectedWidget?.title || 'Widget'}`}
         placement="right"
         width={400}
-        onClose={() => setDrawerVisible(false)}
+        onClose=({ ( }) => setDrawerVisible(false)}
         open={drawerVisible}
       >
         {renderWidgetConfig()}
@@ -621,13 +621,13 @@ const DashboardBuilder = ({ dashboardId, onSave, onPreview }) => {
       <Modal
         title="Dashboard Settings"
         open={configModalVisible}
-        onCancel={() => setConfigModalVisible(false)}
+        onCancel=({ ( }) => setConfigModalVisible(false)}
         footer={null}
       >
         <Form
           layout="vertical"
           initialValues={dashboardConfig}
-          onFinish={(values) => {
+          onFinish=({ (values }) => {
             setDashboardConfig(values);
             setConfigModalVisible(false);
             message.success('Dashboard settings updated');
@@ -676,8 +676,8 @@ const DashboardBuilder = ({ dashboardId, onSave, onPreview }) => {
               <Button type="primary" htmlType="submit">
                 Save Settings
               </Button>
-              <Button onClick={() => setConfigModalVisible(false)}>
-                Cancel
+              <Button onClick=({ ( }) => setConfigModalVisible(false)}>
+
               </Button>
             </Space>
           </Form.Item>
@@ -688,3 +688,4 @@ const DashboardBuilder = ({ dashboardId, onSave, onPreview }) => {
 };
 
 export default DashboardBuilder;
+`

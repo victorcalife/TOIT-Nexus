@@ -306,7 +306,7 @@ class TQLMasterService {
             if (widget.type === 'kpi') {
                 // KPI usa variável já calculada
                 return {
-                    data: { value: widget.data || 0 },
+                    data: { value: widget.data || 0 },`
                     sql: `-- KPI: ${widget.variable}`
                 };
             }
@@ -526,4 +526,4 @@ class TQLMasterService {
     }
 }
 
-module.exports = TQLMasterService;
+module.exports = TQLMasterService;`

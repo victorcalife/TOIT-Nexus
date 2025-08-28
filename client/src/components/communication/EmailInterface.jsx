@@ -11,44 +11,37 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import { 
-  Mail, 
-  Send, 
-  Reply, 
-  ReplyAll, 
-  Forward, 
-  Archive, 
-  Trash2, 
-  Star, 
-  StarOff,
-  Paperclip, 
-  Image, 
-  Calendar,
-  Clock,
-  Search,
-  Filter,
-  Plus,
-  Edit,
-  Save,
-  Download,
-  Share,
-  Settings,
+import {
   Inbox,
   Sent,
   Drafts,
-  Spam,
-  Important,
+  Star,
+  Archive,
+  Trash2,
+  Search,
+  Plus,
+  Send,
+  Paperclip,
+  Calendar,
+  Clock,
+  Users,
+  Settings,
+  Filter,
+  SortAsc,
+  SortDesc,
+  Reply,
+  ReplyAll,
+  Forward,
+  Download,
+  Flag,
+  MoreHorizontal,
   Brain,
   Atom,
   Zap,
-  Bot,
-  User,
   CheckCircle,
   AlertCircle,
-  FileText,
-  Folder,
-  Tag,
-  MoreVertical
+  Info,
+  X
 } from 'lucide-react';
 
 // Importar sistema quântico integrado
@@ -60,8 +53,8 @@ const EMAIL_FOLDERS = [
   { id: 'inbox', name: 'Caixa de Entrada', icon: Inbox, count: 12 },
   { id: 'sent', name: 'Enviados', icon: Sent, count: 0 },
   { id: 'drafts', name: 'Rascunhos', icon: Drafts, count: 3 },
-  { id: 'important', name: 'Importantes', icon: Important, count: 5 },
-  { id: 'spam', name: 'Spam', icon: Spam, count: 2 },
+  { id: 'important', name: 'Importantes', icon: Star, count: 5 },
+  { id: 'spam', name: 'Spam', icon: AlertCircle, count: 2 },
   { id: 'trash', name: 'Lixeira', icon: Trash2, count: 0 }
 ];
 
@@ -128,7 +121,7 @@ export default function EmailInterface({ isOpen = true, onClose }) {
       
       // Conectar ao sistema quântico
       quantumSystemCore.connectModule('email', {
-        receiveQuantumUpdate: (result) => {
+        receiveQuantumUpdate: (result }) => {
           if (result.automaticInsights) {
             setMilaInsights(prev => [...prev, ...result.automaticInsights]);
           }
@@ -405,8 +398,7 @@ Segue em anexo o relatório solicitado, gerado automaticamente pelo sistema TOIT
 • Confiabilidade: ${((quantumResult.confidence || 0.9) * 100).toFixed(0)}%
 
 O relatório inclui análises preditivas e insights gerados pela MILA.
-
-Atenciosamente,
+`
 Sistema TOIT NEXUS`
         };
         
@@ -588,7 +580,7 @@ Atenciosamente,`
                     {email.from.isBot && (
                       <Badge variant="secondary" className="text-xs">
                         <Brain className="w-2 h-2 mr-1" />
-                        AI
+                        MILA
                       </Badge>
                     )}
                     
@@ -774,7 +766,7 @@ Atenciosamente,`
                     </div>
                     <Button variant="outline" size="sm">
                       <Download className="w-4 h-4 mr-2" />
-                      Download
+                      Baixar
                     </Button>
                   </div>
                 </div>
@@ -827,8 +819,7 @@ Atenciosamente,`
                   w-full flex items-center justify-between p-3 rounded-lg text-left transition-colors
                   ${selectedFolder === folder.id 
                     ? 'bg-blue-100 text-blue-700' 
-                    : 'hover:bg-gray-100 text-gray-700'
-                  }
+                    : 'hover:bg-gray-100 text-gray-700'}
                 `}
               >
                 <div className="flex items-center gap-3">
@@ -1090,3 +1081,4 @@ Atenciosamente,`
     </div>
   );
 }
+`

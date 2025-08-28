@@ -4,28 +4,28 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { 
-  Card, 
-  Button, 
-  Progress, 
-  Timeline, 
-  Statistic, 
-  Row, 
-  Col, 
-  Alert, 
-  Badge,
-  Tooltip,
-  Spin,
-  Divider
+import {  
+
+
+
+
+
+
+
+
+
+
+
+ }
 } from 'antd';
-import { 
-  ThunderboltOutlined, 
-  BranchesOutlined, 
-  ClockCircleOutlined,
-  RocketOutlined,
-  ExperimentOutlined,
-  CheckCircleOutlined,
-  SyncOutlined
+import {  
+
+
+
+
+
+
+ }
 } from '@ant-design/icons';
 import useQuantumSystem from '../../hooks/useQuantumSystem';
 import './QuantumWorkflowOptimizer.css';
@@ -84,13 +84,12 @@ const QuantumWorkflowOptimizer = ({ workflowData, onOptimizationComplete }) => {
   };
 
   // Renderizar sequência otimizada
-  const renderOptimizedSequence = () => {
-    if (!optimizationResult?.optimizedSequence) return null;
+  const renderOptimizedSequence = () => ({ if (!optimizationResult?.optimizedSequence) return null;
 
     return (
       <Card title="🔬 Sequência Otimizada" className="quantum-optimization-card">
         <Timeline>
-          {optimizationResult.optimizedSequence.map((task, index) => (
+          {optimizationResult.optimizedSequence.map((task, index }) => (
             <Timeline.Item
               key={task.id || index}
               dot={<CheckCircleOutlined style={{ color: '#52c41a' }} />}
@@ -202,13 +201,12 @@ const QuantumWorkflowOptimizer = ({ workflowData, onOptimizationComplete }) => {
   };
 
   // Renderizar dependências quânticas
-  const renderQuantumDependencies = () => {
-    if (!optimizationResult?.dependencies?.entangledPairs) return null;
+  const renderQuantumDependencies = () => ({ if (!optimizationResult?.dependencies?.entangledPairs) return null;
 
     return (
       <Card title="🔗 Dependências Quânticas" className="quantum-dependencies-card">
         <div className="entangled-pairs">
-          {optimizationResult.dependencies.entangledPairs.map((pair, index) => (
+          {optimizationResult.dependencies.entangledPairs.map((pair, index }) => (
             <div key={index} className="entangled-pair">
               <div className="pair-connection">
                 <span className="task-node">{pair.task1}</span>
@@ -227,11 +225,11 @@ const QuantumWorkflowOptimizer = ({ workflowData, onOptimizationComplete }) => {
           ))}
         </div>
         
-        {optimizationResult.dependencies.criticalPath && (
+        ({ optimizationResult.dependencies.criticalPath && (
           <div className="critical-path">
             <h4>🎯 Caminho Crítico Quântico:</h4>
             <div className="critical-path-tasks">
-              {optimizationResult.dependencies.criticalPath.map((taskId, index) => (
+              {optimizationResult.dependencies.criticalPath.map((taskId, index }) => (
                 <Badge 
                   key={taskId} 
                   count={index + 1} 
@@ -248,13 +246,12 @@ const QuantumWorkflowOptimizer = ({ workflowData, onOptimizationComplete }) => {
   };
 
   // Renderizar histórico de otimizações
-  const renderOptimizationHistory = () => {
-    if (optimizationHistory.length === 0) return null;
+  const renderOptimizationHistory = () => ({ if (optimizationHistory.length === 0) return null;
 
     return (
       <Card title="📈 Histórico de Otimizações" className="optimization-history-card">
         <Timeline size="small">
-          {optimizationHistory.map((entry, index) => (
+          {optimizationHistory.map((entry, index }) => (
             <Timeline.Item
               key={index}
               dot={<ExperimentOutlined style={{ color: '#1890ff' }} />}
@@ -312,7 +309,7 @@ const QuantumWorkflowOptimizer = ({ workflowData, onOptimizationComplete }) => {
         
         {systemHealth && systemHealth.status !== 'excellent' && (
           <Alert
-            message="Sistema Quântico"
+            message="Sistema Quântico"`
             description={`Status: ${systemHealth.status} - Considere otimização`}
             type="warning"
             size="small"
@@ -378,9 +375,9 @@ const QuantumWorkflowOptimizer = ({ workflowData, onOptimizationComplete }) => {
           {renderSystemStatus()}
           {renderOptimizationHistory()}
           
-          {optimizationResult?.recommendations && (
+          ({ optimizationResult?.recommendations && (
             <Card title="💡 Recomendações" size="small">
-              {optimizationResult.recommendations.map((rec, index) => (
+              {optimizationResult.recommendations.map((rec, index }) => (
                 <Alert
                   key={index}
                   message={rec.message}
@@ -399,3 +396,4 @@ const QuantumWorkflowOptimizer = ({ workflowData, onOptimizationComplete }) => {
 };
 
 export default QuantumWorkflowOptimizer;
+`

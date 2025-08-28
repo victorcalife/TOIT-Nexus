@@ -15,7 +15,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   Activity, 
   Zap, 
   Brain, 
@@ -28,14 +28,14 @@ import {
   Waves,
   GitBranch,
   Infinity
+ }
 } from 'lucide-react';
 
 // ============================================================================
 // QUANTUM VISUALIZATION COMPONENTS
 // ============================================================================
 
-) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+) => ({ const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>();
 
   useEffect(() => {
@@ -47,7 +47,7 @@ import {
 
     let animationTime = 0;
 
-    const animate = () => {
+    const animate = ( }) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
       switch (type) {
@@ -99,6 +99,7 @@ import {
       ctx.fill();
       
       // Quantum wave function
+`
       ctx.strokeStyle = `hsla(${240 + i * 30}, 70%, 60%, 0.6)`;
       ctx.lineWidth = 2;
       ctx.beginPath();
@@ -109,6 +110,7 @@ import {
     // Central probability cloud
     ctx.beginPath();
     ctx.arc(centerX, centerY, 12, 0, 2 * Math.PI);
+`
     ctx.fillStyle = `hsla(270, 70%, 60%, ${0.4 + Math.sin(time * 3) * 0.2})`;
     ctx.fill();
   };
@@ -121,15 +123,18 @@ import {
     // Entangled particles
     ctx.beginPath();
     ctx.arc(leftX, centerY, 10, 0, 2 * Math.PI);
+`
     ctx.fillStyle = `hsla(200, 70%, 60%, ${0.8 + Math.sin(time * 4) * 0.2})`;
     ctx.fill();
 
     ctx.beginPath();
     ctx.arc(rightX, centerY, 10, 0, 2 * Math.PI);
+`
     ctx.fillStyle = `hsla(320, 70%, 60%, ${0.8 + Math.sin(time * 4) * 0.2})`;
     ctx.fill();
 
     // Quantum connection
+`
     ctx.strokeStyle = `hsla(260, 70%, 60%, ${0.6 + Math.sin(time * 2) * 0.3})`;
     ctx.lineWidth = 3;
     ctx.setLineDash([5, 5]);
@@ -146,6 +151,7 @@ import {
       
       ctx.beginPath();
       ctx.arc(x, y, 3, 0, 2 * Math.PI);
+`
       ctx.fillStyle = `hsla(${260 + i * 15}, 70%, 60%, 0.7)`;
       ctx.fill();
     }
@@ -169,6 +175,7 @@ import {
         const alpha = Math.abs(interference) * 0.5;
         const hue = interference > 0 ? 240 : 320;
         
+`
         ctx.fillStyle = `hsla(${hue}, 70%, 60%, ${alpha})`;
         ctx.fillRect(x, y, 2, 2);
       }
@@ -184,12 +191,14 @@ import {
     // Source particle
     ctx.beginPath();
     ctx.arc(leftX, centerY, 10, 0, 2 * Math.PI);
+`
     ctx.fillStyle = `hsla(180, 70%, 60%, ${1 - progress})`;
     ctx.fill();
 
     // Target particle
     ctx.beginPath();
     ctx.arc(rightX, centerY, 10, 0, 2 * Math.PI);
+`
     ctx.fillStyle = `hsla(180, 70%, 60%, ${progress})`;
     ctx.fill();
 
@@ -197,12 +206,14 @@ import {
     const beamX = leftX + (rightX - leftX) * progress;
     ctx.beginPath();
     ctx.arc(beamX, centerY, 5, 0, 2 * Math.PI);
+`
     ctx.fillStyle = `hsla(60, 100%, 80%, 0.8)`;
     ctx.fill();
 
     // Quantum field lines
     for (let i = 0; i < 5; i++) {
       const y = centerY + (i - 2) * 8;
+`
       ctx.strokeStyle = `hsla(${60 + i * 20}, 70%, 60%, 0.6)`;
       ctx.lineWidth = 2;
       ctx.beginPath();
@@ -233,93 +244,103 @@ import {
 // MAIN QUANTUM ML DASHBOARD COMPONENT
 // ============================================================================
 
-const QuantumMLDashboard) => {
+const QuantumMLDashboard = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   
   // State management
   const [activeTab, setActiveTab] = useState('overview');
   const [quantumSystem, setQuantumSystem] = useState({
-    isActive,
-    coherenceTime,
-    qubitsInUse,
-    parallelUniverses);
-  const [visualizationActive, setVisualizationActive] = useState<Record<string, boolean>>({});
+    isActive: false,
+    coherenceTime: 0,
+    qubitsInUse: 0,
+    parallelUniverses: 1
+  });
+  const [visualizationActive, setVisualizationActive] = useState({});
 
   // Quantum system status query
-  const { data, isLoading,
-    queryFn) => {
+  const { data, isLoading } = useQuery({
+    queryKey: ['quantum-system-status'],
+    queryFn: async () => {
       const response = await fetch('/api/quantum-ml/system/status', {
-        credentials);
+        credentials: 'include'
+      });
       if (!response.ok) throw new Error('Failed to fetch quantum system status');
       return response.json();
     },
-    refetchInterval);
+    refetchInterval: 5000
+  });
 
   // Quantum report generation mutation
   const generateQuantumReport = useMutation({
-    mutationFn) => {
+    mutationFn: async (params) => {
       const response = await fetch('/api/quantum-ml/reports/generate', {
-        method,
-        headers,
-        credentials,
-        body)
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify(params)
       });
       if (!response.ok) throw new Error('Failed to generate quantum report');
       return response.json();
     },
-    onSuccess) => {
+    onSuccess: (data) => {
       toast({
-        title,
-        description)}x quantum advantage using ${data.data.quantumMetrics.parallelUniverses} parallel universes.`,
+        title: 'Quantum Report Generated',
+        description: `Report generated with ${data.data?.quantumMetrics?.parallelUniverses || 1}x quantum advantage.`
       });
-      queryClient.invalidateQueries({ queryKey);
+      queryClient.invalidateQueries({ queryKey: ['quantum-system-status'] });
     },
-    onError) => {
+    onError: (error) => {
       toast({
-        title,
-        description,
-        variant,
+        title: 'Error',
+        description: error.message,
+        variant: 'destructive'
       });
     }
   });
 
   // Workflow optimization mutation
   const optimizeWorkflow = useMutation({
-    mutationFn) => {
+    mutationFn: async (params) => {
       const response = await fetch('/api/quantum-ml/workflows/optimize', {
-        method,
-        headers,
-        credentials,
-        body)
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify(params)
       });
       if (!response.ok) throw new Error('Failed to optimize workflow');
       return response.json();
     },
-    onSuccess) => {
+    onSuccess: (data) => {
       toast({
-        title,
-        description)}x improvement with ${(data.data.quantumMetrics.fidelity * 100).toFixed(1)}% quantum fidelity.`,
+        title: 'Workflow Optimized',
+        description: `Workflow optimized with ${(data.data?.quantumMetrics?.fidelity * 100 || 95).toFixed(1)}% quantum fidelity.`
       });
     }
   });
 
   // Entanglement creation mutation
   const createEntanglement = useMutation({
-    mutationFn) => {
+    mutationFn: async (params) => {
       const response = await fetch('/api/quantum-ml/entanglement/create', {
-        method,
-        headers,
-        credentials,
-        body)
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify(params)
       });
       if (!response.ok) throw new Error('Failed to create entanglement');
       return response.json();
     },
-    onSuccess) => {
+    onSuccess: (data) => {
       toast({
-        title,
-        description).toFixed(1)}% correlation strength.`,
+        title: 'Entanglement Created',
+        description: `Entanglement created with ${(data.data?.correlationStrength * 100 || 85).toFixed(1)}% correlation strength.`
       });
     }
   });
@@ -333,31 +354,38 @@ const QuantumMLDashboard) => {
 
   const handleQuantumReportGeneration = () => {
     generateQuantumReport.mutate({
-      dataSourceId,
-      reportTypes, 'operational', 'strategic'],
-      timeframe,
-      userContext,
-        department);
+      dataSourceId: 'quantum-ml-system',
+      reportTypes: ['performance', 'operational', 'strategic'],
+      timeframe: '30d',
+      userContext: {
+        userId: 'current-user',
+        department: 'quantum-research'
+      }
+    });
   };
 
   const handleWorkflowOptimization = () => {
     optimizeWorkflow.mutate({
-      workflowId,
-      optimizationObjectives, 'maximize_quality', 'reduce_cost'],
-      constraints, value, weight,
-        { type, value, weight);
+      workflowId: 'quantum-ml-workflow',
+      optimizationObjectives: ['maximize_quality', 'reduce_cost'],
+      constraints: [
+        { type: 'budget', value: 10000, weight: 0.3 },
+        { type: 'time', value: 24, weight: 0.7 }
+      ]
+    });
   };
 
   const handleCreateEntanglement = () => {
     createEntanglement.mutate({
-      metricA,
-      metricB,
-      historicalPeriod);
+      metricA: 'performance',
+      metricB: 'efficiency',
+      historicalPeriod: '7d'
+    });
   };
 
   return (
     <div className="container mx-auto p-6 space-y-6">
-      {/* Header */}
+<header className="mb-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold flex items-center gap-2">
@@ -381,83 +409,119 @@ const QuantumMLDashboard) => {
         </div>
       </div>
 
-      {/* System Status Overview */}
-      <div className="grid grid-cols-1 md, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded">
-                      <span className="text-sm font-medium">{algorithm}</span>
-                      <Badge variant="outline" className="text-xs">Active</Badge>
-                    </div>
-                  ))}
+<div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
+</CardTitle>
+        <Badge>{data?.systemStatus || 'Unknown'</Badge>
+      </div>
+      <div className="flex items-center justify-between">
+        <span className="text-sm font  <CardHeActive adbits</span>
+        <sper>{data?.ac>iveQbits || 0}</span>
+      </div>
+      <div className="flex items-center justify-between">
+        <span className="text-sm font-medium">Coherence Time</span>
+        <span>{data?.coherenceTime || '0'}μs</span>
+      </div>
+    </div>
+  </CardContent>
+</Card>
+      <div classNae="gridgrid-cols-1md:grid-cols-3 gap-6">
+  
+    <CardTitle className="text-sm">System Status Overview</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <div className="space-y-2">
+      <div className="flex items-center justify
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-sm">Quantum Algorithms</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              {['Grover\'s Search', 'Shor\'s Factoring', 'VQE Optimization'].map((algorithm, index) => (
+                <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                  <span className="text-sm font-medium">{algorithm}</span>
+                  <Badge variant="outline" className="text-xs">Active</Badge>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
-          {/* Quantum Visualizations */}
-          <div className="grid grid-cols-1 md) => toggleVisualization('superposition')}
-                >
-                  <QuantumVisualization 
+<div className="quantum-visualizations">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-sm">Quantum Superposition</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div 
+              className="cursor-pointer" 
+              onClick={() => toggleVisualization('superposition')}
+            >
+              <QuantumVisualization 
                     type="superposition" 
                     isActive={visualizationActive.superposition}
                   />
                 </div>
               </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-sm">Quantum Entanglement</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div 
+           </Ca rd>
+    
+           <Card> (  }
+             <C ardHeader>
+               <C ardTitle className="text-sm">Quantum Entanglement</CardTitle>
+             </Card Header>
+             <CardC ontent>
+               <d iv 
                   className="cursor-pointer" 
                   onClick={() => toggleVisualization('entanglement')}
                 >
-                  <QuantumVisualization 
+              <QuantumVisualization 
                     type="entanglement" 
                     isActive={visualizationActive.entanglement}
                   />
                 </div>
               </CardContent>
-            </Card>
-
-            <Card>
+          </Ca  rd>
+    
+        <Card>    (  }
               <CardHeader>
-                <CardTitle className="text-sm">Wave Interference</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div 
+              <C  ardTitle className="text-sm">Wave Interference</CardTitle>
+            </Card  Header>
+            <CardC  ontent>
+              <d  iv 
                   className="cursor-pointer" 
                   onClick={() => toggleVisualization('interference')}
                 >
-                  <QuantumVisualization 
+              <QuantumVisualization 
                     type="interference" 
                     isActive={visualizationActive.interference}
                   />
                 </div>
               </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-sm">Quantum Teleportation</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div 
+         </Ca   rd>
+    
+         <Card>   (  }
+           <C   ardHeader>
+             <C   ardTitle className="text-sm">Quantum Teleportation</CardTitle>
+           </Card   Header>
+           <CardC   ontent>
+             <d   iv 
                   className="cursor-pointer" 
                   onClick={() => toggleVisualization('teleportation')}
                 >
-                  <QuantumVisualization 
-                    type="teleportation" 
-                    isActive={visualizationActive.teleportation}
-                  />
-                </div>
-              </CardContent>
-            </Card>
+              <QuantumVisualization 
+                type="teleportation" 
+                isActive={visualizationActive.teleportation}
+              />
+            </div>
+          </CardContent>
+        </Card>
           </div>
         </TabsContent>
 
-        {/* Quantum Reports Tab */}
+<TabsContent value="reports" className="space-y-4">
         <TabsContent value="reports" className="space-y-4">
           <Card>
             <CardHeader>
@@ -511,7 +575,7 @@ const QuantumMLDashboard) => {
           </Card>
         </TabsContent>
 
-        {/* Workflow Optimization Tab */}
+<TabsContent value="workflows" className="space-y-4">
         <TabsContent value="workflows" className="space-y-4">
           <Card>
             <CardHeader>
@@ -565,7 +629,7 @@ const QuantumMLDashboard) => {
           </Card>
         </TabsContent>
 
-        {/* Entanglement Tab */}
+<TabsContent value="entanglement" className="space-y-4">
         <TabsContent value="entanglement" className="space-y-4">
           <Card>
             <CardHeader>
@@ -595,5 +659,9 @@ const QuantumMLDashboard) => {
     </div>
   );
 };
+
+/**
+ * QUANTUM ML DASHBOARD - TOIT NEXUS
+ */
 
 export default QuantumMLDashboard;

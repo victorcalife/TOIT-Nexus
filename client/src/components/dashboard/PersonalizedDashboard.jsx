@@ -9,49 +9,47 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import
-  {
-    BarChart,
-    Bar,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    ResponsiveContainer,
-    LineChart,
-    Line,
-    PieChart,
-    Pie,
-    Cell,
-    AreaChart,
-    Area
+import { 
+
+
+
+
+
+
+
+
+
+
+
+
+
+ }
   } from 'recharts';
-import
-  {
-    TrendingUp,
-    TrendingDown,
-    Users,
-    DollarSign,
-    Target,
-    Clock,
-    CheckCircle,
-    AlertTriangle,
-    Star,
-    Award,
-    Zap,
-    Activity,
-    Calendar,
-    MessageSquare,
-    FileText,
-    Settings,
-    Filter,
-    Download,
-    RefreshCw,
-    Plus,
-    Eye,
+import { 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     BarChart3,
     PieChart as PieChartIcon,
-    LineChart as LineChartIcon
+    LineChart as LineChartIcon }
   } from 'lucide-react';
 
 const PersonalizedDashboard = ( { userRole, tenantId, userId } ) =>
@@ -252,13 +250,12 @@ const PersonalizedDashboard = ( { userRole, tenantId, userId } ) =>
   const config = dashboardConfigs[ userRole ] || dashboardConfigs.employee;
 
   if ( isLoading )
-  {
-    return (
+  ({ return (
       <div className="p-6 space-y-6">
         <div className="animate-pulse">
           <div className="h-8 bg-slate-200 rounded w-1/3 mb-4"></div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            { [ ...Array( 8 ) ].map( ( _, i ) => (
+            { [ ...Array( 8 ) ].map( ( _, i  }) => (
               <div key={ i } className="h-32 bg-slate-200 rounded"></div>
             ) ) }
           </div>
@@ -279,7 +276,7 @@ const PersonalizedDashboard = ( { userRole, tenantId, userId } ) =>
         <div className="flex items-center space-x-3">
           <select
             value={ selectedPeriod }
-            onChange={ ( e ) => setSelectedPeriod( e.target.value ) }
+            onChange=({ ( e  }) => setSelectedPeriod( e.target.value ) }
             className="px-3 py-2 border border-slate-300 rounded-lg"
           >
             <option value="7d">Últimos 7 dias</option>
@@ -290,17 +287,17 @@ const PersonalizedDashboard = ( { userRole, tenantId, userId } ) =>
 
           <Button variant="outline" onClick={ loadDashboardData }>
             <RefreshCw className="h-4 w-4 mr-1" />
-            Atualizar
+
           </Button>
 
           <Button variant="outline">
             <Download className="h-4 w-4 mr-1" />
-            Exportar
+
           </Button>
 
           <Button variant="outline">
             <Settings className="h-4 w-4 mr-1" />
-            Personalizar
+
           </Button>
         </div>
       </div>
@@ -354,7 +351,7 @@ const SuperAdminWidgets = ( { data, config } ) => (
         trend={ +12.5 }
       />
       <MetricCard
-        title="Receita Total"
+        title="Receita Total"`
         value={ `R$ ${ ( data.revenue / 1000 ).toFixed( 0 ) }k` }
         icon={ DollarSign }
         color="text-green-600"
@@ -421,7 +418,7 @@ const TenantAdminWidgets = ( { data, config } ) => (
     {/* KPIs Executivos */ }
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       <MetricCard
-        title="Receita Mensal"
+        title="Receita Mensal"`
         value={ `R$ ${ ( data.revenue / 1000 ).toFixed( 0 ) }k` }
         icon={ DollarSign }
         color="text-green-600"
@@ -475,7 +472,7 @@ const TenantAdminWidgets = ( { data, config } ) => (
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            { data.departmentPerformance?.map( ( dept, index ) => (
+            ({ data.departmentPerformance?.map( ( dept, index  }) => (
               <div key={ index }>
                 <div className="flex justify-between mb-2">
                   <span className="font-medium">{ dept.name }</span>
@@ -523,7 +520,7 @@ const ManagerWidgets = ( { data, config } ) => (
         trend={ +8 }
       />
       <MetricCard
-        title="Produtividade"
+        title="Produtividade"`
         value={ `${ data.teamProductivity }%` }
         icon={ TrendingUp }
         color="text-orange-600"
@@ -539,7 +536,7 @@ const ManagerWidgets = ( { data, config } ) => (
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            { data.projectProgress?.map( ( project, index ) => (
+            ({ data.projectProgress?.map( ( project, index  }) => (
               <div key={ index } className="p-3 border border-slate-200 rounded-lg">
                 <div className="flex justify-between items-center mb-2">
                   <span className="font-medium">{ project.project }</span>
@@ -563,7 +560,7 @@ const ManagerWidgets = ( { data, config } ) => (
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            { data.teamMetrics?.map( ( member, index ) => (
+            ({ data.teamMetrics?.map( ( member, index  }) => (
               <div key={ index } className="flex items-center justify-between p-2 hover:bg-slate-50 rounded">
                 <div>
                   <div className="font-medium">{ member.member }</div>
@@ -571,9 +568,9 @@ const ManagerWidgets = ( { data, config } ) => (
                     { member.completed }/{ member.tasks } tarefas
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="text-right">`
                   <div className={ `font-semibold ${ member.performance >= 90 ? 'text-green-600' :
-                      member.performance >= 80 ? 'text-yellow-600' : 'text-red-600'
+                      member.performance >= 80 ? 'text-yellow-600' : 'text-red-600'`}
                     }` }>
                     { member.performance }%
                   </div>
@@ -607,14 +604,14 @@ const EmployeeWidgets = ( { data, config } ) => (
         trend={ +1 }
       />
       <MetricCard
-        title="Meta Semanal"
+        title="Meta Semanal"`
         value={ `${ data.weeklyCompleted }/${ data.weeklyGoal }` }
         icon={ Target }
         color="text-blue-600"
         trend={ +3 }
       />
       <MetricCard
-        title="Streak Atual"
+        title="Streak Atual"`
         value={ `${ data.streak } dias` }
         icon={ Zap }
         color="text-purple-600"
@@ -630,7 +627,7 @@ const EmployeeWidgets = ( { data, config } ) => (
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            { data.recentActivities?.map( ( activity, index ) => (
+            ({ data.recentActivities?.map( ( activity, index  }) => (
               <div key={ index } className="flex items-start space-x-3 p-2">
                 <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
                 <div className="flex-1">
@@ -649,7 +646,7 @@ const EmployeeWidgets = ( { data, config } ) => (
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            { data.skillProgress?.map( ( skill, index ) => (
+            ({ data.skillProgress?.map( ( skill, index  }) => (
               <div key={ index }>
                 <div className="flex justify-between mb-2">
                   <span className="font-medium">{ skill.skill }</span>
@@ -670,16 +667,16 @@ const EmployeeWidgets = ( { data, config } ) => (
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          { data.achievements?.map( ( achievement, index ) => (
+          ({ data.achievements?.map( ( achievement, index  }) => (`
             <div key={ index } className={ `
               p-4 rounded-lg border-2 text-center
               ${ achievement.earned
                 ? 'border-green-200 bg-green-50'
-                : 'border-slate-200 bg-slate-50'
-              }
+                : 'border-slate-200 bg-slate-50'}
+              }`
             `}>
-              <div className="text-3xl mb-2">{ achievement.icon }</div>
-              <div className={ `font-medium ${ achievement.earned ? 'text-green-800' : 'text-slate-600'
+              <div className="text-3xl mb-2">{ achievement.icon }</div>`
+              <div className={ `font-medium ${ achievement.earned ? 'text-green-800' : 'text-slate-600'`}
                 }` }>
                 { achievement.title }
               </div>
@@ -702,8 +699,8 @@ const MetricCard = ( { title, value, icon: Icon, color, trend } ) => (
         <div>
           <p className="text-sm font-medium text-slate-600">{ title }</p>
           <p className="text-2xl font-bold text-slate-900">{ value }</p>
-          { trend !== undefined && (
-            <div className={ `flex items-center mt-1 ${ trend > 0 ? 'text-green-600' : trend < 0 ? 'text-red-600' : 'text-slate-600'
+          { trend !== undefined && (`
+            <div className={ `flex items-center mt-1 ${ trend > 0 ? 'text-green-600' : trend < 0 ? 'text-red-600' : 'text-slate-600'`}
               }` }>
               { trend > 0 ? (
                 <TrendingUp className="h-4 w-4 mr-1" />
@@ -715,7 +712,7 @@ const MetricCard = ( { title, value, icon: Icon, color, trend } ) => (
               </span>
             </div>
           ) }
-        </div>
+        </div>`
         <div className={ `p-3 rounded-full bg-slate-100 ${ color }` }>
           <Icon className="h-6 w-6" />
         </div>
@@ -725,3 +722,4 @@ const MetricCard = ( { title, value, icon: Icon, color, trend } ) => (
 );
 
 export default PersonalizedDashboard;
+`

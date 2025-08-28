@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
-import {
+import { 
   Plus,
   Search,
   Database,
@@ -22,24 +22,24 @@ import {
   AlertTriangle,
   Eye,
   EyeOff,
-  Settings
+  Settings }
 } from "lucide-react";
-import {
+import { 
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+  DialogTrigger, }
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
+import { 
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue, }
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -58,13 +58,11 @@ export default function Integrations() {
 
   const { toast } = useToast();
 
-  const { data: integrations, isLoading, refetch } = useQuery({
-    queryKey: ['integrations'],
-    queryFn: () => apiRequest('GET', '/api/integrations')
+  const { data: integrations, isLoading, refetch } = useQuery(({ queryKey: ['integrations'],
+    queryFn: ( }) => apiRequest('GET', '/api/integrations')
   });
 
-  const createIntegrationMutation = useMutation({
-    mutationFn: (integrationData) => {
+  const createIntegrationMutation = useMutation(({ mutationFn: (integrationData }) => {
       return apiRequest('POST', '/api/integrations', integrationData);
     },
     onSuccess: () => {
@@ -107,8 +105,7 @@ export default function Integrations() {
     },
   });
 
-  const deleteIntegrationMutation = useMutation({
-    mutationFn: (integrationId) => {
+  const deleteIntegrationMutation = useMutation(({ mutationFn: (integrationId }) => {`
       return apiRequest('DELETE', `/api/integrations/${integrationId}`);
     },
     onSuccess: () => {
@@ -127,8 +124,7 @@ export default function Integrations() {
     },
   });
 
-  const testIntegrationMutation = useMutation({
-    mutationFn: (integrationId) => {
+  const testIntegrationMutation = useMutation(({ mutationFn: (integrationId }) => {`
       return apiRequest('POST', `/api/integrations/${integrationId}/test`);
     },
     onSuccess: () => {
@@ -283,7 +279,7 @@ export default function Integrations() {
               <Label htmlFor="provider">Provedor de Email</Label>
               <Select
                 value={currentConfig.provider || 'smtp'}
-                onValueChange={(value) => updateConfig('provider', value)}
+                onValueChange=({ (value }) => updateConfig('provider', value)}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Selecione o provedor" />
@@ -305,7 +301,7 @@ export default function Integrations() {
                     <Input
                       id="smtpHost"
                       value={currentConfig.smtpHost || ''}
-                      onChange={(e) => updateConfig('smtpHost', e.target.value)}
+                      onChange=({ (e }) => updateConfig('smtpHost', e.target.value)}
                       placeholder="smtp.gmail.com"
                     />
                   </div>
@@ -315,7 +311,7 @@ export default function Integrations() {
                       id="smtpPort"
                       type="number"
                       value={currentConfig.smtpPort || '587'}
-                      onChange={(e) => updateConfig('smtpPort', parseInt(e.target.value))}
+                      onChange=({ (e }) => updateConfig('smtpPort', parseInt(e.target.value))}
                       placeholder="587"
                     />
                   </div>
@@ -324,7 +320,7 @@ export default function Integrations() {
                   <Checkbox
                     id="smtpSecure"
                     checked={currentConfig.smtpSecure || false}
-                    onCheckedChange={(checked) => updateConfig('smtpSecure', checked)}
+                    onCheckedChange=({ (checked }) => updateConfig('smtpSecure', checked)}
                   />
                   <Label htmlFor="smtpSecure">Usar SSL/TLS</Label>
                 </div>
@@ -335,7 +331,7 @@ export default function Integrations() {
                       id="username"
                       type="email"
                       value={currentConfig.username || ''}
-                      onChange={(e) => updateConfig('username', e.target.value)}
+                      onChange=({ (e }) => updateConfig('username', e.target.value)}
                       placeholder="seu@email.com"
                     />
                   </div>
@@ -346,7 +342,7 @@ export default function Integrations() {
                         id="password"
                         type={showPasswords.password ? "text" : "password"}
                         value={currentConfig.password || ''}
-                        onChange={(e) => updateConfig('password', e.target.value)}
+                        onChange=({ (e }) => updateConfig('password', e.target.value)}
                         placeholder="Sua senha ou app password"
                       />
                       <Button
@@ -354,7 +350,7 @@ export default function Integrations() {
                         variant="ghost"
                         size="sm"
                         className="absolute right-0 top-0 h-full px-3"
-                        onClick={() => togglePasswordVisibility('password')}
+                        onClick=({ ( }) => togglePasswordVisibility('password')}
                       >
                         {showPasswords.password ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                       </Button>
@@ -372,7 +368,7 @@ export default function Integrations() {
                     id="apiKey"
                     type={showPasswords.apiKey ? "text" : "password"}
                     value={currentConfig.apiKey || ''}
-                    onChange={(e) => updateConfig('apiKey', e.target.value)}
+                    onChange=({ (e }) => updateConfig('apiKey', e.target.value)}`
                     placeholder={`Chave da API do ${currentConfig.provider === 'sendgrid' ? 'SendGrid' : 'Mailgun'}`}
                   />
                   <Button
@@ -380,7 +376,7 @@ export default function Integrations() {
                     variant="ghost"
                     size="sm"
                     className="absolute right-0 top-0 h-full px-3"
-                    onClick={() => togglePasswordVisibility('apiKey')}
+                    onClick=({ ( }) => togglePasswordVisibility('apiKey')}
                   >
                     {showPasswords.apiKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </Button>
@@ -395,7 +391,7 @@ export default function Integrations() {
                   id="fromEmail"
                   type="email"
                   value={currentConfig.fromEmail || ''}
-                  onChange={(e) => updateConfig('fromEmail', e.target.value)}
+                  onChange=({ (e }) => updateConfig('fromEmail', e.target.value)}
                   placeholder="no-reply@suaempresa.com"
                 />
               </div>
@@ -404,7 +400,7 @@ export default function Integrations() {
                 <Input
                   id="fromName"
                   value={currentConfig.fromName || ''}
-                  onChange={(e) => updateConfig('fromName', e.target.value)}
+                  onChange=({ (e }) => updateConfig('fromName', e.target.value)}
                   placeholder="Sua Empresa"
                 />
               </div>
@@ -420,7 +416,7 @@ export default function Integrations() {
               <Input
                 id="endpoint"
                 value={currentConfig.endpoint || ''}
-                onChange={(e) => updateConfig('endpoint', e.target.value)}
+                onChange=({ (e }) => updateConfig('endpoint', e.target.value)}
                 placeholder="https://api.exemplo.com"
               />
             </div>
@@ -429,7 +425,7 @@ export default function Integrations() {
               <Label htmlFor="authentication">Tipo de Autenticação</Label>
               <Select
                 value={currentConfig.authentication || 'none'}
-                onValueChange={(value) => updateConfig('authentication', value)}
+                onValueChange=({ (value }) => updateConfig('authentication', value)}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Selecione o tipo" />
@@ -450,7 +446,7 @@ export default function Integrations() {
                   <Input
                     id="username"
                     value={currentConfig.username || ''}
-                    onChange={(e) => updateConfig('username', e.target.value)}
+                    onChange=({ (e }) => updateConfig('username', e.target.value)}
                     placeholder="Usuário"
                   />
                 </div>
@@ -461,7 +457,7 @@ export default function Integrations() {
                       id="password"
                       type={showPasswords.password ? "text" : "password"}
                       value={currentConfig.password || ''}
-                      onChange={(e) => updateConfig('password', e.target.value)}
+                      onChange=({ (e }) => updateConfig('password', e.target.value)}
                       placeholder="Senha"
                     />
                     <Button
@@ -469,7 +465,7 @@ export default function Integrations() {
                       variant="ghost"
                       size="sm"
                       className="absolute right-0 top-0 h-full px-3"
-                      onClick={() => togglePasswordVisibility('password')}
+                      onClick=({ ( }) => togglePasswordVisibility('password')}
                     >
                       {showPasswords.password ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </Button>
@@ -486,7 +482,7 @@ export default function Integrations() {
                     id="token"
                     type={showPasswords.token ? "text" : "password"}
                     value={currentConfig.token || ''}
-                    onChange={(e) => updateConfig('token', e.target.value)}
+                    onChange=({ (e }) => updateConfig('token', e.target.value)}
                     placeholder="Bearer token"
                   />
                   <Button
@@ -494,7 +490,7 @@ export default function Integrations() {
                     variant="ghost"
                     size="sm"
                     className="absolute right-0 top-0 h-full px-3"
-                    onClick={() => togglePasswordVisibility('token')}
+                    onClick=({ ( }) => togglePasswordVisibility('token')}
                   >
                     {showPasswords.token ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </Button>
@@ -510,7 +506,7 @@ export default function Integrations() {
                     id="apiKey"
                     type={showPasswords.apiKey ? "text" : "password"}
                     value={currentConfig.apiKey || ''}
-                    onChange={(e) => updateConfig('apiKey', e.target.value)}
+                    onChange=({ (e }) => updateConfig('apiKey', e.target.value)}
                     placeholder="Chave da API"
                   />
                   <Button
@@ -518,7 +514,7 @@ export default function Integrations() {
                     variant="ghost"
                     size="sm"
                     className="absolute right-0 top-0 h-full px-3"
-                    onClick={() => togglePasswordVisibility('apiKey')}
+                    onClick=({ ( }) => togglePasswordVisibility('apiKey')}
                   >
                     {showPasswords.apiKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </Button>
@@ -531,11 +527,11 @@ export default function Integrations() {
               <Textarea
                 id="headers"
                 value={JSON.stringify(currentConfig.headers || {}, null, 2)}
-                onChange={(e) => {
+                onChange=({ (e }) => {
                   try {
                     const parsed = JSON.parse(e.target.value);
                     updateConfig('headers', parsed);
-                  } catch {
+                  } catch (error) {
                     // Ignore invalid JSON during typing
                   }
                 }}
@@ -550,7 +546,7 @@ export default function Integrations() {
                 id="timeout"
                 type="number"
                 value={currentConfig.timeout || 5000}
-                onChange={(e) => updateConfig('timeout', parseInt(e.target.value))}
+                onChange=({ (e }) => updateConfig('timeout', parseInt(e.target.value))}
                 placeholder="5000"
               />
             </div>
@@ -566,7 +562,7 @@ export default function Integrations() {
                 <Input
                   id="host"
                   value={currentConfig.host || ''}
-                  onChange={(e) => updateConfig('host', e.target.value)}
+                  onChange=({ (e }) => updateConfig('host', e.target.value)}
                   placeholder="api.toit.com.br"
                 />
               </div>
@@ -576,7 +572,7 @@ export default function Integrations() {
                   id="port"
                   type="number"
                   value={currentConfig.port || 5432}
-                  onChange={(e) => updateConfig('port', parseInt(e.target.value))}
+                  onChange=({ (e }) => updateConfig('port', parseInt(e.target.value))}
                   placeholder="5432"
                 />
               </div>
@@ -587,7 +583,7 @@ export default function Integrations() {
               <Input
                 id="database"
                 value={currentConfig.database || ''}
-                onChange={(e) => updateConfig('database', e.target.value)}
+                onChange=({ (e }) => updateConfig('database', e.target.value)}
                 placeholder="nome_do_banco"
               />
             </div>
@@ -598,7 +594,7 @@ export default function Integrations() {
                 <Input
                   id="username"
                   value={currentConfig.username || ''}
-                  onChange={(e) => updateConfig('username', e.target.value)}
+                  onChange=({ (e }) => updateConfig('username', e.target.value)}
                   placeholder="usuario"
                 />
               </div>
@@ -609,7 +605,7 @@ export default function Integrations() {
                     id="password"
                     type={showPasswords.password ? "text" : "password"}
                     value={currentConfig.password || ''}
-                    onChange={(e) => updateConfig('password', e.target.value)}
+                    onChange=({ (e }) => updateConfig('password', e.target.value)}
                     placeholder="senha"
                   />
                   <Button
@@ -617,7 +613,7 @@ export default function Integrations() {
                     variant="ghost"
                     size="sm"
                     className="absolute right-0 top-0 h-full px-3"
-                    onClick={() => togglePasswordVisibility('password')}
+                    onClick=({ ( }) => togglePasswordVisibility('password')}
                   >
                     {showPasswords.password ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </Button>
@@ -630,7 +626,7 @@ export default function Integrations() {
               <Checkbox
                 id="ssl"
                 checked={currentConfig.ssl || false}
-                onCheckedChange={(checked) => updateConfig('ssl', checked)}
+                onCheckedChange=({ (checked }) => updateConfig('ssl', checked)}
               />
             </div>
           </div>
@@ -644,7 +640,7 @@ export default function Integrations() {
               <Input
                 id="url"
                 value={currentConfig.url || ''}
-                onChange={(e) => updateConfig('url', e.target.value)}
+                onChange=({ (e }) => updateConfig('url', e.target.value)}
                 placeholder="https://webhook.exemplo.com"
               />
             </div>
@@ -656,7 +652,7 @@ export default function Integrations() {
                   id="secret"
                   type={showPasswords.secret ? "text" : "password"}
                   value={currentConfig.secret || ''}
-                  onChange={(e) => updateConfig('secret', e.target.value)}
+                  onChange=({ (e }) => updateConfig('secret', e.target.value)}
                   placeholder="Secret para validação"
                 />
                 <Button
@@ -664,7 +660,7 @@ export default function Integrations() {
                   variant="ghost"
                   size="sm"
                   className="absolute right-0 top-0 h-full px-3"
-                  onClick={() => togglePasswordVisibility('secret')}
+                  onClick=({ ( }) => togglePasswordVisibility('secret')}
                 >
                   {showPasswords.secret ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </Button>
@@ -676,7 +672,7 @@ export default function Integrations() {
               <Input
                 id="events"
                 value={currentConfig.events || ''}
-                onChange={(e) => updateConfig('events', e.target.value)}
+                onChange=({ (e }) => updateConfig('events', e.target.value)}
                 placeholder="user.created, order.updated"
               />
             </div>
@@ -692,15 +688,14 @@ export default function Integrations() {
     }
   };
 
-  if (isLoading) {
-    return (
+  if (isLoading) ({ return (
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <Skeleton className="h-8 w-48" />
           <Skeleton className="h-10 w-32" />
         </div>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {[...Array(6)].map((_, i) => (
+          {[...Array(6)].map((_, i }) => (
             <Skeleton key={i} className="h-48" />
           ))}
         </div>
@@ -735,7 +730,7 @@ export default function Integrations() {
                   <Input
                     id="name"
                     value={newIntegration.name}
-                    onChange={(e) => setNewIntegration(prev => ({ ...prev, name: e.target.value }))}
+                    onChange=({ (e }) => setNewIntegration(prev => ({ ...prev, name: e.target.value }))}
                     placeholder="Nome da integração"
                   />
                 </div>
@@ -743,7 +738,7 @@ export default function Integrations() {
                   <Label htmlFor="type">Tipo</Label>
                   <Select
                     value={newIntegration.type}
-                    onValueChange={(value) => setNewIntegration(prev => ({ ...prev, type: value, config: {} }))}
+                    onValueChange=({ (value }) => setNewIntegration(prev => ({ ...prev, type: value, config: {} }))}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Selecione o tipo" />
@@ -762,7 +757,7 @@ export default function Integrations() {
                 <Checkbox
                   id="isActive"
                   checked={newIntegration.isActive}
-                  onCheckedChange={(checked) => setNewIntegration(prev => ({ ...prev, isActive: checked }))}
+                  onCheckedChange=({ (checked }) => setNewIntegration(prev => ({ ...prev, isActive: checked }))}
                 />
                 <Label htmlFor="isActive">Ativar integração</Label>
               </div>
@@ -772,14 +767,12 @@ export default function Integrations() {
               <div className="flex justify-end space-x-2">
                 <Button
                   variant="outline"
-                  onClick={() => {
+                  onClick=({ ( }) => {
                     setIsCreateDialogOpen(false);
                     setEditingIntegration(null);
                     resetForm();
                   }}
                 >
-                  Cancelar
-                </Button>
                 <Button onClick={handleSubmit}>
                   {editingIntegration ? 'Atualizar' : 'Criar'}
                 </Button>
@@ -795,14 +788,14 @@ export default function Integrations() {
           <Input
             placeholder="Buscar integrações..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange=({ (e }) => setSearchTerm(e.target.value)}
             className="pl-8"
           />
         </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {filteredIntegrations.map((integration) => (
+        ({ filteredIntegrations.map((integration }) => (
           <Card key={integration.id} className="relative">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
@@ -824,7 +817,7 @@ export default function Integrations() {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => {
+                    onClick=({ ( }) => {
                       handleEdit(integration);
                       setIsCreateDialogOpen(true);
                     }}
@@ -834,14 +827,14 @@ export default function Integrations() {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => testIntegrationMutation.mutate(integration.id)}
+                    onClick=({ ( }) => testIntegrationMutation.mutate(integration.id)}
                   >
                     <TestTube className="w-4 h-4" />
                   </Button>
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => deleteIntegrationMutation.mutate(integration.id)}
+                    onClick=({ ( }) => deleteIntegrationMutation.mutate(integration.id)}
                   >
                     <Trash2 className="w-4 h-4" />
                   </Button>
@@ -872,8 +865,8 @@ export default function Integrations() {
           <p className="text-gray-500 mb-4">
             {searchTerm ? 'Tente ajustar os filtros de busca.' : 'Comece criando sua primeira integração.'}
           </p>
-          {!searchTerm && (
-            <Button onClick={() => setIsCreateDialogOpen(true)}>
+          ({ !searchTerm && (
+            <Button onClick={( }) => setIsCreateDialogOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Criar Primeira Integração
             </Button>
@@ -882,4 +875,4 @@ export default function Integrations() {
       )}
     </div>
   );
-}
+}`

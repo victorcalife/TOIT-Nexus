@@ -1,5 +1,4 @@
-/**
- * MODULE MANAGER - from 'react';
+import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -12,13 +11,13 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { 
-  Settings, 
+import {
+  Settings,
   Search,
   Filter,
-  Plus, 
-  Edit, 
-  Trash2, 
+  Plus,
+  Edit,
+  Trash2,
   Power,
   Users,
   Building2,
@@ -40,13 +39,30 @@ import { apiRequest } from '@/lib/queryClient';
 import { StandardHeader } from '@/components/standard-header';
 import { useAuth } from '@/hooks/useAuth';
 
-= useAuth();
+export default function ModuleManager() {
+  const { user } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
+  // Estados
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [planFilter, setPlanFilter] = useState('all');
+  const [selectedTenant, setSelectedTenant] = useState(null);
+  const [configModule, setConfigModule] = useState(null);
+  const [showBulkModal, setShowBulkModal] = useState(false);
+  const [bulkSelection, setBulkSelection] = useState({ tenants: [], modules: [] });
+  const [moduleConfig, setModuleConfig] = useState({
+    plan: 'trial',
+    maxUsers: 10,
+    usageLimits: {},
+    trialDays: 30
+  });
+
   // Query para buscar todos os tenants com módulos
-  const { data, isLoading, error, { search, status, plan,
-    queryFn) => {
+  const { data: tenantsData, isLoading: loadingTenants, error } = useQuery({
+    queryKey: ['tenants-modules', { search: searchTerm, status: statusFilter, plan: planFilter }],
+    queryFn: async () => {
       const params = new URLSearchParams();
       if (searchTerm) params.append('search', searchTerm);
       if (statusFilter !== 'all') params.append('status', statusFilter);
@@ -58,8 +74,9 @@ import { useAuth } from '@/hooks/useAuth';
   });
 
   // Query para analytics de uso
-  const { data,
-    queryFn) => {
+  const { data: analyticsData } = useQuery({
+    queryKey: ['modules-analytics'],
+    queryFn: async () => {
       const response = await apiRequest('GET', '/api/admin/modules/usage-analytics');
       return response.json();
     }
@@ -67,64 +84,76 @@ import { useAuth } from '@/hooks/useAuth';
 
   // Mutation para ativar/desativar módulo
   const toggleModuleMutation = useMutation({
-    mutationFn, moduleId, enabled }: { tenantId) => {
+    mutationFn: async ({ tenantId, moduleId, enabled }) => {
       const response = await apiRequest('PUT', `/api/admin/tenant/${tenantId}/modules/${moduleId}/toggle`, {
         enabled
       });
       return response.json();
     },
-    onSuccess) => {
-      queryClient.invalidateQueries({ queryKey);
-      toast({ title, description);
-    },
-    onError) => {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tenants-modules'] });
       toast({ 
-        title, 
-        description,
-        variant);
+        title: 'Sucesso', 
+        description: 'Módulo atualizado com sucesso' 
+      });
+    },
+    onError: () => {
+      toast({ 
+        title: 'Erro', 
+        description: 'Erro ao atualizar módulo',
+        variant: 'destructive'
+      });
     }
   });
 
   // Mutation para configurar módulo
   const configModuleMutation = useMutation({
-    mutationFn, moduleId, config }: { tenantId) => {
+    mutationFn: async ({ tenantId, moduleId, config }) => {
       const response = await apiRequest('PUT', `/api/admin/tenant/${tenantId}/modules/${moduleId}/config`, config);
       return response.json();
     },
-    onSuccess) => {
-      queryClient.invalidateQueries({ queryKey);
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tenants-modules'] });
       setConfigModule(null);
-      toast({ title, description);
-    },
-    onError) => {
       toast({ 
-        title, 
-        description,
-        variant);
+        title: 'Sucesso', 
+        description: 'Configuração salva com sucesso' 
+      });
+    },
+    onError: () => {
+      toast({ 
+        title: 'Erro', 
+        description: 'Erro ao salvar configuração',
+        variant: 'destructive'
+      });
     }
   });
 
   // Mutation para ativar módulo
   const activateModuleMutation = useMutation({
-    mutationFn, moduleId, config }: { tenantId) => {
+    mutationFn: async ({ tenantId, moduleId, config }) => {
       const response = await apiRequest('POST', `/api/admin/tenant/${tenantId}/modules/${moduleId}/activate`, config);
       return response.json();
     },
-    onSuccess) => {
-      queryClient.invalidateQueries({ queryKey);
-      toast({ title, description);
-    },
-    onError) => {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tenants-modules'] });
       toast({ 
-        title, 
-        description,
-        variant);
+        title: 'Sucesso', 
+        description: 'Módulo ativado com sucesso' 
+      });
+    },
+    onError: () => {
+      toast({ 
+        title: 'Erro', 
+        description: 'Erro ao ativar módulo',
+        variant: 'destructive'
+      });
     }
   });
 
   // Mutation para ativação em lote
   const bulkActivateMutation = useMutation({
-    mutationFn, moduleIds, config }: { tenantIds) => {
+    mutationFn: async ({ tenantIds, moduleIds, config }) => {
       const response = await apiRequest('POST', '/api/admin/modules/bulk-activate', {
         tenantIds,
         moduleIds,
@@ -132,27 +161,30 @@ import { useAuth } from '@/hooks/useAuth';
       });
       return response.json();
     },
-    onSuccess) => {
-      queryClient.invalidateQueries({ queryKey);
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tenants-modules'] });
       setShowBulkModal(false);
-      setBulkSelection({ tenants, modules);
+      setBulkSelection({ tenants: [], modules: [] });
       toast({ 
-        title, 
-        description);
+        title: 'Sucesso', 
+        description: 'Módulos ativados em lote com sucesso' 
+      });
     },
-    onError) => {
+    onError: () => {
       toast({ 
-        title, 
-        description,
-        variant);
+        title: 'Erro', 
+        description: 'Erro na ativação em lote',
+        variant: 'destructive'
+      });
     }
   });
 
   const handleToggleModule = (tenant, module) => {
     toggleModuleMutation.mutate({
-      tenantId,
-      moduleId,
-      enabled);
+      tenantId: tenant.id,
+      moduleId: module.id,
+      enabled: !module.isActive
+    });
   };
 
   const handleConfigureModule = (tenant, module) => {
@@ -160,10 +192,11 @@ import { useAuth } from '@/hooks/useAuth';
     setConfigModule(module);
     if (module.config) {
       setModuleConfig({
-        plan,
-        maxUsers,
-        usageLimits,
-        trialDays);
+        plan: module.config.plan || 'trial',
+        maxUsers: module.config.maxUsers || 10,
+        usageLimits: module.config.usageLimits || {},
+        trialDays: module.config.trialDays || 30
+      });
     }
   };
 
@@ -172,30 +205,34 @@ import { useAuth } from '@/hooks/useAuth';
     
     if (configModule.isActive) {
       configModuleMutation.mutate({
-        tenantId,
-        moduleId,
-        config);
+        tenantId: selectedTenant.id,
+        moduleId: configModule.id,
+        config: moduleConfig
+      });
     } else {
       activateModuleMutation.mutate({
-        tenantId,
-        moduleId,
-        config);
+        tenantId: selectedTenant.id,
+        moduleId: configModule.id,
+        config: moduleConfig
+      });
     }
   };
 
   const handleBulkActivate = () => {
     if (bulkSelection.tenants.length === 0 || bulkSelection.modules.length === 0) {
       toast({
-        title,
-        description,
-        variant);
+        title: 'Atenção',
+        description: 'Selecione pelo menos um tenant e um módulo',
+        variant: 'destructive'
+      });
       return;
     }
 
     bulkActivateMutation.mutate({
-      tenantIds,
-      moduleIds,
-      config);
+      tenantIds: bulkSelection.tenants,
+      moduleIds: bulkSelection.modules,
+      config: moduleConfig
+    });
   };
 
   const getStatusColor = (status, isActive) => {
@@ -205,8 +242,12 @@ import { useAuth } from '@/hooks/useAuth';
       case 'basic': return 'green';
       case 'premium': return 'purple';
       case 'enterprise': return 'yellow';
-      default) => {
-    const icons, any> = {
+      default: return 'gray';
+    }
+  };
+
+  const getModuleIcon = (category) => {
+    const icons = {
       'Conectividade': Zap,
       'Produtividade': CheckCircle,
       'Empresarial': Building2,
@@ -253,9 +294,63 @@ import { useAuth } from '@/hooks/useAuth';
             <div className="flex space-x-3">
               <Button
                 onClick={() => setShowBulkModal(true)}
-                className="bg-purple-600 hover) * 100)}%
+                className="bg-purple-600 hover:bg-purple-700"
+              >
+                <Zap className="h-4 w-4 mr-2" />
+                Ativação em Lote
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        {/* Analytics Cards */}
+        {analyticsData && (
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-2xl font-bold">{analyticsData.totalTenants}</p>
+                    <p className="text-xs text-muted-foreground">Total de Empresas</p>
+                  </div>
+                  <Building2 className="h-4 w-4 text-muted-foreground" />
                 </div>
-                <p className="text-xs text-muted-foreground">Módulos utilizados</p>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-2xl font-bold">{analyticsData.activeModules}</p>
+                    <p className="text-xs text-muted-foreground">Módulos Ativos</p>
+                  </div>
+                  <Package className="h-4 w-4 text-muted-foreground" />
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-2xl font-bold">{analyticsData.totalUsers}</p>
+                    <p className="text-xs text-muted-foreground">Usuários Totais</p>
+                  </div>
+                  <Users className="h-4 w-4 text-muted-foreground" />
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-2xl font-bold">{Math.round(analyticsData.usagePercentage)}%</p>
+                    <p className="text-xs text-muted-foreground">Módulos utilizados</p>
+                  </div>
+                  <BarChart3 className="h-4 w-4 text-muted-foreground" />
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -307,7 +402,19 @@ import { useAuth } from '@/hooks/useAuth';
         {/* Lista de Tenants */}
         <div className="space-y-4">
           {tenants.map((tenant) => (
-            <Card key={tenant.id} className="hover)}
+            <Card key={tenant.id} className="hover:shadow-md transition-shadow">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-lg">{tenant.name}</CardTitle>
+                    <CardDescription>{tenant.domain}</CardDescription>
+                  </div>
+                  <div className="flex space-x-2">
+                    <Badge 
+                      variant="outline"
+                      className={`bg-${getStatusColor(tenant.plan, tenant.isActive)}-100`}
+                    >
+                      {tenant.plan?.toUpperCase() || 'N/A'}
                     </Badge>
                     <Badge variant="outline">
                       <Users className="w-3 h-3 mr-1" />
@@ -322,7 +429,8 @@ import { useAuth } from '@/hooks/useAuth';
               </CardHeader>
               
               <CardContent>
-                <div className="grid grid-cols-1 md) => {
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {tenant.modules?.map((module) => {
                     const IconComponent = getModuleIcon(module.category);
                     return (
                       <div
@@ -349,10 +457,10 @@ import { useAuth } from '@/hooks/useAuth';
                           <div className="space-y-1">
                             <div className="flex items-center justify-between">
                               <Badge 
-                                variant="outline" 
+                                variant="outline"
                                 className={`text-xs bg-${getStatusColor(module.config.plan, true)}-100`}
                               >
-                                {module.config.plan.toUpperCase()}
+                                {module.config.plan?.toUpperCase()}
                               </Badge>
                               <Button
                                 variant="ghost"
@@ -365,8 +473,9 @@ import { useAuth } from '@/hooks/useAuth';
                             </div>
                             
                             <div className="text-xs text-gray-600">
-                              <div>Usuários).toLocaleDateString()}
-                                </div>
+                              <div>Usuários: {module.config.maxUsers === -1 ? 'Ilimitado' : module.config.maxUsers}</div>
+                              {module.config.expiresAt && (
+                                <div>Expira: {new Date(module.config.expiresAt).toLocaleDateString()}</div>
                               )}
                             </div>
                           </div>
@@ -397,7 +506,18 @@ import { useAuth } from '@/hooks/useAuth';
           <DialogContent className="max-w-2xl">
             <DialogHeader>
               <DialogTitle>
-                {configModule?.isActive ? 'Configurar' : 'Ativar'} Módulo) => setModuleConfig(prev => ({ ...prev, plan))}>
+                {configModule?.isActive ? 'Configurar' : 'Ativar'} Módulo: {configModule?.name}
+              </DialogTitle>
+              <DialogDescription>
+                Configure as opções do módulo para {selectedTenant?.name}
+              </DialogDescription>
+            </DialogHeader>
+            
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="plan">Plano</Label>
+                  <Select value={moduleConfig.plan} onValueChange={(value) => setModuleConfig(prev => ({ ...prev, plan: value }))}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -418,7 +538,7 @@ import { useAuth } from '@/hooks/useAuth';
                     value={moduleConfig.maxUsers === -1 ? '' : moduleConfig.maxUsers}
                     onChange={(e) => setModuleConfig(prev => ({ 
                       ...prev, 
-                      maxUsers)
+                      maxUsers: e.target.value === '' ? -1 : parseInt(e.target.value)
                     }))}
                     placeholder="Ilimitado"
                   />
@@ -434,7 +554,7 @@ import { useAuth } from '@/hooks/useAuth';
                     value={moduleConfig.trialDays}
                     onChange={(e) => setModuleConfig(prev => ({ 
                       ...prev, 
-                      trialDays)
+                      trialDays: parseInt(e.target.value)
                     }))}
                     min="1"
                     max="90"
@@ -453,7 +573,8 @@ import { useAuth } from '@/hooks/useAuth';
               >
                 {configModuleMutation.isPending || activateModuleMutation.isPending ? (
                   <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-                ) {configModule?.isActive ? 'Salvar' : 'Ativar'}
+                ) : null}
+                {configModule?.isActive ? 'Salvar' : 'Ativar'}
               </Button>
             </div>
           </DialogContent>
@@ -483,12 +604,12 @@ import { useAuth } from '@/hooks/useAuth';
                           if (checked) {
                             setBulkSelection(prev => ({
                               ...prev,
-                              tenants, tenant.id]
+                              tenants: [...prev.tenants, tenant.id]
                             }));
                           } else {
                             setBulkSelection(prev => ({
                               ...prev,
-                              tenants)
+                              tenants: prev.tenants.filter(id => id !== tenant.id)
                             }));
                           }
                         }}
@@ -505,7 +626,7 @@ import { useAuth } from '@/hooks/useAuth';
               <div>
                 <h3 className="font-medium mb-3">Selecionar Módulos ({bulkSelection.modules.length})</h3>
                 <div className="max-h-64 overflow-y-auto space-y-2 border rounded p-3">
-                  {tenants[0]?.modules.map((module) => (
+                  {tenants[0]?.modules?.map((module) => (
                     <div key={module.id} className="flex items-center space-x-2">
                       <Checkbox
                         id={`module-${module.id}`}
@@ -514,12 +635,12 @@ import { useAuth } from '@/hooks/useAuth';
                           if (checked) {
                             setBulkSelection(prev => ({
                               ...prev,
-                              modules, module.id]
+                              modules: [...prev.modules, module.id]
                             }));
                           } else {
                             setBulkSelection(prev => ({
                               ...prev,
-                              modules)
+                              modules: prev.modules.filter(id => id !== module.id)
                             }));
                           }
                         }}
@@ -539,7 +660,7 @@ import { useAuth } from '@/hooks/useAuth';
               <div className="grid grid-cols-3 gap-4">
                 <div>
                   <Label>Plano</Label>
-                  <Select value={moduleConfig.plan} onValueChange={(value) => setModuleConfig(prev => ({ ...prev, plan))}>
+                  <Select value={moduleConfig.plan} onValueChange={(value) => setModuleConfig(prev => ({ ...prev, plan: value }))}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -559,7 +680,7 @@ import { useAuth } from '@/hooks/useAuth';
                     value={moduleConfig.maxUsers === -1 ? '' : moduleConfig.maxUsers}
                     onChange={(e) => setModuleConfig(prev => ({ 
                       ...prev, 
-                      maxUsers)
+                      maxUsers: e.target.value === '' ? -1 : parseInt(e.target.value)
                     }))}
                     placeholder="Ilimitado"
                   />
@@ -573,7 +694,7 @@ import { useAuth } from '@/hooks/useAuth';
                       value={moduleConfig.trialDays}
                       onChange={(e) => setModuleConfig(prev => ({ 
                         ...prev, 
-                        trialDays)
+                        trialDays: parseInt(e.target.value)
                       }))}
                       min="1"
                       max="90"

@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { 
+import {  
   Database, 
   Webhook, 
   Globe, 
@@ -23,7 +23,7 @@ import {
   Trash2,
   CheckCircle,
   XCircle,
-  AlertCircle
+  AlertCircle }
 } from "lucide-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { queryClient } from "@/lib/queryClient";
@@ -71,13 +71,12 @@ import { UnifiedHeader } from "@/components/unified-header";
     headers);
 
   // Fetch data connections
-  const { data= [] } = useQuery<DataConnection[]>({
-    queryKey,
+  const { data= [] } = useQuery<DataConnection[]>(({ queryKey,
     retry);
 
   // Test database connection
   const testDatabaseMutation = useMutation({
-    mutationFn) => {
+    mutationFn }) => {
       const response = await fetch('/api/data-connections/database/test', {
         method,
         headers,
@@ -95,8 +94,7 @@ import { UnifiedHeader } from "@/components/unified-header";
   });
 
   // Create database connection
-  const createDatabaseMutation = useMutation({
-    mutationFn) => {
+  const createDatabaseMutation = useMutation(({ mutationFn }) => {
       const response = await fetch('/api/data-connections/database', {
         method,
         headers,
@@ -115,8 +113,7 @@ import { UnifiedHeader } from "@/components/unified-header";
   });
 
   // Test webhook
-  const testWebhookMutation = useMutation({
-    mutationFn) => {
+  const testWebhookMutation = useMutation(({ mutationFn }) => {
       const response = await fetch('/api/data-connections/webhook/test', {
         method,
         headers,
@@ -134,8 +131,7 @@ import { UnifiedHeader } from "@/components/unified-header";
   });
 
   // Create webhook
-  const createWebhookMutation = useMutation({
-    mutationFn) => {
+  const createWebhookMutation = useMutation(({ mutationFn }) => {
       const response = await fetch('/api/data-connections/webhook', {
         method,
         headers,
@@ -154,8 +150,7 @@ import { UnifiedHeader } from "@/components/unified-header";
   });
 
   // Test API connection
-  const testApiMutation = useMutation({
-    mutationFn) => {
+  const testApiMutation = useMutation(({ mutationFn }) => {
       const response = await fetch('/api/data-connections/api/test', {
         method,
         headers,
@@ -173,8 +168,7 @@ import { UnifiedHeader } from "@/components/unified-header";
   });
 
   // Create API connection
-  const createApiMutation = useMutation({
-    mutationFn) => {
+  const createApiMutation = useMutation(({ mutationFn }) => {
       const response = await fetch('/api/data-connections/api', {
         method,
         headers,
@@ -193,8 +187,7 @@ import { UnifiedHeader } from "@/components/unified-header";
   });
 
   // Upload file
-  const uploadFileMutation = useMutation({
-    mutationFn) => {
+  const uploadFileMutation = useMutation(({ mutationFn }) => {
       const formData = new FormData();
       formData.append('file', file);
       
@@ -219,8 +212,7 @@ import { UnifiedHeader } from "@/components/unified-header";
   });
 
   // Delete connection
-  const deleteConnectionMutation = useMutation({
-    mutationFn) => {
+  const deleteConnectionMutation = useMutation(({ mutationFn }) => {
       const response = await fetch(`/api/data-connections/${id}`, {
         method,
       });
@@ -247,7 +239,7 @@ import { UnifiedHeader } from "@/components/unified-header";
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.href = url;
+      a.href = url;`
       a.download = `${title}_export.pdf`;
       a.click();
       
@@ -276,7 +268,7 @@ import { UnifiedHeader } from "@/components/unified-header";
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.href = url;
+      a.href = url;`
       a.download = `${title}_export.xlsx`;
       a.click();
       
@@ -325,8 +317,8 @@ import { UnifiedHeader } from "@/components/unified-header";
                               <Label htmlFor="dbType">Tipo</Label>
                               <Select
                                 value={databaseConfig.type}
-                                onValueChange={(type) => setDatabaseConfig(prev => ({ ...prev, setWebhookConfig(prev => ({ ...prev, payload }));
-                                  } catch {
+                                onValueChange=({ (type }) => setDatabaseConfig(prev => ({ ...prev, setWebhookConfig(prev => ({ ...prev, payload }));
+                                  } catch (error) {
                                     // Invalid JSON, ignore
                                   }
                                 }}
@@ -335,7 +327,7 @@ import { UnifiedHeader } from "@/components/unified-header";
                           </div>
                           <div className="flex gap-2">
                             <Button
-                              onClick={() => testWebhookMutation.mutate(webhookConfig)}
+                              onClick=({ ( }) => testWebhookMutation.mutate(webhookConfig)}
                               disabled={testWebhookMutation.isPending}
                               variant="outline"
                             >
@@ -343,7 +335,7 @@ import { UnifiedHeader } from "@/components/unified-header";
                               Testar Webhook
                             </Button>
                             <Button
-                              onClick={() => createWebhookMutation.mutate(webhookConfig)}
+                              onClick=({ ( }) => createWebhookMutation.mutate(webhookConfig)}
                               disabled={createWebhookMutation.isPending}
                             >
                               Criar Webhook
@@ -358,7 +350,7 @@ import { UnifiedHeader } from "@/components/unified-header";
                               <Input
                                 id="apiName"
                                 value={apiConfig.name}
-                                onChange={(e) => setApiConfig(prev => ({ ...prev, name))}
+                                onChange=({ (e }) => setApiConfig(prev => ({ ...prev, name))}
                               />
                             </div>
                             <div>
@@ -366,13 +358,13 @@ import { UnifiedHeader } from "@/components/unified-header";
                               <Input
                                 id="apiUrl"
                                 value={apiConfig.baseUrl}
-                                onChange={(e) => setApiConfig(prev => ({ ...prev, baseUrl))}
+                                onChange=({ (e }) => setApiConfig(prev => ({ ...prev, baseUrl))}
                               />
                             </div>
                             <div>
                               <Label htmlFor="apiAuthType">Tipo de Autenticação</Label>
                               <Select
                                 value={apiConfig.authentication.type}
-                                onValueChange={(type) => setApiConfig(prev => ({ 
+                                onValueChange=({ (type }) => setApiConfig(prev => ({ 
                                   ...prev, 
-                                  authentication, }
+                                  authentication, }`

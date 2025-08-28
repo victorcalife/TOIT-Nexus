@@ -1,107 +1,153 @@
-import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import React, { useState } from 'react';
+import { useAuth } from '../hooks/useAuth';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import { Button } from '../components/ui/button';
+import { Badge } from '../components/ui/badge';
 import { 
-  Shield, 
-  Users, 
-  Database, 
-  Activity, 
-  TrendingUp, 
-  Settings, 
+  Database,
+  Users,
+  TrendingUp,
+  Activity,
+  BarChart3,
+  Clock,
+  Shield,
   AlertTriangle,
   CheckCircle,
-  Clock,
+  XCircle,
   DollarSign,
-  BarChart3,
-  UserCog
-} from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
+  Bell }
+} from 'lucide-react';
 
 export default function SupportDashboard() {
   const { user } = useAuth();
-  const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
+  const [selectedMetric, setSelectedMetric] = useState(null);
 
   // Mock data para demonstração
   const systemMetrics = {
-    totalTenants,
-    activeUsers,
-    systemUptime,
-    activeSessions,
-    totalQueries,
-    avgResponseTime,
-      type,
-      description,
-      timestamp,
-      severity,
+    totalTenants: 45,
+    activeUsers: 1247,
+    systemUptime: '99.9%',
+    activeSessions: 89,
+    totalQueries: 15420,
+    avgResponseTime: '120ms'
+  };
+
+  const recentActivities = [
     {
-      id,
-      type,
-      description,
-      timestamp,
-      severity,
+      id: 1,
+      type: 'login',
+      description: 'Novo usuário registrado no tenant ACME Corp',
+      timestamp: '2 min atrás',
+      severity: 'success'
+    },
     {
-      id,
-      type,
-      description,
-      timestamp,
-      severity,
+      id: 2,
+      type: 'error',
+      description: 'Falha na conexão com banco de dados - Tenant XYZ',
+      timestamp: '5 min atrás',
+      severity: 'error'
+    },
     {
-      id,
-      type,
-      description,
-      timestamp,
-      severity,
-      title,
-      tenant,
-      priority,
-      status,
-      assignee,
+      id: 3,
+      type: 'warning',
+      description: 'Alto uso de CPU detectado no servidor principal',
+      timestamp: '10 min atrás',
+      severity: 'warning'
+    },
     {
-      id, 
-      title,
-      tenant,
-      priority,
-      status,
-      assignee,
+      id: 4,
+      type: 'info',
+      description: 'Backup automático concluído com sucesso',
+      timestamp: '15 min atrás',
+      severity: 'success'
+    }
+  ];
+
+  const supportTickets = [
     {
-      id,
-      title,
-      tenant,
-      priority, 
-      status,
-      assignee) => {
+      id: 1,
+      title: 'Problema de integração com API externa',
+      tenant: 'ACME Corp',
+      priority: 'high',
+      status: 'open',
+      assignee: 'João Silva'
+    },
+    {
+      id: 2,
+      title: 'Solicitação de novo módulo personalizado',
+      tenant: 'Tech Solutions',
+      priority: 'medium',
+      status: 'in_progress',
+      assignee: 'Maria Santos'
+    },
+    {
+      id: 3,
+      title: 'Dúvida sobre configuração de relatórios',
+      tenant: 'StartupXYZ',
+      priority: 'low',
+      status: 'resolved',
+      assignee: 'Pedro Costa'
+    }
+  ];
+
+  const getSeverityIcon = (severity) => {
     switch (severity) {
-      case "success"="h-4 w-4 text-green-500" />;
-      case "warning"="h-4 w-4 text-yellow-500" />;
-      case "error"="h-4 w-4 text-red-500" />;
-      default="h-4 w-4 text-blue-500" />;
+      case 'success':
+        return <CheckCircle className="h-4 w-4 text-green-500" />;
+      case 'warning':
+        return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
+      case 'error':
+        return <XCircle className="h-4 w-4 text-red-500" />;
+      default:
+        return <Bell className="h-4 w-4 text-blue-500" />;
     }
   };
 
   const getPriorityColor = (priority) => {
     switch (priority) {
-      case "high": return "bg-red-100 text-red-800 border-red-200";
-      case "medium": return "bg-yellow-100 text-yellow-800 border-yellow-200";
-      case "low": return "bg-green-100 text-green-800 border-green-200";
-      default) => {
+      case 'high': return 'bg-red-100 text-red-800 border-red-200';
+      case 'medium': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'low': return 'bg-green-100 text-green-800 border-green-200';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+    }
+  };
+
+  const getStatusColor = (status) => {
     switch (status) {
-      case "open": return "bg-red-100 text-red-800";
-      case "in_progress": return "bg-blue-100 text-blue-800";
-      case "resolved": return "bg-green-100 text-green-800";
-      default, {user?.firstName} - {user?.role === 'super_admin' ? 'Super Administrator' : 'Support Admin'}
-                </p>
-              </div>
+      case 'open': return 'bg-red-100 text-red-800';
+      case 'in_progress': return 'bg-blue-100 text-blue-800';
+      case 'resolved': return 'bg-green-100 text-green-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 p-6">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Dashboard de Suporte</h1>
+              <p className="text-gray-600 mt-1">
+                Bem-vindo, {user?.firstName} - {user?.role === 'super_admin' ? 'Super Administrator' : 'Support Admin'}
+              </p>
             </div>
             
             <div className="flex items-center space-x-3">
-              {user?.hasFinancialAccess ? (
+              {user?.hasFinancialAccess && (
                 <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
                   <DollarSign className="h-3 w-3 mr-1" />
                   Acesso Financeiro
                 </Badge>
-              ) {/* Métricas do Sistema */}
-        <div className="grid grid-cols-1 md) => setSelectedMetric('tenants')}>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Métricas do Sistema */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 mb-8">
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setSelectedMetric('tenants')}>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -113,7 +159,7 @@ export default function SupportDashboard() {
             </CardContent>
           </Card>
 
-          <Card className="hover) => setSelectedMetric('users')}>
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setSelectedMetric('users')}>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -125,7 +171,7 @@ export default function SupportDashboard() {
             </CardContent>
           </Card>
 
-          <Card className="hover) => setSelectedMetric('uptime')}>
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setSelectedMetric('uptime')}>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -137,7 +183,7 @@ export default function SupportDashboard() {
             </CardContent>
           </Card>
 
-          <Card className="hover) => setSelectedMetric('sessions')}>
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setSelectedMetric('sessions')}>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -149,7 +195,7 @@ export default function SupportDashboard() {
             </CardContent>
           </Card>
 
-          <Card className="hover) => setSelectedMetric('queries')}>
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setSelectedMetric('queries')}>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -161,7 +207,7 @@ export default function SupportDashboard() {
             </CardContent>
           </Card>
 
-          <Card className="hover) => setSelectedMetric('response')}>
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setSelectedMetric('response')}>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -174,8 +220,23 @@ export default function SupportDashboard() {
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 lg) => (
-                  <div key={activity.id} className="flex items-start space-x-3 p-3 rounded-lg hover)}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Atividades Recentes */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Activity className="h-5 w-5" />
+                <span>Atividades Recentes</span>
+              </CardTitle>
+              <CardDescription>
+                Últimas atividades do sistema em tempo real
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                ({ recentActivities.map((activity }) => (
+                  <div key={activity.id} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50">
+                    {getSeverityIcon(activity.severity)}
                     <div className="flex-1">
                       <p className="text-sm font-medium text-gray-900">
                         {activity.description}
@@ -201,49 +262,29 @@ export default function SupportDashboard() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {supportTickets.map((ticket) => (
-                  <div key={ticket.id} className="p-4 border rounded-lg hover)}>
-                            {ticket.priority}
-                          </Badge>
-                          <Badge className={getStatusColor(ticket.status)}>
-                            {ticket.status}
-                          </Badge>
-                        </div>
-                        <h4 className="font-medium text-gray-900 mb-1">{ticket.title}</h4>
-                        <p className="text-sm text-gray-600">
-                          {ticket.tenant} • Assignee))}
+                ({ supportTickets.map((ticket }) => (
+                  <div key={ticket.id} className="p-4 border rounded-lg hover:bg-gray-50">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center space-x-2">
+                        <Badge className={getPriorityColor(ticket.priority)}>
+                          {ticket.priority}
+                        </Badge>
+                        <Badge className={getStatusColor(ticket.status)}>
+                          {ticket.status}
+                        </Badge>
+                      </div>
+                    </div>
+                    <h4 className="font-medium text-gray-900 mb-1">{ticket.title}</h4>
+                    <p className="text-sm text-gray-600">
+                      {ticket.tenant} • Assignee: {ticket.assignee}
+                    </p>
+                  </div>
+                ))}
               </div>
               
               <div className="mt-4 pt-4 border-t">
                 <Button className="w-full" variant="outline">
                   Ver Todos os Tickets
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Ações Rápidas */}
-        <div className="mt-8">
-          <Card>
-            <CardHeader>
-              <CardTitle>Ações Rápidas</CardTitle>
-              <CardDescription>
-                Ferramentas e ações frequentemente utilizadas pela equipe de suporte
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 md)}
-                </Button>
-                
-                <Button variant="outline" className="h-24 flex-col">
-                  <Database className="h-6 w-6 mb-2" />
-                  <span>Monitor Sistema</span>
-                </Button>
-                
-                <Button variant="outline" className="h-24 flex-col">
-                  <Settings className="h-6 w-6 mb-2" />
-                  <span>Configurações</span>
                 </Button>
               </div>
             </CardContent>

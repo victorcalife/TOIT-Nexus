@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
-import { 
+import {  
   Settings as SettingsIcon, 
   Bell, 
   Mail, 
@@ -18,69 +18,71 @@ import {
   Globe,
   Save
 } from "lucide-react";
-import {
+import { 
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 } from "@/components/ui/select";
 
 export default function Settings() {
   const [settings, setSettings] = useState({
     // General Settings
-    companyName,
-    companyEmail,
-    timezone,
-    language,
+    companyName: '',
+    companyEmail: '',
+    timezone: 'America/Sao_Paulo',
+    language: 'pt-BR',
     
     // Notification Settings
-    emailNotifications,
-    workflowNotifications,
-    reportNotifications,
-    systemAlerts,
+    emailNotifications: true,
+    workflowNotifications: true,
+    reportNotifications: false,
+    systemAlerts: true,
     
     // Security Settings
-    twoFactorAuth,
-    sessionTimeout,
-    passwordPolicy,
+    twoFactorAuth: false,
+    sessionTimeout: 30,
+    passwordPolicy: 'medium',
     
     // API Settings
-    apiRateLimit,
-    webhookTimeout,
-    maxFileSize,
+    apiRateLimit: 1000,
+    webhookTimeout: 30,
+    maxFileSize: 10,
     
     // System Variables
-    systemVariables, value,
-      { key, value,
-      { key, value);
+    systemVariables: [
+      { key: '', value: '' }
+    ]
+  });
 
   const { toast } = useToast();
 
   const handleSaveSettings = () => {
     // In a real app, this would make an API call
     toast({
-      title,
-      description,
+      title: 'Configurações salvas',
+      description: 'As configurações foram atualizadas com sucesso.',
     });
   };
 
   const addSystemVariable = () => {
     setSettings({
       ...settings,
-      systemVariables,
-        { key, value);
+      systemVariables: [...settings.systemVariables, { key: '', value: '' }]
+    });
   };
 
   const updateSystemVariable = (index, field, newValue) => {
     const updatedVariables = settings.systemVariables.map((variable, i) => 
-      i === index ? { ...variable, [field]: newValue } );
-    setSettings({ ...settings, systemVariables);
+      i === index ? { ...variable, [field]: newValue } : variable
+    );
+    setSettings({ ...settings, systemVariables: updatedVariables });
   };
 
   const removeSystemVariable = (index) => {
     const updatedVariables = settings.systemVariables.filter((_, i) => i !== index);
-    setSettings({ ...settings, systemVariables);
+    setSettings({ ...settings, systemVariables: updatedVariables });
   };
 
   return (
@@ -94,7 +96,35 @@ export default function Settings() {
               Gerencie configurações gerais, notificações e variáveis do sistema
             </p>
           </div>
-          <Button onClick={handleSaveSettings} className="bg-primary-500 hover) => setSettings({ ...settings, companyName)}
+          <Button onClick={handleSaveSettings} className="bg-primary-500 hover:bg-primary-600 text-white">
+            <Save className="w-4 h-4 mr-2" />
+            Salvar Configurações
+          </Button>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="flex-1 overflow-auto p-6">
+        <div className="max-w-4xl mx-auto space-y-6">
+          {/* General Settings */}
+          <Card>
+            <CardHeader>
+              <div className="flex items-center space-x-2">
+                <SettingsIcon className="w-5 h-5 text-primary-500" />
+                <CardTitle>Configurações Gerais</CardTitle>
+              </div>
+              <CardDescription>
+                Configure informações básicas da empresa e preferências do sistema
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="companyName">Nome da Empresa</Label>
+                  <Input
+                    id="companyName"
+                    value={settings.companyName}
+                    onChange={(e) => setSettings({ ...settings, companyName: e.target.value })}
                   />
                 </div>
                 <div className="space-y-2">
@@ -103,12 +133,15 @@ export default function Settings() {
                     id="companyEmail"
                     type="email"
                     value={settings.companyEmail}
-                    onChange={(e) => setSettings({ ...settings, companyEmail)}
+                    onChange={(e) => setSettings({ ...settings, companyEmail: e.target.value })}
                   />
                 </div>
               </div>
               
-              <div className="grid grid-cols-1 md) => setSettings({ ...settings, timezone)}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="timezone">Fuso Horário</Label>
+                  <Select value={settings.timezone} onValueChange={(value) => setSettings({ ...settings, timezone: value })}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -121,7 +154,7 @@ export default function Settings() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="language">Idioma</Label>
-                  <Select value={settings.language} onValueChange={(value) => setSettings({ ...settings, language)}>
+                  <Select value={settings.language} onValueChange={(value) => setSettings({ ...settings, language: value })}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -157,7 +190,7 @@ export default function Settings() {
                   <Switch
                     id="emailNotifications"
                     checked={settings.emailNotifications}
-                    onCheckedChange={(checked) => setSettings({ ...settings, emailNotifications)}
+                    onCheckedChange={(checked) => setSettings({ ...settings, emailNotifications: checked })}
                   />
                 </div>
                 
@@ -169,7 +202,7 @@ export default function Settings() {
                   <Switch
                     id="workflowNotifications"
                     checked={settings.workflowNotifications}
-                    onCheckedChange={(checked) => setSettings({ ...settings, workflowNotifications)}
+                    onCheckedChange={(checked) => setSettings({ ...settings, workflowNotifications: checked })}
                   />
                 </div>
                 
@@ -181,7 +214,7 @@ export default function Settings() {
                   <Switch
                     id="reportNotifications"
                     checked={settings.reportNotifications}
-                    onCheckedChange={(checked) => setSettings({ ...settings, reportNotifications)}
+                    onCheckedChange={(checked) => setSettings({ ...settings, reportNotifications: checked })}
                   />
                 </div>
                 
@@ -193,7 +226,7 @@ export default function Settings() {
                   <Switch
                     id="systemAlerts"
                     checked={settings.systemAlerts}
-                    onCheckedChange={(checked) => setSettings({ ...settings, systemAlerts)}
+                    onCheckedChange={(checked) => setSettings({ ...settings, systemAlerts: checked })}
                   />
                 </div>
               </div>
@@ -221,22 +254,24 @@ export default function Settings() {
                   <Switch
                     id="twoFactorAuth"
                     checked={settings.twoFactorAuth}
-                    onCheckedChange={(checked) => setSettings({ ...settings, twoFactorAuth)}
+                    onCheckedChange={(checked) => setSettings({ ...settings, twoFactorAuth: checked })}
                   />
                 </div>
               </div>
               
-              <div className="grid grid-cols-1 md)</Label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="sessionTimeout">Timeout da Sessão (min)</Label>
                   <Input
                     id="sessionTimeout"
                     type="number"
                     value={settings.sessionTimeout}
-                    onChange={(e) => setSettings({ ...settings, sessionTimeout)}
+                    onChange={(e) => setSettings({ ...settings, sessionTimeout: parseInt(e.target.value) })}
                   />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="passwordPolicy">Política de Senhas</Label>
-                  <Select value={settings.passwordPolicy} onValueChange={(value) => setSettings({ ...settings, passwordPolicy)}>
+                  <Select value={settings.passwordPolicy} onValueChange={(value) => setSettings({ ...settings, passwordPolicy: value })}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -263,7 +298,14 @@ export default function Settings() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 md) => setSettings({ ...settings, apiRateLimit)}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="apiRateLimit">Rate Limit API (req/min)</Label>
+                  <Input
+                    id="apiRateLimit"
+                    type="number"
+                    value={settings.apiRateLimit}
+                    onChange={(e) => setSettings({ ...settings, apiRateLimit: parseInt(e.target.value) })}
                   />
                 </div>
                 <div className="space-y-2">
@@ -272,7 +314,7 @@ export default function Settings() {
                     id="webhookTimeout"
                     type="number"
                     value={settings.webhookTimeout}
-                    onChange={(e) => setSettings({ ...settings, webhookTimeout)}
+                    onChange={(e) => setSettings({ ...settings, webhookTimeout: parseInt(e.target.value) })}
                   />
                 </div>
                 <div className="space-y-2">
@@ -281,7 +323,7 @@ export default function Settings() {
                     id="maxFileSize"
                     type="number"
                     value={settings.maxFileSize}
-                    onChange={(e) => setSettings({ ...settings, maxFileSize)}
+                    onChange={(e) => setSettings({ ...settings, maxFileSize: parseInt(e.target.value) })}
                   />
                 </div>
               </div>
@@ -319,10 +361,16 @@ export default function Settings() {
                       variant="ghost"
                       size="sm"
                       onClick={() => removeSystemVariable(index)}
-                      className="text-red-600 hover))}
+                      className="text-red-600 hover:text-red-800"
+                    >
+                      ×
+                    </Button>
+                  </div>
+                ))}
+              </div>
               </div>
               
-              <Button variant="outline" onClick={addSystemVariable}>
+              <Button onClick={addSystemVariable} variant="outline" className="w-full">
                 <Key className="w-4 h-4 mr-2" />
                 Adicionar Variável
               </Button>

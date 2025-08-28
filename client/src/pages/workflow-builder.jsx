@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   Workflow, 
   Play, 
   Pause, 
@@ -39,7 +39,7 @@ import {
   CheckCircle,
   XCircle,
   AlertCircle,
-  RefreshCw
+  RefreshCw }
 } from 'lucide-react';
 
 const WorkflowBuilder = () => {
@@ -157,10 +157,10 @@ const WorkflowBuilder = () => {
         connections,
         updatedAt: new Date().toISOString()
       };
-
+`
       const response = await fetch(`/api/workflows/${currentWorkflow.id}`, {
         method: 'PUT',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -197,10 +197,10 @@ const WorkflowBuilder = () => {
     setIsExecuting(true);
     setExecutionLog([]);
 
-    try {
+    try {`
       const response = await fetch(`/api/workflows/${currentWorkflow.id}/execute`, {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -265,7 +265,7 @@ const WorkflowBuilder = () => {
    * ADICIONAR NÓ
    */
   const addNode = (nodeType, position = { x: 100, y: 100 }) => {
-    const newNode = {
+    const newNode = {`
       id: `node-${Date.now()}`,
       type: nodeType.type,
       name: nodeType.name,
@@ -359,7 +359,7 @@ const WorkflowBuilder = () => {
     );
 
     if (!existingConnection) {
-      const newConnection = {
+      const newConnection = {`
         id: `conn-${Date.now()}`,
         from: fromId,
         to: toId,
@@ -378,26 +378,26 @@ const WorkflowBuilder = () => {
 
     return (
       <div
-        key={node.id}
+        key={node.id}`
         className={`absolute bg-white border-2 rounded-lg p-3 cursor-pointer shadow-lg min-w-[120px] ${
-          selectedNode?.id === node.id ? 'border-blue-500' : 'border-gray-300'
+          selectedNode?.id === node.id ? 'border-blue-500' : 'border-gray-300'}
         } ${
           node.status === 'running' ? 'animate-pulse border-yellow-500' :
           node.status === 'success' ? 'border-green-500' :
-          node.status === 'error' ? 'border-red-500' : ''
+          node.status === 'error' ? 'border-red-500' : ''`
         }`}
         style={{
           left: node.position.x,
-          top: node.position.y
+          top: node.position.y}
         }}
-        onClick={() => setSelectedNode(node)}
-        onMouseDown={(e) => {
+        onClick=({ ( }) => setSelectedNode(node)}
+        onMouseDown=({ (e) => {
           setDraggedNode(node);
           const rect = e.currentTarget.getBoundingClientRect();
           const offsetX = e.clientX - rect.left;
           const offsetY = e.clientY - rect.top;
           
-          const handleMouseMove = (e) => {
+          const handleMouseMove = (e }) => {
             const canvas = document.getElementById('workflow-canvas');
             const canvasRect = canvas.getBoundingClientRect();
             const newX = e.clientX - canvasRect.left - offsetX;
@@ -420,7 +420,7 @@ const WorkflowBuilder = () => {
           document.addEventListener('mouseup', handleMouseUp);
         }}
       >
-        <div className="flex items-center gap-2 mb-2">
+        <div className="flex items-center gap-2 mb-2">`
           <div className={`p-1 rounded ${nodeType.color} text-white`}>
             {nodeType.icon}
           </div>
@@ -485,7 +485,7 @@ const WorkflowBuilder = () => {
               />
             </marker>
           </defs>
-          <path
+          <path`
             d={`M ${fromX} ${fromY} Q ${fromX + 50} ${fromY} ${toX} ${toY}`}
             stroke="#3B82F6"
             strokeWidth="2"
@@ -507,25 +507,23 @@ const WorkflowBuilder = () => {
   return (
     <div className="h-screen flex bg-gray-50">
       {/* Painel de Nós */}
-      {showNodePanel && (
+      ({ showNodePanel && (
         <div className="w-64 bg-white border-r border-gray-200 p-4">
           <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
             <Workflow className="h-5 w-5 text-blue-600" />
-            Componentes
-          </h3>
-          
+
           <div className="space-y-2">
-            {nodeTypes.map((nodeType) => (
+            {nodeTypes.map((nodeType }) => (
               <div
                 key={nodeType.type}
                 className="p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"
                 draggable
-                onDragStart={(e) => {
+                onDragStart=({ (e }) => {
                   e.dataTransfer.setData('nodeType', JSON.stringify(nodeType));
                 }}
-                onClick={() => addNode(nodeType)}
+                onClick=({ ( }) => addNode(nodeType)}
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3">`
                   <div className={`p-2 rounded ${nodeType.color} text-white`}>
                     {nodeType.icon}
                   </div>
@@ -557,7 +555,7 @@ const WorkflowBuilder = () => {
             <div className="flex gap-2">
               <Button
                 variant="outline"
-                onClick={() => setShowNodePanel(!showNodePanel)}
+                onClick=({ ( }) => setShowNodePanel(!showNodePanel)}
               >
                 <Settings className="h-4 w-4" />
               </Button>
@@ -567,8 +565,7 @@ const WorkflowBuilder = () => {
                 disabled={!currentWorkflow}
               >
                 <Save className="h-4 w-4 mr-2" />
-                Salvar
-              </Button>
+
               <Button
                 onClick={executeWorkflow}
                 disabled={!currentWorkflow || isExecuting || nodes.length === 0}
@@ -582,8 +579,7 @@ const WorkflowBuilder = () => {
                 ) : (
                   <>
                     <Play className="h-4 w-4 mr-2" />
-                    Executar
-                  </>
+
                 )}
               </Button>
             </div>
@@ -597,9 +593,9 @@ const WorkflowBuilder = () => {
             className="w-full h-full relative bg-gray-50"
             style={{
               backgroundImage: 'radial-gradient(circle, #e5e7eb 1px, transparent 1px)',
-              backgroundSize: '20px 20px'
+              backgroundSize: '20px 20px'}
             }}
-            onDrop={(e) => {
+            onDrop=({ (e }) => {
               e.preventDefault();
               const nodeTypeData = e.dataTransfer.getData('nodeType');
               if (nodeTypeData) {
@@ -612,7 +608,7 @@ const WorkflowBuilder = () => {
                 addNode(nodeType, position);
               }
             }}
-            onDragOver={(e) => e.preventDefault()}
+            onDragOver=({ (e }) => e.preventDefault()}
           >
             {/* Renderizar conexões */}
             {renderConnections()}
@@ -639,14 +635,14 @@ const WorkflowBuilder = () => {
       </div>
 
       {/* Painel de Propriedades */}
-      {showPropertiesPanel && selectedNode && (
+      ({ showPropertiesPanel && selectedNode && (
         <div className="w-80 bg-white border-l border-gray-200 p-4">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-bold text-lg">Propriedades</h3>
             <Button
               variant="outline"
               size="sm"
-              onClick={() => removeNode(selectedNode.id)}
+              onClick={( }) => removeNode(selectedNode.id)}
               className="text-red-600 hover:text-red-700"
             >
               <Trash2 className="h-4 w-4" />
@@ -660,7 +656,7 @@ const WorkflowBuilder = () => {
               </label>
               <Input
                 value={selectedNode.name}
-                onChange={(e) => {
+                onChange=({ (e }) => {
                   setNodes(prev => prev.map(node => 
                     node.id === selectedNode.id 
                       ? { ...node, name: e.target.value }
@@ -673,8 +669,7 @@ const WorkflowBuilder = () => {
             
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Tipo
-              </label>
+
               <Badge>{selectedNode.type}</Badge>
             </div>
             
@@ -683,11 +678,10 @@ const WorkflowBuilder = () => {
               <>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Para
-                  </label>
+
                   <Input
                     value={selectedNode.properties.to || ''}
-                    onChange={(e) => {
+                    onChange=({ (e }) => {
                       const updatedNode = {
                         ...selectedNode,
                         properties: { ...selectedNode.properties, to: e.target.value }
@@ -702,11 +696,10 @@ const WorkflowBuilder = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Assunto
-                  </label>
+
                   <Input
                     value={selectedNode.properties.subject || ''}
-                    onChange={(e) => {
+                    onChange=({ (e }) => {
                       const updatedNode = {
                         ...selectedNode,
                         properties: { ...selectedNode.properties, subject: e.target.value }
@@ -730,7 +723,7 @@ const WorkflowBuilder = () => {
                 <Input
                   type="number"
                   value={selectedNode.properties.duration || 1}
-                  onChange={(e) => {
+                  onChange=({ (e }) => {
                     const updatedNode = {
                       ...selectedNode,
                       properties: { ...selectedNode.properties, duration: parseInt(e.target.value) }
@@ -752,7 +745,7 @@ const WorkflowBuilder = () => {
                   </label>
                   <select
                     value={selectedNode.properties.method || 'GET'}
-                    onChange={(e) => {
+                    onChange=({ (e }) => {
                       const updatedNode = {
                         ...selectedNode,
                         properties: { ...selectedNode.properties, method: e.target.value }
@@ -772,11 +765,10 @@ const WorkflowBuilder = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    URL
-                  </label>
+
                   <Input
                     value={selectedNode.properties.url || ''}
-                    onChange={(e) => {
+                    onChange=({ (e }) => {
                       const updatedNode = {
                         ...selectedNode,
                         properties: { ...selectedNode.properties, url: e.target.value }
@@ -796,21 +788,21 @@ const WorkflowBuilder = () => {
       )}
 
       {/* Log de Execução */}
-      {executionLog.length > 0 && (
+      ({ executionLog.length > 0 && (
         <div className="fixed bottom-4 right-4 w-96 max-h-64 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
           <div className="p-3 bg-gray-50 border-b border-gray-200">
             <h4 className="font-medium text-sm">Log de Execução</h4>
           </div>
           <div className="p-3 overflow-y-auto max-h-48 space-y-2">
-            {executionLog.map((log, index) => (
+            {executionLog.map((log, index }) => (
               <div key={index} className="text-xs">
                 <span className="text-gray-500">
                   {new Date(log.timestamp).toLocaleTimeString()}
-                </span>
+                </span>`
                 <span className={`ml-2 ${
                   log.level === 'error' ? 'text-red-600' :
                   log.level === 'success' ? 'text-green-600' :
-                  'text-gray-700'
+                  'text-gray-700'`}
                 }`}>
                   {log.message}
                 </span>
@@ -824,3 +816,4 @@ const WorkflowBuilder = () => {
 };
 
 export default WorkflowBuilder;
+`

@@ -5,30 +5,11 @@ import { Badge } from './ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Progress } from './ui/progress';
 import { Alert, AlertDescription } from './ui/alert';
-import { 
-  Brain, 
-  TrendingUp, 
-  Users, 
-  PieChart, 
-  Activity, 
-  Zap, 
-  Target,
-  AlertTriangle,
-  CheckCircle,
-  Clock,
-  BarChart3,
-  Lightbulb,
-  RefreshCw,
-  Cpu,
-  Atom,
-  Sparkles,
-  CircuitBoard,
-  Microscope,
-  Gauge
+import {  
+  BarChart3, }
 } from 'lucide-react';
 
-) {
-  const [loading, setLoading] = useState(false);
+) ({ const [loading, setLoading] = useState(false);
   const [quantumLoading, setQuantumLoading] = useState(false);
   const [patterns, setPatterns] = useState<QuantumDataPattern | null>(null);
   const [insights, setInsights] = useState<QuantumInsight[]>([]);
@@ -37,7 +18,7 @@ import {
   const [qlibStatus, setQlibStatus] = useState<any>(null);
 
   // Executar análise quântica adaptativa
-  const runQuantumAnalysis = async () => {
+  const runQuantumAnalysis = async ( }) => {
     setQuantumLoading(true);
     try {
       console.log('🌌 Executando análise quântica adaptativa...');
@@ -58,7 +39,7 @@ import {
       // Executar QAOA para otimização de padrões
       const qaoaResponse = await fetch('/api/qlib/qaoa', {
         method,
-        headers,
+        headers,`
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
         body,
@@ -70,7 +51,7 @@ import {
       // Executar Grover para busca de padrões
       const groverResponse = await fetch('/api/qlib/grover', {
         method,
-        headers,
+        headers,`
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
         body, '001', '010', '011', '100', '101', '110', '111'],
@@ -92,8 +73,8 @@ import {
         groverData = grover.data;
       }
 
-      // Executar análise adaptativa clássica também
-      const adaptiveResponse = await fetch(`/api/adaptive/analyze/${tenantId}`, {
+      // Executar análise adaptativa clássica também`
+      const adaptiveResponse = await fetch(`/api/adaptive/analyze/${tenantId}`, {`
         headers)}`
         }
       });
@@ -111,7 +92,7 @@ import {
             coherenceScore,
             superpositionAdvantage,
         workflowPatterns,
-          quantumOptimizations) * 20),
+          quantumOptimizations) * 20),`
               improvement).toFixed(1)}% otimização` : '85% otimização'
             },
             grover) vs O(N)',
@@ -181,13 +162,13 @@ import {
   const checkQuantumHealth = async () => {
     try {
       const [qlibRes, realQuantumRes, nativeQuantumRes] = await Promise.all([
-        fetch('/api/qlib/status', {
+        fetch('/api/qlib/status', {`
           headers)}` }
         }),
-        fetch('/api/real-quantum/status', {
+        fetch('/api/real-quantum/status', {`
           headers)}` }
         }),
-        fetch('/api/native-quantum/status', {
+        fetch('/api/native-quantum/status', {`
           headers)}` }
         })
       ]);
@@ -212,13 +193,12 @@ import {
     }
   };
 
-  const getImpactColor = (impact) => {
-    switch (impact) {
+  const getImpactColor = (impact) => ({ switch (impact) {
       case 'revolutionary': return 'bg-gradient-to-r from-purple-500 to-pink-500 text-white';
       case 'high': return 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white';
       case 'medium': return 'secondary';
       case 'low': return 'outline';
-      default) => {
+      default }) => {
     if (advantage.includes('Exponential')) return 'text-purple-600 font-bold';
     if (advantage.includes('Quadratic') || advantage.includes('√N')) return 'text-blue-600 font-bold';
     return 'text-green-600';
@@ -279,7 +259,6 @@ import {
           </TabsTrigger>
           <TabsTrigger value="algorithms">
             <CircuitBoard className="mr-2 h-4 w-4" />
-            Algoritmos
           </TabsTrigger>
           <TabsTrigger value="quantum-advantage">
             <Gauge className="mr-2 h-4 w-4" />
@@ -322,7 +301,7 @@ import {
                         {insight.impact === 'revolutionary' ? 'Revolucionário' : 
                          insight.impact === 'high' ? 'Alto Impacto' : 
                          insight.impact === 'medium' ? 'Médio Impacto' : 'Baixo Impacto'}
-                      </Badge>
+                      </Badge>`
                       <div className={`text-sm font-bold ${getQuantumAdvantageColor(insight.quantumAdvantage)}`}>
                         {insight.confidence}% confiança
                       </div>
@@ -403,8 +382,8 @@ import {
             </div>
           ) {/* Aba de Algoritmos */}
         <TabsContent value="algorithms" className="space-y-4">
-          {patterns?.quantumMetrics?.algorithms ? (
-            <div className="grid grid-cols-1 md, index) => (
+          ({ patterns?.quantumMetrics?.algorithms ? (
+            <div className="grid grid-cols-1 md, index }) => (
                 <Card key={index} className="bg-gradient-to-br from-gray-50 to-blue-50">
                   <CardHeader>
                     <CardTitle className="flex items-center justify-between">
@@ -449,9 +428,9 @@ import {
             </div>
           ) {/* Aba de Vantagem Quântica */}
         <TabsContent value="quantum-advantage" className="space-y-4">
-          {patterns?.quantumMetrics?.advantages ? (
+          ({ patterns?.quantumMetrics?.advantages ? (
             <div className="space-y-4">
-              {patterns.quantumMetrics.advantages.map((advantage, index) => (
+              {patterns.quantumMetrics.advantages.map((advantage, index }) => (
                 <Card key={index} className="border-l-4 border-l-purple-500">
                   <CardContent className="pt-6">
                     <div className="flex items-center justify-between">
@@ -460,7 +439,7 @@ import {
                         <div className="text-sm text-muted-foreground mb-2">{advantage.advantage}</div>
                         <Badge className={
                           advantage.impact === 'Revolutionary' ? 'bg-purple-600' :
-                          advantage.impact === 'High' ? 'bg-blue-600' : 'bg-green-600'
+                          advantage.impact === 'High' ? 'bg-blue-600' : 'bg-green-600'}
                         }>
                           {advantage.impact} Impact
                         </Badge>
@@ -550,4 +529,4 @@ import {
       </Tabs>
     </div>
   );
-}
+}`

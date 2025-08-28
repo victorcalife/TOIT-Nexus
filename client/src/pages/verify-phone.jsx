@@ -34,8 +34,7 @@ export default function VerifyPhone() {
 
     // Iniciar countdown de 60 segundos para reenvio
     setCountdown(60);
-    const timer = setInterval(() => {
-      setCountdown((prev) => {
+    const timer = setInterval(() => ({ setCountdown((prev }) => {
         if (prev <= 1) {
           clearInterval(timer);
           return 0;
@@ -146,8 +145,7 @@ export default function VerifyPhone() {
         
         // Reiniciar countdown
         setCountdown(60);
-        const timer = setInterval(() => {
-          setCountdown((prev) => {
+        const timer = setInterval(() => ({ setCountdown((prev }) => {
             if (prev <= 1) {
               clearInterval(timer);
               return 0;
@@ -206,7 +204,7 @@ export default function VerifyPhone() {
             <CardHeader className="text-center space-y-4">
               <div className="flex justify-center">
                 {isVerified ? (
-                  <CheckCircle className="h-16 w-16 text-green-500" />
+                  <CheckCircle className="h-16 w-16 text-green-500" />`
                 ) {`text-2xl font-semibold ${isVerified ? 'text-green-600' : 'text-blue-600'}`}>
                 {isVerified ? "Verificação concluída!" : "Digite o código SMS"}
               </CardTitle>
@@ -245,7 +243,7 @@ export default function VerifyPhone() {
                         className="text-blue-500 hover)}
                   </div>
                 </form>
-              ) {accountActivated ? (
+              ) ({ accountActivated ? (
                     <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
                       <p className="text-green-800 font-medium">🎉 Conta totalmente ativada!</p>
                       <p className="text-green-600 text-sm mt-1">
@@ -256,7 +254,7 @@ export default function VerifyPhone() {
                 <div className="mt-6 text-center">
                   <Button 
                     variant="outline"
-                    onClick={() => window.location.href = '/'}
+                    onClick={( }) => window.location.href = '/'}
                     className="text-sm"
                   >
                     Voltar ao Início
@@ -277,4 +275,4 @@ export default function VerifyPhone() {
       </div>
     </div>
   );
-}
+}`

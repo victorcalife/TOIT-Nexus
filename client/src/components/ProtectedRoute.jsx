@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useAuthState } from '@/hooks/useAuthState';
 
-) => {
+const ProtectedRoute = ({ 
+  children, 
+  requiredRole = null, 
+  requireAuth = true, 
+  fallbackUrl = '/login' 
+}) => {
   const { isAuthenticated, user, isLoading, hasRole } = useAuthState();
   const [shouldRender, setShouldRender] = useState(false);
 
@@ -58,20 +63,22 @@ import { useAuthState } from '@/hooks/useAuthState';
 };
 
 // Componentes específicos para roles
-export const AdminRoute = ({ children }: { children) => (
+export const AdminRoute = ({ children }) => (
   <ProtectedRoute requiredRole={['super_admin', 'tenant_admin']}>
     {children}
   </ProtectedRoute>
 );
 
-export const SuperAdminRoute = ({ children }: { children) => (
+export const SuperAdminRoute = ({ children }) => (
   <ProtectedRoute requiredRole="super_admin">
     {children}
   </ProtectedRoute>
 );
 
-export const AuthenticatedRoute = ({ children }: { children) => (
+export const AuthenticatedRoute = ({ children }) => (
   <ProtectedRoute>
     {children}
   </ProtectedRoute>
 );
+
+export default ProtectedRoute;

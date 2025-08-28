@@ -11,32 +11,32 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { 
-  Calendar, 
-  Clock, 
-  Plus, 
-  ChevronLeft, 
-  ChevronRight, 
+import {  
+
+
+
+
+
   Grid3X3, 
-  List, 
-  Users, 
-  Video,
-  MapPin,
-  Bell,
-  Repeat,
+
+
+
+
+
+
   Trash2,
-  Edit,
-  Eye,
-  Filter,
-  Search,
-  Download,
+
+
+
+
+
   Share2,
-  Settings,
-  Sync,
-  AlertCircle,
-  CheckCircle,
-  Star,
-  MoreHorizontal
+
+
+
+
+
+ }
 } from 'lucide-react';
 import { format, addDays, subDays, startOfWeek, endOfWeek, startOfMonth, endOfMonth, isSameDay, isSameMonth, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -247,21 +247,21 @@ const ProfessionalCalendarUI = ({ tenantId, userId, userRole }) => {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => navigateCalendar('prev')}
+            onClick=({ ( }) => navigateCalendar('prev')}
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
           <Button
             variant="outline"
             size="sm"
-            onClick={() => setCurrentDate(new Date())}
+            onClick=({ ( }) => setCurrentDate(new Date())}
           >
-            Hoje
+
           </Button>
           <Button
             variant="outline"
             size="sm"
-            onClick={() => navigateCalendar('next')}
+            onClick=({ ( }) => navigateCalendar('next')}
           >
             <ChevronRight className="h-4 w-4" />
           </Button>
@@ -272,7 +272,7 @@ const ProfessionalCalendarUI = ({ tenantId, userId, userRole }) => {
           {syncStatus === 'synced' && (
             <Badge variant="outline" className="text-green-600 border-green-600">
               <CheckCircle className="h-3 w-3 mr-1" />
-              Sincronizado
+
             </Badge>
           )}
           {syncStatus === 'syncing' && (
@@ -343,15 +343,15 @@ const ProfessionalCalendarUI = ({ tenantId, userId, userRole }) => {
         <div className="flex items-center space-x-2">
           <Button variant="outline" size="sm" onClick={handleSync}>
             <Sync className="h-4 w-4 mr-1" />
-            Sincronizar
+
           </Button>
           <Button variant="outline" size="sm">
             <Download className="h-4 w-4 mr-1" />
-            Exportar
+
           </Button>
           <Button variant="outline" size="sm">
             <Share2 className="h-4 w-4 mr-1" />
-            Compartilhar
+
           </Button>
           <Button variant="outline" size="sm">
             <Settings className="h-4 w-4 mr-1" />
@@ -551,3 +551,4 @@ const ProfessionalCalendarUI = ({ tenantId, userId, userRole }) => {
 };
 
 export default ProfessionalCalendarUI;
+`

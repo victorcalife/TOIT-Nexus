@@ -13,20 +13,18 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Textarea } from '../components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
-import
-{
+import { 
   Database, Play, Save, Download, Upload, History,
   Table, Columns, Filter, Link, Plus, Trash2, Copy,
-  Code, Eye, Settings, Search, BookOpen, Zap
+  Code, Eye, Settings, Search, BookOpen, Zap }
 } from 'lucide-react';
 
 // Chart components
-import
-{
+import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
   LineChart as RechartsLineChart, Line,
   PieChart as RechartsPieChart, Pie, Cell,
-  AreaChart, Area
+  AreaChart, Area }
 } from 'recharts';
 
 // Color palette
@@ -43,105 +41,105 @@ const TQL_EXAMPLES = {
       description: "Dashboard com KPIs atualizados em tempo real",
       code: `DASHBOARD "Vendas Tempo Real":
     KPI vendas_hoje TITULO "Vendas Hoje", MOEDA R$;
-    KPI pedidos_ativo TITULO "Pedidos Ativos";
+    KPI pedidos_ativo TITULO "Pedidos Ativos";`
     KPI usuarios_online TITULO "Online";`
     }
   ],
   basico: [
     {
       title: "Consulta Simples",
-      description: "Buscar todos os clientes ativos",
+      description: "Buscar todos os clientes ativos",`
       code: `BUSCAR clientes ONDE status = "ativo";`
     },
     {
       title: "Filtro por Data",
-      description: "Vendas dos últimos 30 dias",
+      description: "Vendas dos últimos 30 dias",`
       code: `BUSCAR vendas ONDE data >= HOJE(-30);`
     },
     {
       title: "Agrupamento",
-      description: "Total de vendas por vendedor",
+      description: "Total de vendas por vendedor",`
       code: `BUSCAR vendas AGRUPAR POR vendedor SOMAR(valor);`
     }
   ],
   temporal: [
     {
       title: "Comparação Mensal",
-      description: "Vendas do mês atual vs anterior",
+      description: "Vendas do mês atual vs anterior",`
       code: `COMPARAR vendas MES(0) COM MES(-1);`
     },
     {
       title: "Tendência Semanal",
-      description: "Evolução das vendas por semana",
+      description: "Evolução das vendas por semana",`
       code: `TENDENCIA vendas POR SEMANA ULTIMOS(12);`
     },
     {
       title: "Sazonalidade",
-      description: "Padrão sazonal de vendas",
+      description: "Padrão sazonal de vendas",`
       code: `SAZONALIDADE vendas POR MES ANOS(3);`
     },
     {
       title: "Previsão",
-      description: "Previsão de vendas próximos 30 dias",
+      description: "Previsão de vendas próximos 30 dias",`
       code: `PREVER vendas PROXIMOS(30) DIAS;`
     },
     {
       title: "Análise Diária",
-      description: "Performance diária vs meta",
+      description: "Performance diária vs meta",`
       code: `ANALISAR vendas DIARIO COMPARAR meta;`
     },
     {
       title: "Período Específico",
-      description: "Vendas entre datas específicas",
+      description: "Vendas entre datas específicas",`
       code: `BUSCAR vendas ENTRE DATA("2024-01-01") E DIA(0);`
     },
     {
       title: "Comparação Trimestral",
-      description: "Comparar trimestres",
+      description: "Comparar trimestres",`
       code: `COMPARAR vendas TRIMESTRE(-1) COM TRIMESTRE(0);`
     }
   ],
   dashboard: [
     {
       title: "Dashboard Executivo",
-      description: "Dashboard completo para executivos",
+      description: "Dashboard completo para executivos",`
       code: `DASHBOARD "Executivo":
     KPI receita_mes TITULO "Receita Mensal", MOEDA R$;
     KPI clientes_novos TITULO "Novos Clientes";
-    GRAFICO vendas_tempo TIPO linha PERIODO 30;
+    GRAFICO vendas_tempo TIPO linha PERIODO 30;`
     TABELA top_produtos LIMITE 10;`
     }
   ],
   quantum: [
     {
       title: "Algoritmo Grover com MILA",
-      description: "Busca quântica otimizada",
+      description: "Busca quântica otimizada",`
       code: `EXECUTAR_QUANTUM "grover_search"
 PARAMETROS {
     searchSpace: [1,2,3,4,5,6,7,8],
     targetItem: 5
 }
-BACKEND "ibm_torino"
+BACKEND "ibm_torino"`
 RETORNAR speedup, probability, iterations;`
     },
     {
       title: "Dashboard Quântico MILA",
-      description: "Métricas do sistema quântico",
+      description: "Métricas do sistema quântico",`
       code: `QUANTUM_DASHBOARD "MILA System":
     QUANTUM_KPI ibm_backends TITULO "Backends IBM";
     QUANTUM_KPI total_qubits TITULO "Qubits Disponíveis";
-    QUANTUM_KPI algoritmos_executados TITULO "Algoritmos Hoje";
+    QUANTUM_KPI algoritmos_executados TITULO "Algoritmos Hoje";`
     QUANTUM_GRAFICO speedup DE algoritmos_quantum;`
     },
     {
       title: "Otimização QAOA",
-      description: "Problema de otimização quântica",
+      description: "Problema de otimização quântica",`
       code: `EXECUTAR_QUANTUM "qaoa_optimization"
 PROBLEMA "maxcut"
 PARAMETROS {
     nodes: 6,
     edges: [[0,1], [1,2], [2,3]]
-}
+}`
 RETORNAR solution, cost, approximationRatio;`
     }
   ]
@@ -204,15 +202,13 @@ export default function QueryBuilder()
   ];
 
   // Fetch saved queries
-  const { data: savedQueries = [] } = useQuery( {
-    queryKey: [ 'saved-queries' ],
-    queryFn: () => apiRequest( '/api/query-builder/queries' ),
+  const { data: savedQueries = [] } = useQuery( ({ queryKey: [ 'saved-queries' ],
+    queryFn: ( }) => apiRequest( '/api/query-builder/queries' ),
     retry: 2
   } );
 
   // Execute TQL query mutation with MILA integration
-  const executeQueryMutation = useMutation( {
-    mutationFn: async ( query ) =>
+  const executeQueryMutation = useMutation( ({ mutationFn: async ( query  }) =>
     {
       // Execute TQL with MILA quantum processing
       const tqlResponse = await apiRequest( '/api/tql/execute', 'POST', {
@@ -241,7 +237,7 @@ export default function QueryBuilder()
     {
       setQueryResults( data.results || [] );
       toast( {
-        title: "TQL executada com MILA + Quantum",
+        title: "TQL executada com MILA + Quantum",`
         description: `${ data.results?.length || 0 } resultados com otimização quântica`,
       } );
     },
@@ -256,8 +252,7 @@ export default function QueryBuilder()
   } );
 
   // Save query mutation
-  const saveQueryMutation = useMutation( {
-    mutationFn: async ( queryData ) =>
+  const saveQueryMutation = useMutation( ({ mutationFn: async ( queryData  }) =>
     {
       return await apiRequest( '/api/query-builder/queries', 'POST', queryData );
     },
@@ -338,19 +333,17 @@ export default function QueryBuilder()
 
   // Update field
   const updateField = ( index, field ) =>
-  {
-    setCurrentQuery( prev => ( {
+  ({ setCurrentQuery( prev => ( {
       ...prev,
-      fields, i) => i === index ? { ...f, ...field } )
+      fields, i }) => i === index ? { ...f, ...field } )
   }));
 };
 
 // Update filter
 const updateFilter = ( index, filter ) =>
-{
-  setCurrentQuery( prev => ( {
+({ setCurrentQuery( prev => ( {
     ...prev,
-    filters, i) => i === index ? { ...f, ...filter } )
+    filters, i }) => i === index ? { ...f, ...filter } )
 }));
   };
 
@@ -400,9 +393,9 @@ const renderVisualization = () =>
     </tr>
               </thead >
   <tbody>
-    { queryResults.map( ( row, i ) => (
+    ({ queryResults.map( ( row, i  }) => (
       <tr key={ i } className="border-t">
-        { Object.values( row ).map( ( value, j ) => (
+        ({ Object.values( row ).map( ( value, j  }) => (
           <td key={ j } className="px-4 py-2">
             { String( value ) }
           </td>
@@ -467,7 +460,7 @@ return (
           outerRadius={ 80 }
           fill="#8884d8"
         >
-          { queryResults.map( ( entry, index ) => (
+          ({ queryResults.map( ( entry, index  }) => (`
             <Cell key={ `cell-${ index }` } fill={ visualization.colors[ index % visualization.colors.length ] } />
           ) ) }
         </Pie>
@@ -518,7 +511,7 @@ const gaugeValue = typeof queryResults[ 0 ] === 'number' ? queryResults[ 0 ] :
 const percentage = Math.min( Math.max( gaugeValue, 0 ), 100 );
 return (
           <div className="text-center p-6">
-            <div className="relative w-32 h-32 mx-auto mb-4">
+            <div className="relative w-32 h-32 mx-auto mb-4">`
               <div className="absolute inset-0 rounded-full border-8 border-gray-200 dark, 50% 0%, ${50 + 50 * Math.cos((percentage / 100) * 2 * Math.PI - Math.PI/2)}% ${50 + 50 * Math.sin((percentage / 100) * 2 * Math.PI - Math.PI/2)}%, 50% 50%)` 
                 }}
               ></div>
@@ -562,7 +555,7 @@ return (
       <Button size="sm" variant="outline" onClick={ validateTQLSyntax }>
         <CheckCircle className="w-4 h-4" />
       </Button>
-      <Button size="sm" variant="outline" onClick={ () => setTqlCode( '' ) }>
+      <Button size="sm" variant="outline" onClick=({ ( }) => setTqlCode( '' ) }>
         <AlertCircle className="w-4 h-4" />
       </Button>
     </div>
@@ -570,11 +563,11 @@ return (
   <Textarea
     id="tqlCode"
     value={ tqlCode }
-    onChange={ ( e ) =>
+    onChange=({ ( e  }) =>
     {
       setTqlCode( e.target.value );
       setCurrentTQLQuery( prev => ( { ...prev, tqlCode) );
-    } }
+    } }`
     placeholder={ `# Digite sua consulta TQL em português);\n\n# Dashboard completo);\n\nDASHBOARD "Vendas Mensal":\n    KPI vendas_mes TITULO "Vendas do Mês", MOEDA R$;` }
     className="min-h-[200px] font-mono text-sm"
   />
@@ -627,7 +620,7 @@ return (
           <Input
             id="saveName"
             value={ currentTQLQuery.name }
-            onChange={ ( e ) => setCurrentTQLQuery( prev => ( { ...prev, name) ) }
+            onChange=({ ( e  }) => setCurrentTQLQuery( prev => ( { ...prev, name) ) }
           />
         </div>
         <div>
@@ -635,11 +628,11 @@ return (
           <Textarea
             id="saveDescription"
             value={ currentTQLQuery.description || '' }
-            onChange={ ( e ) => setCurrentTQLQuery( prev => ( { ...prev, description) ) }
+            onChange=({ ( e  }) => setCurrentTQLQuery( prev => ( { ...prev, description) ) }
           />
         </div>
         <Button
-          onClick={ () => saveTQLMutation.mutate( currentTQLQuery ) }
+          onClick=({ ( }) => saveTQLMutation.mutate( currentTQLQuery ) }
           disabled={ saveTQLMutation.isPending }
           className="w-full"
         >
@@ -656,7 +649,7 @@ return (
       <Label>Categorias de Exemplos</Label>
       <Select
         value={ selectedCategory }
-        onValueChange={ ( value ) => setSelectedCategory( value ) }
+        onValueChange=({ ( value  }) => setSelectedCategory( value ) }
       >
         <SelectTrigger>
           <SelectValue />
@@ -673,7 +666,7 @@ return (
 
     <ScrollArea className="h-[400px]">
       <div className="space-y-2">
-        { TQL_EXAMPLES[ selectedCategory ]?.map( ( example, index ) => (
+        ({ TQL_EXAMPLES[ selectedCategory ]?.map( ( example, index  }) => (
           <Card
             key={ index }
             className="p-3 cursor-pointer hover) => insertTQLExample(example)}
@@ -860,17 +853,17 @@ return (
                 </div >
               </CardHeader >
   <CardContent>
-    { executionResult ? (
+    ({ executionResult ? (
                   // Renderizar resultados TQL
                   <div className="space-y-4">
                     {executionResult.type === 'dashboard' && executionResult.dashboard ? (
                       // Renderizar Dashboard TQL
                       <div className="space-y-6">
                         <div className="text-center">
-                          <h2 className="text-2xl font-bold text-gray-900 dark, index) => (
+                          <h2 className="text-2xl font-bold text-gray-900 dark, index }) => (
                             <Card key={widget.id || index} className="p-4">
                               <CardHeader className="pb-2">
-                                <CardTitle className="text-lg">
+                                <CardTitle className="text-lg">`
                                   {widget.title || `Widget ${index + 1}`}
                                 </CardTitle>
                               </CardHeader>
@@ -886,7 +879,7 @@ return (
                                     </div>
                                   </div>
                                 ) {visualization.type}
-                            onValueChange={(type) => setVisualization(prev => ({ ...prev, newColors[0] = color;
+                            onValueChange=({ (type }) => setVisualization(prev => ({ ...prev, newColors[0] = color;
                                 setVisualization(prev => ({ ...prev, colors));
                               }}
                             />
@@ -918,4 +911,4 @@ return (
       </div>
     </div>
   );
-}
+}`

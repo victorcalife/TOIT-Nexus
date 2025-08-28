@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   GitBranch, 
   Workflow,
   Play,
@@ -83,7 +83,7 @@ import {
   Shield,
   Lock,
   Unlock,
-  Key
+  Key }
 } from 'lucide-react';
 
 const BPMSystem = () => {
@@ -145,22 +145,22 @@ const BPMSystem = () => {
         fetch('/api/bpm/processes', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/bpm/instances', {
+        fetch('/api/bpm/instances', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/bpm/tasks', {
+        fetch('/api/bpm/tasks', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/bpm/templates', {
+        fetch('/api/bpm/templates', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/bpm/approvals', {
+        fetch('/api/bpm/approvals', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/bpm/forms', {
+        fetch('/api/bpm/forms', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/bpm/rules', {
+        fetch('/api/bpm/rules', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);
@@ -219,14 +219,14 @@ const BPMSystem = () => {
     try {
       const response = await fetch('/api/bpm/processes', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           ...processData,
           status: 'draft',
-          createdAt: new Date().toISOString(),
+          createdAt: new Date().toISOString(),`
           processId: `PROC-${Date.now()}`
         })
       });
@@ -240,7 +240,7 @@ const BPMSystem = () => {
       setShowProcessModal(false);
       
       toast({
-        title: "Processo criado",
+        title: "Processo criado",`
         description: `Processo ${data.process.name} criado com sucesso`,
       });
     } catch (error) {
@@ -257,16 +257,16 @@ const BPMSystem = () => {
    * INICIAR PROCESSO
    */
   const startProcess = async (processId, instanceData) => {
-    try {
+    try {`
       const response = await fetch(`/api/bpm/processes/${processId}/start`, {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           ...instanceData,
-          startedAt: new Date().toISOString(),
+          startedAt: new Date().toISOString(),`
           instanceId: `INST-${Date.now()}`
         })
       });
@@ -279,7 +279,7 @@ const BPMSystem = () => {
       setInstances(prev => [data.instance, ...prev]);
       
       toast({
-        title: "Processo iniciado",
+        title: "Processo iniciado",`
         description: `Instância ${data.instance.instanceId} iniciada com sucesso`,
       });
     } catch (error) {
@@ -296,10 +296,10 @@ const BPMSystem = () => {
    * COMPLETAR TAREFA
    */
   const completeTask = async (taskId, taskData) => {
-    try {
+    try {`
       const response = await fetch(`/api/bpm/tasks/${taskId}/complete`, {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -400,47 +400,42 @@ const BPMSystem = () => {
           </div>
           
           <div className="flex gap-2">
-            {process.status === 'active' ? (
+            ({ process.status === 'active' ? (
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => startProcess(process.id, { processId: process.id })}
+                onClick={( }) => startProcess(process.id, { processId: process.id })}
               >
                 <Play className="h-3 w-3 mr-1" />
-                Iniciar
-              </Button>
+
             ) : (
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => {
+                onClick=({ ( }) => {
                   // Implementar ativação
                 }}
               >
                 <Play className="h-3 w-3 mr-1" />
-                Ativar
-              </Button>
+
             )}
             
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setSelectedProcess(process)}
+              onClick=({ ( }) => setSelectedProcess(process)}
             >
               <Eye className="h-3 w-3 mr-1" />
-              Ver
-            </Button>
-            
+
             <Button
               variant="outline"
               size="sm"
-              onClick={() => {
+              onClick=({ ( }) => {
                 // Implementar edição
               }}
             >
               <Edit className="h-3 w-3 mr-1" />
-              Editar
-            </Button>
+
           </div>
         </CardContent>
       </Card>
@@ -486,7 +481,7 @@ const BPMSystem = () => {
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div
-                className="bg-blue-600 h-2 rounded-full transition-all"
+                className="bg-blue-600 h-2 rounded-full transition-all"`
                 style={{ width: `${progress}%` }}
               ></div>
             </div>
@@ -515,8 +510,7 @@ const BPMSystem = () => {
             {instance.status === 'active' && (
               <Button variant="outline" size="sm">
                 <Pause className="h-3 w-3 mr-1" />
-                Pausar
-              </Button>
+
             )}
           </div>
         </CardContent>
@@ -572,15 +566,14 @@ const BPMSystem = () => {
           </div>
           
           <div className="flex gap-2">
-            {task.status === 'pending' || task.status === 'in_progress' ? (
+            ({ task.status === 'pending' || task.status === 'in_progress' ? (
               <Button
                 variant="default"
                 size="sm"
-                onClick={() => completeTask(task.id, { taskId: task.id })}
+                onClick={( }) => completeTask(task.id, { taskId: task.id })}
               >
                 <CheckCircle className="h-3 w-3 mr-1" />
-                Completar
-              </Button>
+
             ) : null}
             
             <Button variant="outline" size="sm">
@@ -591,8 +584,7 @@ const BPMSystem = () => {
             {task.status !== 'completed' && (
               <Button variant="outline" size="sm">
                 <Edit className="h-3 w-3 mr-1" />
-                Editar
-              </Button>
+
             )}
           </div>
         </CardContent>
@@ -639,12 +631,10 @@ const BPMSystem = () => {
             </Button>
             <Button variant="outline" size="sm">
               <Eye className="h-3 w-3 mr-1" />
-              Visualizar
-            </Button>
+
             <Button variant="outline" size="sm">
               <Copy className="h-3 w-3 mr-1" />
-              Duplicar
-            </Button>
+
           </div>
         </CardContent>
       </Card>
@@ -722,19 +712,18 @@ const BPMSystem = () => {
                 variant="outline"
                 onClick={loadBPMData}
                 disabled={loading}
-              >
+              >`
                 <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-                Atualizar
-              </Button>
+
               <Button
                 variant="outline"
-                onClick={() => setShowTaskModal(true)}
+                onClick=({ ( }) => setShowTaskModal(true)}
               >
                 <ClipboardCheck className="h-4 w-4 mr-2" />
                 Nova Tarefa
               </Button>
               <Button
-                onClick={() => setShowProcessModal(true)}
+                onClick=({ ( }) => setShowProcessModal(true)}
                 className="bg-blue-600 hover:bg-blue-700"
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -820,7 +809,7 @@ const BPMSystem = () => {
                       <Input
                         placeholder="Buscar processos..."
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange=({ (e }) => setSearchTerm(e.target.value)}
                         className="pl-10"
                       />
                     </div>
@@ -829,22 +818,22 @@ const BPMSystem = () => {
                   <div className="flex gap-3">
                     <select
                       value={filters.status}
-                      onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, status: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todos os Status</option>
-                      {Object.entries(processStatuses).map(([key, status]) => (
+                      ({ Object.entries(processStatuses).map(([key, status] }) => (
                         <option key={key} value={key}>{status.name}</option>
                       ))}
                     </select>
 
                     <select
                       value={filters.priority}
-                      onChange={(e) => setFilters(prev => ({ ...prev, priority: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, priority: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todas as Prioridades</option>
-                      {Object.entries(priorities).map(([key, priority]) => (
+                      ({ Object.entries(priorities).map(([key, priority] }) => (
                         <option key={key} value={key}>{priority.name}</option>
                       ))}
                     </select>
@@ -854,7 +843,7 @@ const BPMSystem = () => {
             </Card>
 
             {/* Lista de Processos */}
-            {loading ? (
+            ({ loading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 <span className="ml-2">Carregando processos...</span>
@@ -869,7 +858,7 @@ const BPMSystem = () => {
                   <p className="text-gray-500 mb-4">
                     Comece criando seu primeiro processo de negócio
                   </p>
-                  <Button onClick={() => setShowProcessModal(true)}>
+                  <Button onClick={( }) => setShowProcessModal(true)}>
                     <Plus className="h-4 w-4 mr-2" />
                     Criar Processo
                   </Button>
@@ -982,9 +971,8 @@ const BPMSystem = () => {
               <h2 className="text-xl font-bold mb-4">Novo Processo</h2>
               {/* Formulário será implementado */}
               <div className="flex justify-end gap-3 mt-6">
-                <Button variant="outline" onClick={() => setShowProcessModal(false)}>
-                  Cancelar
-                </Button>
+                <Button variant="outline" onClick=({ ( }) => setShowProcessModal(false)}>
+
                 <Button disabled={loading}>
                   {loading ? 'Criando...' : 'Criar Processo'}
                 </Button>
@@ -998,3 +986,4 @@ const BPMSystem = () => {
 };
 
 export default BPMSystem;
+`

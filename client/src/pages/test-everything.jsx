@@ -8,10 +8,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { 
+import {  
   TestTube, Database, Workflow, Users, Building2, Settings, 
   Play, CheckSquare, Target, Upload, FileText, BarChart3,
   Zap, Activity, Bell, Eye, LogOut
+ }
 } from 'lucide-react';
 
 export default function TestEverything() {
@@ -20,8 +21,7 @@ export default function TestEverything() {
   const { toast } = useToast();
 
   // Estados para forms de teste
-  const [testData, setTestData] = useState({
-    clientName,
+  const [testData, setTestData] = useState(({ clientName,
     clientEmail,
     investment,
     companyName,
@@ -32,7 +32,7 @@ export default function TestEverything() {
   // ========== MUTATIONS PARA TESTES ==========
   
   const testClientMutation = useMutation({
-    mutationFn) => {
+    mutationFn }) => {
       return await apiRequest('/api/admin/clients', 'POST', {
         name,
         email,
@@ -54,8 +54,7 @@ export default function TestEverything() {
     }
   });
 
-  const testCompanyMutation = useMutation({
-    mutationFn) => {
+  const testCompanyMutation = useMutation(({ mutationFn }) => {
       return await apiRequest('/api/admin/tenants', 'POST', {
         name,
         subscriptionPlan,
@@ -76,8 +75,7 @@ export default function TestEverything() {
     }
   });
 
-  const testUserMutation = useMutation({
-    mutationFn) => {
+  const testUserMutation = useMutation(({ mutationFn }) => {
       return await apiRequest('/api/admin/users', 'POST', {
         email,
         firstName,
@@ -100,8 +98,7 @@ export default function TestEverything() {
     }
   });
 
-  const testWorkflowMutation = useMutation({
-    mutationFn) => {
+  const testWorkflowMutation = useMutation(({ mutationFn }) => {
       return await apiRequest('/api/complete-workflows', 'POST', {
         name,
         description,
@@ -126,8 +123,7 @@ export default function TestEverything() {
     }
   });
 
-  const testAdaptiveMutation = useMutation({
-    mutationFn) => {
+  const testAdaptiveMutation = useMutation(({ mutationFn }) => {
       const tenantId = testData.tenantId || 'tenant-test';
       return await apiRequest(`/api/adaptive/analyze/${tenantId}`, 'GET');
     },
@@ -145,8 +141,7 @@ export default function TestEverything() {
     }
   });
 
-  const testTaskMutation = useMutation({
-    mutationFn) => {
+  const testTaskMutation = useMutation(({ mutationFn }) => {
       // Primeiro criar um template
       const template = await apiRequest('/api/task-management/templates', 'POST', {
         title,
@@ -155,6 +150,7 @@ export default function TestEverything() {
         estimatedHours);
       
       // Depois executar o template
+`
       return await apiRequest(`/api/task-management/templates/${template.id}/execute`, 'POST', {
         assignedToId,
         dueDate) + 24 * 60 * 60 * 1000).toISOString(),
@@ -176,7 +172,7 @@ export default function TestEverything() {
 
   // ========== QUERIES PARA DADOS ==========
   
-  const { data,
+  const ({ data,
     refetchInterval);
 
   const { data);
@@ -193,7 +189,7 @@ export default function TestEverything() {
     { id, name, icon,
     { id, name, icon,
     { id, name, icon,
-    { id, name, icon) => window.location.href = '/api/logout'}
+    { id, name, icon }) => window.location.href = '/api/logout'}
               variant="outline"
               className="flex items-center space-x-2"
             >
@@ -207,10 +203,11 @@ export default function TestEverything() {
       <div className="max-w-7xl mx-auto px-4 sm) => (
               <button
                 key={section.id}
-                onClick={() => setActiveTest(section.id)}
+                onClick={() => setActiveTest(section.id)}`
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
                   activeTest === section.id 
                     ? 'bg-blue-100 text-blue-700 border-l-4 border-blue-500' 
+}
                     : 'text-gray-600 hover))}
           </div>
 
@@ -231,7 +228,7 @@ export default function TestEverything() {
                       <Input
                         id="tenantId"
                         value={testData.tenantId}
-                        onChange={(e) => setTestData(prev => ({ ...prev, tenantId))}
+                        onChange={(e) => setTestData(prev => ({ ...prev, tenantId: e.target.value }))}
                         placeholder="tenant-test"
                       />
                     </div>
@@ -241,7 +238,7 @@ export default function TestEverything() {
             )}
 
             {/* Teste de Clientes */}
-            {activeTest === 'clients' && (
+            ({ activeTest === 'clients' && (
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
@@ -250,7 +247,7 @@ export default function TestEverything() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="grid grid-cols-1 md) => setTestData(prev => ({ ...prev, clientName))}
+                  <div className="grid grid-cols-1 md }) => setTestData(prev => ({ ...prev, clientName))}
                         placeholder="João Silva"
                       />
                     </div>
@@ -260,7 +257,7 @@ export default function TestEverything() {
                         id="clientEmail"
                         type="email"
                         value={testData.clientEmail}
-                        onChange={(e) => setTestData(prev => ({ ...prev, clientEmail))}
+                        onChange={(e) => setTestData(prev => ({ ...prev, clientEmail: e.target.value }))}
                         placeholder="joao@exemplo.com"
                       />
                     </div>
@@ -270,7 +267,7 @@ export default function TestEverything() {
                         id="investment"
                         type="number"
                         value={testData.investment}
-                        onChange={(e) => setTestData(prev => ({ ...prev, investment))}
+                        onChange={(e) => setTestData(prev => ({ ...prev, investment: e.target.value }))}
                         placeholder="50000"
                       />
                     </div>
@@ -308,7 +305,7 @@ export default function TestEverything() {
                     <Input
                       id="companyName"
                       value={testData.companyName}
-                      onChange={(e) => setTestData(prev => ({ ...prev, companyName))}
+                      onChange={(e) => setTestData(prev => ({ ...prev, companyName: e.target.value }))}
                       placeholder="Empresa Teste Ltda"
                     />
                   </div>
@@ -346,7 +343,7 @@ export default function TestEverything() {
                       id="userEmail"
                       type="email"
                       value={testData.userEmail}
-                      onChange={(e) => setTestData(prev => ({ ...prev, userEmail))}
+                      onChange={(e) => setTestData(prev => ({ ...prev, userEmail: e.target.value }))}
                       placeholder="usuario@teste.com"
                     />
                   </div>
@@ -383,7 +380,7 @@ export default function TestEverything() {
                     <Input
                       id="workflowName"
                       value={testData.workflowName}
-                      onChange={(e) => setTestData(prev => ({ ...prev, workflowName))}
+                      onChange={(e) => setTestData(prev => ({ ...prev, workflowName: e.target.value }))}
                       placeholder="Workflow de Teste"
                     />
                   </div>
@@ -406,7 +403,7 @@ export default function TestEverything() {
             )}
 
             {/* Teste de Tarefas */}
-            {activeTest === 'tasks' && (
+            ({ activeTest === 'tasks' && (
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
@@ -419,7 +416,7 @@ export default function TestEverything() {
                     Este teste criará um template de tarefa e depois executará ele.
                   </p>
                   <Button 
-                    onClick={() => testTaskMutation.mutate()}
+                    onClick={( }) => testTaskMutation.mutate()}
                     disabled={testTaskMutation.isPending}
                     className="w-full"
                   >
@@ -437,7 +434,7 @@ export default function TestEverything() {
             )}
 
             {/* Teste de IA Adaptativa */}
-            {activeTest === 'adaptive' && (
+            ({ activeTest === 'adaptive' && (
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
@@ -450,7 +447,7 @@ export default function TestEverything() {
                     Este teste executará a análise de padrões adaptativos no sistema.
                   </p>
                   <Button 
-                    onClick={() => testAdaptiveMutation.mutate()}
+                    onClick={( }) => testAdaptiveMutation.mutate()}
                     disabled={testAdaptiveMutation.isPending}
                     className="w-full"
                   >
@@ -468,7 +465,7 @@ export default function TestEverything() {
             )}
 
             {/* Resultados */}
-            {activeTest === 'results' && (
+            ({ activeTest === 'results' && (
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
@@ -477,7 +474,7 @@ export default function TestEverything() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-1 md).map(([key, result]) => (
+                  <div className="grid grid-cols-1 md).map(([key, result] }) => (
                       <div key={key} className="p-4 border rounded-lg">
                         <h4 className="font-semibold capitalize">{key}</h4>
                         <Badge variant="outline" className="mt-2">
@@ -499,4 +496,4 @@ export default function TestEverything() {
       </div>
     </div>
   );
-}
+}`

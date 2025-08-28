@@ -1,13 +1,13 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Sidebar as OriginalSidebar } from '@/components/sidebar';
 
-export function SidebarWrapper({ isAdmin = false }: { isAdmin) {
+export function SidebarWrapper({ isAdmin = false }: ({ isAdmin) {
 
   const navigate = useNavigate();
   const location = useLocation();
 
   // Função para lidar com a navegação
-  const handleNavigation = (href) => {
+  const handleNavigation = (href }) => {
     navigate(href);
   };
 

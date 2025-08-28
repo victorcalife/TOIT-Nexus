@@ -7,8 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
-import
-  {
+import { 
     MessageCircle,
     Phone,
     Video,
@@ -21,7 +20,7 @@ import
     Settings,
     Plus,
     Wifi,
-    WifiOff
+    WifiOff }
   } from 'lucide-react';
 import io from 'socket.io-client';
 
@@ -153,12 +152,10 @@ export default function Chat()
         description: `${ data.callerName } está chamando`,
         action: (
           <div className="flex gap-2">
-            <Button size="sm" onClick={ () => answerCall( data, true ) }>
-              Aceitar
-            </Button>
-            <Button size="sm" variant="outline" onClick={ () => answerCall( data, false ) }>
-              Recusar
-            </Button>
+            <Button size="sm" onClick=({ ( }) => answerCall( data, true ) }>
+
+            <Button size="sm" variant="outline" onClick=({ ( }) => answerCall( data, false ) }>
+
           </div>
         )
       } );
@@ -189,7 +186,7 @@ export default function Chat()
     try
     {
       const response = await fetch( '/api/chat/conversations', {
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${ localStorage.getItem( 'token' ) }`
         }
       } );
@@ -329,8 +326,8 @@ export default function Chat()
         callType: type
       } );
 
-      toast( {
-        title: `📞 Chamando...`,
+      toast( {`
+        title: `📞 Chamando...`,`
         description: `Iniciando chamada de ${ type } com ${ targetUserId.name }`
       } );
     }
@@ -390,7 +387,7 @@ export default function Chat()
             <Input
               placeholder="Buscar conversas..."
               value={ searchTerm }
-              onChange={ ( e ) => setSearchTerm( e.target.value ) }
+              onChange=({ ( e  }) => setSearchTerm( e.target.value ) }
               className="pl-10"
             />
           </div>
@@ -399,14 +396,14 @@ export default function Chat()
         {/* Lista de Conversas */ }
         <ScrollArea className="h-[calc(100vh-140px)]">
           <div className="p-2">
-            { filteredConversations.map( ( conversation ) => (
+            ({ filteredConversations.map( ( conversation  }) => (
               <div
-                key={ conversation.id }
+                key={ conversation.id }`
                 className={ `p-3 rounded-lg cursor-pointer transition-colors mb-1 ${ selectedConversation?.id === conversation.id
                     ? 'bg-primary/10 border border-primary/20'
-                    : 'hover:bg-muted'
+                    : 'hover:bg-muted'`}
                   }` }
-                onClick={ () => selectConversation( conversation ) }
+                onClick=({ ( }) => selectConversation( conversation ) }
               >
                 <div className="flex items-center gap-3">
                   <div className="relative">
@@ -470,7 +467,7 @@ export default function Chat()
                 <div>
                   <h3 className="font-semibold">{ selectedConversation.name }</h3>
                   <p className="text-sm text-muted-foreground">
-                    { selectedConversation.type === 'group'
+                    { selectedConversation.type === 'group'`
                       ? `${ selectedConversation.participants?.length || 0 } participantes`
                       : onlineUsers.has( selectedConversation.participants?.[ 0 ]?.id ) ? 'Online' : 'Offline'
                     }
@@ -482,10 +479,10 @@ export default function Chat()
               </div>
 
               <div className="flex items-center gap-2">
-                <Button size="sm" variant="ghost" onClick={ () => startCall( 'audio' ) }>
+                <Button size="sm" variant="ghost" onClick=({ ( }) => startCall( 'audio' ) }>
                   <Phone className="h-4 w-4" />
                 </Button>
-                <Button size="sm" variant="ghost" onClick={ () => startCall( 'video' ) }>
+                <Button size="sm" variant="ghost" onClick=({ ( }) => startCall( 'video' ) }>
                   <Video className="h-4 w-4" />
                 </Button>
                 <Button size="sm" variant="ghost">
@@ -498,14 +495,14 @@ export default function Chat()
           {/* Área de Mensagens */ }
           <ScrollArea className="flex-1 p-4">
             <div className="space-y-4">
-              { messages.map( ( message ) =>
+              ({ messages.map( ( message  }) =>
               {
                 const isOwn = message.senderId === localStorage.getItem( 'userId' );
                 return (
                   <div
-                    key={ message.id }
+                    key={ message.id }`
                     className={ `flex ${ isOwn ? 'justify-end' : 'justify-start' }` }
-                  >
+                  >`
                     <div className={ `flex gap-2 max-w-[70%] ${ isOwn ? 'flex-row-reverse' : 'flex-row' }` }>
                       { !isOwn && (
                         <Avatar className="h-8 w-8">
@@ -514,18 +511,18 @@ export default function Chat()
                           </AvatarFallback>
                         </Avatar>
                       ) }
-
+`
                       <div className={ `rounded-lg p-3 ${ isOwn
                           ? 'bg-primary text-primary-foreground'
-                          : 'bg-muted'
+                          : 'bg-muted'`}
                         }` }>
                         { !isOwn && (
                           <p className="text-xs font-medium mb-1 opacity-70">
                             { message.senderName }
                           </p>
                         ) }
-                        <p className="text-sm">{ message.content }</p>
-                        <p className={ `text-xs mt-1 ${ isOwn ? 'text-primary-foreground/70' : 'text-muted-foreground'
+                        <p className="text-sm">{ message.content }</p>`
+                        <p className={ `text-xs mt-1 ${ isOwn ? 'text-primary-foreground/70' : 'text-muted-foreground'`}
                           }` }>
                           { new Date( message.timestamp ).toLocaleTimeString( 'pt-BR', { hour: '2-digit', minute: '2-digit' } ) }
                         </p>
@@ -549,7 +546,7 @@ export default function Chat()
                 <Input
                   placeholder="Digite sua mensagem..."
                   value={ newMessage }
-                  onChange={ ( e ) => setNewMessage( e.target.value ) }
+                  onChange=({ ( e  }) => setNewMessage( e.target.value ) }
                   onKeyPress={ handleKeyPress }
                   onBlur={ stopTyping }
                   className="pr-10"
@@ -585,3 +582,4 @@ export default function Chat()
     </div>
   );
 }
+`

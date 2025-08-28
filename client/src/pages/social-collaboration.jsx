@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   Users, 
   MessageSquare,
   Heart,
@@ -85,7 +85,7 @@ import {
   Lightning,
   Flame,
   Coffee,
-  PartyPopper
+  PartyPopper }
 } from 'lucide-react';
 
 const SocialCollaboration = () => {
@@ -139,22 +139,22 @@ const SocialCollaboration = () => {
         fetch('/api/social/posts', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/social/groups', {
+        fetch('/api/social/groups', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/social/events', {
+        fetch('/api/social/events', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/social/discussions', {
+        fetch('/api/social/discussions', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/social/polls', {
+        fetch('/api/social/polls', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/social/announcements', {
+        fetch('/api/social/announcements', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/social/connections', {
+        fetch('/api/social/connections', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);
@@ -213,13 +213,13 @@ const SocialCollaboration = () => {
     try {
       const response = await fetch('/api/social/posts', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           ...postData,
-          createdAt: new Date().toISOString(),
+          createdAt: new Date().toISOString(),`
           postId: `POST-${Date.now()}`
         })
       });
@@ -251,10 +251,10 @@ const SocialCollaboration = () => {
    * CURTIR POST
    */
   const likePost = async (postId) => {
-    try {
+    try {`
       const response = await fetch(`/api/social/posts/${postId}/like`, {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }
@@ -288,10 +288,10 @@ const SocialCollaboration = () => {
    * COMENTAR POST
    */
   const commentPost = async (postId, commentData) => {
-    try {
+    try {`
       const response = await fetch(`/api/social/posts/${postId}/comments`, {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -385,9 +385,9 @@ const SocialCollaboration = () => {
               </div>
             )}
             
-            {post.attachments && post.attachments.length > 0 && (
+            ({ post.attachments && post.attachments.length > 0 && (
               <div className="mt-3 space-y-2">
-                {post.attachments.map((attachment, index) => (
+                {post.attachments.map((attachment, index }) => (
                   <div key={index} className="flex items-center gap-2 p-2 bg-gray-50 rounded">
                     <Paperclip className="h-4 w-4 text-gray-600" />
                     <span className="text-sm">{attachment.name}</span>
@@ -406,9 +406,9 @@ const SocialCollaboration = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => likePost(post.id)}
+                onClick=({ ( }) => likePost(post.id)}
                 className={post.isLiked ? 'text-red-600' : ''}
-              >
+              >`
                 <Heart className={`h-4 w-4 mr-1 ${post.isLiked ? 'fill-current' : ''}`} />
                 {post.likes || 0}
               </Button>
@@ -416,7 +416,7 @@ const SocialCollaboration = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => {
+                onClick=({ ( }) => {
                   // Implementar comentários
                 }}
               >
@@ -426,8 +426,7 @@ const SocialCollaboration = () => {
               
               <Button variant="ghost" size="sm">
                 <Share className="h-4 w-4 mr-1" />
-                Compartilhar
-              </Button>
+
             </div>
             
             <div className="flex items-center gap-2">
@@ -441,10 +440,10 @@ const SocialCollaboration = () => {
           </div>
 
           {/* Comentários */}
-          {post.comments && post.comments.length > 0 && (
+          ({ post.comments && post.comments.length > 0 && (
             <div className="mt-4 pt-4 border-t border-gray-100">
               <div className="space-y-3">
-                {post.comments.slice(0, 3).map((comment, index) => (
+                {post.comments.slice(0, 3).map((comment, index }) => (
                   <div key={index} className="flex items-start gap-2">
                     <div className="w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center">
                       <span className="text-xs text-gray-600">
@@ -478,7 +477,7 @@ const SocialCollaboration = () => {
                 <Input
                   placeholder="Escreva um comentário..."
                   className="flex-1"
-                  onKeyPress={(e) => {
+                  onKeyPress=({ (e }) => {
                     if (e.key === 'Enter' && e.target.value.trim()) {
                       commentPost(post.id, { content: e.target.value.trim() });
                       e.target.value = '';
@@ -546,13 +545,11 @@ const SocialCollaboration = () => {
             {group.isMember ? (
               <Button variant="outline" size="sm">
                 <UserCheck className="h-3 w-3 mr-1" />
-                Membro
-              </Button>
+
             ) : (
               <Button variant="default" size="sm">
                 <UserPlus className="h-3 w-3 mr-1" />
-                Participar
-              </Button>
+
             )}
             
             <Button variant="outline" size="sm">
@@ -604,13 +601,11 @@ const SocialCollaboration = () => {
             {event.isAttending ? (
               <Button variant="outline" size="sm">
                 <UserCheck className="h-3 w-3 mr-1" />
-                Participando
-              </Button>
+
             ) : (
               <Button variant="default" size="sm">
                 <UserPlus className="h-3 w-3 mr-1" />
-                Participar
-              </Button>
+
             )}
             
             <Button variant="outline" size="sm">
@@ -620,8 +615,7 @@ const SocialCollaboration = () => {
             
             <Button variant="outline" size="sm">
               <Share className="h-3 w-3 mr-1" />
-              Compartilhar
-            </Button>
+
           </div>
         </CardContent>
       </Card>
@@ -631,13 +625,12 @@ const SocialCollaboration = () => {
   /**
    * OBTER ESTATÍSTICAS
    */
-  const getStats = () => {
-    const totalPosts = posts.length;
+  const getStats = () => ({ const totalPosts = posts.length;
     const totalGroups = groups.length;
     const totalEvents = events.length;
     const totalConnections = connections.length;
     const totalLikes = posts.reduce((sum, post) => sum + (post.likes || 0), 0);
-    const totalComments = posts.reduce((sum, post) => sum + (post.commentCount || 0), 0);
+    const totalComments = posts.reduce((sum, post }) => sum + (post.commentCount || 0), 0);
     const upcomingEvents = events.filter(e => new Date(e.startDate) > new Date()).length;
     const activeDiscussions = discussions.filter(d => d.status === 'active').length;
     
@@ -696,19 +689,18 @@ const SocialCollaboration = () => {
                 variant="outline"
                 onClick={loadSocialData}
                 disabled={loading}
-              >
+              >`
                 <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-                Atualizar
-              </Button>
+
               <Button
                 variant="outline"
-                onClick={() => setShowGroupModal(true)}
+                onClick=({ ( }) => setShowGroupModal(true)}
               >
                 <Users className="h-4 w-4 mr-2" />
                 Criar Grupo
               </Button>
               <Button
-                onClick={() => setShowPostModal(true)}
+                onClick=({ ( }) => setShowPostModal(true)}
                 className="bg-blue-600 hover:bg-blue-700"
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -794,7 +786,7 @@ const SocialCollaboration = () => {
                     <textarea
                       placeholder="O que você está pensando?"
                       value={newPostContent}
-                      onChange={(e) => setNewPostContent(e.target.value)}
+                      onChange=({ (e }) => setNewPostContent(e.target.value)}
                       className="w-full p-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
                       rows={3}
                     />
@@ -802,23 +794,20 @@ const SocialCollaboration = () => {
                       <div className="flex items-center gap-2">
                         <Button variant="ghost" size="sm">
                           <Image className="h-4 w-4 mr-1" />
-                          Foto
-                        </Button>
+
                         <Button variant="ghost" size="sm">
                           <Video className="h-4 w-4 mr-1" />
                           Vídeo
                         </Button>
                         <Button variant="ghost" size="sm">
                           <Paperclip className="h-4 w-4 mr-1" />
-                          Arquivo
-                        </Button>
+
                         <Button variant="ghost" size="sm">
                           <Target className="h-4 w-4 mr-1" />
-                          Enquete
-                        </Button>
+
                       </div>
                       <Button
-                        onClick={() => {
+                        onClick=({ ( }) => {
                           if (newPostContent.trim()) {
                             createPost({ content: newPostContent.trim(), type: 'text' });
                           }
@@ -826,8 +815,7 @@ const SocialCollaboration = () => {
                         disabled={!newPostContent.trim()}
                       >
                         <Send className="h-4 w-4 mr-2" />
-                        Publicar
-                      </Button>
+
                     </div>
                   </div>
                 </div>
@@ -844,7 +832,7 @@ const SocialCollaboration = () => {
                       <Input
                         placeholder="Buscar posts..."
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange=({ (e }) => setSearchTerm(e.target.value)}
                         className="pl-10"
                       />
                     </div>
@@ -853,18 +841,18 @@ const SocialCollaboration = () => {
                   <div className="flex gap-3">
                     <select
                       value={filters.type}
-                      onChange={(e) => setFilters(prev => ({ ...prev, type: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, type: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todos os Tipos</option>
-                      {Object.entries(postTypes).map(([key, type]) => (
+                      ({ Object.entries(postTypes).map(([key, type] }) => (
                         <option key={key} value={key}>{type.name}</option>
                       ))}
                     </select>
 
                     <select
                       value={filters.group}
-                      onChange={(e) => setFilters(prev => ({ ...prev, group: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, group: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todos os Grupos</option>
@@ -879,7 +867,7 @@ const SocialCollaboration = () => {
 
             {/* Feed de Posts */}
             <div className="space-y-6">
-              {loading ? (
+              ({ loading ? (
                 <div className="flex items-center justify-center py-8">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                   <span className="ml-2">Carregando posts...</span>
@@ -894,7 +882,7 @@ const SocialCollaboration = () => {
                     <p className="text-gray-500 mb-4">
                       Seja o primeiro a compartilhar algo interessante
                     </p>
-                    <Button onClick={() => setShowPostModal(true)}>
+                    <Button onClick={( }) => setShowPostModal(true)}>
                       <Plus className="h-4 w-4 mr-2" />
                       Criar Post
                     </Button>
@@ -908,7 +896,7 @@ const SocialCollaboration = () => {
 
           <TabsContent value="groups" className="space-y-6">
             {/* Lista de Grupos */}
-            {loading ? (
+            ({ loading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 <span className="ml-2">Carregando grupos...</span>
@@ -923,7 +911,7 @@ const SocialCollaboration = () => {
                   <p className="text-gray-500 mb-4">
                     Crie grupos para colaborar com sua equipe
                   </p>
-                  <Button onClick={() => setShowGroupModal(true)}>
+                  <Button onClick={( }) => setShowGroupModal(true)}>
                     <Plus className="h-4 w-4 mr-2" />
                     Criar Grupo
                   </Button>
@@ -984,9 +972,8 @@ const SocialCollaboration = () => {
               <h2 className="text-xl font-bold mb-4">Novo Post</h2>
               {/* Formulário será implementado */}
               <div className="flex justify-end gap-3 mt-6">
-                <Button variant="outline" onClick={() => setShowPostModal(false)}>
-                  Cancelar
-                </Button>
+                <Button variant="outline" onClick=({ ( }) => setShowPostModal(false)}>
+
                 <Button disabled={loading}>
                   {loading ? 'Publicando...' : 'Publicar'}
                 </Button>
@@ -1000,3 +987,4 @@ const SocialCollaboration = () => {
 };
 
 export default SocialCollaboration;
+`

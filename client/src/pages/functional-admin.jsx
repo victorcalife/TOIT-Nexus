@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   Users, 
   Building2, 
   Settings, 
@@ -19,14 +19,13 @@ import {
   Check,
   X,
   UserPlus,
-  BuildingIcon
+  BuildingIcon }
 } from 'lucide-react';
 
 = useToast();
 
   // Estados para criação de usuário
-  const [newUser, setNewUser] = useState({
-    cpf,
+  const [newUser, setNewUser] = useState(({ cpf,
     email,
     firstName,
     lastName,
@@ -39,7 +38,7 @@ import {
     name,
     description);
 
-  useEffect(() => {
+  useEffect(( }) => {
     loadData();
   }, []);
 
@@ -204,7 +203,7 @@ import {
                         <Input
                           id="lastName"
                           value={newUser.lastName}
-                          onChange={(e) => setNewUser(prev => ({ ...prev, lastName))}
+                          onChange=({ (e }) => setNewUser(prev => ({ ...prev, lastName))}
                         />
                       </div>
                     </div>
@@ -213,7 +212,7 @@ import {
                       <Input
                         id="cpf"
                         value={newUser.cpf}
-                        onChange={(e) => setNewUser(prev => ({ ...prev, cpf))}
+                        onChange=({ (e }) => setNewUser(prev => ({ ...prev, cpf))}
                         placeholder="00000000000"
                       />
                     </div>
@@ -223,7 +222,7 @@ import {
                         id="email"
                         type="email"
                         value={newUser.email}
-                        onChange={(e) => setNewUser(prev => ({ ...prev, email))}
+                        onChange=({ (e }) => setNewUser(prev => ({ ...prev, email))}
                       />
                     </div>
                     <div>
@@ -232,12 +231,12 @@ import {
                         id="password"
                         type="password"
                         value={newUser.password}
-                        onChange={(e) => setNewUser(prev => ({ ...prev, password))}
+                        onChange=({ (e }) => setNewUser(prev => ({ ...prev, password))}
                       />
                     </div>
                     <div>
                       <Label htmlFor="role">Função</Label>
-                      <Select value={newUser.role} onValueChange={(value) => setNewUser(prev => ({ ...prev, role))}>
+                      <Select value={newUser.role} onValueChange=({ (value }) => setNewUser(prev => ({ ...prev, role))}>
                         <SelectTrigger>
                           <SelectValue />
                         </SelectTrigger>
@@ -251,7 +250,7 @@ import {
                     </div>
                     <div>
                       <Label htmlFor="tenant">Empresa</Label>
-                      <Select value={newUser.tenantId} onValueChange={(value) => setNewUser(prev => ({ ...prev, tenantId))}>
+                      <Select value={newUser.tenantId} onValueChange=({ (value }) => setNewUser(prev => ({ ...prev, tenantId))}>
                         <SelectTrigger>
                           <SelectValue placeholder="Selecione uma empresa" />
                         </SelectTrigger>
@@ -287,13 +286,11 @@ import {
                         <Button
                           size="sm"
                           variant={user.isActive ? "destructive" : "default"}
-                          onClick={() => handleToggleUserStatus(user.id, !user.isActive)}
+                          onClick=({ ( }) => handleToggleUserStatus(user.id, !user.isActive)}
                         >
                           {user.isActive ? (
                             <>
                               <X className="h-4 w-4 mr-1" />
-                              Desativar
-                            </>
                           ) {/* Gestão de Empresas */}
           <TabsContent value="tenants" className="space-y-6">
             <div className="flex justify-between items-center">
@@ -341,8 +338,6 @@ import {
                         </Badge>
                         <Button size="sm" variant="outline">
                           <Settings className="h-4 w-4 mr-1" />
-                          Configurar
-                        </Button>
                         <Button size="sm" variant="outline">
                           <Eye className="h-4 w-4 mr-1" />
                           Ver Detalhes
@@ -370,4 +365,4 @@ import {
       </div>
     </div>
   );
-}
+}`

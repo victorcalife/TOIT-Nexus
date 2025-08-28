@@ -15,7 +15,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import TaskFieldBuilder, { TaskField } from '@/components/task-field-builder';
 import TaskResponseForm from '@/components/task-response-form';
-import { 
+import {  
   Plus, 
   Search, 
   Filter, 
@@ -35,7 +35,7 @@ import {
   Layout,
   Users,
   Target,
-  Zap
+  Zap }
 } from 'lucide-react';
 
 });
@@ -54,8 +54,8 @@ import {
   const queryClient = useQueryClient();
 
   // Fetch templates
-  const { data= [], isLoading,
-    queryFn) => {
+  const ({ data= [], isLoading,
+    queryFn }) => {
       const response = await fetch('/api/advanced-tasks/templates');
       if (!response.ok) throw new Error('Erro ao buscar templates');
       const result = await response.json();
@@ -64,8 +64,8 @@ import {
   });
 
   // Fetch tasks
-  const { data= [], isLoading, { status, priority, search,
-    queryFn) => {
+  const ({ data= [], isLoading, { status, priority, search,
+    queryFn }) => {
       const params = new URLSearchParams();
       if (statusFilter !== 'all') params.append('status', statusFilter);
       if (priorityFilter !== 'all') params.append('priority', priorityFilter);
@@ -79,8 +79,7 @@ import {
   });
 
   // Create template mutation
-  const createTemplateMutation = useMutation({
-    mutationFn) => {
+  const createTemplateMutation = useMutation(({ mutationFn }) => {
       const response = await fetch('/api/advanced-tasks/templates', {
         method,
         headers,
@@ -104,8 +103,7 @@ import {
   });
 
   // Create task mutation
-  const createTaskMutation = useMutation({
-    mutationFn) => {
+  const createTaskMutation = useMutation(({ mutationFn }) => {
       const response = await fetch('/api/advanced-tasks/create-from-template', {
         method,
         headers,
@@ -130,7 +128,7 @@ import {
 
   // Update task responses mutation
   const updateResponsesMutation = useMutation({
-    mutationFn, responses }: { taskId, responses, any> }) => {
+    mutationFn, responses }: { taskId, responses, any> }) => {`
       const response = await fetch(`/api/advanced-tasks/${taskId}/responses`, {
         method,
         headers,
@@ -153,7 +151,7 @@ import {
 
   // Complete task mutation
   const completeTaskMutation = useMutation({
-    mutationFn, finalResponses }: { taskId, finalResponses, any> }) => {
+    mutationFn, finalResponses }: { taskId, finalResponses, any> }) => {`
       const response = await fetch(`/api/advanced-tasks/${taskId}/complete`, {
         method,
         headers,
@@ -179,7 +177,7 @@ import {
 
   // Add comment mutation
   const addCommentMutation = useMutation({
-    mutationFn, message }: { taskId, message) => {
+    mutationFn, message }: ({ taskId, message }) => {`
       const response = await fetch(`/api/advanced-tasks/${taskId}/comments`, {
         method,
         headers,
@@ -264,8 +262,7 @@ import {
       return;
     }
 
-    createTaskMutation.mutate({
-      templateId,
+    createTaskMutation.mutate(({ templateId,
       assignedTo,
       customData,
         description,
@@ -276,7 +273,7 @@ import {
       case 'high': return 'bg-orange-500';
       case 'medium': return 'bg-yellow-500';
       case 'low': return 'bg-green-500';
-      default) => {
+      default }) => {
     switch (status) {
       case 'completed': return 'bg-green-500';
       case 'in_progress': return 'bg-blue-500';
@@ -305,11 +302,11 @@ import {
           </p>
         </div>
         <div className="flex space-x-2">
-          <Button onClick={() => setIsCreatingTemplate(true)}>
+          <Button onClick=({ ( }) => setIsCreatingTemplate(true)}>
             <Plus className="h-4 w-4 mr-2" />
             Novo Template
           </Button>
-          <Button onClick={() => setIsCreatingTask(true)} variant="outline">
+          <Button onClick=({ ( }) => setIsCreatingTask(true)} variant="outline">
             <Target className="h-4 w-4 mr-2" />
             Nova Tarefa
           </Button>
@@ -339,7 +336,7 @@ import {
                 <div className="text-center py-8">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
                   <p>Carregando templates...</p>
-                </div>
+                </div>`
               ) {template.id} className="cursor-pointer hover)} text-white`}
                           >
                             {template.priority}
@@ -361,7 +358,7 @@ import {
                             </span>
                           </div>
                           <div className="flex flex-wrap gap-1">
-                            {template.tags.slice(0, 3).map((tag, index) => (
+                            ({ template.tags.slice(0, 3).map((tag, index }) => (
                               <Badge key={index} variant="outline" className="text-xs">
                                 {tag}
                               </Badge>
@@ -375,12 +372,8 @@ import {
                           <div className="flex space-x-2 pt-2">
                             <Button size="sm" variant="outline" className="flex-1">
                               <Eye className="h-4 w-4 mr-1" />
-                              Ver
-                            </Button>
                             <Button size="sm" variant="outline" className="flex-1">
                               <Edit className="h-4 w-4 mr-1" />
-                              Editar
-                            </Button>
                           </div>
                         </div>
                       </CardContent>
@@ -404,7 +397,7 @@ import {
                     <Input
                       placeholder="Buscar tarefas..."
                       value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onChange=({ (e }) => setSearchQuery(e.target.value)}
                       className="pl-10"
                     />
                   </div>
@@ -447,12 +440,12 @@ import {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {loadingTasks ? (
+              ({ loadingTasks ? (
                 <div className="text-center py-8">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
                   <p>Carregando tarefas...</p>
                 </div>
-              ) {activeTasks.map((task) => (
+              ) {activeTasks.map((task }) => (
                         <TableRow key={task.id}>
                           <TableCell>
                             <div>
@@ -462,12 +455,12 @@ import {
                               </p>
                             </div>
                           </TableCell>
-                          <TableCell>
+                          <TableCell>`
                             <Badge className={`${getStatusColor(task.status)} text-white`}>
                               {task.status}
                             </Badge>
                           </TableCell>
-                          <TableCell>
+                          <TableCell>`
                             <Badge className={`${getPriorityColor(task.priority)} text-white`}>
                               {task.priority}
                             </Badge>
@@ -484,7 +477,7 @@ import {
                                 <Calendar className="h-4 w-4" />
                                 <span>{new Date(task.dueDate).toLocaleDateString()}</span>
                               </span>
-                            ) {() => {
+                            ) ({ ( }) => {
                                   setSelectedTask(task);
                                   const template = templates.find(t => t.id === task.templateId);
                                   setSelectedTemplate(template || null);
@@ -496,11 +489,11 @@ import {
                               <Button size="sm" variant="outline">
                                 <Edit className="h-4 w-4" />
                               </Button>
-                              {task.status !== 'completed' && (
+                              ({ task.status !== 'completed' && (
                                 <Button 
                                   size="sm" 
                                   variant="outline"
-                                  onClick={() => completeTaskMutation.mutate({ 
+                                  onClick={( }) => completeTaskMutation.mutate({ 
                                     taskId, 
                                     finalResponses)}
                                 >
@@ -529,12 +522,12 @@ import {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {loadingTasks ? (
+              ({ loadingTasks ? (
                 <div className="text-center py-8">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
                   <p>Carregando tarefas...</p>
                 </div>
-              ) {completedTasks.map((task) => {
+              ) {completedTasks.map((task }) => {
                         const completedDate = task.completedAt ? new Date(task.completedAt) {task.id}>
                             <TableCell>
                               <div>
@@ -544,7 +537,7 @@ import {
                                 </p>
                               </div>
                             </TableCell>
-                            <TableCell>
+                            <TableCell>`
                               <Badge className={`${getPriorityColor(task.priority)} text-white`}>
                                 {task.priority}
                               </Badge>
@@ -566,7 +559,7 @@ import {
                                   <Clock className="h-4 w-4" />
                                   <span>{totalTime}h</span>
                                 </span>
-                              ) {() => {
+                              ) ({ ( }) => {
                                   setSelectedTask(task);
                                   const template = templates.find(t => t.id === task.templateId);
                                   setSelectedTemplate(template || null);
@@ -630,7 +623,7 @@ import {
                     
                     return (
                       <div key={status} className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-2">`
                           <Badge className={`${getStatusColor(status)} text-white`}>
                             {status}
                           </Badge>
@@ -638,7 +631,7 @@ import {
                         </div>
                         <div className="flex items-center space-x-2">
                           <div className="w-24 bg-gray-200 rounded-full h-2">
-                            <div 
+                            <div `
                               className={`h-2 rounded-full ${getStatusColor(status)}`}
                               style={{ width)}%
                           </span>
@@ -662,7 +655,7 @@ import {
                     
                     return (
                       <div key={priority} className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-2">`
                           <Badge className={`${getPriorityColor(priority)} text-white`}>
                             {priority}
                           </Badge>
@@ -670,7 +663,7 @@ import {
                         </div>
                         <div className="flex items-center space-x-2">
                           <div className="w-24 bg-gray-200 rounded-full h-2">
-                            <div 
+                            <div `
                               className={`h-2 rounded-full ${getPriorityColor(priority)}`}
                               style={{ width)}%
                           </span>
@@ -706,7 +699,7 @@ import {
                         <Badge variant="outline">{template.category}</Badge>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <span className="text-sm text-gray-500">{template.usage} usos</span>
+                        <span className="text-sm text-gray-500">{template.usage} usos</span>`
                         <Badge className={`${getPriorityColor(template.priority)} text-white`}>
                           {template.priority}
                         </Badge>
@@ -743,7 +736,7 @@ import {
                 <Label>Categoria</Label>
                 <Input
                   value={templateForm.category}
-                  onChange={(e) => setTemplateForm({ ...templateForm, category)}
+                  onChange=({ (e }) => setTemplateForm({ ...templateForm, category)}
                   placeholder="Ex, Desenvolvimento, etc."
                 />
               </div>
@@ -753,7 +746,7 @@ import {
               <Label>Descrição *</Label>
               <Textarea
                 value={templateForm.description}
-                onChange={(e) => setTemplateForm({ ...templateForm, description)}
+                onChange=({ (e }) => setTemplateForm({ ...templateForm, description)}
                 placeholder="Descreva o propósito deste template"
                 rows={3}
               />
@@ -763,14 +756,14 @@ import {
                 <Input
                   type="number"
                   value={templateForm.estimatedDuration}
-                  onChange={(e) => setTemplateForm({ ...templateForm, estimatedDuration) })}
+                  onChange=({ (e }) => setTemplateForm({ ...templateForm, estimatedDuration) })}
                 />
               </div>
               <div className="space-y-2">
                 <Label>Prioridade Padrão</Label>
                 <Select 
                   value={templateForm.priority} 
-                  onValueChange={(value) => setTemplateForm({ ...templateForm, priority)}
+                  onValueChange=({ (value }) => setTemplateForm({ ...templateForm, priority)}
                 >
                   <SelectTrigger>
                     <SelectValue />
@@ -789,7 +782,7 @@ import {
               <Label>Tags (separadas por vírgula)</Label>
               <Input
                 value={templateForm.tags}
-                onChange={(e) => setTemplateForm({ ...templateForm, tags)}
+                onChange=({ (e }) => setTemplateForm({ ...templateForm, tags)}
                 placeholder="tag1, tag2, tag3"
               />
             </div>
@@ -799,15 +792,13 @@ import {
               <Label className="text-base font-semibold">Campos do Formulário *</Label>
               <TaskFieldBuilder
                 fields={templateForm.fields}
-                onChange={(fields) => setTemplateForm({ ...templateForm, fields })}
+                onChange=({ (fields }) => setTemplateForm({ ...templateForm, fields })}
               />
             </div>
 
             {/* Actions */}
             <div className="flex justify-end space-x-2 pt-4 border-t">
-              <Button variant="outline" onClick={() => setIsCreatingTemplate(false)}>
-                Cancelar
-              </Button>
+              <Button variant="outline" onClick=({ ( }) => setIsCreatingTemplate(false)}>
               <Button 
                 onClick={handleCreateTemplate}
                 disabled={createTemplateMutation.isPending}
@@ -830,13 +821,13 @@ import {
               <Label>Template Base *</Label>
               <Select 
                 value={taskForm.templateId} 
-                onValueChange={(value) => setTaskForm({ ...taskForm, templateId)}
+                onValueChange=({ (value }) => setTaskForm({ ...taskForm, templateId)}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Selecione um template" />
                 </SelectTrigger>
                 <SelectContent>
-                  {templates.map((template) => (
+                  ({ templates.map((template }) => (
                     <SelectItem key={template.id} value={template.id}>
                       {template.name}
                     </SelectItem>
@@ -853,7 +844,7 @@ import {
                 <Label>Prioridade</Label>
                 <Select 
                   value={taskForm.priority} 
-                  onValueChange={(value) => setTaskForm({ ...taskForm, priority)}
+                  onValueChange=({ (value }) => setTaskForm({ ...taskForm, priority)}
                 >
                   <SelectTrigger>
                     <SelectValue />
@@ -872,7 +863,7 @@ import {
               <Label>Título Customizado</Label>
               <Input
                 value={taskForm.title}
-                onChange={(e) => setTaskForm({ ...taskForm, title)}
+                onChange=({ (e }) => setTaskForm({ ...taskForm, title)}
                 placeholder="Deixe vazio para usar o nome do template"
               />
             </div>
@@ -881,7 +872,7 @@ import {
               <Label>Descrição Adicional</Label>
               <Textarea
                 value={taskForm.description}
-                onChange={(e) => setTaskForm({ ...taskForm, description)}
+                onChange=({ (e }) => setTaskForm({ ...taskForm, description)}
                 placeholder="Instruções específicas para esta tarefa"
                 rows={3}
               />
@@ -894,16 +885,14 @@ import {
                 <Label>Tags Adicionais</Label>
                 <Input
                   value={taskForm.tags}
-                  onChange={(e) => setTaskForm({ ...taskForm, tags)}
+                  onChange=({ (e }) => setTaskForm({ ...taskForm, tags)}
                   placeholder="tag1, tag2, tag3"
                 />
               </div>
             </div>
 
             <div className="flex justify-end space-x-2 pt-4 border-t">
-              <Button variant="outline" onClick={() => setIsCreatingTask(false)}>
-                Cancelar
-              </Button>
+              <Button variant="outline" onClick=({ ( }) => setIsCreatingTask(false)}>
               <Button 
                 onClick={handleCreateTask}
                 disabled={createTaskMutation.isPending}
@@ -926,19 +915,19 @@ import {
               <TaskResponseForm
                 task={selectedTask}
                 template={selectedTemplate}
-                onSave={(responses) => {
+                onSave=({ (responses }) => {
                   updateResponsesMutation.mutate({
                     taskId,
                     responses
                   });
                 }}
-                onComplete={(finalResponses) => {
+                onComplete=({ (finalResponses }) => {
                   completeTaskMutation.mutate({
                     taskId,
                     finalResponses
                   });
                 }}
-                onAddComment={(message) => {
+                onAddComment=({ (message }) => {
                   addCommentMutation.mutate({
                     taskId,
                     message
@@ -961,4 +950,4 @@ import {
       </Dialog>
     </div>
   );
-}
+}`

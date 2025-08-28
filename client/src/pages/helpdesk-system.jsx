@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   Headphones, 
   Ticket,
   MessageSquare,
@@ -63,7 +63,7 @@ import {
   HelpCircle,
   BookOpen,
   Lightbulb,
-  Award
+  Award }
 } from 'lucide-react';
 
 const HelpdeskSystem = () => {
@@ -113,13 +113,13 @@ const HelpdeskSystem = () => {
         fetch('/api/helpdesk/tickets', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/helpdesk/agents', {
+        fetch('/api/helpdesk/agents', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/helpdesk/categories', {
+        fetch('/api/helpdesk/categories', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/helpdesk/knowledge-base', {
+        fetch('/api/helpdesk/knowledge-base', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);
@@ -163,14 +163,14 @@ const HelpdeskSystem = () => {
     try {
       const response = await fetch('/api/helpdesk/tickets', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           ...ticketData,
           status: 'open',
-          createdAt: new Date().toISOString(),
+          createdAt: new Date().toISOString(),`
           ticketNumber: `TK-${Date.now()}`
         })
       });
@@ -184,7 +184,7 @@ const HelpdeskSystem = () => {
       setShowTicketModal(false);
       
       toast({
-        title: "Ticket criado",
+        title: "Ticket criado",`
         description: `Ticket #${data.ticket.ticketNumber} criado com sucesso`,
       });
     } catch (error) {
@@ -201,10 +201,10 @@ const HelpdeskSystem = () => {
    * ATUALIZAR STATUS DO TICKET
    */
   const updateTicketStatus = async (ticketId, newStatus) => {
-    try {
+    try {`
       const response = await fetch(`/api/helpdesk/tickets/${ticketId}/status`, {
         method: 'PATCH',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -239,10 +239,10 @@ const HelpdeskSystem = () => {
    * ATRIBUIR TICKET
    */
   const assignTicket = async (ticketId, agentId) => {
-    try {
+    try {`
       const response = await fetch(`/api/helpdesk/tickets/${ticketId}/assign`, {
         method: 'PATCH',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -277,10 +277,10 @@ const HelpdeskSystem = () => {
    * ADICIONAR RESPOSTA AO TICKET
    */
   const addTicketResponse = async (ticketId, responseData) => {
-    try {
+    try {`
       const response = await fetch(`/api/helpdesk/tickets/${ticketId}/responses`, {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -388,10 +388,10 @@ const HelpdeskSystem = () => {
           <div className="flex gap-2">
             <select
               value={ticket.status}
-              onChange={(e) => updateTicketStatus(ticket.id, e.target.value)}
+              onChange=({ (e }) => updateTicketStatus(ticket.id, e.target.value)}
               className="flex-1 px-2 py-1 border border-gray-300 rounded text-sm"
             >
-              {Object.entries(ticketStatuses).map(([key, status]) => (
+              ({ Object.entries(ticketStatuses).map(([key, status] }) => (
                 <option key={key} value={key}>{status.name}</option>
               ))}
             </select>
@@ -399,11 +399,10 @@ const HelpdeskSystem = () => {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setSelectedTicket(ticket)}
+              onClick=({ ( }) => setSelectedTicket(ticket)}
             >
               <Eye className="h-3 w-3 mr-1" />
-              Ver
-            </Button>
+
           </div>
         </CardContent>
       </Card>
@@ -429,10 +428,10 @@ const HelpdeskSystem = () => {
             <div>
               <h3 className="font-semibold text-lg">{agent.name}</h3>
               <p className="text-gray-600 text-sm">{agent.role}</p>
-              <div className="flex items-center gap-1 mt-1">
+              <div className="flex items-center gap-1 mt-1">`
                 <div className={`w-2 h-2 rounded-full ${
                   agent.status === 'online' ? 'bg-green-500' : 
-                  agent.status === 'busy' ? 'bg-yellow-500' : 'bg-gray-400'
+                  agent.status === 'busy' ? 'bg-yellow-500' : 'bg-gray-400'`}
                 }`}></div>
                 <span className="text-xs text-gray-600 capitalize">{agent.status}</span>
               </div>
@@ -454,13 +453,13 @@ const HelpdeskSystem = () => {
             <div className="flex justify-between">
               <span className="text-gray-600">Avaliação:</span>
               <div className="flex items-center gap-1">
-                {[...Array(5)].map((_, i) => (
+                ({ [...Array(5)].map((_, i }) => (
                   <Star
-                    key={i}
+                    key={i}`
                     className={`h-3 w-3 ${
                       i < (agent.rating || 0) 
                         ? 'text-yellow-400 fill-current' 
-                        : 'text-gray-300'
+                        : 'text-gray-300'`}
                     }`}
                   />
                 ))}
@@ -520,12 +519,10 @@ const HelpdeskSystem = () => {
             <div className="flex gap-2">
               <Button variant="outline" size="sm">
                 <Eye className="h-3 w-3 mr-1" />
-                Ver
-              </Button>
+
               <Button variant="outline" size="sm">
                 <Edit className="h-3 w-3 mr-1" />
-                Editar
-              </Button>
+
             </div>
           </div>
         </CardContent>
@@ -591,19 +588,18 @@ const HelpdeskSystem = () => {
                 variant="outline"
                 onClick={loadHelpdeskData}
                 disabled={loading}
-              >
+              >`
                 <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-                Atualizar
-              </Button>
+
               <Button
                 variant="outline"
-                onClick={() => setShowKBModal(true)}
+                onClick=({ ( }) => setShowKBModal(true)}
               >
                 <BookOpen className="h-4 w-4 mr-2" />
                 Novo Artigo
               </Button>
               <Button
-                onClick={() => setShowTicketModal(true)}
+                onClick=({ ( }) => setShowTicketModal(true)}
                 className="bg-blue-600 hover:bg-blue-700"
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -696,7 +692,7 @@ const HelpdeskSystem = () => {
                       <Input
                         placeholder="Buscar tickets..."
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange=({ (e }) => setSearchTerm(e.target.value)}
                         className="pl-10"
                       />
                     </div>
@@ -705,29 +701,29 @@ const HelpdeskSystem = () => {
                   <div className="flex gap-3">
                     <select
                       value={filters.status}
-                      onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, status: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todos os Status</option>
-                      {Object.entries(ticketStatuses).map(([key, status]) => (
+                      ({ Object.entries(ticketStatuses).map(([key, status] }) => (
                         <option key={key} value={key}>{status.name}</option>
                       ))}
                     </select>
 
                     <select
                       value={filters.priority}
-                      onChange={(e) => setFilters(prev => ({ ...prev, priority: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, priority: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todas as Prioridades</option>
-                      {Object.entries(priorities).map(([key, priority]) => (
+                      ({ Object.entries(priorities).map(([key, priority] }) => (
                         <option key={key} value={key}>{priority.name}</option>
                       ))}
                     </select>
 
                     <select
                       value={filters.assignee}
-                      onChange={(e) => setFilters(prev => ({ ...prev, assignee: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, assignee: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todos os Agentes</option>
@@ -741,7 +737,7 @@ const HelpdeskSystem = () => {
             </Card>
 
             {/* Lista de Tickets */}
-            {loading ? (
+            ({ loading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 <span className="ml-2">Carregando tickets...</span>
@@ -756,7 +752,7 @@ const HelpdeskSystem = () => {
                   <p className="text-gray-500 mb-4">
                     Comece criando seu primeiro ticket de suporte
                   </p>
-                  <Button onClick={() => setShowTicketModal(true)}>
+                  <Button onClick={( }) => setShowTicketModal(true)}>
                     <Plus className="h-4 w-4 mr-2" />
                     Criar Ticket
                   </Button>
@@ -797,7 +793,7 @@ const HelpdeskSystem = () => {
 
           <TabsContent value="knowledge" className="space-y-6">
             {/* Base de Conhecimento */}
-            {loading ? (
+            ({ loading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 <span className="ml-2">Carregando artigos...</span>
@@ -812,7 +808,7 @@ const HelpdeskSystem = () => {
                   <p className="text-gray-500 mb-4">
                     Crie artigos para ajudar sua equipe e clientes
                   </p>
-                  <Button onClick={() => setShowKBModal(true)}>
+                  <Button onClick={( }) => setShowKBModal(true)}>
                     <Plus className="h-4 w-4 mr-2" />
                     Criar Artigo
                   </Button>
@@ -847,9 +843,8 @@ const HelpdeskSystem = () => {
               <h2 className="text-xl font-bold mb-4">Novo Ticket</h2>
               {/* Formulário será implementado */}
               <div className="flex justify-end gap-3 mt-6">
-                <Button variant="outline" onClick={() => setShowTicketModal(false)}>
-                  Cancelar
-                </Button>
+                <Button variant="outline" onClick=({ ( }) => setShowTicketModal(false)}>
+
                 <Button disabled={loading}>
                   {loading ? 'Criando...' : 'Criar Ticket'}
                 </Button>
@@ -863,3 +858,4 @@ const HelpdeskSystem = () => {
 };
 
 export default HelpdeskSystem;
+`

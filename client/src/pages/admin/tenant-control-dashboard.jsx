@@ -15,7 +15,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { 
+import {  
   Building2,
   Search,
   Filter,
@@ -44,7 +44,7 @@ import {
   FileText,
   PieChart,
   Target,
-  Save
+  Save }
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
@@ -56,8 +56,8 @@ import { useAuth } from '@/hooks/useAuth';
   const queryClient = useQueryClient();
 
   // Query para buscar todos os tenants com dados de controle
-  const { data, isLoading, { search, status, plan,
-    queryFn) => {
+  const ({ data, isLoading, { search, status, plan,
+    queryFn }) => {
       const params = new URLSearchParams();
       if (searchTerm) params.append('search', searchTerm);
       if (statusFilter !== 'all') params.append('status', statusFilter);
@@ -69,16 +69,16 @@ import { useAuth } from '@/hooks/useAuth';
   });
 
   // Query para analytics de uso
-  const { data, { period,
-    queryFn) => {
+  const ({ data, { period,
+    queryFn }) => {`
       const response = await apiRequest('GET', `/api/admin/tenant-control/analytics?period=${periodFilter}`);
       return response.json();
     }
   });
 
   // Query para dados de billing consolidado
-  const { data,
-    queryFn) => {
+  const ({ data,
+    queryFn }) => {
       const response = await apiRequest('GET', '/api/admin/tenant-control/billing');
       return response.json();
     }
@@ -86,7 +86,7 @@ import { useAuth } from '@/hooks/useAuth';
 
   // Mutation para suspender/ativar tenant
   const toggleTenantMutation = useMutation({
-    mutationFn, active }: { tenantId) => {
+    mutationFn, active }: ({ tenantId }) => {`
       const response = await apiRequest('PUT', `/api/admin/tenant-control/${tenantId}/status`, {
         isActive,
         reason);
@@ -106,7 +106,7 @@ import { useAuth } from '@/hooks/useAuth';
 
   // Mutation para alterar plano do tenant
   const changePlanMutation = useMutation({
-    mutationFn, accessProfileId }: { tenantId) => {
+    mutationFn, accessProfileId }: ({ tenantId }) => {`
       const response = await apiRequest('PUT', `/api/admin/tenant-control/${tenantId}/plan`, {
         accessProfileId
       });
@@ -136,13 +136,12 @@ import { useAuth } from '@/hooks/useAuth';
     setShowTenantModal(true);
   };
 
-  const getStatusColor = (status, isActive) => {
-    if (!isActive) return 'bg-red-100 text-red-800 border-red-200';
+  const getStatusColor = (status, isActive) => ({ if (!isActive) return 'bg-red-100 text-red-800 border-red-200';
     switch (status) {
       case 'active': return 'bg-green-100 text-green-800 border-green-200';
       case 'overdue': return 'bg-orange-100 text-orange-800 border-orange-200';
       case 'suspended': return 'bg-red-100 text-red-800 border-red-200';
-      default) => {
+      default }) => {
     const colors, string> = {
       'basico': 'bg-blue-100 text-blue-800',
       'standard': 'bg-green-100 text-green-800',
@@ -193,15 +192,13 @@ import { useAuth } from '@/hooks/useAuth';
             
             <div className="flex space-x-3">
               <Button
-                onClick={() => queryClient.invalidateQueries()}
+                onClick=({ ( }) => queryClient.invalidateQueries()}
                 variant="outline"
                 className="flex items-center"
               >
                 <RefreshCw className="h-4 w-4 mr-2" />
-                Atualizar
-              </Button>
               <Button
-                onClick={() => {/* Implementar export */}}
+                onClick=({ ( }) => {/* Implementar export */}}
                 className="bg-green-600 hover)}
                   </div>
                   <p className="text-xs text-muted-foreground">
@@ -217,10 +214,10 @@ import { useAuth } from '@/hooks/useAuth';
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">
-                    {tenants.reduce((sum, t) => sum + t.activeUsers, 0)}
+                    ({ tenants.reduce((sum, t }) => sum + t.activeUsers, 0)}
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    de {tenants.reduce((sum, t) => sum + t.totalUsers, 0)} total
+                    de ({ tenants.reduce((sum, t }) => sum + t.totalUsers, 0)} total
                   </p>
                 </CardContent>
               </Card>
@@ -232,7 +229,7 @@ import { useAuth } from '@/hooks/useAuth';
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">
-                    {tenants.reduce((sum, t) => sum + t.activeModules, 0)}
+                    ({ tenants.reduce((sum, t }) => sum + t.activeModules, 0)}
                   </div>
                   <p className="text-xs text-muted-foreground">
                     Adoção, t) => sum + t.activeModules, 0) / (tenants.length * 15)) * 100)}%
@@ -242,8 +239,7 @@ import { useAuth } from '@/hooks/useAuth';
             </div>
 
             {/* Gráficos e Resumos */}
-            <div className="grid grid-cols-1 lg, 'standard', 'premium', 'enterprise'].map(plan => {
-                      const count = tenants.filter((t) => t.plan === plan).length;
+            <div className="grid grid-cols-1 lg, 'standard', 'premium', 'enterprise'].map(plan => ({ const count = tenants.filter((t }) => t.plan === plan).length;
                       const percentage = tenants.length > 0 ? (count / tenants.length) * 100 : 0;
                       return (
                         <div key={plan} className="flex items-center justify-between">
@@ -268,8 +264,8 @@ import { useAuth } from '@/hooks/useAuth';
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    {['active', 'overdue', 'suspended'].map(status => {
-                      const count = tenants.filter((t) => t.billingInfo?.paymentStatus === status).length;
+                    ({ ['active', 'overdue', 'suspended'].map(status => {
+                      const count = tenants.filter((t }) => t.billingInfo?.paymentStatus === status).length;
                       const icons = { active, overdue, suspended, overdue, suspended);
                     })}
                   </div>
@@ -289,13 +285,13 @@ import { useAuth } from '@/hooks/useAuth';
                       <Input
                         placeholder="Buscar por nome ou domínio..."
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange=({ (e }) => setSearchTerm(e.target.value)}
                         className="pl-10"
                       />
                     </div>
                   </div>
                   
-                  <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value)}>
+                  <Select value={statusFilter} onValueChange=({ (value }) => setStatusFilter(value)}>
                     <SelectTrigger className="w-40">
                       <SelectValue placeholder="Status" />
                     </SelectTrigger>
@@ -307,7 +303,7 @@ import { useAuth } from '@/hooks/useAuth';
                     </SelectContent>
                   </Select>
                   
-                  <Select value={planFilter} onValueChange={(value) => setPlanFilter(value)}>
+                  <Select value={planFilter} onValueChange=({ (value }) => setPlanFilter(value)}>
                     <SelectTrigger className="w-40">
                       <SelectValue placeholder="Plano" />
                     </SelectTrigger>
@@ -325,7 +321,7 @@ import { useAuth } from '@/hooks/useAuth';
 
             {/* Lista de Tenants */}
             <div className="space-y-4">
-              {tenants.map((tenant) => (
+              ({ tenants.map((tenant }) => (
                 <Card key={tenant.id} className="hover, tenant.isActive)}>
                           {tenant.isActive 
                             ? (tenant.billingInfo?.paymentStatus || 'active').toUpperCase() {getPlanColor(tenant.plan)}>
@@ -352,38 +348,32 @@ import { useAuth } from '@/hooks/useAuth';
                         </div>
                       </div>
                       <div>
-                        <span className="text-muted-foreground">Último Login).toLocaleDateString('pt-BR') {() => handleViewTenant(tenant)}
+                        <span className="text-muted-foreground">Último Login).toLocaleDateString('pt-BR') ({ ( }) => handleViewTenant(tenant)}
                         >
                           <Eye className="h-4 w-4 mr-1" />
-                          Detalhes
-                        </Button>
                         <Button
                           variant="outline"
-                          size="sm"
-                          onClick={() => window.open(`/tenant/${tenant.domain}`, '_blank')}
+                          size="sm"`
+                          onClick=({ ( }) => window.open(`/tenant/${tenant.domain}`, '_blank')}
                         >
                           <Settings className="h-4 w-4 mr-1" />
-                          Acessar
-                        </Button>
                       </div>
                       
                       <div className="flex space-x-2">
                         <Switch
                           checked={tenant.isActive}
-                          onCheckedChange={() => handleToggleTenant(tenant)}
+                          onCheckedChange=({ ( }) => handleToggleTenant(tenant)}
                           disabled={toggleTenantMutation.isPending}
                         />
                         <Button
                           variant={tenant.isActive ? "destructive" : "default"}
                           size="sm"
-                          onClick={() => handleToggleTenant(tenant)}
+                          onClick=({ ( }) => handleToggleTenant(tenant)}
                           disabled={toggleTenantMutation.isPending}
                         >
                           {tenant.isActive ? (
                             <>
                               <Pause className="h-4 w-4 mr-1" />
-                              Suspender
-                            </>
                           ) {/* Modal de Detalhes do Tenant */}
         <Dialog open={showTenantModal} onOpenChange={setShowTenantModal}>
           <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
@@ -436,7 +426,7 @@ import { useAuth } from '@/hooks/useAuth';
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
                           <div 
-                            className="bg-blue-600 h-2 rounded-full" 
+                            className="bg-blue-600 h-2 rounded-full" `
                             style={{ width) * 100}%` }}
                           ></div>
                         </div>
@@ -448,7 +438,7 @@ import { useAuth } from '@/hooks/useAuth';
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
                           <div 
-                            className="bg-green-600 h-2 rounded-full" 
+                            className="bg-green-600 h-2 rounded-full" `
                             style={{ width) * 100}%` }}
                           ></div>
                         </div>
@@ -460,7 +450,7 @@ import { useAuth } from '@/hooks/useAuth';
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
                           <div 
-                            className="bg-purple-600 h-2 rounded-full" 
+                            className="bg-purple-600 h-2 rounded-full" `
                             style={{ width) * 100}%` }}
                           ></div>
                         </div>
@@ -476,7 +466,7 @@ import { useAuth } from '@/hooks/useAuth';
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3 max-h-40 overflow-y-auto">
-                      {selectedTenant.recentActivity?.slice(0, 5).map((activity, index) => (
+                      ({ selectedTenant.recentActivity?.slice(0, 5).map((activity, index }) => (
                         <div key={index} className="flex items-center justify-between text-sm p-2 border rounded">
                           <div>
                             <div className="font-medium">{activity.description}</div>
@@ -497,4 +487,4 @@ import { useAuth } from '@/hooks/useAuth';
       </div>
     </div>
   );
-}
+}`

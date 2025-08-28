@@ -199,7 +199,7 @@ const StatusLabel = React.forwardRef(({
           config.variant === "success" && "text-green-600 dark:text-green-400",
           config.variant === "warning" && "text-yellow-600 dark:text-yellow-400",
           config.variant === "info" && "text-blue-600 dark:text-blue-400",
-          config.variant === "default" && "text-muted-foreground"
+          config.variant === "default" && "text-muted-foreground"}
         )}>
           {message}
         </p>
@@ -283,7 +283,7 @@ const FormLabel = React.forwardRef(({
           status === "error" && "text-red-600 dark:text-red-400",
           status === "success" && "text-green-600 dark:text-green-400", 
           status === "warning" && "text-yellow-600 dark:text-yellow-400",
-          status === "info" && "text-blue-600 dark:text-blue-400"
+          status === "info" && "text-blue-600 dark:text-blue-400"}
         )}>
           {message}
         </p>
@@ -310,7 +310,7 @@ const FloatingLabel = React.forwardRef(({
       (focused || hasValue) 
         ? "top-2 text-xs text-primary" 
         : "top-1/2 -translate-y-1/2 text-sm text-muted-foreground",
-      className
+      className}
     )}
     {...props}
   >
@@ -396,12 +396,12 @@ export const useLabel = (initialState = {}) => {
 }
 
 export {
-  Label,
-  IconLabel,
-  HelpLabel,
-  StatusLabel,
-  FormLabel,
-  FloatingLabel,
-  LabelGroup,
+
+
+
+
+
+
+
   labelVariants
 }

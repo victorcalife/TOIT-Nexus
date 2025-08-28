@@ -4,35 +4,35 @@
  */
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { 
-  Card, 
-  Input, 
-  Button, 
-  Tooltip, 
-  Tag, 
-  Divider,
-  Row,
-  Col,
-  Select,
-  Switch,
+import {  
+
+
+
+
+
+
+
+
+
+
   message,
-  Spin,
-  Alert,
-  Collapse,
-  List,
-  Typography
+
+
+
+
+ }
 } from 'antd';
-import { 
-  PlayCircleOutlined,
-  SaveOutlined,
-  ClearOutlined,
-  BulbOutlined,
-  ThunderboltOutlined,
-  ExperimentOutlined,
-  HistoryOutlined,
-  CheckCircleOutlined,
-  ExclamationCircleOutlined,
-  InfoCircleOutlined
+import {  
+
+
+
+
+
+
+
+
+
+ }
 } from '@ant-design/icons';
 import MonacoEditor from '@monaco-editor/react';
 import './TQLQueryBuilder.css';
@@ -136,8 +136,7 @@ const TQLQueryBuilder = ({ onExecute, onSave }) => {
     });
 
     // Configurar autocomplete
-    monaco.languages.registerCompletionItemProvider('tql', {
-      provideCompletionItems: (model, position) => {
+    monaco.languages.registerCompletionItemProvider('tql', ({ provideCompletionItems: (model, position }) => {
         const word = model.getWordUntilPosition(position);
         const range = {
           startLineNumber: position.lineNumber,
@@ -294,7 +293,7 @@ const TQLQueryBuilder = ({ onExecute, onSave }) => {
     try {
       await onSave(query);
       message.success('Query salva com sucesso!');
-    } catch (error) {
+    } catch (error) {`
       message.error(`Erro ao salvar: ${error.message}`);
     }
   };
@@ -342,7 +341,7 @@ const TQLQueryBuilder = ({ onExecute, onSave }) => {
                       loading={loading}
                       disabled={!validation.valid}
                     >
-                      Executar
+
                     </Button>
                   </Tooltip>
                   
@@ -352,7 +351,7 @@ const TQLQueryBuilder = ({ onExecute, onSave }) => {
                       onClick={saveQuery}
                       disabled={!query.trim()}
                     >
-                      Salvar
+
                     </Button>
                   </Tooltip>
                   
@@ -361,7 +360,7 @@ const TQLQueryBuilder = ({ onExecute, onSave }) => {
                       icon={<ClearOutlined />}
                       onClick={clearEditor}
                     >
-                      Limpar
+
                     </Button>
                   </Tooltip>
                 </div>
@@ -393,7 +392,7 @@ const TQLQueryBuilder = ({ onExecute, onSave }) => {
                   language="tql"
                   value={query}
                   onMount={handleEditorDidMount}
-                  options={{
+                  options={{}
                     minimap: { enabled: false },
                     fontSize: 14,
                     lineNumbers: 'on',
@@ -408,13 +407,13 @@ const TQLQueryBuilder = ({ onExecute, onSave }) => {
               </div>
 
               {/* Validação em tempo real */}
-              {!validation.valid && (
+              ({ !validation.valid && (
                 <Alert
                   type="error"
                   message="Erros na Query"
                   description={
-                    <ul>
-                      {validation.errors.map((error, index) => (
+                    <ul>}
+                      {validation.errors.map((error, index }) => (
                         <li key={index}>{error}</li>
                       ))}
                     </ul>
@@ -424,13 +423,13 @@ const TQLQueryBuilder = ({ onExecute, onSave }) => {
                 />
               )}
 
-              {validation.suggestions.length > 0 && (
+              ({ validation.suggestions.length > 0 && (
                 <Alert
                   type="info"
                   message="Sugestões de Melhoria"
                   description={
-                    <ul>
-                      {validation.suggestions.map((suggestion, index) => (
+                    <ul>}
+                      {validation.suggestions.map((suggestion, index }) => (
                         <li key={index}>
                           {suggestion.severity === 'warning' && <ExclamationCircleOutlined />}
                           {suggestion.severity === 'info' && <InfoCircleOutlined />}
@@ -455,15 +454,15 @@ const TQLQueryBuilder = ({ onExecute, onSave }) => {
                 <List
                   size="small"
                   dataSource={queryTemplates}
-                  renderItem={template => (
+                  renderItem=({ template => (
                     <List.Item
                       actions={[
                         <Button 
                           type="link" 
-                          size="small"
-                          onClick={() => insertTemplate(template.template)}
+                          size="small"}
+                          onClick={( }) => insertTemplate(template.template)}
                         >
-                          Usar
+
                         </Button>
                       ]}
                     >
@@ -481,15 +480,15 @@ const TQLQueryBuilder = ({ onExecute, onSave }) => {
                 <List
                   size="small"
                   dataSource={queryHistory}
-                  renderItem={historyQuery => (
+                  renderItem=({ historyQuery => (
                     <List.Item
                       actions={[
                         <Button 
                           type="link" 
-                          size="small"
-                          onClick={() => insertFromHistory(historyQuery)}
+                          size="small"}
+                          onClick={( }) => insertFromHistory(historyQuery)}
                         >
-                          Usar
+
                         </Button>
                       ]}
                     >
@@ -519,7 +518,7 @@ const TQLQueryBuilder = ({ onExecute, onSave }) => {
                     <Tag 
                       key={table}
                       style={{ cursor: 'pointer', margin: 2 }}
-                      onClick={() => {
+                      onClick=({ ( }) => {
                         const currentValue = editorRef.current?.getValue() || '';
                         const newValue = currentValue + (currentValue ? ' ' : '') + table;
                         setQuery(newValue);
@@ -567,3 +566,4 @@ const TQLQueryBuilder = ({ onExecute, onSave }) => {
 };
 
 export default TQLQueryBuilder;
+`

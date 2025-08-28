@@ -7,8 +7,7 @@
 import React, { useState, useEffect } from 'react';
 import { useMLCredits } from '../hooks/useMLCredits';
 import { MLCreditsWidget } from '../components/ml/MLCreditsWidget';
-import
-{
+import { 
   Crown,
   Zap,
   Star,
@@ -21,7 +20,7 @@ import
   Brain,
   Sparkles,
   ArrowRight,
-  Info
+  Info }
 } from 'lucide-react';
 
 /**
@@ -166,20 +165,19 @@ export function MLPlansConfiguration()
 
     return (
       <div
-        key={ plan.id }
+        key={ plan.id }`
         className={ `relative p-6 border-2 rounded-xl transition-all duration-200 ${ isCurrentPlan
           ? 'border-green-500 bg-green-50'
           : isSelected
             ? 'border-purple-500 bg-purple-50'
-            : 'border-gray-200 bg-white hover:border-gray-300'
+            : 'border-gray-200 bg-white hover:border-gray-300'`}
           } ${ plan.recommended ? 'ring-2 ring-blue-200' : '' }` }
       >
         {/* Badge de recomendado */ }
         { plan.recommended && (
           <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
             <span className="px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded-full">
-              Recomendado
-            </span>
+
           </div>
         ) }
 
@@ -226,7 +224,7 @@ export function MLPlansConfiguration()
           <div className="space-y-2">
             <div className="flex items-center justify-between text-sm">
               <span className="text-gray-600">Créditos ML/mês</span>
-              <span className="font-medium">
+              <span className="font-medium">`
                 { plan.mlCredits === 0 ? 'Nenhum' : `${ plan.mlCredits } créditos` }
               </span>
             </div>
@@ -247,7 +245,7 @@ export function MLPlansConfiguration()
         <div className="mb-6">
           <h4 className="font-medium text-gray-900 mb-3">Funcionalidades</h4>
           <ul className="space-y-2">
-            { plan.features.map( ( feature, index ) => (
+            ({ plan.features.map( ( feature, index  }) => (
               <li key={ index } className="flex items-start space-x-2 text-sm">
                 <Check className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
                 <span className="text-gray-700">{ feature }</span>
@@ -257,11 +255,11 @@ export function MLPlansConfiguration()
         </div>
 
         {/* Limitações */ }
-        { plan.limitations.length > 0 && (
+        ({ plan.limitations.length > 0 && (
           <div className="mb-6">
             <h4 className="font-medium text-gray-900 mb-3">Limitações</h4>
             <ul className="space-y-2">
-              { plan.limitations.map( ( limitation, index ) => (
+              { plan.limitations.map( ( limitation, index  }) => (
                 <li key={ index } className="flex items-start space-x-2 text-sm">
                   <X className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
                   <span className="text-gray-600">{ limitation }</span>
@@ -273,11 +271,11 @@ export function MLPlansConfiguration()
 
         {/* Botão de ação */ }
         <button
-          onClick={ () => handlePlanChange( plan.id ) }
-          disabled={ isCurrentPlan || isChangingPlan }
+          onClick=({ ( }) => handlePlanChange( plan.id ) }
+          disabled={ isCurrentPlan || isChangingPlan }`
           className={ `w-full py-3 px-4 rounded-lg font-medium transition-colors ${ isCurrentPlan
             ? 'bg-green-100 text-green-700 cursor-default'
-            : 'bg-purple-600 hover:bg-purple-700 text-white disabled:opacity-50'
+            : 'bg-purple-600 hover:bg-purple-700 text-white disabled:opacity-50'`}
             }` }
         >
           { isCurrentPlan ? (
@@ -322,7 +320,7 @@ export function MLPlansConfiguration()
               <MLCreditsWidget variant="compact" />
 
               <button
-                onClick={ () => setShowComparison( !showComparison ) }
+                onClick=({ ( }) => setShowComparison( !showComparison ) }
                 className="px-4 py-2 bg-gray-100 text-gray-700 text-sm rounded-md hover:bg-gray-200"
               >
                 { showComparison ? 'Ocultar' : 'Comparar' } Planos
@@ -392,8 +390,7 @@ export function MLPlansConfiguration()
                 <thead className="bg-gray-50">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Recurso
-                    </th>
+
                     { availablePlans.map( plan => (
                       <th key={ plan.id } className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         { plan.name }
@@ -471,3 +468,4 @@ export function MLPlansConfiguration()
 }
 
 export default MLPlansConfiguration;
+`

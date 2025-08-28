@@ -43,8 +43,7 @@ export default function Login()
   }, [isAuthenticated, navigate, searchParams]);
 
   // Hide loading screen
-  useEffect(() => {
-    const timer = setTimeout(() => {
+  useEffect(() => ({ const timer = setTimeout(( }) => {
       setShowLoading(false);
     }, 1500);
     return () => clearTimeout(timer);
@@ -158,9 +157,9 @@ export default function Login()
       return;
     }
 
-    try {
+    try {`
       console.log(`🛡️ [LOGIN] Iniciando login ${isSupportLogin ? 'SUPORTE' : 'NORMAL'}:`, { cpf: cleanedCpf });
-      
+      `
       const response = await fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.AUTH.SIMPLE_LOGIN}`, {
         method: 'POST',
         headers: {
@@ -174,15 +173,14 @@ export default function Login()
           rememberMe
         }),
       });
-
+`
       console.log(`🛡️ [LOGIN] Resposta recebida:`, response.status);
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: 'Erro desconhecido' }));
+      if (!response.ok) ({ const errorData = await response.json().catch(( }) => ({ error: 'Erro desconhecido' }));`
         throw new Error(errorData.error || `Erro HTTP ${response.status}`);
       }
 
-      const data = await response.json();
+      const data = await response.json();`
       console.log(`🛡️ [LOGIN] Login realizado com sucesso:`, data.user?.name);
       
       // Armazenar dados do usuário
@@ -296,16 +294,14 @@ export default function Login()
             {!isSupportLogin && (
               <div className="form-tabs">
                 <button 
-                  type="button"
+                  type="button"`
                   className={`tab ${activeTab === 'login' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('login')}
+                  onClick=({ ( }) => setActiveTab('login')}
                 >
-                  Entrar
-                </button>
                 <button 
-                  type="button"
+                  type="button"`
                   className={`tab ${activeTab === 'register' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('register')}
+                  onClick=({ ( }) => setActiveTab('register')}
                 >
                   Criar Conta
                 </button>
@@ -353,7 +349,7 @@ export default function Login()
                     <button
                       type="button"
                       className="password-toggle"
-                      onClick={() => setShowPassword(!showPassword)}
+                      onClick=({ ( }) => setShowPassword(!showPassword)}
                     >
                       {showPassword ? '👁️' : '👁️‍🗨️'}
                     </button>
@@ -365,7 +361,7 @@ export default function Login()
                     <input
                       type="checkbox"
                       checked={rememberMe}
-                      onChange={(e) => setRememberMe(e.target.checked)}
+                      onChange=({ (e }) => setRememberMe(e.target.checked)}
                     />
                     <span className="checkmark"></span>
                     Lembrar de mim
@@ -393,7 +389,7 @@ export default function Login()
                       type="text"
                       id="name"
                       value={name}
-                      onChange={(e) => setName(e.target.value)}
+                      onChange=({ (e }) => setName(e.target.value)}
                       placeholder="Seu nome completo"
                       required
                     />
@@ -404,7 +400,7 @@ export default function Login()
                       type="email"
                       id="email"
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange=({ (e }) => setEmail(e.target.value)}
                       placeholder="seu@email.com"
                       required
                     />
@@ -430,7 +426,7 @@ export default function Login()
                       type="tel"
                       id="phone"
                       value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
+                      onChange=({ (e }) => setPhone(e.target.value)}
                       placeholder="(11) 99999-9999"
                       required
                     />
@@ -451,7 +447,7 @@ export default function Login()
                     <button
                       type="button"
                       className="password-toggle"
-                      onClick={() => setShowPassword(!showPassword)}
+                      onClick=({ ( }) => setShowPassword(!showPassword)}
                     >
                       {showPassword ? '👁️' : '👁️‍🗨️'}
                     </button>
@@ -459,7 +455,7 @@ export default function Login()
                   <div className="password-strength">
                     <div className="strength-bar">
                       <div 
-                        className="strength-fill" 
+                        className="strength-fill" `
                         style={{ width: `${passwordStrength}%` }}
                       ></div>
                     </div>
@@ -478,7 +474,7 @@ export default function Login()
                     type="password"
                     id="confirm-password"
                     value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    onChange=({ (e }) => setConfirmPassword(e.target.value)}
                     placeholder="Confirme sua senha"
                     required
                   />
@@ -489,7 +485,7 @@ export default function Login()
                     <input
                       type="checkbox"
                       checked={acceptTerms}
-                      onChange={(e) => setAcceptTerms(e.target.checked)}
+                      onChange=({ (e }) => setAcceptTerms(e.target.checked)}
                       required
                     />
                     <span className="checkmark"></span>
@@ -512,7 +508,7 @@ export default function Login()
           </div>
         </div>
       </div>
-
+`
       <style jsx>{`
         .login-container {
           min-height: 100vh;
@@ -840,8 +836,8 @@ export default function Login()
             gap: 15px;
             align-items: flex-start;
           }
-        }
+        }`
       `}</style>
     </div>
   );
-}
+}`

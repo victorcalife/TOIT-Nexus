@@ -15,12 +15,11 @@ import { Textarea } from '../components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Switch } from '../components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
-import
-  {
+import { 
     User, Camera, Upload, Save, Edit, Settings, Bell,
     Shield, Activity, Calendar, Clock, MapPin, Phone,
     Mail, Globe, Github, Linkedin, Twitter, Eye, EyeOff,
-    Download, Trash2, Star, Award, TrendingUp, BarChart3
+    Download, Trash2, Star, Award, TrendingUp, BarChart3 }
   } from 'lucide-react';
 
 export default function Profile()
@@ -306,7 +305,7 @@ export default function Profile()
                 className="w-24 h-24 rounded-full object-cover border-4 border-gray-200"
               />
               <button
-                onClick={ () => fileInputRef.current?.click() }
+                onClick=({ ( }) => fileInputRef.current?.click() }
                 className="absolute bottom-0 right-0 bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700 transition-colors"
               >
                 <Camera className="h-4 w-4" />
@@ -336,7 +335,7 @@ export default function Profile()
               <Input
                 id="name"
                 value={ profileData.name }
-                onChange={ ( e ) => setProfileData( prev => ( { ...prev, name: e.target.value } ) ) }
+                onChange=({ ( e  }) => setProfileData( prev => ( { ...prev, name: e.target.value } ) ) }
                 placeholder="Seu nome completo"
               />
             </div>
@@ -347,7 +346,7 @@ export default function Profile()
                 id="email"
                 type="email"
                 value={ profileData.email }
-                onChange={ ( e ) => setProfileData( prev => ( { ...prev, email: e.target.value } ) ) }
+                onChange=({ ( e  }) => setProfileData( prev => ( { ...prev, email: e.target.value } ) ) }
                 placeholder="seu@email.com"
               />
             </div>
@@ -357,7 +356,7 @@ export default function Profile()
               <Input
                 id="phone"
                 value={ profileData.phone }
-                onChange={ ( e ) => setProfileData( prev => ( { ...prev, phone: e.target.value } ) ) }
+                onChange=({ ( e  }) => setProfileData( prev => ( { ...prev, phone: e.target.value } ) ) }
                 placeholder="(11) 99999-9999"
               />
             </div>
@@ -367,7 +366,7 @@ export default function Profile()
               <Input
                 id="location"
                 value={ profileData.location }
-                onChange={ ( e ) => setProfileData( prev => ( { ...prev, location: e.target.value } ) ) }
+                onChange=({ ( e  }) => setProfileData( prev => ( { ...prev, location: e.target.value } ) ) }
                 placeholder="São Paulo, Brasil"
               />
             </div>
@@ -378,7 +377,7 @@ export default function Profile()
             <Textarea
               id="bio"
               value={ profileData.bio }
-              onChange={ ( e ) => setProfileData( prev => ( { ...prev, bio: e.target.value } ) ) }
+              onChange=({ ( e  }) => setProfileData( prev => ( { ...prev, bio: e.target.value } ) ) }
               placeholder="Conte um pouco sobre você..."
               rows={ 3 }
             />
@@ -395,7 +394,7 @@ export default function Profile()
                   <Input
                     id="website"
                     value={ profileData.website }
-                    onChange={ ( e ) => setProfileData( prev => ( { ...prev, website: e.target.value } ) ) }
+                    onChange=({ ( e  }) => setProfileData( prev => ( { ...prev, website: e.target.value } ) ) }
                     placeholder="https://seusite.com"
                     className="pl-10"
                   />
@@ -409,7 +408,7 @@ export default function Profile()
                   <Input
                     id="github"
                     value={ profileData.github }
-                    onChange={ ( e ) => setProfileData( prev => ( { ...prev, github: e.target.value } ) ) }
+                    onChange=({ ( e  }) => setProfileData( prev => ( { ...prev, github: e.target.value } ) ) }
                     placeholder="github.com/usuario"
                     className="pl-10"
                   />
@@ -423,7 +422,7 @@ export default function Profile()
                   <Input
                     id="linkedin"
                     value={ profileData.linkedin }
-                    onChange={ ( e ) => setProfileData( prev => ( { ...prev, linkedin: e.target.value } ) ) }
+                    onChange=({ ( e  }) => setProfileData( prev => ( { ...prev, linkedin: e.target.value } ) ) }
                     placeholder="linkedin.com/in/usuario"
                     className="pl-10"
                   />
@@ -470,7 +469,7 @@ export default function Profile()
             </div>
             <Switch
               checked={ preferences.emailNotifications }
-              onCheckedChange={ ( checked ) => setPreferences( prev => ( { ...prev, emailNotifications: checked } ) ) }
+              onCheckedChange=({ ( checked  }) => setPreferences( prev => ( { ...prev, emailNotifications: checked } ) ) }
             />
           </div>
 
@@ -481,7 +480,7 @@ export default function Profile()
             </div>
             <Switch
               checked={ preferences.pushNotifications }
-              onCheckedChange={ ( checked ) => setPreferences( prev => ( { ...prev, pushNotifications: checked } ) ) }
+              onCheckedChange=({ ( checked  }) => setPreferences( prev => ( { ...prev, pushNotifications: checked } ) ) }
             />
           </div>
 
@@ -492,7 +491,7 @@ export default function Profile()
             </div>
             <Switch
               checked={ preferences.weeklyReports }
-              onCheckedChange={ ( checked ) => setPreferences( prev => ( { ...prev, weeklyReports: checked } ) ) }
+              onCheckedChange=({ ( checked  }) => setPreferences( prev => ( { ...prev, weeklyReports: checked } ) ) }
             />
           </div>
 
@@ -503,7 +502,7 @@ export default function Profile()
             </div>
             <Switch
               checked={ preferences.marketingEmails }
-              onCheckedChange={ ( checked ) => setPreferences( prev => ( { ...prev, marketingEmails: checked } ) ) }
+              onCheckedChange=({ ( checked  }) => setPreferences( prev => ( { ...prev, marketingEmails: checked } ) ) }
             />
           </div>
         </CardContent>
@@ -525,7 +524,7 @@ export default function Profile()
             </div>
             <Switch
               checked={ preferences.publicProfile }
-              onCheckedChange={ ( checked ) => setPreferences( prev => ( { ...prev, publicProfile: checked } ) ) }
+              onCheckedChange=({ ( checked  }) => setPreferences( prev => ( { ...prev, publicProfile: checked } ) ) }
             />
           </div>
 
@@ -536,7 +535,7 @@ export default function Profile()
             </div>
             <Switch
               checked={ preferences.showActivity }
-              onCheckedChange={ ( checked ) => setPreferences( prev => ( { ...prev, showActivity: checked } ) ) }
+              onCheckedChange=({ ( checked  }) => setPreferences( prev => ( { ...prev, showActivity: checked } ) ) }
             />
           </div>
 
@@ -547,7 +546,7 @@ export default function Profile()
             </div>
             <Switch
               checked={ preferences.showStats }
-              onCheckedChange={ ( checked ) => setPreferences( prev => ( { ...prev, showStats: checked } ) ) }
+              onCheckedChange=({ ( checked  }) => setPreferences( prev => ( { ...prev, showStats: checked } ) ) }
             />
           </div>
         </CardContent>
@@ -565,7 +564,7 @@ export default function Profile()
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="language">Idioma</Label>
-              <Select value={ profileData.language } onValueChange={ ( value ) => setProfileData( prev => ( { ...prev, language: value } ) ) }>
+              <Select value={ profileData.language } onValueChange=({ ( value  }) => setProfileData( prev => ( { ...prev, language: value } ) ) }>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -579,7 +578,7 @@ export default function Profile()
 
             <div>
               <Label htmlFor="timezone">Fuso Horário</Label>
-              <Select value={ profileData.timezone } onValueChange={ ( value ) => setProfileData( prev => ( { ...prev, timezone: value } ) ) }>
+              <Select value={ profileData.timezone } onValueChange=({ ( value  }) => setProfileData( prev => ( { ...prev, timezone: value } ) ) }>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -594,7 +593,7 @@ export default function Profile()
 
           <div>
             <Label htmlFor="theme">Tema</Label>
-            <Select value={ profileData.theme } onValueChange={ ( value ) => setProfileData( prev => ( { ...prev, theme: value } ) ) }>
+            <Select value={ profileData.theme } onValueChange=({ ( value  }) => setProfileData( prev => ( { ...prev, theme: value } ) ) }>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>

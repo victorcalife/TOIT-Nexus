@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   BarChart, 
   Bar, 
   LineChart, 
@@ -31,9 +31,9 @@ import {
   PolarGrid,
   PolarAngleAxis,
   PolarRadiusAxis,
-  Radar
+  Radar }
 } from 'recharts';
-import { 
+import {  
   BarChart3, 
   TrendingUp, 
   TrendingDown,
@@ -58,7 +58,7 @@ import {
   Database,
   Globe,
   Smartphone,
-  Monitor
+  Monitor }
 } from 'lucide-react';
 
 const BusinessIntelligence = () => {
@@ -87,7 +87,7 @@ const BusinessIntelligence = () => {
     setLoading(true);
     try {
       const response = await fetch(`/api/bi/dashboard/${activeDashboard}?dateRange=${dateRange}`, {
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }
@@ -120,7 +120,7 @@ const BusinessIntelligence = () => {
   const loadRealTimeData = async () => {
     try {
       const response = await fetch('/api/bi/realtime', {
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }
@@ -139,10 +139,10 @@ const BusinessIntelligence = () => {
    * EXPORTAR DASHBOARD
    */
   const exportDashboard = async (format = 'pdf') => {
-    try {
+    try {`
       const response = await fetch(`/api/bi/export/${activeDashboard}`, {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -161,7 +161,7 @@ const BusinessIntelligence = () => {
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.href = url;
+      a.href = url;`
       a.download = `dashboard_${activeDashboard}_${new Date().toISOString().split('T')[0]}.${format}`;
       document.body.appendChild(a);
       a.click();
@@ -169,7 +169,7 @@ const BusinessIntelligence = () => {
       document.body.removeChild(a);
       
       toast({
-        title: "Dashboard exportado",
+        title: "Dashboard exportado",`
         description: `Dashboard exportado em formato ${format.toUpperCase()}`,
       });
     } catch (error) {
@@ -197,7 +197,7 @@ const BusinessIntelligence = () => {
             <div>
               <p className="text-sm font-medium text-gray-600">{kpi.label}</p>
               <p className="text-2xl font-bold text-gray-900">{kpi.value}</p>
-              {kpi.change !== undefined && (
+              {kpi.change !== undefined && (`
                 <div className={`flex items-center mt-1 ${changeColor}`}>
                   <TrendIcon className="h-4 w-4 mr-1" />
                   <span className="text-sm font-medium">
@@ -212,18 +212,18 @@ const BusinessIntelligence = () => {
                     <span>{Math.round((kpi.rawValue / kpi.targetValue) * 100)}%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div
+                    <div`
                       className={`h-2 rounded-full ${
-                        (kpi.rawValue / kpi.targetValue) >= 1 ? 'bg-green-500' : 'bg-blue-500'
+                        (kpi.rawValue / kpi.targetValue) >= 1 ? 'bg-green-500' : 'bg-blue-500'`}
                       }`}
-                      style={{
+                      style={{`}
                         width: `${Math.min((kpi.rawValue / kpi.targetValue) * 100, 100)}%`
                       }}
                     ></div>
                   </div>
                 </div>
               )}
-            </div>
+            </div>`
             <div className={`p-3 rounded-full ${kpi.bgColor || 'bg-blue-100'}`}>
               {kpi.icon || <BarChart3 className="h-6 w-6 text-blue-600" />}
             </div>
@@ -298,13 +298,13 @@ const BusinessIntelligence = () => {
                   data={widget.data}
                   cx="50%"
                   cy="50%"
-                  labelLine={false}
+                  labelLine={false}`
                   label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                   outerRadius={100}
                   fill="#8884d8"
                   dataKey="value"
                 >
-                  {widget.data.map((entry, index) => (
+                  ({ widget.data.map((entry, index }) => (`
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
@@ -373,14 +373,13 @@ const BusinessIntelligence = () => {
         </CardHeader>
         <CardContent>
           {renderChart()}
-          {widget.insights && widget.insights.length > 0 && (
+          ({ widget.insights && widget.insights.length > 0 && (
             <div className="mt-4 p-3 bg-blue-50 rounded-lg">
               <h4 className="font-medium text-blue-900 mb-2 flex items-center gap-2">
                 <Zap className="h-4 w-4" />
-                Insights
-              </h4>
+
               <ul className="space-y-1">
-                {widget.insights.map((insight, index) => (
+                {widget.insights.map((insight, index }) => (
                   <li key={index} className="text-sm text-blue-800 flex items-start gap-2">
                     <CheckCircle className="h-3 w-3 mt-0.5 text-blue-600" />
                     {insight}
@@ -421,8 +420,7 @@ const BusinessIntelligence = () => {
             {widget.title}
             <Button variant="outline" size="sm">
               <Download className="h-4 w-4 mr-2" />
-              Exportar
-            </Button>
+
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -430,7 +428,7 @@ const BusinessIntelligence = () => {
             <table className="w-full">
               <thead>
                 <tr className="border-b">
-                  {widget.tableHeaders.map((header, index) => (
+                  ({ widget.tableHeaders.map((header, index }) => (
                     <th key={index} className="text-left py-3 px-4 font-medium text-gray-900">
                       {header}
                     </th>
@@ -438,13 +436,13 @@ const BusinessIntelligence = () => {
                 </tr>
               </thead>
               <tbody>
-                {widget.tableData.slice(0, 10).map((row, index) => (
+                ({ widget.tableData.slice(0, 10).map((row, index }) => (
                   <tr key={index} className="border-b hover:bg-gray-50">
-                    {row.map((cell, cellIndex) => (
+                    ({ row.map((cell, cellIndex }) => (
                       <td key={cellIndex} className="py-3 px-4 text-gray-700">
                         {typeof cell === 'object' && cell.type === 'badge' ? (
                           <Badge variant={cell.variant}>{cell.value}</Badge>
-                        ) : typeof cell === 'object' && cell.type === 'trend' ? (
+                        ) : typeof cell === 'object' && cell.type === 'trend' ? (`
                           <div className={`flex items-center gap-1 ${cell.positive ? 'text-green-600' : 'text-red-600'}`}>
                             {cell.positive ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
                             {cell.value}
@@ -474,9 +472,8 @@ const BusinessIntelligence = () => {
   /**
    * CONFIGURAR ATUALIZAÇÃO EM TEMPO REAL
    */
-  useEffect(() => {
-    const interval = setInterval(loadRealTimeData, 30000); // 30 segundos
-    return () => clearInterval(interval);
+  useEffect(() => ({ const interval = setInterval(loadRealTimeData, 30000); // 30 segundos
+    return ( }) => clearInterval(interval);
   }, []);
 
   /**
@@ -506,21 +503,19 @@ const BusinessIntelligence = () => {
                 variant="outline"
                 onClick={loadRealTimeData}
                 disabled={loading}
-              >
+              >`
                 <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-                Atualizar
-              </Button>
+
               <Button
                 variant="outline"
-                onClick={() => exportDashboard('pdf')}
+                onClick=({ ( }) => exportDashboard('pdf')}
               >
                 <Download className="h-4 w-4 mr-2" />
                 Exportar PDF
               </Button>
               <Button variant="outline">
                 <Settings className="h-4 w-4 mr-2" />
-                Configurar
-              </Button>
+
             </div>
           </div>
         </div>
@@ -532,7 +527,7 @@ const BusinessIntelligence = () => {
               <div className="flex gap-4 flex-1">
                 <select
                   value={dateRange}
-                  onChange={(e) => setDateRange(e.target.value)}
+                  onChange=({ (e }) => setDateRange(e.target.value)}
                   className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="today">Hoje</option>
@@ -547,7 +542,7 @@ const BusinessIntelligence = () => {
 
                 <select
                   value={filters.department}
-                  onChange={(e) => setFilters(prev => ({ ...prev, department: e.target.value }))}
+                  onChange=({ (e }) => setFilters(prev => ({ ...prev, department: e.target.value }))}
                   className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="all">Todos os Departamentos</option>
@@ -559,7 +554,7 @@ const BusinessIntelligence = () => {
 
                 <select
                   value={filters.region}
-                  onChange={(e) => setFilters(prev => ({ ...prev, region: e.target.value }))}
+                  onChange=({ (e }) => setFilters(prev => ({ ...prev, region: e.target.value }))}
                   className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="all">Todas as Regiões</option>
@@ -657,3 +652,4 @@ const BusinessIntelligence = () => {
 };
 
 export default BusinessIntelligence;
+`

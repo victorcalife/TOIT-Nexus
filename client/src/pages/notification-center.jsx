@@ -12,7 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CheckboxWithLabel } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   Bell, 
   Mail, 
   MessageSquare,
@@ -44,7 +44,7 @@ import {
   Send,
   Users,
   Target,
-  Activity
+  Activity }
 } from 'lucide-react';
 
 const NotificationCenter = () => {
@@ -177,7 +177,7 @@ const NotificationCenter = () => {
     try {
       const response = await fetch('/api/notifications/mark-read', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -215,7 +215,7 @@ const NotificationCenter = () => {
     try {
       const response = await fetch('/api/notifications/archive', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -254,7 +254,7 @@ const NotificationCenter = () => {
     try {
       const response = await fetch('/api/notifications/delete', {
         method: 'DELETE',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -291,7 +291,7 @@ const NotificationCenter = () => {
     try {
       const response = await fetch('/api/notifications/send', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -324,7 +324,7 @@ const NotificationCenter = () => {
    */
   const setupRealTimeNotifications = () => {
     if (!realTimeEnabled) return;
-
+`
     const eventSource = new EventSource(`/api/notifications/stream?token=${localStorage.getItem('token')}`);
     
     eventSource.onmessage = (event) => {
@@ -395,15 +395,15 @@ const NotificationCenter = () => {
     
     return (
       <div
-        key={notification.id}
+        key={notification.id}`
         className={`p-4 border rounded-lg transition-colors ${
-          notification.isRead ? 'bg-white' : 'bg-blue-50 border-blue-200'
+          notification.isRead ? 'bg-white' : 'bg-blue-50 border-blue-200'`}
         } ${isSelected ? 'ring-2 ring-blue-500' : ''}`}
       >
         <div className="flex items-start gap-3">
           <CheckboxWithLabel
             checked={isSelected}
-            onCheckedChange={(checked) => {
+            onCheckedChange=({ (checked }) => {
               if (checked) {
                 setSelectedNotifications(prev => [...prev, notification.id]);
               } else {
@@ -411,13 +411,13 @@ const NotificationCenter = () => {
               }
             }}
           />
-          
+          `
           <div className={`p-2 rounded-full ${notificationType?.color || 'text-gray-600 bg-gray-100'}`}>
             {notificationType?.icon || <Bell className="h-4 w-4" />}
           </div>
           
           <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between mb-1">
+            <div className="flex items-center justify-between mb-1">`
               <h4 className={`font-medium ${notification.isRead ? 'text-gray-700' : 'text-gray-900'}`}>
                 {notification.title}
               </h4>
@@ -434,7 +434,7 @@ const NotificationCenter = () => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => markAsRead([notification.id])}
+                  onClick=({ ( }) => markAsRead([notification.id])}
                   className="h-6 w-6 p-0"
                 >
                   {notification.isRead ? (
@@ -445,7 +445,7 @@ const NotificationCenter = () => {
                 </Button>
               </div>
             </div>
-            
+            `
             <p className={`text-sm mb-2 ${notification.isRead ? 'text-gray-600' : 'text-gray-800'}`}>
               {notification.message}
             </p>
@@ -459,12 +459,12 @@ const NotificationCenter = () => {
                 {notificationChannels.find(c => c.id === notification.channel)?.icon}
                 {notificationChannels.find(c => c.id === notification.channel)?.name || 'In-App'}
               </div>
-              {notification.actionUrl && (
+              ({ notification.actionUrl && (
                 <Button
                   variant="link"
                   size="sm"
                   className="h-auto p-0 text-xs text-blue-600"
-                  onClick={() => window.open(notification.actionUrl, '_blank')}
+                  onClick={( }) => window.open(notification.actionUrl, '_blank')}
                 >
                   Ver detalhes
                 </Button>
@@ -522,7 +522,7 @@ const NotificationCenter = () => {
             <div className="flex gap-3">
               <Button
                 variant="outline"
-                onClick={() => setRealTimeEnabled(!realTimeEnabled)}
+                onClick=({ ( }) => setRealTimeEnabled(!realTimeEnabled)}
               >
                 {realTimeEnabled ? (
                   <>
@@ -540,12 +540,11 @@ const NotificationCenter = () => {
                 variant="outline"
                 onClick={loadNotifications}
                 disabled={loading}
-              >
+              >`
                 <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-                Atualizar
-              </Button>
+
               <Button
-                onClick={() => setShowCreateModal(true)}
+                onClick=({ ( }) => setShowCreateModal(true)}
                 className="bg-blue-600 hover:bg-blue-700"
               >
                 <Send className="h-4 w-4 mr-2" />
@@ -597,11 +596,11 @@ const NotificationCenter = () => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Tempo Real</p>
+                  <p className="text-sm font-medium text-gray-600">Tempo Real</p>`
                   <p className={`text-2xl font-bold ${realTimeEnabled ? 'text-green-600' : 'text-gray-600'}`}>
                     {realTimeEnabled ? 'Ativo' : 'Inativo'}
                   </p>
-                </div>
+                </div>`
                 <Activity className={`h-8 w-8 ${realTimeEnabled ? 'text-green-600' : 'text-gray-600'}`} />
               </div>
             </CardContent>
@@ -618,7 +617,7 @@ const NotificationCenter = () => {
                   <Input
                     placeholder="Buscar notificações..."
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange=({ (e }) => setSearchTerm(e.target.value)}
                     className="pl-10"
                   />
                 </div>
@@ -627,7 +626,7 @@ const NotificationCenter = () => {
               <div className="flex gap-3">
                 <select
                   value={filters.type}
-                  onChange={(e) => setFilters(prev => ({ ...prev, type: e.target.value }))}
+                  onChange=({ (e }) => setFilters(prev => ({ ...prev, type: e.target.value }))}
                   className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="all">Todos os Tipos</option>
@@ -638,7 +637,7 @@ const NotificationCenter = () => {
 
                 <select
                   value={filters.status}
-                  onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
+                  onChange=({ (e }) => setFilters(prev => ({ ...prev, status: e.target.value }))}
                   className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="all">Todos os Status</option>
@@ -648,7 +647,7 @@ const NotificationCenter = () => {
 
                 <select
                   value={filters.priority}
-                  onChange={(e) => setFilters(prev => ({ ...prev, priority: e.target.value }))}
+                  onChange=({ (e }) => setFilters(prev => ({ ...prev, priority: e.target.value }))}
                   className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="all">Todas as Prioridades</option>
@@ -667,7 +666,7 @@ const NotificationCenter = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => markAsRead(selectedNotifications)}
+                  onClick=({ ( }) => markAsRead(selectedNotifications)}
                 >
                   <Eye className="h-3 w-3 mr-1" />
                   Marcar como Lidas
@@ -675,20 +674,18 @@ const NotificationCenter = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => archiveNotifications(selectedNotifications)}
+                  onClick=({ ( }) => archiveNotifications(selectedNotifications)}
                 >
                   <Archive className="h-3 w-3 mr-1" />
-                  Arquivar
-                </Button>
+
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => deleteNotifications(selectedNotifications)}
+                  onClick=({ ( }) => deleteNotifications(selectedNotifications)}
                   className="text-red-600 hover:text-red-700"
                 >
                   <Trash2 className="h-3 w-3 mr-1" />
-                  Deletar
-                </Button>
+
               </div>
             )}
           </CardContent>
@@ -729,9 +726,8 @@ const NotificationCenter = () => {
             <h2 className="text-xl font-bold mb-4">Enviar Nova Notificação</h2>
             {/* Formulário será implementado na próxima parte */}
             <div className="flex justify-end gap-3 mt-6">
-              <Button variant="outline" onClick={() => setShowCreateModal(false)}>
-                Cancelar
-              </Button>
+              <Button variant="outline" onClick=({ ( }) => setShowCreateModal(false)}>
+
               <Button disabled={loading}>
                 {loading ? 'Enviando...' : 'Enviar Notificação'}
               </Button>
@@ -744,3 +740,4 @@ const NotificationCenter = () => {
 };
 
 export default NotificationCenter;
+`

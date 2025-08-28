@@ -7,18 +7,20 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { 
-  MessageCircle, 
-  X, 
-  Minimize2, 
-  Maximize2,
-  Send, 
+import {
+  MessageCircle,
+  Send,
   Users,
   Bot,
+  Minimize2, 
+  Maximize2,
+  X,
   Phone,
   Video,
+  MoreHorizontal,
   Paperclip,
-  Smile
+  Smile,
+  Search
 } from 'lucide-react';
 import io from 'socket.io-client';
 
@@ -119,7 +121,6 @@ Sua assistente inteligente do TOIT NEXUS. Estou aqui para ajudar com:
 🧠 **ML**: Insights e predições
 🔗 **Integrações**: Conectar sistemas
 ${data.data.user.canAccessQuantum ? '⚛️ **Quantum**: Algoritmos avançados' : ''}
-
 **Como posso ajudar você hoje?**`,
           timestamp: new Date(),
           suggestedActions: [
@@ -239,7 +240,7 @@ ${data.data.user.canAccessQuantum ? '⚛️ **Quantum**: Algoritmos avançados' 
           setIsOpen(true);
           setActiveTab('users');
         }}>
-          Ver
+          Abrir
         </Button>
       )
     });
@@ -347,7 +348,7 @@ ${data.data.user.canAccessQuantum ? '⚛️ **Quantum**: Algoritmos avançados' 
                   <TabsList className="grid w-full grid-cols-2 m-2">
                     <TabsTrigger value="mila" className="relative">
                       <Bot className="h-4 w-4 mr-1" />
-                      MILA
+
                       {milaUnread > 0 && (
                         <Badge variant="destructive" className="ml-1 h-4 w-4 p-0 text-xs">
                           {milaUnread}
@@ -356,7 +357,7 @@ ${data.data.user.canAccessQuantum ? '⚛️ **Quantum**: Algoritmos avançados' 
                     </TabsTrigger>
                     <TabsTrigger value="users" className="relative">
                       <Users className="h-4 w-4 mr-1" />
-                      Equipe
+
                       {userUnread > 0 && (
                         <Badge variant="destructive" className="ml-1 h-4 w-4 p-0 text-xs">
                           {userUnread}
@@ -380,7 +381,6 @@ ${data.data.user.canAccessQuantum ? '⚛️ **Quantum**: Algoritmos avançados' 
                                   {message.type === 'mila' ? '🧠' : 'U'}
                                 </AvatarFallback>
                               </Avatar>
-                              
                               <div className={`rounded-lg p-2 text-sm ${
                                 message.type === 'user' 
                                   ? 'bg-primary text-primary-foreground' 
@@ -469,7 +469,7 @@ ${data.data.user.canAccessQuantum ? '⚛️ **Quantum**: Algoritmos avançados' 
                               <div>
                                 <div className="font-medium text-sm">{selectedConversation.name}</div>
                                 <div className="text-xs text-muted-foreground">
-                                  {selectedConversation.type === 'group' 
+                                  {selectedConversation.type === 'group'
                                     ? `${selectedConversation.participants?.length || 0} participantes`
                                     : 'Online'
                                   }
@@ -505,7 +505,6 @@ ${data.data.user.canAccessQuantum ? '⚛️ **Quantum**: Algoritmos avançados' 
                                         </AvatarFallback>
                                       </Avatar>
                                     )}
-                                    
                                     <div className={`rounded-lg p-2 text-sm ${
                                       isOwn 
                                         ? 'bg-primary text-primary-foreground' 
@@ -597,3 +596,4 @@ ${data.data.user.canAccessQuantum ? '⚛️ **Quantum**: Algoritmos avançados' 
     </>
   );
 }
+`

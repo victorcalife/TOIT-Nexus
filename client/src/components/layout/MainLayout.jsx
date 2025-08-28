@@ -11,44 +11,36 @@ import { useToast } from '@/hooks/use-toast';
 import quantumSystemCore from '@/core/QuantumSystemCore';
 import milaOmnipresence from '@/core/MilaOmnipresence';
 import universalWorkflowEngine from '@/core/UniversalWorkflowEngine';
-import
-{
+import {
   LayoutDashboard,
-  MessageCircle,
-  Users,
+  Database,
   FileText,
+  Workflow,
+  Brain,
+  Atom,
   Settings,
-  Search,
+  MessageCircle,
   Bell,
-  User,
-  LogOut,
+  Search,
+  Menu,
+  X,
   ChevronLeft,
   ChevronRight,
-  Circle,
-  Minus,
-  Moon,
+  Users,
   Phone,
   Video,
-  MoreHorizontal,
   Send,
-  Paperclip,
   Smile,
-  Plus,
-  Filter,
-  Archive,
-  Star,
-  Trash2,
-  Edit,
-  Eye,
-  Download,
-  Share,
-  Calendar,
-  BarChart3,
-  Workflow,
-  Database,
+  Paperclip,
+  MoreVertical,
   Zap,
-  Brain,
-  Atom
+  Trash2,
+  LogOut,
+  User,
+  BarChart3,
+  Plus,
+  Minimize2,
+  Maximize2
 } from 'lucide-react';
 import io from 'socket.io-client';
 
@@ -116,15 +108,14 @@ export default function MainLayout()
     loadNotifications();
   }, [] );
 
-  const initializeQuantumSystem = async () =>
-  {
+  const initializeQuantumSystem = async () => {
     try
     {
       console.log( '🧠⚛️ Inicializando Sistema Quântico Integrado...' );
 
       // Conectar todos os sistemas
       quantumSystemCore.connectModule( 'main_layout', {
-        receiveQuantumUpdate: ( result ) =>
+        receiveQuantumUpdate: (result) =>
         {
           // Processar atualizações quânticas na interface
           if ( result.automaticInsights )
@@ -135,8 +126,8 @@ export default function MainLayout()
                 title: `🧠 ${ insight.title }`,
                 description: insight.message,
                 action: insight.action ? (
-                  <Button size="sm" onClick={ () => executeQuantumAction( insight.action ) }>
-                    Aplicar
+                  <Button size="sm" onClick={() => executeQuantumAction(insight.action)}>
+                    Executar
                   </Button>
                 ) : undefined
               } );
@@ -150,13 +141,13 @@ export default function MainLayout()
       {
         data.insights.forEach( insight =>
         {
-          toast( {
-            title: `🧠 MILA: ${ insight.title }`,
+          toast({
+            title: `🧠 MILA: ${insight.title}`,
             description: insight.message,
             action: (
-              <Button size="sm" onClick={ () => executeMilaAction( insight.action, insight ) }>
+              <Button size="sm" onClick={() => executeMilaAction(insight.action, insight)}>
                 <Zap className="w-3 h-3 mr-1" />
-                Aplicar
+                Executar
               </Button>
             )
           } );
@@ -166,11 +157,11 @@ export default function MainLayout()
       // Configurar workflows automáticos
       universalWorkflowEngine.on( 'automatic_workflow_created', ( data ) =>
       {
-        toast( {
+        toast({
           title: "🔄 Workflow Automático Criado",
-          description: `MILA criou workflow: ${ data.workflow.name }`,
+          description: `MILA criou workflow: ${data.workflow.name}`,
           action: (
-            <Button size="sm" onClick={ () => viewWorkflow( data.workflowId ) }>
+            <Button size="sm" onClick={() => viewWorkflow(data.workflowId)}>
               Ver Workflow
             </Button>
           )
@@ -266,7 +257,7 @@ export default function MainLayout()
     {
       const response = await fetch( '/api/users/tenant', {
         headers: {
-          'Authorization': `Bearer ${ localStorage.getItem( 'token' ) }`
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       } );
 
@@ -316,7 +307,7 @@ export default function MainLayout()
     {
       const response = await fetch( '/api/chat/conversations', {
         headers: {
-          'Authorization': `Bearer ${ localStorage.getItem( 'token' ) }`
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       } );
 
@@ -357,7 +348,7 @@ export default function MainLayout()
     {
       const response = await fetch( '/api/notifications', {
         headers: {
-          'Authorization': `Bearer ${ localStorage.getItem( 'token' ) }`
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       } );
 
@@ -393,9 +384,9 @@ export default function MainLayout()
       socket.emit( 'status_change', { status: newStatus } );
     }
 
-    toast( {
+    toast({
       title: "Status atualizado",
-      description: `Seu status foi alterado para ${ USER_STATUS[ newStatus ].label }`
+      description: `Seu status foi alterado para ${USER_STATUS[newStatus].label}`
     } );
   };
 
@@ -414,15 +405,14 @@ export default function MainLayout()
 
   const showMessageNotification = ( message ) =>
   {
-    toast( {
+    toast({
       title: "💬 Nova mensagem",
-      description: `${ message.senderName }: ${ message.content }`,
+      description: `${message.senderName}: ${message.content}`,
       action: (
-        <Button size="sm" onClick={ () =>
-        {
-          setChatExpanded( true );
-          setSelectedConversation( conversations.find( c => c.id === message.conversationId ) );
-        } }>
+        <Button size="sm" onClick={() => {
+          setChatExpanded(true);
+          setSelectedConversation(conversations.find(c => c.id === message.conversationId));
+        }}>
           Ver
         </Button>
       )
@@ -457,7 +447,7 @@ export default function MainLayout()
           <Button
             variant="ghost"
             size="sm"
-            onClick={ () => setSidebarCollapsed( !sidebarCollapsed ) }
+            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
           >
             { sidebarCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" /> }
           </Button>
@@ -487,7 +477,7 @@ export default function MainLayout()
               <Badge variant="destructive" className="absolute -top-1 -right-1 h-5 w-5 p-0 text-xs">
                 { unreadNotifications }
               </Badge>
-            ) }
+            )}
           </Button>
 
           {/* Perfil do usuário */ }
@@ -513,25 +503,25 @@ export default function MainLayout()
       </header>
 
       <div className="flex-1 flex">
-        {/* Sidebar */ }
-        <aside className={ `${ sidebarCollapsed ? 'w-16' : 'w-80' } border-r bg-card transition-all duration-300 flex flex-col` }>
+        {/* Sidebar */ }`
+        <aside className={`${sidebarCollapsed ? 'w-16' : 'w-80'} border-r bg-card transition-all duration-300 flex flex-col`}>
           {/* Módulos */ }
           <div className="p-4">
-            <h3 className={ `text-sm font-semibold mb-3 ${ sidebarCollapsed ? 'hidden' : 'block' }` }>
+            <h3 className={`text-sm font-semibold mb-3 ${sidebarCollapsed ? 'hidden' : 'block'}`}>
               Módulos
             </h3>
             <div className="space-y-1">
-              { MODULES.map( ( module ) => (
+              {MODULES.map((module) => (
                 <Button
                   key={ module.id }
-                  variant={ activeModule === module.id ? 'default' : 'ghost' }
-                  className={ `w-full justify-start ${ sidebarCollapsed ? 'px-2' : 'px-3' }` }
-                  onClick={ () => setActiveModule( module.id ) }
+                  variant={activeModule === module.id ? 'default' : 'ghost'}
+                  className={`w-full justify-start ${sidebarCollapsed ? 'px-2' : 'px-3'}`}
+                  onClick={() => setActiveModule(module.id)}
                 >
                   <module.icon className="h-4 w-4" />
-                  { !sidebarCollapsed && <span className="ml-2">{ module.name }</span> }
+                  {!sidebarCollapsed && <span className="ml-2">{module.name}</span>}
                 </Button>
-              ) ) }
+              ))}
             </div>
           </div>
 
@@ -545,11 +535,11 @@ export default function MainLayout()
                 <div className="flex items-center justify-between">
                   <h3 className="text-sm font-semibold">Chat & Equipe</h3>
                   <div className="flex items-center gap-1">
-                    <div className={ `w-2 h-2 rounded-full ${ isConnected ? 'bg-green-500' : 'bg-red-500' }` } />
+                    <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-green-500' : 'bg-red-500'}`} />
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={ () => setChatExpanded( !chatExpanded ) }
+                      onClick={() => setChatExpanded(!chatExpanded)}
                     >
                       { chatExpanded ? <ChevronLeft className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" /> }
                     </Button>
@@ -564,36 +554,34 @@ export default function MainLayout()
                 </h4>
                 <ScrollArea className="h-32">
                   <div className="space-y-2">
-                    { tenantUsers.map( ( user ) => (
+                    {tenantUsers.map((user) => (
                       <div
                         key={ user.id }
                         className="flex items-center gap-2 p-2 rounded-lg hover:bg-muted cursor-pointer"
-                        onClick={ () =>
-                        {
+                        onClick={() => {
                           // Iniciar conversa direta
-                          const directConv = conversations.find( c =>
-                            c.type === 'direct' && c.participants.includes( user.id )
+                          const directConv = conversations.find(c =>
+                            c.type === 'direct' && c.participants.includes(user.id)
                           );
-                          if ( directConv )
-                          {
-                            setSelectedConversation( directConv );
-                            setChatExpanded( true );
+                          if (directConv) {
+                            setSelectedConversation(directConv);
+                            setChatExpanded(true);
                           }
-                        } }
+                        }}
                       >
                         <div className="relative">
                           <Avatar className="h-6 w-6">
                             <AvatarImage src={ user.avatar } />
                             <AvatarFallback className="text-xs">{ user.name.charAt( 0 ) }</AvatarFallback>
                           </Avatar>
-                          <div className={ `absolute -bottom-1 -right-1 w-3 h-3 ${ USER_STATUS[ user.status ].color } rounded-full border border-background` } />
+                          <div className={`absolute -bottom-1 -right-1 w-3 h-3 ${USER_STATUS[user.status].color} rounded-full border border-background`} />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="text-xs font-medium truncate">{ user.name }</div>
                           <div className="text-xs text-muted-foreground">{ user.role }</div>
                         </div>
                       </div>
-                    ) ) }
+                    ))}
                   </div>
                 </ScrollArea>
               </div>
@@ -615,41 +603,39 @@ export default function MainLayout()
 
                 <ScrollArea className="flex-1">
                   <div className="p-2">
-                    { conversations.map( ( conversation ) => (
+                    {conversations.map((conversation) => (
                       <div
-                        key={ conversation.id }
-                        className={ `p-2 rounded-lg cursor-pointer transition-colors mb-1 ${ selectedConversation?.id === conversation.id
+                        key={conversation.id}
+                        className={`p-2 rounded-lg cursor-pointer transition-colors mb-1 ${selectedConversation?.id === conversation.id
                           ? 'bg-primary/10 border border-primary/20'
-                          : 'hover:bg-muted'
-                          }` }
-                        onClick={ () =>
-                        {
-                          setSelectedConversation( conversation );
-                          setChatExpanded( true );
-                        } }
+                          : 'hover:bg-muted'}`}
+                        onClick={() => {
+                          setSelectedConversation(conversation);
+                          setChatExpanded(true);
+                        }}
                       >
                         <div className="flex items-center gap-2">
                           <Avatar className="h-8 w-8">
                             <AvatarFallback className="text-xs">
-                              { conversation.type === 'group' ? <Users className="h-4 w-4" /> : conversation.name.charAt( 0 ) }
+                              {conversation.type === 'group' ? <Users className="h-4 w-4" /> : conversation.name.charAt(0)}
                             </AvatarFallback>
                           </Avatar>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between">
-                              <div className="text-xs font-medium truncate">{ conversation.name }</div>
-                              { conversation.unread > 0 && (
+                              <div className="text-xs font-medium truncate">{conversation.name}</div>
+                              {conversation.unread > 0 && (
                                 <Badge variant="destructive" className="h-4 w-4 p-0 text-xs">
-                                  { conversation.unread }
+                                  {conversation.unread}
                                 </Badge>
-                              ) }
+                              )}
                             </div>
                             <div className="text-xs text-muted-foreground truncate">
-                              { conversation.lastMessage }
+                              {conversation.lastMessage}
                             </div>
                           </div>
                         </div>
                       </div>
-                    ) ) }
+                    ))}
                   </div>
                 </ScrollArea>
               </div>
@@ -657,30 +643,30 @@ export default function MainLayout()
           ) }
         </aside>
 
-        {/* Área de Conteúdo Principal */ }
+        {/* Área de Conteúdo Principal */}
         <main className="flex-1 flex">
-          {/* Conteúdo do Módulo */ }
-          <div className={ `${ chatExpanded && selectedConversation ? 'flex-1' : 'w-full' } bg-background` }>
-            { renderActiveModule() }
+          {/* Conteúdo do Módulo */}
+          <div className={`${chatExpanded && selectedConversation ? 'flex-1' : 'w-full'} bg-background`}>
+            {renderActiveModule()}
           </div>
 
-          {/* Chat Expandido */ }
-          { chatExpanded && selectedConversation && (
+          {/* Chat Expandido */}
+          {chatExpanded && selectedConversation && (
             <div className="w-96 border-l bg-card flex flex-col">
-              {/* Header do Chat */ }
+              {/* Header do Chat */}
               <div className="p-4 border-b">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Avatar className="h-8 w-8">
                       <AvatarFallback className="text-xs">
-                        { selectedConversation.type === 'group' ? <Users className="h-4 w-4" /> : selectedConversation.name.charAt( 0 ) }
+                        {selectedConversation.type === 'group' ? <Users className="h-4 w-4" /> : selectedConversation.name.charAt(0)}
                       </AvatarFallback>
                     </Avatar>
                     <div>
-                      <div className="font-medium text-sm">{ selectedConversation.name }</div>
+                      <div className="font-medium text-sm">{selectedConversation.name}</div>
                       <div className="text-xs text-muted-foreground">
-                        { selectedConversation.type === 'group'
-                          ? `${ selectedConversation.participants?.length || 0 } participantes`
+                        {selectedConversation.type === 'group'
+                          ? `${selectedConversation.participants?.length || 0} participantes`
                           : 'Online'
                         }
                       </div>
@@ -693,55 +679,52 @@ export default function MainLayout()
                     <Button variant="ghost" size="sm">
                       <Video className="h-3 w-3" />
                     </Button>
-                    <Button variant="ghost" size="sm" onClick={ () => setChatExpanded( false ) }>
+                    <Button variant="ghost" size="sm" onClick={() => setChatExpanded(false)}>
                       <X className="h-3 w-3" />
                     </Button>
                   </div>
                 </div>
               </div>
 
-              {/* Mensagens */ }
+              {/* Mensagens */}
               <ScrollArea className="flex-1 p-4">
                 <div className="space-y-3">
-                  { messages.map( ( message ) =>
-                  {
+                  {messages.map((message) => {
                     const isOwn = message.senderId === currentUser?.id;
                     return (
                       <div
-                        key={ message.id }
-                        className={ `flex ${ isOwn ? 'justify-end' : 'justify-start' }` }
+                        key={message.id}
+                        className={`flex ${isOwn ? 'justify-end' : 'justify-start'}`}
                       >
-                        <div className={ `flex gap-2 max-w-[80%] ${ isOwn ? 'flex-row-reverse' : 'flex-row' }` }>
-                          { !isOwn && (
+                        <div className={`flex gap-2 max-w-[80%] ${isOwn ? 'flex-row-reverse' : 'flex-row'}`}>
+                          {!isOwn && (
                             <Avatar className="h-6 w-6">
                               <AvatarFallback className="text-xs">
-                                { message.senderName?.charAt( 0 ) || 'U' }
+                                {message.senderName?.charAt(0) || 'U'}
                               </AvatarFallback>
                             </Avatar>
-                          ) }
-
-                          <div className={ `rounded-lg p-2 text-sm ${ isOwn
+                          )}
+                          <div className={`rounded-lg p-2 text-sm ${isOwn
                             ? 'bg-primary text-primary-foreground'
-                            : 'bg-muted'
-                            }` }>
-                            { !isOwn && (
+                            : 'bg-muted'}`}>
+                            {!isOwn && (
                               <div className="text-xs font-medium mb-1 opacity-70">
-                                { message.senderName }
+                                {message.senderName}
                               </div>
-                            ) }
-                            <div>{ message.content }</div>
+                            )}
+                            <div>{message.content}</div>
                             <div className="text-xs opacity-70 mt-1">
-                              { new Date( message.timestamp ).toLocaleTimeString( 'pt-BR', { hour: '2-digit', minute: '2-digit' } ) }
+                              {new Date(message.timestamp).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
                             </div>
                           </div>
                         </div>
                       </div>
                     );
-                  } ) }
+                  ))}
                 </div>
               </ScrollArea>
 
-              {/* Input de Mensagem */ }
+              {/* Input de Mensagem */}
               <div className="p-4 border-t">
                 <div className="flex gap-2">
                   <Button variant="ghost" size="sm">
@@ -750,127 +733,115 @@ export default function MainLayout()
                   <input
                     type="text"
                     placeholder="Digite sua mensagem..."
-                    value={ newMessage }
-                    onChange={ ( e ) => setNewMessage( e.target.value ) }
-                    onKeyPress={ ( e ) =>
-                    {
-                      if ( e.key === 'Enter' && !e.shiftKey )
-                      {
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
                         e.preventDefault();
                         sendMessage();
                       }
-                    } }
+                    }}
                     className="flex-1 px-3 py-2 border rounded-lg text-sm"
-                    disabled={ !isConnected }
+                    disabled={!isConnected}
                   />
                   <Button variant="ghost" size="sm">
                     <Smile className="h-3 w-3" />
                   </Button>
                   <Button
                     size="sm"
-                    onClick={ sendMessage }
-                    disabled={ !newMessage.trim() || !isConnected }
+                    onClick={sendMessage}
+                    disabled={!newMessage.trim() || !isConnected}
                   >
                     <Send className="h-3 w-3" />
                   </Button>
                 </div>
               </div>
             </div>
-          ) }
+          )}
         </main>
       </div>
     </div>
   );
 
   // Funções auxiliares para integração quântica
-  function handleModuleClick( moduleId )
-  {
-    setActiveModule( moduleId );
+  function handleModuleClick(moduleId) {
+    setActiveModule(moduleId);
 
     // Observar interação para MILA
-    milaOmnipresence.observeUserInteraction( {
+    milaOmnipresence.observeUserInteraction({
       type: 'module_navigation',
       module: moduleId,
       action: 'navigate',
       data: { fromModule: activeModule, toModule: moduleId },
       userId: currentUser?.id,
       timestamp: new Date()
-    } );
+    });
   }
 
   // Executar ações quânticas
-  async function executeQuantumAction( action )
-  {
-    try
-    {
-      const result = await quantumSystemCore.processQuantumOperation( {
+  async function executeQuantumAction(action) {
+    try {
+      const result = await quantumSystemCore.processQuantumOperation({
         type: 'user_action',
         data: { action },
         complexity: 1
-      } );
+      });
 
-      toast( {
+      toast({
         title: "⚛️ Ação Quântica Executada",
-        description: `Processamento quântico concluído com speedup de ${ result.quantumSpeedup?.toFixed( 2 ) }x`
-      } );
+        description: `Processamento quântico concluído com speedup de ${result.quantumSpeedup?.toFixed(2)}x`
+      });
 
-    } catch ( error )
-    {
-      toast( {
+    } catch (error) {
+      toast({
         title: "Erro na ação quântica",
         description: error.message,
         variant: "destructive"
-      } );
+      });
     }
   }
 
   // Executar ações MILA
-  async function executeMilaAction( action, insight )
-  {
-    try
-    {
-      if ( action === 'apply_quantum_optimization' )
-      {
-        await executeQuantumAction( 'optimize_current_module' );
-      } else if ( action === 'create_automated_workflow' )
-      {
-        const workflowId = await universalWorkflowEngine.createAutomaticWorkflow( {
+  async function executeMilaAction(action, insight) {
+    try {
+      if (action === 'apply_quantum_optimization') {
+        await executeQuantumAction('optimize_current_module');
+      } else if (action === 'create_automated_workflow') {
+        const workflowId = await universalWorkflowEngine.createAutomaticWorkflow({
           type: 'mila_suggestion',
           data: insight,
           source: 'user_action'
-        } );
+        });
 
-        toast( {
+        toast({
           title: "🔄 Workflow Criado",
-          description: `Workflow automático criado: ${ workflowId }`
-        } );
-      } else if ( action === 'optimize_layout' )
-      {
+          description: `Workflow automático criado: ${workflowId}`
+        });
+      } else if (action === 'optimize_layout') {
         // Otimizar layout atual
-        toast( {
+        toast({
           title: "🎨 Layout Otimizado",
           description: "MILA otimizou o layout baseado em seus padrões de uso"
-        } );
+        });
       }
 
-    } catch ( error )
-    {
-      toast( {
+    } catch (error) {
+      toast({
         title: "Erro na ação MILA",
         description: error.message,
         variant: "destructive"
-      } );
+      });
     }
   }
 
   // Ver workflow
-  function viewWorkflow( workflowId )
-  {
-    setActiveModule( 'workflows' );
+  function viewWorkflow(workflowId) {
+    setActiveModule('workflows');
 
-    toast( {
+    toast({
       title: "🔄 Abrindo Workflows",
-      description: `Visualizando workflow: ${ workflowId }`
-    } );
+      description: `Visualizando workflow: ${workflowId}`
+    });
   }
 }
+`

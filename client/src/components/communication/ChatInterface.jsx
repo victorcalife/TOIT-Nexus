@@ -7,36 +7,37 @@ import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
-import { 
-  Send, 
-  Smile, 
-  Paperclip, 
-  Phone, 
-  Video, 
-  MoreVertical,
-  Search,
-  Users,
-  Settings,
+import {
+  Send,
+  Phone,
+  Video,
   Mic,
   MicOff,
   VideoOff,
-  PhoneOff,
+  MoreHorizontal,
+  Search,
+  Smile,
+  Paperclip,
+  Download,
+  Reply,
   Volume2,
   VolumeX,
-  Maximize,
-  Minimize,
-  Brain,
-  Atom,
-  Zap,
-  Bot,
-  User,
-  Clock,
-  Check,
-  CheckCheck,
-  Star,
+  Users,
+  Settings,
+  X,
+  Minimize2,
+  Maximize2,
   Heart,
   ThumbsUp,
-  Laugh
+  Laugh,
+  Frown,
+  Angry,
+  Brain,
+  Atom,
+  MoreVertical,
+  User,
+  PhoneOff,
+  CheckCheck
 } from 'lucide-react';
 
 // Importar sistema quântico integrado
@@ -403,7 +404,7 @@ export default function ChatInterface({
         description: "Conectando com WebRTC...",
         action: (
           <Button size="sm" variant="destructive" onClick={() => endCall(interval)}>
-            <PhoneOff className="w-3 h-3 mr-1" />
+            <Phone className="w-3 h-3 mr-1" />
             Encerrar
           </Button>
         )
@@ -433,7 +434,7 @@ export default function ChatInterface({
         description: "Conectando...",
         action: (
           <Button size="sm" variant="destructive" onClick={() => endCall(interval)}>
-            <PhoneOff className="w-3 h-3 mr-1" />
+            <Phone className="w-3 h-3 mr-1" />
             Encerrar
           </Button>
         )
@@ -564,13 +565,13 @@ export default function ChatInterface({
               {isMila && (
                 <Badge variant="secondary" className="text-xs">
                   <Brain className="w-2 h-2 mr-1" />
-                  AI
+                  IA
                 </Badge>
               )}
               {message.type === MESSAGE_TYPES.QUANTUM && (
                 <Badge variant="outline" className="text-xs">
                   <Atom className="w-2 h-2 mr-1" />
-                  Quantum
+                  Quântico
                 </Badge>
               )}
             </div>
@@ -584,8 +585,7 @@ export default function ChatInterface({
                 ? 'bg-blue-500 text-white rounded-br-md' 
                 : isMila 
                   ? 'bg-purple-50 border border-purple-200 text-purple-900 rounded-bl-md'
-                  : 'bg-gray-100 text-gray-900 rounded-bl-md'
-              }
+                  : 'bg-gray-100 text-gray-900 rounded-bl-md'}
               ${message.type === MESSAGE_TYPES.QUANTUM ? 'border-2 border-blue-300 bg-gradient-to-r from-blue-50 to-purple-50' : ''}
             `}
             onDoubleClick={() => setSelectedMessage(message)}
@@ -637,8 +637,7 @@ export default function ChatInterface({
                       flex items-center gap-1 px-2 py-1 rounded-full text-xs
                       ${hasUserReaction 
                         ? 'bg-blue-100 text-blue-600 border border-blue-300' 
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                      }
+                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}
                     `}
                   >
                     <span>{emoji}</span>
@@ -702,7 +701,7 @@ export default function ChatInterface({
                   {quantumEnhanced && (
                     <Badge variant="secondary" className="text-xs">
                       <Atom className="w-2 h-2 mr-1" />
-                      Quantum
+                      Quântico
                     </Badge>
                   )}
                   {milaActive && (

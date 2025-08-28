@@ -6,24 +6,24 @@
 
 import React, { useState } from 'react';
 import { useMLSlots } from '../../hooks/useMLSlots';
-import {
-  Zap,
-  Plus,
+import { 
+
+
   Trash2,
-  Activity,
-  Database,
-  FileText,
-  Workflow,
+
+
+
+
   BarChart3,
-  Clock,
-  Mail,
-  CheckCircle,
-  PlusCircle,
-  Shield,
-  Bell,
-  AlertTriangle,
-  Info,
-  Settings
+
+
+
+
+
+
+
+
+ }
 } from 'lucide-react';
 
 // Ícones para tipos de slots
@@ -96,7 +96,7 @@ export function MLSlotsWidget({ variant = 'full', showCreateButton = true, class
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
             <div
-              className="bg-purple-600 h-2 rounded-full transition-all duration-300"
+              className="bg-purple-600 h-2 rounded-full transition-all duration-300"`
               style={{ width: `${(slots.used / slots.total) * 100}%` }}
             />
           </div>
@@ -143,7 +143,7 @@ export function MLSlotsWidget({ variant = 'full', showCreateButton = true, class
   };
 
   if (isLoading) {
-    return (
+    return (`
       <div className={`bg-white rounded-lg border p-6 ${className}`}>
         <div className="animate-pulse">
           <div className="h-6 bg-gray-200 rounded mb-4"></div>
@@ -157,7 +157,7 @@ export function MLSlotsWidget({ variant = 'full', showCreateButton = true, class
   }
 
   if (error) {
-    return (
+    return (`
       <div className={`bg-white rounded-lg border p-6 ${className}`}>
         <div className="flex items-center space-x-3 text-red-600">
           <AlertTriangle className="w-5 h-5" />
@@ -170,7 +170,7 @@ export function MLSlotsWidget({ variant = 'full', showCreateButton = true, class
     );
   }
 
-  return (
+  return (`
     <div className={`bg-white rounded-lg border ${className}`}>
       {/* Header */}
       <div className="p-6 border-b border-gray-200">
@@ -189,9 +189,9 @@ export function MLSlotsWidget({ variant = 'full', showCreateButton = true, class
             </div>
           </div>
           
-          {showCreateButton && canCreateSlot() && (
+          ({ showCreateButton && canCreateSlot() && (
             <button
-              onClick={() => setShowCreateModal(true)}
+              onClick={( }) => setShowCreateModal(true)}
               className="px-4 py-2 bg-purple-600 text-white text-sm rounded-md hover:bg-purple-700 flex items-center space-x-2"
             >
               <Plus className="w-4 h-4" />
@@ -207,11 +207,11 @@ export function MLSlotsWidget({ variant = 'full', showCreateButton = true, class
             <span>{Math.round((slots.used / slots.total) * 100)}%</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-3">
-            <div
+            <div`
               className={`h-3 rounded-full transition-all duration-300 ${
                 slots.used / slots.total > 0.8 ? 'bg-red-500' :
-                slots.used / slots.total > 0.6 ? 'bg-yellow-500' : 'bg-purple-600'
-              }`}
+                slots.used / slots.total > 0.6 ? 'bg-yellow-500' : 'bg-purple-600'`}
+              }`}`
               style={{ width: `${(slots.used / slots.total) * 100}%` }}
             />
           </div>
@@ -220,7 +220,7 @@ export function MLSlotsWidget({ variant = 'full', showCreateButton = true, class
 
       {/* Lista de slots */}
       <div className="p-6">
-        {slots.list.length === 0 ? (
+        ({ slots.list.length === 0 ? (
           <div className="text-center py-8">
             <Zap className="w-12 h-12 text-gray-300 mx-auto mb-4" />
             <h4 className="text-lg font-medium text-gray-900 mb-2">
@@ -231,7 +231,7 @@ export function MLSlotsWidget({ variant = 'full', showCreateButton = true, class
             </p>
             {showCreateButton && canCreateSlot() && (
               <button
-                onClick={() => setShowCreateModal(true)}
+                onClick={( }) => setShowCreateModal(true)}
                 className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700"
               >
                 Criar Primeiro Slot
@@ -240,7 +240,7 @@ export function MLSlotsWidget({ variant = 'full', showCreateButton = true, class
           </div>
         ) : (
           <div className="space-y-4">
-            {slots.list.map((slot) => {
+            ({ slots.list.map((slot }) => {
               const IconComponent = SLOT_ICONS[slot.slot_type] || Activity;
               
               return (
@@ -276,18 +276,18 @@ export function MLSlotsWidget({ variant = 'full', showCreateButton = true, class
                     </div>
                   </div>
                   
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2">`
                     <div className={`px-2 py-1 rounded-full text-xs ${
                       slot.is_active 
                         ? 'bg-green-100 text-green-700' 
-                        : 'bg-gray-100 text-gray-500'
+                        : 'bg-gray-100 text-gray-500'`}
                     }`}>
                       {slot.is_active ? 'Ativo' : 'Inativo'}
                     </div>
                     
-                    {slot.is_active && (
+                    ({ slot.is_active && (
                       <button
-                        onClick={() => handleRemoveSlot(slot.slot_location)}
+                        onClick={( }) => handleRemoveSlot(slot.slot_location)}
                         className="p-1 text-gray-400 hover:text-red-500 transition-colors"
                         title="Remover slot"
                       >
@@ -325,11 +325,11 @@ export function MLSlotsWidget({ variant = 'full', showCreateButton = true, class
         
         <div className="mt-3">
           <div className="w-full bg-gray-200 rounded-full h-2">
-            <div
+            <div`
               className={`h-2 rounded-full transition-all duration-300 ${
                 storage.used / storage.total > 0.9 ? 'bg-red-500' :
-                storage.used / storage.total > 0.7 ? 'bg-yellow-500' : 'bg-blue-500'
-              }`}
+                storage.used / storage.total > 0.7 ? 'bg-yellow-500' : 'bg-blue-500'`}
+              }`}`
               style={{ width: `${(storage.used / storage.total) * 100}%` }}
             />
           </div>
@@ -346,9 +346,9 @@ export function MLSlotsWidget({ variant = 'full', showCreateButton = true, class
       </div>
 
       {/* Modal de criação (simplificado) */}
-      {showCreateModal && (
+      ({ showCreateModal && (
         <CreateSlotModal
-          onClose={() => setShowCreateModal(false)}
+          onClose={( }) => setShowCreateModal(false)}
           onCreate={handleCreateSlot}
           isCreating={isCreating}
         />
@@ -389,7 +389,7 @@ function CreateSlotModal({ onClose, onCreate, isCreating }) {
             </label>
             <select
               value={formData.type}
-              onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+              onChange=({ (e }) => setFormData({ ...formData, type: e.target.value })}
               className="w-full border border-gray-300 rounded-md px-3 py-2"
             >
               <option value="dashboard_widget">Widget de Dashboard</option>
@@ -406,7 +406,7 @@ function CreateSlotModal({ onClose, onCreate, isCreating }) {
             <input
               type="text"
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              onChange=({ (e }) => setFormData({ ...formData, name: e.target.value })}
               className="w-full border border-gray-300 rounded-md px-3 py-2"
               placeholder="Ex: Predição de Vendas"
             />
@@ -419,7 +419,7 @@ function CreateSlotModal({ onClose, onCreate, isCreating }) {
             <input
               type="text"
               value={formData.location}
-              onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+              onChange=({ (e }) => setFormData({ ...formData, location: e.target.value })}
               className="w-full border border-gray-300 rounded-md px-3 py-2"
               placeholder="Ex: dashboard_vendas_widget_1"
             />
@@ -431,7 +431,7 @@ function CreateSlotModal({ onClose, onCreate, isCreating }) {
               onClick={onClose}
               className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
             >
-              Cancelar
+
             </button>
             <button
               type="submit"
@@ -448,3 +448,4 @@ function CreateSlotModal({ onClose, onCreate, isCreating }) {
 }
 
 export default MLSlotsWidget;
+`

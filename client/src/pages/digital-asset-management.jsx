@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   Image, 
   Video,
   FileText,
@@ -135,7 +135,7 @@ import {
   Bike,
   Scooter,
   Bus,
-  Taxi
+  Taxi }
 } from 'lucide-react';
 
 const DigitalAssetManagement = () => {
@@ -201,22 +201,22 @@ const DigitalAssetManagement = () => {
         fetch('/api/dam/assets', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/dam/collections', {
+        fetch('/api/dam/collections', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/dam/tags', {
+        fetch('/api/dam/tags', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/dam/metadata', {
+        fetch('/api/dam/metadata', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/dam/versions', {
+        fetch('/api/dam/versions', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/dam/permissions', {
+        fetch('/api/dam/permissions', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/dam/workflows', {
+        fetch('/api/dam/workflows', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);
@@ -275,14 +275,14 @@ const DigitalAssetManagement = () => {
     try {
       const response = await fetch('/api/dam/assets/upload', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           ...assetData,
           status: 'draft',
-          uploadedAt: new Date().toISOString(),
+          uploadedAt: new Date().toISOString(),`
           assetId: `AST-${Date.now()}`
         })
       });
@@ -296,7 +296,7 @@ const DigitalAssetManagement = () => {
       setShowAssetModal(false);
       
       toast({
-        title: "Ativo enviado",
+        title: "Ativo enviado",`
         description: `Ativo ${data.asset.name} enviado com sucesso`,
       });
     } catch (error) {
@@ -313,10 +313,10 @@ const DigitalAssetManagement = () => {
    * ATUALIZAR STATUS DO ATIVO
    */
   const updateAssetStatus = async (assetId, newStatus) => {
-    try {
+    try {`
       const response = await fetch(`/api/dam/assets/${assetId}/status`, {
         method: 'PATCH',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -351,10 +351,10 @@ const DigitalAssetManagement = () => {
    * FAVORITAR ATIVO
    */
   const favoriteAsset = async (assetId) => {
-    try {
+    try {`
       const response = await fetch(`/api/dam/assets/${assetId}/favorite`, {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }
@@ -430,9 +430,9 @@ const DigitalAssetManagement = () => {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => favoriteAsset(asset.id)}
+              onClick=({ ( }) => favoriteAsset(asset.id)}`
               className={`h-8 w-8 p-0 ${asset.isFavorite ? 'text-red-600' : 'text-gray-400'}`}
-            >
+            >`
               <Heart className={`h-4 w-4 ${asset.isFavorite ? 'fill-current' : ''}`} />
             </Button>
           </div>
@@ -446,7 +446,7 @@ const DigitalAssetManagement = () => {
           
           <div className="space-y-1 mb-3 text-xs text-gray-600">
             <div className="flex justify-between">
-              <span>Tamanho:</span>
+              <span>Tamanho:</span>`
               <span>{asset.fileSize ? `${(asset.fileSize / 1024 / 1024).toFixed(1)} MB` : 'N/A'}</span>
             </div>
             <div className="flex justify-between">
@@ -464,9 +464,9 @@ const DigitalAssetManagement = () => {
           </div>
           
           {/* Tags */}
-          {asset.tags && asset.tags.length > 0 && (
+          ({ asset.tags && asset.tags.length > 0 && (
             <div className="flex flex-wrap gap-1 mb-3">
-              {asset.tags.slice(0, 2).map((tag, index) => (
+              {asset.tags.slice(0, 2).map((tag, index }) => (
                 <Badge key={index} variant="outline" className="text-xs">
                   #{tag}
                 </Badge>
@@ -510,10 +510,10 @@ const DigitalAssetManagement = () => {
             <div className="flex gap-1">
               <select
                 value={asset.status}
-                onChange={(e) => updateAssetStatus(asset.id, e.target.value)}
+                onChange=({ (e }) => updateAssetStatus(asset.id, e.target.value)}
                 className="text-xs px-1 py-0.5 border border-gray-300 rounded"
               >
-                {Object.entries(assetStatuses).map(([key, status]) => (
+                ({ Object.entries(assetStatuses).map(([key, status] }) => (
                   <option key={key} value={key}>{status.name}</option>
                 ))}
               </select>
@@ -521,7 +521,7 @@ const DigitalAssetManagement = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => setSelectedAsset(asset)}
+                onClick=({ ( }) => setSelectedAsset(asset)}
                 className="h-6 w-6 p-0"
               >
                 <Eye className="h-3 w-3" />
@@ -536,9 +536,8 @@ const DigitalAssetManagement = () => {
   /**
    * RENDERIZAR COLEÇÃO
    */
-  const renderCollection = (collection) => {
-    const collectionAssets = assets.filter(a => a.collectionId === collection.id);
-    const totalSize = collectionAssets.reduce((sum, a) => sum + (a.fileSize || 0), 0);
+  const renderCollection = (collection) => ({ const collectionAssets = assets.filter(a => a.collectionId === collection.id);
+    const totalSize = collectionAssets.reduce((sum, a }) => sum + (a.fileSize || 0), 0);
     
     return (
       <Card key={collection.id} className="hover:shadow-md transition-shadow">
@@ -578,7 +577,7 @@ const DigitalAssetManagement = () => {
           </div>
           
           <div className="grid grid-cols-4 gap-2 mb-4">
-            {Object.entries(fileTypes).map(([key, type]) => {
+            ({ Object.entries(fileTypes).map(([key, type] }) => {
               const count = collectionAssets.filter(a => a.type === key).length;
               return (
                 <div key={key} className="text-center p-2 bg-gray-50 rounded">
@@ -596,12 +595,10 @@ const DigitalAssetManagement = () => {
             </Button>
             <Button variant="outline" size="sm">
               <Edit className="h-3 w-3 mr-1" />
-              Editar
-            </Button>
+
             <Button variant="outline" size="sm">
               <Share className="h-3 w-3 mr-1" />
-              Compartilhar
-            </Button>
+
           </div>
         </CardContent>
       </Card>
@@ -611,15 +608,14 @@ const DigitalAssetManagement = () => {
   /**
    * OBTER ESTATÍSTICAS
    */
-  const getStats = () => {
-    const totalAssets = assets.length;
+  const getStats = () => ({ const totalAssets = assets.length;
     const totalSize = assets.reduce((sum, a) => sum + (a.fileSize || 0), 0);
     const totalCollections = collections.length;
     const totalTags = tags.length;
     const publishedAssets = assets.filter(a => a.status === 'published').length;
     const favoriteAssets = assets.filter(a => a.isFavorite).length;
     const totalDownloads = assets.reduce((sum, a) => sum + (a.downloads || 0), 0);
-    const totalViews = assets.reduce((sum, a) => sum + (a.views || 0), 0);
+    const totalViews = assets.reduce((sum, a }) => sum + (a.views || 0), 0);
     
     return { 
       totalAssets, 
@@ -679,19 +675,18 @@ const DigitalAssetManagement = () => {
                 variant="outline"
                 onClick={loadDAMData}
                 disabled={loading}
-              >
+              >`
                 <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-                Atualizar
-              </Button>
+
               <Button
                 variant="outline"
-                onClick={() => setShowCollectionModal(true)}
+                onClick=({ ( }) => setShowCollectionModal(true)}
               >
                 <Folder className="h-4 w-4 mr-2" />
                 Nova Coleção
               </Button>
               <Button
-                onClick={() => setShowAssetModal(true)}
+                onClick=({ ( }) => setShowAssetModal(true)}
                 className="bg-blue-600 hover:bg-blue-700"
               >
                 <Upload className="h-4 w-4 mr-2" />
@@ -778,7 +773,7 @@ const DigitalAssetManagement = () => {
                       <Input
                         placeholder="Buscar ativos..."
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange=({ (e }) => setSearchTerm(e.target.value)}
                         className="pl-10"
                       />
                     </div>
@@ -787,18 +782,18 @@ const DigitalAssetManagement = () => {
                   <div className="flex gap-3">
                     <select
                       value={filters.type}
-                      onChange={(e) => setFilters(prev => ({ ...prev, type: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, type: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todos os Tipos</option>
-                      {Object.entries(fileTypes).map(([key, type]) => (
+                      ({ Object.entries(fileTypes).map(([key, type] }) => (
                         <option key={key} value={key}>{type.name}</option>
                       ))}
                     </select>
 
                     <select
                       value={filters.collection}
-                      onChange={(e) => setFilters(prev => ({ ...prev, collection: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, collection: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todas as Coleções</option>
@@ -809,11 +804,11 @@ const DigitalAssetManagement = () => {
 
                     <select
                       value={filters.status}
-                      onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, status: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todos os Status</option>
-                      {Object.entries(assetStatuses).map(([key, status]) => (
+                      ({ Object.entries(assetStatuses).map(([key, status] }) => (
                         <option key={key} value={key}>{status.name}</option>
                       ))}
                     </select>
@@ -821,7 +816,7 @@ const DigitalAssetManagement = () => {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
+                      onClick=({ ( }) => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
                     >
                       {viewMode === 'grid' ? <List className="h-4 w-4" /> : <Grid className="h-4 w-4" />}
                     </Button>
@@ -831,7 +826,7 @@ const DigitalAssetManagement = () => {
             </Card>
 
             {/* Lista de Ativos */}
-            {loading ? (
+            ({ loading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 <span className="ml-2">Carregando ativos...</span>
@@ -846,7 +841,7 @@ const DigitalAssetManagement = () => {
                   <p className="text-gray-500 mb-4">
                     Comece fazendo upload do seu primeiro ativo digital
                   </p>
-                  <Button onClick={() => setShowAssetModal(true)}>
+                  <Button onClick={( }) => setShowAssetModal(true)}>
                     <Upload className="h-4 w-4 mr-2" />
                     Upload Ativo
                   </Button>
@@ -855,7 +850,7 @@ const DigitalAssetManagement = () => {
             ) : (
               <div className={viewMode === 'grid' 
                 ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
-                : 'space-y-4'
+                : 'space-y-4'}
               }>
                 {filteredAssets.map(renderAsset)}
               </div>
@@ -864,7 +859,7 @@ const DigitalAssetManagement = () => {
 
           <TabsContent value="collections" className="space-y-6">
             {/* Lista de Coleções */}
-            {loading ? (
+            ({ loading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 <span className="ml-2">Carregando coleções...</span>
@@ -879,7 +874,7 @@ const DigitalAssetManagement = () => {
                   <p className="text-gray-500 mb-4">
                     Crie coleções para organizar seus ativos digitais
                   </p>
-                  <Button onClick={() => setShowCollectionModal(true)}>
+                  <Button onClick={( }) => setShowCollectionModal(true)}>
                     <Plus className="h-4 w-4 mr-2" />
                     Criar Coleção
                   </Button>
@@ -928,9 +923,8 @@ const DigitalAssetManagement = () => {
               <h2 className="text-xl font-bold mb-4">Upload de Ativo</h2>
               {/* Formulário será implementado */}
               <div className="flex justify-end gap-3 mt-6">
-                <Button variant="outline" onClick={() => setShowAssetModal(false)}>
-                  Cancelar
-                </Button>
+                <Button variant="outline" onClick=({ ( }) => setShowAssetModal(false)}>
+
                 <Button disabled={loading}>
                   {loading ? 'Enviando...' : 'Fazer Upload'}
                 </Button>
@@ -944,3 +938,4 @@ const DigitalAssetManagement = () => {
 };
 
 export default DigitalAssetManagement;
+`

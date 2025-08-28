@@ -3,52 +3,52 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuLabel, 
-  DropdownMenuSeparator, 
-  DropdownMenuTrigger 
+import {  
+
+
+
+
+
+ }
 } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
-import {
-  LayoutDashboard,
-  MessageSquare,
-  Mail,
-  Calendar,
-  FileText,
+import { 
+
+
+
+
+
   BarChart3,
-  Settings,
-  Users,
-  Video,
-  Workflow,
-  Search,
-  Bell,
-  Menu,
-  X,
-  Sun,
-  Moon,
-  Monitor,
-  LogOut,
-  User,
-  CreditCard,
-  Atom,
-  Brain,
-  Zap,
-  Sparkles,
-  ChevronDown,
-  ChevronRight,
-  Home,
-  Building,
-  Globe,
-  Shield,
-  HelpCircle,
-  Plus
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ }
 } from 'lucide-react';
 
 // Configuração de navegação
@@ -159,11 +159,10 @@ const QUANTUM_MODULES = [
   }
 ];
 
-export default function DashboardLayout({ 
-  children, 
+export default function DashboardLayout(({ children, 
   currentUser = null,
   currentPath = '/dashboard',
-  onNavigate = () => {},
+  onNavigate = ( }) => {},
   className = ''
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -221,7 +220,7 @@ export default function DashboardLayout({
       {/* Logo */}
       <div className={cn(
         "flex items-center gap-3 p-6 border-b border-border",
-        sidebarCollapsed && "justify-center p-4"
+        sidebarCollapsed && "justify-center p-4"}
       )}>
         <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-quantum-500 rounded-lg flex items-center justify-center">
           <Atom className="w-5 h-5 text-white" />
@@ -237,13 +236,13 @@ export default function DashboardLayout({
       </div>
 
       {/* Módulos Quânticos */}
-      {!sidebarCollapsed && (
+      ({ !sidebarCollapsed && (
         <div className="p-4 border-b border-border">
           <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
             Status Quântico
           </h3>
           <div className="space-y-2">
-            {QUANTUM_MODULES.map((module) => {
+            {QUANTUM_MODULES.map((module }) => {
               const IconComponent = module.icon;
               return (
                 <div key={module.id} className="flex items-center justify-between p-2 rounded-md bg-muted/50">
@@ -265,7 +264,7 @@ export default function DashboardLayout({
       {/* Navegação */}
       <ScrollArea className="flex-1 px-4 py-4">
         <nav className="space-y-1">
-          {NAVIGATION_ITEMS.map((item) => {
+          ({ NAVIGATION_ITEMS.map((item }) => {
             const IconComponent = item.icon;
             const isActive = isActiveRoute(item.href);
             
@@ -279,13 +278,13 @@ export default function DashboardLayout({
                         "w-full justify-start gap-3 h-10",
                         sidebarCollapsed && "justify-center px-2",
                         isActive && "bg-primary-50 text-primary-700 border-primary-200",
-                        item.quantum && "relative"
+                        item.quantum && "relative"}
                       )}
-                      onClick={() => onNavigate(item.href)}
+                      onClick=({ ( }) => onNavigate(item.href)}
                     >
                       <IconComponent className={cn(
                         "w-5 h-5",
-                        isActive && "text-primary-600"
+                        isActive && "text-primary-600"}
                       )} />
                       
                       {!sidebarCollapsed && (
@@ -322,7 +321,7 @@ export default function DashboardLayout({
 
       {/* Rodapé da Sidebar */}
       <div className="p-4 border-t border-border">
-        {!sidebarCollapsed ? (
+        ({ !sidebarCollapsed ? (
           <div className="space-y-3">
             <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-quantum-50 to-mila-50 rounded-lg">
               <div className="w-8 h-8 bg-gradient-to-br from-quantum-500 to-mila-500 rounded-full flex items-center justify-center">
@@ -338,7 +337,7 @@ export default function DashboardLayout({
               variant="ghost"
               size="sm"
               className="w-full justify-start gap-2"
-              onClick={() => setSidebarCollapsed(true)}
+              onClick={( }) => setSidebarCollapsed(true)}
             >
               <ChevronRight className="w-4 h-4" />
               Recolher Menu
@@ -349,7 +348,7 @@ export default function DashboardLayout({
             variant="ghost"
             size="sm"
             className="w-full justify-center"
-            onClick={() => setSidebarCollapsed(false)}
+            onClick=({ ( }) => setSidebarCollapsed(false)}
           >
             <ChevronDown className="w-4 h-4" />
           </Button>
@@ -363,7 +362,7 @@ export default function DashboardLayout({
       {/* Sidebar Desktop */}
       <aside className={cn(
         "fixed left-0 top-0 z-40 h-screen bg-card border-r border-border transition-all duration-300 hidden lg:block",
-        sidebarCollapsed ? "w-16" : "w-64"
+        sidebarCollapsed ? "w-16" : "w-64"}
       )}>
         <SidebarContent />
       </aside>
@@ -378,7 +377,7 @@ export default function DashboardLayout({
       {/* Conteúdo Principal */}
       <div className={cn(
         "transition-all duration-300 lg:ml-64",
-        sidebarCollapsed && "lg:ml-16"
+        sidebarCollapsed && "lg:ml-16"}
       )}>
         {/* Header */}
         <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60 px-4 lg:px-6">
@@ -389,7 +388,7 @@ export default function DashboardLayout({
                 variant="ghost"
                 size="sm"
                 className="lg:hidden"
-                onClick={() => setSidebarOpen(true)}
+                onClick=({ ( }) => setSidebarOpen(true)}
               >
                 <Menu className="w-5 h-5" />
                 <span className="sr-only">Abrir menu</span>
@@ -416,7 +415,7 @@ export default function DashboardLayout({
               placeholder="Buscar..."
               className="pl-10 pr-4"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange=({ (e }) => setSearchQuery(e.target.value)}
             />
           </div>
 
@@ -457,7 +456,7 @@ export default function DashboardLayout({
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <ScrollArea className="max-h-80">
-                  {notifications.map((notification) => (
+                  ({ notifications.map((notification }) => (
                     <DropdownMenuItem key={notification.id} className="flex flex-col items-start p-4">
                       <div className="flex items-start gap-3 w-full">
                         <div className={cn(
@@ -465,7 +464,7 @@ export default function DashboardLayout({
                           notification.type === 'quantum' && "bg-quantum-500",
                           notification.type === 'mila' && "bg-mila-500",
                           notification.type === 'calendar' && "bg-primary-500",
-                          notification.read && "opacity-50"
+                          notification.read && "opacity-50"}
                         )} />
                         <div className="flex-1">
                           <p className="font-medium text-sm">{notification.title}</p>
@@ -503,15 +502,15 @@ export default function DashboardLayout({
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => onNavigate('/profile')}>
+                <DropdownMenuItem onClick=({ ( }) => onNavigate('/profile')}>
                   <User className="mr-2 h-4 w-4" />
                   <span>Perfil</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => onNavigate('/billing')}>
+                <DropdownMenuItem onClick=({ ( }) => onNavigate('/billing')}>
                   <CreditCard className="mr-2 h-4 w-4" />
                   <span>Cobrança</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => onNavigate('/settings')}>
+                <DropdownMenuItem onClick=({ ( }) => onNavigate('/settings')}>
                   <Settings className="mr-2 h-4 w-4" />
                   <span>Configurações</span>
                 </DropdownMenuItem>

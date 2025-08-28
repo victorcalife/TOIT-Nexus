@@ -13,8 +13,7 @@ console.log('🧪 Iniciando testes TQL Engine...\n');
 /**
  * Mock Database para testes
  */
-const mockDatabase = {
-    query: async (sql) => {
+const mockDatabase = ({ query: async (sql }) => {
         console.log('📊 Mock SQL:', sql);
         
         // Retornar dados mock baseados na query
@@ -33,8 +32,7 @@ const mockDatabase = {
 /**
  * TESTE 1: Dashboard Parser
  */
-async function testDashboardParser() {
-    console.log('🔬 TESTE 1: Dashboard Parser');
+async function testDashboardParser() ({ console.log('🔬 TESTE 1: Dashboard Parser');
     
     const tql = `
 # Variáveis de vendas
@@ -45,7 +43,7 @@ DASHBOARD "Dashboard Vendas":
     KPI vendas_mes TITULO "Vendas do Mês", MOEDA R$, COR verde SE >100000;
     KPI funcionarios_ativos TITULO "Funcionários Ativos";
     GRAFICO barras DE vendas AGRUPADO POR regiao TITULO "Vendas por Região";
-    TABELA TOP 10 vendedores POR comissao;
+    TABELA TOP 10 vendedores POR comissao;`
     `;
     
     try {
@@ -57,7 +55,7 @@ DASHBOARD "Dashboard Vendas":
         console.log('   🧮 Variáveis:', result.variables.length);
         console.log('   🎨 Widgets:', result.widgets.length);
         
-        result.widgets.forEach((widget, i) => {
+        result.widgets.forEach((widget, i }) => {`
             console.log(`   Widget ${i+1}: ${widget.type} - ${widget.definition.substring(0, 50)}...`);
         });
         
@@ -93,7 +91,7 @@ async function testWidgetParser() {
         const parser = new WidgetParser();
         
         for (const widget of widgets) {
-            const result = parser.parse(widget);
+            const result = parser.parse(widget);`
             console.log(`✅ Widget ${widget.type} parseado:`, result.type);
             
             if (result.config) {
@@ -121,13 +119,12 @@ async function testVariableCalculator() {
         { name: 'margem_lucro', definition: 'lucro_mes / receita_mes * 100' }
     ];
     
-    try {
-        const calculator = new VariableCalculator();
+    try ({ const calculator = new VariableCalculator();
         
         // Testar ordenação por dependência
         const sorted = calculator.sortByDependency(variables);
         console.log('✅ Variáveis ordenadas por dependência:');
-        sorted.forEach((v, i) => {
+        sorted.forEach((v, i }) => {`
             console.log(`   ${i+1}. ${v.name}`);
         });
         
@@ -221,11 +218,10 @@ async function testVisualizationEngine() {
         ]
     ];
     
-    try {
-        const engine = new VisualizationEngine();
+    try ({ const engine = new VisualizationEngine();
         
-        widgets.forEach((widget, i) => {
-            const result = engine.configure(widget, mockData[i]);
+        widgets.forEach((widget, i }) => {
+            const result = engine.configure(widget, mockData[i]);`
             console.log(`✅ Widget ${widget.type} configurado:`, result.type);
             
             if (result.color) {
@@ -253,7 +249,7 @@ async function testVisualizationEngine() {
  */
 async function testTQLEngineComplete() {
     console.log('🔬 TESTE 6: TQL Engine Completo - Integração End-to-End');
-    
+    `
     const tqlComplete = `
 # Variáveis de negócio
 receita_mes = SOMAR valor DE vendas ONDE data EM MES(0);
@@ -271,7 +267,7 @@ DASHBOARD "Dashboard Executivo":
     KPI funcionarios_ativos TITULO "Equipe Ativa";
     GRAFICO barras DE receita_mes TITULO "Receita por Período";
     GRAFICO pizza DE funcionarios_ativos AGRUPADO POR departamento;
-    GAUGE margem_lucro MINIMO 0, MAXIMO 50, META 25;
+    GAUGE margem_lucro MINIMO 0, MAXIMO 50, META 25;`
     `;
     
     try {
@@ -287,15 +283,15 @@ DASHBOARD "Dashboard Executivo":
         
         // Mostrar variáveis calculadas
         console.log('\n📊 Variáveis calculadas:');
-        for (const [name, value] of result.variables) {
+        for (const [name, value] of result.variables) {`
             console.log(`   ${name}: ${value}`);
         }
         
         // Mostrar widgets
         console.log('\n🎨 Widgets gerados:');
-        result.widgets.forEach((widget, i) => {
+        result.widgets.forEach((widget, i) => {`
             console.log(`   ${i+1}. ${widget.type} - ${widget.title || 'Sem título'}`);
-            if (widget.visualization) {
+            if (widget.visualization) {`
                 console.log(`      Visualização: ${widget.visualization.type}`);
             }
         });
@@ -373,4 +369,4 @@ module.exports = {
     testTQLEngineComplete,
     testTemporalFunctions,
     runAllTests
-};
+};`

@@ -8,13 +8,12 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
-import
-  {
+import { 
     Users,
     Building2,
     Settings,
     UserPlus,
-    LogOut
+    LogOut }
   } from 'lucide-react';
 
 export default function WorkingAdmin()
@@ -58,16 +57,12 @@ export default function WorkingAdmin()
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="stats">
             <Settings className="h-4 w-4 mr-2" />
-            Dashboard
-          </TabsTrigger>
           <TabsTrigger value="users">
             <Users className="h-4 w-4 mr-2" />
             Usuários
           </TabsTrigger>
           <TabsTrigger value="tenants">
             <Building2 className="h-4 w-4 mr-2" />
-            Empresas
-          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="stats" className="space-y-6">

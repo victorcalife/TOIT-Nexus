@@ -7,28 +7,27 @@
 import React, { useState, useEffect } from 'react';
 import { WorkflowMLIntegration } from '../WorkflowMLIntegration';
 import { MLCreditsWidget } from '../MLCreditsWidget';
-import { 
-  DollarSign, 
-  TrendingUp, 
-  Users, 
-  Calendar,
+import {  
+
+
+
+
   BarChart3,
-  Plus,
-  Filter
+
+ }
 } from 'lucide-react';
 
 /**
  * Exemplo de workflow de vendas com integração ML
  * @returns {React.ReactElement} Componente do workflow
  */
-export function SalesWorkflowWithML() {
-  const [salesData, setSalesData] = useState([]);
+export function SalesWorkflowWithML() ({ const [salesData, setSalesData] = useState([]);
   const [selectedPeriod, setSelectedPeriod] = useState('30d');
   const [mlInsights, setMLInsights] = useState([]);
 
   // Simular carregamento de dados de vendas
   useEffect(() => {
-    const generateSalesData = () => {
+    const generateSalesData = ( }) => {
       const days = selectedPeriod === '7d' ? 7 : selectedPeriod === '30d' ? 30 : 90;
       const data = [];
       
@@ -89,12 +88,11 @@ export function SalesWorkflowWithML() {
     const prevWeek = salesData.slice(-14, -7).reduce((sum, item) => sum + item.value, 0);
     const weeklyGrowth = prevWeek > 0 ? ((lastWeek - prevWeek) / prevWeek) * 100 : 0;
     
-    return {
-      totalSales,
+    return ({ totalSales,
       avgDaily,
       weeklyGrowth,
       totalDeals: salesData.reduce((sum, item) => sum + item.deals, 0),
-      totalCustomers: salesData.reduce((sum, item) => sum + item.customers, 0)
+      totalCustomers: salesData.reduce((sum, item }) => sum + item.customers, 0)
     };
   };
 
@@ -121,7 +119,7 @@ export function SalesWorkflowWithML() {
             {/* Filtro de período */}
             <select
               value={selectedPeriod}
-              onChange={(e) => setSelectedPeriod(e.target.value)}
+              onChange=({ (e }) => setSelectedPeriod(e.target.value)}
               className="px-3 py-2 border border-gray-300 rounded-md text-sm"
             >
               <option value="7d">Últimos 7 dias</option>
@@ -193,14 +191,14 @@ export function SalesWorkflowWithML() {
       />
 
       {/* Insights ML Gerados */}
-      {mlInsights.length > 0 && (
+      ({ mlInsights.length > 0 && (
         <div className="bg-white p-6 rounded-lg border shadow-sm">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
             Insights ML Recentes
           </h3>
           
           <div className="space-y-4">
-            {mlInsights.map((insight) => (
+            {mlInsights.map((insight }) => (
               <div key={insight.id} className="p-4 border border-gray-200 rounded-lg">
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex items-center space-x-2">
@@ -223,9 +221,9 @@ export function SalesWorkflowWithML() {
                     {insight.data.summary?.description || 'Insight processado com sucesso'}
                   </p>
                   
-                  {insight.data.insights && (
+                  ({ insight.data.insights && (
                     <ul className="list-disc list-inside space-y-1 text-xs text-gray-600">
-                      {insight.data.insights.slice(0, 3).map((item, index) => (
+                      {insight.data.insights.slice(0, 3).map((item, index }) => (
                         <li key={index}>{item}</li>
                       ))}
                     </ul>
@@ -256,16 +254,16 @@ export function SalesWorkflowWithML() {
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Data
+
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Vendas (R$)
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Deals
+
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Clientes
+
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Ticket Médio
@@ -273,7 +271,7 @@ export function SalesWorkflowWithML() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {salesData.slice(-10).reverse().map((item, index) => (
+              ({ salesData.slice(-10).reverse().map((item, index }) => (
                 <tr key={index} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {new Date(item.date).toLocaleDateString()}

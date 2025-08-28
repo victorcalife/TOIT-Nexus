@@ -9,7 +9,7 @@ import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { 
+import {  
   Settings, 
   Plus, 
   Save, 
@@ -34,7 +34,7 @@ import {
   CheckSquare,
   Bell,
   Shield,
-  Building2
+  Building2 }
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
@@ -78,14 +78,12 @@ const ALL_MODULES = {
   const queryClient = useQueryClient();
 
   // Fetch existing profiles
-  const { data= [], isLoading } = useQuery({
-    queryKey,
-    queryFn) => apiRequest('/api/admin/access-profiles').then(res => res.json())
+  const { data= [], isLoading } = useQuery(({ queryKey,
+    queryFn }) => apiRequest('/api/admin/access-profiles').then(res => res.json())
   });
 
   // Create profile mutation
-  const createProfileMutation = useMutation({
-    mutationFn) => {
+  const createProfileMutation = useMutation(({ mutationFn }) => {
       return await apiRequest('/api/admin/access-profiles', {
         method,
         body)
@@ -122,8 +120,7 @@ const ALL_MODULES = {
   });
 
   // Update profile mutation
-  const updateProfileMutation = useMutation({
-    mutationFn) => {
+  const updateProfileMutation = useMutation(({ mutationFn }) => {
       return await apiRequest(`/api/admin/access-profiles/${profile.id}`, {
         method,
         body)
@@ -140,8 +137,7 @@ const ALL_MODULES = {
   });
 
   // Delete profile mutation
-  const deleteProfileMutation = useMutation({
-    mutationFn) => {
+  const deleteProfileMutation = useMutation(({ mutationFn }) => {`
       return await apiRequest(`/api/admin/access-profiles/${profileId}`, {
         method);
     },
@@ -183,7 +179,7 @@ const ALL_MODULES = {
   const duplicateProfile = (profile) => {
     setNewProfile({
       ...profile,
-      id,
+      id,`
       name)`,
       created_at);
     setIsCreateDialogOpen(true);
@@ -205,7 +201,7 @@ const ALL_MODULES = {
             
             return (
               <div key={key} className="flex items-center justify-between p-3 border rounded-lg">
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-3">`
                   <IconComponent className={`h-5 w-5 ${isActive ? 'text-green-600' : 'text-gray-400'}`} />
                   <div>
                     <p className="font-medium">{module.name}</p>
@@ -214,7 +210,7 @@ const ALL_MODULES = {
                 </div>
                 <Switch
                   checked={isActive}
-                  onCheckedChange={() => handleModuleToggle(key, isCreate)}
+                  onCheckedChange=({ ( }) => handleModuleToggle(key, isCreate)}
                 />
               </div>
             );
@@ -271,7 +267,7 @@ const ALL_MODULES = {
                       id="profile-name"
                       placeholder="Ex, PREMIUM, ENTERPRISE"
                       value={newProfile.name}
-                      onChange={(e) => setNewProfile(prev => ({ ...prev, name))}
+                      onChange=({ (e }) => setNewProfile(prev => ({ ...prev, name))}
                     />
                   </div>
                   <div className="space-y-2">
@@ -279,7 +275,7 @@ const ALL_MODULES = {
                     <div className="flex items-center space-x-2">
                       <Switch
                         checked={newProfile.is_active}
-                        onCheckedChange={(checked) => setNewProfile(prev => ({ ...prev, is_active))}
+                        onCheckedChange=({ (checked }) => setNewProfile(prev => ({ ...prev, is_active))}
                       />
                       <span>{newProfile.is_active ? 'Ativo' : 'Inativo'}</span>
                     </div>
@@ -291,13 +287,13 @@ const ALL_MODULES = {
                     id="profile-description"
                     placeholder="Descreva as principais características deste plano..."
                     value={newProfile.description}
-                    onChange={(e) => setNewProfile(prev => ({ ...prev, description))}
+                    onChange=({ (e }) => setNewProfile(prev => ({ ...prev, description))}
                   />
                 </div>
               </TabsContent>
 
               <TabsContent value="modules" className="space-y-4">
-                {Object.entries(ALL_MODULES).map(([categoryName, modules]) => 
+                ({ Object.entries(ALL_MODULES).map(([categoryName, modules] }) => 
                   renderModuleCategory(categoryName, modules, newProfile.modules, true)
                 )}
               </TabsContent>
@@ -311,7 +307,7 @@ const ALL_MODULES = {
                       type="number"
                       step="0.01"
                       value={newProfile.price_monthly}
-                      onChange={(e) => setNewProfile(prev => ({ ...prev, price_monthly) || 0 }))}
+                      onChange=({ (e }) => setNewProfile(prev => ({ ...prev, price_monthly) || 0 }))}
                     />
                   </div>
                   <div className="space-y-2">
@@ -321,7 +317,7 @@ const ALL_MODULES = {
                       type="number"
                       step="0.01"
                       value={newProfile.price_yearly}
-                      onChange={(e) => setNewProfile(prev => ({ ...prev, price_yearly) || 0 }))}
+                      onChange=({ (e }) => setNewProfile(prev => ({ ...prev, price_yearly) || 0 }))}
                     />
                   </div>
                 </div>
@@ -332,7 +328,7 @@ const ALL_MODULES = {
                       id="max-users"
                       type="number"
                       value={newProfile.max_users}
-                      onChange={(e) => setNewProfile(prev => ({ ...prev, max_users) || 1 }))}
+                      onChange=({ (e }) => setNewProfile(prev => ({ ...prev, max_users) || 1 }))}
                     />
                   </div>
                   <div className="space-y-2">
@@ -341,7 +337,7 @@ const ALL_MODULES = {
                       id="max-storage"
                       type="number"
                       value={newProfile.max_storage_gb}
-                      onChange={(e) => setNewProfile(prev => ({ ...prev, max_storage_gb) || 1 }))}
+                      onChange=({ (e }) => setNewProfile(prev => ({ ...prev, max_storage_gb) || 1 }))}
                     />
                   </div>
                 </div>
@@ -355,7 +351,7 @@ const ALL_MODULES = {
                         id="stripe-product-id"
                         placeholder="prod_1234abcd..."
                         value={newProfile.stripe_product_id}
-                        onChange={(e) => setNewProfile(prev => ({ ...prev, stripe_product_id))}
+                        onChange=({ (e }) => setNewProfile(prev => ({ ...prev, stripe_product_id))}
                       />
                       <p className="text-xs text-muted-foreground">ID do produto no Stripe Dashboard</p>
                     </div>
@@ -365,7 +361,7 @@ const ALL_MODULES = {
                         id="stripe-price-monthly"
                         placeholder="price_1234abcd..."
                         value={newProfile.stripe_price_id_monthly}
-                        onChange={(e) => setNewProfile(prev => ({ ...prev, stripe_price_id_monthly))}
+                        onChange=({ (e }) => setNewProfile(prev => ({ ...prev, stripe_price_id_monthly))}
                       />
                       <p className="text-xs text-muted-foreground">Price ID para cobrança mensal</p>
                     </div>
@@ -375,7 +371,7 @@ const ALL_MODULES = {
                         id="stripe-price-yearly"
                         placeholder="price_5678efgh..."
                         value={newProfile.stripe_price_id_yearly}
-                        onChange={(e) => setNewProfile(prev => ({ ...prev, stripe_price_id_yearly))}
+                        onChange=({ (e }) => setNewProfile(prev => ({ ...prev, stripe_price_id_yearly))}
                       />
                       <p className="text-xs text-muted-foreground">Price ID para cobrança anual</p>
                     </div>
@@ -385,9 +381,7 @@ const ALL_MODULES = {
             </Tabs>
 
             <div className="flex justify-end space-x-2 pt-4">
-              <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
-                Cancelar
-              </Button>
+              <Button variant="outline" onClick=({ ( }) => setIsCreateDialogOpen(false)}>
               <Button onClick={handleSaveProfile} disabled={createProfileMutation.isPending}>
                 {createProfileMutation.isPending ? 'Salvando...' : 'Salvar Perfil'}
               </Button>
@@ -397,9 +391,8 @@ const ALL_MODULES = {
       </div>
 
       {/* Lista de Perfis Existentes */}
-      <div className="grid grid-cols-1 md) => {
-          const activeModules = getActiveModulesCount(profile.modules);
-          const totalModules = Object.keys(ALL_MODULES).reduce((acc, category) => 
+      <div className="grid grid-cols-1 md) => ({ const activeModules = getActiveModulesCount(profile.modules);
+          const totalModules = Object.keys(ALL_MODULES).reduce((acc, category }) => 
             acc + Object.keys(ALL_MODULES[category as keyof typeof ALL_MODULES]).length, 0
           );
 
@@ -426,7 +419,7 @@ const ALL_MODULES = {
                   <div>
                     <span className="text-muted-foreground">Preço Anual)}</div>
                   </div>
-                  <div>
+                  <div>`
                     <span className="text-muted-foreground">Máx. Usuários) * 100}%` }}
                     ></div>
                   </div>
@@ -437,22 +430,20 @@ const ALL_MODULES = {
                     variant="outline" 
                     size="sm" 
                     className="flex-1"
-                    onClick={() => setEditingProfile(profile)}
+                    onClick=({ ( }) => setEditingProfile(profile)}
                   >
                     <Edit className="h-4 w-4 mr-1" />
-                    Editar
-                  </Button>
                   <Button 
                     variant="outline" 
                     size="sm"
-                    onClick={() => duplicateProfile(profile)}
+                    onClick=({ ( }) => duplicateProfile(profile)}
                   >
                     <Copy className="h-4 w-4" />
                   </Button>
                   <Button 
                     variant="destructive" 
                     size="sm"
-                    onClick={() => deleteProfileMutation.mutate(profile.id!)}
+                    onClick=({ ( }) => deleteProfileMutation.mutate(profile.id!)}
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
@@ -465,7 +456,7 @@ const ALL_MODULES = {
 
       {/* Modal de Edição */}
       {editingProfile && (
-        <Dialog open={!!editingProfile} onOpenChange={() => setEditingProfile(null)}>
+        <Dialog open={!!editingProfile} onOpenChange=({ ( }) => setEditingProfile(null)}>
           <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Editar Perfil) => setEditingProfile(prev => ({ ...prev!, name))}
@@ -476,7 +467,7 @@ const ALL_MODULES = {
                     <div className="flex items-center space-x-2">
                       <Switch
                         checked={editingProfile.is_active}
-                        onCheckedChange={(checked) => setEditingProfile(prev => ({ ...prev!, is_active))}
+                        onCheckedChange=({ (checked }) => setEditingProfile(prev => ({ ...prev!, is_active))}
                       />
                       <span>{editingProfile.is_active ? 'Ativo' : 'Inativo'}</span>
                     </div>
@@ -487,13 +478,13 @@ const ALL_MODULES = {
                   <Textarea
                     id="edit-profile-description"
                     value={editingProfile.description}
-                    onChange={(e) => setEditingProfile(prev => ({ ...prev!, description))}
+                    onChange=({ (e }) => setEditingProfile(prev => ({ ...prev!, description))}
                   />
                 </div>
               </TabsContent>
 
               <TabsContent value="modules" className="space-y-4">
-                {Object.entries(ALL_MODULES).map(([categoryName, modules]) => 
+                ({ Object.entries(ALL_MODULES).map(([categoryName, modules] }) => 
                   renderModuleCategory(categoryName, modules, editingProfile.modules, false)
                 )}
               </TabsContent>
@@ -507,7 +498,7 @@ const ALL_MODULES = {
                       type="number"
                       step="0.01"
                       value={editingProfile.price_monthly}
-                      onChange={(e) => setEditingProfile(prev => ({ ...prev!, price_monthly) || 0 }))}
+                      onChange=({ (e }) => setEditingProfile(prev => ({ ...prev!, price_monthly) || 0 }))}
                     />
                   </div>
                   <div className="space-y-2">
@@ -517,7 +508,7 @@ const ALL_MODULES = {
                       type="number"
                       step="0.01"
                       value={editingProfile.price_yearly}
-                      onChange={(e) => setEditingProfile(prev => ({ ...prev!, price_yearly) || 0 }))}
+                      onChange=({ (e }) => setEditingProfile(prev => ({ ...prev!, price_yearly) || 0 }))}
                     />
                   </div>
                 </div>
@@ -528,7 +519,7 @@ const ALL_MODULES = {
                       id="edit-max-users"
                       type="number"
                       value={editingProfile.max_users}
-                      onChange={(e) => setEditingProfile(prev => ({ ...prev!, max_users) || 1 }))}
+                      onChange=({ (e }) => setEditingProfile(prev => ({ ...prev!, max_users) || 1 }))}
                     />
                   </div>
                   <div className="space-y-2">
@@ -537,7 +528,7 @@ const ALL_MODULES = {
                       id="edit-max-storage"
                       type="number"
                       value={editingProfile.max_storage_gb}
-                      onChange={(e) => setEditingProfile(prev => ({ ...prev!, max_storage_gb) || 1 }))}
+                      onChange=({ (e }) => setEditingProfile(prev => ({ ...prev!, max_storage_gb) || 1 }))}
                     />
                   </div>
                 </div>
@@ -551,7 +542,7 @@ const ALL_MODULES = {
                         id="edit-stripe-product-id"
                         placeholder="prod_1234abcd..."
                         value={editingProfile.stripe_product_id || ''}
-                        onChange={(e) => setEditingProfile(prev => ({ ...prev!, stripe_product_id))}
+                        onChange=({ (e }) => setEditingProfile(prev => ({ ...prev!, stripe_product_id))}
                       />
                       <p className="text-xs text-muted-foreground">ID do produto no Stripe Dashboard</p>
                     </div>
@@ -561,7 +552,7 @@ const ALL_MODULES = {
                         id="edit-stripe-price-monthly"
                         placeholder="price_1234abcd..."
                         value={editingProfile.stripe_price_id_monthly || ''}
-                        onChange={(e) => setEditingProfile(prev => ({ ...prev!, stripe_price_id_monthly))}
+                        onChange=({ (e }) => setEditingProfile(prev => ({ ...prev!, stripe_price_id_monthly))}
                       />
                       <p className="text-xs text-muted-foreground">Price ID para cobrança mensal</p>
                     </div>
@@ -571,7 +562,7 @@ const ALL_MODULES = {
                         id="edit-stripe-price-yearly"
                         placeholder="price_5678efgh..."
                         value={editingProfile.stripe_price_id_yearly || ''}
-                        onChange={(e) => setEditingProfile(prev => ({ ...prev!, stripe_price_id_yearly))}
+                        onChange=({ (e }) => setEditingProfile(prev => ({ ...prev!, stripe_price_id_yearly))}
                       />
                       <p className="text-xs text-muted-foreground">Price ID para cobrança anual</p>
                     </div>
@@ -581,9 +572,7 @@ const ALL_MODULES = {
             </Tabs>
 
             <div className="flex justify-end space-x-2 pt-4">
-              <Button variant="outline" onClick={() => setEditingProfile(null)}>
-                Cancelar
-              </Button>
+              <Button variant="outline" onClick=({ ( }) => setEditingProfile(null)}>
               <Button onClick={handleSaveProfile} disabled={updateProfileMutation.isPending}>
                 {updateProfileMutation.isPending ? 'Salvando...' : 'Salvar Alterações'}
               </Button>
@@ -593,4 +582,4 @@ const ALL_MODULES = {
       )}
     </div>
   );
-}
+}`

@@ -13,8 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 
 = useToast();
 
-  const [newTrigger, setNewTrigger] = useState({
-    name,
+  const [newTrigger, setNewTrigger] = useState(({ name,
     description,
     triggerType,
     workflowId,
@@ -26,7 +25,7 @@ import { useToast } from "@/hooks/use-toast";
     isRead,
     hasAttachments);
 
-  useEffect(() => {
+  useEffect(( }) => {
     loadData();
   }, []);
 
@@ -148,7 +147,7 @@ import { useToast } from "@/hooks/use-toast";
   };
 
   const testTrigger = async (triggerId) => {
-    try {
+    try {`
       const response = await fetch(`/api/email-triggers/${triggerId}/test`, {
         method,
       });
@@ -238,7 +237,7 @@ import { useToast } from "@/hooks/use-toast";
                   <Input
                     id="name"
                     value={newTrigger.name}
-                    onChange={(e) => setNewTrigger(prev => ({ ...prev, name))}
+                    onChange=({ (e }) => setNewTrigger(prev => ({ ...prev, name))}
                     placeholder="Ex) => setNewTrigger(prev => ({ ...prev, triggerType))}
                   >
                     <SelectTrigger>
@@ -260,7 +259,7 @@ import { useToast } from "@/hooks/use-toast";
                 <Input
                   id="description"
                   value={newTrigger.description}
-                  onChange={(e) => setNewTrigger(prev => ({ ...prev, description))}
+                  onChange=({ (e }) => setNewTrigger(prev => ({ ...prev, description))}
                   placeholder="Descreva o que este trigger faz"
                 />
               </div>
@@ -270,13 +269,13 @@ import { useToast } from "@/hooks/use-toast";
                   <Label htmlFor="emailAccount">Conta de Email</Label>
                   <Select
                     value={newTrigger.emailAccountId}
-                    onValueChange={(value) => setNewTrigger(prev => ({ ...prev, emailAccountId))}
+                    onValueChange=({ (value }) => setNewTrigger(prev => ({ ...prev, emailAccountId))}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Selecione uma conta" />
                     </SelectTrigger>
                     <SelectContent>
-                      {emailAccounts.map((account) => (
+                      ({ emailAccounts.map((account }) => (
                         <SelectItem key={account.id} value={account.id}>
                           {getProviderIcon(account.provider)} {account.email}
                         </SelectItem>
@@ -288,13 +287,13 @@ import { useToast } from "@/hooks/use-toast";
                   <Label htmlFor="workflow">Workflow</Label>
                   <Select
                     value={newTrigger.workflowId}
-                    onValueChange={(value) => setNewTrigger(prev => ({ ...prev, workflowId))}
+                    onValueChange=({ (value }) => setNewTrigger(prev => ({ ...prev, workflowId))}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Selecione um workflow" />
                     </SelectTrigger>
                     <SelectContent>
-                      {workflows.map((workflow) => (
+                      ({ workflows.map((workflow }) => (
                         <SelectItem key={workflow.id} value={workflow.id}>
                           {workflow.name}
                         </SelectItem>
@@ -310,7 +309,7 @@ import { useToast } from "@/hooks/use-toast";
                   <Label>Texto no Assunto</Label>
                   <Input
                     value={newTrigger.subjectRules[0]?.value || ''}
-                    onChange={(e) => setNewTrigger(prev => ({
+                    onChange=({ (e }) => setNewTrigger(prev => ({
                       ...prev,
                       subjectRules, value))}
                     placeholder="Ex, pedido, urgente"
@@ -323,7 +322,7 @@ import { useToast } from "@/hooks/use-toast";
                   <Label>Texto no Corpo</Label>
                   <Input
                     value={newTrigger.bodyRules[0]?.value || ''}
-                    onChange={(e) => setNewTrigger(prev => ({
+                    onChange=({ (e }) => setNewTrigger(prev => ({
                       ...prev,
                       bodyRules, value))}
                     placeholder="Ex, erro, ajuda"
@@ -336,15 +335,14 @@ import { useToast } from "@/hooks/use-toast";
                   <Label>Email do Remetente</Label>
                   <Input
                     value={newTrigger.senderRules[0]?.value || ''}
-                    onChange={(e) => setNewTrigger(prev => ({
+                    onChange=({ (e }) => setNewTrigger(prev => ({
                       ...prev,
                       senderRules, value))}
                     placeholder="Ex)}
 
               <div className="flex justify-end space-x-2">
-                <Button variant="outline" onClick={() => setShowCreateDialog(false)}>
-                  Cancelar
-                </Button>
+                <Button variant="outline" onClick=({ ( }) => setShowCreateDialog(false)}>
+
                 <Button 
                   onClick={createTrigger} 
                   disabled={isCreating || !newTrigger.name || !newTrigger.workflowId || !newTrigger.emailAccountId}
@@ -359,7 +357,7 @@ import { useToast } from "@/hooks/use-toast";
 
       {/* Lista de Triggers */}
       <div className="grid gap-4">
-        {triggers.length === 0 ? (
+        ({ triggers.length === 0 ? (
           <Card>
             <CardContent className="pt-6">
               <div className="text-center py-8">
@@ -368,7 +366,7 @@ import { useToast } from "@/hooks/use-toast";
                 <p className="text-gray-600 mb-4">
                   Crie seu primeiro trigger de email para automatizar workflows baseados em emails recebidos.
                 </p>
-                <Button onClick={() => setShowCreateDialog(true)}>
+                <Button onClick={( }) => setShowCreateDialog(true)}>
                   <Plus className="h-4 w-4 mr-2" />
                   Criar Primeiro Trigger
                 </Button>
@@ -393,14 +391,13 @@ import { useToast } from "@/hooks/use-toast";
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => testTrigger(trigger.id)}
+                      onClick=({ ( }) => testTrigger(trigger.id)}
                     >
                       <Play className="h-4 w-4 mr-1" />
-                      Testar
-                    </Button>
+
                     <Switch
                       checked={trigger.isActive}
-                      onCheckedChange={(checked) => toggleTrigger(trigger.id, checked)}
+                      onCheckedChange=({ (checked }) => toggleTrigger(trigger.id, checked)}
                     />
                   </div>
                 </div>
@@ -436,3 +433,4 @@ import { useToast } from "@/hooks/use-toast";
     </div>
   );
 }
+`

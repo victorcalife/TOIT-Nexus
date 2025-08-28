@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { useNotifications } from '@/hooks/useNotifications';
 import { apiRequest } from '@/lib/queryClient';
@@ -52,7 +52,21 @@ export function NotificationBell() {
         <Button
           variant="ghost"
           size="sm"
-          className={`relative p-2 hover)}
+          className="relative p-2 hover:bg-gray-100"
+        >
+          <Bell className={`h-6 w-6 ${
+            hasUrgent ? 'text-red-500 animate-pulse' :
+            unreadCount > 0 ? 'text-blue-500' :
+            'text-gray-400'
+          }`} />
+          {unreadCount > 0 && (
+            <Badge 
+              variant={hasUrgent ? 'destructive' : 'default'}
+              className="absolute -top-1 -right-1 h-5 w-5 p-0 text-xs flex items-center justify-center"
+            >
+              {unreadCount > 99 ? '99+' : unreadCount}
+            </Badge>
+          )}
         </Button>
       </DropdownMenuTrigger>
 
@@ -71,10 +85,13 @@ export function NotificationBell() {
             <Bell className="h-8 w-8 mx-auto mb-2 text-gray-300" />
             <p className="text-sm">Nenhuma notificação nova</p>
           </div>
-        ) {unreadNotifications.map((notification) => (
+        ) : (
+          <div>
+            {unreadNotifications.map((notification) => (
               <div
                 key={notification.id}
-                className={`p-4 border-b hover) => handleNotificationClick(notification)}
+                className="p-4 border-b hover:bg-gray-50 cursor-pointer"
+                onClick={() => handleNotificationClick(notification)}
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1 min-w-0">
@@ -111,7 +128,8 @@ export function NotificationBell() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="ml-2 h-6 w-6 p-0 hover) => handleDismiss(notification, e)}
+                    className="ml-2 h-6 w-6 p-0 hover:bg-gray-200"
+                    onClick={(e) => handleDismiss(notification, e)}
                   >
                     <X className="h-3 w-3" />
                   </Button>
@@ -126,7 +144,8 @@ export function NotificationBell() {
             <Button
               variant="ghost"
               size="sm"
-              className="w-full text-xs text-gray-600 hover) => {
+              className="w-full text-xs text-gray-600 hover:bg-gray-100"
+              onClick={async () => {
                 try {
                   // Usar endpoint específico para marcar todas como lidas
                   await apiRequest('POST', '/api/notifications/read-all');
@@ -136,7 +155,7 @@ export function NotificationBell() {
                     await markAsRead(notification.id);
                   }
                 } catch (error) {
-                  console.error('Error marking all as read, error);
+                  console.error('Error marking all as read:', error);
                 }
                 setIsOpen(false);
               }}

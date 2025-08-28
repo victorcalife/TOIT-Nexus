@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   Upload, 
   File, 
   Folder,
@@ -51,7 +51,7 @@ import {
   Scissors,
   Maximize2,
   Play,
-  Pause
+  Pause }
 } from 'lucide-react';
 
 const FileManagement = () => {
@@ -118,7 +118,7 @@ const FileManagement = () => {
     setLoading(true);
     try {
       const response = await fetch(`/api/files?folder=${folderId || ''}`, {
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }
@@ -160,13 +160,13 @@ const FileManagement = () => {
         
         const response = await fetch('/api/files/upload', {
           method: 'POST',
-          headers: {
+          headers: {`
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           },
           body: formData
         });
 
-        if (!response.ok) {
+        if (!response.ok) {`
           throw new Error(`Erro ao fazer upload de ${file.name}`);
         }
 
@@ -188,7 +188,7 @@ const FileManagement = () => {
         setFiles(prev => [...prev, data.file]);
         
         toast({
-          title: "Upload concluído",
+          title: "Upload concluído",`
           description: `${file.name} foi enviado com sucesso`,
         });
         
@@ -201,10 +201,10 @@ const FileManagement = () => {
           });
         }, 2000);
         
-      } catch (error) {
+      } catch (error) {`
         console.error(`Erro no upload de ${file.name}:`, error);
         toast({
-          title: "Erro no upload",
+          title: "Erro no upload",`
           description: `Não foi possível enviar ${file.name}`,
           variant: "destructive"
         });
@@ -225,7 +225,7 @@ const FileManagement = () => {
     try {
       const response = await fetch('/api/files/folder', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -243,7 +243,7 @@ const FileManagement = () => {
       setFolders(prev => [...prev, data.folder]);
       
       toast({
-        title: "Pasta criada",
+        title: "Pasta criada",`
         description: `Pasta "${folderName}" criada com sucesso`,
       });
     } catch (error) {
@@ -265,7 +265,7 @@ const FileManagement = () => {
     try {
       const response = await fetch('/api/files/delete', {
         method: 'DELETE',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -299,9 +299,9 @@ const FileManagement = () => {
    * DOWNLOAD DE ARQUIVO
    */
   const downloadFile = async (file) => {
-    try {
+    try {`
       const response = await fetch(`/api/files/${file.id}/download`, {
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
@@ -321,7 +321,7 @@ const FileManagement = () => {
       document.body.removeChild(a);
       
       toast({
-        title: "Download iniciado",
+        title: "Download iniciado",`
         description: `Download de ${file.name} iniciado`,
       });
     } catch (error) {
@@ -400,20 +400,20 @@ const FileManagement = () => {
     
     return (
       <div
-        key={file.id}
+        key={file.id}`
         className={`p-4 border rounded-lg cursor-pointer transition-all hover:shadow-md ${
-          isSelected ? 'border-blue-500 bg-blue-50' : 'border-gray-200'
+          isSelected ? 'border-blue-500 bg-blue-50' : 'border-gray-200'`}
         }`}
-        onClick={() => {
+        onClick=({ ( }) => {
           if (isSelected) {
             setSelectedItems(prev => prev.filter(id => id !== file.id));
           } else {
             setSelectedItems(prev => [...prev, file.id]);
           }
         }}
-        onDoubleClick={() => previewFile(file)}
+        onDoubleClick=({ ( }) => previewFile(file)}
       >
-        <div className="flex flex-col items-center text-center">
+        <div className="flex flex-col items-center text-center">`
           <div className={`p-3 rounded-lg mb-3 ${fileType.color}`}>
             {fileType.icon}
           </div>
@@ -430,15 +430,14 @@ const FileManagement = () => {
           {file.isProcessing && (
             <Badge variant="outline" className="mt-2 text-xs">
               <RefreshCw className="h-3 w-3 mr-1 animate-spin" />
-              Processando
-            </Badge>
+
           )}
           
           <div className="flex gap-1 mt-3">
             <Button
               variant="ghost"
               size="sm"
-              onClick={(e) => {
+              onClick=({ (e }) => {
                 e.stopPropagation();
                 previewFile(file);
               }}
@@ -449,7 +448,7 @@ const FileManagement = () => {
             <Button
               variant="ghost"
               size="sm"
-              onClick={(e) => {
+              onClick=({ (e }) => {
                 e.stopPropagation();
                 downloadFile(file);
               }}
@@ -460,7 +459,7 @@ const FileManagement = () => {
             <Button
               variant="ghost"
               size="sm"
-              onClick={(e) => {
+              onClick=({ (e }) => {
                 e.stopPropagation();
                 // Implementar compartilhamento
               }}
@@ -482,18 +481,18 @@ const FileManagement = () => {
     
     return (
       <div
-        key={folder.id}
+        key={folder.id}`
         className={`p-4 border rounded-lg cursor-pointer transition-all hover:shadow-md ${
-          isSelected ? 'border-blue-500 bg-blue-50' : 'border-gray-200'
+          isSelected ? 'border-blue-500 bg-blue-50' : 'border-gray-200'`}
         }`}
-        onClick={() => {
+        onClick=({ ( }) => {
           if (isSelected) {
             setSelectedItems(prev => prev.filter(id => id !== folder.id));
           } else {
             setSelectedItems(prev => [...prev, folder.id]);
           }
         }}
-        onDoubleClick={() => loadFiles(folder.id)}
+        onDoubleClick=({ ( }) => loadFiles(folder.id)}
       >
         <div className="flex flex-col items-center text-center">
           <div className="p-3 rounded-lg mb-3 text-yellow-600 bg-yellow-100">
@@ -513,7 +512,7 @@ const FileManagement = () => {
             <Button
               variant="ghost"
               size="sm"
-              onClick={(e) => {
+              onClick=({ (e }) => {
                 e.stopPropagation();
                 loadFiles(folder.id);
               }}
@@ -524,7 +523,7 @@ const FileManagement = () => {
             <Button
               variant="ghost"
               size="sm"
-              onClick={(e) => {
+              onClick=({ (e }) => {
                 e.stopPropagation();
                 // Implementar renomear
               }}
@@ -554,7 +553,7 @@ const FileManagement = () => {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setShowPreviewModal(false)}
+              onClick=({ ( }) => setShowPreviewModal(false)}
             >
               <X className="h-4 w-4" />
             </Button>
@@ -562,7 +561,7 @@ const FileManagement = () => {
           
           <div className="mb-4">
             {fileType.type === 'image' && (
-              <img
+              <img`
                 src={`/api/files/${previewFile.id}/preview`}
                 alt={previewFile.name}
                 className="max-w-full max-h-96 object-contain mx-auto"
@@ -572,7 +571,7 @@ const FileManagement = () => {
             {fileType.type === 'video' && (
               <video
                 controls
-                className="max-w-full max-h-96 mx-auto"
+                className="max-w-full max-h-96 mx-auto"`
                 src={`/api/files/${previewFile.id}/preview`}
               />
             )}
@@ -580,17 +579,17 @@ const FileManagement = () => {
             {fileType.type === 'audio' && (
               <audio
                 controls
-                className="w-full"
+                className="w-full"`
                 src={`/api/files/${previewFile.id}/preview`}
               />
             )}
             
-            {fileType.type === 'document' && (
+            ({ fileType.type === 'document' && (
               <div className="text-center py-8">
                 <FileText className="h-16 w-16 text-gray-400 mx-auto mb-4" />
                 <p className="text-gray-600">Preview não disponível para este tipo de arquivo</p>
                 <Button
-                  onClick={() => downloadFile(previewFile)}
+                  onClick={( }) => downloadFile(previewFile)}
                   className="mt-4"
                 >
                   <Download className="h-4 w-4 mr-2" />
@@ -624,18 +623,15 @@ const FileManagement = () => {
           </div>
           
           <div className="flex gap-3 mt-6">
-            <Button onClick={() => downloadFile(previewFile)}>
+            <Button onClick=({ ( }) => downloadFile(previewFile)}>
               <Download className="h-4 w-4 mr-2" />
-              Download
-            </Button>
+
             <Button variant="outline">
               <Share className="h-4 w-4 mr-2" />
-              Compartilhar
-            </Button>
+
             <Button variant="outline">
               <Edit className="h-4 w-4 mr-2" />
-              Editar
-            </Button>
+
           </div>
         </div>
       </div>
@@ -678,14 +674,13 @@ const FileManagement = () => {
             <div className="flex gap-3">
               <Button
                 variant="outline"
-                onClick={() => fileInputRef.current?.click()}
+                onClick=({ ( }) => fileInputRef.current?.click()}
               >
                 <Upload className="h-4 w-4 mr-2" />
-                Upload
-              </Button>
+
               <Button
                 variant="outline"
-                onClick={() => {
+                onClick=({ ( }) => {
                   const folderName = prompt('Nome da pasta:');
                   if (folderName) createFolder(folderName);
                 }}
@@ -698,13 +693,13 @@ const FileManagement = () => {
         </div>
 
         {/* Breadcrumb */}
-        {currentFolder && (
+        ({ currentFolder && (
           <div className="mb-4">
             <nav className="flex items-center space-x-2 text-sm text-gray-600">
               <Button
                 variant="link"
                 size="sm"
-                onClick={() => loadFiles()}
+                onClick={( }) => loadFiles()}
                 className="p-0 h-auto"
               >
                 Início
@@ -725,7 +720,7 @@ const FileManagement = () => {
                   <Input
                     placeholder="Buscar arquivos..."
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange=({ (e }) => setSearchTerm(e.target.value)}
                     className="pl-10"
                   />
                 </div>
@@ -734,7 +729,7 @@ const FileManagement = () => {
               <div className="flex gap-3">
                 <select
                   value={filters.type}
-                  onChange={(e) => setFilters(prev => ({ ...prev, type: e.target.value }))}
+                  onChange=({ (e }) => setFilters(prev => ({ ...prev, type: e.target.value }))}
                   className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="all">Todos os Tipos</option>
@@ -748,7 +743,7 @@ const FileManagement = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
+                  onClick=({ ( }) => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
                 >
                   {viewMode === 'grid' ? <List className="h-4 w-4" /> : <Grid className="h-4 w-4" />}
                 </Button>
@@ -763,22 +758,20 @@ const FileManagement = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => {
+                  onClick=({ ( }) => {
                     // Implementar download múltiplo
                   }}
                 >
                   <Download className="h-3 w-3 mr-1" />
-                  Download
-                </Button>
+
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => deleteItems(selectedItems, ['file', 'folder'])}
+                  onClick=({ ( }) => deleteItems(selectedItems, ['file', 'folder'])}
                   className="text-red-600 hover:text-red-700"
                 >
                   <Trash2 className="h-3 w-3 mr-1" />
-                  Deletar
-                </Button>
+
               </div>
             )}
           </CardContent>
@@ -789,9 +782,9 @@ const FileManagement = () => {
           ref={dropZoneRef}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
-          onDrop={handleDrop}
+          onDrop={handleDrop}`
           className={`border-2 border-dashed rounded-lg p-8 mb-6 transition-colors ${
-            dragOver ? 'border-blue-500 bg-blue-50' : 'border-gray-300'
+            dragOver ? 'border-blue-500 bg-blue-50' : 'border-gray-300'`}
           }`}
         >
           <div className="text-center">
@@ -803,7 +796,7 @@ const FileManagement = () => {
               Suporte para imagens, vídeos, documentos e mais
             </p>
             <Button
-              onClick={() => fileInputRef.current?.click()}
+              onClick=({ ( }) => fileInputRef.current?.click()}
               className="mt-4"
             >
               Selecionar Arquivos
@@ -812,14 +805,14 @@ const FileManagement = () => {
         </div>
 
         {/* Progress de Upload */}
-        {Object.keys(uploadProgress).length > 0 && (
+        ({ Object.keys(uploadProgress).length > 0 && (
           <Card className="mb-6">
             <CardHeader>
               <CardTitle className="text-lg">Upload em Progresso</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {Object.entries(uploadProgress).map(([filename, progress]) => (
+                {Object.entries(uploadProgress).map(([filename, progress] }) => (
                   <div key={filename}>
                     <div className="flex justify-between text-sm mb-1">
                       <span className="truncate">{filename}</span>
@@ -827,7 +820,7 @@ const FileManagement = () => {
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
                       <div
-                        className="bg-blue-600 h-2 rounded-full transition-all"
+                        className="bg-blue-600 h-2 rounded-full transition-all"`
                         style={{ width: `${progress}%` }}
                       ></div>
                     </div>
@@ -871,7 +864,7 @@ const FileManagement = () => {
           ref={fileInputRef}
           type="file"
           multiple
-          onChange={(e) => {
+          onChange=({ (e }) => {
             if (e.target.files?.length > 0) {
               uploadFiles(e.target.files);
             }
@@ -887,3 +880,4 @@ const FileManagement = () => {
 };
 
 export default FileManagement;
+`

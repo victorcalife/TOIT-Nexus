@@ -11,22 +11,8 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Slider } from '@/components/ui/slider';
-import { 
-  Plus, 
-  Trash2, 
-  GripVertical, 
-  Settings, 
-  Eye,
-  Type,
-  Hash,
-  Calendar,
-  Mail,
-  CheckSquare,
-  List,
-  Star,
-  FileUp,
-  AlertCircle,
-  Move
+import {  
+  Trash2,  }
 } from 'lucide-react';
 
 export ) {
@@ -117,7 +103,7 @@ export ) {
       case 'radio':
         return (
           <div className="space-y-2">
-            {field.options?.map((option, index) => (
+            ({ field.options?.map((option, index }) => (
               <div key={index} className="flex items-center space-x-2">
                 <input 
                   type="radio" 
@@ -138,7 +124,7 @@ export ) {
               <SelectValue placeholder="Selecione uma opção" />
             </SelectTrigger>
             <SelectContent>
-              {field.options?.map((option, index) => (
+              ({ field.options?.map((option, index }) => (
                 <SelectItem key={index} value={option}>{option}</SelectItem>
               ))}
             </SelectContent>
@@ -148,7 +134,7 @@ export ) {
       case 'multiselect':
         return (
           <div className="space-y-2 p-2 border rounded">
-            {field.options?.map((option, index) => (
+            ({ field.options?.map((option, index }) => (
               <div key={index} className="flex items-center space-x-2">
                 <Checkbox disabled />
                 <label className="text-sm">{option}</label>
@@ -168,7 +154,7 @@ export ) {
       case 'rating':
         return (
           <div className="flex space-x-1">
-            {[1, 2, 3, 4, 5].map((star) => (
+            ({ [1, 2, 3, 4, 5].map((star }) => (
               <Star 
                 key={star} 
                 className="h-5 w-5 text-gray-300 cursor-pointer" 
@@ -196,8 +182,7 @@ export ) {
           </div>
         );
       
-      default) {
-    return (
+      default) ({ return (
       <div className="space-y-4">
         <h3 className="text-lg font-semibold flex items-center space-x-2">
           <Eye className="h-5 w-5" />
@@ -210,7 +195,7 @@ export ) {
               Nenhum campo adicionado ainda. Use o construtor para criar campos.
             </AlertDescription>
           </Alert>
-        ) {fields.map((field) => (
+        ) {fields.map((field }) => (
               <div key={field.id} className="space-y-2">
                 <Label className="flex items-center space-x-2">
                   <span>{field.label}</span>
@@ -246,7 +231,7 @@ export ) {
                   key={fieldType.value}
                   variant="outline"
                   size="sm"
-                  onClick={() => addField(fieldType.value as TaskField['type'])}
+                  onClick=({ ( }) => addField(fieldType.value as TaskField['type'])}
                   className="justify-start h-auto p-3"
                 >
                   <Icon className="h-4 w-4 mr-2" />
@@ -261,7 +246,7 @@ export ) {
       {/* Fields List */}
       <ScrollArea className="h-96">
         <div className="space-y-4">
-          {fields.map((field, index) => (
+          ({ fields.map((field, index }) => (
             <Card key={field.id} className={editingField === field.id ? 'ring-2 ring-blue-500' : ''}>
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
@@ -282,7 +267,7 @@ export ) {
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => moveField(field.id, 'up')}
+                      onClick=({ ( }) => moveField(field.id, 'up')}
                       disabled={index === 0}
                     >
                       ↑
@@ -290,7 +275,7 @@ export ) {
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => moveField(field.id, 'down')}
+                      onClick=({ ( }) => moveField(field.id, 'down')}
                       disabled={index === fields.length - 1}
                     >
                       ↓
@@ -298,14 +283,14 @@ export ) {
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => setEditingField(editingField === field.id ? null)}
+                      onClick=({ ( }) => setEditingField(editingField === field.id ? null)}
                     >
                       <Settings className="h-4 w-4" />
                     </Button>
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => removeField(field.id)}
+                      onClick=({ ( }) => removeField(field.id)}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -327,7 +312,7 @@ export ) {
                       <Label>Placeholder</Label>
                       <Input
                         value={field.placeholder || ''}
-                        onChange={(e) => updateField(field.id, { placeholder)}
+                        onChange=({ (e }) => updateField(field.id, { placeholder)}
                         placeholder="Texto de exemplo"
                       />
                     </div>
@@ -336,32 +321,32 @@ export ) {
                   <div className="flex items-center space-x-2">
                     <Checkbox
                       checked={field.required}
-                      onCheckedChange={(checked) => updateField(field.id, { required)}
+                      onCheckedChange=({ (checked }) => updateField(field.id, { required)}
                     />
                     <Label>Campo obrigatório</Label>
                   </div>
 
                   {/* Options for select/radio/multiselect */}
-                  {['radio', 'select', 'multiselect'].includes(field.type) && (
+                  ({ ['radio', 'select', 'multiselect'].includes(field.type) && (
                     <div className="space-y-2">
                       <Label>Opções</Label>
                       <div className="space-y-2">
-                        {field.options?.map((option, index) => (
+                        {field.options?.map((option, index }) => (
                           <div key={index} className="flex items-center space-x-2">
                             <Input
                               value={option}
-                              onChange={(e) => {
+                              onChange=({ (e }) => {
                                 const newOptions = [...(field.options || [])];
                                 newOptions[index] = e.target.value;
                                 updateFieldOptions(field.id, newOptions);
-                              }}
+                              }}`
                               placeholder={`Opção ${index + 1}`}
                             />
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={() => {
-                                const newOptions = field.options?.filter((_, i) => i !== index) || [];
+                              onClick=({ () => {
+                                const newOptions = field.options?.filter((_, i }) => i !== index) || [];
                                 updateFieldOptions(field.id, newOptions);
                               }}
                             >
@@ -372,7 +357,7 @@ export ) {
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => {
+                          onClick=({ ( }) => {`
                             const newOptions = [...(field.options || []), `Opção ${(field.options?.length || 0) + 1}`];
                             updateFieldOptions(field.id, newOptions);
                           }}
@@ -389,7 +374,7 @@ export ) {
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => setShowAdvanced({
+                      onClick=({ ( }) => setShowAdvanced({
                         ...showAdvanced,
                         [field.id]: !showAdvanced[field.id]
                       })}
@@ -407,13 +392,13 @@ export ) {
                               <Input
                                 type="number"
                                 value={field.validation?.min || ''}
-                                onChange={(e) => updateField(field.id, {
+                                onChange=({ (e }) => updateField(field.id, {
                                   validation,
                                     min) {field.validation?.max || ''}
-                                onChange={(e) => updateField(field.id, {
+                                onChange=({ (e }) => updateField(field.id, {
                                   validation,
                                     max) {field.validation?.pattern || ''}
-                            onChange={(e) => updateField(field.id, {
+                            onChange=({ (e }) => updateField(field.id, {
                               validation,
                                 pattern)}
                             placeholder="Ex) => updateField(field.id, {
@@ -427,7 +412,7 @@ export ) {
                           <Label>Valor Padrão</Label>
                           <Input
                             value={field.defaultValue || ''}
-                            onChange={(e) => updateField(field.id, { defaultValue)}
+                            onChange=({ (e }) => updateField(field.id, { defaultValue)}
                             placeholder="Valor inicial do campo"
                           />
                         </div>
@@ -459,4 +444,4 @@ export ) {
       </ScrollArea>
     </div>
   );
-}
+}`

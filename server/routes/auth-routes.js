@@ -447,7 +447,7 @@ router.post( '/simple-login', loginLimiter, [
     }
 
     // Verificar se o usuário tem permissão para o tipo de login solicitado
-    if ( loginType === 'support' && ![ 'admin', 'super_admin', 'support' ].includes( user.role ) )
+    if ( loginType === 'support' && ![ 'admin', 'super_admin', 'support', 'toit_admin' ].includes( user.role ) )
     {
       console.log( '❌ [SIMPLE-LOGIN] Usuário sem permissão de suporte:', user.role );
       return res.status( 403 ).json( {

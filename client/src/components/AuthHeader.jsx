@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuSeparator, 
-  DropdownMenuTrigger 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { LogOut, Settings, User } from "lucide-react";
 import { useAuthState } from "@/hooks/useAuthState";
@@ -34,7 +34,9 @@ export const AuthHeader = () => {
   return (
     <div className="flex items-center space-x-4">
       {/* Informações do usuário */}
-      <div className="hidden md)}
+      <div className="hidden md:block text-right">
+        <p className="text-sm font-medium text-gray-900">
+          {getFullName()}
         </p>
         <p className="text-xs text-gray-500">
           {user.role === 'super_admin' && 'Super Administrador'}
@@ -59,7 +61,9 @@ export const AuthHeader = () => {
         
         <DropdownMenuContent className="w-56" align="end" forceMount>
           {/* Informações do usuário no mobile */}
-          <div className="flex flex-col space-y-1 p-2 md)}
+          <div className="flex flex-col space-y-1 p-2 md:hidden">
+            <p className="text-sm font-medium leading-none">
+              {getFullName()}
             </p>
             <p className="text-xs leading-none text-muted-foreground">
               {user.email}
@@ -71,7 +75,14 @@ export const AuthHeader = () => {
             )}
           </div>
           
-          <DropdownMenuSeparator className="md) || isSuperAdmin()) && (
+          <DropdownMenuSeparator className="md:hidden" />
+          
+          <DropdownMenuItem onClick={handleProfile}>
+            <User className="mr-2 h-4 w-4" />
+            <span>Perfil</span>
+          </DropdownMenuItem>
+          
+          {(isAdmin() || isSuperAdmin()) && (
             <DropdownMenuItem onClick={handleSettings}>
               <Settings className="mr-2 h-4 w-4" />
               <span>Configurações</span>

@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
-import { 
+import {  
   Plus, 
   Search, 
   Tag, 
@@ -16,24 +16,24 @@ import {
   TrendingUp,
   DollarSign,
   Settings,
-  AlertTriangle
+  AlertTriangle }
 } from "lucide-react";
-import {
+import { 
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+  DialogTrigger, }
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
+import { 
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue, }
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 
@@ -65,8 +65,7 @@ export default function Categories() {
     retry,
   });
 
-  const createCategoryMutation = useMutation({
-    mutationFn) => {
+  const createCategoryMutation = useMutation(({ mutationFn }) => {
       const processedData = {
         ...categoryData,
         minInvestment) {
@@ -88,7 +87,7 @@ export default function Categories() {
   });
 
   const updateCategoryMutation = useMutation({
-    mutationFn, data }: { id, data) => {
+    mutationFn, data }: ({ id, data }) => {
       const processedData = {
         ...data,
         minInvestment) {id}`, processedData);
@@ -111,8 +110,7 @@ export default function Categories() {
     },
   });
 
-  const deleteCategoryMutation = useMutation({
-    mutationFn) => {
+  const deleteCategoryMutation = useMutation(({ mutationFn }) => {`
       await apiRequest('DELETE', `/api/categories/${categoryId}`);
     },
     onSuccess) => {
@@ -182,8 +180,7 @@ export default function Categories() {
     }
   };
 
-  const handleRiskProfileToggle = (profile) => {
-    setNewCategory(prev => ({
+  const handleRiskProfileToggle = (profile) => ({ setNewCategory(prev => ({
       ...prev,
       autoAssignRules,
         riskProfiles)
@@ -207,7 +204,7 @@ export default function Categories() {
         return 'Moderado';
       case 'aggressive':
         return 'Agressivo';
-      default) => {
+      default }) => {
             setIsCreateDialogOpen(open);
             if (!open) {
               setEditingCategory(null);
@@ -215,7 +212,7 @@ export default function Categories() {
             }
           }}>
             <DialogTrigger asChild>
-              <Button onClick={() => setIsCreateDialogOpen(true)}>
+              <Button onClick=({ ( }) => setIsCreateDialogOpen(true)}>
                 <Plus className="w-4 h-4 mr-2" />
                 Nova Categoria
               </Button>
@@ -237,7 +234,7 @@ export default function Categories() {
                       <Input
                         id="name"
                         value={newCategory.name}
-                        onChange={(e) => setNewCategory(prev => ({ ...prev, name))}
+                        onChange=({ (e }) => setNewCategory(prev => ({ ...prev, name))}
                         placeholder="Ex) => setNewCategory(prev => ({ ...prev, description))}
                         placeholder="Descreva os critérios desta categoria..."
                       />
@@ -249,7 +246,7 @@ export default function Categories() {
                           id="minInvestment"
                           type="number"
                           value={newCategory.minInvestment}
-                          onChange={(e) => setNewCategory(prev => ({ ...prev, minInvestment))}
+                          onChange=({ (e }) => setNewCategory(prev => ({ ...prev, minInvestment))}
                           placeholder="0.00"
                         />
                       </div>
@@ -259,14 +256,14 @@ export default function Categories() {
                           id="maxInvestment"
                           type="number"
                           value={newCategory.maxInvestment}
-                          onChange={(e) => setNewCategory(prev => ({ ...prev, maxInvestment))}
+                          onChange=({ (e }) => setNewCategory(prev => ({ ...prev, maxInvestment))}
                           placeholder="Deixe vazio para ilimitado"
                         />
                       </div>
                     </div>
                     <div>
                       <Label htmlFor="riskProfile">Perfil de Risco Padrão</Label>
-                      <Select value={newCategory.riskProfile} onValueChange={(value) => setNewCategory(prev => ({ ...prev, riskProfile))}>
+                      <Select value={newCategory.riskProfile} onValueChange=({ (value }) => setNewCategory(prev => ({ ...prev, riskProfile))}>
                         <SelectTrigger>
                           <SelectValue placeholder="Selecione o perfil de risco" />
                         </SelectTrigger>
@@ -290,7 +287,7 @@ export default function Categories() {
                         id="minAmount"
                         type="number"
                         value={newCategory.autoAssignRules.minAmount}
-                        onChange={(e) => setNewCategory(prev => ({
+                        onChange=({ (e }) => setNewCategory(prev => ({
                           ...prev,
                           autoAssignRules, minAmount))}
                         placeholder="0.00"
@@ -302,7 +299,7 @@ export default function Categories() {
                         id="maxAmount"
                         type="number"
                         value={newCategory.autoAssignRules.maxAmount}
-                        onChange={(e) => setNewCategory(prev => ({
+                        onChange=({ (e }) => setNewCategory(prev => ({
                           ...prev,
                           autoAssignRules, maxAmount))}
                         placeholder="Deixe vazio para ilimitado"
@@ -312,12 +309,12 @@ export default function Categories() {
                   <div>
                     <Label>Perfis de Risco Aceitos</Label>
                     <div className="flex gap-4 mt-2">
-                      {['conservative', 'moderate', 'aggressive'].map((profile) => (
+                      ({ ['conservative', 'moderate', 'aggressive'].map((profile }) => (
                         <div key={profile} className="flex items-center space-x-2">
                           <Checkbox
                             id={profile}
                             checked={newCategory.autoAssignRules.riskProfiles.includes(profile)}
-                            onCheckedChange={() => handleRiskProfileToggle(profile)}
+                            onCheckedChange=({ ( }) => handleRiskProfileToggle(profile)}
                           />
                           <Label htmlFor={profile}>{getRiskProfileLabel(profile)}</Label>
                         </div>
@@ -328,7 +325,7 @@ export default function Categories() {
                     <Checkbox
                       id="hasActivePortfolio"
                       checked={newCategory.autoAssignRules.hasActivePortfolio}
-                      onCheckedChange={(checked) => setNewCategory(prev => ({
+                      onCheckedChange=({ (checked }) => setNewCategory(prev => ({
                         ...prev,
                         autoAssignRules, hasActivePortfolio))}
                     />
@@ -340,7 +337,7 @@ export default function Categories() {
                       id="lastActivityDays"
                       type="number"
                       value={newCategory.autoAssignRules.lastActivityDays}
-                      onChange={(e) => setNewCategory(prev => ({
+                      onChange=({ (e }) => setNewCategory(prev => ({
                         ...prev,
                         autoAssignRules, lastActivityDays))}
                       placeholder="30"
@@ -352,12 +349,12 @@ export default function Categories() {
                 <div className="space-y-4">
                   <h3 className="text-lg font-medium">Workflows Automatizados</h3>
                   <div className="space-y-2">
-                    {(workflows || []).map((workflow) => (
+                    ({ (workflows || []).map((workflow }) => (
                       <div key={workflow.id} className="flex items-center space-x-2">
                         <Checkbox
                           id={workflow.id}
                           checked={newCategory.workflowTriggers.includes(workflow.id)}
-                          onCheckedChange={() => handleWorkflowToggle(workflow.id)}
+                          onCheckedChange=({ ( }) => handleWorkflowToggle(workflow.id)}
                         />
                         <Label htmlFor={workflow.id}>{workflow.name}</Label>
                         <Badge variant="outline">{workflow.status}</Badge>
@@ -370,7 +367,7 @@ export default function Categories() {
                   <Checkbox
                     id="isActive"
                     checked={newCategory.isActive}
-                    onCheckedChange={(checked) => setNewCategory(prev => ({ ...prev, isActive))}
+                    onCheckedChange=({ (checked }) => setNewCategory(prev => ({ ...prev, isActive))}
                   />
                   <Label htmlFor="isActive">Categoria ativa</Label>
                 </div>
@@ -379,13 +376,11 @@ export default function Categories() {
                   <Button onClick={handleSubmit} disabled={createCategoryMutation.isPending || updateCategoryMutation.isPending}>
                     {editingCategory ? 'Atualizar' : 'Criar'} Categoria
                   </Button>
-                  <Button variant="outline" onClick={() => {
+                  <Button variant="outline" onClick=({ ( }) => {
                     setIsCreateDialogOpen(false);
                     setEditingCategory(null);
                     resetForm();
                   }}>
-                    Cancelar
-                  </Button>
                 </div>
               </div>
             </DialogContent>
@@ -401,15 +396,15 @@ export default function Categories() {
             placeholder="Buscar categorias..."
             className="pl-10"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange=({ (e }) => setSearchTerm(e.target.value)}
           />
         </div>
       </div>
 
       {/* Categories List */}
       <main className="flex-1 overflow-y-auto p-6">
-        {categoriesLoading ? (
-          <div className="grid grid-cols-1 md)].map((_, i) => (
+        ({ categoriesLoading ? (
+          <div className="grid grid-cols-1 md)].map((_, i }) => (
               <Card key={i}>
                 <CardContent className="p-6">
                   <Skeleton className="h-6 w-32 mb-2" />
@@ -429,14 +424,14 @@ export default function Categories() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => handleEdit(category)}
+                        onClick=({ ( }) => handleEdit(category)}
                       >
                         <Edit className="w-4 h-4" />
                       </Button>
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => deleteCategoryMutation.mutate(category.id)}
+                        onClick=({ ( }) => deleteCategoryMutation.mutate(category.id)}
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -458,9 +453,9 @@ export default function Categories() {
                     )}
                     
                     {(category.minInvestment || category.maxInvestment) && (
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between">`
                         <span className="text-sm text-gray-500">Investimento)}`}
-                          {category.minInvestment && category.maxInvestment && ' - '}
+                          {category.minInvestment && category.maxInvestment && ' - '}`
                           {category.maxInvestment && `R$ ${category.maxInvestment.toLocaleString()}`}
                           {!category.maxInvestment && category.minInvestment && '+'}
                         </span>
@@ -477,7 +472,7 @@ export default function Categories() {
           </div>
         ) {searchTerm ? 'Nenhuma categoria corresponde aos critérios de busca.' : 'Crie sua primeira categoria de cliente.'}
             </p>
-            <Button onClick={() => setIsCreateDialogOpen(true)}>
+            <Button onClick=({ ( }) => setIsCreateDialogOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Nova Categoria
             </Button>
@@ -486,4 +481,4 @@ export default function Categories() {
       </main>
     </div>
   );
-}
+}`

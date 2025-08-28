@@ -4,39 +4,39 @@
  */
 
 import React, { useState, useCallback, useRef } from 'react';
-import { 
-  Card, 
-  Button, 
-  Drawer, 
-  Tree, 
-  Form, 
-  Input, 
-  Select, 
-  Switch, 
-  Modal,
+import {  
+
+
+
+
+
+
+
+
+
   message,
-  Tooltip,
-  Space,
-  Divider
+
+
+ }
 } from 'antd';
-import { 
-  PlusOutlined, 
-  PlayCircleOutlined, 
-  SaveOutlined, 
-  SettingOutlined,
-  BranchesOutlined,
-  ThunderboltOutlined,
-  ExperimentOutlined,
-  DragOutlined
+import {  
+
+
+
+
+
+
+
+ }
 } from '@ant-design/icons';
 import ReactFlow, {
-  Background,
-  Controls,
-  MiniMap,
+
+
+
   addEdge,
   useNodesState,
   useEdgesState,
-  ReactFlowProvider
+
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import './WorkflowBuilder.css';
@@ -112,8 +112,7 @@ const WorkflowBuilder = ({ workflowId, onSave, onTest }) => {
   const [form] = Form.useForm();
 
   // Conectar nós
-  const onConnect = useCallback((params) => {
-    setEdges((eds) => addEdge({
+  const onConnect = useCallback((params) => ({ setEdges((eds }) => addEdge({
       ...params,
       type: 'smoothstep',
       animated: true,
@@ -160,11 +159,10 @@ const WorkflowBuilder = ({ workflowId, onSave, onTest }) => {
   };
 
   // Salvar configuração do nó
-  const saveNodeConfig = (config) => {
-    if (!selectedNode) return;
+  const saveNodeConfig = (config) => ({ if (!selectedNode) return;
 
     setNodes((nds) =>
-      nds.map((node) =>
+      nds.map((node }) =>
         node.id === selectedNode.id
           ? {
               ...node,
@@ -185,7 +183,7 @@ const WorkflowBuilder = ({ workflowId, onSave, onTest }) => {
   // Salvar workflow
   const saveWorkflow = async () => {
     try {
-      const workflow = {
+      const workflow = {`
         id: workflowId || `workflow_${Date.now()}`,
         name: workflowConfig.name,
         description: workflowConfig.description,
@@ -236,7 +234,7 @@ const WorkflowBuilder = ({ workflowId, onSave, onTest }) => {
               key={trigger.id}
               block
               className="tool-button"
-              onClick={() => addNode('trigger', trigger.id)}
+              onClick=({ ( }) => addNode('trigger', trigger.id)}
               icon={<PlayCircleOutlined />}
             >
               {trigger.name}
@@ -253,7 +251,7 @@ const WorkflowBuilder = ({ workflowId, onSave, onTest }) => {
               key={action.id}
               block
               className="tool-button"
-              onClick={() => addNode('action', action.id)}
+              onClick=({ ( }) => addNode('action', action.id)}
               icon={<ThunderboltOutlined />}
             >
               {action.name}
@@ -268,7 +266,7 @@ const WorkflowBuilder = ({ workflowId, onSave, onTest }) => {
           <Button
             block
             className="tool-button"
-            onClick={() => addNode('condition')}
+            onClick=({ ( }) => addNode('condition')}
             icon={<BranchesOutlined />}
           >
             If/Then/Else
@@ -276,7 +274,7 @@ const WorkflowBuilder = ({ workflowId, onSave, onTest }) => {
           <Button
             block
             className="tool-button"
-            onClick={() => addNode('condition')}
+            onClick=({ ( }) => addNode('condition')}
             icon={<BranchesOutlined />}
           >
             Switch/Case
@@ -290,7 +288,7 @@ const WorkflowBuilder = ({ workflowId, onSave, onTest }) => {
           <Button
             block
             className="tool-button quantum-button"
-            onClick={() => addNode('quantum')}
+            onClick=({ ( }) => addNode('quantum')}
             icon={<ExperimentOutlined />}
           >
             Quantum Optimize
@@ -298,7 +296,7 @@ const WorkflowBuilder = ({ workflowId, onSave, onTest }) => {
           <Button
             block
             className="tool-button quantum-button"
-            onClick={() => addNode('quantum')}
+            onClick=({ ( }) => addNode('quantum')}
             icon={<ExperimentOutlined />}
           >
             AI Prediction
@@ -433,8 +431,8 @@ const WorkflowBuilder = ({ workflowId, onSave, onTest }) => {
             <Button type="primary" htmlType="submit">
               Save Configuration
             </Button>
-            <Button onClick={() => setDrawerVisible(false)}>
-              Cancel
+            <Button onClick=({ ( }) => setDrawerVisible(false)}>
+
             </Button>
           </Space>
         </Form.Item>
@@ -456,9 +454,9 @@ const WorkflowBuilder = ({ workflowId, onSave, onTest }) => {
           <Space>
             <Button
               icon={<SettingOutlined />}
-              onClick={() => setConfigModalVisible(true)}
+              onClick=({ ( }) => setConfigModalVisible(true)}
             >
-              Settings
+
             </Button>
             <Button
               type="primary"
@@ -466,7 +464,7 @@ const WorkflowBuilder = ({ workflowId, onSave, onTest }) => {
               onClick={testWorkflow}
               disabled={nodes.length === 0}
             >
-              Test
+
             </Button>
             <Button
               type="primary"
@@ -474,7 +472,7 @@ const WorkflowBuilder = ({ workflowId, onSave, onTest }) => {
               onClick={saveWorkflow}
               disabled={nodes.length === 0}
             >
-              Save
+
             </Button>
           </Space>
         </div>
@@ -501,7 +499,7 @@ const WorkflowBuilder = ({ workflowId, onSave, onTest }) => {
                 <Background color="#f0f2f5" gap={20} />
                 <Controls />
                 <MiniMap 
-                  nodeColor={(node) => nodeTypes[node.data.type]?.color || '#1890ff'}
+                  nodeColor=({ (node }) => nodeTypes[node.data.type]?.color || '#1890ff'}
                   maskColor="rgba(0, 0, 0, 0.1)"
                 />
               </ReactFlow>
@@ -511,11 +509,11 @@ const WorkflowBuilder = ({ workflowId, onSave, onTest }) => {
       </div>
 
       {/* Drawer de configuração do nó */}
-      <Drawer
+      <Drawer`
         title={`Configure ${selectedNode?.data.label || 'Node'}`}
         placement="right"
         width={400}
-        onClose={() => setDrawerVisible(false)}
+        onClose=({ ( }) => setDrawerVisible(false)}
         open={drawerVisible}
       >
         {renderNodeConfig()}
@@ -525,13 +523,13 @@ const WorkflowBuilder = ({ workflowId, onSave, onTest }) => {
       <Modal
         title="Workflow Settings"
         open={configModalVisible}
-        onCancel={() => setConfigModalVisible(false)}
+        onCancel=({ ( }) => setConfigModalVisible(false)}
         footer={null}
       >
         <Form
           layout="vertical"
           initialValues={workflowConfig}
-          onFinish={(values) => {
+          onFinish=({ (values }) => {
             setWorkflowConfig(values);
             setConfigModalVisible(false);
             message.success('Workflow settings updated');
@@ -568,8 +566,8 @@ const WorkflowBuilder = ({ workflowId, onSave, onTest }) => {
               <Button type="primary" htmlType="submit">
                 Save Settings
               </Button>
-              <Button onClick={() => setConfigModalVisible(false)}>
-                Cancel
+              <Button onClick=({ ( }) => setConfigModalVisible(false)}>
+
               </Button>
             </Space>
           </Form.Item>
@@ -580,3 +578,4 @@ const WorkflowBuilder = ({ workflowId, onSave, onTest }) => {
 };
 
 export default WorkflowBuilder;
+`

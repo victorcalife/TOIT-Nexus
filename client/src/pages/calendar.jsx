@@ -12,10 +12,10 @@ import { Badge } from '../components/ui/badge';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Textarea } from '../components/ui/textarea';
-import { 
+import {  
   Calendar as CalendarIcon, Plus, ChevronLeft, ChevronRight, 
   Clock, Users, MapPin, Video, Bell, Settings, Filter,
-  Download, Share, Search, MoreHorizontal, Edit, Trash2
+  Download, Share, Search, MoreHorizontal, Edit, Trash2 }
 } from 'lucide-react';
 
 export default function Calendar() {
@@ -65,7 +65,7 @@ export default function Calendar() {
       // Adicionar alguns eventos aleatórios
       if (Math.random() > 0.7) {
         events.push({
-          id: `event-${i}-1`,
+          id: `event-${i}-1`,`
           title: `Reunião de Equipe ${i + 1}`,
           description: 'Reunião semanal para alinhamento de projetos',
           start: new Date(eventDate.setHours(9, 0)),
@@ -80,8 +80,8 @@ export default function Calendar() {
       }
       
       if (Math.random() > 0.8) {
-        events.push({
-          id: `event-${i}-2`,
+        events.push({`
+          id: `event-${i}-2`,`
           title: `Apresentação Cliente`,
           description: 'Apresentação de proposta para novo cliente',
           start: new Date(eventDate.setHours(14, 30)),
@@ -151,17 +151,17 @@ export default function Calendar() {
       
       days.push(
         <div
-          key={current.toISOString()}
+          key={current.toISOString()}`
           className={`
-            min-h-[120px] p-2 border border-gray-200 cursor-pointer hover:bg-gray-50
+            min-h-[120px] p-2 border border-gray-200 cursor-pointer hover:bg-gray-50}
             ${!isCurrentMonth ? 'bg-gray-100 text-gray-400' : 'bg-white'}
-            ${isToday ? 'bg-blue-50 border-blue-300' : ''}
+            ${isToday ? 'bg-blue-50 border-blue-300' : ''}`
           `}
-          onClick={() => {
+          onClick=({ ( }) => {
             setCurrentDate(new Date(current));
             setView('day');
           }}
-        >
+        >`
           <div className={`text-sm font-medium mb-1 ${isToday ? 'text-blue-600' : ''}`}>
             {current.getDate()}
           </div>
@@ -172,7 +172,7 @@ export default function Calendar() {
                 key={event.id}
                 className="text-xs p-1 rounded truncate"
                 style={{ backgroundColor: event.color + '20', color: event.color }}
-                onClick={(e) => {
+                onClick=({ (e }) => {
                   e.stopPropagation();
                   setSelectedEvent(event);
                   setShowEventModal(true);
@@ -239,11 +239,11 @@ export default function Calendar() {
           
           return (
             <div key={day.toISOString()} className="relative">
-              {/* Cabeçalho do dia */}
+              {/* Cabeçalho do dia */}`
               <div className={`h-16 p-2 border-b border-gray-200 text-center ${isToday ? 'bg-blue-50' : 'bg-gray-50'}`}>
                 <div className="text-xs text-gray-500">
                   {day.toLocaleDateString('pt-BR', { weekday: 'short' })}
-                </div>
+                </div>`
                 <div className={`text-lg font-medium ${isToday ? 'text-blue-600' : ''}`}>
                   {day.getDate()}
                 </div>
@@ -263,9 +263,9 @@ export default function Calendar() {
                           backgroundColor: event.color + '20', 
                           color: event.color,
                           top: '2px',
-                          height: 'calc(100% - 4px)'
+                          height: 'calc(100% - 4px)'}
                         }}
-                        onClick={() => {
+                        onClick=({ ( }) => {
                           setSelectedEvent(event);
                           setShowEventModal(true);
                         }}
@@ -315,7 +315,7 @@ export default function Calendar() {
               <Card 
                 key={event.id} 
                 className="cursor-pointer hover:shadow-md transition-shadow"
-                onClick={() => {
+                onClick=({ ( }) => {
                   setSelectedEvent(event);
                   setShowEventModal(true);
                 }}
@@ -381,10 +381,9 @@ export default function Calendar() {
     );
   };
 
-  const renderAgendaView = () => {
-    const upcomingEvents = events
+  const renderAgendaView = () => ({ const upcomingEvents = events
       .filter(event => new Date(event.start) >= new Date())
-      .sort((a, b) => new Date(a.start) - new Date(b.start))
+      .sort((a, b }) => new Date(a.start) - new Date(b.start))
       .slice(0, 20);
     
     return (
@@ -399,7 +398,7 @@ export default function Calendar() {
             <Card 
               key={event.id}
               className="cursor-pointer hover:shadow-md transition-shadow"
-              onClick={() => {
+              onClick=({ ( }) => {
                 setSelectedEvent(event);
                 setShowEventModal(true);
               }}
@@ -463,19 +462,17 @@ export default function Calendar() {
               
               {/* Navegação de data */}
               <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" onClick={() => navigateDate(-1)}>
+                <Button variant="outline" size="sm" onClick=({ ( }) => navigateDate(-1)}>
                   <ChevronLeft className="h-4 w-4" />
                 </Button>
                 
                 <Button 
                   variant="outline" 
                   size="sm"
-                  onClick={() => setCurrentDate(new Date())}
+                  onClick=({ ( }) => setCurrentDate(new Date())}
                 >
-                  Hoje
-                </Button>
-                
-                <Button variant="outline" size="sm" onClick={() => navigateDate(1)}>
+
+                <Button variant="outline" size="sm" onClick=({ ( }) => navigateDate(1)}>
                   <ChevronRight className="h-4 w-4" />
                 </Button>
                 
@@ -498,7 +495,7 @@ export default function Calendar() {
                     key={viewOption.key}
                     variant={view === viewOption.key ? "default" : "ghost"}
                     size="sm"
-                    onClick={() => setView(viewOption.key)}
+                    onClick=({ ( }) => setView(viewOption.key)}
                     className="text-xs"
                   >
                     {viewOption.label}
@@ -508,9 +505,7 @@ export default function Calendar() {
               
               <Button variant="outline" size="sm">
                 <Filter className="h-4 w-4 mr-2" />
-                Filtros
-              </Button>
-              
+
               <Button size="sm">
                 <Plus className="h-4 w-4 mr-2" />
                 Novo Evento
@@ -530,3 +525,4 @@ export default function Calendar() {
     </div>
   );
 }
+`

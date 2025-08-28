@@ -7,15 +7,15 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { QuantumInsightButton } from './QuantumInsightButton';
 import { useMLCredits } from '../../hooks/useMLCredits';
-import { 
-  Brain, 
-  TrendingUp, 
-  Zap, 
+import {  
+
+
+
   BarChart3, 
-  AlertTriangle,
-  ChevronDown,
-  ChevronUp,
-  Info
+
+
+
+ }
 } from 'lucide-react';
 
 /**
@@ -28,11 +28,10 @@ import {
  * @param {boolean} props.showCompact - Se deve mostrar versão compacta
  * @returns {React.ReactElement} Componente de integração
  */
-export function WorkflowMLIntegration({
-  workflowData = [],
+export function WorkflowMLIntegration(({ workflowData = [],
   workflowType = 'general',
   workflowId,
-  onInsightGenerated = () => {},
+  onInsightGenerated = ( }) => {},
   showCompact = false
 }) {
   const [isExpanded, setIsExpanded] = useState(!showCompact);
@@ -174,7 +173,7 @@ export function WorkflowMLIntegration({
             )}
             
             <button
-              onClick={() => setIsExpanded(true)}
+              onClick=({ ( }) => setIsExpanded(true)}
               className="p-1 text-purple-600 hover:text-purple-700"
               title="Expandir opções ML"
             >
@@ -205,9 +204,9 @@ export function WorkflowMLIntegration({
             </div>
           </div>
 
-          {showCompact && (
+          ({ showCompact && (
             <button
-              onClick={() => setIsExpanded(false)}
+              onClick={( }) => setIsExpanded(false)}
               className="p-1 text-purple-600 hover:text-purple-700"
               title="Recolher"
             >
@@ -257,7 +256,7 @@ export function WorkflowMLIntegration({
               </h4>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                {getRecommendedInsights().map((insight) => (
+                ({ getRecommendedInsights().map((insight }) => (
                   <div
                     key={insight.type}
                     className="p-3 bg-white border border-purple-200 rounded-lg hover:border-purple-300 transition-colors"
@@ -286,7 +285,7 @@ export function WorkflowMLIntegration({
                       className="w-full"
                       onSuccess={handleInsightGenerated}
                     >
-                      Executar
+
                     </QuantumInsightButton>
                   </div>
                 ))}

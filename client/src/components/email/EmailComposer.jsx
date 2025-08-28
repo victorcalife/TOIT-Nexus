@@ -13,33 +13,33 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { 
-  Send, 
-  Paperclip, 
-  Image, 
-  Smile, 
-  Bold, 
-  Italic, 
-  Underline,
-  Link,
-  List,
-  AlignLeft,
-  AlignCenter,
-  AlignRight,
-  Save,
-  Clock,
-  Eye,
-  EyeOff,
-  X,
-  Plus,
+import {  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   Trash2,
-  Upload,
-  FileText,
-  Calendar,
-  Users,
-  Tag,
-  Zap,
-  Settings
+
+
+
+
+
+
+ }
 } from 'lucide-react';
 
 const EmailComposer = ({ 
@@ -49,8 +49,7 @@ const EmailComposer = ({
   setEmailDraft, 
   onSend, 
   templates 
-}) => {
-  const [showCc, setShowCc] = useState(false);
+}) => ({ const [showCc, setShowCc] = useState(false);
   const [showBcc, setShowBcc] = useState(false);
   const [isFormatting, setIsFormatting] = useState(false);
   const [attachments, setAttachments] = useState([]);
@@ -59,7 +58,7 @@ const EmailComposer = ({
   const fileInputRef = useRef(null);
 
   // Atualizar campo do draft
-  const updateDraft = (field, value) => {
+  const updateDraft = (field, value }) => {
     setEmailDraft(prev => ({
       ...prev,
       [field]: value
@@ -128,13 +127,13 @@ const EmailComposer = ({
               <span>Compor Email</span>
             </div>
             <div className="flex items-center space-x-2">
-              <Button variant="outline" size="sm" onClick={() => setIsScheduling(!isScheduling)}>
+              <Button variant="outline" size="sm" onClick=({ ( }) => setIsScheduling(!isScheduling)}>
                 <Clock className="h-4 w-4 mr-1" />
-                Agendar
+
               </Button>
               <Button variant="outline" size="sm">
                 <Save className="h-4 w-4 mr-1" />
-                Rascunho
+
               </Button>
             </div>
           </DialogTitle>
@@ -142,16 +141,16 @@ const EmailComposer = ({
 
         <div className="flex-1 overflow-y-auto space-y-4">
           {/* Templates Rápidos */}
-          {Object.keys(templates).length > 0 && (
+          ({ Object.keys(templates).length > 0 && (
             <div className="bg-slate-50 p-3 rounded-lg">
               <Label className="text-sm font-medium mb-2 block">Templates Rápidos</Label>
               <div className="flex flex-wrap gap-2">
-                {Object.entries(templates).map(([key, template]) => (
+                {Object.entries(templates).map(([key, template] }) => (
                   <Button
                     key={key}
                     variant={selectedTemplate === key ? "default" : "outline"}
                     size="sm"
-                    onClick={() => applyTemplate(key)}
+                    onClick=({ ( }) => applyTemplate(key)}
                   >
                     <FileText className="h-3 w-3 mr-1" />
                     {template.name}
@@ -168,7 +167,7 @@ const EmailComposer = ({
               <Input
                 id="to"
                 value={emailDraft.to}
-                onChange={(e) => updateDraft('to', e.target.value)}
+                onChange=({ (e }) => updateDraft('to', e.target.value)}
                 placeholder="destinatario@email.com"
                 className="flex-1"
               />
@@ -176,18 +175,18 @@ const EmailComposer = ({
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => setShowCc(!showCc)}
+                  onClick=({ ( }) => setShowCc(!showCc)}
                   className={showCc ? 'text-blue-600' : ''}
                 >
-                  CC
+
                 </Button>
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => setShowBcc(!showBcc)}
+                  onClick=({ ( }) => setShowBcc(!showBcc)}
                   className={showBcc ? 'text-blue-600' : ''}
                 >
-                  CCO
+
                 </Button>
               </div>
             </div>
@@ -198,7 +197,7 @@ const EmailComposer = ({
                 <Input
                   id="cc"
                   value={emailDraft.cc}
-                  onChange={(e) => updateDraft('cc', e.target.value)}
+                  onChange=({ (e }) => updateDraft('cc', e.target.value)}
                   placeholder="copia@email.com"
                   className="flex-1"
                 />
@@ -211,7 +210,7 @@ const EmailComposer = ({
                 <Input
                   id="bcc"
                   value={emailDraft.bcc}
-                  onChange={(e) => updateDraft('bcc', e.target.value)}
+                  onChange=({ (e }) => updateDraft('bcc', e.target.value)}
                   placeholder="copia.oculta@email.com"
                   className="flex-1"
                 />
@@ -225,11 +224,11 @@ const EmailComposer = ({
             <Input
               id="subject"
               value={emailDraft.subject}
-              onChange={(e) => updateDraft('subject', e.target.value)}
+              onChange=({ (e }) => updateDraft('subject', e.target.value)}
               placeholder="Assunto do email"
               className="flex-1"
             />
-            <Select value={emailDraft.priority} onValueChange={(value) => updateDraft('priority', value)}>
+            <Select value={emailDraft.priority} onValueChange=({ (value }) => updateDraft('priority', value)}>
               <SelectTrigger className="w-32">
                 <SelectValue placeholder="Prioridade" />
               </SelectTrigger>
@@ -254,21 +253,21 @@ const EmailComposer = ({
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => formatText('bold')}
+                  onClick=({ ( }) => formatText('bold')}
                 >
                   <Bold className="h-4 w-4" />
                 </Button>
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => formatText('italic')}
+                  onClick=({ ( }) => formatText('italic')}
                 >
                   <Italic className="h-4 w-4" />
                 </Button>
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => formatText('underline')}
+                  onClick=({ ( }) => formatText('underline')}
                 >
                   <Underline className="h-4 w-4" />
                 </Button>
@@ -278,21 +277,21 @@ const EmailComposer = ({
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => formatText('justifyLeft')}
+                  onClick=({ ( }) => formatText('justifyLeft')}
                 >
                   <AlignLeft className="h-4 w-4" />
                 </Button>
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => formatText('justifyCenter')}
+                  onClick=({ ( }) => formatText('justifyCenter')}
                 >
                   <AlignCenter className="h-4 w-4" />
                 </Button>
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => formatText('justifyRight')}
+                  onClick=({ ( }) => formatText('justifyRight')}
                 >
                   <AlignRight className="h-4 w-4" />
                 </Button>
@@ -302,14 +301,14 @@ const EmailComposer = ({
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => formatText('insertUnorderedList')}
+                  onClick=({ ( }) => formatText('insertUnorderedList')}
                 >
                   <List className="h-4 w-4" />
                 </Button>
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => formatText('createLink', prompt('URL:'))}
+                  onClick=({ ( }) => formatText('createLink', prompt('URL:'))}
                 >
                   <Link className="h-4 w-4" />
                 </Button>
@@ -318,7 +317,7 @@ const EmailComposer = ({
               <div className="flex items-center space-x-2">
                 <Switch
                   checked={emailDraft.isHtml}
-                  onCheckedChange={(checked) => updateDraft('isHtml', checked)}
+                  onCheckedChange=({ (checked }) => updateDraft('isHtml', checked)}
                 />
                 <Label className="text-sm">HTML</Label>
               </div>
@@ -326,17 +325,17 @@ const EmailComposer = ({
 
             {/* Área de Texto */}
             <div className="p-3">
-              {emailDraft.isHtml ? (
+              ({ emailDraft.isHtml ? (
                 <div
                   contentEditable
                   className="min-h-[300px] p-3 border border-slate-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  onInput={(e) => updateDraft('body', e.target.innerHTML)}
+                  onInput={(e }) => updateDraft('body', e.target.innerHTML)}
                   dangerouslySetInnerHTML={{ __html: emailDraft.body }}
                 />
               ) : (
                 <Textarea
                   value={emailDraft.body}
-                  onChange={(e) => updateDraft('body', e.target.value)}
+                  onChange=({ (e }) => updateDraft('body', e.target.value)}
                   placeholder="Digite sua mensagem..."
                   className="min-h-[300px] resize-none"
                 />
@@ -350,7 +349,7 @@ const EmailComposer = ({
               <div className="flex items-center justify-between mb-3">
                 <Label className="text-sm font-medium">Anexos ({attachments.length})</Label>
                 <span className="text-xs text-slate-500">
-                  Total: {formatFileSize(attachments.reduce((sum, att) => sum + att.size, 0))}
+                  Total: ({ formatFileSize(attachments.reduce((sum, att }) => sum + att.size, 0))}
                 </span>
               </div>
               <div className="space-y-2">
@@ -364,7 +363,7 @@ const EmailComposer = ({
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => removeAttachment(attachment.id)}
+                      onClick=({ ( }) => removeAttachment(attachment.id)}
                     >
                       <X className="h-4 w-4" />
                     </Button>
@@ -382,7 +381,7 @@ const EmailComposer = ({
                 <Input
                   type="date"
                   value={emailDraft.scheduledSend?.date || ''}
-                  onChange={(e) => updateDraft('scheduledSend', { 
+                  onChange=({ (e }) => updateDraft('scheduledSend', { 
                     ...emailDraft.scheduledSend, 
                     date: e.target.value 
                   })}
@@ -390,7 +389,7 @@ const EmailComposer = ({
                 <Input
                   type="time"
                   value={emailDraft.scheduledSend?.time || ''}
-                  onChange={(e) => updateDraft('scheduledSend', { 
+                  onChange=({ (e }) => updateDraft('scheduledSend', { 
                     ...emailDraft.scheduledSend, 
                     time: e.target.value 
                   })}
@@ -414,20 +413,20 @@ const EmailComposer = ({
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => fileInputRef.current?.click()}
+                onClick=({ ( }) => fileInputRef.current?.click()}
               >
                 <Paperclip className="h-4 w-4 mr-1" />
-                Anexar
+
               </Button>
               
               <Button variant="outline" size="sm">
                 <Image className="h-4 w-4 mr-1" />
-                Imagem
+
               </Button>
               
               <Button variant="outline" size="sm">
                 <Smile className="h-4 w-4 mr-1" />
-                Emoji
+
               </Button>
               
               <Button variant="outline" size="sm">
@@ -438,7 +437,7 @@ const EmailComposer = ({
 
             <div className="flex items-center space-x-2">
               <Button variant="outline" onClick={onClose}>
-                Cancelar
+
               </Button>
               <Button 
                 onClick={onSend} 

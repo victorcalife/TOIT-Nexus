@@ -81,7 +81,7 @@ export function QuantumInsightButton({
       console.log(`🧠 [QuantumInsight] Executando insight: ${insightType}`);
 
       // Fazer requisição para API
-      const baseURL = process.env.REACT_APP_API_URL || '';
+      const baseURL = process.env.REACT_APP_API_URL || '';`
       const response = await fetch(`${baseURL}/api/quantum/insight`, {
         method: 'POST',
         headers: {
@@ -97,7 +97,7 @@ export function QuantumInsightButton({
 
       const result = await response.json();
 
-      if (!response.ok) {
+      if (!response.ok) {`
         throw new Error(result.error || `HTTP ${response.status}`);
       }
 
@@ -154,21 +154,21 @@ export function QuantumInsightButton({
       processing: 'cursor-wait',
       error: 'border-red-300 bg-red-50 text-red-700'
     };
-
+`
     let classes = `${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]}`;
 
-    if (disabled || creditsLoading || needsSetup || !hasEnoughCredits(1)) {
+    if (disabled || creditsLoading || needsSetup || !hasEnoughCredits(1)) {`
       classes += ` ${stateClasses.disabled}`;
     }
 
-    if (isProcessing) {
+    if (isProcessing) {`
       classes += ` ${stateClasses.processing}`;
     }
 
-    if (error) {
+    if (error) {`
       classes += ` ${stateClasses.error}`;
     }
-
+`
     return `${classes} ${className}`;
   }, [variant, size, disabled, creditsLoading, needsSetup, hasEnoughCredits, isProcessing, error, className]);
 
@@ -234,7 +234,7 @@ export function QuantumInsightButton({
       return 'Configure seu plano ML para usar insights';
     }
 
-    if (!hasEnoughCredits(1)) {
+    if (!hasEnoughCredits(1)) {`
       return `Créditos insuficientes (${credits.available} disponíveis)`;
     }
 
@@ -242,14 +242,14 @@ export function QuantumInsightButton({
       return 'Dados são necessários para executar o insight';
     }
 
-    if (error) {
+    if (error) {`
       return `Erro: ${error}`;
     }
 
     if (lastResult) {
       return 'Insight executado com sucesso';
     }
-
+`
     return `Executar ${insightType} (consome 1 crédito)`;
   }, [needsSetup, hasEnoughCredits, credits.available, data.length, error, lastResult, insightType]);
 
@@ -291,12 +291,12 @@ export function QuantumInsightButton({
 
       {/* Status dos créditos */}
       {!needsSetup && (
-        <div className="absolute -top-2 -right-2 z-10">
+        <div className="absolute -top-2 -right-2 z-10">`
           <div className={`w-3 h-3 rounded-full ${
             getCreditsStatus() === 'good' ? 'bg-green-500' :
             getCreditsStatus() === 'warning' ? 'bg-yellow-500' :
             getCreditsStatus() === 'critical' ? 'bg-orange-500' :
-            'bg-red-500'
+            'bg-red-500'`}
           }`} title={`Créditos: ${credits.available}/${credits.total}`} />
         </div>
       )}
@@ -319,3 +319,4 @@ export function QuantumInsightButton({
 }
 
 export default QuantumInsightButton;
+`

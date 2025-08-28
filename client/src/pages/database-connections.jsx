@@ -13,11 +13,10 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Textarea } from '../components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
-import
-  {
+import { 
     Database, Plus, Settings, TestTube, Trash2, Edit,
     CheckCircle2, XCircle, AlertCircle, Eye, EyeOff,
-    Server, Wifi, WifiOff, Copy, Download, Upload
+    Server, Wifi, WifiOff, Copy, Download, Upload }
   } from 'lucide-react';
 
 export default function DatabaseConnections()
@@ -294,10 +293,10 @@ export default function DatabaseConnections()
     {
       return 'Testado agora há pouco';
     } else if ( diffHours < 24 )
-    {
+    {`
       return `Testado há ${ Math.floor( diffHours ) }h`;
     } else
-    {
+    {`
       return `Testado há ${ Math.floor( diffHours / 24 ) } dias`;
     }
   };
@@ -319,7 +318,7 @@ export default function DatabaseConnections()
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={ () => setShowConnectionModal( false ) }
+                onClick=({ ( }) => setShowConnectionModal( false ) }
               >
                 ✕
               </Button>
@@ -332,7 +331,7 @@ export default function DatabaseConnections()
                 <Input
                   id="name"
                   value={ connectionForm.name }
-                  onChange={ ( e ) => setConnectionForm( prev => ( { ...prev, name: e.target.value } ) ) }
+                  onChange=({ ( e  }) => setConnectionForm( prev => ( { ...prev, name: e.target.value } ) ) }
                   placeholder="Ex: PostgreSQL Principal"
                 />
               </div>
@@ -342,7 +341,7 @@ export default function DatabaseConnections()
                 <Label htmlFor="type">Tipo de Banco *</Label>
                 <Select
                   value={ connectionForm.type }
-                  onValueChange={ ( value ) =>
+                  onValueChange=({ ( value  }) =>
                   {
                     const type = databaseTypes.find( t => t.value === value );
                     setConnectionForm( prev => ( {
@@ -375,7 +374,7 @@ export default function DatabaseConnections()
                   <Input
                     id="host"
                     value={ connectionForm.host }
-                    onChange={ ( e ) => setConnectionForm( prev => ( { ...prev, host: e.target.value } ) ) }
+                    onChange=({ ( e  }) => setConnectionForm( prev => ( { ...prev, host: e.target.value } ) ) }
                     placeholder="api.toit.com.br ou IP do servidor"
                   />
                 </div>
@@ -386,7 +385,7 @@ export default function DatabaseConnections()
                     id="port"
                     type="number"
                     value={ connectionForm.port }
-                    onChange={ ( e ) => setConnectionForm( prev => ( { ...prev, port: e.target.value } ) ) }
+                    onChange=({ ( e  }) => setConnectionForm( prev => ( { ...prev, port: e.target.value } ) ) }
                     placeholder={ selectedType?.defaultPort?.toString() || '' }
                   />
                 </div>
@@ -398,7 +397,7 @@ export default function DatabaseConnections()
                 <Input
                   id="database"
                   value={ connectionForm.database }
-                  onChange={ ( e ) => setConnectionForm( prev => ( { ...prev, database: e.target.value } ) ) }
+                  onChange=({ ( e  }) => setConnectionForm( prev => ( { ...prev, database: e.target.value } ) ) }
                   placeholder="Nome do banco de dados"
                 />
               </div>
@@ -410,7 +409,7 @@ export default function DatabaseConnections()
                   <Input
                     id="username"
                     value={ connectionForm.username }
-                    onChange={ ( e ) => setConnectionForm( prev => ( { ...prev, username: e.target.value } ) ) }
+                    onChange=({ ( e  }) => setConnectionForm( prev => ( { ...prev, username: e.target.value } ) ) }
                     placeholder="Nome do usuário"
                   />
                 </div>
@@ -422,13 +421,13 @@ export default function DatabaseConnections()
                       id="password"
                       type={ showPassword.form ? 'text' : 'password' }
                       value={ connectionForm.password }
-                      onChange={ ( e ) => setConnectionForm( prev => ( { ...prev, password: e.target.value } ) ) }
+                      onChange=({ ( e  }) => setConnectionForm( prev => ( { ...prev, password: e.target.value } ) ) }
                       placeholder="Senha do usuário"
                       className="pr-10"
                     />
                     <button
                       type="button"
-                      onClick={ () => togglePasswordVisibility( 'form' ) }
+                      onClick=({ ( }) => togglePasswordVisibility( 'form' ) }
                       className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                     >
                       { showPassword.form ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" /> }
@@ -443,7 +442,7 @@ export default function DatabaseConnections()
                   type="checkbox"
                   id="ssl"
                   checked={ connectionForm.ssl }
-                  onChange={ ( e ) => setConnectionForm( prev => ( { ...prev, ssl: e.target.checked } ) ) }
+                  onChange=({ ( e  }) => setConnectionForm( prev => ( { ...prev, ssl: e.target.checked } ) ) }
                   className="rounded border-gray-300"
                 />
                 <Label htmlFor="ssl">Usar SSL/TLS</Label>
@@ -455,7 +454,7 @@ export default function DatabaseConnections()
                 <Textarea
                   id="description"
                   value={ connectionForm.description }
-                  onChange={ ( e ) => setConnectionForm( prev => ( { ...prev, description: e.target.value } ) ) }
+                  onChange=({ ( e  }) => setConnectionForm( prev => ( { ...prev, description: e.target.value } ) ) }
                   placeholder="Descrição opcional da conexão"
                   rows={ 3 }
                 />
@@ -463,9 +462,8 @@ export default function DatabaseConnections()
             </div>
 
             <div className="flex items-center justify-end gap-3 mt-6 pt-6 border-t">
-              <Button variant="outline" onClick={ () => setShowConnectionModal( false ) }>
-                Cancelar
-              </Button>
+              <Button variant="outline" onClick=({ ( }) => setShowConnectionModal( false ) }>
+
               <Button onClick={ handleSaveConnection }>
                 { selectedConnection ? 'Atualizar' : 'Criar' } Conexão
               </Button>
@@ -506,13 +504,9 @@ export default function DatabaseConnections()
             <div className="flex items-center gap-4">
               <Button variant="outline" size="sm">
                 <Download className="h-4 w-4 mr-2" />
-                Exportar
-              </Button>
 
               <Button variant="outline" size="sm">
                 <Upload className="h-4 w-4 mr-2" />
-                Importar
-              </Button>
 
               <Button onClick={ handleCreateConnection }>
                 <Plus className="h-4 w-4 mr-2" />
@@ -654,7 +648,7 @@ export default function DatabaseConnections()
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={ () => handleTestConnection( connection.id ) }
+                        onClick=({ ( }) => handleTestConnection( connection.id ) }
                         disabled={ testingConnection === connection.id }
                       >
                         { testingConnection === connection.id ? (
@@ -665,8 +659,7 @@ export default function DatabaseConnections()
                         ) : (
                           <>
                             <TestTube className="h-4 w-4 mr-2" />
-                            Testar
-                          </>
+
                         ) }
                       </Button>
 
@@ -674,7 +667,7 @@ export default function DatabaseConnections()
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={ () => handleEditConnection( connection ) }
+                          onClick=({ ( }) => handleEditConnection( connection ) }
                         >
                           <Edit className="h-4 w-4" />
                         </Button>
@@ -682,7 +675,7 @@ export default function DatabaseConnections()
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={ () => handleDeleteConnection( connection.id ) }
+                          onClick=({ ( }) => handleDeleteConnection( connection.id ) }
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
@@ -715,3 +708,4 @@ export default function DatabaseConnections()
     </div>
   );
 }
+`

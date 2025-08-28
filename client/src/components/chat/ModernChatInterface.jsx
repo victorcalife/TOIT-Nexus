@@ -11,46 +11,44 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import
-  {
-    Send,
-    Phone,
-    Video,
-    Paperclip,
-    Smile,
-    MoreHorizontal,
-    Search,
-    Plus,
-    Settings,
-    Mic,
-    MicOff,
-    VideoOff,
-    PhoneOff,
-    ScreenShare,
-    Users,
-    MessageSquare,
-    Image,
-    File,
-    Download,
-    Reply,
-    Edit,
+import { 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     Trash2,
-    Pin,
-    Star,
-    Clock,
-    Check,
-    CheckCheck,
-    Circle,
+
+
+
+
+
+
     Minimize2,
     Maximize2,
-    X
+ }
   } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 const ModernChatInterface = ( { tenantId, userId, userRole } ) =>
-{
-  const [ conversations, setConversations ] = useState( [] );
+({ const [ conversations, setConversations ] = useState( [] );
   const [ selectedConversation, setSelectedConversation ] = useState( null );
   const [ messages, setMessages ] = useState( [] );
   const [ newMessage, setNewMessage ] = useState( '' );
@@ -70,7 +68,7 @@ const ModernChatInterface = ( { tenantId, userId, userRole } ) =>
   const videoRef = useRef( null );
 
   // Carregar conversas
-  useEffect( () =>
+  useEffect( ( }) =>
   {
     loadConversations();
     loadOnlineUsers();
@@ -396,7 +394,7 @@ const ModernChatInterface = ( { tenantId, userId, userRole } ) =>
             <Input
               placeholder="Buscar conversas..."
               value={ searchTerm }
-              onChange={ ( e ) => setSearchTerm( e.target.value ) }
+              onChange=({ ( e  }) => setSearchTerm( e.target.value ) }
               className="pl-10"
             />
           </div>
@@ -409,7 +407,7 @@ const ModernChatInterface = ( { tenantId, userId, userRole } ) =>
               key={ conversation.id }
               conversation={ conversation }
               isSelected={ selectedConversation?.id === conversation.id }
-              onClick={ () => handleConversationSelect( conversation ) }
+              onClick=({ ( }) => handleConversationSelect( conversation ) }
             />
           ) ) }
         </div>
@@ -496,7 +494,7 @@ const ModernChatInterface = ( { tenantId, userId, userRole } ) =>
           onToggleAudio={ toggleAudio }
           onToggleScreenShare={ toggleScreenShare }
           onEndCall={ endCall }
-          onMinimize={ () => setIsMinimized( !isMinimized ) }
+          onMinimize=({ ( }) => setIsMinimized( !isMinimized ) }
           videoRef={ videoRef }
         />
       ) }
@@ -509,10 +507,10 @@ const ConversationItem = ( { conversation, isSelected, onClick } ) =>
 {
   return (
     <div
-      onClick={ onClick }
+      onClick={ onClick }`
       className={ `
-        p-4 border-b border-slate-100 cursor-pointer transition-colors duration-200
-        ${ isSelected ? 'bg-blue-50 border-blue-200' : 'hover:bg-slate-50' }
+        p-4 border-b border-slate-100 cursor-pointer transition-colors duration-200}
+        ${ isSelected ? 'bg-blue-50 border-blue-200' : 'hover:bg-slate-50' }`
       `}
     >
       <div className="flex items-center space-x-3">
@@ -592,7 +590,7 @@ const ChatHeader = ( { conversation, onStartCall, onlineUsers } ) =>
           <div>
             <h2 className="font-semibold text-slate-900">{ conversation.name }</h2>
             <p className="text-sm text-slate-500">
-              { conversation.type === 'group'
+              { conversation.type === 'group'`
                 ? `${ participantsOnline } de ${ conversation.participants.length } online`
                 : conversation.isOnline ? 'Online' : 'Offline'
               }
@@ -604,7 +602,7 @@ const ChatHeader = ( { conversation, onStartCall, onlineUsers } ) =>
           <Button
             variant="outline"
             size="sm"
-            onClick={ () => onStartCall( 'audio' ) }
+            onClick=({ ( }) => onStartCall( 'audio' ) }
           >
             <Phone className="h-4 w-4" />
           </Button>
@@ -612,7 +610,7 @@ const ChatHeader = ( { conversation, onStartCall, onlineUsers } ) =>
           <Button
             variant="outline"
             size="sm"
-            onClick={ () => onStartCall( 'video' ) }
+            onClick=({ ( }) => onStartCall( 'video' ) }
           >
             <Video className="h-4 w-4" />
           </Button>
@@ -632,10 +630,9 @@ const ChatHeader = ( { conversation, onStartCall, onlineUsers } ) =>
 
 // Componente Item de Mensagem
 const MessageItem = ( { message, isOwn, getStatusIcon } ) =>
-{
-  const [ showActions, setShowActions ] = useState( false );
+({ const [ showActions, setShowActions ] = useState( false );
 
-  const renderMessageContent = () =>
+  const renderMessageContent = ( }) =>
   {
     switch ( message.type )
     {
@@ -662,13 +659,13 @@ const MessageItem = ( { message, isOwn, getStatusIcon } ) =>
         );
 
       default:
-        return (
+        return (`
           <div className={ `
             max-w-xs lg:max-w-md px-4 py-2 rounded-lg
             ${ isOwn
               ? 'bg-blue-500 text-white'
-              : 'bg-white border border-slate-200 text-slate-900'
-            }
+              : 'bg-white border border-slate-200 text-slate-900'}
+            }`
           `}>
             <p className="text-sm">{ message.content }</p>
             { message.isEdited && (
@@ -680,11 +677,11 @@ const MessageItem = ( { message, isOwn, getStatusIcon } ) =>
   };
 
   return (
-    <div
+    <div`
       className={ `flex ${ isOwn ? 'justify-end' : 'justify-start' }` }
-      onMouseEnter={ () => setShowActions( true ) }
-      onMouseLeave={ () => setShowActions( false ) }
-    >
+      onMouseEnter=({ ( }) => setShowActions( true ) }
+      onMouseLeave=({ ( }) => setShowActions( false ) }
+    >`
       <div className={ `flex items-end space-x-2 ${ isOwn ? 'flex-row-reverse space-x-reverse' : '' }` }>
         { !isOwn && (
           <Avatar className="h-8 w-8">
@@ -693,7 +690,7 @@ const MessageItem = ( { message, isOwn, getStatusIcon } ) =>
             </AvatarFallback>
           </Avatar>
         ) }
-
+`
         <div className={ `flex flex-col ${ isOwn ? 'items-end' : 'items-start' }` }>
           { !isOwn && (
             <span className="text-xs text-slate-500 mb-1 px-1">
@@ -704,10 +701,10 @@ const MessageItem = ( { message, isOwn, getStatusIcon } ) =>
           <div className="relative">
             { renderMessageContent() }
 
-            { showActions && (
+            { showActions && (`
               <div className={ `
-                absolute top-0 flex items-center space-x-1 bg-white border border-slate-200 rounded-lg shadow-lg p-1
-                ${ isOwn ? '-left-20' : '-right-20' }
+                absolute top-0 flex items-center space-x-1 bg-white border border-slate-200 rounded-lg shadow-lg p-1}
+                ${ isOwn ? '-left-20' : '-right-20' }`
               `}>
                 <Button variant="ghost" size="sm">
                   <Reply className="h-3 w-3" />
@@ -728,7 +725,7 @@ const MessageItem = ( { message, isOwn, getStatusIcon } ) =>
               </div>
             ) }
           </div>
-
+`
           <div className={ `flex items-center space-x-1 mt-1 px-1 ${ isOwn ? 'flex-row-reverse' : '' }` }>
             <span className="text-xs text-slate-500">
               { format( message.timestamp, 'HH:mm' ) }
@@ -737,9 +734,9 @@ const MessageItem = ( { message, isOwn, getStatusIcon } ) =>
           </div>
 
           {/* Reações */ }
-          { message.reactions && message.reactions.length > 0 && (
+          ({ message.reactions && message.reactions.length > 0 && (
             <div className="flex items-center space-x-1 mt-1">
-              { message.reactions.map( ( reaction, index ) => (
+              { message.reactions.map( ( reaction, index  }) => (
                 <Badge key={ index } variant="secondary" className="text-xs">
                   { reaction.emoji } { reaction.users.length }
                 </Badge>
@@ -753,3 +750,4 @@ const MessageItem = ( { message, isOwn, getStatusIcon } ) =>
 };
 
 export default ModernChatInterface;
+`

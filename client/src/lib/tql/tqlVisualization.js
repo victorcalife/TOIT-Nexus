@@ -85,7 +85,7 @@ class VisualizationEngine {
         console.log('📈 Configurando gráfico:', widget.chartType);
         
         const chartGenerator = this.chartTypes[widget.chartType];
-        if (!chartGenerator) {
+        if (!chartGenerator) {`
             throw new Error(`Tipo de gráfico não suportado: ${widget.chartType}`);
         }
         
@@ -504,7 +504,7 @@ class VisualizationEngine {
         const value = data.value || 0;
         const formattedValue = this.formatValue(value, widget.config);
         const color = this.evaluateKPIConditions(value, widget.config.conditions);
-        
+        `
         return `
         <div class="kpi-widget" data-widget-id="${widget.id}">
             <div class="kpi-title">${widget.title}</div>
@@ -513,14 +513,14 @@ class VisualizationEngine {
             </div>
             <div class="kpi-trend">
                 <!-- Trend indicator aqui -->
-            </div>
+            </div>`
         </div>`;
     }
     
     /**
      * Gera HTML para gráfico
      */
-    generateChartHTML(widget, data) {
+    generateChartHTML(widget, data) {`
         return `
         <div class="chart-widget" data-widget-id="${widget.id}">
             <div class="chart-header">
@@ -531,7 +531,7 @@ class VisualizationEngine {
                         width="${widget.config.width || 600}" 
                         height="${widget.config.height || 400}">
                 </canvas>
-            </div>
+            </div>`
         </div>`;
     }
     
@@ -544,30 +544,30 @@ class VisualizationEngine {
         }
         
         const headers = Object.keys(data[0]);
-        
+        `
         let html = `
         <div class="table-widget" data-widget-id="${widget.id}">
             <div class="table-header">
                 <input type="text" placeholder="Buscar..." class="table-search">
             </div>
             <table class="data-table">
-                <thead>
+                <thead>`
                     <tr>`;
         
-        headers.forEach(header => {
+        headers.forEach(header => {`
             html += `<th data-sort="${header}">${header}</th>`;
         });
-        
+        `
         html += `</tr></thead><tbody>`;
         
         data.forEach(row => {
             html += '<tr>';
-            headers.forEach(header => {
+            headers.forEach(header => {`
                 html += `<td>${row[header] || ''}</td>`;
             });
             html += '</tr>';
         });
-        
+        `
         html += `</tbody></table></div>`;
         
         return html;
@@ -579,14 +579,14 @@ class VisualizationEngine {
     generateGaugeHTML(widget, data) {
         const value = data.value || 0;
         const formattedValue = this.formatValue(value, widget.config);
-        
+        `
         return `
         <div class="gauge-widget" data-widget-id="${widget.id}">
             <div class="gauge-title">${widget.title}</div>
             <div class="gauge-container">
                 <canvas id="gauge-${widget.id}" width="200" height="120"></canvas>
                 <div class="gauge-value">${formattedValue}</div>
-            </div>
+            </div>`
         </div>`;
     }
     
@@ -603,7 +603,7 @@ class VisualizationEngine {
                 style: 'currency',
                 currency: config.currency === 'R$' ? 'BRL' : 'USD'
             }).format(value);
-        } else if (config.format === 'percentage') {
+        } else if (config.format === 'percentage') {`
             return `${value.toFixed(1)}%`;
         } else if (config.format === 'decimal') {
             return value.toFixed(2);
@@ -625,7 +625,7 @@ class VisualizationEngine {
     /**
      * Gera CSS para widgets
      */
-    generateWidgetCSS() {
+    generateWidgetCSS() {`
         return `
         .kpi-widget {
             background: white;
@@ -711,9 +711,9 @@ class VisualizationEngine {
             transform: translateX(-50%);
             font-size: 24px;
             font-weight: 700;
-            color: #1e293b;
+            color: #1e293b;`
         }`;
     }
 }
 
-module.exports = { VisualizationEngine };
+module.exports = { VisualizationEngine };`

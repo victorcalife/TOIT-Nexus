@@ -12,7 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CheckboxWithLabel } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   BarChart, 
   Bar, 
   LineChart, 
@@ -27,9 +27,9 @@ import {
   Legend, 
   ResponsiveContainer,
   AreaChart,
-  Area
+  Area }
 } from 'recharts';
-import { 
+import {  
   FileText, 
   Download, 
   Filter,
@@ -52,7 +52,7 @@ import {
   Edit,
   Trash2,
   Plus,
-  Search
+  Search }
 } from 'lucide-react';
 
 const AdvancedReports = () => {
@@ -110,10 +110,10 @@ const AdvancedReports = () => {
    */
   const generateReport = async (reportId, customFilters = {}) => {
     setLoading(true);
-    try {
+    try {`
       const response = await fetch(`/api/reports/generate/${reportId}`, {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -132,7 +132,7 @@ const AdvancedReports = () => {
       setReportData(data);
       
       toast({
-        title: "Relatório gerado",
+        title: "Relatório gerado",`
         description: `Relatório ${data.name} gerado com sucesso`,
       });
     } catch (error) {
@@ -154,10 +154,10 @@ const AdvancedReports = () => {
     if (!reportData) return;
 
     setLoading(true);
-    try {
+    try {`
       const response = await fetch(`/api/reports/export/${reportData.id}`, {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -176,7 +176,7 @@ const AdvancedReports = () => {
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.href = url;
+      a.href = url;`
       a.download = `${reportData.name}_${new Date().toISOString().split('T')[0]}.${format}`;
       document.body.appendChild(a);
       a.click();
@@ -184,7 +184,7 @@ const AdvancedReports = () => {
       document.body.removeChild(a);
       
       toast({
-        title: "Relatório exportado",
+        title: "Relatório exportado",`
         description: `Relatório exportado em formato ${format.toUpperCase()}`,
       });
     } catch (error) {
@@ -206,7 +206,7 @@ const AdvancedReports = () => {
     try {
       const response = await fetch('/api/reports/save', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -279,13 +279,13 @@ const AdvancedReports = () => {
                 data={data}
                 cx="50%"
                 cy="50%"
-                labelLine={false}
+                labelLine={false}`
                 label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                 outerRadius={120}
                 fill="#8884d8"
                 dataKey="value"
               >
-                {data.map((entry, index) => (
+                ({ data.map((entry, index }) => (`
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
@@ -316,21 +316,20 @@ const AdvancedReports = () => {
   /**
    * RENDERIZAR MÉTRICAS RESUMO
    */
-  const renderSummaryMetrics = () => {
-    if (!reportData || !reportData.summary) return null;
+  const renderSummaryMetrics = () => ({ if (!reportData || !reportData.summary) return null;
 
     return (
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        {reportData.summary.map((metric, index) => (
+        {reportData.summary.map((metric, index }) => (
           <Card key={index}>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">{metric.label}</p>
                   <p className="text-2xl font-bold text-gray-900">{metric.value}</p>
-                  {metric.change && (
+                  {metric.change && (`
                     <div className={`flex items-center mt-1 ${
-                      metric.change > 0 ? 'text-green-600' : 'text-red-600'
+                      metric.change > 0 ? 'text-green-600' : 'text-red-600'`}
                     }`}>
                       {metric.change > 0 ? (
                         <TrendingUp className="h-4 w-4 mr-1" />
@@ -342,7 +341,7 @@ const AdvancedReports = () => {
                       </span>
                     </div>
                   )}
-                </div>
+                </div>`
                 <div className={`p-3 rounded-full ${metric.bgColor || 'bg-blue-100'}`}>
                   {metric.icon || <BarChart3 className="h-6 w-6 text-blue-600" />}
                 </div>
@@ -357,8 +356,7 @@ const AdvancedReports = () => {
   /**
    * RENDERIZAR TABELA DE DADOS
    */
-  const renderDataTable = () => {
-    if (!reportData || !reportData.tableData) return null;
+  const renderDataTable = () => ({ if (!reportData || !reportData.tableData) return null;
 
     return (
       <Card>
@@ -370,7 +368,7 @@ const AdvancedReports = () => {
             <table className="w-full">
               <thead>
                 <tr className="border-b">
-                  {reportData.tableHeaders.map((header, index) => (
+                  {reportData.tableHeaders.map((header, index }) => (
                     <th key={index} className="text-left py-3 px-4 font-medium text-gray-900">
                       {header}
                     </th>
@@ -378,9 +376,9 @@ const AdvancedReports = () => {
                 </tr>
               </thead>
               <tbody>
-                {reportData.tableData.map((row, index) => (
+                ({ reportData.tableData.map((row, index }) => (
                   <tr key={index} className="border-b hover:bg-gray-50">
-                    {row.map((cell, cellIndex) => (
+                    ({ row.map((cell, cellIndex }) => (
                       <td key={cellIndex} className="py-3 px-4 text-gray-700">
                         {cell}
                       </td>
@@ -419,7 +417,7 @@ const AdvancedReports = () => {
             </div>
             <div className="flex gap-3">
               <Button
-                onClick={() => setShowCreateModal(true)}
+                onClick=({ ( }) => setShowCreateModal(true)}
                 className="bg-blue-600 hover:bg-blue-700"
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -438,14 +436,14 @@ const AdvancedReports = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  {reports.map((report) => (
+                  ({ reports.map((report }) => (
                     <div
                       key={report.id}
-                      onClick={() => setSelectedReport(report)}
+                      onClick=({ ( }) => setSelectedReport(report)}`
                       className={`p-3 rounded-lg cursor-pointer transition-colors ${
                         selectedReport?.id === report.id
                           ? 'bg-blue-100 border-blue-200'
-                          : 'hover:bg-gray-100'
+                          : 'hover:bg-gray-100'`}
                       }`}
                     >
                       <div className="flex items-center gap-3">
@@ -468,8 +466,7 @@ const AdvancedReports = () => {
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                   <Filter className="h-5 w-5" />
-                  Filtros
-                </CardTitle>
+
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
@@ -478,7 +475,7 @@ const AdvancedReports = () => {
                   </label>
                   <select
                     value={filters.dateRange}
-                    onChange={(e) => setFilters(prev => ({ ...prev, dateRange: e.target.value }))}
+                    onChange=({ (e }) => setFilters(prev => ({ ...prev, dateRange: e.target.value }))}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="today">Hoje</option>
@@ -499,7 +496,7 @@ const AdvancedReports = () => {
                       <Input
                         type="date"
                         value={filters.startDate}
-                        onChange={(e) => setFilters(prev => ({ ...prev, startDate: e.target.value }))}
+                        onChange=({ (e }) => setFilters(prev => ({ ...prev, startDate: e.target.value }))}
                       />
                     </div>
                     <div>
@@ -509,7 +506,7 @@ const AdvancedReports = () => {
                       <Input
                         type="date"
                         value={filters.endDate}
-                        onChange={(e) => setFilters(prev => ({ ...prev, endDate: e.target.value }))}
+                        onChange=({ (e }) => setFilters(prev => ({ ...prev, endDate: e.target.value }))}
                       />
                     </div>
                   </>
@@ -523,28 +520,28 @@ const AdvancedReports = () => {
                     <Button
                       variant={chartType === 'bar' ? 'default' : 'outline'}
                       size="sm"
-                      onClick={() => setChartType('bar')}
+                      onClick=({ ( }) => setChartType('bar')}
                     >
                       <BarChart3 className="h-4 w-4" />
                     </Button>
                     <Button
                       variant={chartType === 'line' ? 'default' : 'outline'}
                       size="sm"
-                      onClick={() => setChartType('line')}
+                      onClick=({ ( }) => setChartType('line')}
                     >
                       <LineChartIcon className="h-4 w-4" />
                     </Button>
                     <Button
                       variant={chartType === 'pie' ? 'default' : 'outline'}
                       size="sm"
-                      onClick={() => setChartType('pie')}
+                      onClick=({ ( }) => setChartType('pie')}
                     >
                       <PieChartIcon className="h-4 w-4" />
                     </Button>
                     <Button
                       variant={chartType === 'area' ? 'default' : 'outline'}
                       size="sm"
-                      onClick={() => setChartType('area')}
+                      onClick=({ ( }) => setChartType('area')}
                     >
                       <Activity className="h-4 w-4" />
                     </Button>
@@ -552,7 +549,7 @@ const AdvancedReports = () => {
                 </div>
 
                 <Button
-                  onClick={() => selectedReport && generateReport(selectedReport.id)}
+                  onClick=({ ( }) => selectedReport && generateReport(selectedReport.id)}
                   disabled={!selectedReport || loading}
                   className="w-full"
                 >
@@ -590,28 +587,25 @@ const AdvancedReports = () => {
                       <div className="flex gap-2">
                         <Button
                           variant="outline"
-                          onClick={() => exportReport('pdf')}
+                          onClick=({ ( }) => exportReport('pdf')}
                           disabled={loading}
                         >
                           <Download className="h-4 w-4 mr-2" />
-                          PDF
-                        </Button>
+
                         <Button
                           variant="outline"
-                          onClick={() => exportReport('excel')}
+                          onClick=({ ( }) => exportReport('excel')}
                           disabled={loading}
                         >
                           <Download className="h-4 w-4 mr-2" />
-                          Excel
-                        </Button>
+
                         <Button
                           variant="outline"
-                          onClick={() => exportReport('csv')}
+                          onClick=({ ( }) => exportReport('csv')}
                           disabled={loading}
                         >
                           <Download className="h-4 w-4 mr-2" />
-                          CSV
-                        </Button>
+
                       </div>
                     </div>
                   </CardHeader>
@@ -654,3 +648,4 @@ const AdvancedReports = () => {
 };
 
 export default AdvancedReports;
+`

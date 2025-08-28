@@ -11,7 +11,46 @@ import { Badge } from "@/components/ui/badge";
 import { Brain, Settings, Zap, TrendingUp, AlertTriangle, CheckCircle, Activity } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-= useToast();
+// Remove duplicate toast declaration since it's already declared below
+
+  const [config, setConfig] = useState({
+    adaptiveEngine: {
+      enabled: true,
+      sensitivity: 70,
+      autoApply: false,
+      learningRate: 15
+    },
+    behaviorAnalysis: {
+      enabled: true,
+      trackingLevel: 'detailed',
+      anomalyDetection: true,
+      predictionHorizon: 30
+    },
+    kpiAdaptation: {
+      enabled: true,
+      autoGenerate: false,
+      recalculationFrequency: 'weekly',
+      confidenceThreshold: 80
+    },
+    workflowOptimization: {
+      enabled: true,
+      autoSuggest: true,
+      ruleGeneration: false,
+      performanceTracking: true
+    }
+  });
+
+  const [metrics, setMetrics] = useState({
+    accuracy: 0,
+    predictions: 0,
+    adaptations: 0,
+    lastUpdate: new Date().toISOString(),
+    status: 'good'
+  });
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+const { toast } = useToast();
 
   useEffect(() => {
     loadConfiguration();
@@ -29,7 +68,7 @@ import { useToast } from "@/hooks/use-toast";
         }
       }
     } catch (error) {
-      console.error('Erro ao carregar configuração, error);
+      console.error('Erro ao carregar configuração:', error);
     } finally {
       setIsLoading(false);
     }
@@ -42,15 +81,16 @@ import { useToast } from "@/hooks/use-toast";
         const data = await response.json();
         if (data.success && data.data) {
           setMetrics({
-            accuracy,
-            predictions,
-            adaptations,
-            lastUpdate).toISOString(),
-            status);
+            accuracy: data.data.accuracy || 0,
+            predictions: data.data.predictions || 0,
+            adaptations: data.data.adaptations || 0,
+            lastUpdate: data.data.lastUpdate || new Date().toISOString(),
+            status: data.data.status || 'good'
+          });
         }
       }
     } catch (error) {
-      console.error('Erro ao carregar métricas, error);
+      console.error('Erro ao carregar métricas:', error);
     }
   };
 
@@ -58,26 +98,27 @@ import { useToast } from "@/hooks/use-toast";
     try {
       setIsSaving(true);
       const response = await fetch('/api/adaptive-engine/configuration', {
-        method,
-        headers,
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
         },
-        body),
+        body: JSON.stringify(config)
       });
 
       if (response.ok) {
         toast({
-          title,
-          description,
+          title: 'Configuração salva',
+          description: 'As configurações foram salvas com sucesso.'
         });
       } else {
         throw new Error('Erro ao salvar configuração');
       }
     } catch (error) {
-      console.error('Erro ao salvar, error);
+      console.error('Erro ao salvar:', error);
       toast({
-        title,
-        description,
-        variant,
+        title: 'Erro',
+        description: 'Não foi possível salvar as configurações.',
+        variant: 'destructive'
       });
     } finally {
       setIsSaving(false);
@@ -88,24 +129,24 @@ import { useToast } from "@/hooks/use-toast";
     try {
       setIsLoading(true);
       const response = await fetch('/api/adaptive-engine/execute-cycle', {
-        method,
+        method: 'POST'
       });
 
       if (response.ok) {
         toast({
-          title,
-          description,
+          title: 'Ciclo executado',
+          description: 'O ciclo de adaptação foi executado com sucesso.'
         });
         await loadMetrics();
       } else {
         throw new Error('Erro ao executar ciclo');
       }
     } catch (error) {
-      console.error('Erro ao executar ciclo, error);
+      console.error('Erro ao executar ciclo:', error);
       toast({
-        title,
-        description,
-        variant,
+        title: 'Erro',
+        description: 'Não foi possível executar o ciclo de adaptação.',
+        variant: 'destructive'
       });
     } finally {
       setIsLoading(false);
@@ -120,7 +161,12 @@ import { useToast } from "@/hooks/use-toast";
         return <Activity className="h-4 w-4 text-blue-500" />;
       case 'needs_attention':
         return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
-      default) => {
+      default:
+        return <Activity className="h-4 w-4 text-gray-500" />;
+    }
+  };
+
+  const getStatusBadgeClass = (status) => {
     switch (status) {
       case 'optimal':
         return 'bg-green-100 text-green-800';
@@ -128,7 +174,21 @@ import { useToast } from "@/hooks/use-toast";
         return 'bg-blue-100 text-blue-800';
       case 'needs_attention':
         return 'bg-yellow-100 text-yellow-800';
-      default)}>
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Engine Adaptativo</h1>
+          <p className="text-gray-600">Configure e monitore o sistema de adaptação automática</p>
+        </div>
+        <div className="flex items-center space-x-4">
+          <Badge className={getStatusBadgeClass(metrics.status)}>
             {getStatusIcon(metrics.status)}
             <span className="ml-1 capitalize">{metrics.status.replace('_', ' ')}</span>
           </Badge>
@@ -140,7 +200,24 @@ import { useToast } from "@/hooks/use-toast";
       </div>
 
       {/* Métricas */}
-      <div className="grid grid-cols-1 md)}</p>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Precisão</p>
+                <p className="text-2xl font-bold text-green-600">{metrics.accuracy}%</p>
+              </div>
+              <TrendingUp className="h-8 w-8 text-green-500" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Predições</p>
+                <p className="text-2xl font-bold text-blue-600">{metrics.predictions}</p>
               </div>
               <Brain className="h-8 w-8 text-blue-500" />
             </div>
@@ -214,16 +291,21 @@ import { useToast } from "@/hooks/use-toast";
                   onCheckedChange={(checked) =>
                     setConfig(prev => ({
                       ...prev,
-                      adaptiveEngine, enabled))
+                      adaptiveEngine: { ...prev.adaptiveEngine, enabled: checked }
+                    }))
                   }
                 />
               </div>
 
               <div className="space-y-2">
-                <Label>Sensibilidade de Adaptação) =>
+                <Label>Sensibilidade de Adaptação</Label>
+                <Slider
+                  value={[config.adaptiveEngine.sensitivity]}
+                  onValueChange={(value) =>
                     setConfig(prev => ({
                       ...prev,
-                      adaptiveEngine, sensitivity))
+                      adaptiveEngine: { ...prev.adaptiveEngine, sensitivity: value[0] }
+                    }))
                   }
                   max={100}
                   min={10}
@@ -246,16 +328,21 @@ import { useToast } from "@/hooks/use-toast";
                   onCheckedChange={(checked) =>
                     setConfig(prev => ({
                       ...prev,
-                      adaptiveEngine, autoApply))
+                      adaptiveEngine: { ...prev.adaptiveEngine, autoApply: checked }
+                    }))
                   }
                 />
               </div>
 
               <div className="space-y-2">
-                <Label>Taxa de Aprendizado) =>
+                <Label>Taxa de Aprendizado</Label>
+                <Slider
+                  value={[config.adaptiveEngine.learningRate]}
+                  onValueChange={(value) =>
                     setConfig(prev => ({
                       ...prev,
-                      adaptiveEngine, learningRate))
+                      adaptiveEngine: { ...prev.adaptiveEngine, learningRate: value[0] }
+                    }))
                   }
                   max={50}
                   min={1}
@@ -291,7 +378,8 @@ import { useToast } from "@/hooks/use-toast";
                   onCheckedChange={(checked) =>
                     setConfig(prev => ({
                       ...prev,
-                      behaviorAnalysis, enabled))
+                      behaviorAnalysis: { ...prev.behaviorAnalysis, enabled: checked }
+                    }))
                   }
                 />
               </div>
@@ -303,7 +391,8 @@ import { useToast } from "@/hooks/use-toast";
                   onValueChange={(value) =>
                     setConfig(prev => ({
                       ...prev,
-                      behaviorAnalysis, trackingLevel))
+                      behaviorAnalysis: { ...prev.behaviorAnalysis, trackingLevel: value }
+                    }))
                   }
                 >
                   <SelectTrigger>
@@ -328,16 +417,21 @@ import { useToast } from "@/hooks/use-toast";
                   onCheckedChange={(checked) =>
                     setConfig(prev => ({
                       ...prev,
-                      behaviorAnalysis, anomalyDetection))
+                      behaviorAnalysis: { ...prev.behaviorAnalysis, anomalyDetection: checked }
+                    }))
                   }
                 />
               </div>
 
               <div className="space-y-2">
-                <Label>Horizonte de Predição) =>
+                <Label>Horizonte de Predição (dias)</Label>
+                <Slider
+                  value={[config.behaviorAnalysis.predictionHorizon]}
+                  onValueChange={(value) =>
                     setConfig(prev => ({
                       ...prev,
-                      behaviorAnalysis, predictionHorizon))
+                      behaviorAnalysis: { ...prev.behaviorAnalysis, predictionHorizon: value[0] }
+                    }))
                   }
                   max={90}
                   min={7}
@@ -370,7 +464,8 @@ import { useToast } from "@/hooks/use-toast";
                   onCheckedChange={(checked) =>
                     setConfig(prev => ({
                       ...prev,
-                      kpiAdaptation, enabled))
+                      kpiAdaptation: { ...prev.kpiAdaptation, enabled: checked }
+                    }))
                   }
                 />
               </div>
@@ -386,7 +481,8 @@ import { useToast } from "@/hooks/use-toast";
                   onCheckedChange={(checked) =>
                     setConfig(prev => ({
                       ...prev,
-                      kpiAdaptation, autoGenerate))
+                      kpiAdaptation: { ...prev.kpiAdaptation, autoGenerate: checked }
+                    }))
                   }
                 />
               </div>
@@ -398,7 +494,8 @@ import { useToast } from "@/hooks/use-toast";
                   onValueChange={(value) =>
                     setConfig(prev => ({
                       ...prev,
-                      kpiAdaptation, recalculationFrequency))
+                      kpiAdaptation: { ...prev.kpiAdaptation, recalculationFrequency: value }
+                    }))
                   }
                 >
                   <SelectTrigger>
@@ -413,10 +510,14 @@ import { useToast } from "@/hooks/use-toast";
               </div>
 
               <div className="space-y-2">
-                <Label>Limite de Confiança) =>
+                <Label>Limite de Confiança (%)</Label>
+                <Slider
+                  value={[config.kpiAdaptation.confidenceThreshold]}
+                  onValueChange={(value) =>
                     setConfig(prev => ({
                       ...prev,
-                      kpiAdaptation, confidenceThreshold))
+                      kpiAdaptation: { ...prev.kpiAdaptation, confidenceThreshold: value[0] }
+                    }))
                   }
                   max={95}
                   min={50}
@@ -449,7 +550,8 @@ import { useToast } from "@/hooks/use-toast";
                   onCheckedChange={(checked) =>
                     setConfig(prev => ({
                       ...prev,
-                      workflowOptimization, enabled))
+                      workflowOptimization: { ...prev.workflowOptimization, enabled: checked }
+                    }))
                   }
                 />
               </div>
@@ -465,7 +567,8 @@ import { useToast } from "@/hooks/use-toast";
                   onCheckedChange={(checked) =>
                     setConfig(prev => ({
                       ...prev,
-                      workflowOptimization, autoSuggest))
+                      workflowOptimization: { ...prev.workflowOptimization, autoSuggest: checked }
+                    }))
                   }
                 />
               </div>
@@ -481,7 +584,8 @@ import { useToast } from "@/hooks/use-toast";
                   onCheckedChange={(checked) =>
                     setConfig(prev => ({
                       ...prev,
-                      workflowOptimization, ruleGeneration))
+                      workflowOptimization: { ...prev.workflowOptimization, ruleGeneration: checked }
+                    }))
                   }
                 />
               </div>
@@ -497,7 +601,8 @@ import { useToast } from "@/hooks/use-toast";
                   onCheckedChange={(checked) =>
                     setConfig(prev => ({
                       ...prev,
-                      workflowOptimization, performanceTracking))
+                      workflowOptimization: { ...prev.workflowOptimization, performanceTracking: checked }
+                    }))
                   }
                 />
               </div>
@@ -509,7 +614,7 @@ import { useToast } from "@/hooks/use-toast";
       {/* Botões de ação */}
       <div className="flex justify-end space-x-4">
         <Button variant="outline" onClick={loadConfiguration} disabled={isLoading}>
-          Resetar
+          {isLoading ? "Carregando..." : "Recarregar"}
         </Button>
         <Button onClick={saveConfiguration} disabled={isSaving}>
           {isSaving ? "Salvando..." : "Salvar Configurações"}
@@ -517,4 +622,4 @@ import { useToast } from "@/hooks/use-toast";
       </div>
     </div>
   );
-}
+

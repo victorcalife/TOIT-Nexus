@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   Play, 
   Save, 
   Download, 
@@ -30,7 +30,7 @@ import {
   Copy,
   Edit,
   Trash2,
-  Plus
+  Plus }
 } from 'lucide-react';
 
 // Importar sistema quântico integrado
@@ -69,13 +69,12 @@ export default function QueryBuilder() {
     setupMilaObservation();
   }, []);
 
-  const initializeQuantumQueryBuilder = async () => {
-    try {
+  const initializeQuantumQueryBuilder = async () => ({ try {
       console.log('🔍⚛️ Inicializando Query Builder Quântico...');
       
       // Conectar ao sistema quântico
       quantumSystemCore.connectModule('query_builder', {
-        receiveQuantumUpdate: (result) => {
+        receiveQuantumUpdate: (result }) => {
           if (result.automaticInsights) {
             setMilaInsights(prev => [...prev, ...result.automaticInsights]);
           }
@@ -104,9 +103,8 @@ export default function QueryBuilder() {
     }
   };
 
-  const setupMilaObservation = () => {
-    // Observar mudanças na query
-    const queryObserver = (newQuery) => {
+  const setupMilaObservation = () => ({ // Observar mudanças na query
+    const queryObserver = (newQuery }) => {
       milaOmnipresence.observeUserInteraction({
         type: 'query_editing',
         module: 'query-builder',
@@ -123,9 +121,8 @@ export default function QueryBuilder() {
 
     // Debounce para não sobrecarregar
     let timeout;
-    const debouncedObserver = (newQuery) => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => queryObserver(newQuery), 1000);
+    const debouncedObserver = (newQuery) => ({ clearTimeout(timeout);
+      timeout = setTimeout(( }) => queryObserver(newQuery), 1000);
     };
 
     // Observar mudanças na query
@@ -221,7 +218,7 @@ export default function QueryBuilder() {
     try {
       const response = await fetch('/api/query/execute', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -266,12 +263,11 @@ export default function QueryBuilder() {
           setQuery(bestOptimization.optimizedQuery);
           
           toast({
-            title: "🧠 MILA otimizou sua query",
+            title: "🧠 MILA otimizou sua query",`
             description: `Melhoria estimada: ${(bestOptimization.improvement * 100).toFixed(0)}%`,
             action: (
-              <Button size="sm" onClick={() => executeQuery()}>
-                Executar
-              </Button>
+              <Button size="sm" onClick=({ ( }) => executeQuery()}>
+
             )
           });
         }
@@ -293,7 +289,7 @@ export default function QueryBuilder() {
     }
 
     try {
-      const savedQuery = {
+      const savedQuery = {`
         id: `query_${Date.now()}`,
         name: queryName,
         query,
@@ -306,7 +302,7 @@ export default function QueryBuilder() {
       // Salvar no workspace
       const response = await fetch('/api/queries', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -317,7 +313,7 @@ export default function QueryBuilder() {
         setSavedQueries(prev => [...prev, savedQuery]);
         
         toast({
-          title: "✅ Query salva",
+          title: "✅ Query salva",`
           description: `Query "${queryName}" salva no workspace`
         });
 
@@ -327,7 +323,7 @@ export default function QueryBuilder() {
 
     } catch (error) {
       // Mock save
-      const savedQuery = {
+      const savedQuery = {`
         id: `query_${Date.now()}`,
         name: queryName,
         query,
@@ -339,7 +335,7 @@ export default function QueryBuilder() {
       setSavedQueries(prev => [...prev, savedQuery]);
       
       toast({
-        title: "✅ Query salva",
+        title: "✅ Query salva",`
         description: `Query "${queryName}" salva localmente`
       });
 
@@ -350,7 +346,7 @@ export default function QueryBuilder() {
   const loadDataSources = async () => {
     try {
       const response = await fetch('/api/data-sources', {
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
@@ -387,7 +383,7 @@ export default function QueryBuilder() {
   const loadSavedQueries = async () => {
     try {
       const response = await fetch('/api/queries', {
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
@@ -449,11 +445,10 @@ export default function QueryBuilder() {
         source: 'query_builder'
       });
 
-      toast({
-        title: "🔄 Criando Dashboard",
+      toast(({ title: "🔄 Criando Dashboard",
         description: "MILA está criando um dashboard baseado na sua query",
         action: (
-          <Button size="sm" onClick={() => window.location.href = '/dashboard'}>
+          <Button size="sm" onClick={( }) => window.location.href = '/dashboard'}>
             Ver Dashboard
           </Button>
         )
@@ -488,7 +483,7 @@ export default function QueryBuilder() {
     const data = [];
     for (let i = 1; i <= 50; i++) {
       data.push({
-        id: i,
+        id: i,`
         name: `Item ${i}`,
         value: Math.floor(Math.random() * 1000),
         created_at: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString()
@@ -518,7 +513,7 @@ export default function QueryBuilder() {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => setQuantumOptimized(!quantumOptimized)}
+            onClick=({ ( }) => setQuantumOptimized(!quantumOptimized)}
           >
             <Atom className="w-4 h-4 mr-2" />
             Quantum: {quantumOptimized ? 'ON' : 'OFF'}
@@ -532,7 +527,7 @@ export default function QueryBuilder() {
       </div>
 
       {/* MILA Insights */}
-      {milaInsights.length > 0 && (
+      ({ milaInsights.length > 0 && (
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -543,7 +538,7 @@ export default function QueryBuilder() {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {milaInsights.slice(-3).map((insight, index) => (
+              {milaInsights.slice(-3).map((insight, index }) => (
                 <div key={index} className="flex items-start justify-between p-3 border rounded-lg">
                   <div className="flex-1">
                     <h4 className="font-medium">{insight.title}</h4>
@@ -553,10 +548,9 @@ export default function QueryBuilder() {
                       <span className="text-xs">{(insight.confidence * 100).toFixed(0)}%</span>
                     </div>
                   </div>
-                  <Button size="sm" onClick={() => handleQuantumSuggestion(insight)}>
+                  <Button size="sm" onClick=({ ( }) => handleQuantumSuggestion(insight)}>
                     <Zap className="w-3 h-3 mr-1" />
-                    Aplicar
-                  </Button>
+
                 </div>
               ))}
             </div>
@@ -577,7 +571,7 @@ export default function QueryBuilder() {
                   <Label>Nome da Query</Label>
                   <Input
                     value={queryName}
-                    onChange={(e) => setQueryName(e.target.value)}
+                    onChange=({ (e }) => setQueryName(e.target.value)}
                     placeholder="Nome para salvar a query"
                   />
                 </div>
@@ -588,7 +582,7 @@ export default function QueryBuilder() {
                       <SelectValue placeholder="Selecionar fonte" />
                     </SelectTrigger>
                     <SelectContent>
-                      {dataSources.map((ds) => (
+                      ({ dataSources.map((ds }) => (
                         <SelectItem key={ds.id} value={ds.id}>
                           <div className="flex items-center gap-2">
                             <Database className="w-4 h-4" />
@@ -608,7 +602,7 @@ export default function QueryBuilder() {
                 <Label>Query SQL</Label>
                 <Textarea
                   value={query}
-                  onChange={(e) => setQuery(e.target.value)}
+                  onChange=({ (e }) => setQuery(e.target.value)}
                   placeholder="SELECT * FROM tabela WHERE..."
                   rows={8}
                   className="font-mono"
@@ -634,9 +628,7 @@ export default function QueryBuilder() {
                 <div className="flex gap-2">
                   <Button variant="outline" onClick={saveQuery}>
                     <Save className="w-4 h-4 mr-2" />
-                    Salvar
-                  </Button>
-                  
+
                   <Button onClick={executeQuery} disabled={isExecuting}>
                     {isExecuting ? (
                       <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
@@ -663,8 +655,7 @@ export default function QueryBuilder() {
                     </Button>
                     <Button size="sm" variant="outline">
                       <Download className="w-4 h-4 mr-2" />
-                      Exportar
-                    </Button>
+
                   </div>
                 </div>
               </CardHeader>
@@ -673,7 +664,7 @@ export default function QueryBuilder() {
                   <table className="w-full border-collapse border border-gray-300">
                     <thead>
                       <tr className="bg-gray-50">
-                        {queryResults.columns?.map((col) => (
+                        ({ queryResults.columns?.map((col }) => (
                           <th key={col} className="border border-gray-300 px-4 py-2 text-left">
                             {col}
                           </th>
@@ -681,9 +672,9 @@ export default function QueryBuilder() {
                       </tr>
                     </thead>
                     <tbody>
-                      {queryResults.rows?.slice(0, 20).map((row, index) => (
+                      ({ queryResults.rows?.slice(0, 20).map((row, index }) => (
                         <tr key={index} className="hover:bg-gray-50">
-                          {queryResults.columns?.map((col) => (
+                          ({ queryResults.columns?.map((col }) => (
                             <td key={col} className="border border-gray-300 px-4 py-2">
                               {row[col]}
                             </td>
@@ -713,11 +704,11 @@ export default function QueryBuilder() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                {savedQueries.map((savedQuery) => (
+                ({ savedQueries.map((savedQuery }) => (
                   <div
                     key={savedQuery.id}
                     className="p-3 border rounded-lg cursor-pointer hover:bg-gray-50"
-                    onClick={() => {
+                    onClick=({ ( }) => {
                       setQuery(savedQuery.query);
                       setSelectedDataSource(savedQuery.dataSource);
                       setQuantumOptimized(savedQuery.quantumOptimized);
@@ -731,8 +722,7 @@ export default function QueryBuilder() {
                       {savedQuery.quantumOptimized && (
                         <Badge variant="secondary" className="text-xs">
                           <Atom className="w-2 h-2 mr-1" />
-                          Quantum
-                        </Badge>
+
                       )}
                       <span className="text-xs text-muted-foreground">
                         {new Date(savedQuery.createdAt).toLocaleDateString()}
@@ -745,7 +735,7 @@ export default function QueryBuilder() {
           </Card>
 
           {/* MILA Suggestions */}
-          {milaSuggestions.length > 0 && (
+          ({ milaSuggestions.length > 0 && (
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -755,13 +745,12 @@ export default function QueryBuilder() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  {milaSuggestions.map((suggestion, index) => (
+                  {milaSuggestions.map((suggestion, index }) => (
                     <div key={index} className="p-2 border rounded text-sm">
                       <div className="font-medium">{suggestion.title}</div>
                       <div className="text-muted-foreground">{suggestion.description}</div>
-                      <Button size="sm" className="mt-2" onClick={() => handleQuantumSuggestion(suggestion)}>
-                        Aplicar
-                      </Button>
+                      <Button size="sm" className="mt-2" onClick=({ ( }) => handleQuantumSuggestion(suggestion)}>
+
                     </div>
                   ))}
                 </div>
@@ -773,3 +762,4 @@ export default function QueryBuilder() {
     </div>
   );
 }
+`

@@ -7,15 +7,15 @@
 import React, { useState, useEffect } from 'react';
 import { DashboardMLWidget } from '../DashboardMLWidget';
 import { MLCreditsWidget } from '../MLCreditsWidget';
-import { 
-  DollarSign, 
-  Users, 
-  ShoppingCart, 
-  TrendingUp,
-  Calendar,
+import {  
+
+
+
+
+
   BarChart3,
-  PieChart,
-  Activity
+
+ }
 } from 'lucide-react';
 
 /**
@@ -33,8 +33,7 @@ export function EnhancedDashboard() {
   const [mlInsights, setMLInsights] = useState([]);
 
   // Simular carregamento de dados do dashboard
-  useEffect(() => {
-    const generateDashboardData = () => {
+  useEffect(() => ({ const generateDashboardData = ( }) => {
       const days = selectedPeriod === '7d' ? 7 : selectedPeriod === '30d' ? 30 : 90;
       
       const salesData = [];
@@ -96,10 +95,9 @@ export function EnhancedDashboard() {
     const totalRevenue = revenue.reduce((sum, item) => sum + item.value, 0);
 
     // Calcular crescimento (últimos 7 dias vs 7 anteriores)
-    const getGrowth = (data) => {
-      if (data.length < 14) return 0;
+    const getGrowth = (data) => ({ if (data.length < 14) return 0;
       const recent = data.slice(-7).reduce((sum, item) => sum + item.value, 0);
-      const previous = data.slice(-14, -7).reduce((sum, item) => sum + item.value, 0);
+      const previous = data.slice(-14, -7).reduce((sum, item }) => sum + item.value, 0);
       return previous > 0 ? ((recent - previous) / previous) * 100 : 0;
     };
 
@@ -151,7 +149,7 @@ export function EnhancedDashboard() {
               
               <select
                 value={selectedPeriod}
-                onChange={(e) => setSelectedPeriod(e.target.value)}
+                onChange=({ (e }) => setSelectedPeriod(e.target.value)}
                 className="px-3 py-2 border border-gray-300 rounded-md text-sm"
               >
                 <option value="7d">Últimos 7 dias</option>
@@ -175,10 +173,10 @@ export function EnhancedDashboard() {
                 </p>
                 <div className="flex items-center mt-1">
                   <TrendingUp className={`w-4 h-4 mr-1 ${
-                    metrics.salesGrowth >= 0 ? 'text-green-600' : 'text-red-600'
-                  }`} />
+                    metrics.salesGrowth >= 0 ? 'text-green-600' : 'text-red-600'`}
+                  }`} />`
                   <span className={`text-sm ${
-                    metrics.salesGrowth >= 0 ? 'text-green-600' : 'text-red-600'
+                    metrics.salesGrowth >= 0 ? 'text-green-600' : 'text-red-600'`}
                   }`}>
                     {metrics.salesGrowth.toFixed(1)}%
                   </span>
@@ -195,12 +193,12 @@ export function EnhancedDashboard() {
                 <p className="text-2xl font-bold text-gray-900">
                   {metrics.totalUsers.toLocaleString()}
                 </p>
-                <div className="flex items-center mt-1">
+                <div className="flex items-center mt-1">`
                   <TrendingUp className={`w-4 h-4 mr-1 ${
-                    metrics.usersGrowth >= 0 ? 'text-green-600' : 'text-red-600'
-                  }`} />
+                    metrics.usersGrowth >= 0 ? 'text-green-600' : 'text-red-600'`}
+                  }`} />`
                   <span className={`text-sm ${
-                    metrics.usersGrowth >= 0 ? 'text-green-600' : 'text-red-600'
+                    metrics.usersGrowth >= 0 ? 'text-green-600' : 'text-red-600'`}
                   }`}>
                     {metrics.usersGrowth.toFixed(1)}%
                   </span>
@@ -217,12 +215,12 @@ export function EnhancedDashboard() {
                 <p className="text-2xl font-bold text-gray-900">
                   {metrics.totalOrders.toLocaleString()}
                 </p>
-                <div className="flex items-center mt-1">
+                <div className="flex items-center mt-1">`
                   <TrendingUp className={`w-4 h-4 mr-1 ${
-                    metrics.ordersGrowth >= 0 ? 'text-green-600' : 'text-red-600'
-                  }`} />
+                    metrics.ordersGrowth >= 0 ? 'text-green-600' : 'text-red-600'`}
+                  }`} />`
                   <span className={`text-sm ${
-                    metrics.ordersGrowth >= 0 ? 'text-green-600' : 'text-red-600'
+                    metrics.ordersGrowth >= 0 ? 'text-green-600' : 'text-red-600'`}
                   }`}>
                     {metrics.ordersGrowth.toFixed(1)}%
                   </span>
@@ -239,12 +237,12 @@ export function EnhancedDashboard() {
                 <p className="text-2xl font-bold text-gray-900">
                   R$ {metrics.totalRevenue.toLocaleString()}
                 </p>
-                <div className="flex items-center mt-1">
+                <div className="flex items-center mt-1">`
                   <TrendingUp className={`w-4 h-4 mr-1 ${
-                    metrics.revenueGrowth >= 0 ? 'text-green-600' : 'text-red-600'
-                  }`} />
+                    metrics.revenueGrowth >= 0 ? 'text-green-600' : 'text-red-600'`}
+                  }`} />`
                   <span className={`text-sm ${
-                    metrics.revenueGrowth >= 0 ? 'text-green-600' : 'text-red-600'
+                    metrics.revenueGrowth >= 0 ? 'text-green-600' : 'text-red-600'`}
                   }`}>
                     {metrics.revenueGrowth.toFixed(1)}%
                   </span>
@@ -332,7 +330,7 @@ export function EnhancedDashboard() {
         </div>
 
         {/* Insights ML recentes */}
-        {mlInsights.length > 0 && (
+        ({ mlInsights.length > 0 && (
           <div className="bg-white rounded-lg border shadow-sm">
             <div className="p-6 border-b border-gray-200">
               <h3 className="text-lg font-semibold text-gray-900">
@@ -341,7 +339,7 @@ export function EnhancedDashboard() {
             </div>
             <div className="p-6">
               <div className="space-y-4">
-                {mlInsights.map((insight) => (
+                {mlInsights.map((insight }) => (
                   <div key={insight.id} className="p-4 border border-gray-200 rounded-lg">
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center space-x-2">
@@ -372,3 +370,4 @@ export function EnhancedDashboard() {
 }
 
 export default EnhancedDashboard;
+`

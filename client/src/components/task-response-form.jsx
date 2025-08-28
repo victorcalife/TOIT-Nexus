@@ -12,16 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { TaskField } from '@/components/task-field-builder';
-import { 
-  Save, 
-  CheckCircle, 
-  AlertCircle, 
-  Star,
-  Upload,
-  Calendar,
-  Clock,
-  User,
-  MessageSquare
+import {   }
 } from 'lucide-react';
 
 ) {
@@ -55,7 +46,7 @@ import {
     // Type-specific validation
     switch (field.type) {
       case 'email':
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {`
           return `${field.label} deve ser um email válido`;
         }
         break;
@@ -63,26 +54,26 @@ import {
       case 'url':
         try {
           new URL(value);
-        } catch {
+        } catch (error) {`
           return `${field.label} deve ser uma URL válida`;
         }
         break;
       
       case 'number':
-        if (isNaN(Number(value))) {
+        if (isNaN(Number(value))) {`
           return `${field.label} deve ser um número`;
         }
-        if (field.validation?.min !== undefined && Number(value) < field.validation.min) {
+        if (field.validation?.min !== undefined && Number(value) < field.validation.min) {`
           return `${field.label} deve ser maior que ${field.validation.min}`;
         }
-        if (field.validation?.max !== undefined && Number(value) > field.validation.max) {
+        if (field.validation?.max !== undefined && Number(value) > field.validation.max) {`
           return `${field.label} deve ser menor que ${field.validation.max}`;
         }
         break;
       
       case 'select':
       case 'radio':
-        if (field.options && !field.options.includes(value)) {
+        if (field.options && !field.options.includes(value)) {`
           return `Valor inválido para ${field.label}`;
         }
         break;
@@ -90,7 +81,7 @@ import {
       case 'multiselect':
         if (field.options && Array.isArray(value)) {
           for (const item of value) {
-            if (!field.options.includes(item)) {
+            if (!field.options.includes(item)) {`
               return `Valor inválido para ${field.label}: ${item}`;
             }
           }
@@ -101,7 +92,7 @@ import {
     // Regex validation
     if (field.validation?.pattern && typeof value === 'string') {
       const regex = new RegExp(field.validation.pattern);
-      if (!regex.test(value)) {
+      if (!regex.test(value)) {`
         return field.validation.customMessage || `Formato inválido para ${field.label}`;
       }
     }
@@ -173,8 +164,7 @@ import {
     const condition = field.conditionalLogic.showIf;
     const fieldValue = responses[condition.fieldId];
 
-    switch (condition.operator) {
-      case 'equals':
+    switch (condition.operator) ({ case 'equals':
         return fieldValue === condition.value;
       case 'not_equals':
         return fieldValue !== condition.value;
@@ -184,7 +174,7 @@ import {
         return Number(fieldValue || 0) > Number(condition.value);
       case 'less_than':
         return Number(fieldValue || 0) < Number(condition.value);
-      default) => {
+      default }) => {
     if (!shouldShowField(field)) {
       return null;
     }
@@ -203,7 +193,7 @@ import {
             {...commonProps}
             type={field.type === 'text' ? 'text' : field.type}
             value={value || ''}
-            onChange={(e) => handleFieldChange(field.id, e.target.value)}
+            onChange=({ (e }) => handleFieldChange(field.id, e.target.value)}
             placeholder={field.placeholder}
             className={hasError ? 'border-red-500' : ''}
           />
@@ -215,7 +205,7 @@ import {
           <Textarea
             {...commonProps}
             value={value || ''}
-            onChange={(e) => handleFieldChange(field.id, e.target.value)}
+            onChange=({ (e }) => handleFieldChange(field.id, e.target.value)}
             placeholder={field.placeholder}
             className={hasError ? 'border-red-500' : ''}
             rows={3}
@@ -229,7 +219,7 @@ import {
             {...commonProps}
             type="number"
             value={value || ''}
-            onChange={(e) => handleFieldChange(field.id, e.target.value)}
+            onChange=({ (e }) => handleFieldChange(field.id, e.target.value)}
             placeholder={field.placeholder}
             min={field.validation?.min}
             max={field.validation?.max}
@@ -244,7 +234,7 @@ import {
             {...commonProps}
             type="date"
             value={value || ''}
-            onChange={(e) => handleFieldChange(field.id, e.target.value)}
+            onChange=({ (e }) => handleFieldChange(field.id, e.target.value)}
             className={hasError ? 'border-red-500' : ''}
           />
         );
@@ -256,7 +246,7 @@ import {
             {...commonProps}
             type="time"
             value={value || ''}
-            onChange={(e) => handleFieldChange(field.id, e.target.value)}
+            onChange=({ (e }) => handleFieldChange(field.id, e.target.value)}
             className={hasError ? 'border-red-500' : ''}
           />
         );
@@ -268,7 +258,7 @@ import {
             {...commonProps}
             type="datetime-local"
             value={value || ''}
-            onChange={(e) => handleFieldChange(field.id, e.target.value)}
+            onChange=({ (e }) => handleFieldChange(field.id, e.target.value)}
             className={hasError ? 'border-red-500' : ''}
           />
         );
@@ -279,7 +269,7 @@ import {
           <div className="flex items-center space-x-2">
             <Checkbox
               checked={!!value}
-              onCheckedChange={(checked) => handleFieldChange(field.id, checked)}
+              onCheckedChange=({ (checked }) => handleFieldChange(field.id, checked)}
               disabled={isReadOnly}
             />
             <Label className="text-sm">{field.label}</Label>
@@ -290,14 +280,14 @@ import {
       case 'radio':
         fieldElement = (
           <div className="space-y-2">
-            {field.options?.map((option, index) => (
+            ({ field.options?.map((option, index }) => (
               <div key={index} className="flex items-center space-x-2">
                 <input
                   type="radio"
                   name={field.id}
                   value={option}
                   checked={value === option}
-                  onChange={(e) => handleFieldChange(field.id, e.target.value)}
+                  onChange=({ (e }) => handleFieldChange(field.id, e.target.value)}
                   disabled={isReadOnly}
                 />
                 <label className="text-sm">{option}</label>
@@ -311,14 +301,14 @@ import {
         fieldElement = (
           <Select
             value={value || ''}
-            onValueChange={(newValue) => handleFieldChange(field.id, newValue)}
+            onValueChange=({ (newValue }) => handleFieldChange(field.id, newValue)}
             disabled={isReadOnly}
           >
             <SelectTrigger className={hasError ? 'border-red-500' : ''}>
               <SelectValue placeholder={field.placeholder || 'Selecione uma opção'} />
             </SelectTrigger>
             <SelectContent>
-              {field.options?.map((option, index) => (
+              ({ field.options?.map((option, index }) => (
                 <SelectItem key={index} value={option}>{option}</SelectItem>
               ))}
             </SelectContent>
@@ -329,11 +319,11 @@ import {
       case 'multiselect':
         fieldElement = (
           <div className="space-y-2 p-2 border rounded">
-            {field.options?.map((option, index) => (
+            ({ field.options?.map((option, index }) => (
               <div key={index} className="flex items-center space-x-2">
                 <Checkbox
                   checked={Array.isArray(value) && value.includes(option)}
-                  onCheckedChange={(checked) => {
+                  onCheckedChange=({ (checked }) => {
                     const currentValues = Array.isArray(value) ? value, option]
                       : currentValues.filter(v => v !== option);
                     handleFieldChange(field.id, newValues);
@@ -351,8 +341,8 @@ import {
         fieldElement = (
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
             <Upload className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-            <p className="text-sm text-gray-500">
-              {value ? `Arquivo) => {
+            <p className="text-sm text-gray-500">`
+              ({ value ? `Arquivo }) => {
                   const file = e.target.files?.[0];
                   if (file) {
                     handleFieldChange(field.id, file.name);
@@ -368,13 +358,13 @@ import {
       case 'rating':
         fieldElement = (
           <div className="flex space-x-1">
-            {[1, 2, 3, 4, 5].map((star) => (
+            ({ [1, 2, 3, 4, 5].map((star }) => (
               <Star
-                key={star}
+                key={star}`
                 className={`h-5 w-5 cursor-pointer ${
-                  star <= (value || 0) ? 'text-yellow-500 fill-current' : 'text-gray-300'
+                  star <= (value || 0) ? 'text-yellow-500 fill-current' : 'text-gray-300'`}
                 }`}
-                onClick={() => !isReadOnly && handleFieldChange(field.id, star)}
+                onClick=({ ( }) => !isReadOnly && handleFieldChange(field.id, star)}
               />
             ))}
           </div>
@@ -389,7 +379,7 @@ import {
               min={field.validation?.min || 0}
               max={field.validation?.max || 100}
               value={value || field.validation?.min || 0}
-              onChange={(e) => handleFieldChange(field.id, Number(e.target.value))}
+              onChange=({ (e }) => handleFieldChange(field.id, Number(e.target.value))}
               disabled={isReadOnly}
               className="w-full"
             />
@@ -429,7 +419,7 @@ import {
           <div className="flex items-center justify-between">
             <div className="space-y-2">
               <CardTitle className="flex items-center space-x-2">
-                <span>{task.title}</span>
+                <span>{task.title}</span>`
                 <Badge className={`${getPriorityColor(task.priority)} text-white`}>
                   {task.priority}
                 </Badge>
@@ -530,7 +520,7 @@ import {
             <div className="space-y-2">
               <Textarea
                 value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
+                onChange=({ (e }) => setNewComment(e.target.value)}
                 placeholder="Adicione um comentário..."
                 rows={2}
               />
@@ -548,9 +538,9 @@ import {
 
           {/* Comments List */}
           <ScrollArea className="h-48">
-            {task.comments.length === 0 ? (
+            ({ task.comments.length === 0 ? (
               <p className="text-gray-500 text-sm">Nenhum comentário ainda.</p>
-            ) {task.comments.map((comment) => (
+            ) {task.comments.map((comment }) => (
                   <div key={comment.id} className="space-y-1">
                     <div className="flex items-center space-x-2">
                       <span className="font-medium text-sm">{comment.userName}</span>
@@ -568,4 +558,4 @@ import {
       </Card>
     </div>
   );
-}
+}`

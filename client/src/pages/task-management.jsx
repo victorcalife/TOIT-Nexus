@@ -5,11 +5,11 @@ import quantumSystemCore from '@/core/QuantumSystemCore';
 import milaOmnipresence from '@/core/MilaOmnipresence';
 import universalWorkflowEngine from '@/core/UniversalWorkflowEngine';
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import
-{
+import { 
   Plus, Users, CheckSquare, Clock, AlertTriangle, Play, Pause,
   Settings, Calendar, MessageCircle, BarChart3, Target,
   Timer, Activity, UserCheck, Zap, Filter
+ }
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -48,8 +48,7 @@ function TaskManagement()
   const [ templates, setTemplates ] = useState( [] );
   const { toast } = useToast();
 
-  const form = useForm < TaskTemplateForm > ( {
-    resolver),
+  const form = useForm < TaskTemplateForm > ( ({ resolver),
     defaultValues,
     description,
     category,
@@ -59,7 +58,7 @@ function TaskManagement()
     tags);
 
   const createTemplateMutation = useMutation( {
-    mutationFn) => {
+    mutationFn }) => {
     const response = await apiRequest( '/api/tasks/templates', {
       method,
       body)
@@ -89,13 +88,13 @@ return (
           Sistema completo de gerenciamento de tarefas
         </p>
       </div>
-      <Button onClick={ () => setOpen( true ) }>
+      <Button onClick={() => setOpen(true)}>
         <Plus className="h-4 w-4 mr-2" />
         Criar Template
       </Button>
     </div>
 
-    { templates.length === 0 && (
+    ({ templates.length === 0 && (
       <Card>
         <CardContent className="flex flex-col items-center justify-center py-12">
           <AlertTriangle className="h-12 w-12 text-muted-foreground mb-4" />
@@ -103,7 +102,7 @@ return (
           <p className="text-muted-foreground text-center mb-4">
             Comece criando seu primeiro template de tarefa para organizar o trabalho da sua equipe.
           </p>
-          <Button onClick={ () => setOpen( true ) }>
+          <Button onClick={() => setOpen(true)}>
             <Plus className="h-4 w-4 mr-2" />
             Criar Primeiro Template
           </Button>
@@ -194,7 +193,7 @@ return (
             </div>
 
             <div className="flex justify-end gap-3 pt-4">
-              <Button variant="outline" type="button" onClick={ () => setOpen( false ) }>
+              <Button variant="outline" type="button" onClick={() => setOpen(false)}>
                 Cancelar
               </Button>
               <Button type="submit" disabled={ createTemplateMutation.isPending }>

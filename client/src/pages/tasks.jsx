@@ -13,12 +13,44 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Textarea } from '../components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
-import { 
-  CheckSquare, Plus, Calendar, User, Flag, MessageSquare, 
-  Paperclip, MoreHorizontal, Filter, Search, Download,
-  Clock, Target, TrendingUp, BarChart3, Kanban, List,
-  Edit, Trash2, Eye, Users, AlertCircle, CheckCircle2
-} from 'lucide-react';
+import {  
+  CheckSquare, 
+  Plus, 
+  Calendar, 
+  User, 
+  Flag, 
+  MessageSquare, 
+  Paperclip, 
+  MoreHorizontal, 
+  Filter, 
+  Search, 
+  Download,
+  Clock, 
+  Target, 
+  TrendingUp, 
+  BarChart3, 
+  Kanban, 
+  List,
+  Edit, 
+  Trash2, 
+  Eye, 
+  Users, 
+  AlertCircle, 
+  CheckCircle2,
+  AlertTriangle,
+  Play,
+  Pause,
+  Settings,
+  Calendar,
+  MessageCircle,
+  BarChart3,
+  Target,
+  Timer,
+  Activity,
+  UserCheck,
+  Zap,
+  Filter
+ } from 'lucide-react';
 
 export default function Tasks() {
   const { user, tenant } = useAuth();
@@ -305,8 +337,8 @@ export default function Tasks() {
                             <div className="w-full bg-gray-200 rounded-full h-1.5">
                               <div 
                                 className="bg-blue-600 h-1.5 rounded-full transition-all"
-                                style={{ width: `${getTaskProgress(task)}%` }}
-                              ></div>
+                                  style={{ width: getTaskProgress(task) + '%' }}
+                              />
                             </div>
                           </div>
                         )}
@@ -400,7 +432,7 @@ export default function Tasks() {
                   <Badge className={getStatusColor(task.status)}>
                     {task.status.replace('_', ' ')}
                   </Badge>
-                  
+
                   <div className={`${getPriorityColor(task.priority)}`}>
                     {getPriorityIcon(task.priority)}
                   </div>
@@ -449,10 +481,8 @@ export default function Tasks() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
-              <h1 className="text-2xl font-bold text-gray-900">
-                Tarefas
-              </h1>
-              
+              <h1 className="text-2xl font-bold text-gray-900">Tarefas</h1>
+
               {/* Seletor de projeto */}
               <Select value={selectedProject} onValueChange={setSelectedProject}>
                 <SelectTrigger className="w-48">
@@ -498,7 +528,7 @@ export default function Tasks() {
                 <Filter className="h-4 w-4 mr-2" />
                 Filtros
               </Button>
-              
+
               <Button size="sm" onClick={() => setShowTaskModal(true)}>
                 <Plus className="h-4 w-4 mr-2" />
                 Nova Tarefa

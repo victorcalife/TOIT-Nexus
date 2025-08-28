@@ -47,15 +47,13 @@ const requireAuth = (req, res, next) => {
 /**
  * Configurar rotas TQL
  */
-function setupTQLRoutes(tqlController) {
-    
-    // ===== QUERIES =====
+function setupTQLRoutes(tqlController) ({ // ===== QUERIES =====
     
     /**
      * Executar query TQL
      * POST /api/tql/execute
      */
-    router.post('/execute', requireAuth, validateTQLRequest, async (req, res) => {
+    router.post('/execute', requireAuth, validateTQLRequest, async (req, res }) => {
         try {
             console.log('🔍 Executando query TQL');
             
@@ -279,7 +277,7 @@ function setupTQLRoutes(tqlController) {
                 SELECT table_name, table_schema 
                 FROM information_schema.tables 
                 WHERE table_schema NOT IN ('information_schema', 'pg_catalog')
-                ORDER BY table_name
+                ORDER BY table_name`
             `);
             
             const schemas = {};
@@ -287,12 +285,12 @@ function setupTQLRoutes(tqlController) {
             for (const table of tablesResult.rows) {
                 const tableName = table.table_name;
                 
-                // Descobrir colunas da tabela
+                // Descobrir colunas da tabela`
                 const columnsResult = await client.query(`
                     SELECT column_name, data_type, is_nullable
                     FROM information_schema.columns 
                     WHERE table_name = $1 AND table_schema = $2
-                    ORDER BY ordinal_position
+                    ORDER BY ordinal_position`
                 `, [tableName, table.table_schema]);
                 
                 schemas[tableName] = {
@@ -448,8 +446,7 @@ function setupTQLRoutes(tqlController) {
             console.log('🧪 Teste TQL com dados mock:', tql);
             
             // Mock database para testes
-            const mockDatabase = {
-                query: async (sql) => {
+            const mockDatabase = ({ query: async (sql }) => {
                     console.log('📊 Mock query:', sql);
                     // Retornar dados mock baseados na query
                     return {
@@ -538,4 +535,4 @@ function setupTQLRoutes(tqlController) {
     return router;
 }
 
-module.exports = setupTQLRoutes;
+module.exports = setupTQLRoutes;`

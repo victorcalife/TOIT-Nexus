@@ -14,7 +14,7 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { apiRequest } from '@/lib/queryClient';
-import { 
+import {  
   Calendar, 
   Plus, 
   RefreshCw, 
@@ -23,7 +23,7 @@ import {
   AlertCircle, 
   Clock,
   ExternalLink,
-  Settings
+  Settings }
 } from 'lucide-react';
 
 = useAuth();
@@ -70,8 +70,7 @@ import {
       const response = await apiRequest('POST', `/api/calendar/connect/${providerId}`);
       const data = await response.json();
       
-      if (data.success && data.authUrl) {
-        // Abrir janela popup para OAuth
+      if (data.success && data.authUrl) ({ // Abrir janela popup para OAuth
         const popup = window.open(
           data.authUrl,
           'calendar_auth',
@@ -84,12 +83,12 @@ import {
             clearInterval(checkClosed);
             setConnectingProvider(null);
             // Recarregar integrações após possível conexão
-            setTimeout(() => loadData(), 2000);
+            setTimeout(( }) => loadData(), 2000);
           }
         }, 1000);
         
         toast({
-          title,
+          title,`
           description)?.name}`,
         });
         
@@ -113,13 +112,13 @@ import {
     
     try {
       setSyncingIntegration(integrationId);
-      
+      `
       const response = await apiRequest('POST', `/api/calendar/sync/${integrationId}`);
       const data = await response.json();
       
       if (data.success) {
         toast({
-          title,
+          title,`
           description, ${data.result.errors} erros` : ''}`,
         });
         
@@ -177,7 +176,7 @@ import {
   const handleDisconnect = async (integrationId) => {
     if (!confirm('Tem certeza que deseja desconectar este calendário?')) return;
     
-    try {
+    try {`
       const response = await apiRequest('DELETE', `/api/calendar/disconnect/${integrationId}`);
       const data = await response.json();
       
@@ -255,11 +254,10 @@ import {
     }
   };
 
-  const getProviderIcon = (provider) => {
-    const icons = {
+  const getProviderIcon = (provider) => ({ const icons = {
       google,
       outlook, 
-      apple) => {
+      apple }) => {
     if (!dateString) return 'Nunca';
     return new Date(dateString).toLocaleString('pt-BR');
   };
@@ -301,9 +299,9 @@ import {
                 <Button
                   onClick={handleSyncAll}
                   disabled={syncingAll}
-                  className="bg-green-600 hover) {integrations.length > 0 && (
+                  className="bg-green-600 hover) ({ integrations.length > 0 && (
                 <Button
-                  onClick={() => setShowCreateEvent(!showCreateEvent)}
+                  onClick={( }) => setShowCreateEvent(!showCreateEvent)}
                   variant="outline"
                 >
                   <Plus className="h-4 w-4 mr-2" />
@@ -339,7 +337,7 @@ import {
                     <select
                       id="eventIntegration"
                       value={newEventData.integrationId}
-                      onChange={(e) => setNewEventData(prev => ({ ...prev, integrationId))}
+                      onChange=({ (e }) => setNewEventData(prev => ({ ...prev, integrationId))}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus).map(integration => (
                         <option key={integration.id} value={integration.id}>
                           {getProviderIcon(integration.provider)} {integration.calendarName}
@@ -360,7 +358,7 @@ import {
                       id="eventEnd"
                       type="datetime-local"
                       value={newEventData.endTime}
-                      onChange={(e) => setNewEventData(prev => ({ ...prev, endTime))}
+                      onChange=({ (e }) => setNewEventData(prev => ({ ...prev, endTime))}
                       required
                     />
                   </div>
@@ -371,7 +369,7 @@ import {
                   <Input
                     id="eventLocation"
                     value={newEventData.location}
-                    onChange={(e) => setNewEventData(prev => ({ ...prev, location))}
+                    onChange=({ (e }) => setNewEventData(prev => ({ ...prev, location))}
                     placeholder="Local do evento (opcional)"
                   />
                 </div>
@@ -381,13 +379,11 @@ import {
                   <textarea
                     id="eventDescription"
                     value={newEventData.description}
-                    onChange={(e) => setNewEventData(prev => ({ ...prev, description))}
+                    onChange=({ (e }) => setNewEventData(prev => ({ ...prev, description))}
                     placeholder="Descrição do evento (opcional)"
                     rows={3}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus) => setShowCreateEvent(false)}
                   >
-                    Cancelar
-                  </Button>
                 </div>
               </form>
             </CardContent>
@@ -416,7 +412,7 @@ import {
                       <div className="flex items-center space-x-1">
                         {integration.isActive ? (
                           <Badge className="bg-green-100 text-green-800">Ativo</Badge>
-                        ) {integration.syncErrors > 0 && (
+                        ) {integration.syncErrors > 0 && (`
                           <Badge variant="destructive" title={`${integration.syncErrors} erros de sincronização`}>
                             {integration.syncErrors}
                           </Badge>
@@ -440,13 +436,13 @@ import {
                     <div className="flex space-x-2">
                       <Button
                         size="sm"
-                        onClick={() => handleSync(integration.id)}
+                        onClick=({ ( }) => handleSync(integration.id)}
                         disabled={syncingIntegration === integration.id}
                         className="flex-1"
                       >
-                        {syncingIntegration === integration.id ? (
+                        ({ syncingIntegration === integration.id ? (
                           <RefreshCw className="h-4 w-4 mr-1 animate-spin" />
-                        ) {() => handleDisconnect(integration.id)}
+                        ) {( }) => handleDisconnect(integration.id)}
                         className="text-red-600 hover))}
             </div>
           </div>
@@ -496,7 +492,7 @@ import {
                       </div>
                       
                       <Button
-                        onClick={() => handleConnect(provider.id)}
+                        onClick=({ ( }) => handleConnect(provider.id)}
                         disabled={connectingProvider === provider.id || isConnected}
                         className="w-full"
                         variant={isConnected ? "secondary" : "default"}
@@ -528,4 +524,4 @@ import {
       </div>
     </div>
   );
-}
+}`

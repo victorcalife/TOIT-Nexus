@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   Shield, 
   CheckCircle,
   XCircle,
@@ -105,7 +105,7 @@ import {
   Plane,
   Train,
   Ship,
-  Bike
+  Bike }
 } from 'lucide-react';
 
 const ComplianceManagement = () => {
@@ -177,22 +177,22 @@ const ComplianceManagement = () => {
         fetch('/api/compliance/regulations', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/compliance/policies', {
+        fetch('/api/compliance/policies', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/compliance/audits', {
+        fetch('/api/compliance/audits', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/compliance/risks', {
+        fetch('/api/compliance/risks', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/compliance/controls', {
+        fetch('/api/compliance/controls', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/compliance/incidents', {
+        fetch('/api/compliance/incidents', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/compliance/assessments', {
+        fetch('/api/compliance/assessments', {`
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);
@@ -251,14 +251,14 @@ const ComplianceManagement = () => {
     try {
       const response = await fetch('/api/compliance/regulations', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           ...regulationData,
           status: 'pending',
-          createdAt: new Date().toISOString(),
+          createdAt: new Date().toISOString(),`
           regulationId: `REG-${Date.now()}`
         })
       });
@@ -272,7 +272,7 @@ const ComplianceManagement = () => {
       setShowRegulationModal(false);
       
       toast({
-        title: "Regulamentação criada",
+        title: "Regulamentação criada",`
         description: `Regulamentação ${data.regulation.name} criada com sucesso`,
       });
     } catch (error) {
@@ -289,10 +289,10 @@ const ComplianceManagement = () => {
    * ATUALIZAR STATUS DE CONFORMIDADE
    */
   const updateComplianceStatus = async (regulationId, newStatus) => {
-    try {
+    try {`
       const response = await fetch(`/api/compliance/regulations/${regulationId}/status`, {
         method: 'PATCH',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -330,14 +330,14 @@ const ComplianceManagement = () => {
     try {
       const response = await fetch('/api/compliance/audits', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           ...auditData,
           status: 'planned',
-          createdAt: new Date().toISOString(),
+          createdAt: new Date().toISOString(),`
           auditId: `AUD-${Date.now()}`
         })
       });
@@ -351,7 +351,7 @@ const ComplianceManagement = () => {
       setShowAuditModal(false);
       
       toast({
-        title: "Auditoria criada",
+        title: "Auditoria criada",`
         description: `Auditoria ${data.audit.name} criada com sucesso`,
       });
     } catch (error) {
@@ -434,10 +434,10 @@ const ComplianceManagement = () => {
           <div className="flex gap-2">
             <select
               value={regulation.status}
-              onChange={(e) => updateComplianceStatus(regulation.id, e.target.value)}
+              onChange=({ (e }) => updateComplianceStatus(regulation.id, e.target.value)}
               className="flex-1 px-2 py-1 border border-gray-300 rounded text-sm"
             >
-              {Object.entries(complianceStatuses).map(([key, status]) => (
+              ({ Object.entries(complianceStatuses).map(([key, status] }) => (
                 <option key={key} value={key}>{status.name}</option>
               ))}
             </select>
@@ -445,11 +445,10 @@ const ComplianceManagement = () => {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setSelectedRegulation(regulation)}
+              onClick=({ ( }) => setSelectedRegulation(regulation)}
             >
               <Eye className="h-3 w-3 mr-1" />
-              Ver
-            </Button>
+
           </div>
         </CardContent>
       </Card>
@@ -530,12 +529,10 @@ const ComplianceManagement = () => {
             </Button>
             <Button variant="outline" size="sm">
               <Edit className="h-3 w-3 mr-1" />
-              Editar
-            </Button>
+
             <Button variant="outline" size="sm">
               <Download className="h-3 w-3 mr-1" />
-              Exportar
-            </Button>
+
           </div>
         </CardContent>
       </Card>
@@ -605,12 +602,10 @@ const ComplianceManagement = () => {
             </Button>
             <Button variant="outline" size="sm">
               <Edit className="h-3 w-3 mr-1" />
-              Editar
-            </Button>
+
             <Button variant="outline" size="sm">
               <Users className="h-3 w-3 mr-1" />
-              Atribuir
-            </Button>
+
           </div>
         </CardContent>
       </Card>
@@ -681,16 +676,13 @@ const ComplianceManagement = () => {
           <div className="flex gap-2">
             <Button variant="outline" size="sm">
               <Eye className="h-3 w-3 mr-1" />
-              Avaliar
-            </Button>
+
             <Button variant="outline" size="sm">
               <Shield className="h-3 w-3 mr-1" />
-              Controles
-            </Button>
+
             <Button variant="outline" size="sm">
               <Target className="h-3 w-3 mr-1" />
-              Mitigar
-            </Button>
+
           </div>
         </CardContent>
       </Card>
@@ -769,19 +761,18 @@ const ComplianceManagement = () => {
                 variant="outline"
                 onClick={loadComplianceData}
                 disabled={loading}
-              >
+              >`
                 <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-                Atualizar
-              </Button>
+
               <Button
                 variant="outline"
-                onClick={() => setShowAuditModal(true)}
+                onClick=({ ( }) => setShowAuditModal(true)}
               >
                 <ClipboardCheck className="h-4 w-4 mr-2" />
                 Nova Auditoria
               </Button>
               <Button
-                onClick={() => setShowRegulationModal(true)}
+                onClick=({ ( }) => setShowRegulationModal(true)}
                 className="bg-blue-600 hover:bg-blue-700"
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -880,7 +871,7 @@ const ComplianceManagement = () => {
                       <Input
                         placeholder="Buscar regulamentações..."
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange=({ (e }) => setSearchTerm(e.target.value)}
                         className="pl-10"
                       />
                     </div>
@@ -889,22 +880,22 @@ const ComplianceManagement = () => {
                   <div className="flex gap-3">
                     <select
                       value={filters.status}
-                      onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, status: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todos os Status</option>
-                      {Object.entries(complianceStatuses).map(([key, status]) => (
+                      ({ Object.entries(complianceStatuses).map(([key, status] }) => (
                         <option key={key} value={key}>{status.name}</option>
                       ))}
                     </select>
 
                     <select
                       value={filters.framework}
-                      onChange={(e) => setFilters(prev => ({ ...prev, framework: e.target.value }))}
+                      onChange=({ (e }) => setFilters(prev => ({ ...prev, framework: e.target.value }))}
                       className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="all">Todos os Frameworks</option>
-                      {Object.entries(complianceFrameworks).map(([key, framework]) => (
+                      ({ Object.entries(complianceFrameworks).map(([key, framework] }) => (
                         <option key={key} value={key}>{framework.name}</option>
                       ))}
                     </select>
@@ -914,7 +905,7 @@ const ComplianceManagement = () => {
             </Card>
 
             {/* Lista de Regulamentações */}
-            {loading ? (
+            ({ loading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 <span className="ml-2">Carregando regulamentações...</span>
@@ -929,7 +920,7 @@ const ComplianceManagement = () => {
                   <p className="text-gray-500 mb-4">
                     Comece adicionando regulamentações para monitorar conformidade
                   </p>
-                  <Button onClick={() => setShowRegulationModal(true)}>
+                  <Button onClick={( }) => setShowRegulationModal(true)}>
                     <Plus className="h-4 w-4 mr-2" />
                     Adicionar Regulamentação
                   </Button>
@@ -944,7 +935,7 @@ const ComplianceManagement = () => {
 
           <TabsContent value="audits" className="space-y-6">
             {/* Lista de Auditorias */}
-            {loading ? (
+            ({ loading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 <span className="ml-2">Carregando auditorias...</span>
@@ -959,7 +950,7 @@ const ComplianceManagement = () => {
                   <p className="text-gray-500 mb-4">
                     Crie auditorias para verificar conformidade
                   </p>
-                  <Button onClick={() => setShowAuditModal(true)}>
+                  <Button onClick={( }) => setShowAuditModal(true)}>
                     <Plus className="h-4 w-4 mr-2" />
                     Criar Auditoria
                   </Button>
@@ -1046,9 +1037,8 @@ const ComplianceManagement = () => {
               <h2 className="text-xl font-bold mb-4">Nova Regulamentação</h2>
               {/* Formulário será implementado */}
               <div className="flex justify-end gap-3 mt-6">
-                <Button variant="outline" onClick={() => setShowRegulationModal(false)}>
-                  Cancelar
-                </Button>
+                <Button variant="outline" onClick=({ ( }) => setShowRegulationModal(false)}>
+
                 <Button disabled={loading}>
                   {loading ? 'Criando...' : 'Criar Regulamentação'}
                 </Button>
@@ -1062,3 +1052,4 @@ const ComplianceManagement = () => {
 };
 
 export default ComplianceManagement;
+`

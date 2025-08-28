@@ -12,13 +12,12 @@ import { Badge } from '../components/ui/badge';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Textarea } from '../components/ui/textarea';
-import
-  {
+import { 
     Mail, Send, Reply, ReplyAll, Forward, Archive, Trash2,
     Star, StarOff, Paperclip, Search, Filter, Plus, Settings,
     Inbox, Sent, Drafts, Spam, MoreHorizontal, Download,
     Bold, Italic, Underline, Link, Image, List, AlignLeft,
-    AlignCenter, AlignRight, Code, Quote, Undo, Redo
+    AlignCenter, AlignRight, Code, Quote, Undo, Redo }
   } from 'lucide-react';
 
 export default function Email()
@@ -163,7 +162,7 @@ export default function Email()
       to: replyAll ? [ email.from, ...email.to ].join( ', ' ) : email.from,
       cc: replyAll ? email.cc || '' : '',
       bcc: '',
-      subject: `Re: ${ email.subject }`,
+      subject: `Re: ${ email.subject }`,`
       body: `\n\n--- Mensagem Original ---\nDe: ${ email.fromName } <${ email.from }>\nData: ${ email.date.toLocaleString() }\nAssunto: ${ email.subject }\n\n${ email.body }`,
       attachments: []
     } );
@@ -175,8 +174,8 @@ export default function Email()
     setComposerData( {
       to: '',
       cc: '',
-      bcc: '',
-      subject: `Fwd: ${ email.subject }`,
+      bcc: '',`
+      subject: `Fwd: ${ email.subject }`,`
       body: `\n\n--- Mensagem Encaminhada ---\nDe: ${ email.fromName } <${ email.from }>\nData: ${ email.date.toLocaleString() }\nAssunto: ${ email.subject }\n\n${ email.body }`,
       attachments: email.attachments || []
     } );
@@ -221,7 +220,7 @@ export default function Email()
     {
       return 'Agora há pouco';
     } else if ( diffHours < 24 )
-    {
+    {`
       return `${ Math.floor( diffHours ) }h atrás`;
     } else if ( diffHours < 48 )
     {
@@ -254,13 +253,13 @@ export default function Email()
       <div className="space-y-1">
         { filteredEmails.map( email => (
           <div
-            key={ email.id }
+            key={ email.id }`
             className={ `
-              p-4 border-b cursor-pointer hover:bg-gray-50 transition-colors
+              p-4 border-b cursor-pointer hover:bg-gray-50 transition-colors}
               ${ selectedEmail?.id === email.id ? 'bg-blue-50 border-blue-200' : '' }
-              ${ !email.isRead ? 'bg-blue-25 font-medium' : '' }
+              ${ !email.isRead ? 'bg-blue-25 font-medium' : '' }`
             `}
-            onClick={ () => setSelectedEmail( email ) }
+            onClick=({ ( }) => setSelectedEmail( email ) }
           >
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-3">
@@ -275,7 +274,7 @@ export default function Email()
                   ) }
                 </div>
 
-                <div className="flex-1 min-w-0">
+                <div className="flex-1 min-w-0">`
                   <p className={ `text-sm truncate ${ !email.isRead ? 'font-semibold' : '' }` }>
                     { email.fromName }
                   </p>
@@ -287,7 +286,7 @@ export default function Email()
               </div>
             </div>
 
-            <div className="mb-2">
+            <div className="mb-2">`
               <p className={ `text-sm truncate ${ !email.isRead ? 'font-semibold' : '' }` }>
                 { email.subject }
               </p>
@@ -336,20 +335,16 @@ export default function Email()
             <h2 className="text-xl font-semibold">{ selectedEmail.subject }</h2>
 
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" onClick={ () => handleReply( selectedEmail ) }>
+              <Button variant="outline" size="sm" onClick=({ ( }) => handleReply( selectedEmail ) }>
                 <Reply className="h-4 w-4 mr-2" />
-                Responder
-              </Button>
 
-              <Button variant="outline" size="sm" onClick={ () => handleReply( selectedEmail, true ) }>
+              <Button variant="outline" size="sm" onClick=({ ( }) => handleReply( selectedEmail, true ) }>
                 <ReplyAll className="h-4 w-4 mr-2" />
                 Resp. Todos
               </Button>
 
-              <Button variant="outline" size="sm" onClick={ () => handleForward( selectedEmail ) }>
+              <Button variant="outline" size="sm" onClick=({ ( }) => handleForward( selectedEmail ) }>
                 <Forward className="h-4 w-4 mr-2" />
-                Encaminhar
-              </Button>
 
               <Button variant="outline" size="sm">
                 <MoreHorizontal className="h-4 w-4" />
@@ -427,7 +422,7 @@ export default function Email()
             <Button
               variant="ghost"
               size="sm"
-              onClick={ () => setShowComposer( false ) }
+              onClick=({ ( }) => setShowComposer( false ) }
             >
               ✕
             </Button>
@@ -439,7 +434,7 @@ export default function Email()
               <Label className="w-12 text-sm">Para:</Label>
               <Input
                 value={ composerData.to }
-                onChange={ ( e ) => setComposerData( prev => ( { ...prev, to: e.target.value } ) ) }
+                onChange=({ ( e  }) => setComposerData( prev => ( { ...prev, to: e.target.value } ) ) }
                 placeholder="destinatario@email.com"
                 className="flex-1"
               />
@@ -449,7 +444,7 @@ export default function Email()
               <Label className="w-12 text-sm">CC:</Label>
               <Input
                 value={ composerData.cc }
-                onChange={ ( e ) => setComposerData( prev => ( { ...prev, cc: e.target.value } ) ) }
+                onChange=({ ( e  }) => setComposerData( prev => ( { ...prev, cc: e.target.value } ) ) }
                 placeholder="cc@email.com"
                 className="flex-1"
               />
@@ -459,7 +454,7 @@ export default function Email()
               <Label className="w-12 text-sm">Assunto:</Label>
               <Input
                 value={ composerData.subject }
-                onChange={ ( e ) => setComposerData( prev => ( { ...prev, subject: e.target.value } ) ) }
+                onChange=({ ( e  }) => setComposerData( prev => ( { ...prev, subject: e.target.value } ) ) }
                 placeholder="Assunto do email"
                 className="flex-1"
               />
@@ -504,7 +499,7 @@ export default function Email()
             <Textarea
               ref={ editorRef }
               value={ composerData.body }
-              onChange={ ( e ) => setComposerData( prev => ( { ...prev, body: e.target.value } ) ) }
+              onChange=({ ( e  }) => setComposerData( prev => ( { ...prev, body: e.target.value } ) ) }
               placeholder="Digite sua mensagem..."
               className="w-full h-full resize-none border-0 focus:ring-0"
             />
@@ -515,18 +510,15 @@ export default function Email()
             <div className="flex items-center gap-2">
               <Button variant="outline" size="sm">
                 <Paperclip className="h-4 w-4 mr-2" />
-                Anexar
-              </Button>
+
             </div>
 
             <div className="flex items-center gap-2">
-              <Button variant="outline" onClick={ () => setShowComposer( false ) }>
-                Cancelar
-              </Button>
+              <Button variant="outline" onClick=({ ( }) => setShowComposer( false ) }>
+
               <Button onClick={ handleSendEmail }>
                 <Send className="h-4 w-4 mr-2" />
-                Enviar
-              </Button>
+
             </div>
           </div>
         </div>
@@ -554,15 +546,13 @@ export default function Email()
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
               <h1 className="text-2xl font-bold text-gray-900">
-                Email
-              </h1>
 
               {/* Barra de pesquisa */ }
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input
                   value={ searchQuery }
-                  onChange={ ( e ) => setSearchQuery( e.target.value ) }
+                  onChange=({ ( e  }) => setSearchQuery( e.target.value ) }
                   placeholder="Pesquisar emails..."
                   className="pl-10 w-80"
                 />
@@ -572,8 +562,6 @@ export default function Email()
             <div className="flex items-center gap-4">
               <Button variant="outline" size="sm">
                 <Filter className="h-4 w-4 mr-2" />
-                Filtros
-              </Button>
 
               <Button variant="outline" size="sm">
                 <Settings className="h-4 w-4 mr-2" />
@@ -582,8 +570,7 @@ export default function Email()
 
               <Button onClick={ handleCompose }>
                 <Plus className="h-4 w-4 mr-2" />
-                Escrever
-              </Button>
+
             </div>
           </div>
         </div>
@@ -601,13 +588,13 @@ export default function Email()
                 return (
                   <button
                     key={ folder.id }
-                    onClick={ () => setSelectedFolder( folder.id ) }
+                    onClick=({ ( }) => setSelectedFolder( folder.id ) }`
                     className={ `
                       w-full flex items-center justify-between p-3 rounded-lg text-left transition-colors
                       ${ selectedFolder === folder.id
                         ? 'bg-blue-100 text-blue-700'
-                        : 'hover:bg-gray-100'
-                      }
+                        : 'hover:bg-gray-100'}
+                      }`
                     `}
                   >
                     <div className="flex items-center gap-3">
@@ -651,3 +638,4 @@ export default function Email()
     </div>
   );
 }
+`

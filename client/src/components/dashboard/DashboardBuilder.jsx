@@ -10,41 +10,41 @@ import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
-  LineChart, Line, PieChart, Pie, Cell, AreaChart, Area, ScatterChart, Scatter
+  LineChart, Line, PieChart, Pie, Cell, AreaChart, Area, ScatterChart, Scatter }
 } from 'recharts';
-import { 
-  Plus, 
-  Save, 
-  Download, 
-  Share, 
-  Edit, 
+import {  
+
+
+
+
+
   Trash2, 
-  Eye,
-  Settings,
-  Palette,
-  Layout,
-  Database,
-  Mail,
-  Brain,
-  Atom,
-  Zap,
+
+
+
+
+
+
+
+
+
   BarChart3,
   LineChart as LineChartIcon,
   PieChart as PieChartIcon,
-  TrendingUp,
-  Activity,
-  Target,
-  Gauge,
-  Grid,
-  Maximize,
-  Minimize,
-  RefreshCw,
-  Filter,
-  Search,
-  Copy,
-  ExternalLink
+
+
+
+
+
+
+
+
+
+
+
+ }
 } from 'lucide-react';
 
 const CHART_TYPES = [
@@ -137,7 +137,7 @@ export default function DashboardBuilder({ dashboardId, onSave, onClose }) {
   const loadDashboard = async () => {
     try {
       const response = await fetch(`/api/dashboards/${dashboardId}`, {
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
@@ -154,7 +154,7 @@ export default function DashboardBuilder({ dashboardId, onSave, onClose }) {
   const loadDataSources = async () => {
     try {
       const response = await fetch('/api/data-sources', {
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
@@ -190,7 +190,7 @@ export default function DashboardBuilder({ dashboardId, onSave, onClose }) {
     try {
       const response = await fetch('/api/mila/dashboard-insights', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -229,12 +229,12 @@ export default function DashboardBuilder({ dashboardId, onSave, onClose }) {
 
   const saveDashboard = async () => {
     try {
-      const method = dashboard.id ? 'PUT' : 'POST';
+      const method = dashboard.id ? 'PUT' : 'POST';`
       const url = dashboard.id ? `/api/dashboards/${dashboard.id}` : '/api/dashboards';
 
       const response = await fetch(url, {
         method,
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -267,7 +267,7 @@ export default function DashboardBuilder({ dashboardId, onSave, onClose }) {
 
   const addWidget = () => {
     const widget = {
-      ...newWidget,
+      ...newWidget,`
       id: `widget_${Date.now()}`,
       createdAt: new Date()
     };
@@ -314,7 +314,7 @@ export default function DashboardBuilder({ dashboardId, onSave, onClose }) {
     try {
       const response = await fetch('/api/data-sources', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -353,10 +353,10 @@ export default function DashboardBuilder({ dashboardId, onSave, onClose }) {
   };
 
   const testDataSource = async (dataSource) => {
-    try {
+    try {`
       const response = await fetch(`/api/data-sources/${dataSource.id}/test`, {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
@@ -380,14 +380,14 @@ export default function DashboardBuilder({ dashboardId, onSave, onClose }) {
     try {
       const response = await fetch('/api/dashboards/send-email', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           dashboardId: dashboard.id,
           format: 'pdf',
-          recipients: [], // Será preenchido em dialog
+          recipients: [], // Será preenchido em dialog`
           subject: `Dashboard: ${dashboard.name}`,
           message: 'Dashboard em anexo gerado automaticamente pelo TOIT NEXUS'
         })
@@ -412,7 +412,7 @@ export default function DashboardBuilder({ dashboardId, onSave, onClose }) {
     try {
       const response = await fetch('/api/mila/apply-dashboard-optimization', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -467,7 +467,7 @@ export default function DashboardBuilder({ dashboardId, onSave, onClose }) {
             </div>
           ) : (
             <ResponsiveContainer width="100%" height={200}>
-              <ChartComponent data={[
+              <ChartComponent data={[}
                 { name: 'Jan', value: 400 },
                 { name: 'Fev', value: 300 },
                 { name: 'Mar', value: 500 },
@@ -543,7 +543,7 @@ export default function DashboardBuilder({ dashboardId, onSave, onClose }) {
                             {ds.status}
                           </Badge>
                           <Button size="sm" variant="outline" onClick={() => testDataSource(ds)}>
-                            Testar
+
                           </Button>
                         </div>
                       </div>
@@ -648,17 +648,17 @@ export default function DashboardBuilder({ dashboardId, onSave, onClose }) {
 
             <Button variant="outline" size="sm">
               <Download className="w-4 h-4 mr-2" />
-              Exportar
+
             </Button>
 
             <Button onClick={saveDashboard}>
               <Save className="w-4 h-4 mr-2" />
-              Salvar
+
             </Button>
 
             {onClose && (
               <Button variant="outline" onClick={onClose}>
-                Fechar
+
               </Button>
             )}
           </div>
@@ -666,7 +666,7 @@ export default function DashboardBuilder({ dashboardId, onSave, onClose }) {
       </div>
 
       {/* MILA Insights */}
-      {milaInsights.length > 0 && (
+      ({ milaInsights.length > 0 && (
         <div className="border-b p-4">
           <div className="flex items-center gap-2 mb-3">
             <Brain className="w-4 h-4" />
@@ -674,7 +674,7 @@ export default function DashboardBuilder({ dashboardId, onSave, onClose }) {
             <Badge variant="secondary">Quantum AI</Badge>
           </div>
           <div className="flex gap-2 overflow-x-auto">
-            {milaInsights.map((insight) => (
+            {milaInsights.map((insight }) => (
               <Card key={insight.id} className="min-w-80">
                 <CardContent className="p-3">
                   <div className="flex items-start justify-between">
@@ -688,7 +688,7 @@ export default function DashboardBuilder({ dashboardId, onSave, onClose }) {
                     </div>
                     <Button size="sm" onClick={() => applyMilaOptimization(insight.id)}>
                       <Zap className="w-3 h-3 mr-1" />
-                      Aplicar
+
                     </Button>
                   </div>
                 </CardContent>
@@ -701,12 +701,12 @@ export default function DashboardBuilder({ dashboardId, onSave, onClose }) {
       {/* Content */}
       <div className="flex-1 flex">
         {/* Sidebar */}
-        {!isPreviewMode && (
+        ({ !isPreviewMode && (
           <div className="w-80 border-r p-4 space-y-4">
             <div>
               <h3 className="font-medium mb-3">Widgets</h3>
               <div className="grid grid-cols-2 gap-2">
-                {CHART_TYPES.map((type) => (
+                {CHART_TYPES.map((type }) => (
                   <Button
                     key={type.id}
                     variant="outline"
@@ -721,7 +721,7 @@ export default function DashboardBuilder({ dashboardId, onSave, onClose }) {
                     <span className="text-xs">{type.name}</span>
                   </Button>
                 ))}
-                {KPI_TYPES.map((type) => (
+                ({ KPI_TYPES.map((type }) => (
                   <Button
                     key={type.id}
                     variant="outline"
@@ -851,7 +851,7 @@ export default function DashboardBuilder({ dashboardId, onSave, onClose }) {
                     <SelectValue placeholder="Selecionar fonte" />
                   </SelectTrigger>
                   <SelectContent>
-                    {dataSources.map((ds) => (
+                    ({ dataSources.map((ds }) => (
                       <SelectItem key={ds.id} value={ds.id}>{ds.name}</SelectItem>
                     ))}
                   </SelectContent>
@@ -913,7 +913,7 @@ export default function DashboardBuilder({ dashboardId, onSave, onClose }) {
 
             <div className="flex justify-end gap-2">
               <Button variant="outline" onClick={() => setShowWidgetDialog(false)}>
-                Cancelar
+
               </Button>
               <Button onClick={addWidget}>
                 <Plus className="w-4 h-4 mr-2" />
@@ -926,3 +926,4 @@ export default function DashboardBuilder({ dashboardId, onSave, onClose }) {
     </div>
   );
 }
+`

@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   Calendar, 
   ChevronLeft, 
   ChevronRight,
@@ -37,7 +37,7 @@ import {
   AlertCircle,
   CheckCircle,
   XCircle,
-  MoreHorizontal
+  MoreHorizontal }
 } from 'lucide-react';
 
 const CalendarProfessional = () => {
@@ -85,7 +85,7 @@ const CalendarProfessional = () => {
       const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
       
       const response = await fetch(`/api/calendar/events?start=${startDate.toISOString()}&end=${endDate.toISOString()}`, {
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }
@@ -115,7 +115,7 @@ const CalendarProfessional = () => {
   const loadCalendars = async () => {
     try {
       const response = await fetch('/api/calendar/calendars', {
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }
@@ -139,15 +139,15 @@ const CalendarProfessional = () => {
   const createEvent = async () => {
     try {
       const eventData = {
-        ...eventForm,
-        startDateTime: `${eventForm.startDate}T${eventForm.startTime}`,
+        ...eventForm,`
+        startDateTime: `${eventForm.startDate}T${eventForm.startTime}`,`
         endDateTime: `${eventForm.endDate}T${eventForm.endTime}`,
         attendees: eventForm.attendees.map(email => ({ email }))
       };
 
       const response = await fetch('/api/calendar/events', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -181,10 +181,10 @@ const CalendarProfessional = () => {
    * ATUALIZAR EVENTO
    */
   const updateEvent = async (eventId, updates) => {
-    try {
+    try {`
       const response = await fetch(`/api/calendar/events/${eventId}`, {
         method: 'PUT',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -220,10 +220,10 @@ const CalendarProfessional = () => {
   const deleteEvent = async (eventId) => {
     if (!confirm('Tem certeza que deseja deletar este evento?')) return;
 
-    try {
+    try {`
       const response = await fetch(`/api/calendar/events/${eventId}`, {
         method: 'DELETE',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }
@@ -258,7 +258,7 @@ const CalendarProfessional = () => {
     try {
       const response = await fetch('/api/calendar/sync/google', {
         method: 'POST',
-        headers: {
+        headers: {`
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }
@@ -376,18 +376,18 @@ const CalendarProfessional = () => {
   const renderEventInCalendar = (event) => {
     return (
       <div
-        key={event.id}
+        key={event.id}`
         className={`text-xs p-1 mb-1 rounded cursor-pointer truncate ${
           event.priority === 'high' ? 'border-l-2 border-red-500' :
-          event.priority === 'low' ? 'border-l-2 border-gray-400' : ''
+          event.priority === 'low' ? 'border-l-2 border-gray-400' : ''`}
         }`}
         style={{ backgroundColor: event.color + '20', color: event.color }}
-        onClick={() => {
+        onClick=({ ( }) => {
           setSelectedEvent(event);
           setShowEventModal(true);
         }}
         draggable
-        onDragStart={() => setDraggedEvent(event)}
+        onDragStart=({ ( }) => setDraggedEvent(event)}
       >
         <div className="flex items-center gap-1">
           {event.meetingType === 'video' && <Video className="h-3 w-3" />}
@@ -449,7 +449,7 @@ const CalendarProfessional = () => {
                 Sync Google
               </Button>
               <Button
-                onClick={() => setShowCreateModal(true)}
+                onClick=({ ( }) => setShowCreateModal(true)}
                 className="bg-blue-600 hover:bg-blue-700"
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -472,7 +472,7 @@ const CalendarProfessional = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => navigateMonth(-1)}
+                    onClick=({ ( }) => navigateMonth(-1)}
                   >
                     <ChevronLeft className="h-4 w-4" />
                   </Button>
@@ -485,19 +485,19 @@ const CalendarProfessional = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => navigateMonth(1)}
+                    onClick=({ ( }) => navigateMonth(1)}
                   >
                     <ChevronRight className="h-4 w-4" />
                   </Button>
                 </div>
                 
                 <div className="grid grid-cols-4 gap-2 mb-4">
-                  {['Mês', 'Semana', 'Dia', 'Lista'].map((viewType, index) => (
+                  ({ ['Mês', 'Semana', 'Dia', 'Lista'].map((viewType, index }) => (
                     <Button
                       key={viewType}
                       variant={view === ['month', 'week', 'day', 'agenda'][index] ? 'default' : 'outline'}
                       size="sm"
-                      onClick={() => setView(['month', 'week', 'day', 'agenda'][index])}
+                      onClick=({ ( }) => setView(['month', 'week', 'day', 'agenda'][index])}
                       className="text-xs"
                     >
                       {viewType}
@@ -508,11 +508,10 @@ const CalendarProfessional = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setCurrentDate(new Date())}
+                  onClick=({ ( }) => setCurrentDate(new Date())}
                   className="w-full"
                 >
-                  Hoje
-                </Button>
+
               </CardContent>
             </Card>
 
@@ -521,14 +520,13 @@ const CalendarProfessional = () => {
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                   <Search className="h-5 w-5" />
-                  Buscar
-                </CardTitle>
+
               </CardHeader>
               <CardContent>
                 <Input
                   placeholder="Buscar eventos..."
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange=({ (e }) => setSearchTerm(e.target.value)}
                 />
               </CardContent>
             </Card>
@@ -540,10 +538,10 @@ const CalendarProfessional = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  {calendars.map((calendar) => (
+                  ({ calendars.map((calendar }) => (
                     <div key={calendar.id} className="flex items-center gap-3">
                       <button
-                        onClick={() => {
+                        onClick=({ ( }) => {
                           const newVisible = new Set(visibleCalendars);
                           if (newVisible.has(calendar.id)) {
                             newVisible.delete(calendar.id);
@@ -578,15 +576,15 @@ const CalendarProfessional = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {filteredEvents
+                  ({ filteredEvents
                     .filter(event => new Date(event.startDateTime) > new Date())
                     .sort((a, b) => new Date(a.startDateTime) - new Date(b.startDateTime))
                     .slice(0, 5)
-                    .map((event) => (
+                    .map((event }) => (
                       <div
                         key={event.id}
                         className="p-2 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50"
-                        onClick={() => {
+                        onClick=({ ( }) => {
                           setSelectedEvent(event);
                           setShowEventModal(true);
                         }}
@@ -633,14 +631,14 @@ const CalendarProfessional = () => {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => navigateMonth(-1)}
+                      onClick=({ ( }) => navigateMonth(-1)}
                     >
                       <ChevronLeft className="h-4 w-4" />
                     </Button>
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => navigateMonth(1)}
+                      onClick=({ ( }) => navigateMonth(1)}
                     >
                       <ChevronRight className="h-4 w-4" />
                     </Button>
@@ -651,36 +649,36 @@ const CalendarProfessional = () => {
                 {view === 'month' && (
                   <div className="grid grid-cols-7 gap-1">
                     {/* Cabeçalho dos dias da semana */}
-                    {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map((day) => (
+                    ({ ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map((day }) => (
                       <div key={day} className="p-2 text-center font-medium text-gray-600 text-sm">
                         {day}
                       </div>
                     ))}
                     
                     {/* Dias do mês */}
-                    {getDaysInMonth().map((day, index) => (
+                    ({ getDaysInMonth().map((day, index }) => (
                       <div
-                        key={index}
+                        key={index}`
                         className={`min-h-[120px] p-2 border border-gray-200 ${
-                          !day.isCurrentMonth ? 'bg-gray-50 text-gray-400' : 'bg-white'
+                          !day.isCurrentMonth ? 'bg-gray-50 text-gray-400' : 'bg-white'}
                         } ${
                           day.date.toDateString() === new Date().toDateString() 
                             ? 'bg-blue-50 border-blue-200' 
-                            : ''
+                            : ''`
                         }`}
-                        onDrop={(e) => {
+                        onDrop=({ (e }) => {
                           e.preventDefault();
                           if (draggedEvent) {
                             const newStartDate = day.date.toISOString().split('T')[0];
-                            updateEvent(draggedEvent.id, {
-                              startDateTime: `${newStartDate}T${draggedEvent.startDateTime.split('T')[1]}`,
+                            updateEvent(draggedEvent.id, {`
+                              startDateTime: `${newStartDate}T${draggedEvent.startDateTime.split('T')[1]}`,`
                               endDateTime: `${newStartDate}T${draggedEvent.endDateTime.split('T')[1]}`
                             });
                             setDraggedEvent(null);
                           }
                         }}
-                        onDragOver={(e) => e.preventDefault()}
-                        onDoubleClick={() => {
+                        onDragOver=({ (e }) => e.preventDefault()}
+                        onDoubleClick=({ ( }) => {
                           const dateStr = day.date.toISOString().split('T')[0];
                           setEventForm(prev => ({
                             ...prev,
@@ -727,9 +725,8 @@ const CalendarProfessional = () => {
             <h2 className="text-xl font-bold mb-4">Criar Novo Evento</h2>
             {/* Formulário será implementado na próxima parte */}
             <div className="flex justify-end gap-3 mt-6">
-              <Button variant="outline" onClick={() => setShowCreateModal(false)}>
-                Cancelar
-              </Button>
+              <Button variant="outline" onClick=({ ( }) => setShowCreateModal(false)}>
+
               <Button onClick={createEvent} disabled={loading}>
                 {loading ? 'Criando...' : 'Criar Evento'}
               </Button>
@@ -742,3 +739,4 @@ const CalendarProfessional = () => {
 };
 
 export default CalendarProfessional;
+`

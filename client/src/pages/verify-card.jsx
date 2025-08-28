@@ -248,7 +248,7 @@ export default function VerifyCard()
             <CardHeader className="text-center space-y-4">
               <div className="flex justify-center">
                 {isVerified ? (
-                  <CheckCircle className="h-16 w-16 text-green-500" />
+                  <CheckCircle className="h-16 w-16 text-green-500" />`
                 ) {`text-2xl font-semibold ${ isVerified ? 'text-green-600' : 'text-blue-600' }`}>
                 {isVerified ? "Cartão verificado!" : "Validar cartão de crédito"}
               </CardTitle>
@@ -327,11 +327,11 @@ export default function VerifyCard()
                     </div>
                   </div>
 
-                  {validationErrors.length > 0 && (
+                  ({ validationErrors.length > 0 && (
                     <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
                       <div className="flex items-center space-x-2 mb-2">
                         <AlertCircle className="h-4 w-4 text-red-500" />
-                        <p className="text-red-800 font-medium">Erros encontrados, index ) => (
+                        <p className="text-red-800 font-medium">Erros encontrados, index  }) => (
                           <li key={index}>• {error}</li>
                         ) )}
                       </ul>
@@ -342,11 +342,11 @@ export default function VerifyCard()
                     <div className="flex items-center space-x-2">
                       <Lock className="h-4 w-4 text-blue-500" />
                       <p className="text-blue-800 text-sm">
-                        <strong>Seguro) {!isVerified && (
+                        <strong>Seguro) ({ !isVerified && (
                 <div className="mt-6 text-center">
                   <Button
                     variant="outline"
-                    onClick={() => window.location.href = '/'}
+                    onClick={( }) => window.location.href = '/'}
                     className="text-sm"
                   >
                     Voltar ao Início
@@ -366,4 +366,4 @@ export default function VerifyCard()
       </div>
     </div>
   );
-}
+}`

@@ -208,3 +208,4 @@ export default function TrialSignup() {
                     <p className="text-blue-800 text-sm">
                       <strong>Próximo passo);
 }
+`

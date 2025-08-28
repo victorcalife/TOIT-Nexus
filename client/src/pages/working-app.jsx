@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { 
+import {  
   CheckCircle, 
   Users, 
   Workflow, 
@@ -11,7 +11,7 @@ import {
   Database,
   Server,
   Shield,
-  Activity
+  Activity }
 } from 'lucide-react';
 
 , []);
@@ -73,8 +73,7 @@ import {
     );
   }
 
-  if (!user) {
-    return (
+  if (!user) ({ return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
@@ -87,7 +86,7 @@ import {
           </CardHeader>
           <CardContent>
             <Button 
-              onClick={() => window.location.href = '/'} 
+              onClick={( }) => window.location.href = '/'} 
               className="w-full"
             >
               Ir para Login
@@ -122,9 +121,9 @@ import {
                       </div>
                     ))}
                   </div>
-                ) {templates.length > 0 ? (
+                ) ({ templates.length > 0 ? (
                   <div className="space-y-2">
-                    {templates.slice(0, 3).map((template, index) => (
+                    {templates.slice(0, 3).map((template, index }) => (
                       <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                         <div>
                           <p className="font-medium">{template.name || `Template ${index + 1}`}</p>
@@ -158,4 +157,4 @@ import {
       </div>
     </div>
   );
-}
+}`

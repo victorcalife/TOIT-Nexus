@@ -25,15 +25,14 @@ export default function SystemSetup() {
   const [setupComplete, setSetupComplete] = useState(false);
   const { toast } = useToast();
   
-  const form = useForm<SetupFormData>({
-    resolver),
+  const form = useForm<SetupFormData>(({ resolver),
     defaultValues,
       firstName,
       lastName,
       password,
       confirmPassword);
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data }) => {
     setIsSubmitting(true);
     try {
       const response = await fetch('/api/setup-system', {
@@ -64,8 +63,7 @@ export default function SystemSetup() {
     }
   };
 
-  if (setupComplete) {
-    return (
+  if (setupComplete) ({ return (
       <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-blue-50 flex items-center justify-center p-6">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
@@ -79,7 +77,7 @@ export default function SystemSetup() {
           </CardHeader>
           <CardContent>
             <Button 
-              onClick={() => window.location.href = '/login'}
+              onClick={( }) => window.location.href = '/login'}
               className="w-full bg-primary-500 hover);
   }
 

@@ -7,21 +7,20 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { QuantumInsightButton } from './QuantumInsightButton';
 import { useMLCredits } from '../../hooks/useMLCredits';
-import
-{
-  Brain,
-  FileText,
-  TrendingUp,
-  Zap,
+import { 
+
+
+
+
   BarChart3,
-  AlertTriangle,
-  Download,
-  Share,
-  Eye,
-  Sparkles,
-  ChevronDown,
-  ChevronUp,
-  Filter
+
+
+
+
+
+
+
+ }
 } from 'lucide-react';
 
 /**
@@ -117,7 +116,7 @@ export function ReportMLEnhancer( {
             body: JSON.stringify( {
               data: reportData,
               insightType,
-              options: {
+              options: {`
                 context: `report_${ reportType }`,
                 reportTitle,
                 reportConfig
@@ -139,7 +138,7 @@ export function ReportMLEnhancer( {
             }
           }
         } catch ( error )
-        {
+        {`
           console.error( `Erro ao gerar insight ${ insightType }:`, error );
         }
       }
@@ -167,10 +166,9 @@ export function ReportMLEnhancer( {
    * Análise automática quando dados mudarem
    */
   useEffect( () =>
-  {
-    if ( autoAnalyze && reportData.length > 0 && hasEnoughCredits( selectedInsightTypes.length ) )
+  ({ if ( autoAnalyze && reportData.length > 0 && hasEnoughCredits( selectedInsightTypes.length ) )
     {
-      const timer = setTimeout( () =>
+      const timer = setTimeout( ( }) =>
       {
         analyzeReport();
       }, 3000 ); // Aguardar 3s para evitar múltiplas execuções
@@ -215,7 +213,7 @@ export function ReportMLEnhancer( {
 
     const url = URL.createObjectURL( blob );
     const a = document.createElement( 'a' );
-    a.href = url;
+    a.href = url;`
     a.download = `insights-${ reportTitle.toLowerCase().replace( /\s+/g, '-' ) }-${ Date.now() }.json`;
     document.body.appendChild( a );
     a.click();
@@ -236,7 +234,7 @@ export function ReportMLEnhancer( {
       <div key={ index } className="p-4 border border-gray-200 rounded-lg">
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center space-x-2">
-            <div className="p-2 bg-purple-100 rounded-lg">
+            <div className="p-2 bg-purple-100 rounded-lg">`
               <Icon className={ `w-4 h-4 ${ colorClass }` } />
             </div>
             <div>
@@ -262,9 +260,9 @@ export function ReportMLEnhancer( {
             { insight.data.summary?.description || 'Insight gerado com sucesso' }
           </p>
 
-          { insight.data.insights && insight.data.insights.length > 0 && (
+          ({ insight.data.insights && insight.data.insights.length > 0 && (
             <div className="space-y-1">
-              { insight.data.insights.slice( 0, 3 ).map( ( item, idx ) => (
+              { insight.data.insights.slice( 0, 3 ).map( ( item, idx  }) => (
                 <div key={ idx } className="flex items-start space-x-2">
                   <div className="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 flex-shrink-0" />
                   <p className="text-xs text-gray-600">{ item }</p>
@@ -303,8 +301,8 @@ export function ReportMLEnhancer( {
                 Análise ML do Relatório
               </h3>
               <p className="text-sm text-purple-600">
-                { generatedInsights.length > 0
-                  ? `${ generatedInsights.length } insights gerados`
+                { generatedInsights.length > 0`
+                  ? `${ generatedInsights.length } insights gerados``
                   : `${ reportData.length } pontos de dados disponíveis`
                 }
               </p>
@@ -319,7 +317,7 @@ export function ReportMLEnhancer( {
             ) }
 
             <button
-              onClick={ () => setIsExpanded( true ) }
+              onClick=({ ( }) => setIsExpanded( true ) }
               className="p-1 text-purple-600 hover:text-purple-700"
               title="Expandir análise ML"
             >
@@ -371,7 +369,7 @@ export function ReportMLEnhancer( {
             ) }
 
             <button
-              onClick={ () => setIsExpanded( false ) }
+              onClick=({ ( }) => setIsExpanded( false ) }
               className="p-2 text-purple-600 hover:text-purple-700"
               title="Recolher"
             >
@@ -412,7 +410,7 @@ export function ReportMLEnhancer( {
               </h4>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                { availableInsights.map( ( insight ) =>
+                ({ availableInsights.map( ( insight  }) =>
                 {
                   const Icon = insight.icon;
                   const isSelected = selectedInsightTypes.includes( insight.type );
@@ -420,13 +418,13 @@ export function ReportMLEnhancer( {
                   return (
                     <button
                       key={ insight.type }
-                      onClick={ () => toggleInsightType( insight.type ) }
+                      onClick=({ ( }) => toggleInsightType( insight.type ) }`
                       className={ `p-3 border rounded-lg text-left transition-colors ${ isSelected
                         ? 'border-purple-300 bg-purple-50'
-                        : 'border-gray-200 hover:border-gray-300'
+                        : 'border-gray-200 hover:border-gray-300'`}
                         }` }
                     >
-                      <div className="flex items-center space-x-2 mb-2">
+                      <div className="flex items-center space-x-2 mb-2">`
                         <Icon className={ `w-4 h-4 text-${ insight.color }-600` } />
                         <span className="text-sm font-medium text-gray-900">
                           { insight.label }
@@ -497,7 +495,7 @@ export function ReportMLEnhancer( {
                 </h4>
 
                 <div className="space-y-4">
-                  { generatedInsights.map( ( insight, index ) => renderInsight( insight, index ) ) }
+                  ({ generatedInsights.map( ( insight, index  }) => renderInsight( insight, index ) ) }
                 </div>
               </div>
             ) }
@@ -523,3 +521,4 @@ export function ReportMLEnhancer( {
 }
 
 export default ReportMLEnhancer;
+`

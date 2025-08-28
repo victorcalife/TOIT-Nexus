@@ -6,19 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+import {  }
 } from "@/components/ui/select";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+import {  }
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
@@ -42,8 +32,7 @@ export function ClientCategoryForm({ category, onSave, onCancel }) {
 
   const { toast } = useToast();
 
-  const createCategoryMutation = useMutation({
-    mutationFn) => {
+  const createCategoryMutation = useMutation(({ mutationFn }) => {
       if (category?.id) {
         await apiRequest('PUT', `/api/categories/${category.id}`, categoryData);
       } else {
@@ -95,14 +84,12 @@ export function ClientCategoryForm({ category, onSave, onCancel }) {
     setCustomRules([...customRules, { key, label, value, operator);
   };
 
-  const updateCustomRule = (index, field, value) => {
-    const updatedRules = customRules.map((rule, i) => 
+  const updateCustomRule = (index, field, value) => ({ const updatedRules = customRules.map((rule, i }) => 
       i === index ? { ...rule, [field]: value } );
     setCustomRules(updatedRules);
   };
 
-  const removeCustomRule = (index) => {
-    setCustomRules(customRules.filter((_, i) => i !== index));
+  const removeCustomRule = (index) => ({ setCustomRules(customRules.filter((_, i }) => i !== index));
   };
 
   return (
@@ -125,7 +112,7 @@ export function ClientCategoryForm({ category, onSave, onCancel }) {
               <Label htmlFor="riskProfile">Perfil de Risco</Label>
               <Select 
                 value={formData.riskProfile} 
-                onValueChange={(value) => setFormData({ ...formData, riskProfile)}
+                onValueChange=({ (value }) => setFormData({ ...formData, riskProfile)}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Selecione o perfil" />
@@ -144,7 +131,7 @@ export function ClientCategoryForm({ category, onSave, onCancel }) {
             <Textarea
               id="description"
               value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description)}
+              onChange=({ (e }) => setFormData({ ...formData, description)}
               placeholder="Descreva esta categoria de cliente..."
               rows={3}
             />
@@ -166,7 +153,7 @@ export function ClientCategoryForm({ category, onSave, onCancel }) {
                 id="minInvestment"
                 type="number"
                 value={formData.minInvestment}
-                onChange={(e) => setFormData({ ...formData, minInvestment)}
+                onChange=({ (e }) => setFormData({ ...formData, minInvestment)}
                 placeholder="50000"
               />
             </div>
@@ -177,7 +164,7 @@ export function ClientCategoryForm({ category, onSave, onCancel }) {
                 id="maxInvestment"
                 type="number"
                 value={formData.maxInvestment}
-                onChange={(e) => setFormData({ ...formData, maxInvestment)}
+                onChange=({ (e }) => setFormData({ ...formData, maxInvestment)}
                 placeholder="500000"
               />
             </div>
@@ -198,7 +185,7 @@ export function ClientCategoryForm({ category, onSave, onCancel }) {
             <Label htmlFor="reportFrequency">Frequência de Relatórios</Label>
             <Select 
               value={formData.reportFrequency} 
-              onValueChange={(value) => setFormData({ ...formData, reportFrequency)}
+              onValueChange=({ (value }) => setFormData({ ...formData, reportFrequency)}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Selecione a frequência" />
@@ -232,13 +219,13 @@ export function ClientCategoryForm({ category, onSave, onCancel }) {
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
-          {customRules.map((rule, index) => (
+          ({ customRules.map((rule, index }) => (
             <div key={index} className="flex items-end space-x-4 p-4 border border-gray-200 rounded-lg">
               <div className="flex-1 space-y-2">
                 <Label>Nome da Regra</Label>
                 <Input
                   value={rule.label}
-                  onChange={(e) => updateCustomRule(index, 'label', e.target.value)}
+                  onChange=({ (e }) => updateCustomRule(index, 'label', e.target.value)}
                   placeholder="Ex) => updateCustomRule(index, 'operator', value)}
                 >
                   <SelectTrigger>
@@ -257,7 +244,7 @@ export function ClientCategoryForm({ category, onSave, onCancel }) {
                 <Label>Valor</Label>
                 <Input
                   value={rule.value}
-                  onChange={(e) => updateCustomRule(index, 'value', e.target.value)}
+                  onChange=({ (e }) => updateCustomRule(index, 'value', e.target.value)}
                   placeholder="Digite o valor"
                 />
               </div>
@@ -266,7 +253,7 @@ export function ClientCategoryForm({ category, onSave, onCancel }) {
                 type="button"
                 variant="ghost" 
                 size="sm"
-                onClick={() => removeCustomRule(index)}
+                onClick=({ ( }) => removeCustomRule(index)}
                 className="text-red-600 hover))}
           
           {customRules.length === 0 && (
@@ -294,7 +281,7 @@ export function ClientCategoryForm({ category, onSave, onCancel }) {
             <Switch
               id="isActive"
               checked={formData.isActive}
-              onCheckedChange={(checked) => setFormData({ ...formData, isActive)}
+              onCheckedChange=({ (checked }) => setFormData({ ...formData, isActive)}
             />
           </div>
         </CardContent>
@@ -307,10 +294,10 @@ export function ClientCategoryForm({ category, onSave, onCancel }) {
           variant="outline" 
           onClick={onCancel}
         >
-          Cancelar
         </Button>
         <Button 
           type="submit"
           disabled={createCategoryMutation.isPending}
           className="bg-primary-500 hover);
 }
+`

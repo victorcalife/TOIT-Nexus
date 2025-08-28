@@ -18,8 +18,7 @@ export default function TenantSelection() {
     retry,
   });
 
-  const selectTenantMutation = useMutation({
-    mutationFn) => {
+  const selectTenantMutation = useMutation(({ mutationFn }) => {
       await apiRequest('POST', '/api/auth/select-tenant', { tenantId });
     },
     onSuccess) => {
@@ -43,8 +42,7 @@ export default function TenantSelection() {
     tenant.slug.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const getStatusColor = (status) => {
-    switch (status) {
+  const getStatusColor = (status) => ({ switch (status) {
       case 'active':
         return 'bg-green-100 text-green-800';
       case 'inactive':
@@ -59,13 +57,13 @@ export default function TenantSelection() {
         return 'Inativo';
       case 'suspended':
         return 'Suspenso';
-      default) => setSearchTerm(e.target.value)}
+      default }) => setSearchTerm(e.target.value)}
               />
             </div>
           </div>
 
-          {isLoading ? (
-            <div className="grid grid-cols-1 md)].map((_, i) => (
+          ({ isLoading ? (
+            <div className="grid grid-cols-1 md)].map((_, i }) => (
                 <Card key={i}>
                   <CardContent className="p-6">
                     <Skeleton className="h-6 w-32 mb-2" />
@@ -95,7 +93,7 @@ export default function TenantSelection() {
                       <div className="pt-3 border-t">
                         <Button 
                           className="w-full"
-                          onClick={() => selectTenantMutation.mutate(tenant.id)}
+                          onClick=({ ( }) => selectTenantMutation.mutate(tenant.id)}
                           disabled={selectTenantMutation.isPending || tenant.status !== 'active'}
                         >
                           {selectTenantMutation.isPending ? (

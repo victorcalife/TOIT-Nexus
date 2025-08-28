@@ -16,39 +16,39 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   Calendar as CalendarIcon,
-  Clock,
-  Users,
-  MapPin,
-  Video,
-  Phone,
-  Mail,
-  Plus,
-  Filter,
-  Search,
-  Download,
-  Upload,
-  Settings,
-  ChevronLeft,
-  ChevronRight,
-  Today,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   Grid3X3,
-  List,
-  Eye,
-  EyeOff,
-  Bell,
-  BellOff,
-  Repeat,
+
+
+
+
+
+
   Trash2,
-  Edit,
-  Copy,
-  Share,
-  ExternalLink,
-  Zap,
-  Brain,
-  Atom,
-  Sparkles
+
+
+
+
+
+
+
+ }
 } from 'lucide-react';
 
 // Importar sistema quântico integrado
@@ -141,13 +141,12 @@ export default function CalendarInterface({
     }
   }, [isOpen]);
 
-  const initializeQuantumCalendar = async () => {
-    try {
+  const initializeQuantumCalendar = async () => ({ try {
       console.log('📅⚛️ Inicializando Calendário Quântico...');
       
       // Conectar ao sistema quântico
       quantumSystemCore.connectModule('calendar', {
-        receiveQuantumUpdate: (result) => {
+        receiveQuantumUpdate: (result }) => {
           if (result.scheduleOptimizations) {
             setQuantumOptimizations(result.scheduleOptimizations);
             applyQuantumOptimizations(result.scheduleOptimizations);
@@ -179,9 +178,8 @@ export default function CalendarInterface({
     }
   };
 
-  const setupMilaObservation = () => {
-    // Observar interações do calendário
-    const observeCalendarInteraction = (action, data) => {
+  const setupMilaObservation = () => ({ // Observar interações do calendário
+    const observeCalendarInteraction = (action, data }) => {
       milaOmnipresence.observeUserInteraction({
         type: 'calendar_interaction',
         module: 'calendar',
@@ -387,7 +385,7 @@ export default function CalendarInterface({
       setEvents(updatedEvents);
 
       toast({
-        title: "📅 Evento movido",
+        title: "📅 Evento movido",`
         description: `${event.title} reagendado com sucesso`
       });
 
@@ -417,7 +415,7 @@ export default function CalendarInterface({
       setEvents(updatedEvents);
 
       toast({
-        title: "📅 Duração alterada",
+        title: "📅 Duração alterada",`
         description: `Duração de ${event.title} atualizada`
       });
 
@@ -459,7 +457,7 @@ export default function CalendarInterface({
         });
       }
 
-      const newEvent = {
+      const newEvent = {`
         id: selectedEvent?.id || `event_${Date.now()}`,
         title: eventForm.title,
         start: eventForm.start,
@@ -666,7 +664,7 @@ export default function CalendarInterface({
 
   const syncWithExternalCalendar = async (provider) => {
     try {
-      // Simular sincronização
+      // Simular sincronização`
       console.log(`Sincronizando com ${provider}...`);
       
       // Observar sincronização
@@ -675,7 +673,7 @@ export default function CalendarInterface({
         eventCount: events.length
       });
 
-      toast({
+      toast({`
         title: `📅 Sincronizado com ${provider}`,
         description: "Calendário sincronizado com sucesso"
       });
@@ -717,7 +715,7 @@ export default function CalendarInterface({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => navigateCalendar('prev')}
+              onClick=({ ( }) => navigateCalendar('prev')}
             >
               <ChevronLeft className="w-4 h-4" />
             </Button>
@@ -725,16 +723,16 @@ export default function CalendarInterface({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => navigateCalendar('today')}
+              onClick=({ ( }) => navigateCalendar('today')}
             >
               <Today className="w-4 h-4 mr-1" />
-              Hoje
+
             </Button>
             
             <Button
               variant="outline"
               size="sm"
-              onClick={() => navigateCalendar('next')}
+              onClick=({ ( }) => navigateCalendar('next')}
             >
               <ChevronRight className="w-4 h-4" />
             </Button>
@@ -742,12 +740,12 @@ export default function CalendarInterface({
 
           {/* Visualizações */}
           <div className="flex items-center gap-1 mr-4">
-            {Object.entries(VIEW_MODES).map(([view, config]) => (
+            ({ Object.entries(VIEW_MODES).map(([view, config] }) => (
               <Button
                 key={view}
                 variant={currentView === view ? "default" : "outline"}
                 size="sm"
-                onClick={() => changeView(view)}
+                onClick=({ ( }) => changeView(view)}
               >
                 {React.createElement(config.icon, { className: "w-4 h-4 mr-1" })}
                 {config.label}
@@ -757,7 +755,7 @@ export default function CalendarInterface({
 
           {/* Ações */}
           <Button
-            onClick={() => setShowEventDialog(true)}
+            onClick=({ ( }) => setShowEventDialog(true)}
             className="bg-blue-600 hover:bg-blue-700"
           >
             <Plus className="w-4 h-4 mr-2" />
@@ -788,7 +786,7 @@ export default function CalendarInterface({
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => syncWithExternalCalendar('Google')}
+                    onClick=({ ( }) => syncWithExternalCalendar('Google')}
                     className="w-full justify-start"
                   >
                     <ExternalLink className="w-4 h-4 mr-2" />
@@ -798,7 +796,7 @@ export default function CalendarInterface({
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => syncWithExternalCalendar('Outlook')}
+                    onClick=({ ( }) => syncWithExternalCalendar('Outlook')}
                     className="w-full justify-start"
                   >
                     <ExternalLink className="w-4 h-4 mr-2" />
@@ -812,7 +810,7 @@ export default function CalendarInterface({
       </div>
 
       {/* MILA Insights */}
-      {milaInsights.length > 0 && (
+      ({ milaInsights.length > 0 && (
         <div className="p-4 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 border-b">
           <div className="flex items-center gap-2 mb-2">
             <Brain className="w-4 h-4 text-purple-600" />
@@ -821,7 +819,7 @@ export default function CalendarInterface({
             </span>
           </div>
           <div className="space-y-1">
-            {milaInsights.slice(0, 2).map((insight, index) => (
+            {milaInsights.slice(0, 2).map((insight, index }) => (
               <p key={index} className="text-sm text-purple-700 dark:text-purple-300">
                 💡 {insight.message}
               </p>
@@ -852,7 +850,7 @@ export default function CalendarInterface({
               businessHours={{
                 startTime: calendarSettings.workingHours.start,
                 endTime: calendarSettings.workingHours.end,
-                daysOfWeek: [1, 2, 3, 4, 5]
+                daysOfWeek: [1, 2, 3, 4, 5]}
               }}
               slotMinTime="06:00:00"
               slotMaxTime="22:00:00"
@@ -864,12 +862,12 @@ export default function CalendarInterface({
               slotLabelFormat={{
                 hour: '2-digit',
                 minute: '2-digit',
-                hour12: false
+                hour12: false}
               }}
               eventTimeFormat={{
                 hour: '2-digit',
                 minute: '2-digit',
-                hour12: false
+                hour12: false}
               }}
             />
           </CardContent>
@@ -892,7 +890,7 @@ export default function CalendarInterface({
               <Input
                 id="title"
                 value={eventForm.title}
-                onChange={(e) => setEventForm({ ...eventForm, title: e.target.value })}
+                onChange=({ (e }) => setEventForm({ ...eventForm, title: e.target.value })}
                 placeholder="Digite o título do evento"
               />
             </div>
@@ -902,13 +900,13 @@ export default function CalendarInterface({
               <Label htmlFor="type">Tipo</Label>
               <Select
                 value={eventForm.type}
-                onValueChange={(value) => setEventForm({ ...eventForm, type: value })}
+                onValueChange=({ (value }) => setEventForm({ ...eventForm, type: value })}
               >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {Object.entries(EVENT_TYPES).map(([key, config]) => (
+                  ({ Object.entries(EVENT_TYPES).map(([key, config] }) => (
                     <SelectItem key={key} value={key}>
                       <div className="flex items-center gap-2">
                         {React.createElement(config.icon, { 
@@ -930,7 +928,7 @@ export default function CalendarInterface({
                 <Input
                   type="datetime-local"
                   value={eventForm.start.toISOString().slice(0, 16)}
-                  onChange={(e) => setEventForm({ 
+                  onChange=({ (e }) => setEventForm({ 
                     ...eventForm, 
                     start: new Date(e.target.value) 
                   })}
@@ -941,7 +939,7 @@ export default function CalendarInterface({
                 <Input
                   type="datetime-local"
                   value={eventForm.end.toISOString().slice(0, 16)}
-                  onChange={(e) => setEventForm({ 
+                  onChange=({ (e }) => setEventForm({ 
                     ...eventForm, 
                     end: new Date(e.target.value) 
                   })}
@@ -955,7 +953,7 @@ export default function CalendarInterface({
               <Textarea
                 id="description"
                 value={eventForm.description}
-                onChange={(e) => setEventForm({ ...eventForm, description: e.target.value })}
+                onChange=({ (e }) => setEventForm({ ...eventForm, description: e.target.value })}
                 placeholder="Descrição do evento"
                 rows={3}
               />
@@ -967,7 +965,7 @@ export default function CalendarInterface({
               <Input
                 id="location"
                 value={eventForm.location}
-                onChange={(e) => setEventForm({ ...eventForm, location: e.target.value })}
+                onChange=({ (e }) => setEventForm({ ...eventForm, location: e.target.value })}
                 placeholder="Local do evento"
               />
             </div>
@@ -981,7 +979,7 @@ export default function CalendarInterface({
                   <input
                     type="checkbox"
                     checked={eventForm.quantumEnhanced}
-                    onChange={(e) => setEventForm({ 
+                    onChange=({ (e }) => setEventForm({ 
                       ...eventForm, 
                       quantumEnhanced: e.target.checked 
                     })}
@@ -994,7 +992,7 @@ export default function CalendarInterface({
                   <input
                     type="checkbox"
                     checked={eventForm.milaAssisted}
-                    onChange={(e) => setEventForm({ 
+                    onChange=({ (e }) => setEventForm({ 
                       ...eventForm, 
                       milaAssisted: e.target.checked 
                     })}
@@ -1007,13 +1005,13 @@ export default function CalendarInterface({
                   <input
                     type="checkbox"
                     checked={eventForm.isPrivate}
-                    onChange={(e) => setEventForm({ 
+                    onChange=({ (e }) => setEventForm({ 
                       ...eventForm, 
                       isPrivate: e.target.checked 
                     })}
                   />
                   <EyeOff className="w-4 h-4 text-gray-600" />
-                  Privado
+
                 </label>
               </div>
             </div>
@@ -1027,7 +1025,7 @@ export default function CalendarInterface({
                     onClick={deleteEvent}
                   >
                     <Trash2 className="w-4 h-4 mr-2" />
-                    Excluir
+
                   </Button>
                 )}
               </div>
@@ -1035,9 +1033,9 @@ export default function CalendarInterface({
               <div className="flex gap-2">
                 <Button
                   variant="outline"
-                  onClick={() => setShowEventDialog(false)}
+                  onClick=({ ( }) => setShowEventDialog(false)}
                 >
-                  Cancelar
+
                 </Button>
                 <Button onClick={saveEvent}>
                   <Sparkles className="w-4 h-4 mr-2" />
@@ -1051,3 +1049,4 @@ export default function CalendarInterface({
     </div>
   );
 }
+`

@@ -244,7 +244,7 @@ class WidgetParser {
         console.log('🎨 Parsing widget:', widget.type);
         
         const parser = this.widgetTypes[widget.type];
-        if (!parser) {
+        if (!parser) {`
             throw new Error(`Tipo de widget não suportado: ${widget.type}`);
         }
         
@@ -430,14 +430,13 @@ class WidgetParser {
 /**
  * 3️⃣ VARIABLE CALCULATOR - Resolve variáveis calculadas
  */
-class VariableCalculator {
-    constructor() {
+class VariableCalculator ({ constructor() {
         this.operators = {
             '+': (a, b) => a + b,
             '-': (a, b) => a - b,
             '*': (a, b) => a * b,
             '/': (a, b) => a / b,
-            '%': (a, b) => (a / b) * 100
+            '%': (a, b }) => (a / b) * 100
         };
         
         this.functions = {
@@ -452,16 +451,15 @@ class VariableCalculator {
     /**
      * Ordena variáveis por dependência
      */
-    sortByDependency(variables) {
-        console.log('🔄 Ordenando', variables.length, 'variáveis por dependência');
+    sortByDependency(variables) ({ console.log('🔄 Ordenando', variables.length, 'variáveis por dependência');
         
         const sorted = [];
         const processed = new Set();
         const processing = new Set();
         
-        const processDependencies = (variable) => {
+        const processDependencies = (variable }) => {
             if (processed.has(variable.name)) return;
-            if (processing.has(variable.name)) {
+            if (processing.has(variable.name)) {`
                 throw new Error(`Dependência circular detectada: ${variable.name}`);
             }
             
@@ -531,7 +529,7 @@ class VariableCalculator {
             if (this.isMathExpression(variable.definition)) {
                 return this.calculateMathExpression(variable.definition, resolvedVariables);
             }
-            
+            `
             throw new Error(`Tipo de variável não suportado: ${variable.definition}`);
             
         } catch (error) {
@@ -589,7 +587,7 @@ class VariableCalculator {
         // Substituir variáveis por seus valores
         let processedExpression = expression;
         
-        for (const [varName, value] of resolvedVariables) {
+        for (const [varName, value] of resolvedVariables) {`
             const regex = new RegExp(`\\b${varName}\\b`, 'g');
             processedExpression = processedExpression.replace(regex, value.toString());
         }
@@ -603,7 +601,7 @@ class VariableCalculator {
             console.log('✅ Resultado:', result);
             return result;
         } catch (error) {
-            console.error('❌ Erro na expressão:', error.message);
+            console.error('❌ Erro na expressão:', error.message);`
             throw new Error(`Erro na expressão matemática: ${expression}`);
         }
     }
@@ -636,4 +634,4 @@ module.exports = {
     DashboardParser,
     WidgetParser, 
     VariableCalculator
-};
+};`

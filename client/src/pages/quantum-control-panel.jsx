@@ -14,7 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import { 
+import {  
   Settings, 
   Zap, 
   CreditCard, 
@@ -32,6 +32,7 @@ import {
   Package,
   Crown,
   Atom
+ }
 } from 'lucide-react';
 
 // ============================================================================
@@ -50,34 +51,41 @@ import {
   // ========================================================================
 
   // Fetch available quantum tiers
-  const { data, isLoading,
-    queryFn) => {
+  const { data: quantumTiers, isLoading: tiersLoading } = useQuery({
+    queryKey: ['quantum-tiers'],
+    queryFn: async () => {
       const response = await fetch('/api/quantum-commercial/tiers', {
-        credentials);
+        credentials: 'include'
+      });
       if (!response.ok) throw new Error('Failed to fetch quantum tiers');
       return response.json();
     }
   });
 
   // Fetch current credit usage
-  const { data, isLoading,
-    queryFn) => {
+  const { data: creditUsage, isLoading: creditsLoading } = useQuery({
+    queryKey: ['quantum-credits'],
+    queryFn: async () => {
       const response = await fetch('/api/quantum-commercial/credits', {
-        credentials);
+        credentials: 'include'
+      });
       if (!response.ok) throw new Error('Failed to fetch credit usage');
       return response.json();
     },
-    refetchInterval);
+    refetchInterval: 30000
+  });
 
   // Fetch ROI analytics
-  const { data, isLoading, activeTab],
-    queryFn) => {
+  const { data: roiData, isLoading: roiLoading } = useQuery({
+    queryKey: ['quantum-roi', activeTab],
+    queryFn: async () => {
       const response = await fetch('/api/quantum-commercial/analytics/roi', {
-        credentials);
+        credentials: 'include'
+      });
       if (!response.ok) throw new Error('Failed to fetch ROI data');
       return response.json();
     },
-    enabled=== 'analytics'
+    enabled: activeTab === 'analytics'
   });
 
   // ========================================================================
@@ -86,49 +94,53 @@ import {
 
   // Tier upgrade mutation
   const upgradeTier = useMutation({
-    mutationFn) => {
+    mutationFn: async (tierData) => {
       const response = await fetch('/api/quantum-commercial/upgrade', {
-        method,
-        headers,
-        credentials,
-        body)
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify(tierData)
       });
       if (!response.ok) throw new Error('Failed to upgrade tier');
       return response.json();
     },
-    onSuccess) => {
+    onSuccess: () => {
       toast({
-        title,
-        description,
+        title: 'Upgrade realizado com sucesso',
+        description: 'Seu plano foi atualizado'
       });
-      queryClient.invalidateQueries({ queryKey);
-      queryClient.invalidateQueries({ queryKey);
+      queryClient.invalidateQueries({ queryKey: ['quantum-tiers'] });
+      queryClient.invalidateQueries({ queryKey: ['quantum-credits'] });
     },
-    onError) => {
+    onError: () => {
       toast({
-        title,
-        description,
-        variant,
+        title: 'Erro no upgrade',
+        description: 'Não foi possível atualizar o plano',
+        variant: 'destructive'
       });
     }
   });
 
   // Configuration update mutation
   const updateConfig = useMutation({
-    mutationFn) => {
+    mutationFn: async (configData) => {
       const response = await fetch('/api/quantum-commercial/configure', {
-        method,
-        headers,
-        credentials,
-        body)
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify(configData)
       });
       if (!response.ok) throw new Error('Failed to update configuration');
       return response.json();
     },
-    onSuccess) => {
+    onSuccess: () => {
       toast({
-        title,
-        description,
+        title: 'Configuração atualizada',
+        description: 'As configurações foram salvas com sucesso'
       });
       setConfigChanges({});
     }
@@ -136,22 +148,24 @@ import {
 
   // Credit purchase mutation
   const purchaseCredits = useMutation({
-    mutationFn) => {
+    mutationFn: async (purchaseData) => {
       const response = await fetch('/api/quantum-commercial/credits/purchase', {
-        method,
-        headers,
-        credentials,
-        body)
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify(purchaseData)
       });
       if (!response.ok) throw new Error('Failed to purchase credits');
       return response.json();
     },
-    onSuccess) => {
+    onSuccess: () => {
       toast({
-        title,
-        description,
+        title: 'Créditos adquiridos',
+        description: 'Os créditos foram adicionados à sua conta'
       });
-      queryClient.invalidateQueries({ queryKey);
+      queryClient.invalidateQueries({ queryKey: ['quantum-credits'] });
     }
   });
 
@@ -163,8 +177,9 @@ import {
     setSelectedTier(tierKey);
     // Simulate payment method selection
     upgradeTier.mutate({
-      new_tier,
-      payment_method_id);
+      new_tier: tierKey,
+      payment_method_id: 'default'
+    });
   };
 
   const handleConfigChange = (key, value) => {
@@ -180,16 +195,17 @@ import {
 
   const handlePurchaseCredits = (packageType) => {
     purchaseCredits.mutate({
-      package_type,
-      payment_method_id);
+      package_type: packageType,
+      payment_method_id: 'default'
+    });
   };
 
   // ========================================================================
   // RENDER HELPERS
   // ========================================================================
 
-  const renderTierCard = (tierKey, tier, isCurrent= false) => (
-    <Card key={tierKey} className={`relative ${isCurrent ? 'ring-2 ring-purple-500' : 'hover)}
+  const renderTierCard = (tierKey, tier, isCurrent = false) => (
+    <Card key={tierKey} className={`relative ${isCurrent ? 'ring-2 ring-purple-500' : 'hover:shadow-lg'}`}>
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
@@ -233,7 +249,8 @@ import {
         </div>
 
         <div className="space-y-2">
-          <div className="font-medium">Key Features)}
+          <div className="font-medium">Key Features</div>
+          <ul className="space-y-1">
             {tier.features.real_time_analytics && (
               <li className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-green-500" />
@@ -248,7 +265,15 @@ import {
             )}
             <li className="flex items-center gap-2">
               <Shield className="w-4 h-4 text-blue-500" />
-              SLA) => handleTierUpgrade(tierKey)}
+              {tier.features.sla_guarantee || '99.9% SLA'}
+            </li>
+          </ul>
+        </div>
+        
+        <div className="pt-4">
+          {!isCurrent && (
+            <Button 
+              onClick={() => handleTierUpgrade(tierKey)}
               disabled={upgradeTier.isPending}
               className="w-full"
               variant={tierKey === 'quantum_enterprise' ? 'default' : 'outline'}
@@ -262,7 +287,16 @@ import {
   );
 
   const renderCreditPackage = (packageKey, packageInfo) => (
-    <Card key={packageKey} className="hover).toFixed(3)}/credit
+    <Card key={packageKey} className="hover:shadow-lg">
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <CardTitle>{packageInfo.name}</CardTitle>
+          <div className="text-right">
+            <div className="text-2xl font-bold">
+              ${packageInfo.price}
+            </div>
+            <div className="text-sm text-gray-500">
+              ${(packageInfo.price / packageInfo.credits).toFixed(3)}/credit
             </div>
           </div>
         </div>
@@ -314,7 +348,15 @@ import {
       </div>
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-1 md) || '0'}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Credits Remaining</CardTitle>
+            <Zap className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {creditUsage?.data?.remaining_credits?.toLocaleString() || '0'}
             </div>
             <p className="text-xs text-muted-foreground">
               {creditUsage?.data?.usage_percentage || 0}% used this month
@@ -332,7 +374,23 @@ import {
               ${creditUsage?.data?.estimated_monthly_cost || 0}
             </div>
             <p className="text-xs text-muted-foreground">
-              Trend)}%` : 
+              {roiData?.data?.roi_report?.summary?.cost_trend ? 
+                `Trend: ${roiData.data.roi_report.summary.cost_trend}%` : 
+                'N/A'
+              }
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">ROI</CardTitle>
+            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {roiData?.data?.roi_report?.summary?.roi_percentage ? 
+                `${roiData.data.roi_report.summary.roi_percentage}%` : 
                 'N/A'
               }
             </div>
@@ -350,8 +408,8 @@ import {
           <CardContent>
             <div className="text-2xl font-bold">
               {roiData?.data?.roi_report?.summary?.total_time_saved_hours ? 
-                `${roiData.data.roi_report.summary.total_time_saved_hours.toFixed(0)}h` : 
-                '0h'
+                `${roiData.data.roi_report.summary.total_time_saved_hours}h` :
+                'N/A'
               }
             </div>
             <p className="text-xs text-muted-foreground">
@@ -372,7 +430,25 @@ import {
 
         {/* Overview Tab */}
         <TabsContent value="overview" className="space-y-4">
-          <div className="grid grid-cols-1 lg) => handleConfigChange('background_processing', checked)}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Settings className="w-5 h-5 text-purple-500" />
+                  Quantum Configuration
+                </CardTitle>
+                <CardDescription>
+                  Adjust quantum processing settings
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="background">Background Processing</Label>
+                    <Switch 
+                      id="background"
+                      checked={configChanges.background_processing ?? true}
+                      onCheckedChange={(checked) => handleConfigChange('background_processing', checked)}
                     />
                   </div>
                   <div className="flex items-center justify-between">
@@ -439,7 +515,8 @@ import {
 
         {/* Pricing & Tiers Tab */}
         <TabsContent value="pricing" className="space-y-4">
-          <div className="grid grid-cols-1 lg).map(([tierKey, tier]: [string, any]) => 
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {tiers?.data && Object.entries(tiers.data).map(([tierKey, tier]: [string, any]) => 
               renderTierCard(tierKey, tier, tierKey === tiers.current_tier)
             )}
           </div>
@@ -447,8 +524,19 @@ import {
 
         {/* Credits & Usage Tab */}
         <TabsContent value="credits" className="space-y-4">
-          <div className="grid grid-cols-1 lg) || 0}</span>
-                    <span>Limit) || 0}</span>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Credit Usage</CardTitle>
+                <CardDescription>
+                  Current month usage and limits
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex justify-between text-sm">
+                    <span>Used: {creditUsage?.data?.used_credits?.toLocaleString() || 0}</span>
+                    <span>Limit: {creditUsage?.data?.credit_limit?.toLocaleString() || 0}</span>
                   </div>
                   <Progress 
                     value={creditUsage?.data?.usage_percentage || 0} 
@@ -515,47 +603,58 @@ import {
         {/* Analytics & ROI Tab */}
         <TabsContent value="analytics" className="space-y-4">
           {roiData?.data && (
-            <div className="grid grid-cols-1 lg)}%
-                        </div>
-                        <div className="text-sm text-gray-500">ROI</div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Business Metrics</CardTitle>
+                  <CardDescription>
+                    Quantum processing impact on business
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div>
+                      <div className="text-2xl font-bold">
+                        {roiData.data.business_metrics?.roi_percentage || 0}%
                       </div>
-                      <div>
-                        <div className="text-2xl font-bold">
-                          ${roiData.data.business_metrics.net_present_value.toFixed(0)}
-                        </div>
-                        <div className="text-sm text-gray-500">Net Value</div>
+                      <div className="text-sm text-gray-500">ROI</div>
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold">
+                        ${roiData.data.business_metrics?.net_present_value?.toFixed(0) || 0}
                       </div>
+                      <div className="text-sm text-gray-500">Net Value</div>
                     </div>
-                    
-                    <div className="space-y-2">
-                      <h4 className="font-medium">Key Achievements, index) => (
-                        <div key={index} className="flex items-start gap-2 text-sm">
-                          <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                          <span>{achievement}</span>
-                        </div>
-                      ))}
-                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <h4 className="font-medium">Key Achievements</h4>
+                    {roiData.data.business_metrics?.key_achievements?.map((achievement, index) => (
+                      <div key={index} className="flex items-start gap-2 text-sm">
+                        <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                        <span>{achievement}</span>
+                      </div>
+                    ))}
                   </div>
                 </CardContent>
               </Card>
-
               <Card>
                 <CardHeader>
                   <CardTitle>Quantum Operations Performance</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    {roiData.data.roi_report.by_operation.slice(0, 5).map((op, index) => (
+                    {roiData.data.roi_report?.by_operation?.slice(0, 5).map((op, index) => (
                       <div key={index} className="p-3 border rounded-lg">
                         <div className="flex justify-between items-center mb-2">
                           <span className="font-medium text-sm">{op.operation}</span>
                           <Badge variant="outline">
-                            {op.roi_multiple.toFixed(1)}x ROI
+                            {op.roi_multiple?.toFixed(1) || 0}x ROI
                           </Badge>
                         </div>
                         <div className="flex justify-between text-sm text-gray-600">
                           <span>{op.count} operations</span>
-                          <span>${op.total_value_generated.toFixed(0)} value</span>
+                          <span>${op.total_value_generated?.toFixed(0) || 0} value</span>
                         </div>
                       </div>
                     ))}
@@ -570,4 +669,4 @@ import {
   );
 };
 
-export default QuantumControlPanel;
+export default QuantumControlPanel;`

@@ -7,15 +7,14 @@ import { Alert, AlertDescription } from './ui/alert';
 import { Loader2, Zap, Cpu, DollarSign, TrendingUp, AlertTriangle, Star } from 'lucide-react';
 
 // ===== QUANTUM TOGGLE COMPONENT =====
-// ) {
-  const [quantumLevel, setQuantumLevel] = useState<'logic' | 'logic_x' | 'boost'>('logic');
+// ) ({ const [quantumLevel, setQuantumLevel] = useState<'logic' | 'logic_x' | 'boost'>('logic');
   const [eligibility, setEligibility] = useState<any>(null);
   const [canUse, setCanUse] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [executing, setExecuting] = useState(false);
 
   // Verificar elegibilidade ao montar componente
-  useEffect(() => {
+  useEffect(( }) => {
     checkQuantumEligibility();
   }, [context, dataSize, complexity]);
 
@@ -93,7 +92,7 @@ import { Loader2, Zap, Cpu, DollarSign, TrendingUp, AlertTriangle, Star } from '
   }
 
   if (loading) {
-    return (
+    return (`
       <Card className={`border-gray-200 ${className}`}>
         <CardContent className="pt-6">
           <div className="flex items-center justify-center py-8">
@@ -104,15 +103,15 @@ import { Loader2, Zap, Cpu, DollarSign, TrendingUp, AlertTriangle, Star } from '
       </Card>
     );
   }
-
+`
   // `}>
-      {/* Header com toggle quantum */}
+      {/* Header com toggle quantum */}`
       <Card className={`border-2 transition-all duration-200 ${
-        useQuantum ? 'border-purple-300 bg-gradient-to-r from-purple-50 to-blue-50' : 'border-gray-200'
+        useQuantum ? 'border-purple-300 bg-gradient-to-r from-purple-50 to-blue-50' : 'border-gray-200'`}
       }`}>
         <CardHeader className="pb-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-3">`
               <div className={`p-2 rounded-lg ${useQuantum ? 'bg-purple-100' : 'bg-blue-100'}`}>
                 {useQuantum ? (
                   <Zap className="h-5 w-5 text-purple-600" />
@@ -128,7 +127,6 @@ import { Loader2, Zap, Cpu, DollarSign, TrendingUp, AlertTriangle, Star } from '
               {eligibility?.autoSuggest && (
                 <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
                   <Star className="w-3 h-3 mr-1" />
-                  Recomendado
                 </Badge>
               )}
               
@@ -170,7 +168,7 @@ import { Loader2, Zap, Cpu, DollarSign, TrendingUp, AlertTriangle, Star } from '
       {eligibility?.eligible && !useQuantum && (
         <QuantumBenefitsCard 
           eligibility={eligibility}
-          onActivate={() => handleQuantumToggle(true)}
+          onActivate=({ ( }) => handleQuantumToggle(true)}
         />
       )}
     </div>
@@ -211,8 +209,7 @@ function QuantumDetails({ eligibility, canUse, onExecute, executing, disabled })
       <Button 
         onClick={onExecute}
         disabled={disabled || executing}
-        className="w-full bg-blue-600 hover) { canUse }) {
-  const handleUpgrade = () => {
+        className="w-full bg-blue-600 hover) { canUse }) ({ const handleUpgrade = ( }) => {
     // Navegar para página de upgrade
     window.location.href = '/quantum-packages';
   };
@@ -272,4 +269,4 @@ function QuantumBenefitsCard({ eligibility, onActivate }) {
           </div>
           <div className="flex-1">
             <h4 className="font-medium text-green-900 mb-2">Disponível);
-}
+}`

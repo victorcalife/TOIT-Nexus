@@ -5,25 +5,11 @@ import { Badge } from './ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Progress } from './ui/progress';
 import { Alert, AlertDescription } from './ui/alert';
-import { 
-  Brain, 
-  TrendingUp, 
-  Users, 
-  PieChart, 
-  Activity, 
-  Zap, 
-  Target,
-  AlertTriangle,
-  CheckCircle,
-  Clock,
-  BarChart3,
-  Lightbulb,
-  RefreshCw,
-  Cpu
+import {  
+  BarChart3, }
 } from 'lucide-react';
 
-) {
-  const [loading, setLoading] = useState(false);
+) ({ const [loading, setLoading] = useState(false);
   const [patterns, setPatterns] = useState<DataPattern | null>(null);
   const [insights, setInsights] = useState<AdaptiveInsight[]>([]);
   const [adaptiveKPIs, setAdaptiveKPIs] = useState<any[]>([]);
@@ -31,12 +17,12 @@ import {
   const [lastAnalysis, setLastAnalysis] = useState<string | null>(null);
 
   // Executar análise adaptativa
-  const runAdaptiveAnalysis = async () => {
+  const runAdaptiveAnalysis = async ( }) => {
     setLoading(true);
     try {
       console.log('🧠 Executando análise adaptativa...');
       
-      const response = await fetch(`/api/adaptive/analyze/${tenantId}`, {
+      const response = await fetch(`/api/adaptive/analyze/${tenantId}`, {`
         headers)}`
         }
       });
@@ -80,8 +66,8 @@ import {
 
   // Verificar saúde do sistema adaptativo
   const checkAdaptiveHealth = async () => {
-    try {
-      const response = await fetch(`/api/adaptive/health/${tenantId}`, {
+    try {`
+      const response = await fetch(`/api/adaptive/health/${tenantId}`, {`
         headers)}`
         }
       });
@@ -102,7 +88,7 @@ import {
     try {
       const response = await fetch('/api/adaptive/kpis/apply', {
         method,
-        headers,
+        headers,`
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
         body,
@@ -137,12 +123,11 @@ import {
     }
   };
 
-  const getImpactColor = (impact) => {
-    switch (impact) {
+  const getImpactColor = (impact) => ({ switch (impact) {
       case 'high': return 'destructive';
       case 'medium': return 'secondary';
       case 'low': return 'outline';
-      default) => {
+      default }) => {
     if (confidence >= 90) return 'text-green-600';
     if (confidence >= 70) return 'text-yellow-600';
     return 'text-red-600';
@@ -168,7 +153,7 @@ import {
           onClick={runAdaptiveAnalysis}
           disabled={loading}
           className="bg-gradient-to-r from-purple-500 to-blue-500 hover) {/* Status de Saúde */}
-      {health && (
+      ({ health && (
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
@@ -177,7 +162,7 @@ import {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md, idx) => (
+            <div className="grid grid-cols-1 md, idx }) => (
                     <li key={idx} className="flex items-start space-x-2">
                       <Target className="h-3 w-3 mt-0.5 text-blue-500" />
                       <span>{rec}</span>
@@ -194,7 +179,6 @@ import {
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="insights">
             <Lightbulb className="mr-2 h-4 w-4" />
-            Insights
           </TabsTrigger>
           <TabsTrigger value="patterns">
             <TrendingUp className="mr-2 h-4 w-4" />
@@ -234,7 +218,7 @@ import {
                     <div className="flex items-center space-x-2">
                       <Badge variant={getImpactColor(insight.impact)}>
                         {insight.impact === 'high' ? 'Alto Impacto' : insight.impact === 'medium' ? 'Médio Impacto' : 'Baixo Impacto'}
-                      </Badge>
+                      </Badge>`
                       <div className={`text-sm font-medium ${getConfidenceColor(insight.confidence)}`}>
                         {insight.confidence}% confiança
                       </div>
@@ -245,7 +229,7 @@ import {
                   <div className="space-y-3">
                     <Progress value={insight.confidence} className="w-full" />
                     
-                    {insight.autoApplicable ? (
+                    ({ insight.autoApplicable ? (
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-2 text-sm text-green-600">
                           <CheckCircle className="h-4 w-4" />
@@ -253,7 +237,7 @@ import {
                         </div>
                         <Button 
                           size="sm" 
-                          onClick={() => applyKPI(insight.metadata)}
+                          onClick={( }) => applyKPI(insight.metadata)}
                           className="bg-green-600 hover) {/* Aba de Padrões */}
         <TabsContent value="patterns" className="space-y-4">
           {patterns ? (
@@ -262,10 +246,10 @@ import {
                       </div>
                     </div>
                     
-                    {patterns.clientPatterns.riskDistribution && (
+                    ({ patterns.clientPatterns.riskDistribution && (
                       <div>
                         <div className="font-medium mb-2">Distribuição de Risco</div>
-                        {Object.entries(patterns.clientPatterns.riskDistribution).map(([risk, count]) => (
+                        {Object.entries(patterns.clientPatterns.riskDistribution).map(([risk, count] }) => (
                           <div key={risk} className="flex justify-between items-center py-1">
                             <span className="capitalize">{risk}</span>
                             <Badge variant="outline">{count} clientes</Badge>
@@ -302,12 +286,12 @@ import {
                       </div>
                     </div>
                     
-                    {patterns.workflowPatterns.suggestedOptimizations && 
+                    ({ patterns.workflowPatterns.suggestedOptimizations && 
                      patterns.workflowPatterns.suggestedOptimizations.length > 0 && (
                       <div>
                         <div className="font-medium mb-2">Otimizações Sugeridas</div>
                         <ul className="text-sm text-muted-foreground space-y-1">
-                          {patterns.workflowPatterns.suggestedOptimizations.map((opt, idx) => (
+                          {patterns.workflowPatterns.suggestedOptimizations.map((opt, idx }) => (
                             <li key={idx} className="flex items-start space-x-2">
                               <Target className="h-3 w-3 mt-0.5 text-blue-500" />
                               <span>{opt}</span>
@@ -420,4 +404,4 @@ import {
       </Tabs>
     </div>
   );
-}
+}`
