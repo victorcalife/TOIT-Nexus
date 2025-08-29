@@ -1,35 +1,35 @@
 import React from 'react';
 
 // Páginas públicas
-const HomePage = React.lazy(() => import('@/pages/HomePage'));
-const LoginPage = React.lazy(() => import('@/pages/auth/LoginPage'));
-const SupportLoginPage = React.lazy(() => import('@/pages/auth/SupportLoginPage'));
-const RegisterPage = React.lazy(() => import('@/pages/auth/RegisterPage'));
-const ForgotPasswordPage = React.lazy(() => import('@/pages/auth/ForgotPasswordPage'));
-const ResetPasswordPage = React.lazy(() => import('@/pages/auth/ResetPasswordPage'));
-const UnauthorizedPage = React.lazy(() => import('@/pages/UnauthorizedPage'));
-const SelectTenantPage = React.lazy(() => import('@/pages/auth/SelectTenantPage'));
+const HomePage = React.lazy(() => import('@/pages/HomePage.jsx'));
+const LoginPage = React.lazy(() => import('@/pages/auth/LoginPage.jsx'));
+const SupportLoginPage = React.lazy(() => import('@/pages/auth/SupportLoginPage.jsx'));
+const RegisterPage = React.lazy(() => import('@/pages/auth/RegisterPage.jsx'));
+const ForgotPasswordPage = React.lazy(() => import('@/pages/auth/ForgotPasswordPage.jsx'));
+const ResetPasswordPage = React.lazy(() => import('@/pages/auth/ResetPasswordPage.jsx'));
+const UnauthorizedPage = React.lazy(() => import('@/pages/UnauthorizedPage.jsx'));
+const SelectTenantPage = React.lazy(() => import('@/pages/auth/SelectTenantPage.jsx'));
 
 // Páginas de cliente
-const ClientDashboard = React.lazy(() => import('@/pages/client/Dashboard'));
-const WorkflowsPage = React.lazy(() => import('@/pages/client/WorkflowsPage'));
-const ReportsPage = React.lazy(() => import('@/pages/client/ReportsPage'));
-const TasksPage = React.lazy(() => import('@/pages/client/TasksPage'));
-const QueryBuilderPage = React.lazy(() => import('@/pages/client/QueryBuilderPage'));
-const ConnectionsPage = React.lazy(() => import('@/pages/client/ConnectionsPage'));
-const MLPage = React.lazy(() => import('@/pages/client/MLPage'));
-const EmailPage = React.lazy(() => import('@/pages/client/EmailPage'));
-const ChatPage = React.lazy(() => import('@/pages/client/ChatPage'));
-const ProfilePage = React.lazy(() => import('@/pages/client/ProfilePage'));
-const SettingsPage = React.lazy(() => import('@/pages/client/SettingsPage'));
+const ClientDashboard = React.lazy(() => import('@/pages/client/Dashboard.jsx'));
+const WorkflowsPage = React.lazy(() => import('@/pages/client/WorkflowsPage.jsx'));
+const ReportsPage = React.lazy(() => import('@/pages/client/ReportsPage.jsx'));
+const TasksPage = React.lazy(() => import('@/pages/client/TasksPage.jsx'));
+const QueryBuilderPage = React.lazy(() => import('@/pages/client/QueryBuilderPage.jsx'));
+const ConnectionsPage = React.lazy(() => import('@/pages/client/ConnectionsPage.jsx'));
+const MLPage = React.lazy(() => import('@/pages/client/MLPage.jsx'));
+const EmailPage = React.lazy(() => import('@/pages/client/EmailPage.jsx'));
+const ChatPage = React.lazy(() => import('@/pages/client/ChatPage.jsx'));
+const ProfilePage = React.lazy(() => import('@/pages/client/ProfilePage.jsx'));
+const SettingsPage = React.lazy(() => import('@/pages/client/SettingsPage.jsx'));
 
 // Páginas de admin
-const AdminDashboard = React.lazy(() => import('@/pages/admin/dashboard'));
-const UsersManagement = React.lazy(() => import('@/pages/admin/UsersManagement'));
-const TenantsManagement = React.lazy(() => import('@/pages/admin/TenantsManagement'));
-const SystemSettings = React.lazy(() => import('@/pages/admin/SystemSettings'));
-const SystemLogs = React.lazy(() => import('@/pages/admin/SystemLogs'));
-const SystemHealth = React.lazy(() => import('@/pages/admin/SystemHealth'));
+const AdminDashboard = React.lazy(() => import('@/pages/admin/dashboard.jsx'));
+const UsersManagement = React.lazy(() => import('@/pages/admin/UsersManagement.jsx'));
+const TenantsManagement = React.lazy(() => import('@/pages/admin/TenantsManagement.jsx'));
+const SystemSettings = React.lazy(() => import('@/pages/admin/SystemSettings.jsx'));
+const SystemLogs = React.lazy(() => import('@/pages/admin/SystemLogs.jsx'));
+const SystemHealth = React.lazy(() => import('@/pages/admin/SystemHealth.jsx'));
 
 /**
  * Rotas públicas - acessíveis sem autenticação
