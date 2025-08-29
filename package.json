@@ -14,6 +14,7 @@
     "server:start": "cd server && node dist/index.js",
     "db:push": "npx drizzle-kit push --config=drizzle.config.js",
     "db:setup": "node scripts/setup-database.js",
+    "db:fix-sessions": "node scripts/fix-user-sessions-migration.js",
     "deploy": "node deploy.js",
     "railway:start": "npm run server:build && npm run db:setup && node railway-frontend.js",
     "test:start": "node test-deployment.js",
