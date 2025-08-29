@@ -177,22 +177,22 @@ const ComplianceManagement = () => {
         fetch('/api/compliance/regulations', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/compliance/policies', {`
+        fetch('/api/compliance/policies', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/compliance/audits', {`
+        fetch('/api/compliance/audits', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/compliance/risks', {`
+        fetch('/api/compliance/risks', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/compliance/controls', {`
+        fetch('/api/compliance/controls', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/compliance/incidents', {`
+        fetch('/api/compliance/incidents', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/compliance/assessments', {`
+        fetch('/api/compliance/assessments', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);

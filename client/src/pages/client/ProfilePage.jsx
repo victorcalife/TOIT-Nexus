@@ -28,7 +28,7 @@ import {
   Settings,
   Lock,
   Globe,
-  Smartphone }
+  Smartphone
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -160,16 +160,18 @@ const ProfilePage = () => {
           <p className="text-gray-600">Gerencie suas informações pessoais e preferências</p>
         </div>
         <div className="flex gap-2">
-          ({ isEditing ? (
+          {isEditing ? (
             <>
-              <Button variant="outline" onClick={( }) => setIsEditing(false)}>
-
+              <Button variant="outline" onClick={() => setIsEditing(false)}>
+                Cancelar
+              </Button>
               <Button onClick={handleSaveProfile} className="flex items-center gap-2">
                 <Save className="h-4 w-4" />
-
+                Salvar
+              </Button>
             </>
           ) : (
-            <Button onClick=({ ( }) => setIsEditing(true)} className="flex items-center gap-2">
+            <Button onClick={() => setIsEditing(true)} className="flex items-center gap-2">
               <Edit className="h-4 w-4" />
               Editar Perfil
             </Button>
@@ -209,7 +211,7 @@ const ProfilePage = () => {
                 </div>
 
                 <div className="flex flex-wrap gap-1 justify-center">
-                  ({ userProfile.permissions.map((permission }) => (
+                  {userProfile.permissions.map((permission) => (
                     <Badge key={permission} variant="secondary">
                       {permission}
                     </Badge>

@@ -59,7 +59,7 @@ import {
   Edit,
   Plus,
   Minus,
-  MoreHorizontal }
+  MoreHorizontal
 } from 'lucide-react';
 
 const SecurityCenter = () => {
@@ -126,7 +126,7 @@ const SecurityCenter = () => {
     setLoading(true);
     try {
       const response = await fetch(`/api/security/dashboard?timeRange=${filters.timeRange}`, {
-        headers: {`
+        headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }
@@ -161,7 +161,7 @@ const SecurityCenter = () => {
     try {
       const response = await fetch('/api/security/scan', {
         method: 'POST',
-        headers: {`
+        headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -175,7 +175,7 @@ const SecurityCenter = () => {
       const data = await response.json();
       
       toast({
-        title: "Scan iniciado",`
+        title: "Scan iniciado",
         description: `Scan de segurança ${scanType} iniciado com sucesso`,
       });
 
@@ -197,7 +197,7 @@ const SecurityCenter = () => {
    * BLOQUEAR AMEAÇA
    */
   const blockThreat = async (threatId) => {
-    try {`
+    try {
       const response = await fetch(`/api/security/threats/${threatId}/block`, {
         method: 'POST',
         headers: {`

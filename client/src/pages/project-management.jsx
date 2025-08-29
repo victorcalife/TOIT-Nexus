@@ -143,19 +143,19 @@ const ProjectManagement = () => {
         fetch('/api/projects', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/projects/tasks', {`
+        fetch('/api/projects/tasks', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/projects/teams', {`
+        fetch('/api/projects/teams', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/projects/milestones', {`
+        fetch('/api/projects/milestones', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/projects/time-tracking', {`
+        fetch('/api/projects/time-tracking', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/projects/resources', {`
+        fetch('/api/projects/resources', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);

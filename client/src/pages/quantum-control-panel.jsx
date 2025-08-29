@@ -39,7 +39,12 @@ import {
 // TYPES & INTERFACES
 // ============================================================================
 
-= useToast();
+// ============================================================================
+// MAIN COMPONENT
+// ============================================================================
+
+export default function QuantumControlPanel() {
+  const { toast } = useToast();
   const queryClient = useQueryClient();
   
   const [activeTab, setActiveTab] = useState('overview');
@@ -330,8 +335,8 @@ import {
   // ========================================================================
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      {/* Header */}
+    
+     
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold flex items-center gap-2">
@@ -347,7 +352,7 @@ import {
         </Badge>
       </div>
 
-      {/* Quick Stats */}
+   
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -419,7 +424,7 @@ import {
         </Card>
       </div>
 
-      {/* Main Content Tabs */}
+      {/* Main Content Tabs */
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -516,7 +521,7 @@ import {
         {/* Pricing & Tiers Tab */}
         <TabsContent value="pricing" className="space-y-4">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {tiers?.data && Object.entries(tiers.data).map(([tierKey, tier]: [string, any]) => 
+            {tiers?.data && Object.entries(tiers.data).map(([tierKey, tier]) =>
               renderTierCard(tierKey, tier, tierKey === tiers.current_tier)
             )}
           </div>
@@ -574,7 +579,7 @@ import {
               <CardContent>
                 <div className="space-y-3">
                   {creditUsage?.data?.available_packages && 
-                    Object.entries(creditUsage.data.available_packages).map(([packageKey, packageInfo]: [string, any]) => (
+                    Object.entries(creditUsage.data.available_packages).map(([packageKey, packageInfo]) => (
                       <div key={packageKey} className="p-3 border rounded-lg">
                         <div className="flex justify-between items-center">
                           <div>
@@ -665,8 +670,130 @@ import {
           )}
         </TabsContent>
       </Tabs>
+  return (
+    <div className="container mx-auto p-6 space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold flex items-center gap-2">
+            <Settings className="w-8 h-8 text-purple-500" />
+            Quantum Control Panel
+          </h1>
+          <p className="text-gray-600 mt-1">
+            Gerenciar configurações e comercialização do Quantum ML Engine
+          </p>
+        </div>
+        <Badge variant="outline" className="text-purple-600 border-purple-300">
+          {quantumTiers?.current_tier || 'quantum_lite'}
+        </Badge>
+      </div>
+
+      {/* Main Content */}
+      <div className="space-y-6">
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          {/* Credit Stats */}
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Credits Remaining</CardTitle>
+              <Zap className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {creditUsage?.data?.remaining_credits?.toLocaleString() || '0'}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {creditUsage?.data?.usage_percentage || 0}% used this month
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* Monthly Cost Stats */}
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Monthly Cost</CardTitle>
+              <DollarSign className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                ${creditUsage?.data?.estimated_monthly_cost || 0}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {roiData?.data?.roi_report?.summary?.cost_trend ? 
+                  `Trend: ${roiData.data.roi_report.summary.cost_trend}%` : 
+                  'N/A'
+                }
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* ROI Stats */}
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">ROI</CardTitle>
+              <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {roiData?.data?.roi_report?.summary?.roi_percentage ? 
+                  `${roiData.data.roi_report.summary.roi_percentage}%` : 
+                  'N/A'
+                }
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Return on quantum investment
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* Time Saved Stats */}
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Time Saved</CardTitle>
+              <Gauge className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {roiData?.data?.roi_report?.summary?.total_time_saved_hours ? 
+                  `${roiData.data.roi_report.summary.total_time_saved_hours}h` :
+                  'N/A'
+                }
+              </div>
+              <p className="text-xs text-muted-foreground">
+                This month via quantum processing
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Main Tabs */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="pricing">Pricing & Tiers</TabsTrigger>
+            <TabsTrigger value="credits">Credits & Usage</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics & ROI</TabsTrigger>
+          </TabsList>
+
+          {/* Tab Contents */}
+          <TabsContent value="overview" className="space-y-4">
+            {/* Overview Content */}
+          </TabsContent>
+
+          <TabsContent value="pricing" className="space-y-4">
+            {/* Pricing Content */}
+          </TabsContent>
+
+          <TabsContent value="credits" className="space-y-4">
+            {/* Credits Content */}
+          </TabsContent>
+
+          <TabsContent value="analytics" className="space-y-4">
+            {/* Analytics Content */}
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
-};
 
-export default QuantumControlPanel;`
+export default QuantumControlPanel;

@@ -390,4 +390,3 @@ export {
   CheckboxCard,
   checkboxVariants
 }
-`

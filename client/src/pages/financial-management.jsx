@@ -139,25 +139,25 @@ const FinancialManagement = () => {
     setLoading(true);
     try {
       const [transactionsRes, accountsRes, budgetsRes, invoicesRes, expensesRes, revenuesRes, categoriesRes] = await Promise.all([
-        fetch(`/api/financial/transactions?dateRange=${dateRange}`, {`
+        fetch(`/api/financial/transactions?dateRange=${dateRange}`, {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/financial/accounts', {`
+        fetch('/api/financial/accounts', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/financial/budgets', {`
+        fetch('/api/financial/budgets', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/financial/invoices', {`
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-        }),`
-        fetch(`/api/financial/expenses?dateRange=${dateRange}`, {`
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-        }),`
-        fetch(`/api/financial/revenues?dateRange=${dateRange}`, {`
+        fetch('/api/financial/invoices', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/financial/categories', {`
+        fetch(`/api/financial/expenses?dateRange=${dateRange}`, {
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        }),
+        fetch(`/api/financial/revenues?dateRange=${dateRange}`, {
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        }),
+        fetch('/api/financial/categories', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);

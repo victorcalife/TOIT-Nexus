@@ -101,13 +101,13 @@ const EcommerceSystem = () => {
         fetch('/api/ecommerce/products', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/ecommerce/orders', {`
+        fetch('/api/ecommerce/orders', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/ecommerce/customers', {`
+        fetch('/api/ecommerce/customers', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/ecommerce/categories', {`
+        fetch('/api/ecommerce/categories', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);
@@ -151,7 +151,7 @@ const EcommerceSystem = () => {
     try {
       const response = await fetch('/api/ecommerce/products', {
         method: 'POST',
-        headers: {`
+        headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },

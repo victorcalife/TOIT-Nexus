@@ -37,7 +37,7 @@ import {
   Zap,
   Clock,
   Users,
-  Lock }
+  Lock
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -184,10 +184,11 @@ const SettingsPage = () => {
     toast.success('Configurações exportadas com sucesso!');
   };
 
-  const handleImportSettings = (event) => ({ const file = event.target.files[0];
+  const handleImportSettings = (event) => {
+    const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (e }) => {
+      reader.onload = (e) => {
         try {
           const importedSettings = JSON.parse(e.target.result);
           setSettings(importedSettings);

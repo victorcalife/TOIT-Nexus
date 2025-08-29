@@ -268,8 +268,7 @@ const UsersManagement = () => {
           <p className="text-gray-600">Gerencie usuários, permissões e acessos do sistema</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={handleExportUsers}>
-            <Download className="h-4 w-4 mr-2" />
+        
 
           <Button onClick={handleCreateUser}>
             <UserPlus className="h-4 w-4 mr-2" />
@@ -345,7 +344,7 @@ const UsersManagement = () => {
                 <Input
                   placeholder="Buscar por nome, email ou departamento..."
                   value={searchTerm}
-                  onChange=({ (e }) => setSearchTerm(e.target.value)}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
                 />
               </div>
@@ -353,7 +352,7 @@ const UsersManagement = () => {
             
             <select
               value={selectedRole}
-              onChange=({ (e }) => setSelectedRole(e.target.value)}
+              onChange={(e) => setSelectedRole(e.target.value)}
               className="px-3 py-2 border border-gray-300 rounded-md"
             >
               <option value="all">Todas as Funções</option>
@@ -367,7 +366,7 @@ const UsersManagement = () => {
             
             <select
               value={selectedStatus}
-              onChange=({ (e }) => setSelectedStatus(e.target.value)}
+              onChange={(e) => setSelectedStatus(e.target.value)}
               className="px-3 py-2 border border-gray-300 rounded-md"
             >
               <option value="all">Todos os Status</option>
@@ -379,7 +378,7 @@ const UsersManagement = () => {
             
             <select
               value={selectedTenant}
-              onChange=({ (e }) => setSelectedTenant(e.target.value)}
+              onChange={(e) => setSelectedTenant(e.target.value)}
               className="px-3 py-2 border border-gray-300 rounded-md"
             >
               <option value="all">Todos os Tenants</option>
@@ -388,13 +387,15 @@ const UsersManagement = () => {
               ))}
             </select>
             
-            <Button variant="outline" onClick=({ ( }) => {
+            <Button variant="outline" onClick={() => {
               setSearchTerm('');
-              setSelectedRole('all');
+              setSelectedRole('all'); 
               setSelectedStatus('all');
               setSelectedTenant('all');
             }}>
               <RefreshCw className="h-4 w-4 mr-2" />
+              Limpar Filtros
+            </Button>
 
           </div>
         </CardContent>
@@ -406,10 +407,10 @@ const UsersManagement = () => {
           <div className="flex items-center justify-between">
             <CardTitle>Lista de Usuários ({filteredUsers.length})</CardTitle>
             <div className="flex gap-2">
-              <Button variant="outline" size="sm" onClick=({ ( }) => handleBulkAction('activate')}>
+              <Button variant="outline" size="sm" onClick={() => handleBulkAction('activate')}>
                 Ativar Selecionados
               </Button>
-              <Button variant="outline" size="sm" onClick=({ ( }) => handleBulkAction('deactivate')}>
+              <Button variant="outline" size="sm" onClick={() => handleBulkAction('deactivate')}>
                 Desativar Selecionados
               </Button>
             </div>
@@ -433,7 +434,7 @@ const UsersManagement = () => {
                 </tr>
               </thead>
               <tbody>
-                ({ filteredUsers.map((user }) => (
+                {filteredUsers.map((user) => (
                   <tr key={user.id} className="border-b hover:bg-gray-50">
                     <td className="p-3">
                       <input type="checkbox" className="rounded" />
@@ -476,16 +477,16 @@ const UsersManagement = () => {
                         <Button
                           size="sm"
                           variant="outline"
-                          onClick=({ ( }) => handleEditUser(user)}
+                          onClick={() => handleEditUser(user)}
                         >
                           <Edit className="h-4 w-4" />
                         </Button>
                         
-                        ({ user.status === 'active' ? (
+                        {user.status === 'active' ? (
                           <Button
                             size="sm"
                             variant="outline"
-                            onClick={( }) => handleUserAction('deactivate', user)}
+                            onClick={() => handleUserAction('deactivate', user)}
                             disabled={isLoading}
                           >
                             <EyeOff className="h-4 w-4" />
@@ -494,7 +495,7 @@ const UsersManagement = () => {
                           <Button
                             size="sm"
                             variant="outline"
-                            onClick=({ ( }) => handleUserAction('activate', user)}
+                            onClick={() => handleUserAction('activate', user)}
                             disabled={isLoading}
                           >
                             <Eye className="h-4 w-4" />
@@ -504,7 +505,7 @@ const UsersManagement = () => {
                         <Button
                           size="sm"
                           variant="outline"
-                          onClick=({ ( }) => handleUserAction('reset-password', user)}
+                          onClick={() => handleUserAction('reset-password', user)}
                           disabled={isLoading}
                         >
                           <RefreshCw className="h-4 w-4" />
@@ -513,7 +514,7 @@ const UsersManagement = () => {
                         <Button
                           size="sm"
                           variant="outline"
-                          onClick=({ ( }) => handleUserAction('delete', user)}
+                          onClick={() => handleUserAction('delete', user)}
                           disabled={isLoading}
                           className="text-red-600 hover:text-red-700"
                         >
@@ -547,9 +548,10 @@ const UsersManagement = () => {
               Modal de criação/edição de usuário - Em desenvolvimento
             </p>
             <div className="flex gap-2 justify-end">
-              <Button variant="outline" onClick=({ ( }) => setShowUserModal(false)}>
-
-              <Button onClick=({ ( }) => {
+              <Button variant="outline" onClick={() => setShowUserModal(false)}>
+                Cancelar
+              </Button>
+              <Button onClick={() => {
                 setShowUserModal(false);
                 toast.success(selectedUser ? 'Usuário atualizado!' : 'Usuário criado!');
               }}>

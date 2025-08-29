@@ -136,22 +136,22 @@ const InventoryManagement = () => {
         fetch('/api/inventory/products', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/inventory/categories', {`
+        fetch('/api/inventory/categories', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/inventory/suppliers', {`
+        fetch('/api/inventory/suppliers', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/inventory/warehouses', {`
+        fetch('/api/inventory/warehouses', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/inventory/movements', {`
+        fetch('/api/inventory/movements', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/inventory/alerts', {`
+        fetch('/api/inventory/alerts', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/inventory/orders', {`
+        fetch('/api/inventory/orders', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);

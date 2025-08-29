@@ -122,16 +122,16 @@ const LMSSystem = () => {
         fetch('/api/lms/courses', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/lms/students', {`
+        fetch('/api/lms/students', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/lms/instructors', {`
+        fetch('/api/lms/instructors', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/lms/categories', {`
+        fetch('/api/lms/categories', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/lms/enrollments', {`
+        fetch('/api/lms/enrollments', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);
@@ -180,7 +180,7 @@ const LMSSystem = () => {
     try {
       const response = await fetch('/api/lms/courses', {
         method: 'POST',
-        headers: {`
+        headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },

@@ -213,13 +213,13 @@ const SocialCollaboration = () => {
     try {
       const response = await fetch('/api/social/posts', {
         method: 'POST',
-        headers: {`
+        headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           ...postData,
-          createdAt: new Date().toISOString(),`
+          createdAt: new Date().toISOString(),
           postId: `POST-${Date.now()}`
         })
       });
@@ -251,10 +251,10 @@ const SocialCollaboration = () => {
    * CURTIR POST
    */
   const likePost = async (postId) => {
-    try {`
+    try {
       const response = await fetch(`/api/social/posts/${postId}/like`, {
         method: 'POST',
-        headers: {`
+        headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }
@@ -288,10 +288,10 @@ const SocialCollaboration = () => {
    * COMENTAR POST
    */
   const commentPost = async (postId, commentData) => {
-    try {`
+    try {
       const response = await fetch(`/api/social/posts/${postId}/comments`, {
         method: 'POST',
-        headers: {`
+        headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -385,9 +385,9 @@ const SocialCollaboration = () => {
               </div>
             )}
             
-            ({ post.attachments && post.attachments.length > 0 && (
+            {post.attachments && post.attachments.length > 0 && (
               <div className="mt-3 space-y-2">
-                {post.attachments.map((attachment, index }) => (
+                {post.attachments.map((attachment, index) => (
                   <div key={index} className="flex items-center gap-2 p-2 bg-gray-50 rounded">
                     <Paperclip className="h-4 w-4 text-gray-600" />
                     <span className="text-sm">{attachment.name}</span>
@@ -406,9 +406,9 @@ const SocialCollaboration = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick=({ ( }) => likePost(post.id)}
+                onClick={() => likePost(post.id)}
                 className={post.isLiked ? 'text-red-600' : ''}
-              >`
+              >
                 <Heart className={`h-4 w-4 mr-1 ${post.isLiked ? 'fill-current' : ''}`} />
                 {post.likes || 0}
               </Button>

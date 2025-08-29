@@ -327,7 +327,7 @@ export default function QueryBuilderPage() {
           <Button
             variant="outline"
             size="sm"
-            onClick=({ ( }) => setQuantumOptimized(!quantumOptimized)}
+            onClick={() => setQuantumOptimized(!quantumOptimized)}
           >
             <Atom className="w-4 h-4 mr-2" />
             Quantum: {quantumOptimized ? 'ON' : 'OFF'}
@@ -394,7 +394,7 @@ export default function QueryBuilderPage() {
       </div>
 
       {/* MILA Insights */}
-      ({ milaInsights.length > 0 && (
+      {milaInsights.length > 0 && (
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -405,7 +405,7 @@ export default function QueryBuilderPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {milaInsights.slice(-3).map((insight, index }) => (
+              {milaInsights.slice(-3).map((insight, index) => (
                 <div key={index} className="flex items-start justify-between p-3 border rounded-lg">
                   <div className="flex-1">
                     <h4 className="font-medium">{insight.title}</h4>
@@ -415,8 +415,10 @@ export default function QueryBuilderPage() {
                       <span className="text-xs">{(insight.confidence * 100).toFixed(0)}%</span>
                     </div>
                   </div>
-                  <Button size="sm" onClick=({ ( }) => handleQuantumSuggestion(insight)}>
+                  <Button size="sm" onClick={() => handleQuantumSuggestion(insight)}>
                     <Zap className="w-3 h-3 mr-1" />
+                    Aplicar
+                  </Button>
 
                 </div>
               ))}
@@ -438,7 +440,7 @@ export default function QueryBuilderPage() {
                   <Label>Nome da Query</Label>
                   <Input
                     value={queryName}
-                    onChange=({ (e }) => setQueryName(e.target.value)}
+                    onChange={(e) => setQueryName(e.target.value)}
                     placeholder="Digite um nome para a query"
                   />
                 </div>
@@ -449,7 +451,7 @@ export default function QueryBuilderPage() {
                       <SelectValue placeholder="Selecione a fonte" />
                     </SelectTrigger>
                     <SelectContent>
-                      ({ dataSources.map((ds }) => (
+                      {dataSources.map((ds) => (
                         <SelectItem key={ds.id} value={ds.id}>
                           {ds.name} ({ds.type})
                         </SelectItem>
@@ -463,7 +465,7 @@ export default function QueryBuilderPage() {
                 <Label>Query SQL</Label>
                 <Textarea
                   value={query}
-                  onChange=({ (e }) => setQuery(e.target.value)}
+                  onChange={(e) => setQuery(e.target.value)}
                   placeholder="Digite sua query SQL aqui..."
                   className="min-h-[200px] font-mono"
                 />
@@ -479,9 +481,13 @@ export default function QueryBuilderPage() {
 
                 <Button variant="outline" onClick={saveQuery}>
                   <Save className="w-4 h-4 mr-2" />
+                  Salvar
+                </Button>
 
                 <Button variant="outline">
                   <Share className="w-4 h-4 mr-2" />
+                  Compartilhar
+                </Button>
 
               </div>
 
@@ -512,6 +518,8 @@ export default function QueryBuilderPage() {
                     </Button>
                     <Button size="sm" variant="outline">
                       <Download className="w-4 h-4 mr-2" />
+                      Exportar
+                    </Button>
 
                   </div>
                 </div>
@@ -521,7 +529,7 @@ export default function QueryBuilderPage() {
                   <table className="w-full border-collapse border border-gray-300">
                     <thead>
                       <tr className="bg-gray-50">
-                        ({ queryResults.columns?.map((col }) => (
+                        {queryResults.columns?.map((col) => (
                           <th key={col} className="border border-gray-300 px-4 py-2 text-left">
                             {col}
                           </th>

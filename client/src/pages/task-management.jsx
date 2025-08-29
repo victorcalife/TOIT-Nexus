@@ -9,8 +9,7 @@ import {
   Plus, Users, CheckSquare, Clock, AlertTriangle, Play, Pause,
   Settings, Calendar, MessageCircle, BarChart3, Target,
   Timer, Activity, UserCheck, Zap, Filter
- }
-} from "lucide-react";
+} from "lucide-react"; // @ts-ignore
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -31,53 +30,56 @@ import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 
 // Advanced Task Management Schemas
-const taskTemplateSchema = z.object( {
-  title).min( 1, "Título é obrigatório" ),
-  description).optional(),
-    category).default ( "general" ),
-      priority).default ( "medium" ),
-        estimatedDuration).optional(),
-          instructions)).min( 1, "Pelo menos uma instrução é necessária" ),
-            assignedTo)).min( 1, "Selecione pelo menos um funcionário" ),
-              tags)).optional(),
+const taskTemplateSchema = z.object({
+  title: z.string().min(1, "Título é obrigatório"),
+  description: z.string().optional(),
+  category: z.string().default("general"),
+  priority: z.string().default("medium"),
+  estimatedDuration: z.number().optional(),
+  instructions: z.array(z.string()).min(1, "Pelo menos uma instrução é necessária"),
+  assignedTo: z.array(z.string()).min(1, "Selecione pelo menos um funcionário"),
+  tags: z.array(z.string()).optional(),
 });
 
-function TaskManagement()
-{
-  const [ open, setOpen ] = useState( false );
-  const [ templates, setTemplates ] = useState( [] );
+function TaskManagement() {
+  const [open, setOpen] = useState(false);
+  const [templates, setTemplates] = useState([]);
   const { toast } = useToast();
 
-  const form = useForm < TaskTemplateForm > ( ({ resolver),
-    defaultValues,
-    description,
-    category,
-    priority,
-    instructions,
-    assignedTo,
-    tags);
-
-  const createTemplateMutation = useMutation( {
-    mutationFn }) => {
-    const response = await apiRequest( '/api/tasks/templates', {
-      method,
-      body)
-  });
-  return response;
-},
-    onSuccess) => {
-  toast( {
-    title,
-    description);
-  setOpen( false );
-  form.reset();
-}
+  const form = useForm({
+    resolver: zodResolver(taskTemplateSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      category: "general",
+      priority: "medium",
+      instructions: [],
+      assignedTo: [],
+      tags: []
+    }
   });
 
-const onSubmit = ( data ) =>
-{
-  createTemplateMutation.mutate( data );
-};
+  const createTemplateMutation = useMutation({
+    mutationFn: async (data) => {
+      const response = await apiRequest('/api/tasks/templates', {
+        method: 'POST',
+        body: JSON.stringify(data)
+      });
+      return response;
+    },
+    onSuccess: () => {
+      toast({
+        title: "Template criado com sucesso!",
+        description: "O template foi salvo e está disponível para uso."
+      });
+      setOpen(false);
+      form.reset();
+    }
+  });
+
+  const onSubmit = (data) => {
+    createTemplateMutation.mutate(data);
+  };
 
 return (
   <div className="space-y-6">
@@ -94,7 +96,7 @@ return (
       </Button>
     </div>
 
-    ({ templates.length === 0 && (
+    {templates.length === 0 && (
       <Card>
         <CardContent className="flex flex-col items-center justify-center py-12">
           <AlertTriangle className="h-12 w-12 text-muted-foreground mb-4" />
@@ -108,9 +110,9 @@ return (
           </Button>
         </CardContent>
       </Card>
-    ) }
+    )}
 
-    <Dialog open={ open } onOpenChange={ setOpen }>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle>Criar Template de Tarefa</DialogTitle>
@@ -118,48 +120,48 @@ return (
             Defina um template reutilizável para organizar o trabalho da sua equipe.
           </DialogDescription>
         </DialogHeader>
-        <Form { ...form }>
-          <form onSubmit={ form.handleSubmit( onSubmit ) } className="space-y-4">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
-              control={ form.control }
+              control={form.control}
               name="title"
-              render={ ( { field } ) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Título do Template</FormLabel>
                   <FormControl>
-                    <Input placeholder="Ex, Análise de Bug..." { ...field } />
+                    <Input placeholder="Ex: Análise de Bug..." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
-              ) }
+              )}
             />
 
             <FormField
-              control={ form.control }
+              control={form.control}
               name="description"
-              render={ ( { field } ) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Descrição</FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="Descreva o propósito e escopo deste template..."
                       className="resize-none"
-                      { ...field }
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
-              ) }
+              )}
             />
 
             <div className="grid grid-cols-2 gap-4">
               <FormField
-                control={ form.control }
+                control={form.control}
                 name="priority"
-                render={ ( { field } ) => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Prioridade Padrão</FormLabel>
-                    <Select onValueChange={ field.onChange } defaultValue={ field.value }>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Selecione..." />
@@ -174,21 +176,21 @@ return (
                     </Select>
                     <FormMessage />
                   </FormItem>
-                ) }
+                )}
               />
 
               <FormField
-                control={ form.control }
+                control={form.control}
                 name="estimatedDuration"
-                render={ ( { field } ) => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Tempo Estimado (horas)</FormLabel>
                     <FormControl>
-                      <Input type="number" min="0" step="0.5" { ...field } />
+                      <Input type="number" min="0" step="0.5" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
-                ) }
+                )}
               />
             </div>
 
@@ -196,8 +198,8 @@ return (
               <Button variant="outline" type="button" onClick={() => setOpen(false)}>
                 Cancelar
               </Button>
-              <Button type="submit" disabled={ createTemplateMutation.isPending }>
-                { createTemplateMutation.isPending ? (
+              <Button type="submit" disabled={createTemplateMutation.isPending}>
+                {createTemplateMutation.isPending ? (
                   <>
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
                     Criando...
@@ -207,7 +209,7 @@ return (
                     <Plus className="h-4 w-4 mr-2" />
                     Criar Template
                   </>
-                ) }
+                )}
               </Button>
             </div>
           </form>

@@ -201,22 +201,22 @@ const DigitalAssetManagement = () => {
         fetch('/api/dam/assets', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/dam/collections', {`
+        fetch('/api/dam/collections', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/dam/tags', {`
+        fetch('/api/dam/tags', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/dam/metadata', {`
+        fetch('/api/dam/metadata', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/dam/versions', {`
+        fetch('/api/dam/versions', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/dam/permissions', {`
+        fetch('/api/dam/permissions', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/dam/workflows', {`
+        fetch('/api/dam/workflows', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);
@@ -275,14 +275,14 @@ const DigitalAssetManagement = () => {
     try {
       const response = await fetch('/api/dam/assets/upload', {
         method: 'POST',
-        headers: {`
+        headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           ...assetData,
           status: 'draft',
-          uploadedAt: new Date().toISOString(),`
+          uploadedAt: new Date().toISOString(),
           assetId: `AST-${Date.now()}`
         })
       });
@@ -296,7 +296,7 @@ const DigitalAssetManagement = () => {
       setShowAssetModal(false);
       
       toast({
-        title: "Ativo enviado",`
+        title: "Ativo enviado",
         description: `Ativo ${data.asset.name} enviado com sucesso`,
       });
     } catch (error) {
@@ -313,10 +313,10 @@ const DigitalAssetManagement = () => {
    * ATUALIZAR STATUS DO ATIVO
    */
   const updateAssetStatus = async (assetId, newStatus) => {
-    try {`
+    try {
       const response = await fetch(`/api/dam/assets/${assetId}/status`, {
         method: 'PATCH',
-        headers: {`
+        headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -351,10 +351,10 @@ const DigitalAssetManagement = () => {
    * FAVORITAR ATIVO
    */
   const favoriteAsset = async (assetId) => {
-    try {`
+    try {
       const response = await fetch(`/api/dam/assets/${assetId}/favorite`, {
         method: 'POST',
-        headers: {`
+        headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }

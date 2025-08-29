@@ -39,7 +39,7 @@ import {
   CheckCircle,
   XCircle,
   AlertCircle,
-  RefreshCw }
+  RefreshCw
 } from 'lucide-react';
 
 const WorkflowBuilder = () => {
@@ -157,10 +157,10 @@ const WorkflowBuilder = () => {
         connections,
         updatedAt: new Date().toISOString()
       };
-`
+
       const response = await fetch(`/api/workflows/${currentWorkflow.id}`, {
         method: 'PUT',
-        headers: {`
+        headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -197,7 +197,7 @@ const WorkflowBuilder = () => {
     setIsExecuting(true);
     setExecutionLog([]);
 
-    try {`
+    try {
       const response = await fetch(`/api/workflows/${currentWorkflow.id}/execute`, {
         method: 'POST',
         headers: {`

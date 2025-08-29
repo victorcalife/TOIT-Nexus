@@ -12,7 +12,8 @@ import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Slider } from '@/components/ui/slider';
 import {  
-  Trash2,  }
+  Trash2, 
+ }
 } from 'lucide-react';
 
 export ) {
@@ -246,7 +247,7 @@ export ) {
       {/* Fields List */}
       <ScrollArea className="h-96">
         <div className="space-y-4">
-          ({ fields.map((field, index }) => (
+          {fields.map((field, index) => (
             <Card key={field.id} className={editingField === field.id ? 'ring-2 ring-blue-500' : ''}>
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
@@ -267,7 +268,7 @@ export ) {
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick=({ ( }) => moveField(field.id, 'up')}
+                      onClick={() => moveField(field.id, 'up')}
                       disabled={index === 0}
                     >
                       ↑
@@ -275,7 +276,7 @@ export ) {
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick=({ ( }) => moveField(field.id, 'down')}
+                      onClick={() => moveField(field.id, 'down')}
                       disabled={index === fields.length - 1}
                     >
                       ↓
@@ -283,14 +284,14 @@ export ) {
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick=({ ( }) => setEditingField(editingField === field.id ? null)}
+                      onClick={() => setEditingField(editingField === field.id ? null : field.id)}
                     >
                       <Settings className="h-4 w-4" />
                     </Button>
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick=({ ( }) => removeField(field.id)}
+                      onClick={() => removeField(field.id)}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -303,7 +304,12 @@ export ) {
                   <Separator />
                   
                   {/* Basic Settings */}
-                  <div className="grid grid-cols-1 md) => updateField(field.id, { label)}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label>Rótulo</Label>
+                      <Input
+                        value={field.label}
+                        onChange={(e) => updateField(field.id, { label: e.target.value })}
                         placeholder="Digite o rótulo"
                       />
                     </div>
@@ -312,7 +318,7 @@ export ) {
                       <Label>Placeholder</Label>
                       <Input
                         value={field.placeholder || ''}
-                        onChange=({ (e }) => updateField(field.id, { placeholder)}
+                        onChange={(e) => updateField(field.id, { placeholder: e.target.value })}
                         placeholder="Texto de exemplo"
                       />
                     </div>
@@ -321,32 +327,32 @@ export ) {
                   <div className="flex items-center space-x-2">
                     <Checkbox
                       checked={field.required}
-                      onCheckedChange=({ (checked }) => updateField(field.id, { required)}
+                      onCheckedChange={(checked) => updateField(field.id, { required: checked })}
                     />
                     <Label>Campo obrigatório</Label>
                   </div>
 
                   {/* Options for select/radio/multiselect */}
-                  ({ ['radio', 'select', 'multiselect'].includes(field.type) && (
+                  {['radio', 'select', 'multiselect'].includes(field.type) && (
                     <div className="space-y-2">
                       <Label>Opções</Label>
                       <div className="space-y-2">
-                        {field.options?.map((option, index }) => (
+                        {field.options?.map((option, index) => (
                           <div key={index} className="flex items-center space-x-2">
                             <Input
                               value={option}
-                              onChange=({ (e }) => {
+                              onChange={(e) => {
                                 const newOptions = [...(field.options || [])];
                                 newOptions[index] = e.target.value;
                                 updateFieldOptions(field.id, newOptions);
-                              }}`
+                              }}
                               placeholder={`Opção ${index + 1}`}
                             />
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick=({ () => {
-                                const newOptions = field.options?.filter((_, i }) => i !== index) || [];
+                              onClick={() => {
+                                const newOptions = field.options?.filter((_, i) => i !== index) || [];
                                 updateFieldOptions(field.id, newOptions);
                               }}
                             >
@@ -357,7 +363,7 @@ export ) {
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick=({ ( }) => {`
+                          onClick={() => {
                             const newOptions = [...(field.options || []), `Opção ${(field.options?.length || 0) + 1}`];
                             updateFieldOptions(field.id, newOptions);
                           }}
@@ -374,7 +380,7 @@ export ) {
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick=({ ( }) => setShowAdvanced({
+                      onClick={() => setShowAdvanced({
                         ...showAdvanced,
                         [field.id]: !showAdvanced[field.id]
                       })}
@@ -392,27 +398,64 @@ export ) {
                               <Input
                                 type="number"
                                 value={field.validation?.min || ''}
-                                onChange=({ (e }) => updateField(field.id, {
-                                  validation,
-                                    min) {field.validation?.max || ''}
-                                onChange=({ (e }) => updateField(field.id, {
-                                  validation,
-                                    max) {field.validation?.pattern || ''}
-                            onChange=({ (e }) => updateField(field.id, {
-                              validation,
-                                pattern)}
-                            placeholder="Ex) => updateField(field.id, {
-                              validation,
-                                customMessage)}
+                                onChange={(e) => updateField(field.id, {
+                                  validation: {
+                                    ...field.validation,
+                                    min: e.target.value
+                                  }
+                                })}
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Valor Máximo</Label>
+                              <Input
+                                type="number"
+                                value={field.validation?.max || ''}
+                                onChange={(e) => updateField(field.id, {
+                                  validation: {
+                                    ...field.validation,
+                                    max: e.target.value
+                                  }
+                                })}
+                              />
+                            </div>
+                          </div>
+                        )}
+
+                        {field.type === 'text' && (
+                          <div className="space-y-2">
+                            <Label>Padrão (Regex)</Label>
+                            <Input
+                              value={field.validation?.pattern || ''}
+                              onChange={(e) => updateField(field.id, {
+                                validation: {
+                                  ...field.validation,
+                                  pattern: e.target.value
+                                }
+                              })}
+                              placeholder="Ex: ^[A-Za-z]+$"
+                            />
+                          </div>
+                        )}
+
+                        <div className="space-y-2">
+                          <Label>Mensagem de Erro Personalizada</Label>
+                          <Input
+                            value={field.validation?.customMessage || ''}
+                            onChange={(e) => updateField(field.id, {
+                              validation: {
+                                ...field.validation,
+                                customMessage: e.target.value
+                              }
+                            })}
                             placeholder="Mensagem quando validação falhar"
-                          />
                         </div>
 
                         <div className="space-y-2">
                           <Label>Valor Padrão</Label>
                           <Input
                             value={field.defaultValue || ''}
-                            onChange=({ (e }) => updateField(field.id, { defaultValue)}
+                            onChange={(e) => updateField(field.id, { defaultValue: e.target.value })}
                             placeholder="Valor inicial do campo"
                           />
                         </div>

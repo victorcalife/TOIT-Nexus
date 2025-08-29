@@ -83,7 +83,7 @@ import {
   Shield,
   Lock,
   Unlock,
-  Key }
+  Key
 } from 'lucide-react';
 
 const BPMSystem = () => {
@@ -145,22 +145,22 @@ const BPMSystem = () => {
         fetch('/api/bpm/processes', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/bpm/instances', {`
+        fetch('/api/bpm/instances', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/bpm/tasks', {`
+        fetch('/api/bpm/tasks', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/bpm/templates', {`
+        fetch('/api/bpm/templates', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/bpm/approvals', {`
+        fetch('/api/bpm/approvals', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/bpm/forms', {`
+        fetch('/api/bpm/forms', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/bpm/rules', {`
+        fetch('/api/bpm/rules', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);

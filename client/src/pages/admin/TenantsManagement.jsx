@@ -41,8 +41,8 @@ import {
   Activity,
   TrendingUp,
   DollarSign,
-  Package,
-  Zap }
+      Package,
+  Zap
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -229,9 +229,10 @@ const TenantsManagement = () => {
     );
   };
 
-  const handleTenantAction = (action, tenant) => ({ setIsLoading(true);
+  const handleTenantAction = (action, tenant) => {
+    setIsLoading(true);
     
-    setTimeout(( }) => {
+    setTimeout(() => {
       switch (action) {
         case 'activate':
           setTenants(prev => prev.map(t => 
@@ -242,20 +243,20 @@ const TenantsManagement = () => {
         case 'suspend':
           setTenants(prev => prev.map(t => 
             t.id === tenant.id ? { ...t, status: 'suspended' } : t
-          ));`
+          ));
           toast.success(`Tenant ${tenant.name} suspenso com sucesso!`);
           break;
-        case 'delete':`
+        case 'delete':
           if (window.confirm(`Tem certeza que deseja excluir o tenant ${tenant.name}?`)) {
-            setTenants(prev => prev.filter(t => t.id !== tenant.id));`
+            setTenants(prev => prev.filter(t => t.id !== tenant.id));
             toast.success(`Tenant ${tenant.name} excluído com sucesso!`);
           }
           break;
-        case 'upgrade':`
+        case 'upgrade':
           toast.success(`Solicitação de upgrade enviada para ${tenant.name}`);
           break;
-        case 'reset-data':`
-          if (window.confirm(`Tem certeza que deseja resetar os dados do tenant ${tenant.name}?`)) {`
+        case 'reset-data':
+          if (window.confirm(`Tem certeza que deseja resetar os dados do tenant ${tenant.name}?`)) {
             toast.success(`Dados do tenant ${tenant.name} resetados com sucesso!`);
           }
           break;
@@ -316,7 +317,8 @@ const TenantsManagement = () => {
         <div className="flex gap-2">
           <Button variant="outline" onClick={handleExportTenants}>
             <Download className="h-4 w-4 mr-2" />
-
+            Exportar
+          </Button>
           <Button onClick={handleCreateTenant}>
             <Plus className="h-4 w-4 mr-2" />
             Novo Tenant
@@ -358,7 +360,7 @@ const TenantsManagement = () => {
               <div>
                 <p className="text-sm font-medium text-gray-600">Receita Mensal</p>
                 <p className="text-2xl font-bold text-green-600">
-                  ({ formatCurrency(tenants.reduce((sum, t }) => sum + t.billing.amount, 0))}
+                  {formatCurrency(tenants.reduce((sum, t) => sum + t.billing.amount, 0))}
                 </p>
               </div>
               <DollarSign className="h-8 w-8 text-green-600" />
@@ -372,7 +374,7 @@ const TenantsManagement = () => {
               <div>
                 <p className="text-sm font-medium text-gray-600">Total de Usuários</p>
                 <p className="text-2xl font-bold text-blue-600">
-                  ({ tenants.reduce((sum, t }) => sum + t.usersCount, 0)}
+                  {tenants.reduce((sum, t) => sum + t.usersCount, 0)}
                 </p>
               </div>
               <Users className="h-8 w-8 text-blue-600" />
@@ -391,7 +393,7 @@ const TenantsManagement = () => {
                 <Input
                   placeholder="Buscar por nome, domínio ou subdomínio..."
                   value={searchTerm}
-                  onChange=({ (e }) => setSearchTerm(e.target.value)}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
                 />
               </div>
@@ -399,7 +401,7 @@ const TenantsManagement = () => {
             
             <select
               value={selectedStatus}
-              onChange=({ (e }) => setSelectedStatus(e.target.value)}
+              onChange={(e) => setSelectedStatus(e.target.value)}
               className="px-3 py-2 border border-gray-300 rounded-md"
             >
               <option value="all">Todos os Status</option>
@@ -411,7 +413,7 @@ const TenantsManagement = () => {
             
             <select
               value={selectedPlan}
-              onChange=({ (e }) => setSelectedPlan(e.target.value)}
+              onChange={(e) => setSelectedPlan(e.target.value)}
               className="px-3 py-2 border border-gray-300 rounded-md"
             >
               <option value="all">Todos os Planos</option>
@@ -420,12 +422,14 @@ const TenantsManagement = () => {
               <option value="enterprise">Enterprise</option>
             </select>
             
-            <Button variant="outline" onClick=({ ( }) => {
+            <Button variant="outline" onClick={() => {
               setSearchTerm('');
               setSelectedStatus('all');
               setSelectedPlan('all');
             }}>
               <RefreshCw className="h-4 w-4 mr-2" />
+              Limpar Filtros
+            </Button>
 
           </div>
         </CardContent>
@@ -433,7 +437,7 @@ const TenantsManagement = () => {
 
       {/* Tenants Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        ({ filteredTenants.map((tenant }) => (
+        {filteredTenants.map((tenant) => (
           <Card key={tenant.id} className="hover:shadow-lg transition-shadow">
             <CardHeader>
               <div className="flex items-start justify-between">
@@ -474,8 +478,8 @@ const TenantsManagement = () => {
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div 
-                    className="bg-blue-600 h-2 rounded-full" `
-                    style={{ width: `${getUsersPercentage(tenant.usersCount, tenant.maxUsers)}%` }}
+                    className="bg-blue-600 h-2 rounded-full"
+                    style={{width: `${getUsersPercentage(tenant.usersCount, tenant.maxUsers)}%`}}
                   ></div>
                 </div>
               </div>
@@ -487,14 +491,14 @@ const TenantsManagement = () => {
                   <span className="font-medium">{tenant.storageUsed}GB / {tenant.storageLimit}GB</span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div `
+                  <div
                     className={`h-2 rounded-full ${
                       getStoragePercentage(tenant.storageUsed, tenant.storageLimit) > 80 
                         ? 'bg-red-600' 
                         : getStoragePercentage(tenant.storageUsed, tenant.storageLimit) > 60 
                         ? 'bg-yellow-600' 
-                        : 'bg-green-600'`}
-                    }`}`
+                        : 'bg-green-600'
+                    }`}
                     style={{ width: `${getStoragePercentage(tenant.storageUsed, tenant.storageLimit)}%` }}
                   ></div>
                 </div>
@@ -504,7 +508,7 @@ const TenantsManagement = () => {
               <div>
                 <p className="text-sm text-gray-600 mb-2">Módulos Ativos</p>
                 <div className="flex flex-wrap gap-1">
-                  ({ tenant.modules.map((module }) => (
+                  {tenant.modules.map((module) => (
                     <Badge key={module} variant="outline" className="text-xs">
                       {module.toUpperCase()}
                     </Badge>
@@ -529,16 +533,18 @@ const TenantsManagement = () => {
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick=({ ( }) => handleEditTenant(tenant)}
+                  onClick={() => handleEditTenant(tenant)}
                   className="flex-1"
                 >
                   <Edit className="h-4 w-4 mr-1" />
+                  Editar
+                </Button>
 
-                ({ tenant.status === 'active' ? (
+                {tenant.status === 'active' ? (
                   <Button
                     size="sm"
                     variant="outline"
-                    onClick={( }) => handleTenantAction('suspend', tenant)}
+                    onClick={() => handleTenantAction('suspend', tenant)}
                     disabled={isLoading}
                   >
                     <Ban className="h-4 w-4" />
@@ -547,7 +553,7 @@ const TenantsManagement = () => {
                   <Button
                     size="sm"
                     variant="outline"
-                    onClick=({ ( }) => handleTenantAction('activate', tenant)}
+                    onClick={() => handleTenantAction('activate', tenant)}
                     disabled={isLoading}
                   >
                     <CheckCircle className="h-4 w-4" />
@@ -557,7 +563,7 @@ const TenantsManagement = () => {
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick=({ ( }) => handleTenantAction('upgrade', tenant)}
+                  onClick={() => handleTenantAction('upgrade', tenant)}
                   disabled={isLoading}
                 >
                   <TrendingUp className="h-4 w-4" />
@@ -566,7 +572,7 @@ const TenantsManagement = () => {
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick=({ ( }) => handleTenantAction('delete', tenant)}
+                  onClick={() => handleTenantAction('delete', tenant)}
                   disabled={isLoading}
                   className="text-red-600 hover:text-red-700"
                 >
@@ -598,9 +604,10 @@ const TenantsManagement = () => {
               Modal de criação/edição de tenant - Em desenvolvimento
             </p>
             <div className="flex gap-2 justify-end">
-              <Button variant="outline" onClick=({ ( }) => setShowTenantModal(false)}>
-
-              <Button onClick=({ ( }) => {
+              <Button variant="outline" onClick={() => setShowTenantModal(false)}>
+                Cancelar
+              </Button>
+              <Button onClick={() => {
                 setShowTenantModal(false);
                 toast.success(selectedTenant ? 'Tenant atualizado!' : 'Tenant criado!');
               }}>
@@ -614,4 +621,4 @@ const TenantsManagement = () => {
   );
 };
 
-export default TenantsManagement;`
+export default TenantsManagement;

@@ -185,19 +185,19 @@ const SupplyChainManagement = () => {
         fetch('/api/supply-chain/suppliers', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/supply-chain/orders', {`
+        fetch('/api/supply-chain/orders', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/supply-chain/shipments', {`
+        fetch('/api/supply-chain/shipments', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/supply-chain/warehouses', {`
+        fetch('/api/supply-chain/warehouses', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/supply-chain/logistics', {`
+        fetch('/api/supply-chain/logistics', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/supply-chain/procurement', {`
+        fetch('/api/supply-chain/procurement', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
         fetch('/api/supply-chain/tracking', {`

@@ -113,13 +113,13 @@ const HelpdeskSystem = () => {
         fetch('/api/helpdesk/tickets', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/helpdesk/agents', {`
+        fetch('/api/helpdesk/agents', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/helpdesk/categories', {`
+        fetch('/api/helpdesk/categories', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/helpdesk/knowledge-base', {`
+        fetch('/api/helpdesk/knowledge-base', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);
@@ -163,14 +163,14 @@ const HelpdeskSystem = () => {
     try {
       const response = await fetch('/api/helpdesk/tickets', {
         method: 'POST',
-        headers: {`
+        headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           ...ticketData,
           status: 'open',
-          createdAt: new Date().toISOString(),`
+          createdAt: new Date().toISOString(),
           ticketNumber: `TK-${Date.now()}`
         })
       });
@@ -184,7 +184,7 @@ const HelpdeskSystem = () => {
       setShowTicketModal(false);
       
       toast({
-        title: "Ticket criado",`
+        title: "Ticket criado",
         description: `Ticket #${data.ticket.ticketNumber} criado com sucesso`,
       });
     } catch (error) {

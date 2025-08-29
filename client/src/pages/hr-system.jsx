@@ -123,19 +123,19 @@ const HRSystem = () => {
         fetch('/api/hr/employees', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/hr/departments', {`
+        fetch('/api/hr/departments', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/hr/positions', {`
+        fetch('/api/hr/positions', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/hr/payroll', {`
+        fetch('/api/hr/payroll', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/hr/leaves', {`
+        fetch('/api/hr/leaves', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/hr/performance', {`
+        fetch('/api/hr/performance', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);
@@ -189,14 +189,14 @@ const HRSystem = () => {
     try {
       const response = await fetch('/api/hr/employees', {
         method: 'POST',
-        headers: {`
+        headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           ...employeeData,
           status: 'active',
-          hireDate: new Date().toISOString(),`
+          hireDate: new Date().toISOString(),
           employeeId: `EMP-${Date.now()}`
         })
       });

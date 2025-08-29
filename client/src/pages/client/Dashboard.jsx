@@ -230,7 +230,7 @@ const Dashboard = () => {
                   className="w-full justify-start h-auto p-4"
                   asChild
                 >
-                  <a href={action.href}>`
+                  <a href={action.href}>
                     <div className={`${action.color} p-2 rounded-md text-white mr-3`}>
                       {action.icon}
                     </div>
@@ -256,8 +256,8 @@ const Dashboard = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                ({ recentActivities.map((activity }) => (
-                  <div key={activity.id} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">`
+                {recentActivities.map((activity) => (
+                  <div key={activity.id} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
                     <div className={`${getStatusColor(activity.status)} mt-1`}>
                       {getActivityIcon(activity.type)}
                     </div>
@@ -351,4 +351,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;`
+export default Dashboard;

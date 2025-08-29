@@ -84,8 +84,9 @@ const MLPage = () => {
   ];
 
   // Query para buscar modelos
-  const { data: models, isLoading: modelsLoading } = useQuery(({ queryKey: ['ml-models'],
-    queryFn: async ( }) => {
+  const { data: models, isLoading: modelsLoading } = useQuery({
+    queryKey: ['ml-models'],
+    queryFn: async () => {
       // Simular delay de API
       await new Promise(resolve => setTimeout(resolve, 1000));
       return mockModels;
@@ -93,8 +94,9 @@ const MLPage = () => {
   });
 
   // Query para buscar datasets
-  const { data: datasets, isLoading: datasetsLoading } = useQuery(({ queryKey: ['ml-datasets'],
-    queryFn: async ( }) => {
+  const { data: datasets, isLoading: datasetsLoading } = useQuery({
+    queryKey: ['ml-datasets'],
+    queryFn: async () => {
       // Simular delay de API
       await new Promise(resolve => setTimeout(resolve, 800));
       return mockDatasets;
@@ -102,7 +104,8 @@ const MLPage = () => {
   });
 
   // Mutation para treinar modelo
-  const trainModelMutation = useMutation(({ mutationFn: async (modelId }) => {
+  const trainModelMutation = useMutation({
+    mutationFn: async (modelId) => {
       setIsTraining(true);
       setTrainingProgress(0);
       
@@ -211,9 +214,9 @@ const MLPage = () => {
         {/* Aba de Modelos */}
         <TabsContent value="models" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            ({ models?.map((model }) => (
+            {models?.map((model) => (
               <Card key={model.id} className="cursor-pointer hover:shadow-md transition-shadow"
-                    onClick=({ ( }) => setSelectedModel(model)}>
+                    onClick={() => setSelectedModel(model)}>
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg">{model.name}</CardTitle>
@@ -249,7 +252,7 @@ const MLPage = () => {
                     <Button 
                       size="sm" 
                       className="flex-1"
-                      onClick=({ (e }) => {
+                      onClick={(e) => {
                         e.stopPropagation();
                         trainModelMutation.mutate(model.id);
                       }}
@@ -267,7 +270,7 @@ const MLPage = () => {
         {/* Aba de Datasets */}
         <TabsContent value="datasets" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            ({ datasets?.map((dataset }) => (
+            {datasets?.map((dataset) => (
               <Card key={dataset.id}>
                 <CardHeader className="pb-3">
                   <CardTitle className="text-lg">{dataset.name}</CardTitle>

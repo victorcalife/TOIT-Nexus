@@ -166,22 +166,22 @@ const QualityAssurance = () => {
         fetch('/api/qa/testcases', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/qa/testsuites', {`
+        fetch('/api/qa/testsuites', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/qa/testruns', {`
+        fetch('/api/qa/testruns', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/qa/defects', {`
+        fetch('/api/qa/defects', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/qa/requirements', {`
+        fetch('/api/qa/requirements', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/qa/testplans', {`
+        fetch('/api/qa/testplans', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/qa/metrics', {`
+        fetch('/api/qa/metrics', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);

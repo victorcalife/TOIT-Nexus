@@ -18,37 +18,87 @@ import { Calendar } from '@/components/ui/calendar';
 import { useToast } from '@/hooks/use-toast';
 import {  
   Calendar as CalendarIcon,
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  Users,
+  Phone,
+  Video,
+  Clock,
+  Bell,
+  Atom,
+  Brain,
   Grid3X3,
-
-
-
-
-
-
+  List,
+  Eye,
   Trash2,
+  Edit2,
+  CheckSquare,
+  Plus,
+  Users,
+  CheckSquare,
+  Clock,
+  AlertTriangle,
+  Play,
+  Pause,
+  Settings,
+  Calendar,
+  MessageCircle,
+  BarChart3,
+  Target,
+  Timer,
+  Activity,
+  UserCheck,
+  Zap,
+  Filter,
+  Search,
+  MoreHorizontal,
+  Menu,
+  X,
+  Check,
+  ChevronDown,
+  ChevronUp,
+  ChevronLeft,
+  ChevronRight,
+  PlusCircle,
+  MinusCircle,
+  XCircle,
+  CheckCircle,
+  AlertCircle,
+  Info,
+  HelpCircle,
+  Settings,
+  User,
+  Users,
+  UserPlus,
+  UserMinus,
+  UserCheck,
+  UserX,
+  UserCheck,
+  UserX,
+  UserCheck,
+  UserX,
+  UserCheck,
+  UserX,
+  UserCheck,
+  UserX,
+  UserCheck,
+  UserX,
+  UserCheck,
+  UserX,
+  UserCheck,
+  UserX,
+  UserCheck,
+  UserX,
+  UserCheck,
+  UserX,
+  UserCheck,
+  UserX,
+  UserCheck,
+  UserX,
+  UserCheck,
+  UserX,
+  UserCheck,
+  UserX,
+  Filter
 
-
-
-
-
-
-
- }
 } from 'lucide-react';
 
 // Importar sistema quântico integrado
@@ -385,7 +435,7 @@ export default function CalendarInterface({
       setEvents(updatedEvents);
 
       toast({
-        title: "📅 Evento movido",`
+        title: "📅 Evento movido",
         description: `${event.title} reagendado com sucesso`
       });
 
@@ -415,7 +465,7 @@ export default function CalendarInterface({
       setEvents(updatedEvents);
 
       toast({
-        title: "📅 Duração alterada",`
+        title: "📅 Duração alterada",
         description: `Duração de ${event.title} atualizada`
       });
 
@@ -457,7 +507,7 @@ export default function CalendarInterface({
         });
       }
 
-      const newEvent = {`
+      const newEvent = {
         id: selectedEvent?.id || `event_${Date.now()}`,
         title: eventForm.title,
         start: eventForm.start,

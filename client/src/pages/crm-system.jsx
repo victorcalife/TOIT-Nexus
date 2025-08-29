@@ -112,13 +112,13 @@ const CRMSystem = () => {
         fetch('/api/crm/customers', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/crm/leads', {`
+        fetch('/api/crm/leads', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/crm/deals', {`
+        fetch('/api/crm/deals', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/crm/activities', {`
+        fetch('/api/crm/activities', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);
@@ -162,7 +162,7 @@ const CRMSystem = () => {
     try {
       const response = await fetch('/api/crm/customers', {
         method: 'POST',
-        headers: {`
+        headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },

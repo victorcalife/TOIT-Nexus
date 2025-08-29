@@ -15,7 +15,7 @@ import {
   CheckCircle,
   XCircle,
   DollarSign,
-  Bell }
+  BellIcon
 } from 'lucide-react';
 
 export default function SupportDashboard() {
@@ -234,7 +234,7 @@ export default function SupportDashboard() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                ({ recentActivities.map((activity }) => (
+                {recentActivities.map((activity) => (
                   <div key={activity.id} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50">
                     {getSeverityIcon(activity.severity)}
                     <div className="flex-1">
@@ -262,7 +262,7 @@ export default function SupportDashboard() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                ({ supportTickets.map((ticket }) => (
+                {supportTickets.map((ticket) => (
                   <div key={ticket.id} className="p-4 border rounded-lg hover:bg-gray-50">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center space-x-2">

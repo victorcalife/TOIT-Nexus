@@ -158,22 +158,22 @@ const KnowledgeManagement = () => {
         fetch('/api/knowledge/articles', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/knowledge/categories', {`
+        fetch('/api/knowledge/categories', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/knowledge/tags', {`
+        fetch('/api/knowledge/tags', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/knowledge/wikis', {`
+        fetch('/api/knowledge/wikis', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/knowledge/faqs', {`
+        fetch('/api/knowledge/faqs', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/knowledge/tutorials', {`
+        fetch('/api/knowledge/tutorials', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         }),
-        fetch('/api/knowledge/documents', {`
+        fetch('/api/knowledge/documents', {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         })
       ]);

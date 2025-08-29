@@ -87,7 +87,7 @@ const BusinessIntelligence = () => {
     setLoading(true);
     try {
       const response = await fetch(`/api/bi/dashboard/${activeDashboard}?dateRange=${dateRange}`, {
-        headers: {`
+        headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }
@@ -120,7 +120,7 @@ const BusinessIntelligence = () => {
   const loadRealTimeData = async () => {
     try {
       const response = await fetch('/api/bi/realtime', {
-        headers: {`
+        headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         }
@@ -139,10 +139,10 @@ const BusinessIntelligence = () => {
    * EXPORTAR DASHBOARD
    */
   const exportDashboard = async (format = 'pdf') => {
-    try {`
+    try {
       const response = await fetch(`/api/bi/export/${activeDashboard}`, {
         method: 'POST',
-        headers: {`
+        headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
@@ -161,7 +161,7 @@ const BusinessIntelligence = () => {
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.href = url;`
+      a.href = url;
       a.download = `dashboard_${activeDashboard}_${new Date().toISOString().split('T')[0]}.${format}`;
       document.body.appendChild(a);
       a.click();
@@ -169,7 +169,7 @@ const BusinessIntelligence = () => {
       document.body.removeChild(a);
       
       toast({
-        title: "Dashboard exportado",`
+        title: "Dashboard exportado",
         description: `Dashboard exportado em formato ${format.toUpperCase()}`,
       });
     } catch (error) {
@@ -197,7 +197,7 @@ const BusinessIntelligence = () => {
             <div>
               <p className="text-sm font-medium text-gray-600">{kpi.label}</p>
               <p className="text-2xl font-bold text-gray-900">{kpi.value}</p>
-              {kpi.change !== undefined && (`
+              {kpi.change !== undefined && (
                 <div className={`flex items-center mt-1 ${changeColor}`}>
                   <TrendIcon className="h-4 w-4 mr-1" />
                   <span className="text-sm font-medium">
@@ -212,18 +212,18 @@ const BusinessIntelligence = () => {
                     <span>{Math.round((kpi.rawValue / kpi.targetValue) * 100)}%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div`
+                    <div
                       className={`h-2 rounded-full ${
-                        (kpi.rawValue / kpi.targetValue) >= 1 ? 'bg-green-500' : 'bg-blue-500'`}
+                        (kpi.rawValue / kpi.targetValue) >= 1 ? 'bg-green-500' : 'bg-blue-500'
                       }`}
-                      style={{`}
+                      style={{
                         width: `${Math.min((kpi.rawValue / kpi.targetValue) * 100, 100)}%`
                       }}
                     ></div>
                   </div>
                 </div>
               )}
-            </div>`
+            </div>
             <div className={`p-3 rounded-full ${kpi.bgColor || 'bg-blue-100'}`}>
               {kpi.icon || <BarChart3 className="h-6 w-6 text-blue-600" />}
             </div>
@@ -298,13 +298,13 @@ const BusinessIntelligence = () => {
                   data={widget.data}
                   cx="50%"
                   cy="50%"
-                  labelLine={false}`
+                  labelLine={false}
                   label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                   outerRadius={100}
                   fill="#8884d8"
                   dataKey="value"
                 >
-                  ({ widget.data.map((entry, index }) => (`
+                  {widget.data.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
@@ -373,13 +373,14 @@ const BusinessIntelligence = () => {
         </CardHeader>
         <CardContent>
           {renderChart()}
-          ({ widget.insights && widget.insights.length > 0 && (
+          {widget.insights && widget.insights.length > 0 && (
             <div className="mt-4 p-3 bg-blue-50 rounded-lg">
               <h4 className="font-medium text-blue-900 mb-2 flex items-center gap-2">
                 <Zap className="h-4 w-4" />
-
+                Insights
+              </h4>
               <ul className="space-y-1">
-                {widget.insights.map((insight, index }) => (
+                {widget.insights.map((insight, index) => (
                   <li key={index} className="text-sm text-blue-800 flex items-start gap-2">
                     <CheckCircle className="h-3 w-3 mt-0.5 text-blue-600" />
                     {insight}

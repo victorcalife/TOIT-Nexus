@@ -11,7 +11,8 @@ import {
   Database,
   Server,
   Shield,
-  Activity }
+  Activity
+ }
 } from 'lucide-react';
 
 , []);
@@ -120,10 +121,24 @@ import {
                         <Badge variant="default">Ativo</Badge>
                       </div>
                     ))}
-                  </div>
-                ) ({ templates.length > 0 ? (
-                  <div className="space-y-2">
-                    {templates.slice(0, 3).map((template, index }) => (
+))}
+                    </div>
+                  ) : (
+                    <p className="text-gray-500">Nenhum módulo ativo</p>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Templates */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Templates</CardTitle>
+                  <CardDescription>Modelos configurados</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {templates.length > 0 ? (
+                    <div className="space-y-2">
+                      {templates.slice(0, 3).map((template, index) => (
                       <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                         <div>
                           <p className="font-medium">{template.name || `Template ${index + 1}`}</p>
