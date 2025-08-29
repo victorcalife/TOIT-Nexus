@@ -257,7 +257,7 @@ const ProfilePage = () => {
                       <label className="text-sm font-medium text-gray-700">Nome Completo</label>
                       <Input
                         value={userProfile.name}
-                        onChange=({ (e }) => setUserProfile({ ...userProfile, name: e.target.value })}
+                        onChange={ (e) => setUserProfile({ ...userProfile, name: e.target.value })}
                         disabled={!isEditing}
                       />
                     </div>
@@ -265,7 +265,7 @@ const ProfilePage = () => {
                       <label className="text-sm font-medium text-gray-700">Email</label>
                       <Input
                         value={userProfile.email}
-                        onChange=({ (e }) => setUserProfile({ ...userProfile, email: e.target.value })}
+                        onChange={ (e) => setUserProfile({ ...userProfile, email: e.target.value })}
                         disabled={!isEditing}
                       />
                     </div>
@@ -276,7 +276,7 @@ const ProfilePage = () => {
                       <label className="text-sm font-medium text-gray-700">Telefone</label>
                       <Input
                         value={userProfile.phone}
-                        onChange=({ (e }) => setUserProfile({ ...userProfile, phone: e.target.value })}
+                        onChange={ (e) => setUserProfile({ ...userProfile, phone: e.target.value })}
                         disabled={!isEditing}
                       />
                     </div>
@@ -284,7 +284,7 @@ const ProfilePage = () => {
                       <label className="text-sm font-medium text-gray-700">Localização</label>
                       <Input
                         value={userProfile.location}
-                        onChange=({ (e }) => setUserProfile({ ...userProfile, location: e.target.value })}
+                        onChange={ (e) => setUserProfile({ ...userProfile, location: e.target.value })}
                         disabled={!isEditing}
                       />
                     </div>
@@ -295,7 +295,7 @@ const ProfilePage = () => {
                       <label className="text-sm font-medium text-gray-700">Cargo</label>
                       <Input
                         value={userProfile.position}
-                        onChange=({ (e }) => setUserProfile({ ...userProfile, position: e.target.value })}
+                        onChange={ (e) => setUserProfile({ ...userProfile, position: e.target.value })}
                         disabled={!isEditing}
                       />
                     </div>
@@ -303,7 +303,7 @@ const ProfilePage = () => {
                       <label className="text-sm font-medium text-gray-700">Departamento</label>
                       <Input
                         value={userProfile.department}
-                        onChange=({ (e }) => setUserProfile({ ...userProfile, department: e.target.value })}
+                        onChange={ (e) => setUserProfile({ ...userProfile, department: e.target.value })}
                         disabled={!isEditing}
                       />
                     </div>
@@ -313,7 +313,7 @@ const ProfilePage = () => {
                     <label className="text-sm font-medium text-gray-700">Biografia</label>
                     <Textarea
                       value={userProfile.bio}
-                      onChange=({ (e }) => setUserProfile({ ...userProfile, bio: e.target.value })}
+                      onChange={ (e) => setUserProfile({ ...userProfile, bio: e.target.value })}
                       disabled={!isEditing}
                       rows={3}
                     />
@@ -337,7 +337,7 @@ const ProfilePage = () => {
                       <Input
                         type={showPassword ? 'text' : 'password'}
                         value={passwordData.currentPassword}
-                        onChange=({ (e }) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
+                        onChange={ (e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
                         placeholder="Digite sua senha atual"
                       />
                       <Button
@@ -345,7 +345,7 @@ const ProfilePage = () => {
                         variant="ghost"
                         size="sm"
                         className="absolute right-0 top-0 h-full px-3"
-                        onClick=({ ( }) => setShowPassword(!showPassword)}
+                        onClick={ (e) => setShowPassword(!showPassword)}
                       >
                         {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </Button>
@@ -357,7 +357,7 @@ const ProfilePage = () => {
                     <Input
                       type="password"
                       value={passwordData.newPassword}
-                      onChange=({ (e }) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
+                      onChange={ (e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
                       placeholder="Digite a nova senha"
                     />
                   </div>
@@ -367,7 +367,7 @@ const ProfilePage = () => {
                     <Input
                       type="password"
                       value={passwordData.confirmPassword}
-                      onChange=({ (e }) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
+                      onChange={ (e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
                       placeholder="Confirme a nova senha"
                     />
                   </div>
@@ -392,7 +392,7 @@ const ProfilePage = () => {
                       <p className="font-medium">Autenticação de Dois Fatores</p>
                       <p className="text-sm text-gray-600">Adicione uma camada extra de segurança à sua conta</p>
                     </div>
-                    <Button variant="outline">
+                   
 
                   </div>
                 </CardContent>
@@ -419,7 +419,7 @@ const ProfilePage = () => {
                     <input
                       type="checkbox"
                       checked={userProfile.preferences.notifications.email}
-                      onChange=({ (e }) => handleUpdatePreferences('notifications', 'email', e.target.checked)}
+                      onChange={ (e) => handleUpdatePreferences('notifications', 'email', e.target.checked)}
                       className="h-4 w-4"
                     />
                   </div>
@@ -435,7 +435,7 @@ const ProfilePage = () => {
                     <input
                       type="checkbox"
                       checked={userProfile.preferences.notifications.push}
-                      onChange=({ (e }) => handleUpdatePreferences('notifications', 'push', e.target.checked)}
+                      onChange={ (e) => handleUpdatePreferences('notifications', 'push', e.target.checked)}
                       className="h-4 w-4"
                     />
                   </div>
@@ -451,7 +451,7 @@ const ProfilePage = () => {
                     <input
                       type="checkbox"
                       checked={userProfile.preferences.notifications.sms}
-                      onChange=({ (e }) => handleUpdatePreferences('notifications', 'sms', e.target.checked)}
+                      onChange={ (e) => handleUpdatePreferences('notifications', 'sms', e.target.checked)}
                       className="h-4 w-4"
                     />
                   </div>
@@ -476,7 +476,7 @@ const ProfilePage = () => {
                     <input
                       type="checkbox"
                       checked={userProfile.preferences.privacy.profileVisible}
-                      onChange=({ (e }) => handleUpdatePreferences('privacy', 'profileVisible', e.target.checked)}
+                      onChange={ (e) => handleUpdatePreferences('privacy', 'profileVisible', e.target.checked)}
                       className="h-4 w-4"
                     />
                   </div>
@@ -489,7 +489,7 @@ const ProfilePage = () => {
                     <input
                       type="checkbox"
                       checked={userProfile.preferences.privacy.statusVisible}
-                      onChange=({ (e }) => handleUpdatePreferences('privacy', 'statusVisible', e.target.checked)}
+                      onChange={ (e) => handleUpdatePreferences('privacy', 'statusVisible', e.target.checked)}
                       className="h-4 w-4"
                     />
                   </div>
@@ -502,7 +502,7 @@ const ProfilePage = () => {
                     <input
                       type="checkbox"
                       checked={userProfile.preferences.privacy.lastSeenVisible}
-                      onChange=({ (e }) => handleUpdatePreferences('privacy', 'lastSeenVisible', e.target.checked)}
+                      onChange={ (e) => handleUpdatePreferences('privacy', 'lastSeenVisible', e.target.checked)}
                       className="h-4 w-4"
                     />
                   </div>
@@ -521,7 +521,7 @@ const ProfilePage = () => {
                     <label className="text-sm font-medium text-gray-700">Idioma</label>
                     <select
                       value={userProfile.preferences.language}
-                      onChange=({ (e }) => handleUpdatePreferences('', 'language', e.target.value)}
+                      onChange={ (e) => handleUpdatePreferences('', 'language', e.target.value)}
                       className="w-full p-2 border border-gray-300 rounded-md"
                     >
                       <option value="pt-BR">Português (Brasil)</option>
@@ -534,7 +534,7 @@ const ProfilePage = () => {
                     <label className="text-sm font-medium text-gray-700">Fuso Horário</label>
                     <select
                       value={userProfile.preferences.timezone}
-                      onChange=({ (e }) => handleUpdatePreferences('', 'timezone', e.target.value)}
+                      onChange={ (e) => handleUpdatePreferences('', 'timezone', e.target.value)}
                       className="w-full p-2 border border-gray-300 rounded-md"
                     >
                       <option value="America/Sao_Paulo">São Paulo (GMT-3)</option>
@@ -552,4 +552,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;`
+export default ProfilePage;

@@ -24,7 +24,7 @@ import {
     RefreshCw,
     ArrowRight
  }
-  } from "lucide-react";
+   from "lucide-react";
 import { 
     Dialog,
     DialogContent,
@@ -33,7 +33,7 @@ import {
     DialogTitle,
     DialogTrigger,
  }
-  } from "@/components/ui/dialog";
+  from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -44,11 +44,11 @@ import {
     SelectTrigger,
     SelectValue,
  }
-  } from "@/components/ui/select";
+   from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import VisualWorkflowBuilder from "@/components/visual-workflow-builder";
 
-export default function Workflows()
+function Workflows()
 {
   const [ activeTab, setActiveTab ] = useState( 'list' );
   const [ selectedWorkflowId, setSelectedWorkflowId ] = useState < string | null > ( null );
@@ -62,174 +62,200 @@ export default function Workflows()
   const { toast } = useToast();
 
   // Query para workflows visuais (nova API)
-  const ({ data, isLoading,
-    queryFn }) => {
-    const response = await apiRequest( 'GET', '/api/visual-workflows' );
-    return response.json();
-  },
-  retry,
+  // Query para buscar workflows visuais
+  const { data: visualWorkflows = [], isLoading } = useQuery({
+    queryKey: ['visual-workflows'],
+    queryFn: async () => {
+      const response = await apiRequest('GET', '/api/visual-workflows');
+      return response.json();
+    },
+    retry: 3
   });
 
-// Manter compatibilidade com workflows antigos
-const { data,
-  retry,
-});
-
-const { data,
-  retry,
-});
-
-// Mutation para criar workflow visual
-const createWorkflowMutation = useMutation( ({ mutationFn }) => {
-  const response = await apiRequest( 'POST', '/api/visual-workflows', {
-    name,
-    description,
-    category,
-    isActive,
-    canvasData, pan, y,
-    nodes,
-    connections,
-    triggerConfig,
-    variables,
-    settings);
-  return response.json();
-},
-    onSuccess) => {
-  queryClient.invalidateQueries( { queryKey);
-  setIsCreateDialogOpen( false );
-  setNewWorkflow( {
-    name,
-    description,
-    category,
-  } );
-  toast( {
-    title,
-    description,
-  } );
-
-  // Abrir no editor visual
-  setSelectedWorkflowId( data.data.id );
-  setActiveTab( 'builder' );
-},
-    onError) => {
-  toast( {
-    title,
-    description,
-    variant,
-  } );
-},
+  // Manter compatibilidade com workflows antigos
+  const { data: legacyWorkflows = [] } = useQuery({
+    queryKey: ['legacy-workflows'],
+    queryFn: async () => {
+      const response = await apiRequest('GET', '/api/workflows');
+      return response.json();
+    },
+    retry: 3
   });
 
-// Mutation para atualizar status do workflow visual
-const updateWorkflowStatusMutation = useMutation( {
-  mutationFn, isActive
-}: ({ id, isActive }) => {
-  const response = await apiRequest( 'PUT', `/api/visual-workflows/${ id }`, { isActive } );
-  return response.json();
-},
-    onSuccess) => {
-  queryClient.invalidateQueries( { queryKey);
-  toast( {
-    title,
-    description,
-  } );
-},
-    onError) => {
-  toast( {
-    title,
-    description,
-    variant,
-  } );
-},
+  const { data: templates = [] } = useQuery({
+    queryKey: ['workflow-templates'],
+    queryFn: async () => {
+      const response = await apiRequest('GET', '/api/workflow-templates');
+      return response.json();
+    },
+    retry: 3
   });
 
-// Mutation para deletar workflow visual
-const deleteWorkflowMutation = useMutation( ({ mutationFn }) => {
-`
-  const response = await apiRequest( 'DELETE', `/api/visual-workflows/${ workflowId }` );
-  return response.json();
-},
-    onSuccess) => {
-  queryClient.invalidateQueries( { queryKey);
-  toast( {
-    title,
-    description,
-  } );
-},
-    onError) => {
-  toast( {
-    title,
-    description,
-    variant,
-  } );
-},
+  // Mutation para criar workflow visual
+  const createWorkflowMutation = useMutation({
+    mutationFn: async (workflowData) => {
+      const response = await apiRequest('POST', '/api/visual-workflows', {
+        name: workflowData.name,
+        description: workflowData.description,
+        category: workflowData.category,
+        isActive: workflowData.isActive,
+        canvasData: workflowData.canvasData,
+        pan: workflowData.pan,
+        zoom: workflowData.zoom,
+        nodes: workflowData.nodes,
+        connections: workflowData.connections,
+        triggerConfig: workflowData.triggerConfig,
+        variables: workflowData.variables,
+        settings: workflowData.settings
+      });
+      return response.json();
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['visual-workflows'] });
+      setIsCreateDialogOpen(false);
+      setNewWorkflow({
+        name: '',
+        description: '',
+        category: '',
+      });
+      toast({
+        title: 'Workflow criado',
+        description: 'O workflow foi criado com sucesso.',
+      });
+
+      // Abrir no editor visual
+      setSelectedWorkflowId(data.data.id);
+      setActiveTab('builder');
+    },
+    onError: (error) => {
+      toast({
+        title: 'Erro ao criar workflow',
+        description: 'Ocorreu um erro ao criar o workflow.',
+        variant: 'destructive',
+      });
+    },
   });
 
-const getCategoryName = ( categoryId ) =>
-({ return categories?.find( ( cat  }) => cat.id === categoryId )?.name || 'Geral';
+  // Mutation para atualizar status do workflow visual
+  const updateWorkflowStatusMutation = useMutation({
+    mutationFn: async ({ id, isActive }) => {
+      const response = await apiRequest('PUT', `/api/visual-workflows/${id}`, { isActive });
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['visual-workflows'] });
+      toast({
+        title: 'Status atualizado',
+        description: 'O status do workflow foi atualizado com sucesso.',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Erro ao atualizar status',
+        description: 'Ocorreu um erro ao atualizar o status do workflow.',
+        variant: 'destructive',
+      });
+    },
+  });
+
+  // Mutation para deletar workflow visual
+  const deleteWorkflowMutation = useMutation({
+    mutationFn: async (workflowId) => {
+      const response = await apiRequest('DELETE', `/api/visual-workflows/${workflowId}`);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['visual-workflows'] });
+      toast({
+        title: 'Workflow deletado',
+        description: 'O workflow foi deletado com sucesso.',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Erro ao deletar workflow',
+        description: 'Ocorreu um erro ao deletar o workflow.',
+        variant: 'destructive',
+      });
+    },
+  });
+
+const getCategoryName = (categoryId) => {
+  return categories?.find(cat => cat.id === categoryId)?.name || 'Geral';
 };
 
-const getStatusColor = ( status ) =>
-({ switch ( status )
-  {
+const getStatusColor = (status) => {
+  switch (status) {
     case 'active':
       return 'bg-success-100 text-success-800';
     case 'inactive':
       return 'bg-gray-100 text-gray-800';
     case 'draft':
       return 'bg-warning-100 text-warning-800';
-    default) => {
-  switch ( status )
-  {
+    default:
+      return 'bg-gray-100 text-gray-800';
+  }
+};
+
+const getStatusText = (status) => {
+  switch (status) {
     case 'active':
       return 'Ativo';
     case 'inactive':
       return 'Inativo';
     case 'draft':
       return 'Rascunho';
-    default) => {
-      switch ( status )
-      {
-        case 'active':
-          return <CheckCircle className="w-4 h-4 text-success-500" />;
-        case 'inactive':
-          return <Pause className="w-4 h-4 text-gray-500" />;
-        case 'draft':
-          return <AlertCircle className="w-4 h-4 text-warning-500" />;
-        default }) => {
-          if ( !newWorkflow.name )
-          {
-            toast( {
-              title,
-              description,
-              variant,
-            } );
-            return;
-          }
+    default:
+      return 'Desconhecido';
+  }
+};
 
-          createWorkflowMutation.mutate( newWorkflow );
-        };
+const getStatusIcon = (status) => {
+  switch (status) {
+    case 'active':
+      return <CheckCircle className="w-4 h-4 text-success-500" />;
+    case 'inactive':
+      return <Pause className="w-4 h-4 text-gray-500" />;
+    case 'draft':
+      return <AlertCircle className="w-4 h-4 text-warning-500" />;
+    default:
+      return <AlertCircle className="w-4 h-4 text-gray-500" />;
+  }
+};
 
-          const toggleWorkflowStatus = ( workflow ) =>
-          {
-            updateWorkflowStatusMutation.mutate( {
-              id,
-              isActive);
-          };
+const handleCreateWorkflow = () => {
+  if (!newWorkflow.name) {
+    toast({
+      title: 'Erro',
+      description: 'Nome do workflow é obrigatório',
+      variant: 'destructive',
+    });
+    return;
+  }
 
-          const handleEditWorkflow = ( workflowId ) =>
-          {
-            setSelectedWorkflowId( workflowId );
-            setActiveTab( 'builder' );
-          };
+  createWorkflowMutation.mutate(newWorkflow);
+};
 
-          const handleDuplicateWorkflow = ( workflow ) =>
-          {
-            const duplicatedWorkflow = {
-              name,
-              description,
-              category);
-          };
+const toggleWorkflowStatus = (workflow) => {
+  updateWorkflowStatusMutation.mutate({
+    id: workflow.id,
+    isActive: !workflow.isActive
+  });
+};
+
+const handleEditWorkflow = (workflowId) => {
+  setSelectedWorkflowId(workflowId);
+  setActiveTab('builder');
+};
+
+const handleDuplicateWorkflow = (workflow) => {
+  const duplicatedWorkflow = {
+    name: `${workflow.name}, (Cópia)`,
+    description: workflow.description,
+    category: workflow.category
+  };
+  createWorkflowMutation.mutate(duplicatedWorkflow);
+};
 
           const workflows = visualWorkflows?.data || [];
 
@@ -326,7 +352,7 @@ const getStatusColor = ( status ) =>
                   >
                     Cancelar
                   </Button>
-                  >
+                  
                   <Button 
                     onClick={handleCreateWorkflow}
                     disabled={createWorkflowMutation.isPending}
@@ -352,7 +378,7 @@ const getStatusColor = ( status ) =>
 
           <TabsContent value="visual" className="space-y-6">
             {/* Workflows Grid */}
-            {workflowsLoading ? (
+            {isLoading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {Array.from({ length: 6 }).map((_, i) => (
                   <Card key={i}>
@@ -462,9 +488,10 @@ const getStatusColor = ( status ) =>
                   </Card>
                 ))}
               </div>
+            )}
 
-              {!workflowsLoading && (!workflows || workflows.length === 0) && (
-                <Card>
+            {!isLoading && (!workflows || workflows.length === 0) && (
+              <Card>
                   <CardContent className="text-center py-12">
                     <Workflow className="w-16 h-16 mx-auto mb-4 text-gray-300" />
                     <h3 className="text-lg font-medium text-gray-900 mb-2">Nenhum workflow encontrado</h3>
@@ -530,7 +557,5 @@ const getStatusColor = ( status ) =>
         </main>
       </div>
     );
-  };
-
-  export default WorkflowsPage;
-`
+};
+export default Workflows;

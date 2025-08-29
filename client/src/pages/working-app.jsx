@@ -3,19 +3,26 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import {  
-  CheckCircle, 
-  Users, 
-  Workflow, 
-  Settings, 
+import {
+  CheckCircle,
+  Users,
+  Workflow,
+  Settings,
   Database,
   Server,
   Shield,
   Activity
- }
 } from 'lucide-react';
 
-, []);
+const WorkingApp = () => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [modules, setModules] = useState([]);
+  const [templates, setTemplates] = useState([]);
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
 
   const checkAuth = async () => {
     try {
@@ -28,7 +35,7 @@ import {
         loadSystemData();
       }
     } catch (error) {
-      console.error('Erro ao verificar autenticação, error);
+      console.error('Erro ao verificar autenticação:', error);
     }
     setLoading(false);
   };
@@ -49,16 +56,16 @@ import {
         setTemplates(templatesData);
       }
     } catch (error) {
-      console.error('Erro ao carregar dados, error);
+      console.error('Erro ao carregar dados:', error);
     }
   };
 
   const handleLogout = async () => {
     try {
-      await fetch('/api/logout', { method);
+      await fetch('/api/logout', { method: 'POST' });
       window.location.reload();
     } catch (error) {
-      console.error('Erro no logout, error);
+      console.error('Erro no logout:', error);
       window.location.reload();
     }
   };
@@ -74,7 +81,8 @@ import {
     );
   }
 
-  if (!user) ({ return (
+  if (!user) {
+    return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
@@ -87,7 +95,7 @@ import {
           </CardHeader>
           <CardContent>
             <Button 
-              onClick={( }) => window.location.href = '/'} 
+              onClick={() => window.location.href = '/'} 
               className="w-full"
             >
               Ir para Login
@@ -102,17 +110,47 @@ import {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white shadow border-b">
-        <div className="max-w-7xl mx-auto px-4 sm, 
-              sessão ativa e dados carregados do banco PostgreSQL.
-            </AlertDescription>
-          </Alert>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-6">
+            <div className="flex items-center">
+              <h1 className="text-2xl font-bold text-gray-900">TOIT Nexus</h1>
+            </div>
+            <div className="flex items-center space-x-4">
+              <span className="text-sm text-gray-500">Olá, {user.firstName}</span>
+              <Button onClick={handleLogout} variant="outline" size="sm">
+                Sair
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-          {/* User Info */}
-          <div className="mb-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              Bem-vindo, {user.firstName}!
-            </h2>
-            <div className="grid grid-cols-1 md, index) => (
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Status Alert */}
+        <Alert className="mb-8">
+          <CheckCircle className="h-4 w-4" />
+          <AlertDescription>
+            Sistema operacional - sessão ativa e dados carregados do banco PostgreSQL.
+          </AlertDescription>
+        </Alert>
+
+        {/* User Info */}
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">
+            Bem-vindo, {user.firstName}!
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Módulos Ativos */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Módulos Ativos</CardTitle>
+                <CardDescription>Funcionalidades habilitadas</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {modules.length > 0 ? (
+                  <div className="space-y-2">
+                    {modules.slice(0, 3).map((module, index) => (
                       <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                         <div>
                           <p className="font-medium">{module.name || 'Módulo'}</p>
@@ -121,24 +159,28 @@ import {
                         <Badge variant="default">Ativo</Badge>
                       </div>
                     ))}
-))}
-                    </div>
-                  ) : (
-                    <p className="text-gray-500">Nenhum módulo ativo</p>
-                  )}
-                </CardContent>
-              </Card>
+                    {modules.length > 3 && (
+                      <p className="text-sm text-gray-500 text-center mt-2">
+                        +{modules.length - 3} módulos adicionais
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  <p className="text-gray-500">Nenhum módulo ativo</p>
+                )}
+              </CardContent>
+            </Card>
 
-              {/* Templates */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Templates</CardTitle>
-                  <CardDescription>Modelos configurados</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {templates.length > 0 ? (
-                    <div className="space-y-2">
-                      {templates.slice(0, 3).map((template, index) => (
+            {/* Templates */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Templates</CardTitle>
+                <CardDescription>Modelos configurados</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {templates.length > 0 ? (
+                  <div className="space-y-2">
+                    {templates.slice(0, 3).map((template, index) => (
                       <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                         <div>
                           <p className="font-medium">{template.name || `Template ${index + 1}`}</p>
@@ -155,21 +197,101 @@ import {
                       </p>
                     )}
                   </div>
-                ) {/* Quick Actions */}
+                ) : (
+                  <p className="text-gray-500">Nenhum template configurado</p>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Quick Actions */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Ações Rápidas</CardTitle>
+                <CardDescription>
+                  Funcionalidades principais do sistema
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 gap-2">
+                  <Button variant="outline" className="justify-start">
+                    <Users className="h-4 w-4 mr-2" />
+                    Gerenciar Usuários
+                  </Button>
+                  <Button variant="outline" className="justify-start">
+                    <Workflow className="h-4 w-4 mr-2" />
+                    Workflows
+                  </Button>
+                  <Button variant="outline" className="justify-start">
+                    <Database className="h-4 w-4 mr-2" />
+                    Banco de Dados
+                  </Button>
+                  <Button variant="outline" className="justify-start">
+                    <Settings className="h-4 w-4 mr-2" />
+                    Configurações
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        {/* System Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <Card>
-            <CardHeader>
-              <CardTitle>Ações Rápidas</CardTitle>
-              <CardDescription>
-                Funcionalidades principais do sistema
-              </CardDescription>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Usuários Ativos</CardTitle>
+              <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md).toLocaleString()}</p>
-              </div>
+              <div className="text-2xl font-bold">1,234</div>
+              <p className="text-xs text-muted-foreground">
+                +20.1% em relação ao mês passado
+              </p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Workflows</CardTitle>
+              <Workflow className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">89</div>
+              <p className="text-xs text-muted-foreground">
+                +12 novos esta semana
+              </p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Uptime</CardTitle>
+              <Activity className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">99.9%</div>
+              <p className="text-xs text-muted-foreground">
+                Últimos 30 dias
+              </p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Segurança</CardTitle>
+              <Shield className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">Ativo</div>
+              <p className="text-xs text-muted-foreground">
+                Todas as verificações OK
+              </p>
             </CardContent>
           </Card>
         </div>
       </div>
     </div>
   );
-}`
+};
+
+export default WorkingApp;

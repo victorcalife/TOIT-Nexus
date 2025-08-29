@@ -284,7 +284,7 @@ const SystemLogs = () => {
     const dataBlob = new Blob([dataStr], { type: 'application/json' });
     const url = URL.createObjectURL(dataBlob);
     const link = document.createElement('a');
-    link.href = url;`
+    link.href = url;
     link.download = `system-logs-${new Date().toISOString().split('T')[0]}.json`;
 
 
@@ -319,7 +319,9 @@ const SystemLogs = () => {
     }
   };
 
-  useEffect(() => ({ return ( }) => {
+  useEffect(() => {
+    return () => {
+      if (refreshInterval) {
         clearInterval(refreshInterval);
       }
     };
@@ -354,8 +356,10 @@ const SystemLogs = () => {
             <Activity className="h-4 w-4 mr-2" />
             Auto Refresh {autoRefresh ? 'ON' : 'OFF'}
           </Button>
-          <Button variant="outline" onClick={handleRefreshLogs} disabled={isLoading}>`
-          <Button variant="outline" onClick={handleRefreshLogs} disabled={isLoading}>`
+          <Button variant="outline" onClick={handleRefreshLogs} disabled={isLoading}>
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Atualizar
+          </Button>
 
 
 

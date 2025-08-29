@@ -248,6 +248,8 @@ const MLPage = () => {
                       <Button size="sm" variant="outline" className="flex-1">
                         <Play className="h-3 w-3 mr-1" />
 
+                        Executar
+                      </Button>
                     )}
                     <Button 
                       size="sm" 
@@ -259,7 +261,8 @@ const MLPage = () => {
                       disabled={isTraining}
                     >
                       <Brain className="h-3 w-3 mr-1" />
-
+                      Treinar
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -292,10 +295,12 @@ const MLPage = () => {
                   <div className="flex gap-2 mt-4">
                     <Button size="sm" variant="outline" className="flex-1">
                       <BarChart3 className="h-3 w-3 mr-1" />
-
+                      Visualizar
+                    </Button>
                     <Button size="sm" variant="outline" className="flex-1">
                       <Download className="h-3 w-3 mr-1" />
-
+                      Download
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -391,7 +396,9 @@ const MLPage = () => {
             </Card>
           </div>
         </TabsContent>
+        
       </Tabs>
+
     </div>
   );
 };

@@ -561,8 +561,8 @@ export default function Reports() {
                             placeholder="email@exemplo.com"
                             onKeyPress={(e) => {
                               if (e.key === 'Enter') {
-                                handleRecipientAdd((e.target as HTMLInputElement).value);
-                                (e.target as HTMLInputElement).value = '';
+                                handleRecipientAdd(e.target.value);
+                                e.target.value = '';
                               }
                             }}
                           />

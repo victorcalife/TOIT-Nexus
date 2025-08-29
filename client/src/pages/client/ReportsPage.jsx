@@ -314,7 +314,7 @@ const ReportsPage = () => {
               <div>
                 <p className="text-sm font-medium text-gray-600">Downloads</p>
                 <p className="text-2xl font-bold text-blue-600">
-                  ({ reports.reduce((acc, r }) => acc + r.downloads, 0)}
+                  {reports.reduce((acc, r) => acc + r.downloads, 0)}
                 </p>
               </div>
               <Download className="h-8 w-8 text-blue-600" />
@@ -328,7 +328,7 @@ const ReportsPage = () => {
               <div>
                 <p className="text-sm font-medium text-gray-600">Visualizações</p>
                 <p className="text-2xl font-bold text-purple-600">
-                  ({ reports.reduce((acc, r }) => acc + r.views, 0)}
+                  {reports.reduce((acc, r) => acc + r.views, 0)}
                 </p>
               </div>
               <Eye className="h-8 w-8 text-purple-600" />
@@ -349,7 +349,7 @@ const ReportsPage = () => {
                   id="search"
                   placeholder="Digite o nome ou descrição..."
                   value={searchTerm}
-                  onChange=({ (e }) => setSearchTerm(e.target.value)}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
                 />
               </div>
@@ -359,7 +359,7 @@ const ReportsPage = () => {
               <select
                 id="category"
                 value={selectedCategory}
-                onChange=({ (e }) => setSelectedCategory(e.target.value)}
+                onChange={(e) => setSelectedCategory(e.target.value)}
                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
               >
                 {categories.map(cat => (
@@ -372,7 +372,7 @@ const ReportsPage = () => {
               <select
                 id="status"
                 value={selectedStatus}
-                onChange=({ (e }) => setSelectedStatus(e.target.value)}
+                onChange={(e) => setSelectedStatus(e.target.value)}
                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
               >
                 {statuses.map(status => (
@@ -386,7 +386,7 @@ const ReportsPage = () => {
 
       {/* Reports List */}
       <div className="grid gap-6">
-        ({ filteredReports.map((report }) => (
+        {filteredReports.map((report) => (
           <Card key={report.id} className="hover:shadow-lg transition-shadow">
             <CardHeader>
               <div className="flex items-start justify-between">
@@ -429,7 +429,7 @@ const ReportsPage = () => {
                 <div>
                   <p className="text-gray-600">Formatos</p>
                   <div className="flex flex-wrap gap-1">
-                    ({ report.format.map((format, index }) => (
+                    {report.format.map((format, index) => (
                       <div key={index} className="flex items-center space-x-1">
                         {getFormatIcon(format)}
                         <span className="text-xs">{format.toUpperCase()}</span>
@@ -454,11 +454,11 @@ const ReportsPage = () => {
               </div>
 
               {/* Recipients */}
-              ({ report.recipients.length > 0 && (
+              {report.recipients.length > 0 && (
                 <div className="text-sm border-t pt-4">
                   <p className="text-gray-600 mb-2">Destinatários</p>
                   <div className="flex flex-wrap gap-2">
-                    {report.recipients.map((email, index }) => (
+                    {report.recipients.map((email, index) => (
                       <Badge key={index} variant="outline" className="text-xs">
                         <Mail className="h-3 w-3 mr-1" />
                         {email}
@@ -472,22 +472,26 @@ const ReportsPage = () => {
               <div className="flex flex-wrap gap-2 pt-4 border-t">
                 <Button 
                   size="sm" 
-                  onClick=({ ( }) => handleGenerateReport(report.id)}
+                  onClick={() => handleGenerateReport(report.id)}
                   disabled={isLoading || report.status === 'generating'}
                 >
                   <RefreshCw className={`h-4 w-4 mr-1 ${isLoading ? 'animate-spin' : ''}`} />
+                  Gerar
+                </Button>
 
-                ({ report.status === 'published' && (
+                {report.status === 'published' && (
                   <>
                     <Button size="sm" variant="outline">
                       <Eye className="h-4 w-4 mr-1" />
+                      Visualizar
+                    </Button>
 
-                    {report.format.map((format, index }) => (
+                    {report.format.map((format, index) => (
                       <Button 
                         key={index}
                         size="sm" 
                         variant="outline"
-                        onClick=({ ( }) => handleDownloadReport(report.id, format)}
+                        onClick={() => handleDownloadReport(report.id, format)}
                       >
                         <Download className="h-4 w-4 mr-1" />
                         {format.toUpperCase()}
@@ -499,21 +503,31 @@ const ReportsPage = () => {
                 <Button 
                   size="sm" 
                   variant="outline"
-                  onClick=({ ( }) => handleShareReport(report.id)}
+                  onClick={() => handleShareReport(report.id)}
                 >
                   <Share2 className="h-4 w-4 mr-1" />
+                  Compartilhar
+                </Button>
 
                 <Button size="sm" variant="outline">
                   <Edit className="h-4 w-4 mr-1" />
+                  Editar
+                </Button>
 
                 <Button size="sm" variant="outline">
                   <Copy className="h-4 w-4 mr-1" />
+                  Duplicar
+                </Button>
 
                 <Button size="sm" variant="outline">
                   <Settings className="h-4 w-4 mr-1" />
+                  Configurar
+                </Button>
 
                 <Button size="sm" variant="outline" className="text-red-600 hover:text-red-700">
                   <Trash2 className="h-4 w-4 mr-1" />
+                  Excluir
+                </Button>
 
               </div>
             </CardContent>
@@ -559,4 +573,4 @@ const ReportsPage = () => {
   );
 };
 
-export default ReportsPage;`
+export default ReportsPage;

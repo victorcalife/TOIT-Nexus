@@ -313,7 +313,7 @@ function TasksPage() {
                 : "Comece criando sua primeira tarefa para organizar o trabalho da sua equipe."
               }
             </p>
-            <Button onClick=({ ( }) => setOpen(true)}>
+            <Button onClick={() => setOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
               Criar Primeira Tarefa
             </Button>
@@ -321,7 +321,7 @@ function TasksPage() {
         </Card>
       ) : (
         <div className="grid gap-4">
-          ({ filteredTasks.map((task }) => (
+          {filteredTasks.map((task) => (
             <Card key={task.id}>
               <CardHeader>
                 <div className="flex items-start justify-between">
@@ -338,12 +338,20 @@ function TasksPage() {
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem>
                         <Eye className="mr-2 h-4 w-4" />
+                        Visualizar
+                      </DropdownMenuItem>
                       <DropdownMenuItem>
                         <Edit className="mr-2 h-4 w-4" />
+                        Editar
+                      </DropdownMenuItem>
                       <DropdownMenuItem>
                         <Copy className="mr-2 h-4 w-4" />
+                        Duplicar
+                      </DropdownMenuItem>
                       <DropdownMenuItem className="text-red-600">
                         <Trash2 className="mr-2 h-4 w-4" />
+                        Excluir
+                      </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
@@ -384,7 +392,7 @@ function TasksPage() {
                   </div>
                   
                   <div className="flex flex-wrap gap-1">
-                    ({ task.tags.map((tag, index }) => (
+                    {task.tags.map((tag, index) => (
                       <Badge key={index} variant="secondary" className="text-xs">
                         {tag}
                       </Badge>
@@ -481,7 +489,9 @@ function TasksPage() {
               </div>
 
               <div className="flex justify-end gap-3 pt-4">
-                <Button variant="outline" type="button" onClick=({ ( }) => setOpen(false)}>
+                <Button variant="outline" type="button" onClick={() => setOpen(false)}>
+                  Cancelar
+                </Button>
                 <Button type="submit" disabled={createTemplateMutation.isPending}>
                   {createTemplateMutation.isPending ? (
                     <>
@@ -504,4 +514,4 @@ function TasksPage() {
   );
 }
 
-export default TasksPage;`
+export default TasksPage;

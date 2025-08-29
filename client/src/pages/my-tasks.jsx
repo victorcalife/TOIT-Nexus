@@ -19,46 +19,56 @@ export default function MyTasks() {
   const queryClient = useQueryClient();
 
   // Fetch user tasks
-  const { data= [], isLoading } = useQuery({
-    queryKey,
+  const { data: tasks = [], isLoading } = useQuery({
+    queryKey: ['tasks'],
+    queryFn: async () => {
+      const response = await apiRequest('/api/tasks/instances');
+      return response.data || [];
+    }
   });
 
   // Fetch notifications
-  const { data= [] } = useQuery({
-    queryKey,
+  const { data: notifications = [] } = useQuery({
+    queryKey: ['notifications'],
+    queryFn: async () => {
+      const response = await apiRequest('/api/tasks/notifications');
+      return response.data || [];
+    }
   });
 
+  const unreadNotifications = notifications.filter(n => !n.isRead);
+
   // Start task mutation
-  const startTaskMutation = useMutation(({ mutationFn }) => {
+  const startTaskMutation = useMutation({
+    mutationFn: async (taskId) => {
       return await apiRequest(`/api/tasks/instances/${taskId}/start`, {
-        method,
+        method: 'POST',
       });
     },
-    onSuccess) => {
-      queryClient.invalidateQueries({ queryKey);
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tasks'] });
       toast({
-        title,
-        description,
+        title: 'Tarefa iniciada',
+        description: 'A tarefa foi iniciada com sucesso.',
       });
     },
   });
 
   // Complete task mutation
   const completeTaskMutation = useMutation({
-    mutationFn, notes }: ({ taskId }) => {
-`
+    mutationFn: async ({ taskId, notes }) => {
       return await apiRequest(`/api/tasks/instances/${taskId}/complete`, {
-        method,
-        body,
+        method: 'POST',
+        body: JSON.stringify({
           notes,
         }),
       });
     },
-    onSuccess) => {
-      queryClient.invalidateQueries({ queryKey);
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tasks'] });
       toast({
-        title,
-        description,
+        title: 'Tarefa concluída',
+        description: 'A tarefa foi concluída com sucesso.',
       });
       setSelectedTask(null);
       setCompletionNotes("");
@@ -66,14 +76,14 @@ export default function MyTasks() {
   });
 
   // Mark notification as read
-  const markNotificationRead = useMutation(({ mutationFn }) => {
-`
+  const markNotificationRead = useMutation({
+    mutationFn: async (notificationId) => {
       return await apiRequest(`/api/tasks/notifications/${notificationId}/read`, {
-        method,
+        method: 'POST',
       });
     },
-    onSuccess) => {
-      queryClient.invalidateQueries({ queryKey);
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['notifications'] });
     },
   });
 
@@ -84,33 +94,41 @@ export default function MyTasks() {
   const handleCompleteTask = () => {
     if (selectedTask) {
       completeTaskMutation.mutate({
-        taskId,
-        notes,
+        taskId: selectedTask.id,
+        notes: completionNotes,
       });
     }
   };
 
-  const handleNotificationClick = (notification) => ({ markNotificationRead.mutate(notification.id);
+  const handleNotificationClick = (notification) => {
+    markNotificationRead.mutate(notification.id);
     if (notification.actionUrl) {
       // In a real app, would navigate to the task
       const taskId = notification.data?.taskInstanceId;
-      const task = tasks.find((t }) => t.id === taskId);
+      const task = tasks.find((t) => t.id === taskId);
       if (task) {
         setSelectedTask(task);
       }
     }
   };
 
-  const getPriorityColor = (priority) => ({ switch (priority) {
+  const getPriorityColor = (priority) => {
+    switch (priority) {
       case 'urgent': return 'destructive';
       case 'high': return 'default';
       case 'medium': return 'secondary';
-      default) => {
+      default: return 'outline';
+    }
+  };
+
+  const getStatusColor = (status) => {
     switch (status) {
       case 'completed': return 'bg-green-100 text-green-800';
       case 'in_progress': return 'bg-blue-100 text-blue-800';
       case 'overdue': return 'bg-red-100 text-red-800';
-      default }) => !n.isRead);
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
 
   if (isLoading) {
     return (
@@ -330,4 +348,4 @@ export default function MyTasks() {
       )}
     </div>
   );
-}`
+}

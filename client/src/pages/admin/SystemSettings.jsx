@@ -293,7 +293,7 @@ const SystemSettings = () => {
               <label className="block text-sm font-medium mb-2">Telefone de Suporte</label>
               <Input
                 value={generalSettings.supportPhone}
-                onChange=({ (e }) => setGeneralSettings(prev => ({ ...prev, supportPhone: e.target.value }))}
+                onChange={(e) => setGeneralSettings(prev => ({ ...prev, supportPhone: e.target.value }))}
               />
             </div>
           </div>

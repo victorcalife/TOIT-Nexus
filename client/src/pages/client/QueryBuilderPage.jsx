@@ -478,6 +478,8 @@ export default function QueryBuilderPage() {
                   ) : (
                     <Play className="w-4 h-4 mr-2" />
                   )}
+                  Executar
+                </Button>
 
                 <Button variant="outline" onClick={saveQuery}>
                   <Save className="w-4 h-4 mr-2" />
@@ -537,9 +539,9 @@ export default function QueryBuilderPage() {
                       </tr>
                     </thead>
                     <tbody>
-                      ({ queryResults.rows?.slice(0, 20).map((row, index }) => (
+                      {queryResults.rows?.slice(0, 20).map((row, index) => (
                         <tr key={index} className="hover:bg-gray-50">
-                          ({ queryResults.columns?.map((col }) => (
+                          {queryResults.columns?.map((col) => (
                             <td key={col} className="border border-gray-300 px-4 py-2">
                               {row[col]}
                             </td>
@@ -569,15 +571,15 @@ export default function QueryBuilderPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                ({ savedQueries.map((savedQuery }) => (
+{savedQueries.map((savedQuery) => (
                   <div
                     key={savedQuery.id}
                     className="p-3 border rounded-lg cursor-pointer hover:bg-gray-50"
-                    onClick=({ ( }) => {
+                    onClick={() => {
                       setQuery(savedQuery.query);
                       setSelectedDataSource(savedQuery.dataSource);
                       setQuantumOptimized(savedQuery.quantumOptimized);
-                    }}
+                     }}
                   >
                     <div className="font-medium">{savedQuery.name}</div>
                     <div className="text-sm text-muted-foreground">
@@ -587,7 +589,8 @@ export default function QueryBuilderPage() {
                       {savedQuery.quantumOptimized && (
                         <Badge variant="secondary" className="text-xs">
                           <Atom className="w-2 h-2 mr-1" />
-
+                          Quantum
+                        </Badge>
                       )}
                       <span className="text-xs text-muted-foreground">
                         {new Date(savedQuery.createdAt).toLocaleDateString()}
@@ -610,7 +613,7 @@ export default function QueryBuilderPage() {
                   variant="outline"
                   size="sm"
                   className="w-full justify-start"
-                  onClick=({ ( }) => setQuery('SELECT * FROM clientes WHERE status = \'ativo\' LIMIT 10;')}
+                  onClick={() => setQuery('SELECT * FROM clientes WHERE status = \'ativo\' LIMIT 10;')}
                 >
                   <Table className="w-4 h-4 mr-2" />
                   Clientes Ativos
@@ -620,7 +623,7 @@ export default function QueryBuilderPage() {
                   variant="outline"
                   size="sm"
                   className="w-full justify-start"
-                  onClick=({ ( }) => setQuery('SELECT DATE(created_at) as data, COUNT(*) as total FROM vendas GROUP BY DATE(created_at) ORDER BY data DESC;')}
+                  onClick={() => setQuery('SELECT DATE(created_at) as data, COUNT(*) as total FROM vendas GROUP BY DATE(created_at) ORDER BY data DESC;')}
                 >
                   <BarChart3 className="w-4 h-4 mr-2" />
                   Vendas por Data
@@ -630,7 +633,7 @@ export default function QueryBuilderPage() {
                   variant="outline"
                   size="sm"
                   className="w-full justify-start"
-                  onClick=({ ( }) => setQuery('SELECT produto, SUM(quantidade) as total FROM vendas GROUP BY produto ORDER BY total DESC LIMIT 5;')}
+                  onClick={() => setQuery('SELECT produto, SUM(quantidade) as total FROM vendas GROUP BY produto ORDER BY total DESC LIMIT 5;')}
                 >
                   <TrendingUp className="w-4 h-4 mr-2" />
                   Top Produtos
@@ -646,7 +649,7 @@ export default function QueryBuilderPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                ({ dataSources.map((ds }) => (
+                {dataSources.map((ds) => (
                   <div key={ds.id} className="flex items-center justify-between p-2 border rounded">
                     <div>
                       <div className="font-medium text-sm">{ds.name}</div>
@@ -662,4 +665,4 @@ export default function QueryBuilderPage() {
       </div>
     </div>
   );
-}`
+};

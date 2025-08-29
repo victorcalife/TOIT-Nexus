@@ -249,65 +249,66 @@ const SettingsPage = () => {
             <CardContent className="p-4">
               <nav className="space-y-2">
                 <button
-                  onClick=({ ( }) => setActiveTab('general')}
+                  onClick={() => setActiveTab('general')}
                   className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
-                    activeTab === 'general' ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50'`}
+                    activeTab === 'general' ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50'
                   }`}
                 >
                   <Settings className="h-4 w-4" />
 
                 <button
-                  onClick=({ ( }) => setActiveTab('appearance')}`
+                  onClick={() => setActiveTab('appearance')}
                   className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
-                    activeTab === 'appearance' ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50'`}
+                    activeTab === 'appearance' ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50'
                   }`}
                 >
                   <Palette className="h-4 w-4" />
                   Aparência
                 </button>
                 <button
-                  onClick=({ ( }) => setActiveTab('notifications')}`
+                  onClick={() => setActiveTab('notifications')}
                   className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
-                    activeTab === 'notifications' ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50'`}
+                    activeTab === 'notifications' ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50'
                   }`}
                 >
                   <Bell className="h-4 w-4" />
                   Notificações
                 </button>
                 <button
-                  onClick=({ ( }) => setActiveTab('security')}`
+                  onClick={() => setActiveTab('security')}
                   className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
-                    activeTab === 'security' ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50'`}
+                    activeTab === 'security' ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50'
                   }`}
                 >
                   <Shield className="h-4 w-4" />
                   Segurança
                 </button>
                 <button
-                  onClick=({ ( }) => setActiveTab('integrations')}`
+                  onClick={() => setActiveTab('integrations')}
                   className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
-                    activeTab === 'integrations' ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50'`}
+                    activeTab === 'integrations' ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50'
                   }`}
                 >
                   <Wifi className="h-4 w-4" />
                   Integrações
                 </button>
                 <button
-                  onClick=({ ( }) => setActiveTab('performance')}`
+                  onClick={() => setActiveTab('performance')}
                   className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
-                    activeTab === 'performance' ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50'`}
+                    activeTab === 'performance' ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50'
                   }`}
                 >
                   <Zap className="h-4 w-4" />
 
                 <button
-                  onClick=({ ( }) => setActiveTab('backup')}`
+                  onClick={() => setActiveTab('backup')}
                   className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
-                    activeTab === 'backup' ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50'`}
+                    activeTab === 'backup' ? 'bg-blue-50 text-blue-700' : 'hover:bg-gray-50'
                   }`}
                 >
                   <Database className="h-4 w-4" />
-
+                  Backup
+                </button>
               </nav>
             </CardContent>
           </Card>
@@ -331,14 +332,14 @@ const SettingsPage = () => {
                       <label className="text-sm font-medium text-gray-700">Nome da Empresa</label>
                       <Input
                         value={settings.general.companyName}
-                        onChange=({ (e }) => handleSettingChange('general', 'companyName', e.target.value)}
+                        onChange={(e) => handleSettingChange('general', 'companyName', e.target.value)}
                       />
                     </div>
                     <div>
                       <label className="text-sm font-medium text-gray-700">Fuso Horário</label>
                       <select
                         value={settings.general.timezone}
-                        onChange=({ (e }) => handleSettingChange('general', 'timezone', e.target.value)}
+                        onChange={(e) => handleSettingChange('general', 'timezone', e.target.value)}
                         className="w-full p-2 border border-gray-300 rounded-md"
                       >
                         <option value="America/Sao_Paulo">São Paulo (GMT-3)</option>
@@ -353,7 +354,7 @@ const SettingsPage = () => {
                       <label className="text-sm font-medium text-gray-700">Idioma</label>
                       <select
                         value={settings.general.language}
-                        onChange=({ (e }) => handleSettingChange('general', 'language', e.target.value)}
+                        onChange={(e) => handleSettingChange('general', 'language', e.target.value)}
                         className="w-full p-2 border border-gray-300 rounded-md"
                       >
                         <option value="pt-BR">Português (Brasil)</option>
@@ -365,7 +366,7 @@ const SettingsPage = () => {
                       <label className="text-sm font-medium text-gray-700">Formato de Data</label>
                       <select
                         value={settings.general.dateFormat}
-                        onChange=({ (e }) => handleSettingChange('general', 'dateFormat', e.target.value)}
+                        onChange={(e) => handleSettingChange('general', 'dateFormat', e.target.value)}
                         className="w-full p-2 border border-gray-300 rounded-md"
                       >
                         <option value="DD/MM/YYYY">DD/MM/YYYY</option>
@@ -377,7 +378,7 @@ const SettingsPage = () => {
                       <label className="text-sm font-medium text-gray-700">Moeda</label>
                       <select
                         value={settings.general.currency}
-                        onChange=({ (e }) => handleSettingChange('general', 'currency', e.target.value)}
+                        onChange={(e) => handleSettingChange('general', 'currency', e.target.value)}
                         className="w-full p-2 border border-gray-300 rounded-md"
                       >
                         <option value="BRL">Real (R$)</option>
@@ -392,7 +393,7 @@ const SettingsPage = () => {
           )}
 
           {/* Appearance Settings */}
-          ({ activeTab === 'appearance' && (
+          {activeTab === 'appearance' && (
             <div className="space-y-6">
               <Card>
                 <CardHeader>
@@ -405,14 +406,14 @@ const SettingsPage = () => {
                   <div>
                     <label className="text-sm font-medium text-gray-700 mb-3 block">Tema</label>
                     <div className="grid grid-cols-3 gap-3">
-                      {['light', 'dark', 'auto'].map((theme }) => (
+                      {['light', 'dark', 'auto'].map((theme) => (
                         <button
                           key={theme}
-                          onClick=({ ( }) => handleSettingChange('appearance', 'theme', theme)}`
+                          onClick={() => handleSettingChange('appearance', 'theme', theme)}
                           className={`p-4 border rounded-lg flex flex-col items-center gap-2 transition-colors ${
                             settings.appearance.theme === theme
                               ? 'border-blue-500 bg-blue-50'
-                              : 'border-gray-200 hover:border-gray-300'`}
+                              : 'border-gray-200 hover:border-gray-300'
                           }`}
                         >
                           {getThemeIcon(theme)}
@@ -430,7 +431,7 @@ const SettingsPage = () => {
                       <input
                         type="color"
                         value={settings.appearance.primaryColor}
-                        onChange=({ (e }) => handleSettingChange('appearance', 'primaryColor', e.target.value)}
+                        onChange={(e) => handleSettingChange('appearance', 'primaryColor', e.target.value)}
                         className="w-full h-10 border border-gray-300 rounded-md"
                       />
                     </div>
@@ -438,7 +439,7 @@ const SettingsPage = () => {
                       <label className="text-sm font-medium text-gray-700">Tamanho da Fonte</label>
                       <select
                         value={settings.appearance.fontSize}
-                        onChange=({ (e }) => handleSettingChange('appearance', 'fontSize', e.target.value)}
+                        onChange={(e) => handleSettingChange('appearance', 'fontSize', e.target.value)}
                         className="w-full p-2 border border-gray-300 rounded-md"
                       >
                         <option value="small">Pequena</option>
@@ -456,7 +457,7 @@ const SettingsPage = () => {
                       </div>
                       <Switch
                         checked={settings.appearance.compactMode}
-                        onCheckedChange=({ (checked }) => handleSettingChange('appearance', 'compactMode', checked)}
+                        onCheckedChange={(checked) => handleSettingChange('appearance', 'compactMode', checked)}
                       />
                     </div>
                     
@@ -467,7 +468,7 @@ const SettingsPage = () => {
                       </div>
                       <Switch
                         checked={settings.appearance.animations}
-                        onCheckedChange=({ (checked }) => handleSettingChange('appearance', 'animations', checked)}
+                        onCheckedChange={(checked) => handleSettingChange('appearance', 'animations', checked)}
                       />
                     </div>
                   </div>
@@ -495,7 +496,7 @@ const SettingsPage = () => {
                       </div>
                       <Switch
                         checked={settings.notifications.emailNotifications}
-                        onCheckedChange=({ (checked }) => handleSettingChange('notifications', 'emailNotifications', checked)}
+                        onCheckedChange={(checked) => handleSettingChange('notifications', 'emailNotifications', checked)}
                       />
                     </div>
                     
@@ -506,7 +507,7 @@ const SettingsPage = () => {
                       </div>
                       <Switch
                         checked={settings.notifications.pushNotifications}
-                        onCheckedChange=({ (checked }) => handleSettingChange('notifications', 'pushNotifications', checked)}
+                        onCheckedChange={(checked) => handleSettingChange('notifications', 'pushNotifications', checked)}
                       />
                     </div>
                     
@@ -517,7 +518,7 @@ const SettingsPage = () => {
                       </div>
                       <Switch
                         checked={settings.notifications.soundEnabled}
-                        onCheckedChange=({ (checked }) => handleSettingChange('notifications', 'soundEnabled', checked)}
+                        onCheckedChange={(checked) => handleSettingChange('notifications', 'soundEnabled', checked)}
                       />
                     </div>
                     
@@ -528,7 +529,7 @@ const SettingsPage = () => {
                       </div>
                       <Switch
                         checked={settings.notifications.desktopNotifications}
-                        onCheckedChange=({ (checked }) => handleSettingChange('notifications', 'desktopNotifications', checked)}
+                        onCheckedChange={(checked) => handleSettingChange('notifications', 'desktopNotifications', checked)}
                       />
                     </div>
                   </div>
@@ -537,7 +538,7 @@ const SettingsPage = () => {
                     <label className="text-sm font-medium text-gray-700">Frequência de Notificações</label>
                     <select
                       value={settings.notifications.notificationFrequency}
-                      onChange=({ (e }) => handleSettingChange('notifications', 'notificationFrequency', e.target.value)}
+                      onChange={(e) => handleSettingChange('notifications', 'notificationFrequency', e.target.value)}
                       className="w-full p-2 border border-gray-300 rounded-md"
                     >
                       <option value="immediate">Imediata</option>
@@ -569,7 +570,7 @@ const SettingsPage = () => {
                     </div>
                     <Switch
                       checked={settings.security.twoFactorAuth}
-                      onCheckedChange=({ (checked }) => handleSettingChange('security', 'twoFactorAuth', checked)}
+                      onCheckedChange={(checked) => handleSettingChange('security', 'twoFactorAuth', checked)}
                     />
                   </div>
                   
@@ -579,7 +580,7 @@ const SettingsPage = () => {
                       <Input
                         type="number"
                         value={settings.security.sessionTimeout}
-                        onChange=({ (e }) => handleSettingChange('security', 'sessionTimeout', parseInt(e.target.value))}
+                        onChange={(e) => handleSettingChange('security', 'sessionTimeout', parseInt(e.target.value))}
                       />
                     </div>
                     <div>
@@ -587,7 +588,7 @@ const SettingsPage = () => {
                       <Input
                         type="number"
                         value={settings.security.passwordExpiry}
-                        onChange=({ (e }) => handleSettingChange('security', 'passwordExpiry', parseInt(e.target.value))}
+                        onChange={(e) => handleSettingChange('security', 'passwordExpiry', parseInt(e.target.value))}
                       />
                     </div>
                   </div>
@@ -597,7 +598,7 @@ const SettingsPage = () => {
                     <Input
                       type="number"
                       value={settings.security.loginAttempts}
-                      onChange=({ (e }) => handleSettingChange('security', 'loginAttempts', parseInt(e.target.value))}
+                      onChange={(e) => handleSettingChange('security', 'loginAttempts', parseInt(e.target.value))}
                     />
                   </div>
                 </CardContent>
@@ -621,7 +622,7 @@ const SettingsPage = () => {
                       <label className="text-sm font-medium text-gray-700">Serviço de Email</label>
                       <select
                         value={settings.integrations.emailService}
-                        onChange=({ (e }) => handleSettingChange('integrations', 'emailService', e.target.value)}
+                        onChange={(e) => handleSettingChange('integrations', 'emailService', e.target.value)}
                         className="w-full p-2 border border-gray-300 rounded-md"
                       >
                         <option value="smtp">SMTP</option>
@@ -633,7 +634,7 @@ const SettingsPage = () => {
                       <label className="text-sm font-medium text-gray-700">Provedor de Armazenamento</label>
                       <select
                         value={settings.integrations.storageProvider}
-                        onChange=({ (e }) => handleSettingChange('integrations', 'storageProvider', e.target.value)}
+                        onChange={(e) => handleSettingChange('integrations', 'storageProvider', e.target.value)}
                         className="w-full p-2 border border-gray-300 rounded-md"
                       >
                         <option value="local">Local</option>
@@ -650,7 +651,7 @@ const SettingsPage = () => {
                     </div>
                     <Switch
                       checked={settings.integrations.backupEnabled}
-                      onCheckedChange=({ (checked }) => handleSettingChange('integrations', 'backupEnabled', checked)}
+                      onCheckedChange={(checked) => handleSettingChange('integrations', 'backupEnabled', checked)}
                     />
                   </div>
                   
@@ -658,7 +659,7 @@ const SettingsPage = () => {
                     <label className="text-sm font-medium text-gray-700">Frequência de Backup</label>
                     <select
                       value={settings.integrations.backupFrequency}
-                      onChange=({ (e }) => handleSettingChange('integrations', 'backupFrequency', e.target.value)}
+                      onChange={(e) => handleSettingChange('integrations', 'backupFrequency', e.target.value)}
                       className="w-full p-2 border border-gray-300 rounded-md"
                       disabled={!settings.integrations.backupEnabled}
                     >
@@ -674,7 +675,7 @@ const SettingsPage = () => {
                     <Input
                       type="number"
                       value={settings.integrations.apiRateLimit}
-                      onChange=({ (e }) => handleSettingChange('integrations', 'apiRateLimit', parseInt(e.target.value))}
+                      onChange={(e) => handleSettingChange('integrations', 'apiRateLimit', parseInt(e.target.value))}
                     />
                   </div>
                 </CardContent>
@@ -701,7 +702,7 @@ const SettingsPage = () => {
                       </div>
                       <Switch
                         checked={settings.performance.cacheEnabled}
-                        onCheckedChange=({ (checked }) => handleSettingChange('performance', 'cacheEnabled', checked)}
+                        onCheckedChange={(checked) => handleSettingChange('performance', 'cacheEnabled', checked)}
                       />
                     </div>
                     
@@ -712,7 +713,7 @@ const SettingsPage = () => {
                       </div>
                       <Switch
                         checked={settings.performance.compressionEnabled}
-                        onCheckedChange=({ (checked }) => handleSettingChange('performance', 'compressionEnabled', checked)}
+                        onCheckedChange={(checked) => handleSettingChange('performance', 'compressionEnabled', checked)}
                       />
                     </div>
                     
@@ -723,7 +724,7 @@ const SettingsPage = () => {
                       </div>
                       <Switch
                         checked={settings.performance.lazyLoading}
-                        onCheckedChange=({ (checked }) => handleSettingChange('performance', 'lazyLoading', checked)}
+                        onCheckedChange={(checked) => handleSettingChange('performance', 'lazyLoading', checked)}
                       />
                     </div>
                     
@@ -734,7 +735,7 @@ const SettingsPage = () => {
                       </div>
                       <Switch
                         checked={settings.performance.prefetchData}
-                        onCheckedChange=({ (checked }) => handleSettingChange('performance', 'prefetchData', checked)}
+                        onCheckedChange={(checked) => handleSettingChange('performance', 'prefetchData', checked)}
                       />
                     </div>
                   </div>
@@ -744,7 +745,7 @@ const SettingsPage = () => {
                     <Input
                       type="number"
                       value={settings.performance.maxConcurrentUsers}
-                      onChange=({ (e }) => handleSettingChange('performance', 'maxConcurrentUsers', parseInt(e.target.value))}
+                      onChange={(e) => handleSettingChange('performance', 'maxConcurrentUsers', parseInt(e.target.value))}
                     />
                   </div>
                 </CardContent>
@@ -777,7 +778,7 @@ const SettingsPage = () => {
                         id="import-settings"
                       />
                       <Button 
-                        onClick=({ ( }) => document.getElementById('import-settings').click()}
+                        onClick={() => document.getElementById('import-settings').click()}
                         variant="outline"
                         className="w-full flex items-center gap-2"
                       >
@@ -809,4 +810,4 @@ const SettingsPage = () => {
   );
 };
 
-export default SettingsPage;`
+export default SettingsPage;
