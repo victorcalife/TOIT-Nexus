@@ -23,7 +23,6 @@ import {
   PieChart,
   TrendingUp,
   FileSpreadsheet,
-  FilePdf,
   Mail,
   Share2,
   Settings,
@@ -188,7 +187,7 @@ const ReportsPage = () => {
   const getFormatIcon = (format) => {
     switch (format) {
       case 'pdf':
-        return <FilePdf className="h-3 w-3 text-red-600" />;
+        return <FileText className="h-3 w-3 text-red-600" />;
       case 'excel':
         return <FileSpreadsheet className="h-3 w-3 text-green-600" />;
       case 'web':

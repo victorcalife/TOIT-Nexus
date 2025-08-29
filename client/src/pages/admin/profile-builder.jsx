@@ -211,7 +211,8 @@ function ProfileBuilder() {
         <CardTitle className="text-lg">{categoryName}</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md).map(([key, module]: [string, any]) => {
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {Object.entries(modules).map(([key, module]) => {
             const IconComponent = module.icon;
             const isActive = profileModules[key] || false;
             
@@ -227,7 +228,7 @@ function ProfileBuilder() {
                 </div>
                 <Switch
                   checked={isActive}
-                  onCheckedChange=({ ( }) => handleModuleToggle(key, isCreate)}
+                  onCheckedChange={() => handleModuleToggle(key, isCreate)}
                 />
               </div>
             );
@@ -292,7 +293,7 @@ function ProfileBuilder() {
                     <div className="flex items-center space-x-2">
                       <Switch
                         checked={newProfile.is_active}
-                        onCheckedChange=({ (checked }) => setNewProfile(prev => ({ ...prev, is_active))}
+                        onCheckedChange={(checked) => setNewProfile(prev => ({ ...prev, is_active: checked }))}
                       />
                       <span>{newProfile.is_active ? 'Ativo' : 'Inativo'}</span>
                     </div>
@@ -310,7 +311,7 @@ function ProfileBuilder() {
               </TabsContent>
 
               <TabsContent value="modules" className="space-y-4">
-                ({ Object.entries(ALL_MODULES).map(([categoryName, modules] }) => 
+                {Object.entries(ALL_MODULES).map(([categoryName, modules]) =>
                   renderModuleCategory(categoryName, modules, newProfile.modules, true)
                 )}
               </TabsContent>
@@ -398,7 +399,7 @@ function ProfileBuilder() {
             </Tabs>
 
             <div className="flex justify-end space-x-2 pt-4">
-              <Button variant="outline" onClick=({ ( }) => setIsCreateDialogOpen(false)}>
+              <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
               <Button onClick={handleSaveProfile} disabled={createProfileMutation.isPending}>
                 {createProfileMutation.isPending ? 'Salvando...' : 'Salvar Perfil'}
               </Button>
@@ -408,9 +409,11 @@ function ProfileBuilder() {
       </div>
 
       {/* Lista de Perfis Existentes */}
-      <div className="grid grid-cols-1 md) => ({ const activeModules = getActiveModulesCount(profile.modules);
-          const totalModules = Object.keys(ALL_MODULES).reduce((acc, category }) => 
-            acc + Object.keys(ALL_MODULES[category as keyof typeof ALL_MODULES]).length, 0
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {data.map((profile) => {
+          const activeModules = getActiveModulesCount(profile.modules);
+          const totalModules = Object.keys(ALL_MODULES).reduce((acc, category) =>
+            acc + Object.keys(ALL_MODULES[category]).length, 0
           );
 
           return (
@@ -431,14 +434,32 @@ function ProfileBuilder() {
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <span className="text-muted-foreground">Preço Mensal)}</div>
+                    <span className="text-muted-foreground">Preço Mensal:</span>
+                    <div className="font-semibold">R$ {profile.price_monthly.toFixed(2)}</div>
                   </div>
                   <div>
-                    <span className="text-muted-foreground">Preço Anual)}</div>
+                    <span className="text-muted-foreground">Preço Anual:</span>
+                    <div className="font-semibold">R$ {profile.price_yearly.toFixed(2)}</div>
                   </div>
                   <div>
-`
-                    <span className="text-muted-foreground">Máx. Usuários) * 100}%` }}
+                    <span className="text-muted-foreground">Máx. Usuários:</span>
+                    <div className="font-semibold">{profile.max_users}</div>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Armazenamento:</span>
+                    <div className="font-semibold">{profile.max_storage_gb} GB</div>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Módulos Ativos</span>
+                    <span>{activeModules}/{totalModules}</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-blue-600 h-2 rounded-full"
+                      style={{ width: `${(activeModules / totalModules) * 100}%` }}
                     ></div>
                   </div>
                 </div>
@@ -448,20 +469,22 @@ function ProfileBuilder() {
                     variant="outline" 
                     size="sm" 
                     className="flex-1"
-                    onClick=({ ( }) => setEditingProfile(profile)}
+                    onClick={() => setEditingProfile(profile)}
                   >
                     <Edit className="h-4 w-4 mr-1" />
-                  <Button 
+                    Editar
+                  </Button>
+                  <Button
                     variant="outline" 
                     size="sm"
-                    onClick=({ ( }) => duplicateProfile(profile)}
+                    onClick={() => duplicateProfile(profile)}
                   >
                     <Copy className="h-4 w-4" />
                   </Button>
                   <Button 
                     variant="destructive" 
                     size="sm"
-                    onClick=({ ( }) => deleteProfileMutation.mutate(profile.id!)}
+                    onClick={() => deleteProfileMutation.mutate(profile.id)}
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
@@ -474,18 +497,17 @@ function ProfileBuilder() {
 
       {/* Modal de Edição */}
       {editingProfile && (
-        <Dialog open={!!editingProfile} onOpenChange=({ ( }) => setEditingProfile(null)}>
+        <Dialog open={!!editingProfile} onOpenChange={() => setEditingProfile(null)}>
           <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>Editar Perfil) => setEditingProfile(prev => ({ ...prev!, name))}
-                    />
-                  </div>
+              <DialogTitle>Editar Perfil de Acesso</DialogTitle>
+            </DialogHeader>
                   <div className="space-y-2">
                     <Label htmlFor="edit-profile-status">Status</Label>
                     <div className="flex items-center space-x-2">
                       <Switch
                         checked={editingProfile.is_active}
-                        onCheckedChange=({ (checked }) => setEditingProfile(prev => ({ ...prev!, is_active))}
+                        onCheckedChange={(checked) => setEditingProfile(prev => ({ ...prev, is_active: checked }))}
                       />
                       <span>{editingProfile.is_active ? 'Ativo' : 'Inativo'}</span>
                     </div>
@@ -502,7 +524,7 @@ function ProfileBuilder() {
               </TabsContent>
 
               <TabsContent value="modules" className="space-y-4">
-                ({ Object.entries(ALL_MODULES).map(([categoryName, modules] }) => 
+                {Object.entries(ALL_MODULES).map(([categoryName, modules]) =>
                   renderModuleCategory(categoryName, modules, editingProfile.modules, false)
                 )}
               </TabsContent>
@@ -590,7 +612,9 @@ function ProfileBuilder() {
             </Tabs>
 
             <div className="flex justify-end space-x-2 pt-4">
-              <Button variant="outline" onClick=({ ( }) => setEditingProfile(null)}>
+              <Button variant="outline" onClick={() => setEditingProfile(null)}>
+                Cancelar
+              </Button>
               <Button onClick={handleSaveProfile} disabled={updateProfileMutation.isPending}>
                 {updateProfileMutation.isPending ? 'Salvando...' : 'Salvar Alterações'}
               </Button>
@@ -600,4 +624,6 @@ function ProfileBuilder() {
       )}
     </div>
   );
-}`
+}
+
+export default ProfileBuilder;

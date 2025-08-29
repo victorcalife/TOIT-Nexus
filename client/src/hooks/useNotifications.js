@@ -2,11 +2,14 @@ import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getQueryFn, apiRequest } from '@/lib/queryClient';
 
-= useQuery<NotificationsResponse>({
-    queryKey, 'notifications'],
-    queryFn),
-    refetchInterval, // Refetch a cada 1 minuto
-    staleTime, // Considera fresh por 30 segundos
+export const useNotifications = () => {
+  const [readNotifications, setReadNotifications] = useState(new Set());
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['notifications'],
+    queryFn: () => apiRequest('/api/notifications'),
+    refetchInterval: 60000, // Refetch a cada 1 minuto
+    staleTime: 30000, // Considera fresh por 30 segundos
   });
 
   // Recuperar notificações lidas do localStorage
@@ -17,7 +20,7 @@ import { getQueryFn, apiRequest } from '@/lib/queryClient';
         const readIds = JSON.parse(stored);
         setReadNotifications(new Set(readIds));
       } catch (error) {
-        console.error('Error parsing read notifications, error);
+        console.error('Error parsing read notifications:', error);
       }
     }
   }, []);
@@ -39,7 +42,7 @@ import { getQueryFn, apiRequest } from '@/lib/queryClient';
         JSON.stringify([...newReadNotifications])
       );
     } catch (error) {
-      console.error('Error marking notification as read, error);
+      console.error('Error marking notification as read:', error);
     }
   };
 

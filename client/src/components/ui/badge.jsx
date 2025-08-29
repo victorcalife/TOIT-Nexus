@@ -72,7 +72,7 @@ const Badge = React.forwardRef(({
 }, ref) => (
   <div
     ref={ref}
-    className={cn(}
+    className={cn(
       badgeVariants({ variant, size, interactive: !!onClick || interactive }),
       className
     )}
@@ -185,9 +185,9 @@ const RemovableBadge = React.forwardRef(({
     {...props}
   >
     <span>{children}</span>
-    ({ onRemove && (
+    {onRemove && (
       <button
-        onClick={(e }) => {
+        onClick={(e) => {
           e.stopPropagation()
           onRemove()
         }}
@@ -223,7 +223,7 @@ const CountBadge = React.forwardRef(({
       size={size}
       className={cn(
         "min-w-[1.25rem] h-5 px-1 justify-center rounded-full",
-        className}
+        className
       )}
       {...props}
     >
@@ -252,11 +252,11 @@ const ProgressBadge = React.forwardRef(({
       className={cn("relative overflow-hidden", className)}
       {...props}
     >
-      <div 
-        className="absolute inset-0 bg-white/20 transition-all duration-300"`
+      <div
+        className="absolute inset-0 bg-white/20 transition-all duration-300"
         style={{ width: `${percentage}%` }}
       />
-      <span className="relative z-10">`
+      <span className="relative z-10">
         {showPercentage ? `${Math.round(percentage)}%` : `${progress}`}
       </span>
     </Badge>
@@ -310,7 +310,7 @@ const DotBadge = React.forwardRef(({
     size={size}
     className={cn(
       "w-2 h-2 p-0 rounded-full min-w-0",
-      className}
+      className
     )}
     {...props}
   />
@@ -341,7 +341,7 @@ const BadgeGroup = React.forwardRef(({
         "flex items-center",
         spacingClasses[spacing],
         wrap && "flex-wrap",
-        className}
+        className
       )}
       {...props}
     >
@@ -366,7 +366,7 @@ const ColorBadge = React.forwardRef(({
     className={cn("border-transparent", className)}
     style={{
       backgroundColor: color,
-      color: textColor}
+      color: textColor
     }}
     {...props}
   >
@@ -378,9 +378,10 @@ ColorBadge.displayName = "ColorBadge"
 /**
  * HOOK PARA GERENCIAR BADGES
  */
-export const useBadges = (initialBadges = []) => ({ const [badges, setBadges] = React.useState(initialBadges)
+export const useBadges = (initialBadges = []) => {
+  const [badges, setBadges] = React.useState(initialBadges)
 
-  const addBadge = (badge }) => {
+  const addBadge = (badge) => {
     setBadges(prev => [...prev, { ...badge, id: Date.now() }])
   }
 
@@ -408,16 +409,11 @@ export const useBadges = (initialBadges = []) => ({ const [badges, setBadges] = 
 }
 
 export {
-
-
-
-
-
-
-
-
-
-
-  badgeVariants
+  Badge,
+  badgeVariants,
+  CountBadge,
+  ProgressBadge,
+  DotBadge,
+  BadgeGroup,
+  ColorBadge
 }
-`

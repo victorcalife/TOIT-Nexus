@@ -53,7 +53,6 @@ import {
   DollarSign,
   CreditCard,
   Webhook,
-  Api,
   Cloud,
   Backup
 } from 'lucide-react';
@@ -145,7 +144,7 @@ const SystemSettings = () => {
     { id: 'database', label: 'Banco de Dados', icon: Database },
     { id: 'email', label: 'E-mail', icon: Mail },
     { id: 'security', label: 'Segurança', icon: Shield },
-    { id: 'api', label: 'API', icon: Api },
+    { id: 'api', label: 'API', icon: Code },
     { id: 'integrations', label: 'Integrações', icon: Webhook }
   ];
 

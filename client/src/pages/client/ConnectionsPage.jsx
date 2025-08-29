@@ -187,11 +187,14 @@ const ConnectionsPage = () => {
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="name" className="text-right">
-
+                  Nome
+                </Label>
                 <Input id="name" className="col-span-3" placeholder="Nome da conexão" />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="type" className="text-right">
+                  Tipo
+                </Label>
 
                 <Select>
                   <SelectTrigger className="col-span-3">
@@ -208,12 +211,14 @@ const ConnectionsPage = () => {
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="host" className="text-right">
-
+                  Host
+                </Label>
                 <Input id="host" className="col-span-3" placeholder="localhost" />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="port" className="text-right">
-
+                  Porta
+                </Label>
                 <Input id="port" className="col-span-3" placeholder="5432" />
               </div>
             </div>
@@ -277,16 +282,13 @@ const ConnectionsPage = () => {
                     </div>
                   </div>
                   <div className="flex gap-2 mt-4">
-                    <Button 
-                      size="sm" 
-                      variant="outline" 
+                    <Button
+                      size="sm"
+                      variant="outline"
                       className="flex-1"
                       onClick={() => testConnectionMutation.mutate(connection.id)}
                       disabled={testConnectionMutation.isPending}
                     >
-                      <TestTube className="h-3 w-3 mr-1" />
-
-                    <Button size="sm" variant="outline">
                       <TestTube className="h-3 w-3 mr-1" />
                       Testar
                     </Button>

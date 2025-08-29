@@ -199,7 +199,8 @@ const WorkflowsPage = () => {
         <div className="flex gap-2">
           <Button variant="outline">
             <Upload className="h-4 w-4 mr-2" />
-
+            Importar
+          </Button>
           <Button>
             <Plus className="h-4 w-4 mr-2" />
             Novo Workflow
@@ -369,39 +370,45 @@ const WorkflowsPage = () => {
 
               {/* Action Buttons */}
               <div className="flex flex-wrap gap-2 pt-4 border-t">
-                <Button 
-                  size="sm" 
+                <Button
+                  size="sm"
                   onClick={() => handleRunWorkflow(workflow.id)}
                   disabled={isLoading}
                 >
                   <Play className="h-4 w-4 mr-1" />
-
+                  Executar
+                </Button>
                 {workflow.status === 'active' && (
-                  <Button 
-                    size="sm" 
+                  <Button
+                    size="sm"
                     variant="outline"
                     onClick={() => handlePauseWorkflow(workflow.id)}
                   >
                     <Pause className="h-4 w-4 mr-1" />
-
+                    Pausar
+                  </Button>
                 )}
-                
-                <Button 
-                  size="sm" 
+
+                <Button
+                  size="sm"
                   variant="outline"
                   onClick={() => handleStopWorkflow(workflow.id)}
                 >
                   <Square className="h-4 w-4 mr-1" />
-
+                  Parar
+                </Button>
                 <Button size="sm" variant="outline">
                   <Eye className="h-4 w-4 mr-1" />
-
+                  Visualizar
+                </Button>
                 <Button size="sm" variant="outline">
                   <Edit className="h-4 w-4 mr-1" />
-
+                  Editar
+                </Button>
                 <Button size="sm" variant="outline">
                   <Copy className="h-4 w-4 mr-1" />
-
+                  Duplicar
+                </Button>
                 <Button size="sm" variant="outline">
                   <BarChart3 className="h-4 w-4 mr-1" />
                   Métricas
@@ -409,10 +416,12 @@ const WorkflowsPage = () => {
                 
                 <Button size="sm" variant="outline">
                   <Settings className="h-4 w-4 mr-1" />
-
+                  Configurar
+                </Button>
                 <Button size="sm" variant="outline" className="text-red-600 hover:text-red-700">
                   <Trash2 className="h-4 w-4 mr-1" />
-
+                  Excluir
+                </Button>
               </div>
             </CardContent>
           </Card>

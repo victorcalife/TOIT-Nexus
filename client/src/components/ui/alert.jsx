@@ -1,17 +1,6 @@
 /**
  * SISTEMA DE ALERTS COMPLETO - TOIT NEXUS
  * Sistema profissional de alertas com todas as funcionalidades
- * 100% JavaScript - SEM TYPESCRIPT
- * 
- * FUNCIONALIDADES INCLUÍDAS:
- * - Múltiplas variantes (success, error, warning, info, default)
- * - Alerts com ícones automáticos
- * - Alerts dismissíveis (removíveis)
- * - Alerts com ações
- * - Alerts de confirmação
- * - Diferentes tamanhos e estilos
- * - Animações de entrada/saída
- * - Sistema de auto-dismiss
  */
 
 import * as React from "react"
@@ -39,13 +28,13 @@ const alertVariants = cva(
     defaultVariants: {
       variant: "default",
       size: "default"
-    },
+    }
   }
 )
 
-const Alert = React.forwardRef(({ 
-  className, 
-  variant, 
+const Alert = React.forwardRef(({
+  className,
+  variant,
   size,
   dismissible = false,
   onDismiss,
@@ -53,13 +42,14 @@ const Alert = React.forwardRef(({
   autoHideDelay = 5000,
   showIcon = true,
   children,
-  ...props 
-}, ref) => ({ const [isVisible, setIsVisible] = React.useState(true)
+  ...props
+}, ref) => {
+  const [isVisible, setIsVisible] = React.useState(true)
 
   // Auto-hide functionality
   React.useEffect(() => {
     if (autoHide && autoHideDelay > 0) {
-      const timer = setTimeout(( }) => {
+      const timer = setTimeout(() => {
         setIsVisible(false)
         onDismiss?.()
       }, autoHideDelay)
@@ -71,7 +61,7 @@ const Alert = React.forwardRef(({
   // Get icon based on variant
   const getIcon = () => {
     if (!showIcon) return null
-    
+
     switch (variant) {
       case 'success':
         return <CheckCircle className="h-4 w-4" />
@@ -99,9 +89,9 @@ const Alert = React.forwardRef(({
       <div className="flex-1">
         {children}
       </div>
-      ({ dismissible && (
+      {dismissible && (
         <button
-          onClick={( }) => {
+          onClick={() => {
             setIsVisible(false)
             onDismiss?.()
           }}
@@ -134,125 +124,21 @@ const AlertDescription = React.forwardRef(({ className, ...props }, ref) => (
 AlertDescription.displayName = "AlertDescription"
 
 /**
- * ALERT COM AÇÕES
- */
-const AlertWithActions = React.forwardRef(({ 
-  title,
-  description,
-  variant = "default",
-  actions,
-  className,
-  ...props 
-}, ref) => (
-  <Alert ref={ref} variant={variant} className={className} {...props}>
-    <AlertTitle>{title}</AlertTitle>
-    {description && <AlertDescription>{description}</AlertDescription>}
-    {actions && (
-      <div className="mt-3 flex gap-2">
-        {actions}
-      </div>
-    )}
-  </Alert>
-))
-AlertWithActions.displayName = "AlertWithActions"
-
-/**
- * ALERT DE CONFIRMAÇÃO
- */
-const ConfirmAlert = React.forwardRef(({ 
-  title = "Confirmar ação",
-  description,
-  onConfirm,
-  onCancel,
-  confirmText = "Confirmar",
-  cancelText = "Cancelar",
-  variant = "warning",
-  className,
-  ...props 
-}, ref) => (
-  <Alert ref={ref} variant={variant} className={className} {...props}>
-    <AlertTitle>{title}</AlertTitle>
-    {description && <AlertDescription>{description}</AlertDescription>}
-    <div className="mt-3 flex gap-2">
-      <button
-        onClick={onConfirm}
-        className="px-3 py-1 bg-primary text-primary-foreground rounded-md text-sm hover:bg-primary/90 transition-colors"
-      >
-        {confirmText}
-      </button>
-      <button
-        onClick={onCancel}
-        className="px-3 py-1 bg-secondary text-secondary-foreground rounded-md text-sm hover:bg-secondary/80 transition-colors"
-      >
-        {cancelText}
-      </button>
-    </div>
-  </Alert>
-))
-ConfirmAlert.displayName = "ConfirmAlert"
-
-/**
- * ALERT DE SUCESSO RÁPIDO
- */
-export const showSuccessAlert = (message, duration = 3000) => {
-  const alertElement = document.createElement('div')
-  alertElement.className = 'fixed top-4 right-4 z-50'
-  
-  const alertContent = `
-    <div class="bg-green-50 border border-green-200 text-green-900 px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 animate-in slide-in-from-top-2">
-      <svg class="h-4 w-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-      </svg>
-      <span class="text-sm font-medium">${message}</span>
-    </div>`
-  `
-  
-  alertElement.innerHTML = alertContent
-  document.body.appendChild(alertElement)
-  
-  setTimeout(() => {
-    alertElement.remove()
-  }, duration)
-}
-
-/**
- * ALERT DE ERRO RÁPIDO
- */
-export const showErrorAlert = (message, duration = 5000) => {
-  const alertElement = document.createElement('div')
-  alertElement.className = 'fixed top-4 right-4 z-50'
-  `
-  const alertContent = `
-    <div class="bg-red-50 border border-red-200 text-red-900 px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 animate-in slide-in-from-top-2">
-      <svg class="h-4 w-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-      </svg>
-      <span class="text-sm font-medium">${message}</span>
-    </div>`
-  `
-  
-  alertElement.innerHTML = alertContent
-  document.body.appendChild(alertElement)
-  
-  setTimeout(() => {
-    alertElement.remove()
-  }, duration)
-}
-
-/**
  * HOOK PARA GERENCIAR ALERTS
  */
-export const useAlerts = () => ({ const [alerts, setAlerts] = React.useState([])
+export const useAlerts = () => {
+  const [alerts, setAlerts] = React.useState([])
 
-  const addAlert = (alert }) => {
+  const addAlert = (alert) => {
     const id = Date.now()
     setAlerts(prev => [...prev, { ...alert, id }])
-    
-    if (alert.autoHide !== false) ({ setTimeout(( }) => {
+
+    if (alert.autoHide !== false) {
+      setTimeout(() => {
         removeAlert(id)
       }, alert.duration || 5000)
     }
-    
+
     return id
   }
 
@@ -264,16 +150,16 @@ export const useAlerts = () => ({ const [alerts, setAlerts] = React.useState([])
     setAlerts([])
   }
 
-  const success = (message, options = {}) => 
+  const success = (message, options = {}) =>
     addAlert({ variant: 'success', message, ...options })
-  
-  const error = (message, options = {}) => 
+
+  const error = (message, options = {}) =>
     addAlert({ variant: 'destructive', message, ...options })
-  
-  const warning = (message, options = {}) => 
+
+  const warning = (message, options = {}) =>
     addAlert({ variant: 'warning', message, ...options })
-  
-  const info = (message, options = {}) => 
+
+  const info = (message, options = {}) =>
     addAlert({ variant: 'info', message, ...options })
 
   return {
@@ -288,12 +174,4 @@ export const useAlerts = () => ({ const [alerts, setAlerts] = React.useState([])
   }
 }
 
-export { 
-
-
-
-
-
-  alertVariants 
-}
-`
+export { Alert, AlertDescription, AlertTitle, alertVariants }

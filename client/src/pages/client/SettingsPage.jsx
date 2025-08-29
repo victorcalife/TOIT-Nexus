@@ -255,7 +255,8 @@ const SettingsPage = () => {
                   }`}
                 >
                   <Settings className="h-4 w-4" />
-
+                  Geral
+                </button>
                 <button
                   onClick={() => setActiveTab('appearance')}
                   className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
@@ -299,7 +300,8 @@ const SettingsPage = () => {
                   }`}
                 >
                   <Zap className="h-4 w-4" />
-
+                  Performance
+                </button>
                 <button
                   onClick={() => setActiveTab('backup')}
                   className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${

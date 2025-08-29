@@ -101,3 +101,39 @@ export const queryClientConfig = {
 import { QueryClient } from '@tanstack/react-query';
 
 export const queryClient = new QueryClient( queryClientConfig );
+
+/**
+ * Função para fazer requisições HTTP
+ */
+export const apiRequest = async (url, options = {}) => {
+  const fullUrl = url.startsWith('http') ? url : `${API_BASE_URL}${url}`;
+
+  const defaultOptions = {
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers
+    }
+  };
+
+  // Adicionar token de autenticação se disponível
+  const token = localStorage.getItem('auth_token');
+  if (token) {
+    defaultOptions.headers.Authorization = `Bearer ${token}`;
+  }
+
+  const response = await fetch(fullUrl, {
+    ...defaultOptions,
+    ...options
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  return response.json();
+};
+
+/**
+ * Função helper para queries
+ */
+export const getQueryFn = (url) => () => apiRequest(url);

@@ -156,7 +156,7 @@ const FloatingButton = React.forwardRef(({
       className={cn(
         "rounded-full shadow-lg hover:shadow-xl transition-shadow z-50",
         positionClasses[position],
-        className}
+        className
       )}
       {...props}
     >
@@ -192,11 +192,11 @@ const ButtonGroup = React.forwardRef(({
         orientation === "vertical" && "[&>button:first-child]:rounded-t-md [&>button:first-child]:rounded-l-md [&>button:last-child]:rounded-b-md [&>button:last-child]:rounded-r-md",
         "[&>button:not(:first-child)]:border-l-0",
         orientation === "vertical" && "[&>button:not(:first-child)]:border-l [&>button:not(:first-child)]:border-t-0",
-        className}
+        className
       )}
       {...props}
     >
-      ({ React.Children.map(children, (child }) => {
+      {React.Children.map(children, (child) => {
         if (React.isValidElement(child) && child.type === Button) {
           return React.cloneElement(child, {
             variant: child.props.variant || variant,
@@ -221,9 +221,10 @@ const ToggleButton = React.forwardRef(({
   className,
   children,
   ...props 
-}, ref) => ({ const [isPressed, setIsPressed] = React.useState(pressed)
+}, ref) => {
+  const [isPressed, setIsPressed] = React.useState(pressed)
 
-  React.useEffect(( }) => {
+  React.useEffect(() => {
     setIsPressed(pressed)
   }, [pressed])
 
@@ -240,7 +241,7 @@ const ToggleButton = React.forwardRef(({
       variant={isPressed ? activeVariant : variant}
       className={cn(
         isPressed && "bg-accent text-accent-foreground",
-        className}
+        className
       )}
       onClick={handleClick}
       {...props}
@@ -318,9 +319,10 @@ const ConfirmButton = React.forwardRef(({
   className,
   children,
   ...props 
-}, ref) => ({ const [isConfirming, setIsConfirming] = React.useState(showConfirm)
+}, ref) => {
+  const [isConfirming, setIsConfirming] = React.useState(showConfirm)
 
-  const handleClick = ( }) => {
+  const handleClick = () => {
     if (isConfirming) {
       onConfirm?.()
       setIsConfirming(false)
@@ -379,13 +381,14 @@ const CopyButton = React.forwardRef(({
   className,
   children,
   ...props 
-}, ref) => ({ const [copied, setCopied] = React.useState(false)
+}, ref) => {
+  const [copied, setCopied] = React.useState(false)
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(text)
       setCopied(true)
-      setTimeout(( }) => setCopied(false), 2000)
+      setTimeout(() => setCopied(false), 2000)
     } catch (err) {
       console.error('Erro ao copiar:', err)
     }
@@ -415,5 +418,13 @@ export {
 
 
 
+  Button,
+  IconButton,
+  FloatingButton,
+  ButtonGroup,
+  ToggleButton,
+  ActionButton,
+  ConfirmButton,
+  CopyButton,
   buttonVariants
 }

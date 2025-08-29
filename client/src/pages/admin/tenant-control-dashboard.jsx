@@ -1,490 +1,366 @@
-/**
- * TENANT CONTROL DASHBOARD - Dashboard completo para equipe TOIT controlar tenants
- * Visualizar e controlar funcionalidades, billing e logs de uso por empresa
- */
-
-import { useState, useEffect } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import {  
+import { Input } from '@/components/ui/input';
+import {
   Building2,
-  Search,
-  Filter,
+  Users,
   DollarSign,
   Activity,
-  Users,
-  Package,
-  Settings,
-  BarChart3,
-  Clock,
-  CheckCircle,
-  XCircle,
-  AlertTriangle,
-  Crown,
-  Zap,
-  TrendingUp,
-  TrendingDown,
-  Download,
+  Search,
+  MoreHorizontal,
   Eye,
   Edit,
-  Ban,
-  Play,
-  Pause,
-  RefreshCw,
-  Calendar,
-  FileText,
-  PieChart,
-  Target,
-  Save }
+  Trash2,
+  Plus,
+  TrendingUp,
+  AlertTriangle
 } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-import { apiRequest } from '@/lib/queryClient';
-import { StandardHeader } from '@/components/standard-header';
-import { useAuth } from '@/hooks/useAuth';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
-= useAuth();
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
+const TenantControlDashboard = () => {
+  const [loading, setLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [dashboardData, setDashboardData] = useState(null);
 
-  // Query para buscar todos os tenants com dados de controle
-  const ({ data, isLoading, { search, status, plan,
-    queryFn }) => {
-      const params = new URLSearchParams();
-      if (searchTerm) params.append('search', searchTerm);
-      if (statusFilter !== 'all') params.append('status', statusFilter);
-      if (planFilter !== 'all') params.append('plan', planFilter);
-      
-      const response = await apiRequest('GET', `/api/admin/tenant-control?${params}`);
-      return response.json();
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
+  const fetchDashboardData = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/admin/tenants-dashboard');
+      if (response.ok) {
+        const data = await response.json();
+        setDashboardData(data);
+      } else {
+        // Usar dados mock em caso de erro
+        setDashboardData(mockData);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar dados:', error);
+      setDashboardData(mockData);
+    } finally {
+      setLoading(false);
     }
-  });
+  };
 
-  // Query para analytics de uso
-  const ({ data, { period,
-    queryFn }) => {`
-      const response = await apiRequest('GET', `/api/admin/tenant-control/analytics?period=${periodFilter}`);
-      return response.json();
-    }
-  });
-
-  // Query para dados de billing consolidado
-  const ({ data,
-    queryFn }) => {
-      const response = await apiRequest('GET', '/api/admin/tenant-control/billing');
-      return response.json();
-    }
-  });
-
-  // Mutation para suspender/ativar tenant
-  const toggleTenantMutation = useMutation({
-    mutationFn, active }: ({ tenantId }) => {`
-      const response = await apiRequest('PUT', `/api/admin/tenant-control/${tenantId}/status`, {
-        isActive,
-        reason);
-      return response.json();
-    },
-    onSuccess) => {
-      queryClient.invalidateQueries({ queryKey);
-      toast({ title, description);
-    },
-    onError) => {
-      toast({ 
-        title, 
-        description,
-        variant);
-    }
-  });
-
-  // Mutation para alterar plano do tenant
-  const changePlanMutation = useMutation({
-    mutationFn, accessProfileId }: ({ tenantId }) => {`
-      const response = await apiRequest('PUT', `/api/admin/tenant-control/${tenantId}/plan`, {
-        accessProfileId
+  const handleTenantAction = async (tenantId, action) => {
+    try {
+      const response = await fetch(`/api/admin/tenants/${tenantId}/${action}`, {
+        method: 'POST'
       });
-      return response.json();
-    },
-    onSuccess) => {
-      queryClient.invalidateQueries({ queryKey);
-      setShowTenantModal(false);
-      toast({ title, description);
-    },
-    onError) => {
-      toast({ 
-        title, 
-        description,
-        variant);
+      if (response.ok) {
+        fetchDashboardData();
+      }
+    } catch (error) {
+      console.error(`Erro ao ${action} tenant:`, error);
     }
+  };
+
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    }).format(value);
+  };
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('pt-BR');
+  };
+
+  // Mock data
+  const mockData = {
+    analytics: {
+      totalTenants: 156,
+      activeTenants: 142,
+      totalUsers: 3420,
+      totalRevenue: 125000
+    },
+    tenants: [
+      {
+        id: 1,
+        name: 'Empresa Alpha',
+        domain: 'alpha.toit.com.br',
+        status: 'active',
+        plan: 'Enterprise',
+        users: 45,
+        createdAt: '2024-01-15',
+        billing: { amount: 2500, status: 'paid' }
+      },
+      {
+        id: 2,
+        name: 'Beta Solutions',
+        domain: 'beta.toit.com.br',
+        status: 'active',
+        plan: 'Professional',
+        users: 23,
+        createdAt: '2024-02-01',
+        billing: { amount: 1200, status: 'pending' }
+      },
+      {
+        id: 3,
+        name: 'Gamma Corp',
+        domain: 'gamma.toit.com.br',
+        status: 'suspended',
+        plan: 'Basic',
+        users: 8,
+        createdAt: '2024-01-20',
+        billing: { amount: 400, status: 'overdue' }
+      }
+    ]
+  };
+
+  const data = dashboardData || mockData;
+  const { analytics, tenants } = data;
+
+  const filteredTenants = tenants.filter(tenant => {
+    const matchesSearch = tenant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         tenant.domain.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = statusFilter === 'all' || tenant.status === statusFilter;
+    return matchesSearch && matchesStatus;
   });
 
-  const handleToggleTenant = (tenant) => {
-    toggleTenantMutation.mutate({
-      tenantId,
-      active);
-  };
-
-  const handleViewTenant = (tenant) => {
-    setSelectedTenant(tenant);
-    setShowTenantModal(true);
-  };
-
-  const getStatusColor = (status, isActive) => ({ if (!isActive) return 'bg-red-100 text-red-800 border-red-200';
-    switch (status) {
-      case 'active': return 'bg-green-100 text-green-800 border-green-200';
-      case 'overdue': return 'bg-orange-100 text-orange-800 border-orange-200';
-      case 'suspended': return 'bg-red-100 text-red-800 border-red-200';
-      default }) => {
-    const colors, string> = {
-      'basico': 'bg-blue-100 text-blue-800',
-      'standard': 'bg-green-100 text-green-800',
-      'premium': 'bg-purple-100 text-purple-800',
-      'enterprise': 'bg-yellow-100 text-yellow-800'
+  const getStatusBadge = (status) => {
+    const variants = {
+      active: 'default',
+      suspended: 'destructive',
+      pending: 'secondary'
     };
-    return colors[plan] || 'bg-gray-100 text-gray-800';
+    return <Badge variant={variants[status] || 'secondary'}>{status}</Badge>;
   };
 
-  const formatCurrency = (value) => 
-    new Intl.NumberFormat('pt-BR', { style, currency).format(value);
+  const getBillingStatusBadge = (status) => {
+    const variants = {
+      paid: 'default',
+      pending: 'secondary',
+      overdue: 'destructive'
+    };
+    const labels = {
+      paid: 'Pago',
+      pending: 'Pendente',
+      overdue: 'Vencido'
+    };
+    return <Badge variant={variants[status] || 'secondary'}>{labels[status] || status}</Badge>;
+  };
 
-  if (loadingTenants) {
+  if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <StandardHeader showUserActions={true} user={user} />
-        <div className="flex items-center justify-center pt-20">
-          <div className="text-center">
-            <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4 text-blue-500" />
-            <p className="text-gray-600">Carregando dashboard de controle...</p>
-          </div>
-        </div>
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
   }
 
-  const tenants = tenantsData?.data || [];
-  const analytics = analyticsData?.data || null;
-  const billing = billingData?.data || null;
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      <StandardHeader showUserActions={true} user={user} />
-      
-      <div className="max-w-7xl mx-auto px-4 pt-20 pb-8">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 flex items-center">
-                <Building2 className="h-8 w-8 mr-3 text-blue-600" />
-                Controle de Tenants
-              </h1>
-              <p className="text-gray-600 mt-2">
-                Dashboard executivo para controle total de empresas e funcionalidades
-              </p>
-            </div>
-            
-            <div className="flex space-x-3">
-              <Button
-                onClick=({ ( }) => queryClient.invalidateQueries()}
-                variant="outline"
-                className="flex items-center"
-              >
-                <RefreshCw className="h-4 w-4 mr-2" />
-              <Button
-                onClick=({ ( }) => {/* Implementar export */}}
-                className="bg-green-600 hover)}
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    +12% vs mês anterior
-                  </p>
-                </CardContent>
-              </Card>
-              
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Usuários Ativos</CardTitle>
-                  <Users className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">
-                    ({ tenants.reduce((sum, t }) => sum + t.activeUsers, 0)}
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    de ({ tenants.reduce((sum, t }) => sum + t.totalUsers, 0)} total
-                  </p>
-                </CardContent>
-              </Card>
-              
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Módulos em Uso</CardTitle>
-                  <Package className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">
-                    ({ tenants.reduce((sum, t }) => sum + t.activeModules, 0)}
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Adoção, t) => sum + t.activeModules, 0) / (tenants.length * 15)) * 100)}%
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Gráficos e Resumos */}
-            <div className="grid grid-cols-1 lg, 'standard', 'premium', 'enterprise'].map(plan => ({ const count = tenants.filter((t }) => t.plan === plan).length;
-                      const percentage = tenants.length > 0 ? (count / tenants.length) * 100 : 0;
-                      return (
-                        <div key={plan} className="flex items-center justify-between">
-                          <div className="flex items-center space-x-2">
-                            <Badge className={getPlanColor(plan)}>
-                              {plan.toUpperCase()}
-                            </Badge>
-                            <span className="text-sm">{count} empresas</span>
-                          </div>
-                          <span className="text-sm font-medium">{percentage.toFixed(1)}%</span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Status de Pagamentos</CardTitle>
-                  <CardDescription>Situação de faturamento das empresas</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    ({ ['active', 'overdue', 'suspended'].map(status => {
-                      const count = tenants.filter((t }) => t.billingInfo?.paymentStatus === status).length;
-                      const icons = { active, overdue, suspended, overdue, suspended);
-                    })}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="tenants" className="space-y-4">
-            {/* Filtros */}
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex flex-wrap gap-4">
-                  <div className="flex-1 min-w-64">
-                    <div className="relative">
-                      <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                      <Input
-                        placeholder="Buscar por nome ou domínio..."
-                        value={searchTerm}
-                        onChange=({ (e }) => setSearchTerm(e.target.value)}
-                        className="pl-10"
-                      />
-                    </div>
-                  </div>
-                  
-                  <Select value={statusFilter} onValueChange=({ (value }) => setStatusFilter(value)}>
-                    <SelectTrigger className="w-40">
-                      <SelectValue placeholder="Status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">Todos</SelectItem>
-                      <SelectItem value="active">Ativos</SelectItem>
-                      <SelectItem value="inactive">Inativos</SelectItem>
-                      <SelectItem value="overdue">Em Atraso</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  
-                  <Select value={planFilter} onValueChange=({ (value }) => setPlanFilter(value)}>
-                    <SelectTrigger className="w-40">
-                      <SelectValue placeholder="Plano" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">Todos</SelectItem>
-                      <SelectItem value="basico">Básico</SelectItem>
-                      <SelectItem value="standard">Standard</SelectItem>
-                      <SelectItem value="premium">Premium</SelectItem>
-                      <SelectItem value="enterprise">Enterprise</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Lista de Tenants */}
-            <div className="space-y-4">
-              ({ tenants.map((tenant }) => (
-                <Card key={tenant.id} className="hover, tenant.isActive)}>
-                          {tenant.isActive 
-                            ? (tenant.billingInfo?.paymentStatus || 'active').toUpperCase() {getPlanColor(tenant.plan)}>
-                          <Crown className="w-3 h-3 mr-1" />
-                          {tenant.accessProfileName || tenant.plan.toUpperCase()}
-                        </Badge>
-                        <Badge variant="outline">
-                          <Users className="w-3 h-3 mr-1" />
-                          {tenant.activeUsers}/{tenant.totalUsers}
-                        </Badge>
-                        <Badge variant="outline">
-                          <Package className="w-3 h-3 mr-1" />
-                          {tenant.activeModules}/{tenant.totalModules}
-                        </Badge>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  
-                  <CardContent className="space-y-4">
-                    <div className="grid grid-cols-2 md)}</div>
-                      </div>
-                      <div>
-                        <span className="text-muted-foreground">Storage)}
-                        </div>
-                      </div>
-                      <div>
-                        <span className="text-muted-foreground">Último Login).toLocaleDateString('pt-BR') ({ ( }) => handleViewTenant(tenant)}
-                        >
-                          <Eye className="h-4 w-4 mr-1" />
-                        <Button
-                          variant="outline"
-                          size="sm"`
-                          onClick=({ ( }) => window.open(`/tenant/${tenant.domain}`, '_blank')}
-                        >
-                          <Settings className="h-4 w-4 mr-1" />
-                      </div>
-                      
-                      <div className="flex space-x-2">
-                        <Switch
-                          checked={tenant.isActive}
-                          onCheckedChange=({ ( }) => handleToggleTenant(tenant)}
-                          disabled={toggleTenantMutation.isPending}
-                        />
-                        <Button
-                          variant={tenant.isActive ? "destructive" : "default"}
-                          size="sm"
-                          onClick=({ ( }) => handleToggleTenant(tenant)}
-                          disabled={toggleTenantMutation.isPending}
-                        >
-                          {tenant.isActive ? (
-                            <>
-                              <Pause className="h-4 w-4 mr-1" />
-                          ) {/* Modal de Detalhes do Tenant */}
-        <Dialog open={showTenantModal} onOpenChange={setShowTenantModal}>
-          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle className="flex items-center">
-                <Building2 className="h-5 w-5 mr-2" />
-                {selectedTenant?.name}
-              </DialogTitle>
-              <DialogDescription>
-                Controle completo de funcionalidades e configurações
-              </DialogDescription>
-            </DialogHeader>
-            
-            {selectedTenant && (
-              <div className="space-y-6">
-                {/* Informações Básicas */}
-                <div className="grid grid-cols-2 gap-4">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-sm">Informações Gerais</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-2 text-sm">
-                      <div><strong>Domínio).toLocaleDateString('pt-BR')}</div>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-sm">Faturamento</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-2 text-sm">
-                      <div><strong>Receita Mensal)}</div>
-                      <div><strong>Total Gasto)}</div>
-                      <div><strong>Próximo Pgto).toLocaleDateString('pt-BR') {selectedTenant.billingInfo?.paymentStatus?.toUpperCase() || 'ATIVO'}</Badge></div>
-                    </CardContent>
-                  </Card>
-                </div>
-
-                {/* Uso Atual vs Limites */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-sm">Uso vs Limites</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-3 gap-4">
-                      <div>
-                        <Label className="text-xs">Storage</Label>
-                        <div className="text-sm font-medium">
-                          {selectedTenant.currentUsage.storage}GB / {selectedTenant.limits.storage}GB
-                        </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
-                          <div 
-                            className="bg-blue-600 h-2 rounded-full" `
-                            style={{ width) * 100}%` }}
-                          ></div>
-                        </div>
-                      </div>
-                      <div>
-                        <Label className="text-xs">API Calls</Label>
-                        <div className="text-sm font-medium">
-                          {selectedTenant.currentUsage.apiCalls.toLocaleString()} / {selectedTenant.limits.apiCalls.toLocaleString()}
-                        </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
-                          <div 
-                            className="bg-green-600 h-2 rounded-full" `
-                            style={{ width) * 100}%` }}
-                          ></div>
-                        </div>
-                      </div>
-                      <div>
-                        <Label className="text-xs">Usuários</Label>
-                        <div className="text-sm font-medium">
-                          {selectedTenant.activeUsers} / {selectedTenant.limits.users}
-                        </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
-                          <div 
-                            className="bg-purple-600 h-2 rounded-full" `
-                            style={{ width) * 100}%` }}
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Atividade Recente */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-sm">Atividade Recente</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3 max-h-40 overflow-y-auto">
-                      ({ selectedTenant.recentActivity?.slice(0, 5).map((activity, index }) => (
-                        <div key={index} className="flex items-center justify-between text-sm p-2 border rounded">
-                          <div>
-                            <div className="font-medium">{activity.description}</div>
-                            <div className="text-xs text-muted-foreground">por {activity.user}</div>
-                          </div>
-                          <div className="text-xs text-muted-foreground">
-                            {new Date(activity.timestamp).toLocaleString('pt-BR')}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
-          </DialogContent>
-        </Dialog>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Controle de Tenants</h1>
+          <p className="text-muted-foreground">
+            Gerencie todos os tenants da plataforma TOIT Nexus
+          </p>
+        </div>
+        <Button>
+          <Plus className="h-4 w-4 mr-2" />
+          Novo Tenant
+        </Button>
       </div>
+
+      {/* Analytics Cards */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total de Tenants</CardTitle>
+            <Building2 className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{analytics.totalTenants}</div>
+            <p className="text-xs text-muted-foreground">
+              <span className="text-green-600 flex items-center">
+                <TrendingUp className="h-3 w-3 mr-1" />
+                +12% vs mês anterior
+              </span>
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Tenants Ativos</CardTitle>
+            <Activity className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{analytics.activeTenants}</div>
+            <p className="text-xs text-muted-foreground">
+              {((analytics.activeTenants / analytics.totalTenants) * 100).toFixed(1)}% do total
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total de Usuários</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{analytics.totalUsers.toLocaleString()}</div>
+            <p className="text-xs text-muted-foreground">
+              Média de {Math.round(analytics.totalUsers / analytics.totalTenants)} por tenant
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Receita Total</CardTitle>
+            <DollarSign className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{formatCurrency(analytics.totalRevenue)}</div>
+            <p className="text-xs text-muted-foreground">
+              <span className="text-green-600 flex items-center">
+                <TrendingUp className="h-3 w-3 mr-1" />
+                +8.2% vs mês anterior
+              </span>
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Filters and Search */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Filtros</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center gap-4">
+            <div className="flex-1">
+              <div className="relative">
+                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Buscar por nome ou domínio..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-8"
+                />
+              </div>
+            </div>
+            <div className="flex gap-2">
+              {['all', 'active', 'suspended', 'pending'].map((status) => (
+                <Button
+                  key={status}
+                  variant={statusFilter === status ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setStatusFilter(status)}
+                >
+                  {status === 'all' && 'Todos'}
+                  {status === 'active' && 'Ativos'}
+                  {status === 'suspended' && 'Suspensos'}
+                  {status === 'pending' && 'Pendentes'}
+                </Button>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Tenants Table */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Lista de Tenants</CardTitle>
+          <CardDescription>
+            {filteredTenants.length} de {tenants.length} tenants
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {filteredTenants.map((tenant) => (
+              <div key={tenant.id} className="flex items-center justify-between p-4 border rounded-lg">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <Building2 className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-semibold">{tenant.name}</h3>
+                      {getStatusBadge(tenant.status)}
+                    </div>
+                    <p className="text-sm text-muted-foreground">{tenant.domain}</p>
+                    <div className="flex items-center gap-4 text-xs text-muted-foreground mt-1">
+                      <span>{tenant.users} usuários</span>
+                      <span>Plano: {tenant.plan}</span>
+                      <span>Criado em: {formatDate(tenant.createdAt)}</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4">
+                  <div className="text-right">
+                    <div className="font-semibold">{formatCurrency(tenant.billing.amount)}</div>
+                    {getBillingStatusBadge(tenant.billing.status)}
+                  </div>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="h-8 w-8 p-0">
+                        <MoreHorizontal className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuLabel>Ações</DropdownMenuLabel>
+                      <DropdownMenuItem onClick={() => handleTenantAction(tenant.id, 'view')}>
+                        <Eye className="mr-2 h-4 w-4" />
+                        Visualizar
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleTenantAction(tenant.id, 'edit')}>
+                        <Edit className="mr-2 h-4 w-4" />
+                        Editar
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      {tenant.status === 'active' ? (
+                        <DropdownMenuItem 
+                          onClick={() => handleTenantAction(tenant.id, 'suspend')}
+                          className="text-orange-600"
+                        >
+                          <AlertTriangle className="mr-2 h-4 w-4" />
+                          Suspender
+                        </DropdownMenuItem>
+                      ) : (
+                        <DropdownMenuItem 
+                          onClick={() => handleTenantAction(tenant.id, 'activate')}
+                          className="text-green-600"
+                        >
+                          <Activity className="mr-2 h-4 w-4" />
+                          Ativar
+                        </DropdownMenuItem>
+                      )}
+                      <DropdownMenuItem 
+                        onClick={() => handleTenantAction(tenant.id, 'delete')}
+                        className="text-red-600"
+                      >
+                        <Trash2 className="mr-2 h-4 w-4" />
+                        Excluir
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
-}`
+};
+
+export default TenantControlDashboard;

@@ -363,4 +363,5 @@ const SalesMetricsDashboard = () => {
   );
 };
 
-export default SalesMetricsDashboard;`
+export { SalesMetricsDashboard };
+export default SalesMetricsDashboard;

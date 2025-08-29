@@ -8,4 +8,5 @@ const LoadingSpinner = ({ className = '', size = 24 }) => {
   );
 };
 
+export { LoadingSpinner };
 export default LoadingSpinner;

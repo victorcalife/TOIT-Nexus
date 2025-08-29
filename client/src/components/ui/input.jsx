@@ -38,7 +38,7 @@ const Input = React.forwardRef(({
         "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
         error && "border-red-500 focus-visible:ring-red-500",
         success && "border-green-500 focus-visible:ring-green-500",
-        className}
+        className
       )}
       ref={ref}
       disabled={disabled}
@@ -67,7 +67,7 @@ const IconInput = React.forwardRef(({
         className={cn(
           Icon && iconPosition === "left" && "pl-10",
           Icon && iconPosition === "right" && "pr-10",
-          className}
+          className
         )}
         {...props}
       />
@@ -98,7 +98,7 @@ const PasswordInput = React.forwardRef(({
       />
       <button
         type="button"
-        onClick=({ ( }) => setShowPassword(!showPassword)}
+        onClick={() => setShowPassword(!showPassword)}
         className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
       >
         {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -116,9 +116,10 @@ const SearchInput = React.forwardRef(({
   value,
   className,
   ...props 
-}, ref) => ({ const [searchValue, setSearchValue] = React.useState(value || "")
+}, ref) => {
+  const [searchValue, setSearchValue] = React.useState(value || "")
 
-  React.useEffect(( }) => {
+  React.useEffect(() => {
     setSearchValue(value || "")
   }, [value])
 
@@ -134,7 +135,7 @@ const SearchInput = React.forwardRef(({
         ref={ref}
         type="text"
         value={searchValue}
-        onChange=({ (e }) => {
+        onChange={(e) => {
           setSearchValue(e.target.value)
           props.onChange?.(e)
         }}
@@ -166,9 +167,10 @@ const NumberInput = React.forwardRef(({
   onChange,
   className,
   ...props 
-}, ref) => ({ const [numValue, setNumValue] = React.useState(value || 0)
+}, ref) => {
+  const [numValue, setNumValue] = React.useState(value || 0)
 
-  const increment = ( }) => {
+  const increment = () => {
     const newValue = numValue + step
     if (max === undefined || newValue <= max) {
       setNumValue(newValue)
@@ -190,7 +192,7 @@ const NumberInput = React.forwardRef(({
         ref={ref}
         type="number"
         value={numValue}
-        onChange=({ (e }) => {
+        onChange={(e) => {
           const val = parseFloat(e.target.value) || 0
           setNumValue(val)
           onChange?.(e)
@@ -380,7 +382,7 @@ const FileInput = React.forwardRef(({
       className={cn(
         "border-2 border-dashed rounded-lg p-6 text-center transition-colors",
         isDragging ? "border-primary bg-primary/5" : "border-muted-foreground/25",
-        className}
+        className
       )}
       onDrop={handleDrop}
       onDragOver={handleDragOver}
@@ -416,4 +418,14 @@ const FileInput = React.forwardRef(({
 })
 FileInput.displayName = "FileInput"
 
-export {}
+export {
+  Input,
+  IconInput,
+  PasswordInput,
+  SearchInput,
+  NumberInput,
+  CPFInput,
+  PhoneInput,
+  EmailInput,
+  FileInput
+}

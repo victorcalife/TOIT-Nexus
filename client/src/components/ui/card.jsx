@@ -70,7 +70,7 @@ const Card = React.forwardRef(({
 }, ref) => (
   <div
     ref={ref}
-    className={cn(}
+    className={cn(
       cardVariants({ variant, size, interactive: !!onClick || interactive }),
       className
     )}
@@ -102,7 +102,7 @@ const CardTitle = React.forwardRef(({ className, ...props }, ref) => (
     ref={ref}
     className={cn(
       "text-2xl font-semibold leading-none tracking-tight",
-      className}
+      className
     )}
     {...props}
   />
@@ -186,7 +186,7 @@ const CardStats = React.forwardRef(({
           {trend && trendValue && (
             <div className={cn(
               "flex items-center text-sm font-medium",
-              trend === 'up' ? "text-green-600" : trend === 'down' ? "text-red-600" : "text-muted-foreground"}
+              trend === 'up' ? "text-green-600" : trend === 'down' ? "text-red-600" : "text-muted-foreground"
             )}>
               <span>{trendValue}</span>
               <span className="ml-1">
@@ -317,9 +317,9 @@ const CardGrid = React.forwardRef(({
     <div
       ref={ref}
       className={cn(
-        "grid",}
-        `sm:${gridClasses[columns.sm] || 'grid-cols-1'}`,`
-        `md:${gridClasses[columns.md] || 'grid-cols-2'}`,`
+        "grid",
+        `sm:${gridClasses[columns.sm] || 'grid-cols-1'}`,
+        `md:${gridClasses[columns.md] || 'grid-cols-2'}`,
         `lg:${gridClasses[columns.lg] || 'grid-cols-3'}`,
         gapClasses[gap] || 'gap-6',
         className
@@ -332,18 +332,4 @@ const CardGrid = React.forwardRef(({
 })
 CardGrid.displayName = "CardGrid"
 
-export {
-
-
-
-
-
-
-
-
-
-
-
-  cardVariants
-}
-`
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent, CardGrid }

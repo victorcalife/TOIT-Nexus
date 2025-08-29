@@ -325,6 +325,14 @@ export {
 
 
 
+  Toast,
+  ToastAction,
+  ToastClose,
+  ToastDescription,
+  ToastProvider,
+  ToastTitle,
+  ToastViewport,
+  ToastComplete,
   TOAST_CONFIG,
   toastVariants
 }
