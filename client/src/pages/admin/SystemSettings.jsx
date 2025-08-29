@@ -449,7 +449,7 @@ const SystemSettings = () => {
                 <Input
                   type="number"
                   value={databaseSettings.backupRetention}
-                  onChange={(e) => setDatabaseSettings(prev => ({ ...prev, backupRetention: parseInt(e.target.value) }))
+                  onChange={(e) => setDatabaseSettings(prev => ({ ...prev, backupRetention: parseInt(e.target.value) }))}
                 />
               </div>
             </div>
@@ -487,7 +487,7 @@ const SystemSettings = () => {
               <Input
                 type="number"
                 value={emailSettings.smtpPort}
-                onChange={(e) => setEmailSettings(prev => ({ ...prev, smtpPort: parseInt(e.target.value) }))
+                onChange={(e) => setEmailSettings(prev => ({ ...prev, smtpPort: parseInt(e.target.value) }))}
               />
             </div>
           </div>
@@ -593,7 +593,7 @@ const SystemSettings = () => {
             <Input
               type="number"
               value={securitySettings.passwordMinLength}
-              onChange={(e) => setSecuritySettings(prev => ({ ...prev, passwordMinLength: parseInt(e.target.value) }))
+              onChange={(e) => setSecuritySettings(prev => ({ ...prev, passwordMinLength: parseInt(e.target.value) }))}
             />
           </div>
           
@@ -648,7 +648,7 @@ const SystemSettings = () => {
             <Input
               type="number"
               value={securitySettings.passwordExpiration}
-              onChange={(e) => setSecuritySettings(prev => ({ ...prev, passwordExpiration: parseInt(e.target.value) }))
+              onChange={(e) => setSecuritySettings(prev => ({ ...prev, passwordExpiration: parseInt(e.target.value) }))}
             />
           </div>
         </CardContent>
@@ -665,7 +665,7 @@ const SystemSettings = () => {
               <Input
                 type="number"
                 value={securitySettings.maxLoginAttempts}
-                onChange={(e) => setSecuritySettings(prev => ({ ...prev, maxLoginAttempts: parseInt(e.target.value) }))
+                onChange={(e) => setSecuritySettings(prev => ({ ...prev, maxLoginAttempts: parseInt(e.target.value) }))}
               />
             </div>
             <div>
@@ -673,7 +673,7 @@ const SystemSettings = () => {
               <Input
                 type="number"
                 value={securitySettings.lockoutDuration}
-                onChange={(e) => setSecuritySettings(prev => ({ ...prev, lockoutDuration: parseInt(e.target.value) }))
+                onChange={(e) => setSecuritySettings(prev => ({ ...prev, lockoutDuration: parseInt(e.target.value) }))}
               />
             </div>
           </div>
@@ -751,7 +751,7 @@ const SystemSettings = () => {
               <Input
                 type="number"
                 value={apiSettings.rateLimit}
-                onChange={(e) => setApiSettings(prev => ({ ...prev, rateLimit: parseInt(e.target.value) }))
+                onChange={(e) => setApiSettings(prev => ({ ...prev, rateLimit: parseInt(e.target.value) }))}
               />
             </div>
           </div>
@@ -762,7 +762,7 @@ const SystemSettings = () => {
               <Input
                 type="number"
                 value={apiSettings.apiKeyExpiration}
-                onChange={(e) => setApiSettings(prev => ({ ...prev, apiKeyExpiration: parseInt(e.target.value) }))
+                onChange={(e) => setApiSettings(prev => ({ ...prev, apiKeyExpiration: parseInt(e.target.value) }))}
               />
             </div>
             <div>
@@ -770,7 +770,7 @@ const SystemSettings = () => {
               <Input
                 type="number"
                 value={apiSettings.webhookTimeout}
-                onChange={(e) => setApiSettings(prev => ({ ...prev, webhookTimeout: parseInt(e.target.value) }))
+                onChange={(e) => setApiSettings(prev => ({ ...prev, webhookTimeout: parseInt(e.target.value) }))}
               />
             </div>
           </div>
@@ -805,7 +805,7 @@ const SystemSettings = () => {
                 type="checkbox"
                 id="enableWebhooks"
                 checked={apiSettings.enableWebhooks}
-                onChange=({ (e }) => setApiSettings(prev => ({ ...prev, enableWebhooks: e.target.checked }))}
+                onChange={(e) => setApiSettings(prev => ({ ...prev, enableWebhooks: e.target.checked }))}
                 className="rounded"
               />
               <label htmlFor="enableWebhooks" className="text-sm font-medium">Habilitar Webhooks</label>
@@ -860,7 +860,7 @@ const SystemSettings = () => {
       </Card>
       
       <div className="flex justify-end">
-        <Button onClick=({ ( }) => handleSaveSettings('API')} disabled={isLoading}>
+        <Button onClick={() => handleSaveSettings('API')} disabled={isLoading}>
           <Save className="h-4 w-4 mr-2" />
           Salvar Configurações
         </Button>
@@ -883,14 +883,14 @@ const SystemSettings = () => {
                 <Input
                   type={showPasswords.google ? 'text' : 'password'}
                   value={integrationSettings.googleApiKey}
-                  onChange=({ (e }) => setIntegrationSettings(prev => ({ ...prev, googleApiKey: e.target.value }))}
+                  onChange={(e) => setIntegrationSettings(prev => ({ ...prev, googleApiKey: e.target.value }))}
                 />
                 <Button
                   type="button"
                   variant="ghost"
                   size="sm"
                   className="absolute right-2 top-1/2 transform -translate-y-1/2"
-                  onClick=({ ( }) => togglePasswordVisibility('google')}
+                  onClick={() => togglePasswordVisibility('google')}
                 >
                   {showPasswords.google ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </Button>
@@ -903,14 +903,14 @@ const SystemSettings = () => {
                 <Input
                   type={showPasswords.openai ? 'text' : 'password'}
                   value={integrationSettings.openaiApiKey}
-                  onChange=({ (e }) => setIntegrationSettings(prev => ({ ...prev, openaiApiKey: e.target.value }))}
+                  onChange={(e) => setIntegrationSettings(prev => ({ ...prev, openaiApiKey: e.target.value }))}
                 />
                 <Button
                   type="button"
                   variant="ghost"
                   size="sm"
                   className="absolute right-2 top-1/2 transform -translate-y-1/2"
-                  onClick=({ ( }) => togglePasswordVisibility('openai')}
+                  onClick={() => togglePasswordVisibility('openai')}
                 >
                   {showPasswords.openai ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </Button>
@@ -923,7 +923,7 @@ const SystemSettings = () => {
               <label className="block text-sm font-medium mb-2">Microsoft Client ID</label>
               <Input
                 value={integrationSettings.microsoftClientId}
-                onChange=({ (e }) => setIntegrationSettings(prev => ({ ...prev, microsoftClientId: e.target.value }))}
+                onChange={(e) => setIntegrationSettings(prev => ({ ...prev, microsoftClientId: e.target.value }))}
               />
             </div>
             
@@ -933,14 +933,14 @@ const SystemSettings = () => {
                 <Input
                   type={showPasswords.microsoft ? 'text' : 'password'}
                   value={integrationSettings.microsoftClientSecret}
-                  onChange=({ (e }) => setIntegrationSettings(prev => ({ ...prev, microsoftClientSecret: e.target.value }))}
+                  onChange={(e) => setIntegrationSettings(prev => ({ ...prev, microsoftClientSecret: e.target.value }))}
                 />
                 <Button
                   type="button"
                   variant="ghost"
                   size="sm"
                   className="absolute right-2 top-1/2 transform -translate-y-1/2"
-                  onClick=({ ( }) => togglePasswordVisibility('microsoft')}
+                  onClick={() => togglePasswordVisibility('microsoft')}
                 >
                   {showPasswords.microsoft ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </Button>
@@ -953,7 +953,7 @@ const SystemSettings = () => {
               <label className="block text-sm font-medium mb-2">Stripe Public Key</label>
               <Input
                 value={integrationSettings.stripePublicKey}
-                onChange=({ (e }) => setIntegrationSettings(prev => ({ ...prev, stripePublicKey: e.target.value }))}
+                onChange={(e) => setIntegrationSettings(prev => ({ ...prev, stripePublicKey: e.target.value }))}
               />
             </div>
             
@@ -963,14 +963,14 @@ const SystemSettings = () => {
                 <Input
                   type={showPasswords.stripe ? 'text' : 'password'}
                   value={integrationSettings.stripeSecretKey}
-                  onChange=({ (e }) => setIntegrationSettings(prev => ({ ...prev, stripeSecretKey: e.target.value }))}
+                  onChange={(e) => setIntegrationSettings(prev => ({ ...prev, stripeSecretKey: e.target.value }))}
                 />
                 <Button
                   type="button"
                   variant="ghost"
                   size="sm"
                   className="absolute right-2 top-1/2 transform -translate-y-1/2"
-                  onClick=({ ( }) => togglePasswordVisibility('stripe')}
+                  onClick={() => togglePasswordVisibility('stripe')}
                 >
                   {showPasswords.stripe ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </Button>
@@ -984,14 +984,14 @@ const SystemSettings = () => {
               <Input
                 type={showPasswords.slack ? 'text' : 'password'}
                 value={integrationSettings.slackWebhookUrl}
-                onChange=({ (e }) => setIntegrationSettings(prev => ({ ...prev, slackWebhookUrl: e.target.value }))}
+                onChange={(e) => setIntegrationSettings(prev => ({ ...prev, slackWebhookUrl: e.target.value }))}
               />
               <Button
                 type="button"
                 variant="ghost"
                 size="sm"
                 className="absolute right-2 top-1/2 transform -translate-y-1/2"
-                onClick=({ ( }) => togglePasswordVisibility('slack')}
+                onClick={() => togglePasswordVisibility('slack')}
               >
                 {showPasswords.slack ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </Button>
@@ -1004,14 +1004,14 @@ const SystemSettings = () => {
               <Input
                 type={showPasswords.zapier ? 'text' : 'password'}
                 value={integrationSettings.zapierApiKey}
-                onChange=({ (e }) => setIntegrationSettings(prev => ({ ...prev, zapierApiKey: e.target.value }))}
+                onChange={(e) => setIntegrationSettings(prev => ({ ...prev, zapierApiKey: e.target.value }))}
               />
               <Button
                 type="button"
                 variant="ghost"
                 size="sm"
                 className="absolute right-2 top-1/2 transform -translate-y-1/2"
-                onClick=({ ( }) => togglePasswordVisibility('zapier')}
+                onClick={() => togglePasswordVisibility('zapier')}
               >
                 {showPasswords.zapier ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </Button>
@@ -1021,7 +1021,7 @@ const SystemSettings = () => {
       </Card>
       
       <div className="flex justify-end">
-        <Button onClick=({ ( }) => handleSaveSettings('integrações')} disabled={isLoading}>
+        <Button onClick={() => handleSaveSettings('integrações')} disabled={isLoading}>
           <Save className="h-4 w-4 mr-2" />
           Salvar Configurações
         </Button>
@@ -1071,16 +1071,16 @@ const SystemSettings = () => {
       {/* Tabs */}
       <div className="border-b">
         <nav className="flex space-x-8">
-          ({ tabs.map((tab }) => {
+          {tabs.map((tab) => {
             const Icon = tab.icon;
             return (
               <button
                 key={tab.id}
-                onClick=({ ( }) => setActiveTab(tab.id)}`
+                onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-2 py-2 px-1 border-b-2 font-medium text-sm ${
                   activeTab === tab.id
                     ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'`}
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
                 <Icon className="h-4 w-4" />
@@ -1099,4 +1099,4 @@ const SystemSettings = () => {
   );
 };
 
-export default SystemSettings;`
+export default SystemSettings;

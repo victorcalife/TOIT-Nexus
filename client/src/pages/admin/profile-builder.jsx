@@ -34,7 +34,7 @@ import {
   CheckSquare,
   Bell,
   Shield,
-  Building2 }
+  Building2
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
@@ -42,110 +42,123 @@ import { apiRequest } from '@/lib/queryClient';
 // Definição completa de todos os módulos disponíveis
 const ALL_MODULES = {
   'Conectividade e Interfaces': {
-    email, icon, description,
-    apis, icon, description,
-    calendars, icon, description, Apple, Outlook/Microsoft' },
-    database, icon, description, MySQL, MongoDB' },
-    file_upload, icon, description, .xlsx, .csv' },
-    webhooks, icon, description,
+    email: { icon: Mail, description: 'Sistema de email integrado' },
+    apis: { icon: Globe, description: 'Integração com APIs externas' },
+    calendars: { icon: Calendar, description: 'Calendários Apple, Outlook/Microsoft' },
+    database: { icon: Database, description: 'Conectores MySQL, MongoDB' },
+    file_upload: { icon: Upload, description: 'Upload de arquivos .xlsx, .csv' },
+    webhooks: { icon: Webhook, description: 'Webhooks para integrações' }
+  },
   'Ferramentas de Produtividade': {
-    task_management, icon, description,
-    workflow_builder, icon, description,
-    query_builder, icon, description,
-    dashboard_builder, icon, description,
-    reports, icon, description,
-    notifications, icon, description,
+    task_management: { icon: CheckSquare, description: 'Gerenciamento de tarefas' },
+    workflow_builder: { icon: GitBranch, description: 'Construtor de workflows' },
+    query_builder: { icon: Search, description: 'Construtor de consultas' },
+    dashboard_builder: { icon: BarChart3, description: 'Construtor de dashboards' },
+    reports: { icon: FileText, description: 'Sistema de relatórios' },
+    notifications: { icon: Bell, description: 'Sistema de notificações' }
+  },
   'Funcionalidades Empresariais': {
-    team_management, icon, description,
-    department_management, icon, description,
-    access_control, icon, description) {
+    team_management: { icon: Users, description: 'Gerenciamento de equipes' },
+    department_management: { icon: Building2, description: 'Gerenciamento de departamentos' },
+    access_control: { icon: Shield, description: 'Controle de acesso' }
+  }
+};
+
+function ProfileBuilder() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  const [editingProfile, setEditingProfile] = useState<AccessProfile | null>(null);
-  const [newProfile, setNewProfile] = useState<AccessProfile>({
-    name,
-    description,
-    price_monthly,
-    price_yearly,
-    max_users,
-    max_storage_gb,
-    modules,
-    features,
-    stripe_price_id_monthly,
-    stripe_price_id_yearly,
-    stripe_product_id,
-    is_active);
+  const [editingProfile, setEditingProfile] = useState(null);
+  const [newProfile, setNewProfile] = useState({
+    name: '',
+    description: '',
+    price_monthly: 0,
+    price_yearly: 0,
+    max_users: 0,
+    max_storage_gb: 0,
+    modules: {},
+    features: [],
+    stripe_price_id_monthly: '',
+    stripe_price_id_yearly: '',
+    stripe_product_id: '',
+    is_active: true
+  });
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
   // Fetch existing profiles
-  const { data= [], isLoading } = useQuery(({ queryKey,
-    queryFn }) => apiRequest('/api/admin/access-profiles').then(res => res.json())
+  const { data = [], isLoading } = useQuery({
+    queryKey: ['access-profiles'],
+    queryFn: () => apiRequest('/api/admin/access-profiles').then(res => res.json())
   });
 
   // Create profile mutation
-  const createProfileMutation = useMutation(({ mutationFn }) => {
+  const createProfileMutation = useMutation({
+    mutationFn: async (profileData) => {
       return await apiRequest('/api/admin/access-profiles', {
-        method,
-        body)
+        method: 'POST',
+        body: JSON.stringify(profileData)
       });
     },
-    onSuccess) => {
-      queryClient.invalidateQueries({ queryKey);
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['access-profiles'] });
       setIsCreateDialogOpen(false);
       setNewProfile({
-        name,
-        description,
-        price_monthly,
-        price_yearly,
-        max_users,
-        max_storage_gb,
-        modules,
-        features,
-        stripe_price_id_monthly,
-        stripe_price_id_yearly,
-        stripe_product_id,
-        is_active);
+        name: '',
+        description: '',
+        price_monthly: 0,
+        price_yearly: 0,
+        max_users: 0,
+        max_storage_gb: 0,
+        modules: {},
+        features: [],
+        stripe_price_id_monthly: '',
+        stripe_price_id_yearly: '',
+        stripe_product_id: '',
+        is_active: true
+      });
       toast({
-        title,
-        description,
+        title: 'Sucesso',
+        description: 'Perfil criado com sucesso',
       });
     },
-    onError) => {
+    onError: (error) => {
       toast({
-        title,
-        description,
-        variant,
+        title: 'Erro',
+        description: 'Erro ao criar perfil',
+        variant: 'destructive',
       });
     }
   });
 
   // Update profile mutation
-  const updateProfileMutation = useMutation(({ mutationFn }) => {
+  const updateProfileMutation = useMutation({
+    mutationFn: async (profile) => {
       return await apiRequest(`/api/admin/access-profiles/${profile.id}`, {
-        method,
-        body)
+        method: 'PUT',
+        body: JSON.stringify(profile)
       });
     },
-    onSuccess) => {
-      queryClient.invalidateQueries({ queryKey);
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['access-profiles'] });
       setEditingProfile(null);
       toast({
-        title,
-        description,
+        title: 'Sucesso',
+        description: 'Perfil atualizado com sucesso',
       });
     }
   });
 
   // Delete profile mutation
-  const deleteProfileMutation = useMutation(({ mutationFn }) => {`
+  const deleteProfileMutation = useMutation({
+    mutationFn: async (profileId) => {
       return await apiRequest(`/api/admin/access-profiles/${profileId}`, {
-        method);
+        method: 'DELETE'
+      });
     },
-    onSuccess) => {
-      queryClient.invalidateQueries({ queryKey);
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['access-profiles'] });
       toast({
-        title,
-        description,
+        title: 'Sucesso',
+        description: 'Perfil excluído com sucesso',
       });
     }
   });
@@ -154,14 +167,16 @@ const ALL_MODULES = {
     if (isCreate) {
       setNewProfile(prev => ({
         ...prev,
-        modules,
+        modules: {
+          ...prev.modules,
           [moduleKey]: !prev.modules[moduleKey]
         }
       }));
     } else if (editingProfile) {
       setEditingProfile(prev => ({
-        ...prev!,
-        modules,
+        ...prev,
+        modules: {
+          ...prev.modules,
           [moduleKey]: !prev.modules[moduleKey]
         }
       }));
@@ -179,7 +194,8 @@ const ALL_MODULES = {
   const duplicateProfile = (profile) => {
     setNewProfile({
       ...profile,
-      id,`
+      id,
+`
       name)`,
       created_at);
     setIsCreateDialogOpen(true);
@@ -201,7 +217,8 @@ const ALL_MODULES = {
             
             return (
               <div key={key} className="flex items-center justify-between p-3 border rounded-lg">
-                <div className="flex items-center space-x-3">`
+                <div className="flex items-center space-x-3">
+`
                   <IconComponent className={`h-5 w-5 ${isActive ? 'text-green-600' : 'text-gray-400'}`} />
                   <div>
                     <p className="font-medium">{module.name}</p>
@@ -267,7 +284,7 @@ const ALL_MODULES = {
                       id="profile-name"
                       placeholder="Ex, PREMIUM, ENTERPRISE"
                       value={newProfile.name}
-                      onChange=({ (e }) => setNewProfile(prev => ({ ...prev, name))}
+                      onChange={(e) => setNewProfile(prev => ({ ...prev, name: e.target.value }))}
                     />
                   </div>
                   <div className="space-y-2">
@@ -287,7 +304,7 @@ const ALL_MODULES = {
                     id="profile-description"
                     placeholder="Descreva as principais características deste plano..."
                     value={newProfile.description}
-                    onChange=({ (e }) => setNewProfile(prev => ({ ...prev, description))}
+                    onChange={(e) => setNewProfile(prev => ({ ...prev, description: e.target.value }))}
                   />
                 </div>
               </TabsContent>
@@ -307,7 +324,7 @@ const ALL_MODULES = {
                       type="number"
                       step="0.01"
                       value={newProfile.price_monthly}
-                      onChange=({ (e }) => setNewProfile(prev => ({ ...prev, price_monthly) || 0 }))}
+                      onChange={(e) => setNewProfile(prev => ({ ...prev, price_monthly: parseFloat(e.target.value) || 0 }))}
                     />
                   </div>
                   <div className="space-y-2">
@@ -317,7 +334,7 @@ const ALL_MODULES = {
                       type="number"
                       step="0.01"
                       value={newProfile.price_yearly}
-                      onChange=({ (e }) => setNewProfile(prev => ({ ...prev, price_yearly) || 0 }))}
+                      onChange={(e) => setNewProfile(prev => ({ ...prev, price_yearly: parseFloat(e.target.value) || 0 }))}
                     />
                   </div>
                 </div>
@@ -328,7 +345,7 @@ const ALL_MODULES = {
                       id="max-users"
                       type="number"
                       value={newProfile.max_users}
-                      onChange=({ (e }) => setNewProfile(prev => ({ ...prev, max_users) || 1 }))}
+                      onChange={(e) => setNewProfile(prev => ({ ...prev, max_users: parseInt(e.target.value) || 1 }))}
                     />
                   </div>
                   <div className="space-y-2">
@@ -337,7 +354,7 @@ const ALL_MODULES = {
                       id="max-storage"
                       type="number"
                       value={newProfile.max_storage_gb}
-                      onChange=({ (e }) => setNewProfile(prev => ({ ...prev, max_storage_gb) || 1 }))}
+                      onChange={(e) => setNewProfile(prev => ({ ...prev, max_storage_gb: parseInt(e.target.value) || 1 }))}
                     />
                   </div>
                 </div>
@@ -351,7 +368,7 @@ const ALL_MODULES = {
                         id="stripe-product-id"
                         placeholder="prod_1234abcd..."
                         value={newProfile.stripe_product_id}
-                        onChange=({ (e }) => setNewProfile(prev => ({ ...prev, stripe_product_id))}
+                        onChange={(e) => setNewProfile(prev => ({ ...prev, stripe_product_id: e.target.value }))}
                       />
                       <p className="text-xs text-muted-foreground">ID do produto no Stripe Dashboard</p>
                     </div>
@@ -361,7 +378,7 @@ const ALL_MODULES = {
                         id="stripe-price-monthly"
                         placeholder="price_1234abcd..."
                         value={newProfile.stripe_price_id_monthly}
-                        onChange=({ (e }) => setNewProfile(prev => ({ ...prev, stripe_price_id_monthly))}
+                        onChange={(e) => setNewProfile(prev => ({ ...prev, stripe_price_id_monthly: e.target.value }))}
                       />
                       <p className="text-xs text-muted-foreground">Price ID para cobrança mensal</p>
                     </div>
@@ -371,7 +388,7 @@ const ALL_MODULES = {
                         id="stripe-price-yearly"
                         placeholder="price_5678efgh..."
                         value={newProfile.stripe_price_id_yearly}
-                        onChange=({ (e }) => setNewProfile(prev => ({ ...prev, stripe_price_id_yearly))}
+                        onChange={(e) => setNewProfile(prev => ({ ...prev, stripe_price_id_yearly: e.target.value }))}
                       />
                       <p className="text-xs text-muted-foreground">Price ID para cobrança anual</p>
                     </div>
@@ -419,7 +436,8 @@ const ALL_MODULES = {
                   <div>
                     <span className="text-muted-foreground">Preço Anual)}</div>
                   </div>
-                  <div>`
+                  <div>
+`
                     <span className="text-muted-foreground">Máx. Usuários) * 100}%` }}
                     ></div>
                   </div>
@@ -478,7 +496,7 @@ const ALL_MODULES = {
                   <Textarea
                     id="edit-profile-description"
                     value={editingProfile.description}
-                    onChange=({ (e }) => setEditingProfile(prev => ({ ...prev!, description))}
+                    onChange={(e) => setEditingProfile(prev => ({ ...prev, description: e.target.value }))}
                   />
                 </div>
               </TabsContent>
@@ -498,7 +516,7 @@ const ALL_MODULES = {
                       type="number"
                       step="0.01"
                       value={editingProfile.price_monthly}
-                      onChange=({ (e }) => setEditingProfile(prev => ({ ...prev!, price_monthly) || 0 }))}
+                      onChange={(e) => setEditingProfile(prev => ({ ...prev, price_monthly: parseFloat(e.target.value) || 0 }))}
                     />
                   </div>
                   <div className="space-y-2">
@@ -508,7 +526,7 @@ const ALL_MODULES = {
                       type="number"
                       step="0.01"
                       value={editingProfile.price_yearly}
-                      onChange=({ (e }) => setEditingProfile(prev => ({ ...prev!, price_yearly) || 0 }))}
+                      onChange={(e) => setEditingProfile(prev => ({ ...prev, price_yearly: parseFloat(e.target.value) || 0 }))}
                     />
                   </div>
                 </div>
@@ -519,7 +537,7 @@ const ALL_MODULES = {
                       id="edit-max-users"
                       type="number"
                       value={editingProfile.max_users}
-                      onChange=({ (e }) => setEditingProfile(prev => ({ ...prev!, max_users) || 1 }))}
+                      onChange={(e) => setEditingProfile(prev => ({ ...prev, max_users: parseInt(e.target.value) || 1 }))}
                     />
                   </div>
                   <div className="space-y-2">
@@ -528,7 +546,7 @@ const ALL_MODULES = {
                       id="edit-max-storage"
                       type="number"
                       value={editingProfile.max_storage_gb}
-                      onChange=({ (e }) => setEditingProfile(prev => ({ ...prev!, max_storage_gb) || 1 }))}
+                      onChange={(e) => setEditingProfile(prev => ({ ...prev, max_storage_gb: parseInt(e.target.value) || 1 }))}
                     />
                   </div>
                 </div>
@@ -542,7 +560,7 @@ const ALL_MODULES = {
                         id="edit-stripe-product-id"
                         placeholder="prod_1234abcd..."
                         value={editingProfile.stripe_product_id || ''}
-                        onChange=({ (e }) => setEditingProfile(prev => ({ ...prev!, stripe_product_id))}
+                        onChange={(e) => setEditingProfile(prev => ({ ...prev, stripe_product_id: e.target.value }))}
                       />
                       <p className="text-xs text-muted-foreground">ID do produto no Stripe Dashboard</p>
                     </div>
@@ -552,7 +570,7 @@ const ALL_MODULES = {
                         id="edit-stripe-price-monthly"
                         placeholder="price_1234abcd..."
                         value={editingProfile.stripe_price_id_monthly || ''}
-                        onChange=({ (e }) => setEditingProfile(prev => ({ ...prev!, stripe_price_id_monthly))}
+                        onChange={(e) => setEditingProfile(prev => ({ ...prev, stripe_price_id_monthly: e.target.value }))}
                       />
                       <p className="text-xs text-muted-foreground">Price ID para cobrança mensal</p>
                     </div>
@@ -562,7 +580,7 @@ const ALL_MODULES = {
                         id="edit-stripe-price-yearly"
                         placeholder="price_5678efgh..."
                         value={editingProfile.stripe_price_id_yearly || ''}
-                        onChange=({ (e }) => setEditingProfile(prev => ({ ...prev!, stripe_price_id_yearly))}
+                        onChange={(e) => setEditingProfile(prev => ({ ...prev, stripe_price_id_yearly: e.target.value }))}
                       />
                       <p className="text-xs text-muted-foreground">Price ID para cobrança anual</p>
                     </div>
