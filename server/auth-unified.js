@@ -19,7 +19,7 @@ const passport = require( 'passport' );
 const LocalStrategy = require( 'passport-local' ).Strategy;
 const DatabaseService = require( './services/DatabaseService' );
 const db = new DatabaseService();
-const { users, tenants, permissions, userPermissions, rolePermissions } = require( './dist/shared/schema' );
+const { users, tenants, permissions, userPermissions, rolePermissions } = require( './schema-unified.js' );
 const { eq, and, or, isNull } = require( 'drizzle-orm' );
 
 // Configurações

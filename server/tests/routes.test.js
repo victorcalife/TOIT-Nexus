@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../index');
+const { app } = require('../index-unified');
 const DatabaseService = require('../services/DatabaseService');
 
 const db = new DatabaseService();

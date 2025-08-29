@@ -1,14 +1,6 @@
 /**
- * SERVIDOR PRINCIPAL UNIFICADO
- * Integra toda a nova arquitetura limpa
- * 100% JavaScript - SEM TYPESCRIPT
- * 
- * FUNCIONALIDADES:
- * - Sistema de autenticação unificado
- * - Rotas modulares
- * - Middlewares centralizados
- * - Serviços organizados
- * - Health checks
+ * SERVIDOR DE TESTE UNIFICADO - CARREGAMENTO INCREMENTAL
+ * Testa cada componente do sistema unificado separadamente
  */
 
 const express = require('express');
@@ -23,7 +15,7 @@ const PORT = process.env.PORT || 3001;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const SESSION_SECRET = process.env.SESSION_SECRET || 'your-super-secret-session-key';
 
-console.log('🚀 Iniciando servidor unificado...');
+console.log('🚀 Iniciando servidor de teste unificado...');
 
 // PASSO 1: Middlewares básicos
 try {
@@ -136,8 +128,8 @@ try {
   process.exit(1);
 }
 
-// Rota de health check adicional
-app.get('/api/health-simple', (req, res) => {
+// Rota de health check
+app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
     message: 'Servidor unificado funcionando',
@@ -155,29 +147,10 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Classe UnifiedServer para compatibilidade
-class UnifiedServer {
-  constructor() {
-    this.app = app;
-  }
+// Iniciar servidor
+app.listen(PORT, () => {
+  console.log(`✅ Servidor unificado rodando na porta ${PORT}`);
+  console.log(`🌐 Health Check: http://localhost:${PORT}/api/health`);
+});
 
-  getApp() {
-    return this.app;
-  }
-}
-
-// Inicializar servidor se executado diretamente
-if (require.main === module) {
-  app.listen(PORT, () => {
-    console.log(`✅ Servidor unificado rodando na porta ${PORT}`);
-    console.log(`🌐 Ambiente: ${NODE_ENV}`);
-    console.log(`🔗 Health Check: http://localhost:${PORT}/api/health`);
-    console.log(`🔗 Health Check Simples: http://localhost:${PORT}/api/health-simple`);
-    console.log('🎯 Sistema TOIT-Nexus inicializado com sucesso!');
-  });
-}
-
-module.exports = {
-  UnifiedServer,
-  app
-};
+module.exports = app;
