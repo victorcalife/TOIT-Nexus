@@ -100,8 +100,33 @@ class UnifiedServer {
   setupRoutes() {
     console.log('🛣️ [SERVER] Configurando rotas...');
 
-    // Rota de status básico
-    this.app.get('/', (req, res) => {
+    // Middleware para detectar domínio e servir conteúdo específico
+    this.app.use((req, res, next) => {
+      const host = req.get('host') || req.get('x-forwarded-host') || '';
+      const hostname = host.split(':')[0]; // Remove porta se existir
+      
+      console.log(`🌐 [DOMAIN] Request para: ${hostname} - Path: ${req.path}`);
+      
+      // Roteamento baseado em domínio
+      if (hostname === 'supnexus.toit.com.br') {
+        // Servir página de login de suporte
+        if (req.path === '/' || req.path === '/index.html') {
+          const loginSupportePath = path.join(__dirname, '../client/src/pages/admin/login_suporte.html');
+          return res.sendFile(loginSupportePath);
+        }
+      } else if (hostname === 'nexus.toit.com.br') {
+        // Servir landing page do Nexus
+        if (req.path === '/' || req.path === '/index.html') {
+          const nexusLandingPath = path.join(__dirname, '../client/public/nexus-landing-new.html');
+          return res.sendFile(nexusLandingPath);
+        }
+      }
+      
+      next();
+    });
+
+    // Rota de status básico para API
+    this.app.get('/api/status', (req, res) => {
       res.json({
         success: true,
         service: 'TOIT NEXUS',
@@ -117,16 +142,24 @@ class UnifiedServer {
     setupRoutes(this.app);
 
     // Servir arquivos estáticos do frontend
-    if (NODE_ENV === 'production') {
-      this.app.use(express.static(path.join(__dirname, '../dist')));
+    this.app.use(express.static(path.join(__dirname, '../client/public')));
+    this.app.use(express.static(path.join(__dirname, '../dist')));
+    
+    // Catch-all para SPA (apenas para outros domínios)
+    this.app.get('*', (req, res) => {
+      const host = req.get('host') || req.get('x-forwarded-host') || '';
+      const hostname = host.split(':')[0];
       
-      // Catch-all para SPA
-      this.app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, '../dist/index.html'));
-      });
-    }
+      // Para domínios específicos, não fazer catch-all
+      if (hostname === 'supnexus.toit.com.br' || hostname === 'nexus.toit.com.br') {
+        return res.status(404).send('Página não encontrada');
+      }
+      
+      // Para outros domínios, servir o SPA
+      res.sendFile(path.join(__dirname, '../dist/index.html'));
+    });
 
-    console.log('✅ [SERVER] Rotas configuradas');
+    console.log('✅ [SERVER] Rotas configuradas com roteamento por domínio');
   }
 
   /**

@@ -40,6 +40,25 @@ function ProtectedRoute({ children, requiredRoles = [], requireTenantSelection =
   return children;
 }
 
+// Componente para roteamento baseado em domínio
+function DomainBasedRoute() {
+  const hostname = window.location.hostname;
+  
+  // Para supnexus.toit.com.br, redirecionar para login de suporte
+  if (hostname === 'supnexus.toit.com.br') {
+    return <Navigate to="/support-login" replace />;
+  }
+  
+  // Para nexus.toit.com.br, o servidor já serve a landing page
+  // Então não fazemos nada aqui, deixamos o servidor lidar
+  if (hostname === 'nexus.toit.com.br') {
+    return null; // O servidor serve nexus-landing-new.html
+  }
+  
+  // Para outros domínios, comportamento padrão
+  return <Navigate to="/login" replace />;
+}
+
 // Componente para rotas públicas
 function PublicRoute({ children }) {
   const { isAuthenticated, isLoading, user } = useAuth();
@@ -91,8 +110,14 @@ function AppRoutes() {
     <ErrorBoundary>
       <Suspense fallback={<LoadingSpinner />}>
         <Routes>
-          {/* Rotas públicas */}
-          {publicRoutes.map((route) => (
+          {/* Rota especial para domínios específicos */}
+          <Route
+            path="/"
+            element={<DomainBasedRoute />}
+          />
+          
+          {/* Rotas públicas (exceto a raiz que é tratada acima) */}
+          {publicRoutes.filter(route => route.path !== '/').map((route) => (
             <Route
               key={route.path}
               path={route.path}
