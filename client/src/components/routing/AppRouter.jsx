@@ -44,15 +44,10 @@ function ProtectedRoute({ children, requiredRoles = [], requireTenantSelection =
 function DomainBasedRoute() {
   const hostname = window.location.hostname;
   
-  // Para supnexus.toit.com.br, redirecionar para login de suporte
-  if (hostname === 'supnexus.toit.com.br') {
-    return <Navigate to="/support-login" replace />;
-  }
-  
-  // Para nexus.toit.com.br, o servidor já serve a landing page
-  // Então não fazemos nada aqui, deixamos o servidor lidar
-  if (hostname === 'nexus.toit.com.br') {
-    return null; // O servidor serve nexus-landing-new.html
+  // Para domínios específicos (supnexus.toit.com.br e nexus.toit.com.br),
+  // deixamos o servidor lidar com o roteamento servindo os arquivos HTML corretos
+  if (hostname === 'supnexus.toit.com.br' || hostname === 'nexus.toit.com.br') {
+    return null; // O servidor serve login_suporte.html ou nexus-landing-new.html
   }
   
   // Para outros domínios, comportamento padrão
