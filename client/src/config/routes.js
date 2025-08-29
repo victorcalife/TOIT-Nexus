@@ -24,7 +24,7 @@ const ProfilePage = React.lazy(() => import('@/pages/client/ProfilePage'));
 const SettingsPage = React.lazy(() => import('@/pages/client/SettingsPage'));
 
 // Páginas de admin
-const AdminDashboard = React.lazy(() => import('@/pages/admin/Dashboard'));
+const AdminDashboard = React.lazy(() => import('@/pages/admin/dashboard'));
 const UsersManagement = React.lazy(() => import('@/pages/admin/UsersManagement'));
 const TenantsManagement = React.lazy(() => import('@/pages/admin/TenantsManagement'));
 const SystemSettings = React.lazy(() => import('@/pages/admin/SystemSettings'));
