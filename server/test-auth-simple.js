@@ -5,7 +5,7 @@
  */
 
 const jwt = require( 'jsonwebtoken' );
-const bcrypt = require( 'bcrypt' );
+const bcrypt = require( 'bcryptjs' );
 
 // Configurações de teste
 const JWT_SECRET = 'test-secret-key';

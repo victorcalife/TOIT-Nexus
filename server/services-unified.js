@@ -30,7 +30,7 @@ const {
   mlSlotUsage
 } = require('./schema-unified');
 const { eq, and, or, isNull, desc, asc } = require('drizzle-orm');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 /**
  * CLASSE BASE PARA TODOS OS SERVIÇOS

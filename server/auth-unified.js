@@ -13,7 +13,7 @@
  * - Super Admin System
  */
 
-const bcrypt = require( 'bcrypt' );
+const bcrypt = require( 'bcryptjs' );
 const jwt = require( 'jsonwebtoken' );
 const passport = require( 'passport' );
 const LocalStrategy = require( 'passport-local' ).Strategy;

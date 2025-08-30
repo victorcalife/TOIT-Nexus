@@ -3,7 +3,7 @@
  */
 
 const { Client } = require('pg');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 async function hashPassword(password) {
   return await bcrypt.hash(password, 12);
