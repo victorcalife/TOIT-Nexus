@@ -1,0 +1,10 @@
+[33m6a7926b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m s
+[33mdb3ec41[m s
+[33m07aa369[m a
+[33m60ff64c[m fix(database): add missing data column to user_sessions table
+[33m1efd2bb[m fix: add missing data column to user_sessions table
+[33m62f60ba[m � CRITICAL FIX: Add user_sessions.data column migration
+[33m8c212c9[m Fix: Remove SelectTenantPage.jsx from .gitignore and add to repository
+[33m6dcf032[m s
+[33md10210b[m s
+[33m872abc7[m s
